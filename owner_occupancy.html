@@ -402,6 +402,111 @@
             gap: 15px;
         }
 
+        /* Short-Term Rental Section */
+        .str-section {
+            background-color: #f5f5f0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .str-header {
+            background-color: #c9a86c;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .str-header h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .str-icon {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .str-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        .str-content {
+            padding: 20px;
+        }
+
+        .str-warning {
+            background-color: #fdf5f5;
+            border-left: 4px solid #c0392b;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #333333;
+        }
+
+        .str-warning .not-allowed-text {
+            color: #c0392b;
+            font-weight: 700;
+        }
+
+        .str-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .str-card {
+            background-color: white;
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .str-card h4 {
+            font-size: 12px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .str-card p {
+            font-size: 11px;
+            color: #666666;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .str-card a {
+            font-size: 11px;
+            color: #6b8fa3;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .str-footer {
+            text-align: center;
+            padding-top: 10px;
+            border-top: 1px dashed #d0ccc7;
+        }
+
+        .str-footer a {
+            font-size: 12px;
+            color: #c9a86c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
         .covenant-icon {
             width: 45px;
             height: 45px;
@@ -640,6 +745,36 @@
                     </div>
                     <h4>Community Investment</h4>
                     <p>Owners living on-site are more invested in the community</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Short-Term Rental Section -->
+        <div class="str-section">
+            <div class="str-header">
+                <div class="str-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                </div>
+                <h3>What About Short-Term Rentals?</h3>
+            </div>
+            <div class="str-content">
+                <div class="str-warning">
+                    <strong>Important:</strong> Short-term rentals (Airbnb, VRBO, etc.) are <span class="not-allowed-text">NOT permitted</span> in DADUs located in RS, RN, or RL zones.
+                </div>
+                <div class="str-grid">
+                    <div class="str-card">
+                        <h4>Owner-Occupied STRP</h4>
+                        <p>If your property qualifies (not in RS/RN/RL), you may apply for an owner-occupied short-term rental permit. You must live on-site and provide proof of residence.</p>
+                        <a href="https://www.nashville.gov/departments/codes/short-term-rentals/permit-types" target="_blank">View Permit Types ↗</a>
+                    </div>
+                    <div class="str-card">
+                        <h4>Proof of Residence Required</h4>
+                        <p>Nashville requires documentation proving you live at the property, such as a driver's license, voter registration, or utility bills in your name.</p>
+                        <a href="https://www.nashville.gov/departments/codes/short-term-rentals/apply-short-term-rental-property-permit#proof-of-residence" target="_blank">Proof Requirements ↗</a>
+                    </div>
+                </div>
+                <div class="str-footer">
+                    <a href="https://www.nashville.gov/departments/codes/short-term-rentals" target="_blank">Learn more about Nashville Short-Term Rental regulations ↗</a>
                 </div>
             </div>
         </div>
