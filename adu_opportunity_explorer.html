@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADU Opportunity Explorer | Homebody Projects</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif; }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: #6b8e4e;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .logo-sub {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            flex: 1;
+            max-width: 450px;
+            margin: 0 30px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 24px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+        }
+        .header-stat {
+            text-align: center;
+        }
+        .header-stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #6b8e4e;
+        }
+        
+        /* Filter Bar */
+        .filter-bar {
+            background: #f8f9fa;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+        .filter-select {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+        }
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #555;
+        }
+        .zoom-btn {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .zoom-btn:hover { background: #f0f0f0; }
+        
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 110px);
+        }
+        
+        /* Map */
+        #map {
+            flex: 1;
+            position: relative;
+        }
+        
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e0e0e0;
+            border-top-color: #6b8e4e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text {
+            margin-top: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        .loading-progress {
+            margin-top: 8px;
+            color: #999;
+            font-size: 12px;
+        }
+        
+        /* Legend */
+        .map-legend {
+            position: absolute;
+            bottom: 30px;
+            left: 10px;
+            background: white;
+            padding: 12px 14px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 11px;
+        }
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 12px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px 0;
+        }
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 400px;
+            background: white;
+            border-left: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-header {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            background: #fafafa;
+        }
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+        .sidebar-stats {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+        .sidebar-stats span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .sort-toggle {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        .sort-btn {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .sort-btn.active {
+            background: #6b8e4e;
+            color: white;
+            border-color: #6b8e4e;
+        }
+        
+        /* Property List */
+        .property-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .property-item {
+            padding: 14px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.15s;
+            position: relative;
+        }
+        .property-item:hover {
+            background: #f5f8f5;
+        }
+        .property-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+        .property-address {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            flex: 1;
+        }
+        .property-score {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+        }
+        .score-high { background: #27ae60; }
+        .score-medium { background: #f39c12; }
+        .score-low { background: #e74c3c; }
+        .property-details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            font-size: 11px;
+            color: #666;
+            margin-top: 8px;
+        }
+        .property-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        .property-detail-label {
+            color: #999;
+            font-size: 10px;
+        }
+        .property-detail-value {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Map Popup */
+        .leaflet-popup-content-wrapper {
+            border-radius: 10px;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.2);
+        }
+        .leaflet-popup-content {
+            margin: 14px 16px;
+            min-width: 260px;
+        }
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .popup-address {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+        .popup-score {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+        }
+        .popup-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 12px 0;
+        }
+        .popup-stat {
+            text-align: center;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .popup-stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .popup-stat-label {
+            font-size: 10px;
+            color: #888;
+            margin-top: 2px;
+        }
+        .popup-info {
+            font-size: 12px;
+            color: #666;
+            padding: 8px 0;
+            border-top: 1px solid #eee;
+        }
+        .popup-link {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background: #6b8e4e;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+        .popup-link:hover { background: #5a7d3f; }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            border-radius: 12px;
+            max-width: 750px;
+            width: 90%;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .modal-subtitle {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+            font-family: monospace;
+        }
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(85vh - 100px);
+        }
+        .links-section {
+            margin-bottom: 20px;
+        }
+        .links-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .link-card {
+            padding: 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .link-card:hover {
+            border-color: #6b8e4e;
+            background: #f8faf8;
+        }
+        .link-icon {
+            width: 40px;
+            height: 40px;
+            background: #e8f5e8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .link-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .link-info p {
+            font-size: 11px;
+            color: #888;
+        }
+        
+        /* No Results */
+        .no-results {
+            padding: 40px;
+            text-align: center;
+            color: #888;
+        }
+        .no-results-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🎯</div>
+            <div>
+                <div class="logo-text">Homebody Projects</div>
+                <div class="logo-sub">ADU Opportunity Explorer</div>
+            </div>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search address or APN...">
+        </div>
+        <div class="header-stats">
+            <div class="header-stat">
+                <div class="header-stat-value" id="totalProps">—</div>
+                <div>Properties</div>
+            </div>
+            <div class="header-stat">
+                <div class="header-stat-value" id="avgScore">—</div>
+                <div>Avg Score</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-group">
+            <span class="filter-label">Min Score:</span>
+            <select class="filter-select" id="filterScore">
+                <option value="0">All</option>
+                <option value="60">60+</option>
+                <option value="70">70+</option>
+                <option value="80" selected>80+</option>
+                <option value="90">90+ (Best)</option>
+                <option value="95">95+ (Elite)</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">Min Lot Size:</span>
+            <select class="filter-select" id="filterAcres">
+                <option value="0">Any</option>
+                <option value="0.15">0.15+ ac</option>
+                <option value="0.25">0.25+ ac</option>
+                <option value="0.5">0.5+ ac</option>
+                <option value="1">1+ ac</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">Year Built:</span>
+            <select class="filter-select" id="filterYear">
+                <option value="0">Any</option>
+                <option value="1900">Pre-1950</option>
+                <option value="1950">1950+</option>
+                <option value="1980">1980+</option>
+                <option value="2000">2000+</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">District:</span>
+            <select class="filter-select" id="filterDistrict">
+                <option value="">All</option>
+                <option value="USD">USD (Urban)</option>
+                <option value="GSD">GSD (General)</option>
+            </select>
+        </div>
+        <label class="filter-checkbox">
+            <input type="checkbox" id="searchAsMove" checked>
+            Update on move
+        </label>
+        <div style="flex:1"></div>
+        <button class="zoom-btn" onclick="map.setView([36.16, -86.78], 11)">Reset View</button>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <div id="map">
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading ADU opportunity data...</div>
+                <div class="loading-progress" id="loadingProgress">Fetching 105,115 scored properties</div>
+            </div>
+            <div class="map-legend">
+                <div class="legend-title">🎯 ADU Opportunity Score</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div> 90+ Excellent</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> 70-89 Good</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> &lt;70 Limited</div>
+            </div>
+        </div>
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">🏆 Top ADU Opportunities</div>
+                <div class="sidebar-stats">
+                    <span>📍 <span id="visibleCount">0</span> visible</span>
+                    <span>🎯 Avg: <span id="visibleAvg">0</span></span>
+                </div>
+                <div class="sort-toggle">
+                    <button class="sort-btn active" id="sortScore" onclick="setSortMode('score')">By Score</button>
+                    <button class="sort-btn" id="sortAcres" onclick="setSortMode('acres')">By Lot Size</button>
+                    <button class="sort-btn" id="sortIncome" onclick="setSortMode('income')">By Income</button>
+                </div>
+            </div>
+            <div class="property-list" id="propertyList"></div>
+        </aside>
+    </div>
+    
+    <!-- Links Modal -->
+    <div class="modal-overlay" id="linksModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div>
+                    <div class="modal-title" id="modalTitle">Property Links</div>
+                    <div class="modal-subtitle" id="modalSubtitle">APN: ---</div>
+                </div>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="links-section">
+                    <div class="links-section-title">🔍 Permit & Building Records</div>
+                    <div class="links-grid" id="permitLinks"></div>
+                </div>
+                <div class="links-section">
+                    <div class="links-section-title">🏠 Property Information</div>
+                    <div class="links-grid" id="propertyLinks"></div>
+                </div>
+                <div class="links-section">
+                    <div class="links-section-title">📊 History & Records</div>
+                    <div class="links-grid" id="historyLinks"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([36.16, -86.78], 11);
+        
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap, &copy; CartoDB',
+            maxZoom: 19
+        }).addTo(map);
+        
+        // Data storage
+        let allProperties = [];
+        let markers = L.layerGroup().addTo(map);
+        let sortMode = 'score';
+        
+        // Load data from GitHub
+        async function loadData() {
+            const loadingProgress = document.getElementById('loadingProgress');
+            
+            try {
+                loadingProgress.textContent = 'Connecting to GitHub...';
+                
+                const response = await fetch('https://nataliebaldacci.github.io/DADU-Homebody-Projects/parcels_scored_light.json');
+                
+                if (!response.ok) throw new Error('Failed to fetch data');
+                
+                loadingProgress.textContent = 'Parsing data...';
+                const data = await response.json();
+                
+                allProperties = data.d.map(p => ({
+                    address: p.a,
+                    apn: p.apn,
+                    pid: p.pid,
+                    lat: p.lat,
+                    lon: p.lon,
+                    permits: p.p,
+                    value: p.v,
+                    zoning: p.z,
+                    district: p.d,
+                    score: p.s,
+                    year: p.yr,
+                    acres: p.ac,
+                    beds: p.beds,
+                    income: p.inc
+                }));
+                
+                // Update header stats
+                document.getElementById('totalProps').textContent = allProperties.length.toLocaleString();
+                const avgScore = allProperties.reduce((sum, p) => sum + p.score, 0) / allProperties.length;
+                document.getElementById('avgScore').textContent = avgScore.toFixed(0);
+                
+                loadingProgress.textContent = 'Rendering map...';
+                updateMap();
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                loadingProgress.textContent = 'Error loading data. Please refresh.';
+            }
+        }
+        
+        // Get score color
+        function getScoreColor(score) {
+            if (score >= 90) return '#27ae60';
+            if (score >= 70) return '#f39c12';
+            return '#e74c3c';
+        }
+        
+        function getScoreClass(score) {
+            if (score >= 90) return 'score-high';
+            if (score >= 70) return 'score-medium';
+            return 'score-low';
+        }
+        
+        // Filter properties
+        function getFilteredProperties() {
+            const minScore = parseInt(document.getElementById('filterScore').value);
+            const minAcres = parseFloat(document.getElementById('filterAcres').value);
+            const yearFilter = parseInt(document.getElementById('filterYear').value);
+            const district = document.getElementById('filterDistrict').value;
+            const bounds = map.getBounds();
+            
+            return allProperties.filter(p => {
+                if (p.score < minScore) return false;
+                if (minAcres > 0 && (!p.acres || p.acres < minAcres)) return false;
+                if (yearFilter === 1900 && p.year && p.year >= 1950) return false;
+                if (yearFilter > 1900 && (!p.year || p.year < yearFilter)) return false;
+                if (district && p.district !== district) return false;
+                if (!bounds.contains([p.lat, p.lon])) return false;
+                return true;
+            });
+        }
+        
+        // Update map markers
+        function updateMap() {
+            markers.clearLayers();
+            
+            const filtered = getFilteredProperties();
+            const zoom = map.getZoom();
+            
+            // Limit markers at low zoom
+            let displayProps = filtered;
+            if (zoom < 13 && filtered.length > 500) {
+                displayProps = [...filtered].sort((a, b) => b.score - a.score).slice(0, 500);
+            } else if (zoom < 15 && filtered.length > 2000) {
+                displayProps = [...filtered].sort((a, b) => b.score - a.score).slice(0, 2000);
+            }
+            
+            displayProps.forEach(p => {
+                const color = getScoreColor(p.score);
+                const radius = Math.min(5 + (p.score - 70) * 0.15, 12);
+                
+                const marker = L.circleMarker([p.lat, p.lon], {
+                    radius: radius,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 1.5,
+                    fillOpacity: 0.85
+                });
+                
+                marker.on('click', () => showPopup(p, marker));
+                markers.addLayer(marker);
+            });
+            
+            updateSidebar(filtered);
+        }
+        
+        // Show popup
+        function showPopup(p, marker) {
+            const content = `
+                <div class="popup-header">
+                    <div class="popup-address">${p.address}</div>
+                    <div class="popup-score ${getScoreClass(p.score)}">${p.score}</div>
+                </div>
+                <div class="popup-grid">
+                    <div class="popup-stat">
+                        <div class="popup-stat-value">${p.acres ? p.acres.toFixed(2) : '—'}</div>
+                        <div class="popup-stat-label">Acres</div>
+                    </div>
+                    <div class="popup-stat">
+                        <div class="popup-stat-value">${p.year || '—'}</div>
+                        <div class="popup-stat-label">Year Built</div>
+                    </div>
+                    <div class="popup-stat">
+                        <div class="popup-stat-value">${p.beds || '—'}</div>
+                        <div class="popup-stat-label">Beds</div>
+                    </div>
+                </div>
+                <div class="popup-info">
+                    <strong>Zoning:</strong> ${p.zoning || '—'} &nbsp;|&nbsp;
+                    <strong>Income:</strong> $${p.income ? p.income.toLocaleString() : '—'}<br>
+                    <strong>Permits:</strong> ${p.permits} &nbsp;|&nbsp;
+                    <strong>District:</strong> ${p.district || '—'}
+                </div>
+                <div class="popup-link" onclick="openLinksModal('${p.apn}', ${p.pid}, '${p.address.replace(/'/g, "\\'")}', ${p.lat}, ${p.lon})">
+                    View All Nashville Links →
+                </div>
+            `;
+            
+            marker.bindPopup(content, { maxWidth: 300 }).openPopup();
+        }
+        
+        // Set sort mode
+        function setSortMode(mode) {
+            sortMode = mode;
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('sort' + mode.charAt(0).toUpperCase() + mode.slice(1)).classList.add('active');
+            updateMap();
+        }
+        
+        // Update sidebar
+        function updateSidebar(properties) {
+            const list = document.getElementById('propertyList');
+            
+            // Sort based on mode
+            let sorted;
+            if (sortMode === 'score') {
+                sorted = [...properties].sort((a, b) => b.score - a.score);
+            } else if (sortMode === 'acres') {
+                sorted = [...properties].sort((a, b) => (b.acres || 0) - (a.acres || 0));
+            } else {
+                sorted = [...properties].sort((a, b) => (b.income || 0) - (a.income || 0));
+            }
+            sorted = sorted.slice(0, 100);
+            
+            // Stats
+            const avgScore = properties.length > 0 
+                ? (properties.reduce((sum, p) => sum + p.score, 0) / properties.length).toFixed(0)
+                : 0;
+            
+            document.getElementById('visibleCount').textContent = properties.length.toLocaleString();
+            document.getElementById('visibleAvg').textContent = avgScore;
+            
+            if (sorted.length === 0) {
+                list.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">🔍</div>
+                        <div>No properties found</div>
+                        <div style="font-size:12px;margin-top:8px;">Try adjusting filters or zoom level</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = sorted.map(p => `
+                <div class="property-item" onclick="flyTo(${p.lat}, ${p.lon})">
+                    <div class="property-header">
+                        <div class="property-address">${p.address}</div>
+                        <div class="property-score ${getScoreClass(p.score)}">${p.score}</div>
+                    </div>
+                    <div class="property-details">
+                        <div class="property-detail">
+                            <span class="property-detail-label">Lot Size</span>
+                            <span class="property-detail-value">${p.acres ? p.acres.toFixed(2) + ' ac' : '—'}</span>
+                        </div>
+                        <div class="property-detail">
+                            <span class="property-detail-label">Year</span>
+                            <span class="property-detail-value">${p.year || '—'}</span>
+                        </div>
+                        <div class="property-detail">
+                            <span class="property-detail-label">Beds</span>
+                            <span class="property-detail-value">${p.beds || '—'}</span>
+                        </div>
+                        <div class="property-detail">
+                            <span class="property-detail-label">Income</span>
+                            <span class="property-detail-value">$${p.income ? (p.income/1000).toFixed(0) + 'k' : '—'}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Fly to property
+        function flyTo(lat, lon) {
+            map.flyTo([lat, lon], 17);
+        }
+        
+        // Links modal
+        function openLinksModal(apn, pid, address, lat, lon) {
+            document.getElementById('modalTitle').textContent = address;
+            document.getElementById('modalSubtitle').textContent = `APN: ${apn}  |  PID: ${pid}`;
+            
+            const permitLinks = [
+                { icon: '📋', title: 'Permit History', desc: 'XML records', url: `https://maps.nashville.gov/ParcelService/Search.asmx/GetPermitHistory?apn=${apn}` },
+                { icon: '🔍', title: 'ePermits Search', desc: 'Official portal', url: `https://epermits.nashville.gov/#/search?searchCode=APN&page=1&searchText=${apn}` },
+                { icon: '📄', title: 'Permit Documents', desc: 'Scanned files', url: `https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${apn}` }
+            ];
+            
+            const propertyLinks = [
+                { icon: '🗺️', title: 'Parcel Viewer', desc: 'Interactive map', url: `https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin=${pid}` },
+                { icon: '🛣️', title: 'Street View', desc: 'Google Maps', url: `https://www.google.com/maps?q&layer=c&cbll=${lat},${lon}` },
+                { icon: '🏠', title: 'Property Assessor', desc: 'PADCTN Portal', url: `https://www.padctn.org/prc/property/${pid}/print` }
+            ];
+            
+            const historyLinks = [
+                { icon: '👤', title: 'Owner History', desc: 'Deed records', url: `https://maps.nashville.gov/ParcelService/Search.asmx/GetOwnerHistory?onlyactive=false&pin=${pid}` },
+                { icon: '🏗️', title: 'Property History', desc: 'Building changes', url: `https://maps.nashville.gov/ParcelService/Search.asmx/GetPropertyHistory?onlyactive=false&pin=${pid}` },
+                { icon: '📊', title: 'Zoning History', desc: 'Zone changes', url: `https://maps.nashville.gov/ParcelService/Search.asmx/GetZoningHistory?onlyactive=false&pin=${pid}` },
+                { icon: '💰', title: 'Assessment History', desc: 'Value over time', url: `https://maps.nashville.gov/ParcelService/Search.asmx/GetAssessmentHistory?onlyactive=false&pin=${pid}` }
+            ];
+            
+            const renderLinks = links => links.map(l => `
+                <a href="${l.url}" target="_blank" class="link-card">
+                    <div class="link-icon">${l.icon}</div>
+                    <div class="link-info"><h4>${l.title}</h4><p>${l.desc}</p></div>
+                </a>
+            `).join('');
+            
+            document.getElementById('permitLinks').innerHTML = renderLinks(permitLinks);
+            document.getElementById('propertyLinks').innerHTML = renderLinks(propertyLinks);
+            document.getElementById('historyLinks').innerHTML = renderLinks(historyLinks);
+            
+            document.getElementById('linksModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('linksModal').classList.remove('active');
+        }
+        
+        // Event listeners
+        document.getElementById('filterScore').addEventListener('change', updateMap);
+        document.getElementById('filterAcres').addEventListener('change', updateMap);
+        document.getElementById('filterYear').addEventListener('change', updateMap);
+        document.getElementById('filterDistrict').addEventListener('change', updateMap);
+        
+        map.on('moveend', () => {
+            if (document.getElementById('searchAsMove').checked) updateMap();
+        });
+        
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (query.length < 3) { updateMap(); return; }
+            
+            const matches = allProperties.filter(p => 
+                p.address.toLowerCase().includes(query) || 
+                p.apn.toLowerCase().includes(query)
+            ).slice(0, 100);
+            
+            if (matches.length > 0) {
+                const lats = matches.map(p => p.lat);
+                const lons = matches.map(p => p.lon);
+                map.fitBounds([[Math.min(...lats), Math.min(...lons)], [Math.max(...lats), Math.max(...lons)]], { padding: [50, 50] });
+            }
+        });
+        
+        document.getElementById('linksModal').addEventListener('click', (e) => {
+            if (e.target.id === 'linksModal') closeModal();
+        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+        
+        loadData();
+    </script>
+</body>
+</html>
