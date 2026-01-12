@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homebody Projects | Nashville DADU Resource</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #e8e4df;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        .nav {
+            background: #2c3e50;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: #6b8e4e;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .nav-logo-text {
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .nav-dropdown {
+            position: relative;
+        }
+        
+        .nav-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            min-width: 240px;
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .nav-dropdown:hover .nav-dropdown-content {
+            display: block;
+        }
+        
+        .nav-dropdown-link {
+            display: block;
+            padding: 10px 16px;
+            color: #333;
+            text-decoration: none;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+        
+        .nav-dropdown-link:hover {
+            background: #f0f0f0;
+        }
+        
+        .nav-dropdown-link small {
+            display: block;
+            color: #888;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        
+        .hero h1 span {
+            color: #6b8e4e;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .hero-stat {
+            text-align: center;
+        }
+        
+        .hero-stat-value {
+            font-size: 42px;
+            font-weight: 800;
+            color: #6b8e4e;
+        }
+        
+        .hero-stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero-cta {
+            display: inline-block;
+            background: #6b8e4e;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(107, 142, 78, 0.4);
+        }
+        
+        /* Main Content */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title h2 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .section-title p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        /* Portal Cards - Main Sections */
+        .portals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+        
+        .portal-card {
+            background: #f5f5f0;
+            border-radius: 16px;
+            padding: 32px;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 3px solid transparent;
+            text-align: center;
+        }
+        
+        .portal-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            border-color: #6b8e4e;
+        }
+        
+        .portal-card-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            background: #2c3e50;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+        
+        .portal-card-icon.green { background: #6b8e4e; }
+        .portal-card-icon.teal { background: #6b8fa3; }
+        .portal-card-icon.gold { background: #c9a86c; }
+        
+        .portal-card h3 {
+            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+        
+        .portal-card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Tool Cards - Smaller */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            border-left: 4px solid #6b8fa3;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        
+        .tool-card:hover {
+            border-left-color: #6b8e4e;
+            background: #f8f8f8;
+            transform: translateX(4px);
+        }
+        
+        .tool-card-icon {
+            width: 48px;
+            height: 48px;
+            background: #e8f0e0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .tool-card-content h4 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+        
+        .tool-card-content p {
+            font-size: 13px;
+            color: #888;
+        }
+        
+        /* Divider */
+        .section-divider {
+            border: none;
+            border-top: 2px dashed #ccc;
+            margin: 40px 0;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-section h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            color: #6b8e4e;
+        }
+        
+        .footer-section a {
+            display: block;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 13px;
+            padding: 4px 0;
+            transition: color 0.2s;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .portals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">🏠</div>
+                <span class="nav-logo-text">Homebody Projects</span>
+            </a>
+            <div class="nav-links">
+                <div class="nav-dropdown">
+                    <a href="#" class="nav-link">For Homeowners ▾</a>
+                    <div class="nav-dropdown-content">
+                        <a href="am_i_eligible.html" class="nav-dropdown-link">
+                            Am I Eligible?
+                            <small>Check your property</small>
+                        </a>
+                        <a href="dadu_opportunity_explorer_v2.html" class="nav-dropdown-link">
+                            Find DADUs Near Me
+                            <small>See projects in your neighborhood</small>
+                        </a>
+                        <a href="dadu_property_viewer_v3.html" class="nav-dropdown-link">
+                            Property Viewer
+                            <small>Detailed analysis & ROI</small>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <a href="#" class="nav-link">For Contractors ▾</a>
+                    <div class="nav-dropdown-content">
+                        <a href="nashville_permit_explorer_v3.html" class="nav-dropdown-link">
+                            Permit Explorer
+                            <small>Search all permits</small>
+                        </a>
+                        <a href="nashville_permit_analytics.html" class="nav-dropdown-link">
+                            Market Analytics
+                            <small>Costs, trends, demand</small>
+                        </a>
+                        <a href="dadu_contractors_infographic.html" class="nav-dropdown-link">
+                            Top Contractors
+                            <small>Leaderboard</small>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <a href="#" class="nav-link">Learn ▾</a>
+                    <div class="nav-dropdown-content">
+                        <a href="what_is_dadu.html" class="nav-dropdown-link">
+                            What is a DADU?
+                        </a>
+                        <a href="dadu_building_requirements.html" class="nav-dropdown-link">
+                            Building Requirements
+                        </a>
+                        <a href="restrictive_covenants_v2.html" class="nav-dropdown-link">
+                            Restrictive Covenants
+                        </a>
+                        <a href="permit_process_timeline.html" class="nav-dropdown-link">
+                            Permit Process
+                        </a>
+                        <a href="dadu_history.html" class="nav-dropdown-link">
+                            Legislative History
+                        </a>
+                    </div>
+                </div>
+                <a href="dadu_code_legislation_v3.html" class="nav-link">Code & Law</a>
+                <a href="homebody_dadu_pricing.html" class="nav-link">Reports</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Build Your <span>Nashville DADU</span></h1>
+        <p>The complete platform for Detached Accessory Dwelling Units. Check eligibility, explore permits, find contractors, browse plans.</p>
+        <a href="am_i_eligible.html" class="hero-cta">Check Your Property →</a>
+        
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value">67,707</div>
+                <div class="hero-stat-label">Eligible Properties</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">771</div>
+                <div class="hero-stat-label">DADUs Built</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">393</div>
+                <div class="hero-stat-label">Contractors</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main class="main">
+        
+        <!-- Three Main Portals -->
+        <div class="section-title">
+            <h2>Choose Your Path</h2>
+            <p>Tools for homeowners, contractors, and researchers</p>
+        </div>
+        
+        <div class="portals-grid">
+            <a href="am_i_eligible.html" class="portal-card">
+                <div class="portal-card-icon green">🏡</div>
+                <h3>Homeowner Portal</h3>
+                <p>Check if your property is eligible, see what you can build, find DADUs near you, calculate costs & ROI, and get your feasibility report.</p>
+            </a>
+            
+            <a href="nashville_permit_explorer_v3.html" class="portal-card">
+                <div class="portal-card-icon teal">👷</div>
+                <h3>Contractor Marketplace</h3>
+                <p>Explore the DADU market, see who's building, find project leads, compare pricing, and showcase your completed work.</p>
+            </a>
+            
+            <a href="dadu_code_legislation_v3.html" class="portal-card">
+                <div class="portal-card-icon gold">📜</div>
+                <h3>Code & Legislation</h3>
+                <p>Full legal database with 111 citations, BL2025-1007 text, zoning codes, and legislative history from 2003 to present.</p>
+            </a>
+        </div>
+        
+        <hr class="section-divider">
+        
+        <!-- Homeowner Tools -->
+        <div class="section-title">
+            <h2>Homeowner Tools</h2>
+            <p>Everything you need to plan your DADU</p>
+        </div>
+        
+        <div class="tools-grid">
+            <a href="am_i_eligible.html" class="tool-card">
+                <div class="tool-card-icon">✓</div>
+                <div class="tool-card-content">
+                    <h4>Am I Eligible?</h4>
+                    <p>Enter your address to check eligibility</p>
+                </div>
+            </a>
+            
+            <a href="dadu_opportunity_explorer_v2.html" class="tool-card">
+                <div class="tool-card-icon">📍</div>
+                <div class="tool-card-content">
+                    <h4>Find DADUs Near Me</h4>
+                    <p>See completed projects in your area</p>
+                </div>
+            </a>
+            
+            <a href="dadu_property_viewer_v3.html" class="tool-card">
+                <div class="tool-card-icon">🏠</div>
+                <div class="tool-card-content">
+                    <h4>Property Viewer</h4>
+                    <p>Detailed analysis, footprints, ROI calc</p>
+                </div>
+            </a>
+            
+            <a href="dadu_building_requirements.html" class="tool-card">
+                <div class="tool-card-icon">📐</div>
+                <div class="tool-card-content">
+                    <h4>What Can I Build?</h4>
+                    <p>Size limits, height, setbacks</p>
+                </div>
+            </a>
+            
+            <a href="restrictive_covenants_v2.html" class="tool-card">
+                <div class="tool-card-icon">📋</div>
+                <div class="tool-card-content">
+                    <h4>Restrictive Covenants</h4>
+                    <p>Required filings before permit</p>
+                </div>
+            </a>
+            
+            <a href="permit_process_timeline.html" class="tool-card">
+                <div class="tool-card-icon">⏱️</div>
+                <div class="tool-card-content">
+                    <h4>Permit Process</h4>
+                    <p>Step-by-step timeline</p>
+                </div>
+            </a>
+        </div>
+        
+        <hr class="section-divider">
+        
+        <!-- Contractor Tools -->
+        <div class="section-title">
+            <h2>Contractor Marketplace</h2>
+            <p>Market intelligence for builders</p>
+        </div>
+        
+        <div class="tools-grid">
+            <a href="nashville_permit_explorer_v3.html" class="tool-card">
+                <div class="tool-card-icon">🔍</div>
+                <div class="tool-card-content">
+                    <h4>Permit Explorer</h4>
+                    <p>Search all Nashville building permits</p>
+                </div>
+            </a>
+            
+            <a href="nashville_permit_analytics.html" class="tool-card">
+                <div class="tool-card-icon">📊</div>
+                <div class="tool-card-content">
+                    <h4>Market Analytics</h4>
+                    <p>Costs, trends, demand by area</p>
+                </div>
+            </a>
+            
+            <a href="dadu_contractors_infographic.html" class="tool-card">
+                <div class="tool-card-icon">🏆</div>
+                <div class="tool-card-content">
+                    <h4>Top Contractors</h4>
+                    <p>Leaderboard by permit volume</p>
+                </div>
+            </a>
+            
+            <a href="homebody_dadu_pricing.html" class="tool-card">
+                <div class="tool-card-icon">💰</div>
+                <div class="tool-card-content">
+                    <h4>Pricing & Reports</h4>
+                    <p>Feasibility reports for clients</p>
+                </div>
+            </a>
+        </div>
+        
+        <hr class="section-divider">
+        
+        <!-- Learn Section -->
+        <div class="section-title">
+            <h2>Learn About DADUs</h2>
+            <p>Understand the rules and requirements</p>
+        </div>
+        
+        <div class="tools-grid">
+            <a href="what_is_dadu.html" class="tool-card">
+                <div class="tool-card-icon">❓</div>
+                <div class="tool-card-content">
+                    <h4>What is a DADU?</h4>
+                    <p>Introduction to accessory dwellings</p>
+                </div>
+            </a>
+            
+            <a href="dadu_zoning_standards.html" class="tool-card">
+                <div class="tool-card-icon">🗺️</div>
+                <div class="tool-card-content">
+                    <h4>Zoning Standards</h4>
+                    <p>Which zones allow DADUs</p>
+                </div>
+            </a>
+            
+            <a href="owner_occupancy.html" class="tool-card">
+                <div class="tool-card-icon">🔑</div>
+                <div class="tool-card-content">
+                    <h4>Owner Occupancy</h4>
+                    <p>Residency requirements</p>
+                </div>
+            </a>
+            
+            <a href="dadu_history.html" class="tool-card">
+                <div class="tool-card-icon">📚</div>
+                <div class="tool-card-content">
+                    <h4>Legislative History</h4>
+                    <p>From 2003 pilot to BL2025-1007</p>
+                </div>
+            </a>
+            
+            <a href="dadu_code_legislation_v3.html" class="tool-card">
+                <div class="tool-card-icon">⚖️</div>
+                <div class="tool-card-content">
+                    <h4>Code & Citations</h4>
+                    <p>111 legal sources</p>
+                </div>
+            </a>
+            
+            <a href="about_platform_infographic.html" class="tool-card">
+                <div class="tool-card-icon">ℹ️</div>
+                <div class="tool-card-content">
+                    <h4>About This Platform</h4>
+                    <p>How Homebody Projects works</p>
+                </div>
+            </a>
+        </div>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Homeowners</h4>
+                <a href="am_i_eligible.html">Eligibility Check</a>
+                <a href="dadu_opportunity_explorer_v2.html">Find DADUs Near Me</a>
+                <a href="dadu_property_viewer_v3.html">Property Viewer</a>
+                <a href="dadu_building_requirements.html">Building Requirements</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contractors</h4>
+                <a href="nashville_permit_explorer_v3.html">Permit Explorer</a>
+                <a href="nashville_permit_analytics.html">Market Analytics</a>
+                <a href="dadu_contractors_infographic.html">Top Contractors</a>
+                <a href="homebody_dadu_pricing.html">Reports & Pricing</a>
+            </div>
+            <div class="footer-section">
+                <h4>Learn</h4>
+                <a href="what_is_dadu.html">What is a DADU?</a>
+                <a href="restrictive_covenants_v2.html">Restrictive Covenants</a>
+                <a href="permit_process_timeline.html">Permit Process</a>
+                <a href="dadu_history.html">Legislative History</a>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="dadu_code_legislation_v3.html">Code & Citations</a>
+                <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644" target="_blank">BL2025-1007 →</a>
+                <a href="https://www.nashville.gov/departments/codes" target="_blank">Metro Codes →</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Homebody Projects · Nashville, Tennessee · Data current as of BL2025-1007 (effective Dec 12, 2025)</p>
+        </div>
+    </footer>
+</body>
+</html>
