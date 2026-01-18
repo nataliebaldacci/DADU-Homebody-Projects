@@ -283,6 +283,54 @@
         }
         .action-btn.secondary:hover { background: #e0e0e0; }
 
+        /* Links Grid */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .link-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 8px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            font-size: 11px;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .link-btn:hover {
+            background: #e3f2fd;
+            border-color: #1565c0;
+            color: #1565c0;
+        }
+        .link-btn.primary {
+            background: #1565c0;
+            border-color: #1565c0;
+            color: white;
+        }
+        .link-btn.primary:hover {
+            background: #0d47a1;
+        }
+        .link-btn.aerial {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            border-color: #2e7d32;
+            color: white;
+        }
+        .link-btn.aerial:hover {
+            background: linear-gradient(135deg, #1b5e20 0%, #0d3d10 100%);
+        }
+        .link-icon {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
         /* Empty State */
         .empty-state {
             padding: 60px 30px;
@@ -974,16 +1022,54 @@
                     </div>
                     ` : ''}
 
-                    <div class="property-actions">
-                        ${props.epermits_url && props.epermits_url !== 'nan' ? `
-                        <a href="${props.epermits_url}" target="_blank" class="action-btn primary">View on ePermits</a>
-                        ` : ''}
-                        ${props.docs_url && props.docs_url !== 'nan' ? `
-                        <a href="${props.docs_url}" target="_blank" class="action-btn secondary">Documents</a>
-                        ` : ''}
-                        ${props.parcel_url && props.parcel_url !== 'nan' ? `
-                        <a href="${props.parcel_url}" target="_blank" class="action-btn secondary">Parcel Viewer</a>
-                        ` : ''}
+                    <div class="property-section">
+                        <div class="section-title">Quick Links</div>
+                        <div class="links-grid">
+                            <a href="https://epermits.nashville.gov/?#/?searchCode=PRMT=${props.permit_number}" target="_blank" class="link-btn primary">
+                                <span class="link-icon">📋</span>
+                                <span>ePermits</span>
+                            </a>
+                            <a href="https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=${props.permit_number}" target="_blank" class="link-btn">
+                                <span class="link-icon">📄</span>
+                                <span>Documents</span>
+                            </a>
+                            ${props.apn && props.apn !== 'nan' ? `
+                            <a href="https://maps.nashville.gov/ParcelViewer/?parcelID=${props.apn}" target="_blank" class="link-btn">
+                                <span class="link-icon">🗺️</span>
+                                <span>Parcel Viewer</span>
+                            </a>
+                            <a href="https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin=${props.apn}" target="_blank" class="link-btn">
+                                <span class="link-icon">🖨️</span>
+                                <span>Print Record</span>
+                            </a>
+                            <a href="https://davidson-tn-citizen.comper.info/template.aspx?propertyID=${props.apn}" target="_blank" class="link-btn">
+                                <span class="link-icon">🏠</span>
+                                <span>Property Info</span>
+                            </a>
+                            <a href="https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${props.apn}" target="_blank" class="link-btn">
+                                <span class="link-icon">📑</span>
+                                <span>All Permits</span>
+                            </a>
+                            ` : ''}
+                        </div>
+                    </div>
+
+                    <div class="property-section">
+                        <div class="section-title">Aerial & Satellite View</div>
+                        <div class="links-grid">
+                            <a href="https://portal.patriotproperties.com/?APIKEY=5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F&LAT=${feature.geometry.coordinates[1]}&LONG=${feature.geometry.coordinates[0]}" target="_blank" class="link-btn aerial">
+                                <span class="link-icon">🛰️</span>
+                                <span>Patriot Aerial</span>
+                            </a>
+                            <a href="https://www.google.com/maps/@${feature.geometry.coordinates[1]},${feature.geometry.coordinates[0]},19z" target="_blank" class="link-btn">
+                                <span class="link-icon">🌍</span>
+                                <span>Google Maps</span>
+                            </a>
+                            <a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${feature.geometry.coordinates[1]},${feature.geometry.coordinates[0]}" target="_blank" class="link-btn">
+                                <span class="link-icon">👁️</span>
+                                <span>Street View</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             `;
