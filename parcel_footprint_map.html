@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nashville Parcel & Building Footprint Map | Homebody Projects</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: #6b8e4e;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .logo-sub {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 25px;
+            font-size: 13px;
+        }
+        .header-stat {
+            text-align: center;
+        }
+        .header-stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #6b8e4e;
+        }
+        .header-stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        /* Control Panel */
+        .control-bar {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .control-label {
+            font-size: 13px;
+            color: #555;
+            font-weight: 500;
+        }
+        .toggle-btn {
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .toggle-btn:hover { border-color: #6b8e4e; }
+        .toggle-btn.active {
+            background: #6b8e4e;
+            color: white;
+            border-color: #6b8e4e;
+        }
+        .toggle-btn .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Map */
+        #map {
+            height: calc(100vh - 120px);
+            width: 100%;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .loading-overlay.hidden { display: none; }
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #e0e0e0;
+            border-top-color: #6b8e4e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+        .loading-progress {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* Legend */
+        .legend {
+            position: absolute;
+            bottom: 30px;
+            right: 15px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 13px;
+            max-width: 200px;
+        }
+        .legend h4 {
+            margin: 0 0 12px 0;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 6px 0;
+        }
+        .legend-color {
+            width: 20px;
+            height: 12px;
+            margin-right: 10px;
+            border-radius: 2px;
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+
+        /* Info Panel */
+        .info-panel {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-width: 280px;
+            font-size: 13px;
+        }
+        .info-panel h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        .info-panel p {
+            margin: 5px 0;
+            color: #666;
+            line-height: 1.5;
+        }
+        .info-tip {
+            background: #f0f7e6;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #5a7a3a;
+        }
+
+        /* Popup Styles */
+        .leaflet-popup-content {
+            margin: 12px 15px;
+            min-width: 200px;
+        }
+        .popup-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            border-bottom: 2px solid #6b8e4e;
+            padding-bottom: 6px;
+        }
+        .popup-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 13px;
+        }
+        .popup-label {
+            color: #888;
+        }
+        .popup-value {
+            font-weight: 500;
+            color: #333;
+        }
+        .popup-type {
+            display: inline-block;
+            padding: 3px 10px;
+            background: #6b8e4e;
+            color: white;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-top: 8px;
+        }
+
+        /* Warning for large data */
+        .data-warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px 15px;
+            font-size: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">🏠</div>
+            <div>
+                <div class="logo-text">Nashville Parcel & Footprint Map</div>
+                <div class="logo-sub">Homebody Projects - DADU Explorer</div>
+            </div>
+        </div>
+        <div class="header-stats">
+            <div class="header-stat">
+                <div class="header-stat-value" id="parcel-count">-</div>
+                <div class="header-stat-label">Parcels</div>
+            </div>
+            <div class="header-stat">
+                <div class="header-stat-value" id="footprint-count">-</div>
+                <div class="header-stat-label">Buildings</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-warning">
+        Large dataset - zoom in to see individual parcels and building footprints. Best viewed at neighborhood level.
+    </div>
+
+    <div class="control-bar">
+        <div class="control-group">
+            <span class="control-label">Show Layers:</span>
+            <button class="toggle-btn active" id="toggle-parcels" onclick="toggleLayer('parcels')">
+                <span class="dot" style="background: #3388ff;"></span> Parcels
+            </button>
+            <button class="toggle-btn active" id="toggle-footprints" onclick="toggleLayer('footprints')">
+                <span class="dot" style="background: #e74c3c;"></span> Buildings
+            </button>
+        </div>
+        <div class="control-group">
+            <span class="control-label">Quick Zoom:</span>
+            <button class="toggle-btn" onclick="zoomTo('downtown')">Downtown</button>
+            <button class="toggle-btn" onclick="zoomTo('eastside')">East Nashville</button>
+            <button class="toggle-btn" onclick="zoomTo('12south')">12 South</button>
+            <button class="toggle-btn" onclick="zoomTo('germantown')">Germantown</button>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="info-panel">
+        <h4>How to Use This Map</h4>
+        <p>This map displays Nashville parcel boundaries and building footprints for DADU eligibility research.</p>
+        <div class="info-tip">
+            <strong>Tip:</strong> Zoom in to see parcel details. Click any parcel or building to view property information.
+        </div>
+    </div>
+
+    <div class="legend">
+        <h4>Map Legend</h4>
+        <div class="legend-item">
+            <div class="legend-color" style="background: rgba(51, 136, 255, 0.3); border-color: #3388ff;"></div>
+            Parcels
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: rgba(231, 76, 60, 0.5); border-color: #c0392b;"></div>
+            Building Footprints
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading Nashville Property Data...</div>
+        <div class="loading-progress" id="loading-progress">Initializing map...</div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map centered on Nashville
+        const map = L.map('map').setView([36.1627, -86.7816], 12);
+
+        // Add tile layer
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap © CARTO',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Layer groups
+        let parcelsLayer = null;
+        let footprintsLayer = null;
+        let parcelsVisible = true;
+        let footprintsVisible = true;
+
+        // Quick zoom locations
+        const locations = {
+            downtown: [36.1627, -86.7816, 15],
+            eastside: [36.1847, -86.7489, 15],
+            '12south': [36.1206, -86.7911, 15],
+            germantown: [36.1808, -86.7932, 15]
+        };
+
+        function zoomTo(location) {
+            const [lat, lng, zoom] = locations[location];
+            map.setView([lat, lng], zoom);
+        }
+
+        function toggleLayer(layer) {
+            const btn = document.getElementById(`toggle-${layer}`);
+            if (layer === 'parcels') {
+                parcelsVisible = !parcelsVisible;
+                btn.classList.toggle('active');
+                if (parcelsLayer) {
+                    parcelsVisible ? parcelsLayer.addTo(map) : map.removeLayer(parcelsLayer);
+                }
+            } else if (layer === 'footprints') {
+                footprintsVisible = !footprintsVisible;
+                btn.classList.toggle('active');
+                if (footprintsLayer) {
+                    footprintsVisible ? footprintsLayer.addTo(map) : map.removeLayer(footprintsLayer);
+                }
+            }
+        }
+
+        function updateProgress(text) {
+            document.getElementById('loading-progress').textContent = text;
+        }
+
+        // Parcel style
+        const parcelStyle = {
+            color: '#3388ff',
+            weight: 1,
+            fillColor: '#3388ff',
+            fillOpacity: 0.15
+        };
+
+        // Footprint style
+        const footprintStyle = {
+            color: '#c0392b',
+            weight: 1,
+            fillColor: '#e74c3c',
+            fillOpacity: 0.4
+        };
+
+        // Format popup content for parcels
+        function parcelPopup(feature) {
+            const props = feature.properties;
+            return `
+                <div class="popup-title">Parcel Information</div>
+                <div class="popup-row">
+                    <span class="popup-label">APN:</span>
+                    <span class="popup-value">${props.apn || props.APN || props.id || 'N/A'}</span>
+                </div>
+                ${props.type ? `<div class="popup-type">${props.type}</div>` : ''}
+            `;
+        }
+
+        // Format popup content for footprints
+        function footprintPopup(feature) {
+            const props = feature.properties;
+            let areaText = '';
+            if (props.area) {
+                areaText = `<div class="popup-row">
+                    <span class="popup-label">Area:</span>
+                    <span class="popup-value">${props.area.toLocaleString()} sq ft</span>
+                </div>`;
+            }
+            let heightText = '';
+            if (props.height) {
+                heightText = `<div class="popup-row">
+                    <span class="popup-label">Height:</span>
+                    <span class="popup-value">${props.height} ft</span>
+                </div>`;
+            }
+            return `
+                <div class="popup-title">Building Footprint</div>
+                <div class="popup-row">
+                    <span class="popup-label">ID:</span>
+                    <span class="popup-value">${props.id || 'N/A'}</span>
+                </div>
+                ${props.type ? `<div class="popup-row"><span class="popup-label">Type:</span><span class="popup-value">${props.type}</span></div>` : ''}
+                ${areaText}
+                ${heightText}
+            `;
+        }
+
+        // Load the data
+        async function loadData() {
+            try {
+                // Load parcels first
+                updateProgress('Loading parcel boundaries...');
+                const parcelsResponse = await fetch('parcels_footprints_map.geojson');
+                const parcelsData = await parcelsResponse.json();
+
+                document.getElementById('parcel-count').textContent = parcelsData.features.length.toLocaleString();
+                updateProgress(`Loaded ${parcelsData.features.length.toLocaleString()} parcels. Rendering...`);
+
+                parcelsLayer = L.geoJSON(parcelsData, {
+                    style: parcelStyle,
+                    onEachFeature: (feature, layer) => {
+                        layer.bindPopup(parcelPopup(feature));
+                    }
+                });
+
+                if (parcelsVisible) {
+                    parcelsLayer.addTo(map);
+                }
+
+                // Load footprints
+                updateProgress('Loading building footprints...');
+                const footprintsResponse = await fetch('footprints_map.geojson');
+                const footprintsData = await footprintsResponse.json();
+
+                document.getElementById('footprint-count').textContent = footprintsData.features.length.toLocaleString();
+                updateProgress(`Loaded ${footprintsData.features.length.toLocaleString()} buildings. Rendering...`);
+
+                footprintsLayer = L.geoJSON(footprintsData, {
+                    style: footprintStyle,
+                    onEachFeature: (feature, layer) => {
+                        layer.bindPopup(footprintPopup(feature));
+                    }
+                });
+
+                if (footprintsVisible) {
+                    footprintsLayer.addTo(map);
+                }
+
+                // Hide loading overlay
+                document.getElementById('loading').classList.add('hidden');
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                updateProgress('Error loading data. Please refresh the page.');
+            }
+        }
+
+        // Start loading
+        loadData();
+    </script>
+</body>
+</html>
