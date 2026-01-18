@@ -63,6 +63,68 @@
             letter-spacing: 0.5px;
         }
 
+        /* Area Pricing Tool */
+        .pricing-tool {
+            background: linear-gradient(135deg, #6b8e4e 0%, #8bb36d 100%);
+            padding: 20px 30px;
+            color: white;
+        }
+        .pricing-tool h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .pricing-form {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .pricing-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .pricing-btn {
+            padding: 12px 25px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .pricing-btn:hover { background: #1a252f; }
+        .pricing-results {
+            margin-top: 15px;
+            display: none;
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .pricing-results.active { display: block; }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .pricing-stat {
+            text-align: center;
+        }
+        .pricing-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .pricing-stat-label {
+            font-size: 11px;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+
         /* Main Content */
         .main-content {
             display: grid;
@@ -144,9 +206,9 @@
         }
         .contractor-table th {
             text-align: left;
-            padding: 12px 15px;
+            padding: 12px 10px;
             background: #f8f9fa;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: #666;
             text-transform: uppercase;
@@ -162,9 +224,9 @@
             color: #6b8e4e;
         }
         .contractor-table td {
-            padding: 12px 15px;
+            padding: 10px;
             border-bottom: 1px solid #eee;
-            font-size: 14px;
+            font-size: 13px;
         }
         .contractor-table tr:hover {
             background: #f8faf5;
@@ -172,7 +234,7 @@
         .contractor-name {
             font-weight: 600;
             color: #2c3e50;
-            max-width: 250px;
+            max-width: 200px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -185,6 +247,10 @@
             font-weight: 700;
             color: #6b8e4e;
         }
+        .cost-per-sf {
+            font-weight: 600;
+            color: #e65100;
+        }
         .badge {
             display: inline-block;
             padding: 3px 8px;
@@ -193,9 +259,7 @@
             font-weight: 600;
         }
         .badge-building { background: #e3f2fd; color: #1565c0; }
-        .badge-electrical { background: #fff3e0; color: #e65100; }
-        .badge-plumbing { background: #e8f5e9; color: #2e7d32; }
-        .badge-mechanical { background: #fce4ec; color: #c2185b; }
+        .badge-has-pricing { background: #fff3e0; color: #e65100; }
 
         /* Pagination */
         .pagination {
@@ -266,17 +330,7 @@
             color: #6b8e4e;
             font-size: 14px;
         }
-
-        /* Charts placeholder */
-        .chart-container {
-            height: 200px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-        }
+        .top-value.price { color: #e65100; }
 
         /* Bar chart simple */
         .bar-chart {
@@ -315,6 +369,28 @@
             min-width: fit-content;
         }
 
+        /* Zipcode table */
+        .zipcode-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .zipcode-table th {
+            text-align: left;
+            padding: 8px;
+            background: #f8f9fa;
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+        }
+        .zipcode-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .zipcode-table tr:hover {
+            background: #f8faf5;
+        }
+
         /* Modal */
         .modal-overlay {
             position: fixed;
@@ -333,8 +409,8 @@
             background: white;
             border-radius: 12px;
             width: 90%;
-            max-width: 700px;
-            max-height: 80vh;
+            max-width: 800px;
+            max-height: 85vh;
             overflow: auto;
         }
         .modal-header {
@@ -343,6 +419,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
         }
         .modal-title { font-size: 18px; font-weight: 600; }
         .modal-close {
@@ -374,6 +453,33 @@
             font-size: 12px;
             color: #888;
         }
+        .pricing-detail {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 2px solid #e65100;
+        }
+        .pricing-detail .detail-value {
+            color: #e65100;
+        }
+
+        /* Permit list in modal */
+        .permit-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        .permit-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        .permit-item:last-child { border-bottom: none; }
+        .permit-item:hover { background: #f8f9fa; }
+        .permit-address { flex: 1; }
+        .permit-details { color: #888; }
+        .permit-price { font-weight: 600; color: #e65100; }
 
         /* Loading */
         .loading {
@@ -399,6 +505,12 @@
             .stats-bar {
                 justify-content: center;
             }
+            .pricing-form {
+                flex-direction: column;
+            }
+            .pricing-input {
+                min-width: 100%;
+            }
         }
     </style>
 </head>
@@ -408,10 +520,23 @@
             <div class="logo-icon">👷</div>
             <div>
                 <div class="logo-text">DADU Contractor Dashboard</div>
-                <div class="logo-sub">Homebody Projects - Nashville Contractor Activity</div>
+                <div class="logo-sub">Homebody Projects - Nashville Contractor Activity & Pricing</div>
             </div>
         </div>
         <a href="parcel_footprint_map.html" style="color: white; text-decoration: none; font-size: 14px;">← Back to Map</a>
+    </div>
+
+    <!-- Area Pricing Tool -->
+    <div class="pricing-tool">
+        <h3>📍 Get Average $/SF Pricing by Area</h3>
+        <div class="pricing-form">
+            <input type="text" class="pricing-input" id="address-input" placeholder="Enter address or zip code (e.g., 1234 Main St, Nashville 37206 or just 37206)">
+            <button class="pricing-btn" onclick="lookupAreaPricing()">Get Area Pricing</button>
+        </div>
+        <div class="pricing-results" id="pricing-results">
+            <div class="pricing-grid" id="pricing-grid"></div>
+            <div id="area-contractors" style="margin-top: 15px;"></div>
+        </div>
     </div>
 
     <div class="stats-bar">
@@ -424,12 +549,12 @@
             <div class="stat-label">Contractors</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value" id="building-count">-</div>
-            <div class="stat-label">Building Permits</div>
+            <div class="stat-value" id="dadu-count">-</div>
+            <div class="stat-label">DADU Permits</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value" id="trade-count">-</div>
-            <div class="stat-label">Trade Permits</div>
+            <div class="stat-value" id="avg-cost-sf">-</div>
+            <div class="stat-label">Avg $/SF</div>
         </div>
         <div class="stat-item">
             <div class="stat-value" id="total-value">-</div>
@@ -450,16 +575,16 @@
                         <input type="text" class="search-input" id="search" placeholder="Search contractors...">
                     </div>
                     <select class="filter-select" id="type-filter">
-                        <option value="all">All Types</option>
-                        <option value="building">Building Only</option>
-                        <option value="electrical">Electrical</option>
-                        <option value="plumbing">Plumbing</option>
-                        <option value="mechanical">HVAC/Mechanical</option>
+                        <option value="all">All Contractors</option>
+                        <option value="has-pricing">Has $/SF Data</option>
+                        <option value="dadu">DADU Builders</option>
                     </select>
                     <select class="filter-select" id="sort-by">
                         <option value="total">Sort by Total Permits</option>
-                        <option value="building">Sort by Building Permits</option>
-                        <option value="recent">Sort by Recent (2024-25)</option>
+                        <option value="dadu">Sort by DADU Count</option>
+                        <option value="pricing-count">Sort by $/SF Records</option>
+                        <option value="cost-low">Sort by $/SF (Low to High)</option>
+                        <option value="cost-high">Sort by $/SF (High to Low)</option>
                         <option value="value">Sort by Total Value</option>
                     </select>
                 </div>
@@ -469,17 +594,16 @@
                         <tr>
                             <th>#</th>
                             <th>Contractor Name</th>
-                            <th>Total</th>
-                            <th>Building</th>
-                            <th>Elec</th>
-                            <th>Plumb</th>
-                            <th>HVAC</th>
-                            <th>2024-25</th>
-                            <th>Years</th>
+                            <th>Permits</th>
+                            <th>DADU</th>
+                            <th>Avg $/SF</th>
+                            <th>Range</th>
+                            <th># w/Price</th>
+                            <th>Zip Codes</th>
                         </tr>
                     </thead>
                     <tbody id="contractor-tbody">
-                        <tr><td colspan="9" class="loading">Loading contractors...</td></tr>
+                        <tr><td colspan="8" class="loading">Loading contractors...</td></tr>
                     </tbody>
                 </table>
 
@@ -490,28 +614,39 @@
         <div class="sidebar">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">🏗️ Top Building Contractors</div>
+                    <div class="card-title">💰 Best Value Contractors</div>
+                    <div style="font-size: 11px; color: #888;">Lowest avg $/SF (5+ records)</div>
                 </div>
                 <div class="card-body">
-                    <ul class="top-list" id="top-building"></ul>
+                    <ul class="top-list" id="top-value"></ul>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">🔥 Most Active 2024-25</div>
+                    <div class="card-title">🏗️ Top DADU Builders</div>
                 </div>
                 <div class="card-body">
-                    <ul class="top-list" id="top-recent"></ul>
+                    <ul class="top-list" id="top-dadu"></ul>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">📊 Permits by Type</div>
+                    <div class="card-title">📍 $/SF by Zip Code</div>
                 </div>
                 <div class="card-body">
-                    <div class="bar-chart" id="type-chart"></div>
+                    <table class="zipcode-table" id="zipcode-table">
+                        <thead>
+                            <tr>
+                                <th>Zip</th>
+                                <th>Permits</th>
+                                <th>Avg $/SF</th>
+                                <th>Contractors</th>
+                            </tr>
+                        </thead>
+                        <tbody id="zipcode-tbody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -531,37 +666,48 @@
     <script>
         let allContractors = [];
         let filteredContractors = [];
+        let zipcodeData = [];
         let currentPage = 1;
         const perPage = 25;
 
-        // Load data
-        fetch('contractor_data.json')
-            .then(r => r.json())
-            .then(data => {
-                allContractors = data.contractors;
-                filteredContractors = [...allContractors];
+        // Load both data files
+        Promise.all([
+            fetch('contractor_data_enhanced.json').then(r => r.json()),
+            fetch('zipcode_pricing_data.json').then(r => r.json())
+        ]).then(([contractors, zipcodes]) => {
+            allContractors = contractors;
+            zipcodeData = zipcodes;
+            filteredContractors = [...allContractors];
 
-                // Update stats
-                document.getElementById('total-permits').textContent = data.total_permits.toLocaleString();
-                document.getElementById('total-contractors').textContent = data.total_contractors.toLocaleString();
+            // Calculate stats
+            let totalPermits = 0, totalDadu = 0, totalValue = 0, totalSqft = 0;
+            let allCostPerSf = [];
 
-                // Calculate totals
-                let buildingTotal = 0, tradeTotal = 0, valueTotal = 0;
-                allContractors.forEach(c => {
-                    buildingTotal += c.building_permits;
-                    tradeTotal += c.electrical_permits + c.plumbing_permits + c.mechanical_permits;
-                    valueTotal += c.total_value;
-                });
-
-                document.getElementById('building-count').textContent = buildingTotal.toLocaleString();
-                document.getElementById('trade-count').textContent = tradeTotal.toLocaleString();
-                document.getElementById('total-value').textContent = '$' + (valueTotal / 1000000).toFixed(1) + 'M';
-
-                // Render
-                renderTable();
-                renderTopLists();
-                renderTypeChart();
+            allContractors.forEach(c => {
+                totalPermits += c.permit_count;
+                totalDadu += c.dadu_count || 0;
+                totalValue += c.total_value || 0;
+                totalSqft += c.total_sqft || 0;
+                if (c.avg_cost_per_sf) {
+                    allCostPerSf.push(c.avg_cost_per_sf);
+                }
             });
+
+            const avgCostPerSf = allCostPerSf.length > 0
+                ? (allCostPerSf.reduce((a,b) => a+b, 0) / allCostPerSf.length).toFixed(2)
+                : 'N/A';
+
+            document.getElementById('total-permits').textContent = totalPermits.toLocaleString();
+            document.getElementById('total-contractors').textContent = allContractors.length.toLocaleString();
+            document.getElementById('dadu-count').textContent = totalDadu.toLocaleString();
+            document.getElementById('avg-cost-sf').textContent = avgCostPerSf !== 'N/A' ? '$' + avgCostPerSf : 'N/A';
+            document.getElementById('total-value').textContent = '$' + (totalValue / 1000000).toFixed(1) + 'M';
+
+            // Render
+            renderTable();
+            renderTopLists();
+            renderZipcodeTable();
+        });
 
         function renderTable() {
             const start = (currentPage - 1) * perPage;
@@ -571,23 +717,30 @@
             const tbody = document.getElementById('contractor-tbody');
 
             if (pageData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="9" class="loading">No contractors found</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="loading">No contractors found</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = pageData.map((c, i) => `
-                <tr>
-                    <td>${start + i + 1}</td>
-                    <td class="contractor-name" onclick="showDetails('${encodeURIComponent(c.name)}')">${c.name}</td>
-                    <td class="permit-count">${c.total_permits}</td>
-                    <td>${c.building_permits || '-'}</td>
-                    <td>${c.electrical_permits || '-'}</td>
-                    <td>${c.plumbing_permits || '-'}</td>
-                    <td>${c.mechanical_permits || '-'}</td>
-                    <td><strong>${c.recent_count || '-'}</strong></td>
-                    <td>${c.year_start && c.year_end ? c.year_start + '-' + c.year_end.slice(2) : '-'}</td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = pageData.map((c, i) => {
+                const avgCost = c.avg_cost_per_sf ? '$' + c.avg_cost_per_sf.toFixed(0) : '-';
+                const range = c.min_cost_per_sf && c.max_cost_per_sf
+                    ? '$' + c.min_cost_per_sf.toFixed(0) + '-$' + c.max_cost_per_sf.toFixed(0)
+                    : '-';
+                const zipcodes = c.zipcodes ? c.zipcodes.slice(0, 3).join(', ') + (c.zipcodes.length > 3 ? '...' : '') : '-';
+
+                return `
+                    <tr>
+                        <td>${start + i + 1}</td>
+                        <td class="contractor-name" onclick="showDetails(${i + start})">${c.display_name || c.name}</td>
+                        <td class="permit-count">${c.permit_count}</td>
+                        <td>${c.dadu_count || '-'}</td>
+                        <td class="cost-per-sf">${avgCost}</td>
+                        <td style="font-size: 11px; color: #666;">${range}</td>
+                        <td>${c.cost_per_sf_count || '-'}</td>
+                        <td style="font-size: 11px;">${zipcodes}</td>
+                    </tr>
+                `;
+            }).join('');
 
             document.getElementById('showing-count').textContent =
                 `Showing ${start + 1}-${Math.min(end, filteredContractors.length)} of ${filteredContractors.length}`;
@@ -623,87 +776,141 @@
         function goToPage(page) {
             currentPage = page;
             renderTable();
-            window.scrollTo({ top: 200, behavior: 'smooth' });
+            window.scrollTo({ top: 300, behavior: 'smooth' });
         }
 
         function renderTopLists() {
-            // Top Building
-            const topBuilding = [...allContractors]
-                .filter(c => c.building_permits > 0 && !c.name.includes('SELF CONTRACTOR'))
-                .sort((a, b) => b.building_permits - a.building_permits)
+            // Best Value (lowest $/SF with 5+ records)
+            const withPricing = allContractors
+                .filter(c => c.avg_cost_per_sf && c.cost_per_sf_count >= 5 && !c.name.includes('SELF CONTRACTOR'))
+                .sort((a, b) => a.avg_cost_per_sf - b.avg_cost_per_sf)
                 .slice(0, 10);
 
-            document.getElementById('top-building').innerHTML = topBuilding.map((c, i) => `
+            document.getElementById('top-value').innerHTML = withPricing.map((c, i) => `
                 <li>
                     <span class="rank ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">${i + 1}</span>
-                    <span class="top-name">${c.name}</span>
-                    <span class="top-value">${c.building_permits}</span>
+                    <span class="top-name">${c.display_name || c.name}</span>
+                    <span class="top-value price">$${c.avg_cost_per_sf.toFixed(0)}/SF</span>
                 </li>
             `).join('');
 
-            // Top Recent
-            const topRecent = [...allContractors]
-                .filter(c => c.recent_count > 0 && !c.name.includes('SELF CONTRACTOR'))
-                .sort((a, b) => b.recent_count - a.recent_count)
+            // Top DADU builders
+            const topDadu = allContractors
+                .filter(c => c.dadu_count > 0 && !c.name.includes('SELF CONTRACTOR'))
+                .sort((a, b) => b.dadu_count - a.dadu_count)
                 .slice(0, 10);
 
-            document.getElementById('top-recent').innerHTML = topRecent.map((c, i) => `
+            document.getElementById('top-dadu').innerHTML = topDadu.map((c, i) => `
                 <li>
                     <span class="rank ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">${i + 1}</span>
-                    <span class="top-name">${c.name}</span>
-                    <span class="top-value">${c.recent_count}</span>
+                    <span class="top-name">${c.display_name || c.name}</span>
+                    <span class="top-value">${c.dadu_count}</span>
                 </li>
             `).join('');
         }
 
-        function renderTypeChart() {
-            let building = 0, electrical = 0, plumbing = 0, mechanical = 0;
-            allContractors.forEach(c => {
-                building += c.building_permits;
-                electrical += c.electrical_permits;
-                plumbing += c.plumbing_permits;
-                mechanical += c.mechanical_permits;
-            });
+        function renderZipcodeTable() {
+            const tbody = document.getElementById('zipcode-tbody');
+            tbody.innerHTML = zipcodeData.slice(0, 12).map(z => `
+                <tr onclick="filterByZipcode('${z.zipcode}')" style="cursor: pointer;">
+                    <td><strong>${z.zipcode}</strong></td>
+                    <td>${z.permit_count}</td>
+                    <td class="cost-per-sf">${z.avg_cost_per_sf ? '$' + z.avg_cost_per_sf.toFixed(0) : '-'}</td>
+                    <td>${z.contractor_count}</td>
+                </tr>
+            `).join('');
+        }
 
-            const max = Math.max(building, electrical, plumbing, mechanical);
+        function filterByZipcode(zipcode) {
+            document.getElementById('search').value = zipcode;
+            applyFilters();
+        }
 
-            document.getElementById('type-chart').innerHTML = `
-                <div class="bar-row">
-                    <span class="bar-label">Building</span>
-                    <div class="bar-track">
-                        <div class="bar-fill" style="width: ${building/max*100}%; background: linear-gradient(90deg, #1565c0, #42a5f5);">${building.toLocaleString()}</div>
-                    </div>
+        // Area pricing lookup
+        function lookupAreaPricing() {
+            const input = document.getElementById('address-input').value.trim();
+            if (!input) return;
+
+            // Extract zip code from input
+            const zipMatch = input.match(/\b(\d{5})\b/);
+            let zipcode = zipMatch ? zipMatch[1] : null;
+
+            // If no zip found, check if it's just a zip
+            if (!zipcode && /^\d{5}$/.test(input)) {
+                zipcode = input;
+            }
+
+            const results = document.getElementById('pricing-results');
+            const grid = document.getElementById('pricing-grid');
+            const contractors = document.getElementById('area-contractors');
+
+            if (!zipcode) {
+                grid.innerHTML = '<p style="text-align: center;">Please include a Nashville zip code (e.g., 37206)</p>';
+                results.classList.add('active');
+                contractors.innerHTML = '';
+                return;
+            }
+
+            // Find zip code data
+            const zipData = zipcodeData.find(z => z.zipcode === zipcode);
+
+            if (!zipData) {
+                grid.innerHTML = `<p style="text-align: center;">No DADU permit data found for zip code ${zipcode}</p>`;
+                results.classList.add('active');
+                contractors.innerHTML = '';
+                return;
+            }
+
+            // Display pricing stats
+            grid.innerHTML = `
+                <div class="pricing-stat">
+                    <div class="pricing-stat-value">${zipData.permit_count}</div>
+                    <div class="pricing-stat-label">Permits in ${zipcode}</div>
                 </div>
-                <div class="bar-row">
-                    <span class="bar-label">Electrical</span>
-                    <div class="bar-track">
-                        <div class="bar-fill" style="width: ${electrical/max*100}%; background: linear-gradient(90deg, #e65100, #ff9800);">${electrical.toLocaleString()}</div>
-                    </div>
+                <div class="pricing-stat">
+                    <div class="pricing-stat-value">${zipData.avg_cost_per_sf ? '$' + zipData.avg_cost_per_sf.toFixed(0) : 'N/A'}</div>
+                    <div class="pricing-stat-label">Avg $/SF</div>
                 </div>
-                <div class="bar-row">
-                    <span class="bar-label">Plumbing</span>
-                    <div class="bar-track">
-                        <div class="bar-fill" style="width: ${plumbing/max*100}%; background: linear-gradient(90deg, #2e7d32, #66bb6a);">${plumbing.toLocaleString()}</div>
-                    </div>
+                <div class="pricing-stat">
+                    <div class="pricing-stat-value">${zipData.contractor_count}</div>
+                    <div class="pricing-stat-label">Contractors</div>
                 </div>
-                <div class="bar-row">
-                    <span class="bar-label">HVAC</span>
-                    <div class="bar-track">
-                        <div class="bar-fill" style="width: ${mechanical/max*100}%; background: linear-gradient(90deg, #c2185b, #f06292);">${mechanical.toLocaleString()}</div>
-                    </div>
+                <div class="pricing-stat">
+                    <div class="pricing-stat-value">$${Math.round(zipData.total_value / zipData.permit_count).toLocaleString()}</div>
+                    <div class="pricing-stat-label">Avg Permit Value</div>
                 </div>
             `;
+
+            // Show top contractors in this area
+            const areaContractors = allContractors
+                .filter(c => c.zipcodes && c.zipcodes.includes(zipcode))
+                .sort((a, b) => (b.cost_per_sf_count || 0) - (a.cost_per_sf_count || 0))
+                .slice(0, 5);
+
+            if (areaContractors.length > 0) {
+                contractors.innerHTML = `
+                    <div style="font-size: 12px; margin-bottom: 8px; opacity: 0.9;">Top contractors in ${zipcode}:</div>
+                    ${areaContractors.map(c => `
+                        <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                            <span>${c.display_name || c.name}</span>
+                            <span>${c.avg_cost_per_sf ? '$' + c.avg_cost_per_sf.toFixed(0) + '/SF' : 'No pricing'}</span>
+                        </div>
+                    `).join('')}
+                `;
+            } else {
+                contractors.innerHTML = '';
+            }
+
+            results.classList.add('active');
         }
 
-        // Search
-        document.getElementById('search').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            applyFilters();
-        });
-
-        // Type filter
+        // Search & Filters
+        document.getElementById('search').addEventListener('input', applyFilters);
         document.getElementById('type-filter').addEventListener('change', applyFilters);
         document.getElementById('sort-by').addEventListener('change', applyFilters);
+        document.getElementById('address-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') lookupAreaPricing();
+        });
 
         function applyFilters() {
             const query = document.getElementById('search').value.toLowerCase();
@@ -711,23 +918,42 @@
             const sort = document.getElementById('sort-by').value;
 
             filteredContractors = allContractors.filter(c => {
-                if (query && !c.name.toLowerCase().includes(query)) return false;
-                if (type === 'building' && c.building_permits === 0) return false;
-                if (type === 'electrical' && c.electrical_permits === 0) return false;
-                if (type === 'plumbing' && c.plumbing_permits === 0) return false;
-                if (type === 'mechanical' && c.mechanical_permits === 0) return false;
+                // Search filter
+                if (query) {
+                    const matchName = (c.name || '').toLowerCase().includes(query) ||
+                                     (c.display_name || '').toLowerCase().includes(query);
+                    const matchZip = c.zipcodes && c.zipcodes.some(z => z.includes(query));
+                    if (!matchName && !matchZip) return false;
+                }
+
+                // Type filter
+                if (type === 'has-pricing' && !c.avg_cost_per_sf) return false;
+                if (type === 'dadu' && (!c.dadu_count || c.dadu_count === 0)) return false;
+
                 return true;
             });
 
             // Sort
-            if (sort === 'building') {
-                filteredContractors.sort((a, b) => b.building_permits - a.building_permits);
-            } else if (sort === 'recent') {
-                filteredContractors.sort((a, b) => b.recent_count - a.recent_count);
+            if (sort === 'dadu') {
+                filteredContractors.sort((a, b) => (b.dadu_count || 0) - (a.dadu_count || 0));
+            } else if (sort === 'pricing-count') {
+                filteredContractors.sort((a, b) => (b.cost_per_sf_count || 0) - (a.cost_per_sf_count || 0));
+            } else if (sort === 'cost-low') {
+                filteredContractors.sort((a, b) => {
+                    if (!a.avg_cost_per_sf) return 1;
+                    if (!b.avg_cost_per_sf) return -1;
+                    return a.avg_cost_per_sf - b.avg_cost_per_sf;
+                });
+            } else if (sort === 'cost-high') {
+                filteredContractors.sort((a, b) => {
+                    if (!a.avg_cost_per_sf) return 1;
+                    if (!b.avg_cost_per_sf) return -1;
+                    return b.avg_cost_per_sf - a.avg_cost_per_sf;
+                });
             } else if (sort === 'value') {
-                filteredContractors.sort((a, b) => b.total_value - a.total_value);
+                filteredContractors.sort((a, b) => (b.total_value || 0) - (a.total_value || 0));
             } else {
-                filteredContractors.sort((a, b) => b.total_permits - a.total_permits);
+                filteredContractors.sort((a, b) => b.permit_count - a.permit_count);
             }
 
             currentPage = 1;
@@ -735,43 +961,66 @@
         }
 
         // Modal
-        function showDetails(encodedName) {
-            const name = decodeURIComponent(encodedName);
-            const contractor = allContractors.find(c => c.name === name);
+        function showDetails(index) {
+            const contractor = filteredContractors[index];
             if (!contractor) return;
 
-            document.getElementById('modal-title').textContent = contractor.name;
+            document.getElementById('modal-title').textContent = contractor.display_name || contractor.name;
 
             const valueStr = contractor.total_value > 0 ? '$' + contractor.total_value.toLocaleString() : 'N/A';
-            const sqftStr = contractor.total_sqft > 0 ? contractor.total_sqft.toLocaleString() + ' sq ft' : 'N/A';
+            const sqftStr = contractor.total_sqft > 0 ? contractor.total_sqft.toLocaleString() + ' SF' : 'N/A';
+            const avgCost = contractor.avg_cost_per_sf ? '$' + contractor.avg_cost_per_sf.toFixed(2) + '/SF' : 'N/A';
+            const costRange = contractor.min_cost_per_sf && contractor.max_cost_per_sf
+                ? '$' + contractor.min_cost_per_sf.toFixed(0) + ' - $' + contractor.max_cost_per_sf.toFixed(0) + '/SF'
+                : 'N/A';
+
+            let permitListHtml = '';
+            if (contractor.cost_per_sf_details && contractor.cost_per_sf_details.length > 0) {
+                permitListHtml = `
+                    <h4 style="margin: 20px 0 10px; font-size: 14px; color: #666;">$/SF Data Points</h4>
+                    <div class="permit-list">
+                        ${contractor.cost_per_sf_details.map(p => `
+                            <div class="permit-item">
+                                <span class="permit-address">${p.address || 'Unknown'}</span>
+                                <span class="permit-details">${p.sqft ? p.sqft.toLocaleString() + ' SF' : ''}</span>
+                                <span class="permit-price">$${p.cost_per_sf.toFixed(2)}/SF</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
 
             document.getElementById('modal-body').innerHTML = `
                 <div class="detail-grid">
                     <div class="detail-item">
-                        <div class="detail-value">${contractor.total_permits}</div>
+                        <div class="detail-value">${contractor.permit_count}</div>
                         <div class="detail-label">Total Permits</div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-value">${contractor.building_permits}</div>
+                        <div class="detail-value">${contractor.dadu_count || 0}</div>
+                        <div class="detail-label">DADU Permits</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-value">${contractor.building_count || 0}</div>
                         <div class="detail-label">Building Permits</div>
                     </div>
-                    <div class="detail-item">
-                        <div class="detail-value">${contractor.recent_count}</div>
-                        <div class="detail-label">2024-25 Permits</div>
+                </div>
+
+                <div class="detail-grid">
+                    <div class="detail-item pricing-detail">
+                        <div class="detail-value">${avgCost}</div>
+                        <div class="detail-label">Average $/SF</div>
                     </div>
-                    <div class="detail-item">
-                        <div class="detail-value">${contractor.electrical_permits}</div>
-                        <div class="detail-label">Electrical</div>
+                    <div class="detail-item pricing-detail">
+                        <div class="detail-value" style="font-size: 16px;">${costRange}</div>
+                        <div class="detail-label">$/SF Range</div>
                     </div>
-                    <div class="detail-item">
-                        <div class="detail-value">${contractor.plumbing_permits}</div>
-                        <div class="detail-label">Plumbing</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-value">${contractor.mechanical_permits}</div>
-                        <div class="detail-label">HVAC/Mech</div>
+                    <div class="detail-item pricing-detail">
+                        <div class="detail-value">${contractor.cost_per_sf_count || 0}</div>
+                        <div class="detail-label">Records with Pricing</div>
                     </div>
                 </div>
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                     <div class="detail-item">
                         <div class="detail-value" style="font-size: 18px;">${valueStr}</div>
@@ -782,14 +1031,22 @@
                         <div class="detail-label">Total Sq Ft Built</div>
                     </div>
                 </div>
-                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                    <div style="font-size: 13px; color: #666; margin-bottom: 8px;">Activity Period</div>
-                    <div style="font-size: 16px; font-weight: 600;">
-                        ${contractor.year_start || '?'} - ${contractor.year_end || 'Present'}
-                        <span style="color: #888; font-weight: 400;">(${contractor.years_active} years active)</span>
+
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <div style="font-size: 13px; color: #666; margin-bottom: 8px;">Active Areas (Zip Codes)</div>
+                    <div style="font-size: 14px; font-weight: 500;">
+                        ${contractor.zipcodes && contractor.zipcodes.length > 0 ? contractor.zipcodes.join(', ') : 'No zip code data'}
                     </div>
-                    ${contractor.license ? `<div style="margin-top: 10px; font-size: 13px;"><strong>License:</strong> ${contractor.license}</div>` : ''}
                 </div>
+
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    <div style="font-size: 13px; color: #666; margin-bottom: 8px;">Years Active</div>
+                    <div style="font-size: 14px; font-weight: 500;">
+                        ${contractor.years_active && contractor.years_active.length > 0 ? contractor.years_active.join(', ') : 'Unknown'}
+                    </div>
+                </div>
+
+                ${permitListHtml}
             `;
 
             document.getElementById('modal-overlay').classList.add('active');
@@ -799,8 +1056,14 @@
             document.getElementById('modal-overlay').classList.remove('active');
         }
 
+        // Close modal on overlay click
         document.getElementById('modal-overlay').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) closeModal();
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
         });
     </script>
 </body>
