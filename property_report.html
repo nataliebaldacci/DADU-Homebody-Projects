@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Report | Nashville DADU Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --teal: #00a0b0;
+            --teal-dark: #008999;
+            --olive: #6b8e4e;
+            --tan: #c9a86c;
+            --cream: #f8f9fa;
+            --white: #ffffff;
+            --text: #1a1a1a;
+            --text-light: #666666;
+            --border: #e0e0e0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: #f5f5f5; color: var(--text); }
+
+        /* Header */
+        .header {
+            background: var(--teal);
+            color: white;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-logo {
+            font-weight: 700;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header-nav {
+            display: flex;
+            gap: 24px;
+        }
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+        .header-nav a:hover { opacity: 1; }
+        .header-search {
+            display: flex;
+            gap: 8px;
+        }
+        .header-search input {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            width: 280px;
+            font-size: 14px;
+        }
+        .header-search button {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Property Title Bar */
+        .property-title-bar {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .property-address {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        .property-actions {
+            display: flex;
+            gap: 12px;
+        }
+        .action-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .action-btn:hover { background: #f5f5f5; }
+        .action-btn.primary {
+            background: var(--teal);
+            color: white;
+            border-color: var(--teal);
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 480px 1fr;
+            height: calc(100vh - 120px);
+        }
+
+        /* Left Panel - Map & Images */
+        .left-panel {
+            background: #1a1a1a;
+            position: relative;
+        }
+        .street-view {
+            height: 200px;
+            background: #333;
+            position: relative;
+        }
+        .street-view img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .photo-count {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        #propertyMap {
+            height: calc(100% - 200px);
+        }
+        .map-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+        }
+        .map-control-btn {
+            background: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Right Panel - Report Content */
+        .right-panel {
+            background: white;
+            overflow-y: auto;
+        }
+
+        /* Tabs */
+        .report-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            background: #fafafa;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .report-tab {
+            padding: 14px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+        .report-tab:hover { color: var(--teal); }
+        .report-tab.active {
+            color: var(--teal);
+            border-bottom-color: var(--teal);
+            font-weight: 600;
+        }
+
+        /* Action Buttons Row */
+        .action-row {
+            padding: 16px 24px;
+            display: flex;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+            background: #fafafa;
+        }
+        .action-pill {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .action-pill:hover { background: #f0f0f0; }
+        .action-pill.highlight {
+            background: #e8f5e9;
+            border-color: var(--olive);
+            color: var(--olive);
+        }
+
+        /* Section */
+        .report-section {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .section-number {
+            background: var(--teal);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+        }
+        .section-toggle {
+            color: var(--teal);
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* Data Grid */
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .data-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .data-label {
+            color: var(--text-light);
+            font-size: 13px;
+        }
+        .data-value {
+            font-weight: 600;
+            font-size: 13px;
+            text-align: right;
+        }
+        .data-value.link {
+            color: var(--teal);
+            cursor: pointer;
+        }
+
+        /* Data Box */
+        .data-box {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .data-box-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: var(--navy);
+        }
+
+        /* DADU Eligibility Banner */
+        .eligibility-banner {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .eligibility-banner.eligible {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-left: 4px solid var(--success);
+        }
+        .eligibility-banner.review {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-left: 4px solid var(--warning);
+        }
+        .eligibility-banner.ineligible {
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            border-left: 4px solid var(--error);
+        }
+        .eligibility-icon {
+            font-size: 32px;
+        }
+        .eligibility-text h3 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .eligibility-text p {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        .eligibility-score {
+            margin-left: auto;
+            text-align: center;
+        }
+        .eligibility-score .score {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--success);
+        }
+        .eligibility-score .label {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        /* Premium Lock */
+        .premium-section {
+            position: relative;
+        }
+        .premium-section.locked .premium-content {
+            filter: blur(4px);
+            pointer-events: none;
+            user-select: none;
+        }
+        .premium-lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+        .lock-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .lock-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .lock-price {
+            color: var(--teal);
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .unlock-btn {
+            background: var(--teal);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-logo">
+            <span>🏠</span>
+            <span>Homebody Projects</span>
+        </div>
+        <div class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="property_search.html">Property Search</a>
+            <a href="reports_pricing.html">Reports</a>
+            <a href="#">Resources</a>
+        </div>
+        <div class="header-search">
+            <input type="text" id="searchInput" placeholder="Address, neighborhood, or Parcel ID">
+            <button onclick="searchProperty()">Search</button>
+        </div>
+    </div>
+
+    <!-- Property Title Bar -->
+    <div class="property-title-bar">
+        <div class="property-address" id="propertyAddress">Loading property...</div>
+        <div class="property-actions">
+            <button class="action-btn">📧</button>
+            <button class="action-btn">🖨️</button>
+            <button class="action-btn primary" onclick="downloadReport()">📄 Download Report</button>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Left Panel - Map & Images -->
+        <div class="left-panel">
+            <div class="street-view">
+                <img id="streetViewImg" src="https://maps.googleapis.com/maps/api/streetview?size=480x200&location=36.1627,-86.7816&key=YOUR_KEY" alt="Street View" onerror="this.src='https://via.placeholder.com/480x200/333/666?text=Street+View'">
+                <div class="photo-count">📷 1</div>
+            </div>
+            <div id="propertyMap"></div>
+            <div class="map-controls">
+                <button class="map-control-btn" onclick="toggleMapStyle()">🗺️ Default</button>
+            </div>
+        </div>
+
+        <!-- Right Panel - Report Content -->
+        <div class="right-panel">
+            <!-- Report Tabs -->
+            <div class="report-tabs">
+                <div class="report-tab active" onclick="switchTab('general')">General</div>
+                <div class="report-tab" onclick="switchTab('dadu')">DADU Analysis</div>
+                <div class="report-tab" onclick="switchTab('documents')">Documents</div>
+                <div class="report-tab" onclick="switchTab('tax')">Tax</div>
+                <div class="report-tab" onclick="switchTab('development')">Development</div>
+                <div class="report-tab" onclick="switchTab('neighborhood')">Neighborhood</div>
+            </div>
+
+            <!-- Action Row -->
+            <div class="action-row">
+                <button class="action-pill highlight">🏠 DADU Report</button>
+                <button class="action-pill">📄 1 Page Report</button>
+                <button class="action-pill">📝 Notes</button>
+                <button class="action-pill">🏷️ Tags</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tab-general" class="tab-content">
+                <!-- DADU Eligibility Banner -->
+                <div class="eligibility-banner eligible" id="eligibilityBanner">
+                    <div class="eligibility-icon">✅</div>
+                    <div class="eligibility-text">
+                        <h3 id="eligibilityTitle">Likely Eligible for DADU</h3>
+                        <p id="eligibilityDesc">This property meets Nashville's basic DADU requirements</p>
+                    </div>
+                    <div class="eligibility-score">
+                        <div class="score" id="eligibilityScoreValue">85</div>
+                        <div class="label">Eligibility Score</div>
+                    </div>
+                </div>
+
+                <!-- Section 1: Overview -->
+                <div class="report-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="section-number">1</span>
+                            Overview
+                        </div>
+                        <span class="section-toggle">Hide</span>
+                    </div>
+
+                    <div class="data-grid">
+                        <div class="data-column">
+                            <div class="data-box">
+                                <div class="data-box-title">Location</div>
+                                <div class="data-row">
+                                    <span class="data-label">Property address</span>
+                                    <span class="data-value" id="propAddr">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">County</span>
+                                    <span class="data-value">Davidson</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Parcel ID</span>
+                                    <span class="data-value" id="propAPN">-</span>
+                                </div>
+                            </div>
+
+                            <div class="data-box">
+                                <div class="data-box-title">Legal Description</div>
+                                <div class="data-row">
+                                    <span class="data-value" id="propLegal" style="text-align: left;">-</span>
+                                </div>
+                            </div>
+
+                            <div class="data-box">
+                                <div class="data-box-title">Owner</div>
+                                <div class="data-row">
+                                    <span class="data-label">Name</span>
+                                    <span class="data-value link" id="propOwner">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Address</span>
+                                    <span class="data-value" id="propOwnerAddr">-</span>
+                                </div>
+                            </div>
+
+                            <div class="data-box">
+                                <div class="data-box-title">Neighborhood</div>
+                                <div class="data-row">
+                                    <span class="data-label">Council district</span>
+                                    <span class="data-value" id="propCouncil">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Tax district</span>
+                                    <span class="data-value" id="propTaxDistrict">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Neighborhood</span>
+                                    <span class="data-value" id="propNeighborhood">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="data-column">
+                            <div class="data-box">
+                                <div class="data-box-title">Property Tax</div>
+                                <div class="data-row">
+                                    <span class="data-label">Tax year</span>
+                                    <span class="data-value">2025</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Land value</span>
+                                    <span class="data-value" id="propLandValue">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Building value</span>
+                                    <span class="data-value" id="propBldgValue">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Market value</span>
+                                    <span class="data-value" id="propMarketValue">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Property tax</span>
+                                    <span class="data-value" id="propTaxAmt">-</span>
+                                </div>
+                            </div>
+
+                            <div class="data-box">
+                                <div class="data-box-title">Land</div>
+                                <div class="data-row">
+                                    <span class="data-label">Property class</span>
+                                    <span class="data-value" id="propClass">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Acreage</span>
+                                    <span class="data-value" id="propAcres">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Lot dimensions</span>
+                                    <span class="data-value" id="propLotDim">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Units</span>
+                                    <span class="data-value" id="propUnits">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Buildings on lot</span>
+                                    <span class="data-value" id="propBldgCount">-</span>
+                                </div>
+                            </div>
+
+                            <div class="data-box">
+                                <div class="data-box-title">Building</div>
+                                <div class="data-row">
+                                    <span class="data-label">Square footage</span>
+                                    <span class="data-value" id="propSqft">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Year built</span>
+                                    <span class="data-value" id="propYearBuilt">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Stories</span>
+                                    <span class="data-value" id="propStories">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Bedrooms</span>
+                                    <span class="data-value" id="propBeds">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Bathrooms</span>
+                                    <span class="data-value" id="propBaths">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: DADU Requirements -->
+                <div class="report-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="section-number">2</span>
+                            DADU Requirements Check
+                        </div>
+                        <span class="section-toggle">Hide</span>
+                    </div>
+
+                    <div class="data-grid">
+                        <div class="data-column">
+                            <div class="data-box">
+                                <div class="data-box-title">Zoning & District</div>
+                                <div class="data-row">
+                                    <span class="data-label">Zoning</span>
+                                    <span class="data-value" id="reqZoning">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Zoning allows DADU?</span>
+                                    <span class="data-value" id="reqZoningOK" style="color: var(--success);">✅ Yes</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Service District</span>
+                                    <span class="data-value" id="reqDistrict">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">USD Requirement Met?</span>
+                                    <span class="data-value" id="reqDistrictOK" style="color: var(--success);">✅ Yes</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="data-column">
+                            <div class="data-box">
+                                <div class="data-box-title">Size Limits</div>
+                                <div class="data-row">
+                                    <span class="data-label">Lot Size</span>
+                                    <span class="data-value" id="reqLotSize">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Max DADU Size</span>
+                                    <span class="data-value" id="reqMaxDADU" style="color: var(--olive); font-weight: 700;">850 SF</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Principal Structures</span>
+                                    <span class="data-value" id="reqStructures">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <span class="data-label">Single Structure OK?</span>
+                                    <span class="data-value" id="reqStructuresOK" style="color: var(--success);">✅ Yes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 16px; padding: 12px; background: #f0f9ff; border-radius: 8px; font-size: 13px;">
+                        <strong>📖 Official Requirements:</strong>
+                        <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/dadu" target="_blank" style="color: var(--teal);">Nashville.gov DADU Requirements →</a>
+                    </div>
+                </div>
+
+                <!-- Section 3: Cost Estimate (Premium) -->
+                <div class="report-section premium-section locked" id="costSection">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="section-number">3</span>
+                            DADU Cost Estimate
+                            <span style="background: #fef3c7; color: #92400e; font-size: 10px; padding: 2px 8px; border-radius: 4px; margin-left: 8px;">PREMIUM</span>
+                        </div>
+                    </div>
+
+                    <div class="premium-content">
+                        <div class="data-grid">
+                            <div class="data-column">
+                                <div class="data-box">
+                                    <div class="data-box-title">Construction Costs</div>
+                                    <div class="data-row">
+                                        <span class="data-label">Base Construction</span>
+                                        <span class="data-value">$127,500</span>
+                                    </div>
+                                    <div class="data-row">
+                                        <span class="data-label">Site Work</span>
+                                        <span class="data-value">$15,000</span>
+                                    </div>
+                                    <div class="data-row">
+                                        <span class="data-label">Utilities</span>
+                                        <span class="data-value">$12,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="data-column">
+                                <div class="data-box">
+                                    <div class="data-box-title">Total Estimate</div>
+                                    <div style="font-size: 32px; font-weight: 700; color: var(--olive);">$175,000</div>
+                                    <div style="font-size: 12px; color: var(--text-light);">Based on 850 SF DADU</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="premium-lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-title">Premium Report Section</div>
+                        <div class="lock-price">$9</div>
+                        <button class="unlock-btn" onclick="unlockSection('cost')">Unlock Cost Estimate</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DADU Tab -->
+            <div id="tab-dadu" class="tab-content" style="display: none;">
+                <div class="report-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="section-number">1</span>
+                            DADU Eligibility Analysis
+                        </div>
+                    </div>
+                    <p style="color: var(--text-light);">Detailed DADU analysis coming soon...</p>
+                </div>
+            </div>
+
+            <!-- Documents Tab -->
+            <div id="tab-documents" class="tab-content" style="display: none;">
+                <div class="report-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="section-number">1</span>
+                            Property Documents
+                        </div>
+                    </div>
+                    <p style="color: var(--text-light);">Documents section coming soon...</p>
+                </div>
+            </div>
+
+            <!-- Tax Tab -->
+            <div id="tab-tax" class="tab-content" style="display: none;">
+                <div class="report-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="section-number">1</span>
+                            Tax History
+                        </div>
+                    </div>
+                    <p style="color: var(--text-light);">Tax history coming soon...</p>
+                </div>
+            </div>
+
+            <!-- Development Tab -->
+            <div id="tab-development" class="tab-content" style="display: none;">
+                <div class="report-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="section-number">1</span>
+                            Development History
+                        </div>
+                    </div>
+                    <p style="color: var(--text-light);">Development history coming soon...</p>
+                </div>
+            </div>
+
+            <!-- Neighborhood Tab -->
+            <div id="tab-neighborhood" class="tab-content" style="display: none;">
+                <div class="report-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <span class="section-number">1</span>
+                            Neighborhood Analysis
+                        </div>
+                    </div>
+                    <p style="color: var(--text-light);">Neighborhood analysis coming soon...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let map;
+        let propertyData = null;
+        let eligibilityData = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            initMap();
+            await loadEligibilityData();
+            checkURLParams();
+        });
+
+        function initMap() {
+            map = L.map('propertyMap').setView([36.1627, -86.7816], 17);
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 19
+            }).addTo(map);
+        }
+
+        async function loadEligibilityData() {
+            const paths = ['parcels_eligibility_map.json', 'MASTER_ADU_DATA/parcels_eligibility_lite.json'];
+            for (const path of paths) {
+                try {
+                    const resp = await fetch(path);
+                    if (resp.ok) {
+                        eligibilityData = await resp.json();
+                        console.log(`Loaded ${eligibilityData.t} parcels`);
+                        return;
+                    }
+                } catch (e) { console.log(`Failed: ${path}`); }
+            }
+        }
+
+        function checkURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            const apn = params.get('apn');
+            const address = params.get('address');
+
+            if (apn && eligibilityData) {
+                const parcel = eligibilityData.d.find(p => p.apn === apn);
+                if (parcel) {
+                    loadPropertyData(parcel);
+                }
+            } else if (address) {
+                document.getElementById('searchInput').value = address;
+                searchProperty();
+            }
+        }
+
+        function loadPropertyData(parcel) {
+            propertyData = parcel;
+
+            // Update title
+            document.getElementById('propertyAddress').textContent = parcel.a || 'Property Report';
+
+            // Update map
+            if (parcel.lat && parcel.lon) {
+                map.setView([parcel.lat, parcel.lon], 18);
+                L.marker([parcel.lat, parcel.lon]).addTo(map);
+            }
+
+            // Update Overview
+            document.getElementById('propAddr').textContent = parcel.a || '-';
+            document.getElementById('propAPN').textContent = parcel.apn || '-';
+            document.getElementById('propTaxDistrict').textContent = parcel.d || '-';
+            document.getElementById('propAcres').textContent = parcel.ac ? parcel.ac + ' acres' : '-';
+            document.getElementById('propYearBuilt').textContent = parcel.yr || '-';
+            document.getElementById('propBeds').textContent = parcel.beds || '-';
+            document.getElementById('propSqft').textContent = parcel.bldg ? parcel.bldg.toLocaleString() + ' SF' : '-';
+            document.getElementById('propMarketValue').textContent = parcel.v ? '$' + parcel.v.toLocaleString() : '-';
+
+            // Calculate tax estimate
+            const taxRate = 3.254 / 100;
+            const assessedValue = (parcel.v || 0) * 0.25;
+            const taxAmt = assessedValue * taxRate;
+            document.getElementById('propTaxAmt').textContent = '$' + Math.round(taxAmt).toLocaleString();
+
+            // DADU Requirements
+            document.getElementById('reqZoning').textContent = parcel.z || '-';
+            document.getElementById('reqDistrict').textContent = parcel.d || '-';
+
+            const lotSqft = parcel.sqft || (parcel.ac * 43560);
+            document.getElementById('reqLotSize').textContent = lotSqft ? lotSqft.toLocaleString() + ' SF' : '-';
+            document.getElementById('reqMaxDADU').textContent = lotSqft >= 10000 ? '850 SF' : '700 SF';
+
+            // Eligibility Banner
+            const banner = document.getElementById('eligibilityBanner');
+            const title = document.getElementById('eligibilityTitle');
+            const desc = document.getElementById('eligibilityDesc');
+            const score = document.getElementById('eligibilityScoreValue');
+
+            score.textContent = parcel.sc || '0';
+
+            if (parcel.st === 'E') {
+                banner.className = 'eligibility-banner eligible';
+                title.textContent = 'Likely Eligible for DADU';
+                desc.textContent = 'This property meets Nashville\'s basic DADU requirements';
+                document.getElementById('reqZoningOK').innerHTML = '✅ Yes';
+                document.getElementById('reqDistrictOK').innerHTML = '✅ Yes';
+            } else if (parcel.st === 'P') {
+                banner.className = 'eligibility-banner review';
+                title.textContent = 'Review Required';
+                desc.textContent = 'This property may be eligible - verify overlay/SP requirements';
+                score.style.color = '#f59e0b';
+            } else {
+                banner.className = 'eligibility-banner ineligible';
+                title.textContent = 'Not Eligible for DADU';
+                desc.textContent = 'This property\'s zoning does not permit DADUs';
+                score.style.color = '#ef4444';
+                document.getElementById('reqZoningOK').innerHTML = '❌ No';
+                document.getElementById('reqZoningOK').style.color = '#ef4444';
+            }
+
+            // Check USD
+            if (parcel.d && parcel.d.includes('USD')) {
+                document.getElementById('reqDistrictOK').innerHTML = '✅ Yes';
+                document.getElementById('reqDistrictOK').style.color = '#22c55e';
+            } else {
+                document.getElementById('reqDistrictOK').innerHTML = '⚠️ GSD - Needs Overlay';
+                document.getElementById('reqDistrictOK').style.color = '#f59e0b';
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.report-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabName).style.display = 'block';
+        }
+
+        function unlockSection(section) {
+            if (confirm(`Unlock ${section} section for $9?\n\nIn production, this would open Stripe checkout.`)) {
+                document.getElementById(section + 'Section').classList.remove('locked');
+            }
+        }
+
+        function searchProperty() {
+            const query = document.getElementById('searchInput').value;
+            if (query) {
+                window.location.href = 'property_search.html?q=' + encodeURIComponent(query);
+            }
+        }
+
+        function downloadReport() {
+            alert('PDF Report download coming soon!\n\nThis would generate a professional PDF report.');
+        }
+
+        function toggleMapStyle() {
+            // Toggle between satellite and street view
+        }
+    </script>
+</body>
+</html>

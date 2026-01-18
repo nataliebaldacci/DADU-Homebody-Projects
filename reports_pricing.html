@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Pricing | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --tan: #c9a86c;
+            --tan-light: #dbc291;
+            --cream: #f8f9fa;
+            --white: #ffffff;
+            --text: #1a1a1a;
+            --text-light: #666666;
+            --border: #e0e0e0;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --radius: 8px;
+            --radius-lg: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--olive) 0%, var(--olive-dark) 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .logo-text { font-size: 18px; font-weight: 700; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 10px 16px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: var(--radius);
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .nav-link.active {
+            background: var(--olive);
+            color: white;
+        }
+
+        /* Main Content */
+        .main {
+            margin-top: 70px;
+            padding: 40px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            border-radius: var(--radius-lg);
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        .hero-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-nav-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .hero-nav-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--olive) 0%, var(--olive-dark) 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .section-header p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* Report Cards Grid */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .report-card:hover {
+            border-color: var(--olive);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .report-card.featured {
+            border: 2px solid var(--olive);
+            position: relative;
+        }
+
+        .report-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background: var(--olive);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .report-card.locked {
+            position: relative;
+        }
+
+        .report-card.locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 16px;
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .report-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .report-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .report-price {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--olive);
+        }
+
+        .report-price.free {
+            color: var(--teal);
+        }
+
+        .report-price span {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .report-desc {
+            font-size: 12px;
+            color: var(--text-light);
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 16px;
+        }
+
+        .report-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .report-feature {
+            background: var(--cream);
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            color: var(--text-light);
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--olive) 0%, var(--olive-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(107, 142, 78, 0.4);
+        }
+
+        .btn-outline {
+            background: white;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--olive);
+            color: var(--olive);
+        }
+
+        .btn-locked {
+            background: var(--navy);
+            color: white;
+        }
+
+        /* Subscription Cards */
+        .subscription-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .subscription-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .subscription-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .subscription-card.featured {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            color: white;
+            border: none;
+            transform: scale(1.02);
+        }
+
+        .subscription-card.featured .subscription-price,
+        .subscription-card.featured .subscription-title {
+            color: white;
+        }
+
+        .subscription-card.featured .subscription-desc {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .subscription-card.featured .subscription-feature {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .subscription-badge {
+            display: inline-block;
+            background: var(--tan);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .subscription-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .subscription-price {
+            font-size: 40px;
+            font-weight: 800;
+            color: var(--olive);
+            margin-bottom: 4px;
+        }
+
+        .subscription-price span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .subscription-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+
+        .subscription-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .subscription-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .subscription-feature svg {
+            width: 18px;
+            height: 18px;
+            color: var(--olive);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .subscription-card.featured .subscription-feature svg {
+            color: var(--tan-light);
+        }
+
+        /* Premium Preview Section */
+        .premium-preview {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            color: white;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .premium-preview h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .premium-preview p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .preview-tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .preview-tool {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .preview-tool:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .preview-tool-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .preview-tool-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .preview-tool-desc {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .preview-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--olive);
+            color: white;
+            padding: 14px 28px;
+            border-radius: var(--radius);
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .preview-cta:hover {
+            background: var(--olive-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--navy-dark);
+            color: rgba(255,255,255,0.7);
+            padding: 40px;
+            margin-top: 60px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section h4 {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .footer-link {
+            display: block;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 0;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main { padding: 20px; }
+            .hero { padding: 40px 20px; }
+            .hero h1 { font-size: 28px; }
+            .reports-grid { grid-template-columns: 1fr; }
+            .header { padding: 0 20px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">🏠</div>
+            <span class="logo-text">Homebody Projects</span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="property_search.html" class="nav-link">Property Search</a>
+            <a href="nashville_permit_explorer_v3.html" class="nav-link">DADU Explorer</a>
+            <a href="contractor_marketplace.html" class="nav-link">Contractors</a>
+            <a href="reports_pricing.html" class="nav-link active">Reports & Pricing</a>
+            <a href="#" class="nav-link">Support</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero -->
+        <section class="hero">
+            <h1>DADU Reports & Tools</h1>
+            <p>Everything you need to plan, build, and manage your Nashville DADU project</p>
+            <div class="hero-nav">
+                <a href="#property-search" class="hero-nav-btn">🔍 Property Search</a>
+                <a href="#project-planner" class="hero-nav-btn">📋 Project Planner</a>
+                <a href="#premium-tools" class="hero-nav-btn">⚡ Premium Tools</a>
+                <a href="#dadu-explorer" class="hero-nav-btn">🗺️ DADU Explorer</a>
+                <a href="#property-reports" class="hero-nav-btn">📄 Property Reports</a>
+                <a href="#premium-preview" class="hero-nav-btn">✨ Premium Preview</a>
+            </div>
+        </section>
+
+        <!-- ========== PROPERTY SEARCH ========== -->
+        <section id="property-search">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <div>
+                    <h2>Property Search</h2>
+                    <p>Check eligibility, estimate costs, and plan your DADU project</p>
+                </div>
+            </div>
+
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-icon">✅</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Eligibility Check</div>
+                        </div>
+                        <div class="report-price free">FREE</div>
+                    </div>
+                    <p class="report-desc">Instant check if your Nashville property qualifies for a DADU under BL2025-1007. See zoning, service district (USD/GSD), lot size requirements.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Zoning Check</span>
+                        <span class="report-feature">USD/GSD Status</span>
+                        <span class="report-feature">Lot Size</span>
+                        <span class="report-feature">Max DADU Size</span>
+                    </div>
+                    <a href="property_search.html" class="btn btn-outline">Check Eligibility →</a>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">💰</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Cost Estimate</div>
+                        </div>
+                        <div class="report-price">$6</div>
+                    </div>
+                    <p class="report-desc">Detailed cost breakdown: construction, permits, design, utilities, site prep. Based on actual nearby DADU permit data.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Cost Breakdown</span>
+                        <span class="report-feature">$/SqFt Analysis</span>
+                        <span class="report-feature">Nearby Comps</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('cost', 6)">Unlock Report — $6</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">🏗️</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Build DADU Guide</div>
+                        </div>
+                        <div class="report-price">$9</div>
+                    </div>
+                    <p class="report-desc">Step-by-step guide from design to move-in. Design standards, setbacks, height limits, parking requirements for your specific lot.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Design Standards</span>
+                        <span class="report-feature">Setback Rules</span>
+                        <span class="report-feature">Size Limits</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('build', 9)">Unlock Guide — $9</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">📋</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Checklist & Requirements</div>
+                        </div>
+                        <div class="report-price">$6</div>
+                    </div>
+                    <p class="report-desc">Complete checklist of legal requirements: owner-occupancy, covenants, STR rules, floodplain status, utility connections.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Legal Checklist</span>
+                        <span class="report-feature">Covenant Search</span>
+                        <span class="report-feature">STR Rules</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('checklist', 6)">Unlock Checklist — $6</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">📅</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Permit & Build Timeline</div>
+                        </div>
+                        <div class="report-price">$9</div>
+                    </div>
+                    <p class="report-desc">Realistic timeline from research to move-in. Permit processing times, construction phases, inspection milestones.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Project Timeline</span>
+                        <span class="report-feature">Permit Process</span>
+                        <span class="report-feature">Milestones</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('timeline', 9)">Unlock Timeline — $9</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PROJECT PLANNER ========== -->
+        <section id="project-planner">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <div>
+                    <h2>Project Planner</h2>
+                    <p>Tools for homeowners and contractors to plan DADU projects</p>
+                </div>
+            </div>
+
+            <div class="reports-grid">
+                <div class="report-card featured">
+                    <div class="report-icon">🏡</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Homeowner Project Planner</div>
+                        </div>
+                        <div class="report-price">$19</div>
+                    </div>
+                    <p class="report-desc">Complete planning toolkit for homeowners. Combines eligibility, costs, timeline, legal checklist, and ROI analysis in one comprehensive package.</p>
+                    <div class="report-features">
+                        <span class="report-feature">All-in-One Report</span>
+                        <span class="report-feature">Eligibility</span>
+                        <span class="report-feature">Costs</span>
+                        <span class="report-feature">Timeline</span>
+                        <span class="report-feature">Legal</span>
+                        <span class="report-feature">ROI</span>
+                        <span class="report-feature">PDF Export</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('homeowner-planner', 19)">Get Full Planner — $19</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">🔨</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Contractor Project Planner</div>
+                        </div>
+                        <div class="report-price">$29</div>
+                    </div>
+                    <p class="report-desc">Professional toolkit for contractors. Client-ready reports, permit requirements, cost estimates with markup calculator, and project management tools.</p>
+                    <div class="report-features">
+                        <span class="report-feature">White-Label Reports</span>
+                        <span class="report-feature">Markup Calculator</span>
+                        <span class="report-feature">Permit Checklist</span>
+                        <span class="report-feature">Client Proposals</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('contractor-planner', 29)">Get Pro Planner — $29</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PREMIUM TOOLS ========== -->
+        <section id="premium-tools">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <div>
+                    <h2>Premium Tools</h2>
+                    <p>Advanced calculators and analysis tools</p>
+                </div>
+            </div>
+
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-icon">📊</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Run Eligibility Analysis Report</div>
+                        </div>
+                        <div class="report-price">$15</div>
+                    </div>
+                    <p class="report-desc">Deep-dive eligibility analysis with zoning details, overlay districts, historic restrictions, and detailed regulatory requirements.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Full Zoning Analysis</span>
+                        <span class="report-feature">Overlay Districts</span>
+                        <span class="report-feature">Historic Status</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('eligibility-analysis', 15)">Run Analysis — $15</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">🧮</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Project Cost Calculator</div>
+                        </div>
+                        <div class="report-price">$12</div>
+                    </div>
+                    <p class="report-desc">Interactive calculator with adjustable inputs. Compare prefab vs custom, financing scenarios, and total project costs.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Custom Inputs</span>
+                        <span class="report-feature">Prefab Comparison</span>
+                        <span class="report-feature">Financing Options</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('cost-calculator', 12)">Access Tool — $12</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">🏦</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Property Tax Estimate</div>
+                        </div>
+                        <div class="report-price">$6</div>
+                    </div>
+                    <p class="report-desc">Calculate annual property tax impact using Davidson County's assessment formula. Before/after comparison with construction cost scenarios.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Tax Projection</span>
+                        <span class="report-feature">Assessment Calc</span>
+                        <span class="report-feature">Before/After</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('tax-estimate', 6)">Calculate — $6</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">📈</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">ROI for Short-Term Rental</div>
+                        </div>
+                        <div class="report-price">$9</div>
+                    </div>
+                    <p class="report-desc">Investment analysis for STR income. Rental comps, occupancy rates, cash flow projections, and break-even timeline. Includes STR permit requirements.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Rental Comps</span>
+                        <span class="report-feature">Cash Flow</span>
+                        <span class="report-feature">Break-Even</span>
+                        <span class="report-feature">STR Permit Info</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('str-roi', 9)">Calculate ROI — $9</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">📝</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Auto-Prepare Permit Forms</div>
+                        </div>
+                        <div class="report-price">$25</div>
+                    </div>
+                    <p class="report-desc">Automatically fill out Metro Nashville permit application forms with your property data. Includes building permit, electrical, plumbing, and HVAC forms.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Pre-Filled Forms</span>
+                        <span class="report-feature">Building Permit</span>
+                        <span class="report-feature">MEP Permits</span>
+                        <span class="report-feature">PDF Download</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('permit-forms', 25)">Generate Forms — $25</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== DADU EXPLORER ========== -->
+        <section id="dadu-explorer">
+            <div class="section-header">
+                <div class="section-icon">🗺️</div>
+                <div>
+                    <h2>DADU Explorer</h2>
+                    <p>Research completed DADU projects across Nashville</p>
+                </div>
+            </div>
+
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-icon">📍</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Completed DADU Project Map</div>
+                        </div>
+                        <div class="report-price free">FREE</div>
+                    </div>
+                    <p class="report-desc">Interactive map of 809+ permitted DADU projects in Nashville. Filter by neighborhood, permit value, contractor, and year built.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Interactive Map</span>
+                        <span class="report-feature">809+ Permits</span>
+                        <span class="report-feature">Filters</span>
+                        <span class="report-feature">Basic Info</span>
+                    </div>
+                    <a href="nashville_permit_explorer_v3.html" class="btn btn-outline">Explore Map →</a>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">👷</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Contractor Marketplace</div>
+                        </div>
+                        <div class="report-price free">FREE</div>
+                    </div>
+                    <p class="report-desc">Browse 98 Nashville contractors ranked by DADU permit volume. See project counts, average costs, and specializations.</p>
+                    <div class="report-features">
+                        <span class="report-feature">98 Contractors</span>
+                        <span class="report-feature">Rankings</span>
+                        <span class="report-feature">Avg Costs</span>
+                    </div>
+                    <a href="contractor_marketplace.html" class="btn btn-outline">View Contractors →</a>
+                </div>
+
+                <div class="report-card locked">
+                    <div class="report-icon">📐</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Site Plans of Completed DADUs</div>
+                        </div>
+                        <div class="report-price">$8</div>
+                    </div>
+                    <p class="report-desc">Download actual site plans from permitted DADU projects. See setback layouts, building placement, and parking arrangements.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Site Plans</span>
+                        <span class="report-feature">Setback Examples</span>
+                        <span class="report-feature">PDF Download</span>
+                    </div>
+                    <button class="btn btn-locked" onclick="purchaseReport('site-plans', 8)">🔒 Unlock — $8</button>
+                </div>
+
+                <div class="report-card locked">
+                    <div class="report-icon">🏠</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">DADU Property Detail Report</div>
+                        </div>
+                        <div class="report-price">$15</div>
+                    </div>
+                    <p class="report-desc">Full report on a specific completed DADU. Permit details, contractor info, project cost, timeline, and available documents.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Permit Details</span>
+                        <span class="report-feature">Contractor</span>
+                        <span class="report-feature">Cost & Timeline</span>
+                        <span class="report-feature">Documents</span>
+                    </div>
+                    <button class="btn btn-locked" onclick="purchaseReport('property-detail', 15)">🔒 Unlock — $15</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PROPERTY REPORTS ========== -->
+        <section id="property-reports">
+            <div class="section-header">
+                <div class="section-icon">📄</div>
+                <div>
+                    <h2>Property Reports</h2>
+                    <p>Detailed reports for any Nashville property</p>
+                </div>
+            </div>
+
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-icon">🏘️</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Property Detail Report</div>
+                        </div>
+                        <div class="report-price">$4</div>
+                    </div>
+                    <p class="report-desc">Comprehensive property data including characteristics, zoning, flood zone, owner info, sales history, and tax assessment.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Property Info</span>
+                        <span class="report-feature">Zoning</span>
+                        <span class="report-feature">Tax Data</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('property-detail-basic', 4)">Get Report — $4</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">📜</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Transaction History Report</div>
+                        </div>
+                        <div class="report-price">$9</div>
+                    </div>
+                    <p class="report-desc">Complete ownership and transaction history including all transfers, sales, refinances, and mortgage recordings.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Ownership History</span>
+                        <span class="report-feature">Sales</span>
+                        <span class="report-feature">Mortgages</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('transaction-history', 9)">Get Report — $9</button>
+                </div>
+
+                <div class="report-card featured">
+                    <div class="report-icon">📊</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">TotalView Report</div>
+                        </div>
+                        <div class="report-price">$22</div>
+                    </div>
+                    <p class="report-desc">Everything in one report: property details, ownership, liens, foreclosure status, tax status, sales comparables, and market data.</p>
+                    <div class="report-features">
+                        <span class="report-feature">All Data</span>
+                        <span class="report-feature">Liens</span>
+                        <span class="report-feature">Comps</span>
+                        <span class="report-feature">Market Data</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('totalview', 22)">Get Report — $22</button>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">🗺️</div>
+                    <div class="report-header">
+                        <div>
+                            <div class="report-title">Assessor Parcel Map</div>
+                        </div>
+                        <div class="report-price">$4</div>
+                    </div>
+                    <p class="report-desc">Official assessor parcel map showing boundaries, dimensions, acreage, street widths, and adjoining parcel information.</p>
+                    <div class="report-features">
+                        <span class="report-feature">Parcel Map</span>
+                        <span class="report-feature">Dimensions</span>
+                        <span class="report-feature">Boundaries</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="purchaseReport('parcel-map', 4)">Get Map — $4</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SUBSCRIPTION PLANS ========== -->
+        <section id="subscriptions">
+            <div class="section-header">
+                <div class="section-icon">💎</div>
+                <div>
+                    <h2>Subscription Plans</h2>
+                    <p>Unlimited access for professionals and serious investors</p>
+                </div>
+            </div>
+
+            <div class="subscription-grid">
+                <div class="subscription-card">
+                    <div class="subscription-title">Basic</div>
+                    <div class="subscription-price">$25<span>/mo</span></div>
+                    <p class="subscription-desc">For homeowners exploring DADU options</p>
+                    <ul class="subscription-features">
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            5 Full Reports/month
+                        </li>
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Unlimited Cost Estimates
+                        </li>
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            All Premium Calculators
+                        </li>
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            20% off Property Reports
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline">Subscribe</button>
+                </div>
+
+                <div class="subscription-card featured">
+                    <div class="subscription-badge">BEST VALUE</div>
+                    <div class="subscription-title">Professional</div>
+                    <div class="subscription-price">$75<span>/mo</span></div>
+                    <p class="subscription-desc">For contractors, agents & investors</p>
+                    <ul class="subscription-features">
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Unlimited Full Reports
+                        </li>
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            All Premium Tools
+                        </li>
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Auto Permit Form Generator
+                        </li>
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            White-label Reports
+                        </li>
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            API Access (100 calls/day)
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary">Subscribe</button>
+                </div>
+
+                <div class="subscription-card">
+                    <div class="subscription-title">Enterprise</div>
+                    <div class="subscription-price">Custom</div>
+                    <p class="subscription-desc">For teams & organizations</p>
+                    <ul class="subscription-features">
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Everything in Professional
+                        </li>
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Unlimited API Access
+                        </li>
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Custom Integrations
+                        </li>
+                        <li class="subscription-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Dedicated Account Manager
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline">Contact Sales</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PREMIUM TOOL PREVIEW ========== -->
+        <section class="premium-preview" id="premium-preview">
+            <h2>✨ Premium Tool Preview</h2>
+            <p>Try our premium tools with limited functionality before you buy</p>
+
+            <div class="preview-tools">
+                <div class="preview-tool" onclick="launchPreview('eligibility')">
+                    <div class="preview-tool-icon">✅</div>
+                    <div class="preview-tool-name">Eligibility Checker</div>
+                    <div class="preview-tool-desc">Try free — Basic results</div>
+                </div>
+                <div class="preview-tool" onclick="launchPreview('cost')">
+                    <div class="preview-tool-icon">💰</div>
+                    <div class="preview-tool-name">Cost Estimator</div>
+                    <div class="preview-tool-desc">Try free — Range only</div>
+                </div>
+                <div class="preview-tool" onclick="launchPreview('tax')">
+                    <div class="preview-tool-icon">🏦</div>
+                    <div class="preview-tool-name">Tax Calculator</div>
+                    <div class="preview-tool-desc">Try free — Estimate only</div>
+                </div>
+                <div class="preview-tool" onclick="launchPreview('roi')">
+                    <div class="preview-tool-icon">📈</div>
+                    <div class="preview-tool-name">ROI Calculator</div>
+                    <div class="preview-tool-desc">Try free — Basic calc</div>
+                </div>
+                <div class="preview-tool" onclick="launchPreview('map')">
+                    <div class="preview-tool-icon">🗺️</div>
+                    <div class="preview-tool-name">DADU Map</div>
+                    <div class="preview-tool-desc">Try free — View all permits</div>
+                </div>
+                <div class="preview-tool" onclick="launchPreview('contractors')">
+                    <div class="preview-tool-icon">👷</div>
+                    <div class="preview-tool-name">Contractor Finder</div>
+                    <div class="preview-tool-desc">Try free — Top 10 list</div>
+                </div>
+            </div>
+
+            <a href="property_search.html" class="preview-cta">
+                🚀 Launch Property Search Tool
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>Product</h4>
+                <a href="property_search.html" class="footer-link">Property Search</a>
+                <a href="nashville_permit_explorer_v3.html" class="footer-link">DADU Explorer</a>
+                <a href="contractor_marketplace.html" class="footer-link">Contractor Marketplace</a>
+                <a href="reports_pricing.html" class="footer-link">Reports & Pricing</a>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <a href="dadu_code_legislation_v3.html" class="footer-link">DADU Code & Legislation</a>
+                <a href="#" class="footer-link">FAQ</a>
+                <a href="#" class="footer-link">Tutorials</a>
+                <a href="#" class="footer-link">Blog</a>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Help Center</a>
+                <a href="#" class="footer-link">Data Sources</a>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function purchaseReport(reportType, price) {
+            const names = {
+                'cost': 'Cost Estimate Report',
+                'build': 'Build DADU Guide',
+                'checklist': 'Checklist & Requirements',
+                'timeline': 'Permit & Build Timeline',
+                'homeowner-planner': 'Homeowner Project Planner',
+                'contractor-planner': 'Contractor Project Planner',
+                'eligibility-analysis': 'Eligibility Analysis Report',
+                'cost-calculator': 'Project Cost Calculator',
+                'tax-estimate': 'Property Tax Estimate',
+                'str-roi': 'ROI for Short-Term Rental',
+                'permit-forms': 'Auto-Prepare Permit Forms',
+                'site-plans': 'Site Plans of Completed DADUs',
+                'property-detail': 'DADU Property Detail Report',
+                'property-detail-basic': 'Property Detail Report',
+                'transaction-history': 'Transaction History Report',
+                'totalview': 'TotalView Report',
+                'parcel-map': 'Assessor Parcel Map'
+            };
+
+            const name = names[reportType] || reportType;
+
+            if (confirm(`Purchase "${name}" for $${price}?\n\nIn production, this would open Stripe checkout.`)) {
+                alert(`✅ Report unlocked!\n\nIn production, you would be redirected to view your ${name}.`);
+            }
+        }
+
+        function launchPreview(tool) {
+            const tools = {
+                'eligibility': 'property_search.html',
+                'cost': 'property_search.html',
+                'tax': 'property_search.html',
+                'roi': 'property_search.html',
+                'map': 'nashville_permit_explorer_v3.html',
+                'contractors': 'contractor_marketplace.html'
+            };
+
+            window.location.href = tools[tool] || 'property_search.html';
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

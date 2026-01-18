@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nashville DADU Contractors</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background-color: #e8e4df;
+            color: #333;
+            line-height: 1.5;
+            padding: 30px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #f5f5f0;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .header .subtitle {
+            color: #6b8fa3;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .stat-box {
+            background: #2c3e50;
+            color: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 160px;
+        }
+        
+        .stat-box .number {
+            font-size: 36px;
+            font-weight: 800;
+            color: #6b8fa3;
+            display: block;
+        }
+        
+        .stat-box .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+        
+        .section-header {
+            background: #2c3e50;
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            margin: 30px 0 20px 0;
+        }
+        
+        .contractor-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .contractor-row {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 6px;
+            padding: 12px 16px;
+            border-left: 4px solid #6b8fa3;
+        }
+        
+        .contractor-row.top-3 {
+            border-left-color: #6b8e4e;
+            background: #e8f0e0;
+        }
+        
+        .rank {
+            width: 32px;
+            height: 32px;
+            background: #2c3e50;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        
+        .contractor-row.top-3 .rank {
+            background: #6b8e4e;
+        }
+        
+        .contractor-info {
+            flex: 1;
+        }
+        
+        .contractor-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        
+        .permit-bar-container {
+            width: 120px;
+            margin-left: 16px;
+        }
+        
+        .permit-bar {
+            height: 24px;
+            background: #6b8fa3;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+        }
+        
+        .contractor-row.top-3 .permit-bar {
+            background: #6b8e4e;
+        }
+        
+        .permit-count {
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        
+        .insight-box {
+            background: #e8f0e0;
+            border: 2px solid #6b8e4e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .insight-box h3 {
+            color: #6b8e4e;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .insight-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .insight-box li {
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #333;
+            font-size: 13px;
+        }
+        
+        .insight-box li::before {
+            content: "•";
+            color: #6b8e4e;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ccc;
+            color: #888;
+            font-size: 11px;
+        }
+        
+        .divider {
+            border: none;
+            border-top: 2px dashed #ccc;
+            margin: 25px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Nashville DADU Contractors</h1>
+            <div class="subtitle">Who's Building Detached Accessory Dwelling Units?</div>
+        </div>
+        
+        <div class="stats-row">
+            <div class="stat-box">
+                <span class="number">771</span>
+                <span class="label">DADU Permits</span>
+            </div>
+            <div class="stat-box">
+                <span class="number">393</span>
+                <span class="label">Unique Contractors</span>
+            </div>
+        </div>
+        
+        <div class="section-header">Top 10 DADU Contractors by Permit Volume</div>
+        
+        <div class="contractor-list">
+            <div class="contractor-row top-3">
+                <div class="rank">1</div>
+                <div class="contractor-info">
+                    <div class="contractor-name">Palmetto Construction LLC</div>
+                </div>
+                <div class="permit-bar-container">
+                    <div class="permit-bar" style="width: 100%;">
+                        <span class="permit-count">43</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contractor-row top-3">
+                <div class="rank">2</div>
+                <div class="contractor-info">
+                    <div class="contractor-name">Self Contractor (Homeowner)</div>
+                </div>
+                <div class="permit-bar-container">
+                    <div class="permit-bar" style="width: 81%;">
+                        <span class="permit-count">35</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contractor-row top-3">
+                <div class="rank">3</div>
+                <div class="contractor-info">
+                    <div class="contractor-name">Bootstrap Architecture + Construction</div>
+                </div>
+                <div class="permit-bar-container">
+                    <div class="permit-bar" style="width: 42%;">
+                        <span class="permit-count">18</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contractor-row">
+                <div class="rank">4</div>
+                <div class="contractor-info">
+                    <div class="contractor-name">Southern Edge Construction LLC</div>
+                </div>
+                <div class="permit-bar-container">
+                    <div class="permit-bar" style="width: 28%;">
+                        <span class="permit-count">12</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contractor-row">
+                <div class="rank">5</div>
+                <div class="contractor-info">
+                    <div class="contractor-name">Huffine First Service</div>
+                </div>
+                <div class="permit-bar-container">
+                    <div class="permit-bar" style="width: 28%;">
+                        <span class="permit-count">12</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contractor-row">
+                <div class="rank">6</div>
+                <div class="contractor-info">
+                    <div class="contractor-name">WTW Construction Co, LLC</div>
+                </div>
+                <div class="permit-bar-container">
+                    <div class="permit-bar" style="width: 23%;">
+                        <span class="permit-count">10</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contractor-row">
+                <div class="rank">7</div>
+                <div class="contractor-info">
+                    <div class="contractor-name">HH Home Design LLC</div>
+                </div>
+                <div class="permit-bar-container">
+                    <div class="permit-bar" style="width: 21%;">
+                        <span class="permit-count">9</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contractor-row">
+                <div class="rank">8</div>
+                <div class="contractor-info">
+                    <div class="contractor-name">Stratus Construction LLC</div>
+                </div>
+                <div class="permit-bar-container">
+                    <div class="permit-bar" style="width: 19%;">
+                        <span class="permit-count">8</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contractor-row">
+                <div class="rank">9</div>
+                <div class="contractor-info">
+                    <div class="contractor-name">Bates, Daniel Eli</div>
+                </div>
+                <div class="permit-bar-container">
+                    <div class="permit-bar" style="width: 19%;">
+                        <span class="permit-count">8</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contractor-row">
+                <div class="rank">10</div>
+                <div class="contractor-info">
+                    <div class="contractor-name">Legacy South Builders LLC</div>
+                </div>
+                <div class="permit-bar-container">
+                    <div class="permit-bar" style="width: 16%;">
+                        <span class="permit-count">7</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="insight-box">
+            <h3>Key Insights</h3>
+            <ul>
+                <li>The top 10 contractors account for 162 permits (21% of all DADU permits)</li>
+                <li>35 homeowners (5%) chose to act as their own contractor</li>
+                <li>Most contractors (300+) have completed only 1-2 DADU projects</li>
+                <li>Specialized DADU builders are emerging as market leaders</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>Source: Metro Nashville Building Permits Database | Updated January 2026</p>
+            <p>Homebody Projects | Nashville DADU Resource</p>
+        </div>
+    </div>
+</body>
+</html>

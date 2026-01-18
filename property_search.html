@@ -1,0 +1,3015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Search | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --navy-light: #34495e;
+            --teal: #6b8fa3;
+            --teal-light: #8fb5c9;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --olive-light: #8bb36d;
+            --tan: #c9a86c;
+            --tan-light: #dbc291;
+            --cream: #f8f9fa;
+            --warm-gray: #e8e4df;
+            --white: #ffffff;
+            --text: #1a1a1a;
+            --text-light: #666666;
+            --text-muted: #999999;
+            --border: #e0e0e0;
+            --border-light: #f0f0f0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --radius: 8px;
+            --radius-lg: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--cream);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 64px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--olive) 0%, var(--olive-dark) 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius);
+            padding: 8px 16px;
+            width: 400px;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .search-bar:focus-within {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .search-bar svg {
+            width: 18px;
+            height: 18px;
+            color: rgba(255,255,255,0.6);
+            flex-shrink: 0;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+            color: var(--white);
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+        }
+
+        .nav-tab {
+            padding: 8px 14px;
+            border-radius: var(--radius);
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+        }
+
+        .nav-tab.active {
+            background: var(--olive);
+            color: white;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--teal);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            margin-top: 64px;
+            height: calc(100vh - 64px);
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 420px;
+            background: #fff;
+            overflow-y: auto;
+            border-right: 1px solid #e0e0e0;
+            flex-shrink: 0;
+        }
+
+        /* Tab Navigation in Sidebar */
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            background: #fafafa;
+            flex-wrap: wrap;
+        }
+
+        .sidebar-tab {
+            flex: 1;
+            min-width: 70px;
+            padding: 12px 6px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .sidebar-tab:hover {
+            color: #333;
+            background: #f0f0f0;
+        }
+
+        .sidebar-tab.active {
+            color: #6b8e4e;
+            border-bottom-color: #6b8e4e;
+            background: #fff;
+        }
+
+        .sidebar-tab svg {
+            display: block;
+            margin: 0 auto 4px;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Eligibility Banner */
+        .eligibility-banner {
+            padding: 16px 20px;
+            background: #e8f5e9;
+            border-bottom: 1px solid #c8e6c9;
+        }
+
+        .eligibility-banner.eligible {
+            background: #e8f5e9;
+            border-color: #c8e6c9;
+        }
+
+        .eligibility-banner.not-eligible {
+            background: #ffebee;
+            border-color: #ffcdd2;
+        }
+
+        .eligibility-banner.checking {
+            background: #fff3e0;
+            border-color: #ffe0b2;
+        }
+
+        .eligibility-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 6px;
+        }
+
+        .eligibility-banner.not-eligible .eligibility-text {
+            color: #c62828;
+        }
+
+        .eligibility-banner.checking .eligibility-text {
+            color: #ef6c00;
+        }
+
+        .eligibility-note {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Property Section */
+        .property-section {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .property-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title svg {
+            width: 18px;
+            height: 18px;
+            color: #6b8fa3;
+        }
+
+        .section-subtitle {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .edit-btn {
+            padding: 5px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .edit-btn:hover {
+            border-color: #6b8fa3;
+            color: #6b8fa3;
+        }
+
+        .property-row {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .property-row:last-child {
+            border-bottom: none;
+        }
+
+        .property-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .property-value {
+            font-size: 13px;
+            color: #333;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .property-value.highlight {
+            color: #6b8e4e;
+        }
+
+        .property-value.warning {
+            color: #ef6c00;
+        }
+
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            border-radius: 10px;
+            padding: 14px;
+            color: white;
+            text-align: center;
+        }
+
+        .stat-card.green {
+            background: linear-gradient(135deg, #6b8e4e 0%, #5a7a3f 100%);
+        }
+
+        .stat-card.blue {
+            background: linear-gradient(135deg, #6b8fa3 0%, #5a7d91 100%);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Permit List */
+        .permit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .permit-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 14px;
+            border: 1px solid #e8e8e8;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .permit-card:hover {
+            border-color: #6b8fa3;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .permit-card.active {
+            border-color: #6b8e4e;
+            background: #f0f7ec;
+        }
+
+        .permit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .permit-address {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .permit-distance {
+            font-size: 11px;
+            color: #888;
+            background: #fff;
+            padding: 3px 8px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .permit-details {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .permit-detail {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .permit-detail strong {
+            color: #333;
+        }
+
+        .permit-contractor {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #6b8fa3;
+        }
+
+        .permit-contractor svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Contractor List */
+        .contractor-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contractor-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 14px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .contractor-card:hover {
+            border-color: #6b8e4e;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .contractor-rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #6b8e4e;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .contractor-rank.silver {
+            background: #95a5a6;
+        }
+
+        .contractor-rank.bronze {
+            background: #c9a86c;
+        }
+
+        .contractor-info {
+            flex: 1;
+        }
+
+        .contractor-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .contractor-stats {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .contractor-stats span {
+            margin-right: 12px;
+        }
+
+        .contractor-arrow {
+            color: #ccc;
+        }
+
+        /* Action Buttons */
+        .btn {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .btn-green {
+            background: #6b8e4e;
+            border: 2px solid #6b8e4e;
+            color: white;
+        }
+
+        .btn-green:hover {
+            background: #5a7a3f;
+            border-color: #5a7a3f;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            color: #333;
+        }
+
+        .btn-outline:hover {
+            border-color: #6b8fa3;
+            color: #6b8fa3;
+        }
+
+        /* Tax Card */
+        .tax-card {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .tax-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .tax-card-title {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .tax-card-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .tax-amount {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .tax-amount-label {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .tax-comparison {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .tax-compare-item {
+            flex: 1;
+        }
+
+        .tax-compare-label {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+
+        .tax-compare-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .tax-compare-value.increase {
+            color: #ff6b6b;
+        }
+
+        /* Slider */
+        .slider-container {
+            margin: 16px 0;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .slider-label span {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .slider-label strong {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #e0e0e0;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #6b8e4e;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Legal Checklist */
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .checklist-icon.check {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .checklist-icon.warning {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .checklist-icon.info {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .checklist-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .checklist-content {
+            flex: 1;
+        }
+
+        .checklist-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .checklist-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .checklist-link {
+            color: #6b8fa3;
+            text-decoration: none;
+        }
+
+        .checklist-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ROI Calculator */
+        .roi-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .roi-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .roi-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .roi-input {
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .roi-input:focus {
+            outline: none;
+            border-color: #6b8fa3;
+        }
+
+        .roi-results {
+            background: #f5f5f0;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .roi-result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .roi-result-row:last-child {
+            border-bottom: none;
+            padding-top: 12px;
+        }
+
+        .roi-result-label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .roi-result-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .roi-result-value.highlight {
+            font-size: 16px;
+            color: #6b8e4e;
+        }
+
+        /* Info Callout */
+        .info-callout {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+
+        .info-callout-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1565c0;
+            margin-bottom: 4px;
+        }
+
+        .info-callout p {
+            font-size: 12px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Map Container */
+        .map-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Map Tools */
+        .map-tools {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            display: flex;
+            gap: 4px;
+            padding: 6px;
+            z-index: 500;
+        }
+
+        .map-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 14px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            gap: 4px;
+        }
+
+        .map-tool:hover {
+            background: #f5f5f0;
+        }
+
+        .map-tool.active {
+            background: #e8f5e9;
+        }
+
+        .map-tool svg {
+            width: 18px;
+            height: 18px;
+            color: #666;
+        }
+
+        .map-tool.active svg {
+            color: #6b8e4e;
+        }
+
+        .map-tool span {
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* Map Legend */
+        .map-legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            padding: 12px 16px;
+            z-index: 500;
+            font-size: 12px;
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.parcel {
+            background: #6b8fa3;
+            border: 2px dashed #2c3e50;
+        }
+
+        .legend-dot.permit {
+            background: #6b8e4e;
+        }
+
+        .legend-dot.building {
+            background: #2c3e50;
+        }
+
+        /* Zoom Controls */
+        .zoom-controls {
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 500;
+        }
+
+        .zoom-btn {
+            width: 36px;
+            height: 36px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .zoom-btn:hover {
+            background: #f5f5f0;
+        }
+
+        /* Loading */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 600;
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e0e0e0;
+            border-top-color: #6b8e4e;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Sidebar Footer */
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-link {
+            font-size: 12px;
+            color: #6b8fa3;
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Custom marker */
+        .permit-marker {
+            background: #6b8e4e;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        /* Design Standards Grid */
+        .design-standards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .design-standard {
+            background: #f9f9f9;
+            border: 1px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 12px 10px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .design-standard:hover {
+            border-color: #6b8fa3;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .design-icon {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .design-label {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .design-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .design-note {
+            font-size: 10px;
+            color: #999;
+        }
+
+        /* Cost Estimate Card */
+        .cost-estimate-card {
+            background: linear-gradient(135deg, #6b8e4e 0%, #5a7a3f 100%);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+        }
+
+        .cost-range {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .cost-low, .cost-high {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .cost-separator {
+            font-size: 20px;
+            opacity: 0.6;
+        }
+
+        .cost-label {
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.85;
+            margin-bottom: 16px;
+        }
+
+        .cost-breakdown {
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+        }
+
+        .cost-item:last-child {
+            border-bottom: none;
+        }
+
+        .cost-item-label {
+            opacity: 0.9;
+        }
+
+        .cost-item-value {
+            font-weight: 600;
+        }
+
+        /* Premium Lock Overlay */
+        .premium-section {
+            position: relative;
+        }
+
+        .premium-section.locked .premium-content {
+            filter: blur(5px);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .premium-lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(2px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .premium-section:not(.locked) .premium-lock-overlay {
+            display: none;
+        }
+
+        .lock-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .lock-icon svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        .lock-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .lock-desc {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+            max-width: 220px;
+        }
+
+        .lock-price {
+            font-size: 11px;
+            color: #6b8e4e;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .btn-unlock {
+            background: linear-gradient(135deg, #6b8e4e 0%, #5a7a3f 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-unlock:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(107, 142, 78, 0.4);
+        }
+
+        .btn-unlock svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Tab Lock Badge */
+        .sidebar-tab .lock-badge {
+            background: #c9a86c;
+            color: white;
+            font-size: 7px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            position: absolute;
+            top: 6px;
+            right: 6px;
+        }
+
+        .sidebar-tab {
+            position: relative;
+        }
+
+        /* Premium Banner */
+        .premium-banner {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 0 0 1px 0;
+        }
+
+        .premium-banner-text {
+            font-size: 11px;
+            flex: 1;
+        }
+
+        .premium-banner-text strong {
+            color: #dbc291;
+        }
+
+        .premium-banner .btn-sm {
+            padding: 6px 12px;
+            font-size: 10px;
+            background: #6b8e4e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* Unlock All Button */
+        .unlock-all-btn {
+            background: linear-gradient(135deg, #c9a86c 0%, #b8975b 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+            transition: all 0.2s;
+        }
+
+        .unlock-all-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(201, 168, 108, 0.4);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 24px;
+            bottom: 24px;
+            width: 2px;
+            background: #e0e0e0;
+        }
+
+        .timeline-step {
+            position: relative;
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+        }
+
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: -16px;
+            top: 20px;
+            width: 10px;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            z-index: 1;
+        }
+
+        .timeline-step.active::before {
+            background: #6b8e4e;
+            box-shadow: 0 0 0 4px rgba(107, 142, 78, 0.2);
+        }
+
+        .timeline-step.completed::before {
+            background: #6b8e4e;
+        }
+
+        .timeline-icon {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            background: #f5f5f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .timeline-step.active .timeline-icon {
+            background: #e8f5e9;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-top: 2px;
+        }
+
+        .timeline-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .timeline-desc {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .timeline-time {
+            font-size: 10px;
+            color: #6b8e4e;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">🏠</div>
+            <span class="logo-text">Homebody Projects</span>
+        </a>
+
+        <div class="search-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="addressSearch" placeholder="Enter Nashville address...">
+        </div>
+
+        <nav class="nav-tabs">
+            <a href="index.html" class="nav-tab">Home</a>
+            <a href="am_i_eligible.html" class="nav-tab">Eligibility</a>
+            <a href="property_search.html" class="nav-tab active">Property Search</a>
+            <a href="nashville_permit_explorer_v3.html" class="nav-tab">Permits</a>
+            <a href="dadu_code_legislation_v3.html" class="nav-tab">Code</a>
+        </nav>
+
+        <div class="user-avatar">NB</div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <!-- Premium Banner -->
+            <div class="premium-banner" id="premiumBanner">
+                <div class="premium-banner-text">
+                    <strong>5 sections locked</strong> · Unlock full property report
+                </div>
+                <button class="btn-sm" onclick="unlockAll()">Unlock $19</button>
+            </div>
+
+            <!-- Sidebar Tabs -->
+            <div class="sidebar-tabs">
+                <div class="sidebar-tab active" onclick="switchTab('property')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Property
+                </div>
+                <div class="sidebar-tab" onclick="switchTab('permits')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="10" r="3"></circle>
+                        <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"></path>
+                    </svg>
+                    Nearby
+                </div>
+                <div class="sidebar-tab" onclick="switchTab('contractors')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Contractors
+                </div>
+                <div class="sidebar-tab" onclick="switchTab('taxes')">
+                    <span class="lock-badge">PRO</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    Taxes
+                </div>
+                <div class="sidebar-tab" onclick="switchTab('legal')">
+                    <span class="lock-badge">PRO</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Legal
+                </div>
+                <div class="sidebar-tab" onclick="switchTab('roi')">
+                    <span class="lock-badge">PRO</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    ROI
+                </div>
+            </div>
+
+            <!-- PROPERTY TAB -->
+            <div class="tab-content active" id="tab-property">
+                <div class="eligibility-banner checking" id="eligibilityBanner">
+                    <div class="eligibility-text" id="eligibilityText">
+                        Enter an address to check DADU eligibility
+                    </div>
+                    <div class="eligibility-note" id="eligibilityNote">
+                        Based on BL2025-1007, effective December 12, 2025
+                    </div>
+                </div>
+
+                <div class="property-section">
+                    <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+                        <button class="btn btn-outline" style="flex: 1;">Browse Designs</button>
+                        <button class="btn btn-green" style="flex: 1;">Sketch a DADU</button>
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%;">Generate DADU Report (PDF)</button>
+                </div>
+
+                <div class="property-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Property Information</h2>
+                        <button class="edit-btn" onclick="openEditModal()">Edit</button>
+                    </div>
+
+                    <div class="property-row">
+                        <div class="property-label">Address</div>
+                        <div class="property-value" id="propAddress">-</div>
+                    </div>
+                    <div class="property-row">
+                        <div class="property-label">Lot Area</div>
+                        <div class="property-value" id="propLotArea">-</div>
+                    </div>
+                    <div class="property-row">
+                        <div class="property-label">Parcel Number</div>
+                        <div class="property-value" id="propAPN">-</div>
+                    </div>
+                    <div class="property-row">
+                        <div class="property-label">Zoning</div>
+                        <div class="property-value" id="propZoning">-</div>
+                    </div>
+                    <div class="property-row">
+                        <div class="property-label">Service District</div>
+                        <div class="property-value" id="propDistrict">-</div>
+                    </div>
+                    <div class="property-row">
+                        <div class="property-label">Appraised Value</div>
+                        <div class="property-value" id="propAppraisedValue">-</div>
+                    </div>
+                    <div class="property-row">
+                        <div class="property-label">Max DADU Size</div>
+                        <div class="property-value highlight" id="propMaxDADU">-</div>
+                    </div>
+                </div>
+
+                <!-- DADU Design Standards Section -->
+                <div class="property-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            DADU Design Standards
+                        </h2>
+                    </div>
+                    <div class="section-subtitle">Based on Nashville zoning code & BL2025-1007</div>
+
+                    <div class="design-standards-grid">
+                        <div class="design-standard">
+                            <div class="design-icon">📏</div>
+                            <div class="design-label">Height Maximum</div>
+                            <div class="design-value" id="stdHeightMax">24 ft</div>
+                            <div class="design-note">2 stories max</div>
+                        </div>
+                        <div class="design-standard">
+                            <div class="design-icon">📐</div>
+                            <div class="design-label">Size Range</div>
+                            <div class="design-value" id="stdSizeRange">200 - 700 SF</div>
+                            <div class="design-note" id="stdSizeNote">Based on lot size</div>
+                        </div>
+                        <div class="design-standard">
+                            <div class="design-icon">↔️</div>
+                            <div class="design-label">Side Setback</div>
+                            <div class="design-value" id="stdSideSetback">3 ft</div>
+                            <div class="design-note">Min from property line</div>
+                        </div>
+                        <div class="design-standard">
+                            <div class="design-icon">↕️</div>
+                            <div class="design-label">Rear Setback</div>
+                            <div class="design-value" id="stdRearSetback">3 ft</div>
+                            <div class="design-note">Min from rear line</div>
+                        </div>
+                        <div class="design-standard">
+                            <div class="design-icon">🚗</div>
+                            <div class="design-label">Parking</div>
+                            <div class="design-value" id="stdParking">0 spaces</div>
+                            <div class="design-note">No additional required</div>
+                        </div>
+                        <div class="design-standard">
+                            <div class="design-icon">🏠</div>
+                            <div class="design-label">Owner Occupancy</div>
+                            <div class="design-value" id="stdOwnerOcc">Required</div>
+                            <div class="design-note">Main or DADU</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cost Estimate Section (LOCKED) -->
+                <div class="property-section premium-section locked" id="costSection">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            Estimated Project Cost
+                        </h2>
+                    </div>
+
+                    <!-- Lock Overlay -->
+                    <div class="premium-lock-overlay">
+                        <div class="lock-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <div class="lock-title">Cost Breakdown</div>
+                        <div class="lock-desc">Unlock detailed construction costs, permit fees & total estimates</div>
+                        <div class="lock-price">$6 one-time or included in $19 report</div>
+                        <button class="btn-unlock" onclick="unlockSection('cost')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Unlock Cost Data
+                        </button>
+                    </div>
+
+                    <!-- Blurred Content -->
+                    <div class="premium-content">
+                        <div class="cost-estimate-card">
+                            <div class="cost-range">
+                                <span class="cost-low" id="costLow">$185,000</span>
+                                <span class="cost-separator">—</span>
+                                <span class="cost-high" id="costHigh">$318,000</span>
+                            </div>
+                            <div class="cost-label">Based on nearby DADU permits & market data</div>
+
+                            <div class="cost-breakdown">
+                                <div class="cost-item">
+                                    <span class="cost-item-label">Construction (hard costs)</span>
+                                    <span class="cost-item-value" id="costConstruction">$150K - $250K</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span class="cost-item-label">Permits & fees</span>
+                                    <span class="cost-item-value">$5K - $15K</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span class="cost-item-label">Design & engineering</span>
+                                    <span class="cost-item-value">$10K - $25K</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span class="cost-item-label">Utilities connection</span>
+                                    <span class="cost-item-value">$8K - $20K</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span class="cost-item-label">Site prep & landscaping</span>
+                                    <span class="cost-item-value">$5K - $15K</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-callout" style="margin-top: 12px;">
+                            <div class="info-callout-title">Cost per Square Foot</div>
+                            <p>Nashville DADUs typically cost <strong>$250-$350/sqft</strong> fully built. Prefab options can reduce costs by 15-25%.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Steps Timeline (LOCKED) -->
+                <div class="property-section premium-section locked" id="timelineSection">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            Your DADU Journey
+                        </h2>
+                    </div>
+
+                    <!-- Lock Overlay -->
+                    <div class="premium-lock-overlay">
+                        <div class="lock-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <div class="lock-title">Project Timeline</div>
+                        <div class="lock-desc">Get personalized timeline with milestones & next steps</div>
+                        <div class="lock-price">Included in $19 full report</div>
+                        <button class="btn-unlock" onclick="unlockSection('timeline')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Unlock Timeline
+                        </button>
+                    </div>
+
+                    <!-- Blurred Content -->
+                    <div class="premium-content">
+                        <div class="timeline">
+                            <div class="timeline-step active">
+                                <div class="timeline-icon">🔍</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Research</div>
+                                    <div class="timeline-desc">Check eligibility & requirements</div>
+                                    <div class="timeline-time">Week 1-2</div>
+                                </div>
+                            </div>
+                            <div class="timeline-step">
+                                <div class="timeline-icon">✏️</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Design</div>
+                                    <div class="timeline-desc">Work with architect or select prefab</div>
+                                    <div class="timeline-time">Week 3-8</div>
+                                </div>
+                            </div>
+                            <div class="timeline-step">
+                                <div class="timeline-icon">📋</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Permitting</div>
+                                    <div class="timeline-desc">Submit plans to Metro Codes</div>
+                                    <div class="timeline-time">Week 9-16</div>
+                                </div>
+                            </div>
+                            <div class="timeline-step">
+                                <div class="timeline-icon">🔨</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Construction</div>
+                                    <div class="timeline-desc">Build your DADU</div>
+                                    <div class="timeline-time">Week 17-32</div>
+                                </div>
+                            </div>
+                            <div class="timeline-step">
+                                <div class="timeline-icon">🏡</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Move In</div>
+                                    <div class="timeline-desc">Final inspection & occupancy</div>
+                                    <div class="timeline-time">~8-10 months</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unlock All CTA -->
+                <div class="property-section">
+                    <button class="unlock-all-btn" onclick="unlockAll()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download Full DADU Report — $19
+                    </button>
+                    <p style="text-align: center; font-size: 11px; color: #888; margin-top: 8px;">
+                        Includes all locked sections + PDF export
+                    </p>
+                </div>
+            </div>
+
+            <!-- NEARBY PERMITS TAB -->
+            <div class="tab-content" id="tab-permits">
+                <div class="property-section">
+                    <h2 class="section-title" style="margin-bottom: 16px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="10" r="3"></circle>
+                            <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"></path>
+                        </svg>
+                        DADUs Built Nearby
+                    </h2>
+
+                    <div class="stats-row">
+                        <div class="stat-card green">
+                            <div class="stat-value" id="nearbyCount">0</div>
+                            <div class="stat-label">Within 1 Mile</div>
+                        </div>
+                        <div class="stat-card blue">
+                            <div class="stat-value" id="avgCost">$0</div>
+                            <div class="stat-label">Avg Cost</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="avgSize">0</div>
+                            <div class="stat-label">Avg SqFt</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #6b8e4e20, #6b8e4e10); border: 1px solid #6b8e4e40;">
+                            <div class="stat-value" id="avgCostPerSF" style="color: #6b8e4e;">$0/SF</div>
+                            <div class="stat-label">Cost Per SF</div>
+                        </div>
+                    </div>
+
+                    <p class="section-subtitle">Click a permit to see on map</p>
+
+                    <div class="permit-list" id="permitList">
+                        <div style="text-align: center; padding: 40px 20px; color: #888;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40" style="margin: 0 auto 12px; display: block; opacity: 0.5;">
+                                <circle cx="12" cy="10" r="3"></circle>
+                                <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"></path>
+                            </svg>
+                            Search an address to find<br>nearby DADU permits
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTRACTORS TAB -->
+            <div class="tab-content" id="tab-contractors">
+                <div class="property-section">
+                    <h2 class="section-title" style="margin-bottom: 8px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                        </svg>
+                        Top DADU Contractors
+                    </h2>
+                    <p class="section-subtitle">Ranked by Nashville DADU permits completed</p>
+
+                    <div class="contractor-list" id="contractorList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="property-section">
+                    <div class="info-callout">
+                        <div class="info-callout-title">How We Rank Contractors</div>
+                        <p>Rankings based on DADU building permits filed in Davidson County. We track permit count, average project cost, and completion rate. Contact info from public permit records.</p>
+                    </div>
+                    <button class="btn btn-green">Get Contractor Quotes</button>
+                </div>
+            </div>
+
+            <!-- TAXES TAB (LOCKED) -->
+            <div class="tab-content" id="tab-taxes">
+                <div class="property-section premium-section locked" id="taxesSection">
+                    <h2 class="section-title" style="margin-bottom: 16px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Property Tax Estimator
+                    </h2>
+
+                    <!-- Lock Overlay -->
+                    <div class="premium-lock-overlay">
+                        <div class="lock-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <div class="lock-title">Tax Estimator</div>
+                        <div class="lock-desc">See projected tax increases and calculate annual property tax impact</div>
+                        <div class="lock-price">Included in $19 full report</div>
+                        <button class="btn-unlock" onclick="unlockAll()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Unlock Full Report
+                        </button>
+                    </div>
+
+                    <div class="premium-content">
+                        <div class="tax-card">
+                            <div class="tax-card-header">
+                                <div>
+                                    <div class="tax-card-title">Estimated Annual Tax Increase</div>
+                                    <div class="tax-amount" id="taxIncrease">+$0</div>
+                                    <div class="tax-amount-label">per year after adding DADU</div>
+                                </div>
+                                <div class="tax-card-badge">ESTIMATE</div>
+                            </div>
+                            <div class="tax-comparison">
+                                <div class="tax-compare-item">
+                                    <div class="tax-compare-label">Current Tax</div>
+                                    <div class="tax-compare-value" id="currentTax">$0</div>
+                                </div>
+                                <div class="tax-compare-item">
+                                    <div class="tax-compare-label">Projected Tax</div>
+                                    <div class="tax-compare-value increase" id="projectedTax">$0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="slider-container">
+                            <div class="slider-label">
+                                <span>Est. Construction Cost</span>
+                                <strong id="constructionCostDisplay">$200,000</strong>
+                            </div>
+                            <input type="range" class="slider" id="constructionCostSlider" min="100000" max="400000" value="200000" step="10000">
+                        </div>
+
+                        <div class="info-callout">
+                            <div class="info-callout-title">Davidson County Tax Formula</div>
+                            <p>25% assessment ratio × $3.254 per $100 assessed value. DADU construction cost adds directly to your property's appraised value.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEGAL TAB (LOCKED) -->
+            <div class="tab-content" id="tab-legal">
+                <div class="property-section premium-section locked" id="legalSection">
+                    <h2 class="section-title" style="margin-bottom: 16px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 11 12 14 22 4"></polyline>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                        Legal Checklist
+                    </h2>
+
+                    <!-- Lock Overlay -->
+                    <div class="premium-lock-overlay">
+                        <div class="lock-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <div class="lock-title">Legal Requirements</div>
+                        <div class="lock-desc">Owner-occupancy, covenants, STR rules, floodplain & utility requirements</div>
+                        <div class="lock-price">Included in $19 full report</div>
+                        <button class="btn-unlock" onclick="unlockAll()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Unlock Full Report
+                        </button>
+                    </div>
+
+                    <div class="premium-content">
+                        <ul class="checklist">
+                            <li class="checklist-item">
+                                <div class="checklist-icon info">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                </div>
+                                <div class="checklist-content">
+                                    <div class="checklist-title">Owner-Occupancy Required</div>
+                                    <div class="checklist-desc">You must live in either the main house or DADU</div>
+                                </div>
+                            </li>
+                            <li class="checklist-item">
+                                <div class="checklist-icon warning">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                </div>
+                                <div class="checklist-content">
+                                    <div class="checklist-title">Restrictive Covenants</div>
+                                    <div class="checklist-desc">Check deed for restrictions. <a href="https://registerofdeeds.nashville.gov" class="checklist-link" target="_blank">Search Register of Deeds →</a></div>
+                                </div>
+                            </li>
+                            <li class="checklist-item">
+                                <div class="checklist-icon check">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div class="checklist-content">
+                                    <div class="checklist-title">Short-Term Rentals</div>
+                                    <div class="checklist-desc">Allowed with owner on-site + STR permit</div>
+                                </div>
+                            </li>
+                            <li class="checklist-item">
+                                <div class="checklist-icon info">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                </div>
+                                <div class="checklist-content">
+                                    <div class="checklist-title">Floodplain Status</div>
+                                    <div class="checklist-desc"><a href="https://maps.nashville.gov/stormwater" class="checklist-link" target="_blank">Check Flood Map →</a></div>
+                                </div>
+                            </li>
+                            <li class="checklist-item">
+                                <div class="checklist-icon check">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div class="checklist-content">
+                                    <div class="checklist-title">Utility Connections</div>
+                                    <div class="checklist-desc">Separate meters required (NES + Metro Water)</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROI TAB (LOCKED) -->
+            <div class="tab-content" id="tab-roi">
+                <div class="property-section premium-section locked" id="roiSection">
+                    <h2 class="section-title" style="margin-bottom: 16px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                        ROI Calculator
+                    </h2>
+
+                    <!-- Lock Overlay -->
+                    <div class="premium-lock-overlay">
+                        <div class="lock-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <div class="lock-title">Investment Calculator</div>
+                        <div class="lock-desc">Calculate ROI, cash-on-cash return & break-even timeline</div>
+                        <div class="lock-price">Included in $19 full report</div>
+                        <button class="btn-unlock" onclick="unlockAll()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Unlock Full Report
+                        </button>
+                    </div>
+
+                    <div class="premium-content">
+                        <div class="roi-inputs">
+                            <div class="roi-input-group">
+                                <label class="roi-label">Construction ($)</label>
+                                <input type="number" class="roi-input" id="roiConstructionCost" value="200000">
+                            </div>
+                            <div class="roi-input-group">
+                                <label class="roi-label">Monthly Rent ($)</label>
+                                <input type="number" class="roi-input" id="roiMonthlyRent" value="1400">
+                            </div>
+                            <div class="roi-input-group">
+                                <label class="roi-label">Vacancy (%)</label>
+                                <input type="number" class="roi-input" id="roiVacancyRate" value="5">
+                            </div>
+                            <div class="roi-input-group">
+                                <label class="roi-label">Annual Costs ($)</label>
+                                <input type="number" class="roi-input" id="roiOperatingCosts" value="2400">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-green" style="width: 100%; margin-bottom: 16px;" onclick="calculateROI()">Calculate</button>
+
+                        <div class="roi-results">
+                            <div class="roi-result-row">
+                                <span class="roi-result-label">Net Operating Income</span>
+                                <span class="roi-result-value" id="roiNOI">$11,933</span>
+                            </div>
+                            <div class="roi-result-row">
+                                <span class="roi-result-label">Cash-on-Cash Return</span>
+                                <span class="roi-result-value highlight" id="roiCashReturn">5.97%</span>
+                            </div>
+                            <div class="roi-result-row">
+                                <span class="roi-result-label">Break-Even</span>
+                                <span class="roi-result-value highlight" id="roiBreakEven">16.8 years</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="#" class="footer-link">Send Feedback</a>
+                <a href="#" class="footer-link">Help</a>
+                <a href="#" class="footer-link">Data Sources</a>
+            </div>
+        </aside>
+
+        <!-- Map Container -->
+        <div class="map-container">
+            <div id="map"></div>
+
+            <div class="loading-overlay hidden" id="loadingOverlay">
+                <div class="spinner"></div>
+                <div class="loading-text" id="loadingText">Loading...</div>
+            </div>
+
+            <div class="map-legend" id="mapLegend" style="display: none;">
+                <div class="legend-title">Map Legend</div>
+                <div class="legend-item">
+                    <div class="legend-dot parcel"></div>
+                    <span>Your Parcel</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot permit"></div>
+                    <span>DADU Permits</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot building"></div>
+                    <span>Buildings</span>
+                </div>
+            </div>
+
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="map.zoomIn()">+</button>
+                <button class="zoom-btn" onclick="map.zoomOut()">−</button>
+            </div>
+
+            <div class="map-tools">
+                <button class="map-tool" onclick="toggleTool('edit')" id="editTool">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    <span>Edit</span>
+                </button>
+                <button class="map-tool" onclick="toggleTool('measure')" id="measureTool">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M2 12h20"></path>
+                        <path d="M6 8v8"></path>
+                        <path d="M18 8v8"></path>
+                    </svg>
+                    <span>Measure</span>
+                </button>
+                <button class="map-tool" onclick="toggleSatellite()" id="satelliteTool">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    <span>Satellite</span>
+                </button>
+                <button class="map-tool" onclick="togglePermits()" id="permitsTool">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="10" r="3"></circle>
+                        <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"></path>
+                    </svg>
+                    <span>Permits</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // REAL DADU PERMIT DATA - Loaded from JSON files
+        // ============================================================
+        let PERMITS = [];
+        let CONTRACTORS = [];
+        let PDF_DATABASE = {};
+        let ELIGIBILITY_DATA = null;
+        let ELIGIBILITY_FULL = null;
+
+        // Load real data from JSON files
+        async function loadRealData() {
+            const basePaths = ['MASTER_ADU_DATA/', 'https://raw.githubusercontent.com/natbat24/Homebody-DADU/main/MASTER_ADU_DATA/'];
+
+            for (const basePath of basePaths) {
+                try {
+                    const [permitsResp, contractorsResp, pdfResp] = await Promise.all([
+                        fetch(basePath + 'permits_for_map.json'),
+                        fetch(basePath + 'contractors_ranked.json'),
+                        fetch(basePath + 'PDF_Database_By_APN.json')
+                    ]);
+
+                    if (!permitsResp.ok) continue;
+
+                    PERMITS = await permitsResp.json();
+                    CONTRACTORS = await contractorsResp.json();
+                    PDF_DATABASE = await pdfResp.json();
+
+                    console.log(`Loaded ${PERMITS.length} real permits, ${CONTRACTORS.length} contractors`);
+                    renderContractors();
+                    break;
+                } catch (e) {
+                    console.log(`Failed to load from ${basePath}`);
+                }
+            }
+
+            // Also load eligibility data
+            await loadEligibilityData();
+            return true;
+        }
+
+        async function loadEligibilityData() {
+            const eligibilityPaths = [
+                'parcels_eligibility_map.json',
+                'MASTER_ADU_DATA/parcels_eligibility_lite.json',
+                'parcels_eligibility_lite.json'
+            ];
+
+            for (const path of eligibilityPaths) {
+                try {
+                    const resp = await fetch(path);
+                    if (resp.ok) {
+                        ELIGIBILITY_DATA = await resp.json();
+                        console.log(`Loaded ${ELIGIBILITY_DATA.t} eligibility parcels`);
+                        return;
+                    }
+                } catch (e) {
+                    console.log(`Failed to load eligibility from ${path}`);
+                }
+            }
+        }
+
+        // Look up parcel by APN from eligibility data
+        function findParcelByAPN(apn) {
+            if (!ELIGIBILITY_DATA || !ELIGIBILITY_DATA.d) return null;
+            return ELIGIBILITY_DATA.d.find(p => p.apn === apn);
+        }
+
+        // Check for APN parameter on page load
+        function checkURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            const apn = params.get('apn');
+            if (apn) {
+                const parcel = findParcelByAPN(apn);
+                if (parcel) {
+                    console.log('Found parcel from URL:', parcel);
+                    // Center map on parcel and show details
+                    map.setView([parcel.lat, parcel.lon], CONFIG.propertyZoom);
+                    currentProperty.lat = parcel.lat;
+                    currentProperty.lon = parcel.lon;
+                    currentProperty.address = parcel.a;
+                    currentProperty.apn = parcel.apn;
+                    currentProperty.zoning = parcel.z;
+                    currentProperty.district = parcel.d;
+                    currentProperty.acres = parcel.ac;
+                    currentProperty.eligibilityScore = parcel.sc;
+                    currentProperty.eligibilityStatus = parcel.st;
+
+                    // Query full parcel data from ArcGIS
+                    queryParcel(parcel.lon, parcel.lat);
+                    findNearbyPermits(parcel.lat, parcel.lon);
+
+                    // Update search box
+                    document.getElementById('addressInput').value = parcel.a;
+                }
+            }
+        }
+
+        // Extract square footage from purpose text
+        function extractSqft(purpose) {
+            if (!purpose) return null;
+            const text = purpose.toUpperCase();
+
+            // Match patterns like "750 SQ FT", "750SQFT", "750 SF", "700 SQFT"
+            const patterns = [
+                /(\d{3,4})\s*(?:SQ\.?\s*FT|SQFT|SF)\s+(?:OF\s+)?(?:LIVING|HEATED)/i,
+                /(\d{3,4})\s*(?:SQ\.?\s*FT|SQFT|SF)\s+DADU/i,
+                /(\d{3,4})\s*(?:SQ\.?\s*FT|SQFT|SF)\s+(?:FOOTPRINT|LIVING)/i,
+                /DADU.*?(\d{3,4})\s*(?:SQ\.?\s*FT|SQFT|SF)/i,
+                /LIVING\s+SPACE.*?(\d{3,4})\s*(?:SQ\.?\s*FT|SQFT|SF)?/i,
+                /(\d{3,4})\s*(?:SQ\.?\s*FT|SQFT|SF)/i
+            ];
+
+            for (const pattern of patterns) {
+                const match = text.match(pattern);
+                if (match) {
+                    const sqft = parseInt(match[1]);
+                    // Valid DADU sizes are typically 400-850 sqft
+                    if (sqft >= 300 && sqft <= 900) {
+                        return sqft;
+                    }
+                }
+            }
+            return null;
+        }
+
+        // Compatibility layer - map new data format to old format
+        function getPermitData() {
+            return PERMITS.map((p, i) => {
+                const extractedSqft = extractSqft(p.purpose);
+                const sqft = extractedSqft || 700; // Default if not found
+                const cost = p.value || 0;
+                const costPerSF = sqft > 0 && cost > 0 ? Math.round(cost / sqft) : null;
+
+                return {
+                    id: i + 1,
+                    address: p.address || 'Unknown',
+                    lat: p.lat,
+                    lon: p.lon,
+                    contractor: p.contractor || 'Unknown',
+                    cost: cost,
+                    sqft: sqft,
+                    costPerSF: costPerSF,
+                    date: p.date_issued || '',
+                    status: p.status || 'Unknown',
+                    permit_number: p.permit_number,
+                    purpose: p.purpose || '',
+                    url_epermits: p.url_epermits,
+                    url_documents: p.url_documents
+                };
+            });
+        }
+
+        // ============================================================
+        // CONFIG & STATE
+        // ============================================================
+        const CONFIG = {
+            defaultCenter: [36.1627, -86.7816],
+            defaultZoom: 12,
+            propertyZoom: 17,
+            searchRadiusMiles: 1,
+            tax: { assessmentRatio: 0.25, taxRate: 3.254 },
+            apis: {
+                geocode: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates',
+                parcels: 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_with_Building_Characteristics_view/FeatureServer/0',
+                buildings: 'https://maps.nashville.gov/arcgis/rest/services/Planimetric/Buildings/MapServer/0',
+                zoning: 'https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/BaseZoning/MapServer/0',
+                usdBoundary: 'https://maps.nashville.gov/arcgis/rest/services/Boundaries/USD_GSD/MapServer/0',
+            }
+        };
+
+        let map, parcelLayer, buildingLayers = [], permitMarkers = [];
+        let currentProperty = { appraisedValue: 0, lotArea: 0 };
+        let nearbyPermits = [];
+        let isSatellite = false, showPermitsOnMap = true;
+        let streetLayer, satelliteLayer;
+
+        // ============================================================
+        // MAP INITIALIZATION
+        // ============================================================
+        async function initMap() {
+            map = L.map('map', { zoomControl: false }).setView(CONFIG.defaultCenter, CONFIG.defaultZoom);
+
+            streetLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap © CARTO',
+                maxZoom: 20
+            }).addTo(map);
+
+            satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 19
+            });
+
+            // Load real data from JSON files
+            await loadRealData();
+
+            // Show all permits on map initially
+            addAllPermitsToMap();
+
+            // Check for APN parameter in URL
+            checkURLParams();
+        }
+
+        function addAllPermitsToMap() {
+            const permitData = getPermitData();
+            permitData.forEach(p => {
+                if (p.lat && p.lon) {
+                    const marker = L.circleMarker([p.lat, p.lon], {
+                        radius: 5,
+                        fillColor: '#6b8e4e',
+                        color: '#fff',
+                        weight: 1,
+                        fillOpacity: 0.6
+                    }).addTo(map);
+
+                    marker.bindPopup(`
+                        <div style="font-family:Inter,sans-serif;min-width:180px;">
+                            <strong style="font-size:12px;">${p.address}</strong><br>
+                            <span style="color:#6b8e4e;font-weight:600;">$${(p.cost || 0).toLocaleString()}</span><br>
+                            <span style="color:#666;font-size:11px;">${p.contractor}</span><br>
+                            ${p.url_epermits ? `<a href="${p.url_epermits}" target="_blank" style="color:#6b8fa3;font-size:11px;">View Permit →</a>` : ''}
+                        </div>
+                    `);
+                }
+            });
+        }
+
+        // ============================================================
+        // TAB SWITCHING
+        // ============================================================
+        function switchTab(tabName) {
+            document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+
+        // ============================================================
+        // ADDRESS SEARCH
+        // ============================================================
+        async function searchAddress(address) {
+            if (!address.trim()) return;
+            showLoading('Searching...');
+
+            try {
+                const url = `${CONFIG.apis.geocode}?f=json&singleLine=${encodeURIComponent(address + ', Nashville, TN')}&outFields=*&maxLocations=1`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (!data.candidates?.length) {
+                    hideLoading();
+                    alert('Address not found');
+                    return;
+                }
+
+                const loc = data.candidates[0].location;
+                currentProperty.lat = loc.y;
+                currentProperty.lon = loc.x;
+                currentProperty.address = data.candidates[0].address;
+
+                map.setView([loc.y, loc.x], CONFIG.propertyZoom);
+                await queryParcel(loc.x, loc.y);
+                findNearbyPermits(loc.y, loc.x);
+                document.getElementById('mapLegend').style.display = 'block';
+                hideLoading();
+
+            } catch (err) {
+                console.error(err);
+                hideLoading();
+                alert('Search error');
+            }
+        }
+
+        // ============================================================
+        // PARCEL QUERY
+        // ============================================================
+        async function queryParcel(lon, lat) {
+            showLoading('Loading parcel...');
+
+            try {
+                const url = `${CONFIG.apis.parcels}/query?` + new URLSearchParams({
+                    f: 'geojson',
+                    geometry: JSON.stringify({ x: lon, y: lat, spatialReference: { wkid: 4326 } }),
+                    geometryType: 'esriGeometryPoint',
+                    spatialRel: 'esriSpatialRelIntersects',
+                    outFields: '*',
+                    returnGeometry: true
+                });
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.features?.length) {
+                    const parcel = data.features[0];
+                    Object.assign(currentProperty, parcel.properties);
+                    currentProperty.geometry = parcel.geometry;
+                    drawParcel(parcel);
+                    await queryBuildings(parcel.geometry);
+                    await queryZoning(lon, lat);
+                    await queryDistrict(lon, lat);
+                }
+
+                updatePropertyUI();
+                updateTaxEstimates();
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function drawParcel(parcel) {
+            if (parcelLayer) map.removeLayer(parcelLayer);
+            parcelLayer = L.geoJSON(parcel, {
+                style: { color: '#2c3e50', weight: 3, fillColor: '#6b8fa3', fillOpacity: 0.15, dashArray: '5,5' }
+            }).addTo(map);
+        }
+
+        async function queryBuildings(geometry) {
+            buildingLayers.forEach(l => map.removeLayer(l));
+            buildingLayers = [];
+
+            try {
+                const coords = geometry.coordinates[0];
+                let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
+                coords.forEach(c => { minX = Math.min(minX, c[0]); minY = Math.min(minY, c[1]); maxX = Math.max(maxX, c[0]); maxY = Math.max(maxY, c[1]); });
+
+                const url = `${CONFIG.apis.buildings}/query?` + new URLSearchParams({
+                    f: 'geojson',
+                    geometry: JSON.stringify({ xmin: minX, ymin: minY, xmax: maxX, ymax: maxY, spatialReference: { wkid: 4326 } }),
+                    geometryType: 'esriGeometryEnvelope',
+                    spatialRel: 'esriSpatialRelIntersects',
+                    outFields: '*',
+                    returnGeometry: true,
+                    outSR: 4326
+                });
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                data.features?.forEach(b => {
+                    const layer = L.geoJSON(b, {
+                        style: { color: '#2c3e50', weight: 2, fillColor: '#2c3e50', fillOpacity: 0.4 }
+                    }).addTo(map);
+                    buildingLayers.push(layer);
+                });
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function queryZoning(lon, lat) {
+            try {
+                const url = `${CONFIG.apis.zoning}/query?` + new URLSearchParams({
+                    f: 'json',
+                    geometry: JSON.stringify({ x: lon, y: lat, spatialReference: { wkid: 4326 } }),
+                    geometryType: 'esriGeometryPoint',
+                    spatialRel: 'esriSpatialRelIntersects',
+                    outFields: '*',
+                    returnGeometry: false
+                });
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.features?.length) {
+                    const z = data.features[0].attributes;
+                    currentProperty.zoning = z.ZONE_DESC || z.ZONE_TYPE || 'Unknown';
+                    currentProperty.zoningCode = z.ZONE_CODE || z.ZONE_TYPE || '';
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        async function queryDistrict(lon, lat) {
+            try {
+                const url = `${CONFIG.apis.usdBoundary}/query?` + new URLSearchParams({
+                    f: 'json',
+                    geometry: JSON.stringify({ x: lon, y: lat, spatialReference: { wkid: 4326 } }),
+                    geometryType: 'esriGeometryPoint',
+                    spatialRel: 'esriSpatialRelIntersects',
+                    outFields: '*',
+                    returnGeometry: false
+                });
+                const response = await fetch(url);
+                const data = await response.json();
+                currentProperty.inUSD = data.features?.length > 0;
+                currentProperty.serviceDistrict = currentProperty.inUSD ? 'USD' : 'GSD';
+            } catch (err) { console.error(err); }
+        }
+
+        // ============================================================
+        // NEARBY PERMITS
+        // ============================================================
+        function findNearbyPermits(lat, lon) {
+            const radiusMiles = CONFIG.searchRadiusMiles;
+            const permitData = getPermitData();
+
+            nearbyPermits = permitData.filter(p => p.lat && p.lon).map(p => {
+                const dist = haversineDistance(lat, lon, p.lat, p.lon);
+                return { ...p, distance: dist };
+            }).filter(p => p.distance <= radiusMiles)
+              .sort((a, b) => a.distance - b.distance);
+
+            // Update stats
+            document.getElementById('nearbyCount').textContent = nearbyPermits.length;
+
+            if (nearbyPermits.length > 0) {
+                const avgCost = nearbyPermits.reduce((sum, p) => sum + p.cost, 0) / nearbyPermits.length;
+                const avgSize = nearbyPermits.reduce((sum, p) => sum + p.sqft, 0) / nearbyPermits.length;
+
+                // Calculate average cost per SF (only for permits with valid cost and size)
+                const validCostPerSF = nearbyPermits.filter(p => p.costPerSF && p.costPerSF > 50 && p.costPerSF < 500);
+                const avgCostPerSF = validCostPerSF.length > 0
+                    ? validCostPerSF.reduce((sum, p) => sum + p.costPerSF, 0) / validCostPerSF.length
+                    : 0;
+
+                document.getElementById('avgCost').textContent = '$' + Math.round(avgCost / 1000) + 'K';
+                document.getElementById('avgSize').textContent = Math.round(avgSize);
+
+                // Update cost per SF if element exists
+                const costPerSFEl = document.getElementById('avgCostPerSF');
+                if (costPerSFEl && avgCostPerSF > 0) {
+                    costPerSFEl.textContent = '$' + Math.round(avgCostPerSF) + '/SF';
+                }
+            }
+
+            renderPermitList();
+            renderPermitMarkers();
+        }
+
+        function haversineDistance(lat1, lon1, lat2, lon2) {
+            const R = 3959; // Earth radius in miles
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        }
+
+        function renderPermitList() {
+            const container = document.getElementById('permitList');
+
+            if (nearbyPermits.length === 0) {
+                container.innerHTML = `<div style="text-align:center;padding:40px 20px;color:#888;">No DADU permits found within 1 mile</div>`;
+                return;
+            }
+
+            container.innerHTML = nearbyPermits.slice(0, 10).map((p, i) => `
+                <div class="permit-card" onclick="focusPermit(${i})">
+                    <div class="permit-header">
+                        <div class="permit-address">${p.address}</div>
+                        <div class="permit-distance">${p.distance.toFixed(2)} mi</div>
+                    </div>
+                    <div class="permit-details">
+                        <div class="permit-detail"><strong>$${(p.cost/1000).toFixed(0)}K</strong></div>
+                        <div class="permit-detail">${p.sqft} SF</div>
+                        ${p.costPerSF ? `<div class="permit-detail" style="color:#6b8e4e;font-weight:600;">$${p.costPerSF}/SF</div>` : ''}
+                    </div>
+                    <div class="permit-details" style="margin-top:4px;">
+                        <div class="permit-detail" style="font-size:10px;color:#888;">${p.status || ''}</div>
+                        ${p.url_epermits ? `<div class="permit-detail"><a href="${p.url_epermits}" target="_blank" style="color:#6b8fa3;">View →</a></div>` : ''}
+                    </div>
+                    <div class="permit-contractor">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        ${p.contractor}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPermitMarkers() {
+            // Clear existing
+            permitMarkers.forEach(m => map.removeLayer(m));
+            permitMarkers = [];
+
+            if (!showPermitsOnMap) return;
+
+            nearbyPermits.forEach((p, i) => {
+                const marker = L.circleMarker([p.lat, p.lon], {
+                    radius: 8,
+                    fillColor: '#6b8e4e',
+                    color: '#fff',
+                    weight: 2,
+                    fillOpacity: 0.9
+                }).addTo(map);
+
+                marker.bindPopup(`
+                    <div style="font-family:Inter,sans-serif;min-width:200px;">
+                        <strong>${p.address}</strong><br>
+                        <span style="color:#6b8e4e;font-weight:600;">$${p.cost.toLocaleString()}</span> · ${p.sqft} SF
+                        ${p.costPerSF ? ` · <strong>$${p.costPerSF}/SF</strong>` : ''}<br>
+                        <span style="color:#666;font-size:12px;">${p.contractor}</span><br>
+                        <span style="color:#888;font-size:11px;">${p.status}</span>
+                        ${p.url_epermits ? ` · <a href="${p.url_epermits}" target="_blank" style="color:#6b8fa3;font-size:11px;">View Permit →</a>` : ''}
+                    </div>
+                `);
+
+                permitMarkers.push(marker);
+            });
+        }
+
+        function focusPermit(index) {
+            const p = nearbyPermits[index];
+            map.setView([p.lat, p.lon], 18);
+            permitMarkers[index]?.openPopup();
+
+            // Highlight card
+            document.querySelectorAll('.permit-card').forEach((c, i) => {
+                c.classList.toggle('active', i === index);
+            });
+        }
+
+        // ============================================================
+        // CONTRACTORS
+        // ============================================================
+        function renderContractors() {
+            const container = document.getElementById('contractorList');
+            if (!CONTRACTORS.length) {
+                container.innerHTML = '<div style="text-align:center;padding:20px;color:#888;">Loading contractors...</div>';
+                return;
+            }
+            container.innerHTML = CONTRACTORS.slice(0, 10).map((c, i) => `
+                <div class="contractor-card">
+                    <div class="contractor-rank ${i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">${i + 1}</div>
+                    <div class="contractor-info">
+                        <div class="contractor-name">${c.name}</div>
+                        <div class="contractor-stats">
+                            <span><strong>${c.permits}</strong> DADUs</span>
+                            <span>Avg <strong>$${Math.round((c.avg_value || c.avgCost || 0)/1000)}K</strong></span>
+                        </div>
+                    </div>
+                    <svg class="contractor-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // UI UPDATES
+        // ============================================================
+        function updatePropertyUI() {
+            document.getElementById('propAddress').textContent = currentProperty.address || '-';
+            
+            const lotArea = currentProperty.LANDAREA || currentProperty.LotSize || (currentProperty.ACREAGE ? currentProperty.ACREAGE * 43560 : 0);
+            currentProperty.lotArea = Math.round(lotArea);
+            document.getElementById('propLotArea').textContent = lotArea > 0 ? Math.round(lotArea).toLocaleString() + ' sqft' : '-';
+
+            document.getElementById('propAPN').textContent = currentProperty.APN || currentProperty.STANPAR || '-';
+            document.getElementById('propZoning').textContent = currentProperty.zoning || '-';
+            document.getElementById('propDistrict').textContent = currentProperty.serviceDistrict || '-';
+
+            const appraised = currentProperty.APPRAISAL || currentProperty.TOTAL_APPR || currentProperty.TOTALVALUE || 0;
+            currentProperty.appraisedValue = appraised;
+            document.getElementById('propAppraisedValue').textContent = appraised > 0 ? '$' + appraised.toLocaleString() : '-';
+
+            const maxDADU = currentProperty.lotArea >= 10000 ? 850 : 700;
+            document.getElementById('propMaxDADU').textContent = maxDADU + ' sqft';
+
+            // Update DADU Design Standards based on lot size
+            updateDesignStandards(maxDADU);
+
+            // Update cost estimates based on nearby permits
+            updateCostEstimates(maxDADU);
+
+            // Enhanced Eligibility Check using eligibility data
+            const banner = document.getElementById('eligibilityBanner');
+            const text = document.getElementById('eligibilityText');
+
+            // Check if we have eligibility data from URL param or loaded data
+            let eligibilityInfo = null;
+            const apn = currentProperty.APN || currentProperty.STANPAR || currentProperty.apn;
+            if (apn && ELIGIBILITY_DATA) {
+                eligibilityInfo = findParcelByAPN(apn);
+            }
+
+            if (eligibilityInfo) {
+                // Use pre-calculated eligibility
+                const statusMap = {
+                    'E': { class: 'eligible', icon: '✅', text: 'Likely Eligible for DADU' },
+                    'P': { class: 'checking', icon: '⚠️', text: 'May Be Eligible - Review Required' },
+                    'R': { class: 'checking', icon: '🔶', text: 'Eligible Zone - Has Restrictions' },
+                    'I': { class: 'not-eligible', icon: '🚫', text: 'Not Eligible - Commercial/Industrial Zone' },
+                    'U': { class: 'checking', icon: '❓', text: 'Unknown - Verify Zoning Eligibility' }
+                };
+                const status = statusMap[eligibilityInfo.st] || statusMap['U'];
+                banner.className = 'eligibility-banner ' + status.class;
+
+                const isEligible = ['E', 'P', 'R'].includes(eligibilityInfo.st);
+                if (isEligible) {
+                    text.innerHTML = `${status.icon} ${status.text} <span style="font-size:11px;opacity:0.8;">(Score: ${eligibilityInfo.sc}/100)</span>`;
+                } else {
+                    text.innerHTML = `${status.icon} ${status.text}`;
+                }
+
+                // Store eligibility info for other uses
+                currentProperty.eligibilityScore = eligibilityInfo.sc;
+                currentProperty.eligibilityStatus = eligibilityInfo.st;
+            } else {
+                // Fallback to basic check
+                const isRorRS = /^(R|RS)/i.test(currentProperty.zoning || currentProperty.zoningCode || '');
+                const isGSD = /GSD/i.test(currentProperty.serviceDistrict || '');
+
+                if (isRorRS && !isGSD) {
+                    banner.className = 'eligibility-banner eligible';
+                    text.innerHTML = '✅ Nashville law allows a DADU here';
+                } else if (isGSD) {
+                    banner.className = 'eligibility-banner checking';
+                    text.innerHTML = '⚠️ GSD - May need septic or sewer extension';
+                } else if (!isRorRS) {
+                    banner.className = 'eligibility-banner not-eligible';
+                    text.innerHTML = '⛔ Zoning may not allow DADUs';
+                } else {
+                    banner.className = 'eligibility-banner checking';
+                    text.innerHTML = '⚠️ Verify zoning permits DADUs';
+                }
+            }
+        }
+
+        // ============================================================
+        // PREMIUM UNLOCK FUNCTIONS
+        // ============================================================
+        function unlockSection(sectionName) {
+            const sectionMap = {
+                'cost': 'costSection',
+                'timeline': 'timelineSection'
+            };
+
+            const sectionId = sectionMap[sectionName];
+            if (sectionId) {
+                // In production, this would trigger a payment flow
+                // For demo, we'll just show an alert and unlock
+                if (confirm(`Unlock ${sectionName} data for $6?\n\nIn production, this would open Stripe checkout.`)) {
+                    document.getElementById(sectionId).classList.remove('locked');
+                    updateLockedCount();
+                }
+            }
+        }
+
+        function unlockAll() {
+            // In production, this would trigger Stripe checkout for $19
+            if (confirm('Purchase Full DADU Report for $19?\n\nIncludes:\n• Cost breakdown\n• Timeline & milestones\n• Tax estimates\n• Legal checklist\n• ROI calculator\n• PDF export\n\nIn production, this would open Stripe checkout.')) {
+                // Unlock all premium sections
+                document.querySelectorAll('.premium-section.locked').forEach(section => {
+                    section.classList.remove('locked');
+                });
+
+                // Hide the premium banner
+                document.querySelector('.premium-banner').style.display = 'none';
+
+                // Remove lock badges from tabs
+                document.querySelectorAll('.lock-badge').forEach(badge => {
+                    badge.style.display = 'none';
+                });
+
+                updateLockedCount();
+            }
+        }
+
+        function updateLockedCount() {
+            const lockedCount = document.querySelectorAll('.premium-section.locked').length;
+            const banner = document.querySelector('.premium-banner-text');
+            if (banner) {
+                if (lockedCount === 0) {
+                    document.querySelector('.premium-banner').style.display = 'none';
+                } else {
+                    banner.innerHTML = `<strong>${lockedCount} section${lockedCount > 1 ? 's' : ''} locked</strong> · Unlock full property report`;
+                }
+            }
+        }
+
+        // ============================================================
+        // DESIGN STANDARDS & COST ESTIMATES
+        // ============================================================
+        function updateDesignStandards(maxDADU) {
+            // Update size range based on max DADU allowed
+            const minSize = 200;
+            document.getElementById('stdSizeRange').textContent = `${minSize} - ${maxDADU} SF`;
+            document.getElementById('stdSizeNote').textContent = currentProperty.lotArea >= 10000 ? 'Lot ≥ 10,000 sqft' : 'Standard lot';
+
+            // Setbacks vary by zoning - these are Nashville defaults
+            const zoningCode = (currentProperty.zoningCode || '').toUpperCase();
+            let sideSetback = '3 ft';
+            let rearSetback = '3 ft';
+            let heightMax = '24 ft';
+
+            // Adjust based on specific zoning if known
+            if (zoningCode.includes('RS')) {
+                sideSetback = '3 ft';
+                rearSetback = '3 ft';
+            } else if (zoningCode.includes('R')) {
+                sideSetback = '3 ft';
+                rearSetback = '3 ft';
+            }
+
+            document.getElementById('stdSideSetback').textContent = sideSetback;
+            document.getElementById('stdRearSetback').textContent = rearSetback;
+            document.getElementById('stdHeightMax').textContent = heightMax;
+        }
+
+        function updateCostEstimates(maxDADU) {
+            // Base cost calculation using $250-$350/sqft range
+            const lowPerSqft = 250;
+            const highPerSqft = 350;
+
+            // Use max DADU size for estimates
+            const typicalSize = Math.min(maxDADU, 700); // Typical build
+
+            const lowConstruction = typicalSize * lowPerSqft;
+            const highConstruction = typicalSize * highPerSqft;
+
+            // Add soft costs (permits, design, utilities, site prep)
+            const softCostsLow = 28000; // ~$28K min for soft costs
+            const softCostsHigh = 75000; // ~$75K max for soft costs
+
+            const totalLow = lowConstruction + softCostsLow;
+            const totalHigh = highConstruction + softCostsHigh;
+
+            document.getElementById('costLow').textContent = '$' + Math.round(totalLow / 1000) + 'K';
+            document.getElementById('costHigh').textContent = '$' + Math.round(totalHigh / 1000) + 'K';
+            document.getElementById('costConstruction').textContent = `$${Math.round(lowConstruction/1000)}K - $${Math.round(highConstruction/1000)}K`;
+
+            // If we have nearby permits, use their average cost
+            if (nearbyPermits && nearbyPermits.length > 0) {
+                const avgCost = nearbyPermits.reduce((sum, p) => sum + (p.cost || 0), 0) / nearbyPermits.length;
+                if (avgCost > 50000) {
+                    // Use nearby permit data to refine estimates
+                    const refinedLow = Math.round(avgCost * 0.8);
+                    const refinedHigh = Math.round(avgCost * 1.3);
+                    document.getElementById('costLow').textContent = '$' + Math.round(refinedLow / 1000) + 'K';
+                    document.getElementById('costHigh').textContent = '$' + Math.round(refinedHigh / 1000) + 'K';
+                }
+            }
+        }
+
+        // ============================================================
+        // TAX CALCULATOR
+        // ============================================================
+        function updateTaxEstimates() {
+            const currentValue = currentProperty.appraisedValue || 0;
+            const constructionCost = parseInt(document.getElementById('constructionCostSlider').value) || 200000;
+            const projectedValue = currentValue + constructionCost;
+
+            const currentTax = (currentValue * 0.25 / 100) * 3.254;
+            const projectedTax = (projectedValue * 0.25 / 100) * 3.254;
+            const increase = projectedTax - currentTax;
+
+            document.getElementById('taxIncrease').textContent = '+$' + Math.round(increase).toLocaleString();
+            document.getElementById('currentTax').textContent = '$' + Math.round(currentTax).toLocaleString();
+            document.getElementById('projectedTax').textContent = '$' + Math.round(projectedTax).toLocaleString();
+
+            return increase;
+        }
+
+        // ============================================================
+        // ROI CALCULATOR
+        // ============================================================
+        function calculateROI() {
+            const cost = parseInt(document.getElementById('roiConstructionCost').value) || 200000;
+            const rent = parseInt(document.getElementById('roiMonthlyRent').value) || 1400;
+            const vacancy = (parseInt(document.getElementById('roiVacancyRate').value) || 5) / 100;
+            const opCosts = parseInt(document.getElementById('roiOperatingCosts').value) || 2400;
+            const taxIncrease = updateTaxEstimates();
+
+            const grossRent = rent * 12;
+            const effectiveRent = grossRent * (1 - vacancy);
+            const noi = effectiveRent - opCosts - taxIncrease;
+            const cashReturn = (noi / cost) * 100;
+            const breakEven = cost / noi;
+
+            document.getElementById('roiNOI').textContent = '$' + Math.round(noi).toLocaleString();
+            document.getElementById('roiCashReturn').textContent = cashReturn.toFixed(2) + '%';
+            document.getElementById('roiBreakEven').textContent = breakEven.toFixed(1) + ' years';
+        }
+
+        // ============================================================
+        // MAP TOOLS
+        // ============================================================
+        function toggleSatellite() {
+            const tool = document.getElementById('satelliteTool');
+            if (isSatellite) {
+                map.removeLayer(satelliteLayer);
+                streetLayer.addTo(map);
+                tool.classList.remove('active');
+            } else {
+                map.removeLayer(streetLayer);
+                satelliteLayer.addTo(map);
+                tool.classList.add('active');
+            }
+            isSatellite = !isSatellite;
+        }
+
+        function togglePermits() {
+            showPermitsOnMap = !showPermitsOnMap;
+            document.getElementById('permitsTool').classList.toggle('active', showPermitsOnMap);
+            renderPermitMarkers();
+        }
+
+        function toggleTool(name) {
+            document.getElementById(name + 'Tool').classList.toggle('active');
+            alert(name.charAt(0).toUpperCase() + name.slice(1) + ' tool coming soon!');
+        }
+
+        // ============================================================
+        // UTILITIES
+        // ============================================================
+        function showLoading(text) {
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function openEditModal() {
+            alert('Edit modal coming soon!');
+        }
+
+        // ============================================================
+        // EVENT LISTENERS
+        // ============================================================
+        document.getElementById('addressSearch').addEventListener('keypress', e => {
+            if (e.key === 'Enter') searchAddress(e.target.value);
+        });
+
+        document.getElementById('constructionCostSlider').addEventListener('input', function() {
+            document.getElementById('constructionCostDisplay').textContent = '$' + parseInt(this.value).toLocaleString();
+            updateTaxEstimates();
+            calculateROI();
+        });
+
+        ['roiConstructionCost', 'roiMonthlyRent', 'roiVacancyRate', 'roiOperatingCosts'].forEach(id => {
+            document.getElementById(id).addEventListener('change', calculateROI);
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            calculateROI();
+
+            // Check for address in URL query params
+            const urlParams = new URLSearchParams(window.location.search);
+            const addressParam = urlParams.get('address');
+            if (addressParam) {
+                document.getElementById('addressSearch').value = addressParam;
+                // Auto-search after map initializes
+                setTimeout(() => searchAddress(addressParam), 1000);
+            }
+        });
+    </script>
+</body>
+</html>
