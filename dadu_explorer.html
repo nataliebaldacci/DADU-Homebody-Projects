@@ -7,14 +7,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
-    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet@3.0.12/dist/esri-leaflet.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif; }
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
             color: white;
             padding: 15px 25px;
             display: flex;
@@ -82,7 +81,7 @@
         .stat-value {
             font-size: 20px;
             font-weight: 700;
-            color: #1565c0;
+            color: #2c3e50;
         }
         .stat-label {
             font-size: 11px;
@@ -106,7 +105,7 @@
         }
         .search-input:focus {
             outline: none;
-            border-color: #1565c0;
+            border-color: #2c3e50;
         }
         .search-icon {
             position: absolute;
@@ -162,7 +161,7 @@
             overflow: hidden;
         }
         .property-header {
-            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
             color: white;
             padding: 15px 20px;
         }
@@ -213,7 +212,7 @@
             color: #333;
         }
         .stat-row-value.highlight {
-            color: #1565c0;
+            color: #2c3e50;
         }
         .stat-row-value.price {
             color: #2e7d32;
@@ -248,7 +247,7 @@
             font-weight: 600;
         }
         .status-badge.active { background: #e8f5e9; color: #2e7d32; }
-        .status-badge.completed { background: #e3f2fd; color: #1565c0; }
+        .status-badge.completed { background: #e8f5e9; color: #2c3e50; }
         .status-badge.expired { background: #ffebee; color: #c62828; }
         .status-badge.pending { background: #fff3e0; color: #e65100; }
 
@@ -273,10 +272,10 @@
             transition: all 0.2s;
         }
         .action-btn.primary {
-            background: #1565c0;
+            background: #2c3e50;
             color: white;
         }
-        .action-btn.primary:hover { background: #0d47a1; }
+        .action-btn.primary:hover { background: #1a252f; }
         .action-btn.secondary {
             background: #f5f5f5;
             color: #333;
@@ -306,17 +305,17 @@
             text-align: center;
         }
         .link-btn:hover {
-            background: #e3f2fd;
-            border-color: #1565c0;
-            color: #1565c0;
+            background: #e8f5e9;
+            border-color: #2c3e50;
+            color: #2c3e50;
         }
         .link-btn.primary {
-            background: #1565c0;
-            border-color: #1565c0;
+            background: #2c3e50;
+            border-color: #2c3e50;
             color: white;
         }
         .link-btn.primary:hover {
-            background: #0d47a1;
+            background: #1a252f;
         }
         .link-btn.aerial {
             background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
@@ -351,22 +350,22 @@
 
         /* Cluster icons */
         .marker-cluster-small {
-            background-color: rgba(21, 101, 192, 0.6);
+            background-color: rgba(44, 62, 80, 0.6);
         }
         .marker-cluster-small div {
-            background-color: rgba(21, 101, 192, 0.8);
+            background-color: rgba(44, 62, 80, 0.8);
         }
         .marker-cluster-medium {
-            background-color: rgba(21, 101, 192, 0.6);
+            background-color: rgba(44, 62, 80, 0.6);
         }
         .marker-cluster-medium div {
-            background-color: rgba(21, 101, 192, 0.8);
+            background-color: rgba(44, 62, 80, 0.8);
         }
         .marker-cluster-large {
-            background-color: rgba(21, 101, 192, 0.6);
+            background-color: rgba(44, 62, 80, 0.6);
         }
         .marker-cluster-large div {
-            background-color: rgba(21, 101, 192, 0.8);
+            background-color: rgba(44, 62, 80, 0.8);
         }
 
         /* Filter Panel */
@@ -391,12 +390,12 @@
             transition: all 0.2s;
         }
         .filter-btn:hover {
-            border-color: #1565c0;
-            color: #1565c0;
+            border-color: #2c3e50;
+            color: #2c3e50;
         }
         .filter-btn.active {
-            background: #1565c0;
-            border-color: #1565c0;
+            background: #2c3e50;
+            border-color: #2c3e50;
             color: white;
         }
 
@@ -417,7 +416,7 @@
             cursor: pointer;
         }
         .layer-toggle input {
-            accent-color: #1565c0;
+            accent-color: #2c3e50;
         }
 
         /* Legend */
@@ -478,7 +477,7 @@
             font-family: 'Avenir Next', -apple-system, sans-serif;
         }
         .popup-header {
-            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
             color: white;
             padding: 12px 15px;
         }
@@ -525,7 +524,7 @@
             text-align: center;
         }
         .popup-btn.primary {
-            background: #1565c0;
+            background: #2c3e50;
             color: white;
         }
         .popup-btn.secondary {
@@ -582,7 +581,7 @@
             <span>Completed DADU</span>
         </div>
         <div class="legend-item">
-            <div class="legend-color" style="background: #1565c0;"></div>
+            <div class="legend-color" style="background: #2c3e50;"></div>
             <span>Active Permit</span>
         </div>
         <div class="legend-item">
@@ -594,7 +593,7 @@
             <span>Expired</span>
         </div>
         <div class="legend-item" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee;">
-            <div style="width: 14px; height: 14px; border: 2px solid #1565c0; background: transparent;"></div>
+            <div style="width: 14px; height: 14px; border: 2px solid #2c3e50; background: transparent;"></div>
             <span>Parcel Boundary</span>
         </div>
         <div class="legend-item">
@@ -603,9 +602,6 @@
         </div>
     </div>
 
-    <div class="zoom-info" id="zoom-info">
-        Zoom in to see building footprints and parcel boundaries
-    </div>
 
     <div class="sidebar">
         <div class="layer-toggles">
@@ -639,7 +635,6 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-    <script src="https://unpkg.com/esri-leaflet@3.0.12/dist/esri-leaflet.js"></script>
     <script>
         // Initialize map
         const map = L.map('map').setView([36.1627, -86.7816], 11);
@@ -650,9 +645,9 @@
             maxZoom: 20
         }).addTo(map);
 
-        // Nashville ArcGIS service URLs
-        const PARCELS_URL = 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Property_Parcels/FeatureServer/0';
-        const FOOTPRINTS_URL = 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Building_Footprints/FeatureServer/0';
+        // Local GeoJSON layers for DADU parcels and footprints
+        let daduParcelsLayer = null;
+        let daduFootprintsLayer = null;
 
         let allData = [];
         let markers = L.markerClusterGroup({
@@ -675,7 +670,7 @@
         function createMarkerIcon(status, isSelected = false) {
             const color = status.toLowerCase().includes('final') || status.toLowerCase().includes('complete') ? '#2e7d32' :
                          status.toLowerCase().includes('expired') ? '#c62828' :
-                         status.toLowerCase().includes('active') || status.toLowerCase().includes('issued') ? '#1565c0' :
+                         status.toLowerCase().includes('active') || status.toLowerCase().includes('issued') ? '#2c3e50' :
                          '#e65100';
 
             const size = isSelected ? 20 : 14;
@@ -725,105 +720,78 @@
             return dateStr;
         }
 
-        // Load parcels for a given bounds
-        async function loadParcelsInBounds(bounds) {
-            if (map.getZoom() < 16) return;
-
-            const sw = bounds.getSouthWest();
-            const ne = bounds.getNorthEast();
-
-            const geometry = encodeURIComponent(JSON.stringify({
-                xmin: sw.lng, ymin: sw.lat,
-                xmax: ne.lng, ymax: ne.lat,
-                spatialReference: { wkid: 4326 }
-            }));
-
+        // Load DADU parcels and footprints from local GeoJSON
+        async function loadDaduLayers() {
             try {
-                const response = await fetch(
-                    `${PARCELS_URL}/query?where=1=1&geometry=${geometry}&geometryType=esriGeometryEnvelope&spatialRel=esriSpatialRelIntersects&outFields=*&returnGeometry=true&f=geojson&outSR=4326`
-                );
-                const data = await response.json();
+                // Load DADU parcels
+                const parcelsResponse = await fetch('dadu_parcels.geojson');
+                const parcelsData = await parcelsResponse.json();
 
-                if (data.features && parcelsLayer) {
-                    data.features.forEach(f => {
-                        const id = f.properties.OBJECTID || f.properties.APN;
-                        if (!loadedParcels.has(id)) {
-                            loadedParcels.add(id);
-                            const layer = L.geoJSON(f, {
-                                style: {
-                                    color: '#1565c0',
-                                    weight: 2,
-                                    fillOpacity: 0,
-                                    opacity: 0.7
-                                }
-                            });
-                            layer.bindPopup(`<strong>APN:</strong> ${f.properties.APN || 'N/A'}<br><strong>Address:</strong> ${f.properties.PROP_ADDR || 'N/A'}`);
-                            parcelsLayer.addLayer(layer);
+                daduParcelsLayer = L.geoJSON(parcelsData, {
+                    style: {
+                        color: '#2c3e50',
+                        weight: 2,
+                        fillColor: '#2c3e50',
+                        fillOpacity: 0.05,
+                        opacity: 0.8
+                    },
+                    onEachFeature: function(feature, layer) {
+                        const props = feature.properties;
+                        layer.bindPopup(`
+                            <strong>APN:</strong> ${props.apn || 'N/A'}<br>
+                            <strong>Address:</strong> ${props.addr || 'N/A'}<br>
+                            <strong>Zone:</strong> ${props.zone || 'N/A'}<br>
+                            <strong>Lot Size:</strong> ${props.sqft ? props.sqft.toLocaleString() + ' SF' : 'N/A'}
+                        `);
+                    }
+                });
+
+                console.log(`Loaded ${parcelsData.features.length} DADU parcels`);
+
+                // Load DADU footprints
+                const footprintsResponse = await fetch('dadu_footprints.geojson');
+                const footprintsData = await footprintsResponse.json();
+
+                daduFootprintsLayer = L.geoJSON(footprintsData, {
+                    style: function(feature) {
+                        // Check if it's the actual DADU building (has permit info)
+                        if (feature.properties.dadu_permit) {
+                            return {
+                                color: '#6b8e4e',
+                                weight: 2,
+                                fillColor: '#6b8e4e',
+                                fillOpacity: 0.4
+                            };
                         }
-                    });
-                }
-            } catch (e) {
-                console.log('Error loading parcels:', e);
-            }
-        }
-
-        // Load footprints for a given bounds
-        async function loadFootprintsInBounds(bounds) {
-            if (map.getZoom() < 16) return;
-
-            const sw = bounds.getSouthWest();
-            const ne = bounds.getNorthEast();
-
-            const geometry = encodeURIComponent(JSON.stringify({
-                xmin: sw.lng, ymin: sw.lat,
-                xmax: ne.lng, ymax: ne.lat,
-                spatialReference: { wkid: 4326 }
-            }));
-
-            try {
-                const response = await fetch(
-                    `${FOOTPRINTS_URL}/query?where=1=1&geometry=${geometry}&geometryType=esriGeometryEnvelope&spatialRel=esriSpatialRelIntersects&outFields=*&returnGeometry=true&f=geojson&outSR=4326`
-                );
-                const data = await response.json();
-
-                if (data.features && footprintsLayer) {
-                    data.features.forEach(f => {
-                        const id = f.properties.OBJECTID || f.id;
-                        if (!loadedFootprints.has(id)) {
-                            loadedFootprints.add(id);
-
-                            // Check if this footprint is near a DADU
-                            const center = L.geoJSON(f).getBounds().getCenter();
-                            const isDadu = isNearDadu(center.lat, center.lng);
-
-                            const layer = L.geoJSON(f, {
-                                style: isDadu ? {
-                                    color: '#2e7d32',
-                                    weight: 3,
-                                    fillColor: '#6b8e4e',
-                                    fillOpacity: 0.5
-                                } : {
-                                    color: '#666',
-                                    weight: 1,
-                                    fillColor: '#888',
-                                    fillOpacity: 0.2
-                                }
+                        return {
+                            color: '#888',
+                            weight: 1,
+                            fillColor: '#999',
+                            fillOpacity: 0.2
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        if (feature.properties.dadu_permit) {
+                            layer.bindPopup(`<strong>DADU Permit:</strong> ${feature.properties.dadu_permit}`);
+                            layer.on('click', function() {
+                                showDetail(feature.properties.dadu_permit);
                             });
-
-                            if (isDadu) {
-                                const daduInfo = getNearestDadu(center.lat, center.lng);
-                                if (daduInfo) {
-                                    layer.bindPopup(createDaduFootprintPopup(daduInfo));
-                                    layer.on('click', () => showDetail(daduInfo.permit_number));
-                                }
-                            }
-
-                            footprintsLayer.addLayer(layer);
                         }
-                    });
+                    }
+                });
+
+                console.log(`Loaded ${footprintsData.features.length} building footprints`);
+
+                // Add to map if toggles are checked
+                if (document.getElementById('toggle-parcels').checked) {
+                    daduParcelsLayer.addTo(map);
                 }
-            } catch (e) {
-                console.log('Error loading footprints:', e);
+                if (document.getElementById('toggle-footprints').checked) {
+                    daduFootprintsLayer.addTo(map);
+                }
+
+            } catch (error) {
+                console.error('Error loading DADU layers:', error);
             }
         }
 
@@ -1129,54 +1097,23 @@
             map.addLayer(markers);
         }
 
-        // Initialize layers
-        parcelsLayer = L.layerGroup().addTo(map);
-        footprintsLayer = L.layerGroup().addTo(map);
-
-        // Load data on map move (for parcels and footprints)
-        map.on('moveend', () => {
-            const zoom = map.getZoom();
-            const zoomInfo = document.getElementById('zoom-info');
-
-            if (zoom < 16) {
-                zoomInfo.classList.add('visible');
-                // Clear layers at low zoom
-                loadedParcels.clear();
-                loadedFootprints.clear();
-                parcelsLayer.clearLayers();
-                footprintsLayer.clearLayers();
-            } else {
-                zoomInfo.classList.remove('visible');
-                const bounds = map.getBounds();
-                if (document.getElementById('toggle-parcels').checked) {
-                    loadParcelsInBounds(bounds);
-                }
-                if (document.getElementById('toggle-footprints').checked) {
-                    loadFootprintsInBounds(bounds);
-                }
-            }
-        });
+        // Initialize DADU parcels and footprints layers
+        loadDaduLayers();
 
         // Layer toggles
         document.getElementById('toggle-parcels').addEventListener('change', (e) => {
-            if (e.target.checked) {
-                map.addLayer(parcelsLayer);
-                if (map.getZoom() >= 16) {
-                    loadParcelsInBounds(map.getBounds());
-                }
-            } else {
-                map.removeLayer(parcelsLayer);
+            if (e.target.checked && daduParcelsLayer) {
+                daduParcelsLayer.addTo(map);
+            } else if (daduParcelsLayer) {
+                map.removeLayer(daduParcelsLayer);
             }
         });
 
         document.getElementById('toggle-footprints').addEventListener('change', (e) => {
-            if (e.target.checked) {
-                map.addLayer(footprintsLayer);
-                if (map.getZoom() >= 16) {
-                    loadFootprintsInBounds(map.getBounds());
-                }
-            } else {
-                map.removeLayer(footprintsLayer);
+            if (e.target.checked && daduFootprintsLayer) {
+                daduFootprintsLayer.addTo(map);
+            } else if (daduFootprintsLayer) {
+                map.removeLayer(daduFootprintsLayer);
             }
         });
 
