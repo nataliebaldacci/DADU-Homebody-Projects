@@ -597,8 +597,12 @@
             <span>Parcel Boundary</span>
         </div>
         <div class="legend-item">
-            <div style="width: 14px; height: 14px; background: rgba(107,142,78,0.6); border: 1px solid #5a7a42;"></div>
-            <span>DADU Footprint</span>
+            <div style="width: 14px; height: 14px; background: rgba(107,142,78,0.6); border: 2px solid #6b8e4e;"></div>
+            <span>Accessory Bldg (DADU)</span>
+        </div>
+        <div class="legend-item">
+            <div style="width: 14px; height: 14px; background: rgba(170,170,170,0.3); border: 1px solid #888;"></div>
+            <span>Main Building</span>
         </div>
     </div>
 
@@ -754,33 +758,75 @@
 
                 daduFootprintsLayer = L.geoJSON(footprintsData, {
                     style: function(feature) {
-                        // Check if it's the actual DADU building (has permit info)
-                        if (feature.properties.dadu_permit) {
+                        const props = feature.properties;
+                        const bldgType = props.Nash_BldgType || '';
+
+                        // Accessory buildings (likely DADUs) - highlight in olive green
+                        if (bldgType === 'Accessory') {
                             return {
                                 color: '#6b8e4e',
-                                weight: 2,
+                                weight: 3,
                                 fillColor: '#6b8e4e',
-                                fillOpacity: 0.4
+                                fillOpacity: 0.5
                             };
                         }
+                        // Major buildings (main house) - subtle gray
                         return {
                             color: '#888',
                             weight: 1,
-                            fillColor: '#999',
+                            fillColor: '#aaa',
                             fillOpacity: 0.2
                         };
                     },
                     onEachFeature: function(feature, layer) {
-                        if (feature.properties.dadu_permit) {
-                            layer.bindPopup(`<strong>DADU Permit:</strong> ${feature.properties.dadu_permit}`);
+                        const props = feature.properties;
+                        const bldgType = props.Nash_BldgType || 'Unknown';
+                        const yearBuilt = props.YearBuilt || 'N/A';
+                        const area = props.Nash_Area ? Math.round(props.Nash_Area).toLocaleString() + ' SF' : 'N/A';
+                        const finArea = props.FinishedArea ? props.FinishedArea.toLocaleString() + ' SF' : 'N/A';
+
+                        let popupContent = `
+                            <div style="font-family: sans-serif; min-width: 200px;">
+                                <div style="background: ${bldgType === 'Accessory' ? '#6b8e4e' : '#2c3e50'}; color: white; padding: 8px 12px; margin: -10px -10px 10px -10px; font-weight: 600;">
+                                    ${bldgType === 'Accessory' ? '🏠 Accessory Building (DADU)' : '🏡 Main Building'}
+                                </div>
+                                <div style="padding: 0 5px;">
+                                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;">
+                                        <span style="color: #666;">Year Built</span>
+                                        <strong>${yearBuilt}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;">
+                                        <span style="color: #666;">Footprint</span>
+                                        <strong>${area}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;">
+                                        <span style="color: #666;">Finished Area</span>
+                                        <strong>${finArea}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;">
+                                        <span style="color: #666;">Roof Type</span>
+                                        <strong>${props.Nash_RoofType || 'N/A'}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                                        <span style="color: #666;">Exterior</span>
+                                        <strong>${props.Exterior || 'N/A'}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        layer.bindPopup(popupContent);
+
+                        // Click accessory buildings to show permit details
+                        if (bldgType === 'Accessory' && props.dadu_permit) {
                             layer.on('click', function() {
-                                showDetail(feature.properties.dadu_permit);
+                                showDetail(props.dadu_permit);
                             });
                         }
                     }
                 });
 
-                console.log(`Loaded ${footprintsData.features.length} building footprints`);
+                console.log(`Loaded ${footprintsData.features.length} building footprints (${footprintsData.features.filter(f => f.properties.Nash_BldgType === 'Accessory').length} accessory buildings)`);
 
                 // Add to map if toggles are checked
                 if (document.getElementById('toggle-parcels').checked) {
