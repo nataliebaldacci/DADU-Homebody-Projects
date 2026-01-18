@@ -672,56 +672,56 @@
             `;
         }
 
-        // Format popup for permits
+        // Format popup for permits (combined dataset)
         function permitPopup(feature) {
             const props = feature.properties;
             let statusClass = 'review';
-            const status = props.STATUS_CODE || '';
-            if (status === 'DONE' || status === 'ISSUED') {
+            const status = props.Status || '';
+            if (status === 'DONE' || status === 'ISSUED' || status === 'Active') {
                 statusClass = 'active';
-            } else if (status === 'EXPIRED' || status === 'VOID') {
+            } else if (status === 'EXPIRED' || status === 'VOID' || status === 'Inactive') {
                 statusClass = 'expired';
             }
 
             // Format date
             let dateStr = 'N/A';
-            if (props.DATE_ACCEPTED) {
-                const d = new Date(props.DATE_ACCEPTED);
-                dateStr = d.toLocaleDateString();
+            if (props.Date) {
+                try {
+                    const d = new Date(props.Date);
+                    dateStr = d.toLocaleDateString();
+                } catch { dateStr = props.Date; }
             }
 
             // Format sq ft
-            let sqftStr = props.BLDG_SQ_FT ? props.BLDG_SQ_FT.toLocaleString() + ' sq ft' : 'N/A';
+            let sqftStr = props.SqFt ? Number(props.SqFt).toLocaleString() + ' sq ft' : 'N/A';
 
             // Format value
-            let valueStr = props.CONSTVAL ? '$' + props.CONSTVAL.toLocaleString() : 'N/A';
+            let valueStr = props.Value ? '$' + Number(props.Value).toLocaleString() : 'N/A';
 
             return `
                 <div class="permit-popup">
                     <div class="popup-title">DADU Permit</div>
-                    <div class="popup-address">${props.ADDRESS || props.LOCATION || 'Address unavailable'}</div>
+                    <div class="popup-address">${props.Address || 'Address unavailable'}</div>
                     <div class="popup-row">
                         <span class="popup-label">Permit #:</span>
-                        <span class="popup-value">${props.CASE_NUMBER || 'N/A'}</span>
+                        <span class="popup-value">${props.PermitNumber || 'N/A'}</span>
                     </div>
                     <div class="popup-row">
                         <span class="popup-label">Date:</span>
                         <span class="popup-value">${dateStr}</span>
                     </div>
                     <div class="popup-row">
-                        <span class="popup-label">Size:</span>
-                        <span class="popup-value">${sqftStr}</span>
+                        <span class="popup-label">Contractor:</span>
+                        <span class="popup-value">${props.Contractor || 'N/A'}</span>
                     </div>
-                    <div class="popup-row">
-                        <span class="popup-label">Value:</span>
-                        <span class="popup-value">${valueStr}</span>
-                    </div>
+                    ${props.SqFt ? `<div class="popup-row"><span class="popup-label">Size:</span><span class="popup-value">${sqftStr}</span></div>` : ''}
+                    ${props.Value ? `<div class="popup-row"><span class="popup-label">Value:</span><span class="popup-value">${valueStr}</span></div>` : ''}
                     <div class="popup-row">
                         <span class="popup-label">Type:</span>
-                        <span class="popup-value">${props.SUB_TYPE_DESC || 'DADU'}</span>
+                        <span class="popup-value">${props.PermitSubType || props.PermitType || 'DADU'}</span>
                     </div>
                     <div class="permit-status ${statusClass}">${status || 'Unknown'}</div>
-                    ${props.epermits ? `<a href="${props.epermits}" target="_blank" style="display:block; margin-top:10px; color:#3498db; font-size:12px;">View Permit Details →</a>` : ''}
+                    ${props.ePermitURL ? `<a href="${props.ePermitURL}" target="_blank" style="display:block; margin-top:10px; color:#3498db; font-size:12px;">View Permit Details →</a>` : ''}
                 </div>
             `;
         }
@@ -763,9 +763,9 @@
                     footprintsLayer.addTo(map);
                 }
 
-                // Load DADU permits
-                updateProgress('Loading DADU permits...');
-                const permitsResponse = await fetch('ADU_Permits_2025.geojson');
+                // Load DADU permits (combined dataset with all permits)
+                updateProgress('Loading DADU permits (6,400+)...');
+                const permitsResponse = await fetch('DADU_Permits_All.geojson');
                 const permitsData = await permitsResponse.json();
 
                 document.getElementById('permit-count').textContent = permitsData.features.length.toLocaleString();
