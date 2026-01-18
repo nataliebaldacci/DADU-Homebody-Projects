@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Explorer | Homebody Projects</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet@3.0.12/dist/esri-leaflet.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #6b8e4e;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        .logo-text { font-size: 20px; font-weight: 600; }
+        .logo-sub { font-size: 12px; opacity: 0.85; }
+
+        .header-nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+        .header-nav a:hover { opacity: 1; }
+
+        /* Stats Bar */
+        .stats-bar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 12px 25px;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            z-index: 999;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1565c0;
+        }
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        /* Search Box */
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #1565c0;
+        }
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        /* Zoom Info */
+        .zoom-info {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 13px;
+            z-index: 1000;
+            display: none;
+        }
+        .zoom-info.visible { display: block; }
+
+        /* Map */
+        #map {
+            position: fixed;
+            top: 120px;
+            left: 0;
+            right: 400px;
+            bottom: 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 120px;
+            right: 0;
+            width: 400px;
+            bottom: 0;
+            background: #f8f9fa;
+            overflow-y: auto;
+            border-left: 1px solid #e0e0e0;
+        }
+
+        /* Property Card (Property Shark style) */
+        .property-card {
+            background: white;
+            margin: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .property-header {
+            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            color: white;
+            padding: 15px 20px;
+        }
+        .property-address {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .property-type {
+            font-size: 13px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .property-type-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Property Stats Grid */
+        .property-stats {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-row-label {
+            font-size: 13px;
+            color: #666;
+        }
+        .stat-row-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+        .stat-row-value.highlight {
+            color: #1565c0;
+        }
+        .stat-row-value.price {
+            color: #2e7d32;
+        }
+
+        /* Property Section */
+        .property-section {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .property-section:last-child { border-bottom: none; }
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .section-content {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-badge.active { background: #e8f5e9; color: #2e7d32; }
+        .status-badge.completed { background: #e3f2fd; color: #1565c0; }
+        .status-badge.expired { background: #ffebee; color: #c62828; }
+        .status-badge.pending { background: #fff3e0; color: #e65100; }
+
+        /* Action Buttons */
+        .property-actions {
+            padding: 15px 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .action-btn.primary {
+            background: #1565c0;
+            color: white;
+        }
+        .action-btn.primary:hover { background: #0d47a1; }
+        .action-btn.secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+        .action-btn.secondary:hover { background: #e0e0e0; }
+
+        /* Empty State */
+        .empty-state {
+            padding: 60px 30px;
+            text-align: center;
+            color: #888;
+        }
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        .empty-state-text {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .empty-state-sub {
+            font-size: 13px;
+        }
+
+        /* Cluster icons */
+        .marker-cluster-small {
+            background-color: rgba(21, 101, 192, 0.6);
+        }
+        .marker-cluster-small div {
+            background-color: rgba(21, 101, 192, 0.8);
+        }
+        .marker-cluster-medium {
+            background-color: rgba(21, 101, 192, 0.6);
+        }
+        .marker-cluster-medium div {
+            background-color: rgba(21, 101, 192, 0.8);
+        }
+        .marker-cluster-large {
+            background-color: rgba(21, 101, 192, 0.6);
+        }
+        .marker-cluster-large div {
+            background-color: rgba(21, 101, 192, 0.8);
+        }
+
+        /* Filter Panel */
+        .filter-panel {
+            padding: 15px 20px;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 6px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            background: white;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover {
+            border-color: #1565c0;
+            color: #1565c0;
+        }
+        .filter-btn.active {
+            background: #1565c0;
+            border-color: #1565c0;
+            color: white;
+        }
+
+        /* Layer toggles */
+        .layer-toggles {
+            padding: 10px 20px;
+            background: #f0f4f8;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .layer-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .layer-toggle input {
+            accent-color: #1565c0;
+        }
+
+        /* Legend */
+        .legend {
+            position: fixed;
+            bottom: 30px;
+            left: 20px;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 12px;
+        }
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            #map { right: 0; }
+            .sidebar {
+                display: none;
+                width: 100%;
+                top: auto;
+                bottom: 0;
+                height: 50%;
+            }
+            .sidebar.active { display: block; }
+        }
+
+        /* Leaflet popup override */
+        .leaflet-popup-content-wrapper {
+            padding: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .leaflet-popup-content {
+            margin: 0;
+            min-width: 300px;
+        }
+        .popup-card {
+            font-family: 'Avenir Next', -apple-system, sans-serif;
+        }
+        .popup-header {
+            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            color: white;
+            padding: 12px 15px;
+        }
+        .popup-header.dadu-highlight {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+        }
+        .popup-address {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .popup-type {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        .popup-stats {
+            padding: 10px 15px;
+        }
+        .popup-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .popup-row:last-child { border-bottom: none; }
+        .popup-label { color: #666; }
+        .popup-value { font-weight: 600; color: #333; }
+        .popup-actions {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            display: flex;
+            gap: 8px;
+        }
+        .popup-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+        .popup-btn.primary {
+            background: #1565c0;
+            color: white;
+        }
+        .popup-btn.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">🏠</div>
+            <div>
+                <div class="logo-text">DADU Explorer</div>
+                <div class="logo-sub">Nashville Accessory Dwelling Units</div>
+            </div>
+        </div>
+        <div class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="parcel_footprint_map.html">Eligibility Map</a>
+            <a href="contractor_dashboard.html">Contractors</a>
+        </div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value" id="total-count">-</div>
+            <div class="stat-label">Total DADUs</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="completed-count">-</div>
+            <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="avg-sqft">-</div>
+            <div class="stat-label">Avg Size</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="avg-cost">-</div>
+            <div class="stat-label">Avg $/SF</div>
+        </div>
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="search" placeholder="Search by address, contractor, or zip code...">
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="legend">
+        <div class="legend-title">Map Legend</div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #2e7d32;"></div>
+            <span>Completed DADU</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #1565c0;"></div>
+            <span>Active Permit</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #e65100;"></div>
+            <span>Pending</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #c62828;"></div>
+            <span>Expired</span>
+        </div>
+        <div class="legend-item" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee;">
+            <div style="width: 14px; height: 14px; border: 2px solid #1565c0; background: transparent;"></div>
+            <span>Parcel Boundary</span>
+        </div>
+        <div class="legend-item">
+            <div style="width: 14px; height: 14px; background: rgba(107,142,78,0.6); border: 1px solid #5a7a42;"></div>
+            <span>DADU Footprint</span>
+        </div>
+    </div>
+
+    <div class="zoom-info" id="zoom-info">
+        Zoom in to see building footprints and parcel boundaries
+    </div>
+
+    <div class="sidebar">
+        <div class="layer-toggles">
+            <label class="layer-toggle">
+                <input type="checkbox" id="toggle-parcels" checked>
+                <span>Parcel Boundaries</span>
+            </label>
+            <label class="layer-toggle">
+                <input type="checkbox" id="toggle-footprints" checked>
+                <span>Building Footprints</span>
+            </label>
+        </div>
+
+        <div class="filter-panel">
+            <div class="filter-row">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+                <button class="filter-btn" data-filter="active">Active</button>
+                <button class="filter-btn" data-filter="expired">Expired</button>
+            </div>
+        </div>
+
+        <div id="property-detail">
+            <div class="empty-state">
+                <div class="empty-state-icon">📍</div>
+                <div class="empty-state-text">Select a DADU on the map</div>
+                <div class="empty-state-sub">Click any marker to view property details</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/esri-leaflet@3.0.12/dist/esri-leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([36.1627, -86.7816], 11);
+
+        // Add base tile layer
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap, &copy; CARTO',
+            maxZoom: 20
+        }).addTo(map);
+
+        // Nashville ArcGIS service URLs
+        const PARCELS_URL = 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Property_Parcels/FeatureServer/0';
+        const FOOTPRINTS_URL = 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Building_Footprints/FeatureServer/0';
+
+        let allData = [];
+        let markers = L.markerClusterGroup({
+            maxClusterRadius: 50,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            disableClusteringAtZoom: 17
+        });
+        let currentFilter = 'all';
+        let parcelsLayer = null;
+        let footprintsLayer = null;
+        let daduFootprintsLayer = L.layerGroup().addTo(map);
+        let selectedDaduMarker = null;
+
+        // Track loaded features to avoid duplicates
+        let loadedParcels = new Set();
+        let loadedFootprints = new Set();
+
+        // Custom marker icon
+        function createMarkerIcon(status, isSelected = false) {
+            const color = status.toLowerCase().includes('final') || status.toLowerCase().includes('complete') ? '#2e7d32' :
+                         status.toLowerCase().includes('expired') ? '#c62828' :
+                         status.toLowerCase().includes('active') || status.toLowerCase().includes('issued') ? '#1565c0' :
+                         '#e65100';
+
+            const size = isSelected ? 20 : 14;
+            const borderWidth = isSelected ? 4 : 2;
+
+            return L.divIcon({
+                className: 'custom-marker',
+                html: `<div style="
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    border: ${borderWidth}px solid white;
+                    border-radius: 50%;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                    ${isSelected ? 'animation: pulse 1s infinite;' : ''}
+                "></div>
+                <style>
+                    @keyframes pulse {
+                        0% { transform: scale(1); }
+                        50% { transform: scale(1.2); }
+                        100% { transform: scale(1); }
+                    }
+                </style>`,
+                iconSize: [size, size],
+                iconAnchor: [size/2, size/2]
+            });
+        }
+
+        // Get status class
+        function getStatusClass(status) {
+            const s = (status || '').toLowerCase();
+            if (s.includes('final') || s.includes('complete')) return 'completed';
+            if (s.includes('expired')) return 'expired';
+            if (s.includes('active') || s.includes('issued') || s.includes('open')) return 'active';
+            return 'pending';
+        }
+
+        // Format currency
+        function formatCurrency(value) {
+            if (!value) return 'N/A';
+            return '$' + Math.round(value).toLocaleString();
+        }
+
+        // Format date
+        function formatDate(dateStr) {
+            if (!dateStr || dateStr === 'None' || dateStr === 'null') return 'N/A';
+            return dateStr;
+        }
+
+        // Load parcels for a given bounds
+        async function loadParcelsInBounds(bounds) {
+            if (map.getZoom() < 16) return;
+
+            const sw = bounds.getSouthWest();
+            const ne = bounds.getNorthEast();
+
+            const geometry = encodeURIComponent(JSON.stringify({
+                xmin: sw.lng, ymin: sw.lat,
+                xmax: ne.lng, ymax: ne.lat,
+                spatialReference: { wkid: 4326 }
+            }));
+
+            try {
+                const response = await fetch(
+                    `${PARCELS_URL}/query?where=1=1&geometry=${geometry}&geometryType=esriGeometryEnvelope&spatialRel=esriSpatialRelIntersects&outFields=*&returnGeometry=true&f=geojson&outSR=4326`
+                );
+                const data = await response.json();
+
+                if (data.features && parcelsLayer) {
+                    data.features.forEach(f => {
+                        const id = f.properties.OBJECTID || f.properties.APN;
+                        if (!loadedParcels.has(id)) {
+                            loadedParcels.add(id);
+                            const layer = L.geoJSON(f, {
+                                style: {
+                                    color: '#1565c0',
+                                    weight: 2,
+                                    fillOpacity: 0,
+                                    opacity: 0.7
+                                }
+                            });
+                            layer.bindPopup(`<strong>APN:</strong> ${f.properties.APN || 'N/A'}<br><strong>Address:</strong> ${f.properties.PROP_ADDR || 'N/A'}`);
+                            parcelsLayer.addLayer(layer);
+                        }
+                    });
+                }
+            } catch (e) {
+                console.log('Error loading parcels:', e);
+            }
+        }
+
+        // Load footprints for a given bounds
+        async function loadFootprintsInBounds(bounds) {
+            if (map.getZoom() < 16) return;
+
+            const sw = bounds.getSouthWest();
+            const ne = bounds.getNorthEast();
+
+            const geometry = encodeURIComponent(JSON.stringify({
+                xmin: sw.lng, ymin: sw.lat,
+                xmax: ne.lng, ymax: ne.lat,
+                spatialReference: { wkid: 4326 }
+            }));
+
+            try {
+                const response = await fetch(
+                    `${FOOTPRINTS_URL}/query?where=1=1&geometry=${geometry}&geometryType=esriGeometryEnvelope&spatialRel=esriSpatialRelIntersects&outFields=*&returnGeometry=true&f=geojson&outSR=4326`
+                );
+                const data = await response.json();
+
+                if (data.features && footprintsLayer) {
+                    data.features.forEach(f => {
+                        const id = f.properties.OBJECTID || f.id;
+                        if (!loadedFootprints.has(id)) {
+                            loadedFootprints.add(id);
+
+                            // Check if this footprint is near a DADU
+                            const center = L.geoJSON(f).getBounds().getCenter();
+                            const isDadu = isNearDadu(center.lat, center.lng);
+
+                            const layer = L.geoJSON(f, {
+                                style: isDadu ? {
+                                    color: '#2e7d32',
+                                    weight: 3,
+                                    fillColor: '#6b8e4e',
+                                    fillOpacity: 0.5
+                                } : {
+                                    color: '#666',
+                                    weight: 1,
+                                    fillColor: '#888',
+                                    fillOpacity: 0.2
+                                }
+                            });
+
+                            if (isDadu) {
+                                const daduInfo = getNearestDadu(center.lat, center.lng);
+                                if (daduInfo) {
+                                    layer.bindPopup(createDaduFootprintPopup(daduInfo));
+                                    layer.on('click', () => showDetail(daduInfo.permit_number));
+                                }
+                            }
+
+                            footprintsLayer.addLayer(layer);
+                        }
+                    });
+                }
+            } catch (e) {
+                console.log('Error loading footprints:', e);
+            }
+        }
+
+        // Check if a point is near a DADU
+        function isNearDadu(lat, lng) {
+            const threshold = 0.0003; // ~30 meters
+            return allData.some(f => {
+                const coords = f.geometry.coordinates;
+                return Math.abs(coords[1] - lat) < threshold && Math.abs(coords[0] - lng) < threshold;
+            });
+        }
+
+        // Get nearest DADU info
+        function getNearestDadu(lat, lng) {
+            const threshold = 0.0003;
+            const nearest = allData.find(f => {
+                const coords = f.geometry.coordinates;
+                return Math.abs(coords[1] - lat) < threshold && Math.abs(coords[0] - lng) < threshold;
+            });
+            return nearest ? nearest.properties : null;
+        }
+
+        // Create DADU footprint popup
+        function createDaduFootprintPopup(props) {
+            return `
+                <div class="popup-card">
+                    <div class="popup-header dadu-highlight">
+                        <div class="popup-address">${props.address || 'DADU'}</div>
+                        <div class="popup-type">🏠 Accessory Dwelling Unit</div>
+                    </div>
+                    <div class="popup-stats">
+                        <div class="popup-row">
+                            <span class="popup-label">Permit #</span>
+                            <span class="popup-value">${props.permit_number}</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Status</span>
+                            <span class="popup-value"><span class="status-badge ${getStatusClass(props.status)}">${props.status || 'Unknown'}</span></span>
+                        </div>
+                        ${props.sqft ? `<div class="popup-row">
+                            <span class="popup-label">Size</span>
+                            <span class="popup-value">${props.sqft.toLocaleString()} SF</span>
+                        </div>` : ''}
+                        ${props.const_value ? `<div class="popup-row">
+                            <span class="popup-label">Value</span>
+                            <span class="popup-value">${formatCurrency(props.const_value)}</span>
+                        </div>` : ''}
+                    </div>
+                    <div class="popup-actions">
+                        <a href="#" class="popup-btn primary" onclick="showDetail('${props.permit_number}'); return false;">View Details</a>
+                        ${props.epermits_url ? `<a href="${props.epermits_url}" target="_blank" class="popup-btn secondary">ePermits</a>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Create popup content for markers
+        function createPopupContent(props) {
+            const statusClass = getStatusClass(props.status);
+            return `
+                <div class="popup-card">
+                    <div class="popup-header">
+                        <div class="popup-address">${props.address || 'Unknown Address'}</div>
+                        <div class="popup-type">${props.sub_type || props.permit_type || 'DADU'}</div>
+                    </div>
+                    <div class="popup-stats">
+                        <div class="popup-row">
+                            <span class="popup-label">Permit #</span>
+                            <span class="popup-value">${props.permit_number}</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Status</span>
+                            <span class="popup-value"><span class="status-badge ${statusClass}">${props.status || 'Unknown'}</span></span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Date Issued</span>
+                            <span class="popup-value">${formatDate(props.permit_date)}</span>
+                        </div>
+                        ${props.sqft ? `<div class="popup-row">
+                            <span class="popup-label">Size</span>
+                            <span class="popup-value">${props.sqft.toLocaleString()} SF</span>
+                        </div>` : ''}
+                        ${props.const_value ? `<div class="popup-row">
+                            <span class="popup-label">Value</span>
+                            <span class="popup-value">${formatCurrency(props.const_value)}</span>
+                        </div>` : ''}
+                    </div>
+                    <div class="popup-actions">
+                        <a href="#" class="popup-btn primary" onclick="showDetail('${props.permit_number}'); return false;">View Details</a>
+                        ${props.epermits_url ? `<a href="${props.epermits_url}" target="_blank" class="popup-btn secondary">ePermits</a>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show property detail in sidebar
+        function showDetail(permitNumber) {
+            const feature = allData.find(f => f.properties.permit_number === permitNumber);
+            if (!feature) return;
+
+            const props = feature.properties;
+            const statusClass = getStatusClass(props.status);
+
+            // Highlight on map
+            if (selectedDaduMarker) {
+                selectedDaduMarker.setIcon(createMarkerIcon(selectedDaduMarker.options.status));
+            }
+
+            // Zoom to location
+            const coords = feature.geometry.coordinates;
+            map.setView([coords[1], coords[0]], 18);
+
+            document.getElementById('property-detail').innerHTML = `
+                <div class="property-card">
+                    <div class="property-header">
+                        <div class="property-address">${props.address || 'Unknown Address'}</div>
+                        <div class="property-type">
+                            <span class="property-type-badge">${props.sub_type || props.permit_type || 'DADU'}</span>
+                            ${props.zipcode ? `<span>${props.zipcode}</span>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="property-stats">
+                        <div class="stats-grid">
+                            <div class="stat-row">
+                                <span class="stat-row-label">Permit Number</span>
+                                <span class="stat-row-value highlight">${props.permit_number}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-row-label">Status</span>
+                                <span class="stat-row-value"><span class="status-badge ${statusClass}">${props.status || 'Unknown'}</span></span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-row-label">Date Issued</span>
+                                <span class="stat-row-value">${formatDate(props.permit_date)}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-row-label">Final Date</span>
+                                <span class="stat-row-value">${formatDate(props.final_date)}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-row-label">Size</span>
+                                <span class="stat-row-value">${props.sqft ? props.sqft.toLocaleString() + ' SF' : 'N/A'}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-row-label">Construction Value</span>
+                                <span class="stat-row-value price">${formatCurrency(props.const_value)}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-row-label">Cost per SF</span>
+                                <span class="stat-row-value price">${props.cost_per_sf ? '$' + props.cost_per_sf.toFixed(2) + '/SF' : 'N/A'}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-row-label">Permit Fees</span>
+                                <span class="stat-row-value">${formatCurrency(props.fees)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${props.contractor ? `
+                    <div class="property-section">
+                        <div class="section-title">Contractor</div>
+                        <div class="section-content">${props.contractor}</div>
+                    </div>
+                    ` : ''}
+
+                    ${props.owner && props.owner !== 'nan' ? `
+                    <div class="property-section">
+                        <div class="section-title">Owner</div>
+                        <div class="section-content">${props.owner}</div>
+                    </div>
+                    ` : ''}
+
+                    ${props.scope && props.scope !== 'nan' ? `
+                    <div class="property-section">
+                        <div class="section-title">Project Scope</div>
+                        <div class="section-content">${props.scope}</div>
+                    </div>
+                    ` : ''}
+
+                    ${props.apn && props.apn !== 'nan' ? `
+                    <div class="property-section">
+                        <div class="section-title">Parcel Information</div>
+                        <div class="stats-grid">
+                            <div class="stat-row">
+                                <span class="stat-row-label">APN</span>
+                                <span class="stat-row-value">${props.apn}</span>
+                            </div>
+                            ${props.adu_type && props.adu_type !== 'nan' ? `
+                            <div class="stat-row">
+                                <span class="stat-row-label">ADU Type</span>
+                                <span class="stat-row-value">${props.adu_type}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div class="property-actions">
+                        ${props.epermits_url && props.epermits_url !== 'nan' ? `
+                        <a href="${props.epermits_url}" target="_blank" class="action-btn primary">View on ePermits</a>
+                        ` : ''}
+                        ${props.docs_url && props.docs_url !== 'nan' ? `
+                        <a href="${props.docs_url}" target="_blank" class="action-btn secondary">Documents</a>
+                        ` : ''}
+                        ${props.parcel_url && props.parcel_url !== 'nan' ? `
+                        <a href="${props.parcel_url}" target="_blank" class="action-btn secondary">Parcel Viewer</a>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            // On mobile, show sidebar
+            document.querySelector('.sidebar').classList.add('active');
+        }
+
+        // Make showDetail globally available
+        window.showDetail = showDetail;
+
+        // Update markers based on filter
+        function updateMarkers(searchQuery = '') {
+            markers.clearLayers();
+
+            const query = searchQuery.toLowerCase();
+
+            allData.forEach(feature => {
+                const props = feature.properties;
+                const status = props.status || '';
+                const statusClass = getStatusClass(status);
+
+                // Apply filter
+                if (currentFilter !== 'all' && statusClass !== currentFilter) return;
+
+                // Apply search
+                if (query) {
+                    const searchFields = [
+                        props.address,
+                        props.contractor,
+                        props.zipcode,
+                        props.permit_number,
+                        props.owner
+                    ].filter(f => f).join(' ').toLowerCase();
+
+                    if (!searchFields.includes(query)) return;
+                }
+
+                const coords = feature.geometry.coordinates;
+                const marker = L.marker([coords[1], coords[0]], {
+                    icon: createMarkerIcon(status),
+                    status: status
+                });
+
+                marker.bindPopup(createPopupContent(props), {
+                    maxWidth: 320,
+                    className: 'custom-popup'
+                });
+
+                marker.on('click', () => {
+                    showDetail(props.permit_number);
+                });
+
+                markers.addLayer(marker);
+            });
+
+            map.addLayer(markers);
+        }
+
+        // Initialize layers
+        parcelsLayer = L.layerGroup().addTo(map);
+        footprintsLayer = L.layerGroup().addTo(map);
+
+        // Load data on map move (for parcels and footprints)
+        map.on('moveend', () => {
+            const zoom = map.getZoom();
+            const zoomInfo = document.getElementById('zoom-info');
+
+            if (zoom < 16) {
+                zoomInfo.classList.add('visible');
+                // Clear layers at low zoom
+                loadedParcels.clear();
+                loadedFootprints.clear();
+                parcelsLayer.clearLayers();
+                footprintsLayer.clearLayers();
+            } else {
+                zoomInfo.classList.remove('visible');
+                const bounds = map.getBounds();
+                if (document.getElementById('toggle-parcels').checked) {
+                    loadParcelsInBounds(bounds);
+                }
+                if (document.getElementById('toggle-footprints').checked) {
+                    loadFootprintsInBounds(bounds);
+                }
+            }
+        });
+
+        // Layer toggles
+        document.getElementById('toggle-parcels').addEventListener('change', (e) => {
+            if (e.target.checked) {
+                map.addLayer(parcelsLayer);
+                if (map.getZoom() >= 16) {
+                    loadParcelsInBounds(map.getBounds());
+                }
+            } else {
+                map.removeLayer(parcelsLayer);
+            }
+        });
+
+        document.getElementById('toggle-footprints').addEventListener('change', (e) => {
+            if (e.target.checked) {
+                map.addLayer(footprintsLayer);
+                if (map.getZoom() >= 16) {
+                    loadFootprintsInBounds(map.getBounds());
+                }
+            } else {
+                map.removeLayer(footprintsLayer);
+            }
+        });
+
+        // Load DADU data
+        fetch('dadu_explorer_data.geojson')
+            .then(r => r.json())
+            .then(data => {
+                allData = data.features;
+
+                // Calculate stats
+                let completed = 0;
+                let totalSqft = 0;
+                let sqftCount = 0;
+                let totalCostPerSf = 0;
+                let costCount = 0;
+
+                allData.forEach(f => {
+                    const status = f.properties.status || '';
+                    if (status.toLowerCase().includes('final') || status.toLowerCase().includes('complete')) {
+                        completed++;
+                    }
+                    if (f.properties.sqft) {
+                        totalSqft += f.properties.sqft;
+                        sqftCount++;
+                    }
+                    if (f.properties.cost_per_sf) {
+                        totalCostPerSf += f.properties.cost_per_sf;
+                        costCount++;
+                    }
+                });
+
+                document.getElementById('total-count').textContent = allData.length.toLocaleString();
+                document.getElementById('completed-count').textContent = completed.toLocaleString();
+                document.getElementById('avg-sqft').textContent = sqftCount > 0 ? Math.round(totalSqft / sqftCount).toLocaleString() + ' SF' : 'N/A';
+                document.getElementById('avg-cost').textContent = costCount > 0 ? '$' + Math.round(totalCostPerSf / costCount) : 'N/A';
+
+                // Add markers
+                updateMarkers();
+            });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                updateMarkers(document.getElementById('search').value);
+            });
+        });
+
+        // Search
+        document.getElementById('search').addEventListener('input', (e) => {
+            updateMarkers(e.target.value);
+        });
+    </script>
+</body>
+</html>
