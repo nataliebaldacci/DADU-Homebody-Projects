@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Property Explorer | Homebody Projects</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #e74c3c;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: var(--olive);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .logo-text { font-size: 16px; font-weight: 700; }
+        
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        
+        .search-input:focus { outline: none; }
+        
+        .search-btn {
+            padding: 10px 20px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .search-btn:hover { background: var(--olive-dark); }
+        
+        .loading-bar {
+            background: var(--teal);
+            color: white;
+            padding: 8px 25px;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .loading-bar.active { display: block; }
+        
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+        
+        .sidebar {
+            width: 400px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+            max-height: calc(100vh - 60px);
+        }
+        
+        .property-card { padding: 20px; }
+        
+        .property-address {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+        
+        .property-apn {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 15px;
+        }
+        
+        .eligibility-banner {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .eligibility-banner.eligible {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 2px solid var(--success);
+        }
+        
+        .eligibility-banner.not-eligible {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 2px solid var(--error);
+        }
+        
+        .eligibility-banner.check-required {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid var(--warning);
+        }
+        
+        .eligibility-icon { font-size: 32px; }
+        
+        .eligibility-text h3 { font-size: 16px; margin-bottom: 3px; }
+        .eligibility-text p { font-size: 12px; opacity: 0.8; }
+        
+        .specs-box {
+            background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .specs-box h4 { font-size: 14px; margin-bottom: 15px; opacity: 0.9; }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .spec-item { text-align: center; }
+        
+        .spec-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--olive);
+        }
+        
+        .spec-value span { font-size: 14px; opacity: 0.8; }
+        .spec-label { font-size: 11px; opacity: 0.7; margin-top: 3px; }
+        
+        .data-section { margin-bottom: 20px; }
+        
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--teal);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--teal);
+        }
+        
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .data-item {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 8px;
+        }
+        
+        .data-item.full-width { grid-column: 1 / -1; }
+        
+        .data-label {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+        
+        .data-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .data-value.highlight { color: var(--olive); }
+        .data-value.warning { color: var(--warning); }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .action-btn.primary {
+            background: var(--olive);
+            color: white;
+            border: none;
+        }
+        
+        .action-btn.primary:hover { background: var(--olive-dark); }
+        
+        .action-btn.secondary {
+            background: white;
+            color: var(--navy);
+            border: 2px solid var(--navy);
+        }
+        
+        .action-btn.secondary:hover {
+            background: var(--navy);
+            color: white;
+        }
+        
+        .action-btn.premium {
+            background: linear-gradient(135deg, #d4af37, #b8960c);
+            color: white;
+            border: none;
+        }
+        
+        .map-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .map-tabs {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .map-tab {
+            flex: 1;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .map-tab:hover {
+            background: #f5f5f5;
+            color: var(--navy);
+        }
+        
+        .map-tab.active {
+            color: var(--olive);
+            border-bottom-color: var(--olive);
+            background: #f0f7f0;
+        }
+        
+        .map-views {
+            flex: 1;
+            position: relative;
+        }
+        
+        .map-view {
+            position: absolute;
+            inset: 0;
+            display: none;
+        }
+        
+        .map-view.active { display: block; }
+        
+        .map-view .map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .map-legend {
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 11px;
+            max-width: 180px;
+        }
+        
+        .legend-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--navy);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .map-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-width: 220px;
+        }
+        
+        .map-info h4 {
+            font-size: 12px;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+        
+        .map-info p {
+            font-size: 10px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        .empty-state .icon { font-size: 64px; margin-bottom: 20px; }
+        .empty-state h3 { font-size: 18px; color: #555; margin-bottom: 10px; }
+        .empty-state p { font-size: 14px; max-width: 300px; }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0e0e0;
+            border-top-color: var(--olive);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .stats-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 12px;
+        }
+        
+        .stats-badge strong { color: var(--olive); }
+        
+        @media (max-width: 900px) {
+            .main-container { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; order: 2; }
+            .map-section { height: 50vh; order: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/" class="logo">
+            <div class="logo-icon">🏠</div>
+            <span class="logo-text">Homebody Projects</span>
+        </a>
+        
+        <div class="search-container">
+            <input type="text" id="addressInput" class="search-input" placeholder="Enter Nashville address to check DADU eligibility...">
+            <button class="search-btn" onclick="searchProperty()">Search</button>
+        </div>
+    </header>
+    
+    <div class="loading-bar" id="loadingBar">Loading data...</div>
+    
+    <div class="main-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="empty-state" id="emptyState">
+                <div class="icon">🏠</div>
+                <h3>Search for a Property</h3>
+                <p>Enter a Nashville address above to check DADU eligibility and building requirements.</p>
+            </div>
+            
+            <div id="propertyContent" style="display: none;">
+                <div class="property-card" id="propertyCard"></div>
+            </div>
+        </aside>
+        
+        <section class="map-section">
+            <div class="map-tabs">
+                <button class="map-tab active" onclick="switchMap('eligibility', this)">✅ Eligibility</button>
+                <button class="map-tab" onclick="switchMap('permits', this)">📍 Permits</button>
+                <button class="map-tab" onclick="switchMap('footprints', this)">🏗️ Footprints</button>
+            </div>
+            
+            <div class="map-views">
+                <div class="map-view active" id="eligibilityView">
+                    <div id="eligibilityMap" class="map"></div>
+                    <div class="map-legend">
+                        <div class="legend-title">DADU Eligibility</div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #4caf50;"></div>
+                            <span>Eligible (USD)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #8bc34a;"></div>
+                            <span>Eligible (GSD Overlay)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff9800;"></div>
+                            <span>Check Covenant</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #9e9e9e;"></div>
+                            <span>Not Eligible</span>
+                        </div>
+                    </div>
+                    <div class="stats-badge" id="eligibilityStats">Loading eligibility data...</div>
+                </div>
+                
+                <div class="map-view" id="permitsView">
+                    <div id="permitsMap" class="map"></div>
+                    <div class="map-legend">
+                        <div class="legend-title">DADU Permits</div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #4caf50; border-radius: 50%;"></div>
+                            <span>Completed</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #2196f3; border-radius: 50%;"></div>
+                            <span>In Progress</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff9800; border-radius: 50%;"></div>
+                            <span>Expired</span>
+                        </div>
+                    </div>
+                    <div class="stats-badge" id="permitsStats">Loading permit data...</div>
+                </div>
+                
+                <div class="map-view" id="footprintsView">
+                    <div id="footprintsMap" class="map"></div>
+                    <div class="map-legend">
+                        <div class="legend-title">Buildings</div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #2c3e50;"></div>
+                            <span>Building Footprint</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #6b8e4e; opacity: 0.3;"></div>
+                            <span>Parcel Boundary</span>
+                        </div>
+                    </div>
+                    <div class="stats-badge" id="footprintsStats">Loading footprints...</div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // ============================================
+        // DATA URLs - Your GitHub GeoJSON files
+        // ============================================
+        const DATA_BASE = 'https://nataliebaldacci.github.io/DADU-Homebody-Projects/';
+        const DATA_URLS = {
+            eligibility: DATA_BASE + 'eligibility_parcels.geojson',
+            permits: DATA_BASE + 'DADU_Permits_All.geojson',
+            footprints: DATA_BASE + 'dadu_footprints.geojson',
+            parcelsScored: DATA_BASE + 'parcels_scored_v2.json'
+        };
+        
+        // Data storage
+        let eligibilityData = null;
+        let permitsData = null;
+        let footprintsData = null;
+        let parcelsData = null;
+        
+        // Maps
+        const maps = {};
+        let searchMarkers = {};
+        let currentProperty = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            initMaps();
+            await loadAllData();
+        });
+        
+        function initMaps() {
+            const defaultView = [36.16, -86.78];
+            const defaultZoom = 11;
+            
+            // Eligibility Map
+            maps.eligibility = L.map('eligibilityMap').setView(defaultView, defaultZoom);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap, © CartoDB'
+            }).addTo(maps.eligibility);
+            
+            // Permits Map
+            maps.permits = L.map('permitsMap').setView(defaultView, defaultZoom);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap, © CartoDB'
+            }).addTo(maps.permits);
+            
+            // Footprints Map
+            maps.footprints = L.map('footprintsMap').setView(defaultView, defaultZoom);
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '© Esri'
+            }).addTo(maps.footprints);
+            
+            // Search marker groups
+            searchMarkers = {
+                eligibility: L.layerGroup().addTo(maps.eligibility),
+                permits: L.layerGroup().addTo(maps.permits),
+                footprints: L.layerGroup().addTo(maps.footprints)
+            };
+        }
+        
+        async function loadAllData() {
+            const loadingBar = document.getElementById('loadingBar');
+            loadingBar.classList.add('active');
+            loadingBar.textContent = 'Loading eligibility data...';
+            
+            try {
+                // Load eligibility parcels
+                try {
+                    const eligRes = await fetch(DATA_URLS.eligibility);
+                    if (eligRes.ok) {
+                        eligibilityData = await eligRes.json();
+                        document.getElementById('eligibilityStats').innerHTML = 
+                            `<strong>${eligibilityData.features?.length?.toLocaleString() || 0}</strong> parcels loaded`;
+                        addEligibilityLayer();
+                    }
+                } catch (e) {
+                    console.log('Eligibility data not available:', e);
+                    document.getElementById('eligibilityStats').textContent = 'Eligibility data loading...';
+                }
+                
+                loadingBar.textContent = 'Loading permit data...';
+                
+                // Load permits
+                try {
+                    const permRes = await fetch(DATA_URLS.permits);
+                    if (permRes.ok) {
+                        permitsData = await permRes.json();
+                        document.getElementById('permitsStats').innerHTML = 
+                            `<strong>${permitsData.features?.length?.toLocaleString() || 0}</strong> permits loaded`;
+                        addPermitsLayer();
+                    }
+                } catch (e) {
+                    console.log('Permits data not available:', e);
+                    document.getElementById('permitsStats').textContent = 'Permit data loading...';
+                }
+                
+                loadingBar.textContent = 'Loading footprint data...';
+                
+                // Load footprints
+                try {
+                    const footRes = await fetch(DATA_URLS.footprints);
+                    if (footRes.ok) {
+                        footprintsData = await footRes.json();
+                        document.getElementById('footprintsStats').innerHTML = 
+                            `<strong>${footprintsData.features?.length?.toLocaleString() || 0}</strong> footprints loaded`;
+                    }
+                } catch (e) {
+                    console.log('Footprints data not available:', e);
+                    document.getElementById('footprintsStats').textContent = 'Footprint data loading...';
+                }
+                
+                // Load parcel scores for property lookup
+                try {
+                    const parcRes = await fetch(DATA_URLS.parcelsScored);
+                    if (parcRes.ok) {
+                        parcelsData = await parcRes.json();
+                    }
+                } catch (e) {
+                    console.log('Parcels scored data not available:', e);
+                }
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+            
+            loadingBar.classList.remove('active');
+        }
+        
+        function addEligibilityLayer() {
+            if (!eligibilityData || !eligibilityData.features) return;
+            
+            // Sample for performance (show every Nth parcel)
+            const sampleRate = Math.max(1, Math.floor(eligibilityData.features.length / 5000));
+            
+            eligibilityData.features.forEach((feature, i) => {
+                if (i % sampleRate !== 0) return;
+                
+                const props = feature.properties || {};
+                const geom = feature.geometry;
+                if (!geom) return;
+                
+                // Determine eligibility color
+                const isEligible = props.eligible === 1 || props.Eligible === 'Yes' || props.dadu_eligible === true;
+                const hasCovenant = props.has_covenant === 1 || props.covenant_risk === 'High';
+                
+                let color = '#9e9e9e'; // Not eligible
+                if (isEligible && !hasCovenant) color = '#4caf50';
+                else if (isEligible && hasCovenant) color = '#ff9800';
+                else if (props.USD === 0 && isEligible) color = '#8bc34a';
+                
+                try {
+                    if (geom.type === 'Polygon' || geom.type === 'MultiPolygon') {
+                        L.geoJSON(feature, {
+                            style: {
+                                color: color,
+                                fillColor: color,
+                                fillOpacity: 0.4,
+                                weight: 1
+                            }
+                        }).addTo(maps.eligibility);
+                    } else if (geom.type === 'Point') {
+                        L.circleMarker([geom.coordinates[1], geom.coordinates[0]], {
+                            radius: 4,
+                            color: color,
+                            fillColor: color,
+                            fillOpacity: 0.6
+                        }).addTo(maps.eligibility);
+                    }
+                } catch (e) {}
+            });
+        }
+        
+        function addPermitsLayer() {
+            if (!permitsData || !permitsData.features) return;
+            
+            permitsData.features.forEach(feature => {
+                const props = feature.properties || {};
+                const geom = feature.geometry;
+                if (!geom) return;
+                
+                const status = (props.status || props.Status || '').toLowerCase();
+                let color = '#ff9800';
+                if (status.includes('done') || status.includes('complete')) color = '#4caf50';
+                else if (status.includes('issued') || status.includes('active')) color = '#2196f3';
+                
+                let lat, lon;
+                if (geom.type === 'Point') {
+                    lon = geom.coordinates[0];
+                    lat = geom.coordinates[1];
+                } else if (geom.type === 'Polygon') {
+                    const ring = geom.coordinates[0];
+                    lon = ring.reduce((s, c) => s + c[0], 0) / ring.length;
+                    lat = ring.reduce((s, c) => s + c[1], 0) / ring.length;
+                }
+                
+                if (!lat || !lon) return;
+                
+                const marker = L.circleMarker([lat, lon], {
+                    radius: 6,
+                    color: color,
+                    fillColor: color,
+                    fillOpacity: 0.8,
+                    weight: 2
+                });
+                
+                marker.bindPopup(`
+                    <strong>${props.address || props.Address || 'DADU Permit'}</strong><br>
+                    Permit: ${props.permit_number || props.Permit || '-'}<br>
+                    Contractor: ${props.contractor || props.Contractor || '-'}<br>
+                    Status: ${props.status || props.Status || '-'}
+                `);
+                
+                marker.addTo(maps.permits);
+            });
+        }
+        
+        function switchMap(viewName, btn) {
+            document.querySelectorAll('.map-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('.map-view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewName + 'View').classList.add('active');
+            
+            setTimeout(() => {
+                maps[viewName].invalidateSize();
+                if (currentProperty) {
+                    maps[viewName].setView([currentProperty.lat, currentProperty.lon], 17);
+                }
+            }, 100);
+        }
+        
+        async function searchProperty() {
+            const address = document.getElementById('addressInput').value.trim();
+            if (!address) return;
+            
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('propertyContent').style.display = 'block';
+            document.getElementById('propertyCard').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div class="spinner"></div>
+                    <p>Searching property...</p>
+                </div>
+            `;
+            
+            try {
+                // Geocode address
+                const geocodeUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${encodeURIComponent(address + ', Nashville, TN')}&f=json&outFields=*`;
+                const geoRes = await fetch(geocodeUrl);
+                const geoData = await geoRes.json();
+                
+                if (!geoData.candidates || geoData.candidates.length === 0) {
+                    throw new Error('Address not found');
+                }
+                
+                const candidate = geoData.candidates[0];
+                currentProperty = {
+                    lat: candidate.location.y,
+                    lon: candidate.location.x,
+                    address: candidate.address
+                };
+                
+                // Find matching parcel in data
+                let matchedParcel = findNearestParcel(currentProperty.lat, currentProperty.lon);
+                
+                // Update UI
+                updatePropertyCard(matchedParcel);
+                updateMapMarkers();
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                document.getElementById('propertyCard').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <div style="font-size: 48px;">⚠️</div>
+                        <p>Address not found. Please try again.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function findNearestParcel(lat, lon) {
+            // Search in parcels data
+            if (parcelsData && Array.isArray(parcelsData)) {
+                let nearest = null;
+                let minDist = Infinity;
+                
+                parcelsData.forEach(p => {
+                    const pLat = p.lat || p.latitude;
+                    const pLon = p.lon || p.longitude || p.lng;
+                    if (!pLat || !pLon) return;
+                    
+                    const dist = Math.sqrt(Math.pow(lat - pLat, 2) + Math.pow(lon - pLon, 2));
+                    if (dist < minDist) {
+                        minDist = dist;
+                        nearest = p;
+                    }
+                });
+                
+                if (nearest && minDist < 0.001) return nearest;
+            }
+            
+            // Search in eligibility GeoJSON
+            if (eligibilityData && eligibilityData.features) {
+                for (const feature of eligibilityData.features) {
+                    const geom = feature.geometry;
+                    if (!geom) continue;
+                    
+                    if (geom.type === 'Point') {
+                        const dist = Math.sqrt(
+                            Math.pow(lat - geom.coordinates[1], 2) + 
+                            Math.pow(lon - geom.coordinates[0], 2)
+                        );
+                        if (dist < 0.001) return feature.properties;
+                    }
+                }
+            }
+            
+            return null;
+        }
+        
+        function updatePropertyCard(parcel) {
+            const props = parcel || {};
+            
+            // Determine eligibility
+            const isEligible = props.eligible === 1 || props.Eligible === 'Yes' || 
+                              props.dadu_eligible === true || props.e === 1;
+            const hasCovenant = props.has_covenant === 1 || props.covenant_risk === 'High' || 
+                               props.risk === 'High';
+            
+            // Get lot size and calculate max DADU
+            const lotSF = props.lot_sf || props.lot_size || props.ac * 43560 || 
+                         props.acreage * 43560 || 0;
+            const maxLiving = lotSF >= 10000 ? 850 : 700;
+            const maxFootprint = lotSF >= 10000 ? 1000 : 750;
+            
+            const html = `
+                <div class="property-address">${currentProperty.address}</div>
+                <div class="property-apn">APN: ${props.apn || props.APN || props.a || 'N/A'}</div>
+                
+                <div class="eligibility-banner ${isEligible ? (hasCovenant ? 'check-required' : 'eligible') : 'not-eligible'}">
+                    <div class="eligibility-icon">${isEligible ? (hasCovenant ? '⚠️' : '✅') : '❌'}</div>
+                    <div class="eligibility-text">
+                        <h3>${isEligible ? (hasCovenant ? 'Review Required' : 'DADU Eligible!') : 'Not Eligible'}</h3>
+                        <p>${isEligible ? (hasCovenant ? 'Covenant may restrict ADUs' : 'Under BL2025-1007') : 'Zoning does not permit DADUs'}</p>
+                    </div>
+                </div>
+                
+                ${isEligible ? `
+                <div class="specs-box">
+                    <h4>📐 Your DADU Building Limits</h4>
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <div class="spec-value">${maxLiving} <span>SF</span></div>
+                            <div class="spec-label">Max Living Area</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-value">${maxFootprint} <span>SF</span></div>
+                            <div class="spec-label">Max Footprint</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-value">27 <span>FT</span></div>
+                            <div class="spec-label">Max Height</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-value">3-5 <span>FT</span></div>
+                            <div class="spec-label">Setbacks</div>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+                
+                <div class="data-section">
+                    <div class="section-title">📋 Parcel Details</div>
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <div class="data-label">Lot Size</div>
+                            <div class="data-value">${lotSF ? Number(lotSF).toLocaleString() + ' SF' : 'N/A'}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Zoning</div>
+                            <div class="data-value">${props.zoning || props.z || props.ZONE_ || 'N/A'}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Service District</div>
+                            <div class="data-value ${props.USD === 1 ? 'highlight' : ''}">${props.USD === 1 ? 'USD (By-Right)' : 'GSD'}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Property Value</div>
+                            <div class="data-value">${props.v ? '$' + Number(props.v).toLocaleString() : 'N/A'}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                ${hasCovenant ? `
+                <div class="data-section">
+                    <div class="section-title">⚠️ Covenant Warning</div>
+                    <div class="data-grid">
+                        <div class="data-item full-width">
+                            <div class="data-label">Status</div>
+                            <div class="data-value warning">Restrictive covenant on file - review before building</div>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+                
+                <div class="action-buttons">
+                    <a href="https://epermits.nashville.gov/?#/search?address=${encodeURIComponent(currentProperty.address)}" class="action-btn primary" target="_blank">
+                        📋 View Permit History
+                    </a>
+                    <a href="https://maps.nashville.gov/ParcelViewer/" class="action-btn secondary" target="_blank">
+                        🗺️ Nashville Parcel Viewer
+                    </a>
+                    <a href="dadu_near_me_v2.html?address=${encodeURIComponent(currentProperty.address)}" class="action-btn secondary">
+                        📍 Find Nearby DADUs
+                    </a>
+                    <button class="action-btn premium" onclick="alert('Coming soon! Full DADU reports with detailed analysis.')">
+                        🔓 Get Full Report - $19
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('propertyCard').innerHTML = html;
+        }
+        
+        function updateMapMarkers() {
+            const loc = [currentProperty.lat, currentProperty.lon];
+            
+            // Clear and add markers to all maps
+            Object.keys(searchMarkers).forEach(mapName => {
+                searchMarkers[mapName].clearLayers();
+                
+                const marker = L.marker(loc, {
+                    icon: L.divIcon({
+                        className: 'search-marker',
+                        html: '<div style="background: #e74c3c; width: 24px; height: 24px; border-radius: 50%; border: 4px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.4);"></div>',
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 12]
+                    })
+                }).bindPopup(`<strong>${currentProperty.address}</strong>`);
+                
+                searchMarkers[mapName].addLayer(marker);
+                maps[mapName].setView(loc, 17);
+            });
+        }
+        
+        // Enter key handler
+        document.getElementById('addressInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchProperty();
+        });
+    </script>
+</body>
+</html>
