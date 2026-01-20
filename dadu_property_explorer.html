@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Property Explorer | Homebody Projects</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --gold: #d4af37;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #e74c3c;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: #333;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: var(--olive);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        
+        .search-input:focus { outline: none; }
+        
+        .search-btn {
+            padding: 10px 20px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .search-btn:hover { background: var(--olive-dark); }
+        
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 400px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+            max-height: calc(100vh - 60px);
+        }
+        
+        /* Property Card */
+        .property-card {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .property-card.loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        .property-address {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+        
+        .property-apn {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 15px;
+        }
+        
+        /* Eligibility Banner */
+        .eligibility-banner {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .eligibility-banner.eligible {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 2px solid var(--success);
+        }
+        
+        .eligibility-banner.not-eligible {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 2px solid var(--error);
+        }
+        
+        .eligibility-banner.check-required {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid var(--warning);
+        }
+        
+        .eligibility-icon {
+            font-size: 32px;
+        }
+        
+        .eligibility-text h3 {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .eligibility-text p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        /* Data Sections */
+        .data-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--teal);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--teal);
+        }
+        
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .data-item {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 8px;
+        }
+        
+        .data-item.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .data-label {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+        
+        .data-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .data-value.highlight {
+            color: var(--olive);
+        }
+        
+        .data-value.warning {
+            color: var(--warning);
+        }
+        
+        .data-value.error {
+            color: var(--error);
+        }
+        
+        /* Building Specs Box */
+        .specs-box {
+            background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .specs-box h4 {
+            font-size: 14px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .spec-item {
+            text-align: center;
+        }
+        
+        .spec-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--olive);
+        }
+        
+        .spec-value span {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .spec-label {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 3px;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .action-btn.primary {
+            background: var(--olive);
+            color: white;
+            border: none;
+        }
+        
+        .action-btn.primary:hover {
+            background: var(--olive-dark);
+        }
+        
+        .action-btn.secondary {
+            background: white;
+            color: var(--navy);
+            border: 2px solid var(--navy);
+        }
+        
+        .action-btn.secondary:hover {
+            background: var(--navy);
+            color: white;
+        }
+        
+        .action-btn.premium {
+            background: linear-gradient(135deg, var(--gold), #b8960c);
+            color: white;
+            border: none;
+        }
+        
+        .action-btn.premium:hover {
+            filter: brightness(1.1);
+        }
+        
+        /* Map Container */
+        .map-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Map Tabs */
+        .map-tabs {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .map-tab {
+            flex: 1;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .map-tab:hover {
+            background: #f5f5f5;
+            color: var(--navy);
+        }
+        
+        .map-tab.active {
+            color: var(--olive);
+            border-bottom-color: var(--olive);
+            background: #f0f7f0;
+        }
+        
+        /* Map Views */
+        .map-views {
+            flex: 1;
+            position: relative;
+        }
+        
+        .map-view {
+            position: absolute;
+            inset: 0;
+            display: none;
+        }
+        
+        .map-view.active {
+            display: block;
+        }
+        
+        .map-view .map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Map Legend */
+        .map-legend {
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 11px;
+            max-width: 200px;
+        }
+        
+        .legend-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--navy);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        /* Map Info Box */
+        .map-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-width: 250px;
+        }
+        
+        .map-info h4 {
+            font-size: 13px;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        
+        .map-info p {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+            max-width: 300px;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0e0e0;
+            border-top-color: var(--olive);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: none;
+                order: 2;
+            }
+            
+            .map-section {
+                height: 50vh;
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/" class="logo">
+            <div class="logo-icon">🏠</div>
+            <span class="logo-text">Homebody Projects</span>
+        </a>
+        
+        <div class="search-container">
+            <input type="text" id="addressInput" class="search-input" placeholder="Enter Nashville address to check DADU eligibility...">
+            <button class="search-btn" onclick="searchProperty()">Search</button>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="empty-state" id="emptyState">
+                <div class="icon">🏠</div>
+                <h3>Search for a Property</h3>
+                <p>Enter a Nashville address above to check DADU eligibility and building requirements.</p>
+            </div>
+            
+            <div id="propertyContent" style="display: none;">
+                <!-- Property Card -->
+                <div class="property-card" id="propertyCard">
+                    <div class="property-address" id="propertyAddress">-</div>
+                    <div class="property-apn" id="propertyApn">APN: -</div>
+                    
+                    <!-- Eligibility Banner -->
+                    <div class="eligibility-banner eligible" id="eligibilityBanner">
+                        <div class="eligibility-icon">✅</div>
+                        <div class="eligibility-text">
+                            <h3 id="eligibilityTitle">DADU Eligible</h3>
+                            <p id="eligibilitySubtitle">This property qualifies for a DADU</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Building Specs -->
+                    <div class="specs-box" id="specsBox">
+                        <h4>📐 Your DADU Building Limits</h4>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <div class="spec-value" id="maxLiving">850 <span>SF</span></div>
+                                <div class="spec-label">Max Living Area</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value" id="maxFootprint">1,000 <span>SF</span></div>
+                                <div class="spec-label">Max Footprint</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value" id="maxHeight">27 <span>FT</span></div>
+                                <div class="spec-label">Max Height</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value" id="setbacks">3-5 <span>FT</span></div>
+                                <div class="spec-label">Setbacks</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Parcel Details -->
+                    <div class="data-section">
+                        <div class="section-title">📋 Parcel Details</div>
+                        <div class="data-grid">
+                            <div class="data-item">
+                                <div class="data-label">Lot Size</div>
+                                <div class="data-value" id="lotSize">-</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Zoning</div>
+                                <div class="data-value" id="zoning">-</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Service District</div>
+                                <div class="data-value" id="serviceDistrict">-</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Council District</div>
+                                <div class="data-value" id="councilDistrict">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Existing Buildings -->
+                    <div class="data-section">
+                        <div class="section-title">🏗️ Existing Structures</div>
+                        <div class="data-grid">
+                            <div class="data-item">
+                                <div class="data-label">Buildings on Lot</div>
+                                <div class="data-value" id="buildingCount">-</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Main Structure Height</div>
+                                <div class="data-value" id="mainHeight">-</div>
+                            </div>
+                            <div class="data-item full-width">
+                                <div class="data-label">Year Built</div>
+                                <div class="data-value" id="yearBuilt">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Covenant Warning -->
+                    <div class="data-section" id="covenantSection" style="display: none;">
+                        <div class="section-title">⚠️ Restrictive Covenant</div>
+                        <div class="data-grid">
+                            <div class="data-item full-width">
+                                <div class="data-label">Covenant Status</div>
+                                <div class="data-value warning" id="covenantStatus">Review Required</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <a href="#" class="action-btn primary" id="btnPermitHistory" target="_blank">
+                            📋 View Permit History
+                        </a>
+                        <a href="#" class="action-btn secondary" id="btnPropertyCard" target="_blank">
+                            📄 Property Assessment Card
+                        </a>
+                        <a href="#" class="action-btn secondary" id="btnParcelViewer" target="_blank">
+                            🗺️ Nashville Parcel Viewer
+                        </a>
+                        <button class="action-btn premium" onclick="showPremiumModal()">
+                            🔓 Get Full DADU Report - $19
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Map Section -->
+        <section class="map-section">
+            <!-- Map Tabs -->
+            <div class="map-tabs">
+                <button class="map-tab active" onclick="switchMap('eligibility')">
+                    ✅ Eligibility Map
+                </button>
+                <button class="map-tab" onclick="switchMap('enriched')">
+                    📊 Detailed Analysis
+                </button>
+                <button class="map-tab" onclick="switchMap('footprints')">
+                    🏗️ Building Footprints
+                </button>
+                <button class="map-tab" onclick="switchMap('permits')">
+                    📍 Nearby Permits
+                </button>
+            </div>
+            
+            <!-- Map Views -->
+            <div class="map-views">
+                <!-- Eligibility Map -->
+                <div class="map-view active" id="eligibilityView">
+                    <div id="eligibilityMap" class="map"></div>
+                    <div class="map-legend">
+                        <div class="legend-title">DADU Eligibility</div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #4caf50;"></div>
+                            <span>Eligible (USD By-Right)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #8bc34a;"></div>
+                            <span>Eligible (GSD Overlay)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff9800;"></div>
+                            <span>Check Required</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #9e9e9e;"></div>
+                            <span>Not Eligible</span>
+                        </div>
+                    </div>
+                    <div class="map-info">
+                        <h4>Basic Eligibility Check</h4>
+                        <p>Shows whether parcels are eligible for DADU construction under BL2025-1007 based on zoning and service district.</p>
+                    </div>
+                </div>
+                
+                <!-- Enriched Map -->
+                <div class="map-view" id="enrichedView">
+                    <div id="enrichedMap" class="map"></div>
+                    <div class="map-legend">
+                        <div class="legend-title">DADU Size Allowed</div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #1565c0;"></div>
+                            <span>850 SF (Lot ≥ 10,000 SF)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #42a5f5;"></div>
+                            <span>700 SF (Lot < 10,000 SF)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ffb74d;"></div>
+                            <span>Has Covenant (Review)</span>
+                        </div>
+                    </div>
+                    <div class="map-info">
+                        <h4>Detailed Analysis</h4>
+                        <p>Shows maximum DADU size based on lot size, covenant warnings, and building specifications.</p>
+                    </div>
+                </div>
+                
+                <!-- Footprints Map -->
+                <div class="map-view" id="footprintsView">
+                    <div id="footprintsMap" class="map"></div>
+                    <div class="map-legend">
+                        <div class="legend-title">Building Types</div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #2c3e50;"></div>
+                            <span>Main Structure</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #6b8fa3;"></div>
+                            <span>Accessory Building</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #6b8e4e; opacity: 0.5;"></div>
+                            <span>Parcel Boundary</span>
+                        </div>
+                    </div>
+                    <div class="map-info">
+                        <h4>Building Footprints</h4>
+                        <p>Shows existing structures on the property with heights and building types for site planning.</p>
+                    </div>
+                </div>
+                
+                <!-- Permits Map -->
+                <div class="map-view" id="permitsView">
+                    <div id="permitsMap" class="map"></div>
+                    <div class="map-legend">
+                        <div class="legend-title">DADU Permits</div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #4caf50; border-radius: 50%;"></div>
+                            <span>Completed</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #2196f3; border-radius: 50%;"></div>
+                            <span>In Progress</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff9800; border-radius: 50%;"></div>
+                            <span>Expired</span>
+                        </div>
+                    </div>
+                    <div class="map-info">
+                        <h4>Nearby DADU Permits</h4>
+                        <p>Shows DADU permits within 1 mile with contractor info and project details.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // ============================================
+        // CONFIGURATION - Your ArcGIS Layers
+        // ============================================
+        const LAYERS = {
+            eligibility: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0',
+            buildingSpecs: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Building_Specs_20260119_042856/FeatureServer/0',
+            footprints: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Footprints_With_ParcelData_20260118_011423/FeatureServer/0',
+            permits: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_Final/FeatureServer/0'
+        };
+        
+        // Initialize maps
+        const maps = {};
+        let currentProperty = null;
+        let searchMarkers = {};
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initMaps();
+        });
+        
+        function initMaps() {
+            const defaultView = [36.16, -86.78];
+            const defaultZoom = 11;
+            
+            // Eligibility Map
+            maps.eligibility = L.map('eligibilityMap').setView(defaultView, defaultZoom);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap, © CartoDB'
+            }).addTo(maps.eligibility);
+            
+            // Enriched Map
+            maps.enriched = L.map('enrichedMap').setView(defaultView, defaultZoom);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap, © CartoDB'
+            }).addTo(maps.enriched);
+            
+            // Footprints Map
+            maps.footprints = L.map('footprintsMap').setView(defaultView, defaultZoom);
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '© Esri'
+            }).addTo(maps.footprints);
+            
+            // Permits Map
+            maps.permits = L.map('permitsMap').setView(defaultView, defaultZoom);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap, © CartoDB'
+            }).addTo(maps.permits);
+            
+            // Initialize marker groups
+            searchMarkers = {
+                eligibility: L.layerGroup().addTo(maps.eligibility),
+                enriched: L.layerGroup().addTo(maps.enriched),
+                footprints: L.layerGroup().addTo(maps.footprints),
+                permits: L.layerGroup().addTo(maps.permits)
+            };
+        }
+        
+        // Switch map view
+        function switchMap(viewName) {
+            // Update tabs
+            document.querySelectorAll('.map-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update views
+            document.querySelectorAll('.map-view').forEach(view => view.classList.remove('active'));
+            document.getElementById(viewName + 'View').classList.add('active');
+            
+            // Invalidate map size
+            setTimeout(() => {
+                maps[viewName].invalidateSize();
+                if (currentProperty) {
+                    maps[viewName].setView([currentProperty.lat, currentProperty.lon], 17);
+                }
+            }, 100);
+        }
+        
+        // Search property
+        async function searchProperty() {
+            const address = document.getElementById('addressInput').value.trim();
+            if (!address) return;
+            
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('propertyContent').style.display = 'block';
+            document.getElementById('propertyCard').innerHTML = `
+                <div class="property-card loading">
+                    <div class="spinner"></div>
+                    <p>Searching property data...</p>
+                </div>
+            `;
+            
+            try {
+                // Geocode
+                const geocodeUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${encodeURIComponent(address + ', Nashville, TN')}&f=json&outFields=*`;
+                const geoRes = await fetch(geocodeUrl);
+                const geoData = await geoRes.json();
+                
+                if (!geoData.candidates || geoData.candidates.length === 0) {
+                    throw new Error('Address not found');
+                }
+                
+                const candidate = geoData.candidates[0];
+                currentProperty = {
+                    lat: candidate.location.y,
+                    lon: candidate.location.x,
+                    address: candidate.address
+                };
+                
+                // Query all layers
+                const [eligibilityData, specsData, footprintsData, permitsData] = await Promise.all([
+                    queryLayer(LAYERS.eligibility, currentProperty),
+                    queryLayer(LAYERS.buildingSpecs, currentProperty),
+                    queryLayer(LAYERS.footprints, currentProperty),
+                    queryNearbyPermits(LAYERS.permits, currentProperty)
+                ]);
+                
+                // Update UI
+                updatePropertyCard(eligibilityData, specsData);
+                updateMaps(eligibilityData, specsData, footprintsData, permitsData);
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                document.getElementById('propertyCard').innerHTML = `
+                    <div class="property-card loading">
+                        <div style="font-size: 48px; margin-bottom: 15px;">⚠️</div>
+                        <p>Error loading property data. Please try again.</p>
+                        <p style="font-size: 12px; color: #999; margin-top: 10px;">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Query layer at point
+        async function queryLayer(layerUrl, location) {
+            const queryUrl = `${layerUrl}/query?` + new URLSearchParams({
+                geometry: JSON.stringify({ x: location.lon, y: location.lat, spatialReference: { wkid: 4326 } }),
+                geometryType: 'esriGeometryPoint',
+                inSR: 4326,
+                spatialRel: 'esriSpatialRelIntersects',
+                outFields: '*',
+                returnGeometry: true,
+                outSR: 4326,
+                f: 'json'
+            });
+            
+            const response = await fetch(queryUrl);
+            const data = await response.json();
+            return data.features && data.features.length > 0 ? data.features[0] : null;
+        }
+        
+        // Query nearby permits
+        async function queryNearbyPermits(layerUrl, location) {
+            const radiusMeters = 1609.34; // 1 mile
+            
+            const queryUrl = `${layerUrl}/query?` + new URLSearchParams({
+                where: '1=1',
+                geometry: JSON.stringify({ x: location.lon, y: location.lat, spatialReference: { wkid: 4326 } }),
+                geometryType: 'esriGeometryPoint',
+                inSR: 4326,
+                spatialRel: 'esriSpatialRelIntersects',
+                distance: radiusMeters,
+                units: 'esriSRUnit_Meter',
+                outFields: '*',
+                returnGeometry: true,
+                outSR: 4326,
+                f: 'json'
+            });
+            
+            const response = await fetch(queryUrl);
+            const data = await response.json();
+            return data.features || [];
+        }
+        
+        // Update property card
+        function updatePropertyCard(eligibilityData, specsData) {
+            const props = eligibilityData?.attributes || specsData?.attributes || {};
+            
+            // Determine eligibility
+            const isEligible = props.Eligible === 'Yes' || props.eligible === 1 || props.DADU_Eligible === 'Y';
+            const hasCovennat = props.Has_Covenant === 'Yes' || props.covenant_risk === 'High';
+            
+            // Get building specs
+            const maxLiving = props.Max_Living_SF || props.max_living || (props.lot_sf >= 10000 ? 850 : 700);
+            const maxFootprint = props.Max_Footprint_SF || props.max_footprint || (props.lot_sf >= 10000 ? 1000 : 750);
+            const lotSize = props.lot_sf || props.Lot_Size || props.ACRES ? (props.ACRES * 43560).toFixed(0) : '-';
+            
+            const html = `
+                <div class="property-address">${currentProperty.address}</div>
+                <div class="property-apn">APN: ${props.APN || props.apn || props.STANPAR || '-'}</div>
+                
+                <div class="eligibility-banner ${isEligible ? 'eligible' : hasCovennat ? 'check-required' : 'not-eligible'}">
+                    <div class="eligibility-icon">${isEligible ? '✅' : hasCovennat ? '⚠️' : '❌'}</div>
+                    <div class="eligibility-text">
+                        <h3>${isEligible ? 'DADU Eligible!' : hasCovennat ? 'Review Required' : 'Not Eligible'}</h3>
+                        <p>${isEligible ? 'This property qualifies under BL2025-1007' : hasCovennat ? 'Restrictive covenant may apply' : 'Property does not meet DADU requirements'}</p>
+                    </div>
+                </div>
+                
+                ${isEligible ? `
+                <div class="specs-box">
+                    <h4>📐 Your DADU Building Limits</h4>
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <div class="spec-value">${maxLiving} <span>SF</span></div>
+                            <div class="spec-label">Max Living Area</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-value">${maxFootprint} <span>SF</span></div>
+                            <div class="spec-label">Max Footprint</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-value">27 <span>FT</span></div>
+                            <div class="spec-label">Max Height</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-value">3-5 <span>FT</span></div>
+                            <div class="spec-label">Setbacks</div>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+                
+                <div class="data-section">
+                    <div class="section-title">📋 Parcel Details</div>
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <div class="data-label">Lot Size</div>
+                            <div class="data-value">${Number(lotSize).toLocaleString()} SF</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Zoning</div>
+                            <div class="data-value">${props.zoning || props.Zoning || props.ZONE_ || '-'}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Service District</div>
+                            <div class="data-value ${props.USD === 1 || props.service_district === 'USD' ? 'highlight' : ''}">${props.USD === 1 || props.service_district === 'USD' ? 'USD (By-Right)' : 'GSD (Overlay Req.)'}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Council District</div>
+                            <div class="data-value">${props.council_district || props.Council_District || '-'}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="data-section">
+                    <div class="section-title">🏗️ Existing Structures</div>
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <div class="data-label">Buildings on Lot</div>
+                            <div class="data-value">${props.building_count || props.Bldg_Count || '1'}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Main Structure Height</div>
+                            <div class="data-value">${props.max_height || props.Max_Height || '-'} ft</div>
+                        </div>
+                        <div class="data-item full-width">
+                            <div class="data-label">Year Built</div>
+                            <div class="data-value">${props.yearbuilt || props.YearBuilt || '-'}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                ${hasCovennat ? `
+                <div class="data-section">
+                    <div class="section-title">⚠️ Restrictive Covenant</div>
+                    <div class="data-grid">
+                        <div class="data-item full-width">
+                            <div class="data-label">Status</div>
+                            <div class="data-value warning">Covenant on file - review required before building</div>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+                
+                <div class="action-buttons">
+                    <a href="https://epermits.nashville.gov/?#/search?address=${encodeURIComponent(currentProperty.address)}" class="action-btn primary" target="_blank">
+                        📋 View Permit History
+                    </a>
+                    <a href="https://maps.nashville.gov/ParcelViewer/?pin=${props.APN || props.apn || ''}" class="action-btn secondary" target="_blank">
+                        🗺️ Nashville Parcel Viewer
+                    </a>
+                    <button class="action-btn premium" onclick="alert('Coming soon! Full DADU reports with detailed analysis.')">
+                        🔓 Get Full DADU Report - $19
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('propertyCard').innerHTML = html;
+        }
+        
+        // Update all maps
+        function updateMaps(eligibilityData, specsData, footprintsData, permitsData) {
+            const loc = [currentProperty.lat, currentProperty.lon];
+            
+            // Clear all markers
+            Object.values(searchMarkers).forEach(group => group.clearLayers());
+            
+            // Add search marker to all maps
+            Object.keys(maps).forEach(mapName => {
+                const marker = L.marker(loc, {
+                    icon: L.divIcon({
+                        className: 'search-marker',
+                        html: '<div style="background: #6b8e4e; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
+                        iconSize: [20, 20],
+                        iconAnchor: [10, 10]
+                    })
+                });
+                searchMarkers[mapName].addLayer(marker);
+                maps[mapName].setView(loc, 17);
+            });
+            
+            // Add parcel outline if geometry available
+            if (eligibilityData?.geometry?.rings) {
+                const coords = eligibilityData.geometry.rings[0].map(c => [c[1], c[0]]);
+                ['eligibility', 'enriched', 'footprints'].forEach(mapName => {
+                    L.polygon(coords, {
+                        color: '#6b8e4e',
+                        fillColor: '#6b8e4e',
+                        fillOpacity: 0.2,
+                        weight: 3
+                    }).addTo(searchMarkers[mapName]);
+                });
+            }
+            
+            // Add footprints if available
+            if (footprintsData?.geometry?.rings) {
+                const coords = footprintsData.geometry.rings[0].map(c => [c[1], c[0]]);
+                L.polygon(coords, {
+                    color: '#2c3e50',
+                    fillColor: '#2c3e50',
+                    fillOpacity: 0.7,
+                    weight: 2
+                }).addTo(searchMarkers.footprints);
+            }
+            
+            // Add nearby permits
+            if (permitsData && permitsData.length > 0) {
+                permitsData.forEach(permit => {
+                    const props = permit.attributes;
+                    const geom = permit.geometry;
+                    if (!geom) return;
+                    
+                    const lat = geom.y || (geom.rings ? geom.rings[0][0][1] : null);
+                    const lon = geom.x || (geom.rings ? geom.rings[0][0][0] : null);
+                    if (!lat || !lon) return;
+                    
+                    const status = (props.status || '').toLowerCase();
+                    const color = status.includes('done') ? '#4caf50' : status.includes('issued') ? '#2196f3' : '#ff9800';
+                    
+                    const marker = L.circleMarker([lat, lon], {
+                        radius: 8,
+                        color: color,
+                        fillColor: color,
+                        fillOpacity: 0.8,
+                        weight: 2
+                    });
+                    
+                    marker.bindPopup(`
+                        <strong>${props.address || 'DADU Permit'}</strong><br>
+                        Permit: ${props.permit_number || '-'}<br>
+                        Contractor: ${props.contractor || '-'}<br>
+                        Status: ${props.status || '-'}
+                    `);
+                    
+                    searchMarkers.permits.addLayer(marker);
+                });
+            }
+        }
+        
+        // Premium modal
+        function showPremiumModal() {
+            alert('Coming soon! Full DADU reports will include:\n\n• Detailed eligibility analysis\n• Maximum building specifications\n• Setback calculations\n• Covenant review\n• Permit checklist\n• Contractor recommendations');
+        }
+        
+        // Enter key handler
+        document.getElementById('addressInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchProperty();
+        });
+    </script>
+</body>
+</html>
