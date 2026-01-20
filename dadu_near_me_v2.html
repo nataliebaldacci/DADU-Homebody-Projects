@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find DADUs Near Me | Homebody Projects</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: #333;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: var(--olive);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 66px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 420px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Search Section */
+        .search-section {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .search-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--olive);
+        }
+        
+        .search-btn {
+            padding: 12px 20px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .search-btn:hover {
+            background: var(--olive-dark);
+        }
+        
+        .search-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Distance Selector */
+        .distance-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .distance-label {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .distance-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        
+        /* Location Info */
+        .location-info {
+            padding: 15px 20px;
+            background: #f0f7f0;
+            border-bottom: 1px solid #eee;
+            display: none;
+        }
+        
+        .location-info.active {
+            display: block;
+        }
+        
+        .location-address {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+        
+        .location-meta {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Results */
+        .results-section {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .results-header {
+            padding: 15px 20px;
+            background: var(--navy);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .results-header span {
+            opacity: 0.8;
+            font-weight: 400;
+        }
+        
+        .contractor-summary {
+            font-size: 11px;
+            background: var(--tan);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        
+        .results-list {
+            list-style: none;
+        }
+        
+        .result-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .result-item:hover {
+            background: #f5f5f5;
+        }
+        
+        .result-item.active {
+            background: #e8f5e9;
+            border-left: 4px solid var(--olive);
+        }
+        
+        .result-distance {
+            display: inline-block;
+            padding: 3px 8px;
+            background: var(--teal);
+            color: white;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .result-address {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+        
+        .result-meta {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        
+        .result-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .result-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .result-status.done { background: #e8f5e9; color: #2e7d32; }
+        .result-status.issued { background: #e3f2fd; color: #1565c0; }
+        .result-status.expired { background: #fbe9e7; color: #d84315; }
+        
+        .contractor-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--tan);
+            color: white;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: #888;
+        }
+        
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .empty-state h3 {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        
+        .empty-state p {
+            font-size: 13px;
+        }
+        
+        /* Loading */
+        .loading {
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0e0e0;
+            border-top-color: var(--olive);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Map */
+        .map-container {
+            flex: 1;
+            position: relative;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Custom Markers */
+        .search-marker {
+            background: var(--olive);
+            border: 3px solid white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        
+        .permit-marker {
+            background: var(--teal);
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .permit-marker.done { background: #4caf50; }
+        .permit-marker.issued { background: #2196f3; }
+        .permit-marker.expired { background: #ff9800; }
+        
+        /* Popup */
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            padding: 0;
+        }
+        
+        .leaflet-popup-content {
+            margin: 0;
+            min-width: 280px;
+        }
+        
+        .popup-header {
+            background: var(--navy);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .popup-header h4 {
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+        
+        .popup-header .distance {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+        
+        .popup-body {
+            padding: 15px;
+        }
+        
+        .popup-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+        }
+        
+        .popup-row:last-child {
+            border-bottom: none;
+        }
+        
+        .popup-label {
+            color: #888;
+        }
+        
+        .popup-value {
+            font-weight: 600;
+            color: #333;
+            text-align: right;
+            max-width: 60%;
+        }
+        
+        .popup-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 12px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .popup-btn:hover {
+            background: var(--olive-dark);
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .stats-bar.active {
+            display: block;
+        }
+        
+        .stats-row {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Legend */
+        .map-legend {
+            position: absolute;
+            bottom: 30px;
+            left: 10px;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 12px;
+        }
+        
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--navy);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .legend-dot.search { background: var(--olive); width: 14px; height: 14px; }
+        .legend-dot.done { background: #4caf50; }
+        .legend-dot.issued { background: #2196f3; }
+        .legend-dot.expired { background: #ff9800; }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 45%;
+            }
+            
+            .map-container {
+                height: 55%;
+            }
+            
+            .stats-bar {
+                top: auto;
+                bottom: 80px;
+                right: 10px;
+                left: 10px;
+            }
+            
+            .stats-row {
+                justify-content: space-around;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/" class="logo">
+            <div class="logo-icon">🏠</div>
+            <span class="logo-text">Homebody</span>
+        </a>
+        <h1>📍 Find DADUs & Contractors Near You</h1>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Search -->
+            <div class="search-section">
+                <div class="search-title">Enter Your Nashville Address</div>
+                <div class="search-box">
+                    <input type="text" id="addressInput" class="search-input" placeholder="123 Main St, Nashville, TN">
+                    <button id="searchBtn" class="search-btn" onclick="searchAddress()">Search</button>
+                </div>
+                <div class="distance-row">
+                    <span class="distance-label">Search within:</span>
+                    <select id="distanceSelect" class="distance-select" onchange="updateSearch()">
+                        <option value="0.25">¼ mile</option>
+                        <option value="0.5" selected>½ mile</option>
+                        <option value="1">1 mile</option>
+                        <option value="2">2 miles</option>
+                        <option value="5">5 miles</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Location Info -->
+            <div class="location-info" id="locationInfo">
+                <div class="location-address" id="locationAddress">-</div>
+                <div class="location-meta" id="locationMeta">-</div>
+            </div>
+            
+            <!-- Results -->
+            <div class="results-section">
+                <div class="results-header" id="resultsHeader" style="display: none;">
+                    <div>
+                        <span id="resultsCount">0</span> DADU Permits Found
+                    </div>
+                    <div class="contractor-summary" id="contractorSummary">0 contractors</div>
+                </div>
+                
+                <div id="resultsContainer">
+                    <div class="empty-state">
+                        <div class="icon">🔍</div>
+                        <h3>Search for nearby DADUs</h3>
+                        <p>Enter your Nashville address to find DADU permits and contractors in your area.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Map -->
+        <div class="map-container">
+            <div id="map"></div>
+            
+            <div class="stats-bar" id="statsBar">
+                <div class="stats-row">
+                    <div class="stat">
+                        <div class="stat-value" id="statPermits">0</div>
+                        <div class="stat-label">Permits</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="statContractors">0</div>
+                        <div class="stat-label">Contractors</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="statCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-legend">
+                <div class="legend-title">Legend</div>
+                <div class="legend-item">
+                    <div class="legend-dot search"></div>
+                    <span>Your Location</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot done"></div>
+                    <span>Completed</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot issued"></div>
+                    <span>In Progress</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot expired"></div>
+                    <span>Expired</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ============================================
+        // CONFIGURATION - Your ArcGIS Layer
+        // ============================================
+        const PERMIT_LAYER_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_Final/FeatureServer/0';
+        
+        // Initialize map
+        const map = L.map('map').setView([36.16, -86.78], 11);
+        
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap, © CartoDB',
+            maxZoom: 19
+        }).addTo(map);
+        
+        // Layers
+        let searchMarker = null;
+        let searchCircle = null;
+        let permitMarkers = L.layerGroup().addTo(map);
+        
+        // State
+        let searchLocation = null;
+        let nearbyPermits = [];
+        
+        // Search address
+        async function searchAddress() {
+            const address = document.getElementById('addressInput').value.trim();
+            if (!address) return;
+            
+            const btn = document.getElementById('searchBtn');
+            btn.disabled = true;
+            btn.textContent = '...';
+            
+            document.getElementById('resultsContainer').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Searching nearby permits...</p>
+                </div>
+            `;
+            
+            try {
+                // Geocode
+                const geocodeUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${encodeURIComponent(address + ', Nashville, TN')}&f=json&outFields=*`;
+                const geoRes = await fetch(geocodeUrl);
+                const geoData = await geoRes.json();
+                
+                if (!geoData.candidates || geoData.candidates.length === 0) {
+                    throw new Error('Address not found');
+                }
+                
+                const candidate = geoData.candidates[0];
+                searchLocation = {
+                    lat: candidate.location.y,
+                    lon: candidate.location.x,
+                    address: candidate.address
+                };
+                
+                // Update location info
+                document.getElementById('locationInfo').classList.add('active');
+                document.getElementById('locationAddress').textContent = candidate.address;
+                document.getElementById('locationMeta').textContent = `Coordinates: ${searchLocation.lat.toFixed(5)}, ${searchLocation.lon.toFixed(5)}`;
+                
+                // Update map
+                updateMapView();
+                
+                // Search permits
+                await searchNearbyPermits();
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">⚠️</div>
+                        <h3>Address not found</h3>
+                        <p>Please try a different Nashville address.</p>
+                    </div>
+                `;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Search';
+            }
+        }
+        
+        // Update map view
+        function updateMapView() {
+            if (!searchLocation) return;
+            
+            const distance = parseFloat(document.getElementById('distanceSelect').value);
+            const radiusMeters = distance * 1609.34;
+            
+            // Clear old markers
+            if (searchMarker) map.removeLayer(searchMarker);
+            if (searchCircle) map.removeLayer(searchCircle);
+            
+            // Add search marker
+            searchMarker = L.marker([searchLocation.lat, searchLocation.lon], {
+                icon: L.divIcon({
+                    className: 'search-marker-container',
+                    html: '<div class="search-marker"></div>',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                })
+            }).addTo(map);
+            
+            // Add search radius circle
+            searchCircle = L.circle([searchLocation.lat, searchLocation.lon], {
+                radius: radiusMeters,
+                color: '#6b8e4e',
+                fillColor: '#6b8e4e',
+                fillOpacity: 0.1,
+                weight: 2
+            }).addTo(map);
+            
+            // Fit map to circle
+            map.fitBounds(searchCircle.getBounds(), { padding: [20, 20] });
+        }
+        
+        // Search nearby permits from YOUR ArcGIS layer
+        async function searchNearbyPermits() {
+            if (!searchLocation) return;
+            
+            const distance = parseFloat(document.getElementById('distanceSelect').value);
+            const radiusMeters = distance * 1609.34;
+            
+            // Clear old permit markers
+            permitMarkers.clearLayers();
+            nearbyPermits = [];
+            
+            try {
+                // Query YOUR DADU permits layer with geometry buffer
+                const queryUrl = `${PERMIT_LAYER_URL}/query?` + new URLSearchParams({
+                    where: '1=1',
+                    geometry: JSON.stringify({
+                        x: searchLocation.lon,
+                        y: searchLocation.lat,
+                        spatialReference: { wkid: 4326 }
+                    }),
+                    geometryType: 'esriGeometryPoint',
+                    inSR: 4326,
+                    spatialRel: 'esriSpatialRelIntersects',
+                    distance: radiusMeters,
+                    units: 'esriSRUnit_Meter',
+                    outFields: '*',
+                    returnGeometry: true,
+                    outSR: 4326,
+                    f: 'json'
+                });
+                
+                const response = await fetch(queryUrl);
+                const data = await response.json();
+                
+                if (data.features && data.features.length > 0) {
+                    nearbyPermits = data.features.map(f => {
+                        const props = f.attributes;
+                        const geom = f.geometry;
+                        
+                        // Handle different geometry formats
+                        let lat, lon;
+                        if (geom.y && geom.x) {
+                            lat = geom.y;
+                            lon = geom.x;
+                        } else if (geom.rings) {
+                            // Polygon - use centroid
+                            const ring = geom.rings[0];
+                            lon = ring.reduce((sum, pt) => sum + pt[0], 0) / ring.length;
+                            lat = ring.reduce((sum, pt) => sum + pt[1], 0) / ring.length;
+                        } else {
+                            return null;
+                        }
+                        
+                        // Calculate distance
+                        const dist = calculateDistance(searchLocation.lat, searchLocation.lon, lat, lon);
+                        
+                        return {
+                            id: props.OBJECTID || props.permit_number,
+                            address: props.address || props.Address || props.mapped_location || 'Unknown',
+                            permitNumber: props.permit_number || props.Permit_Number || props.PERMIT_NUM || '-',
+                            contractor: props.contractor || props.Contractor || props.contractor_name || 'Not listed',
+                            dateIssued: formatDate(props.date_issued || props.Date_Issued),
+                            status: props.status || props.Status || '-',
+                            purpose: props.purpose || props.Purpose || '',
+                            lat: lat,
+                            lon: lon,
+                            distance: dist,
+                            url: props.url_epermits || props.URL || ''
+                        };
+                    }).filter(p => p !== null);
+                    
+                    // Sort by distance
+                    nearbyPermits.sort((a, b) => a.distance - b.distance);
+                    
+                    // Add markers
+                    nearbyPermits.forEach((permit, index) => {
+                        const statusClass = permit.status.toLowerCase().includes('done') ? 'done' :
+                                          permit.status.toLowerCase().includes('issued') ? 'issued' : 'expired';
+                        
+                        const marker = L.marker([permit.lat, permit.lon], {
+                            icon: L.divIcon({
+                                className: 'permit-marker-container',
+                                html: `<div class="permit-marker ${statusClass}"></div>`,
+                                iconSize: [12, 12],
+                                iconAnchor: [6, 6]
+                            })
+                        });
+                        
+                        marker.bindPopup(`
+                            <div class="popup-header">
+                                <h4>${permit.address}</h4>
+                                <div class="distance">${permit.distance.toFixed(2)} miles away</div>
+                            </div>
+                            <div class="popup-body">
+                                <div class="popup-row">
+                                    <span class="popup-label">Permit #</span>
+                                    <span class="popup-value">${permit.permitNumber}</span>
+                                </div>
+                                <div class="popup-row">
+                                    <span class="popup-label">Contractor</span>
+                                    <span class="popup-value">${permit.contractor}</span>
+                                </div>
+                                <div class="popup-row">
+                                    <span class="popup-label">Date Issued</span>
+                                    <span class="popup-value">${permit.dateIssued}</span>
+                                </div>
+                                <div class="popup-row">
+                                    <span class="popup-label">Status</span>
+                                    <span class="popup-value">${permit.status}</span>
+                                </div>
+                                ${permit.url ? `
+                                    <a href="${permit.url}" target="_blank" class="popup-btn">
+                                        View Permit Details →
+                                    </a>
+                                ` : ''}
+                            </div>
+                        `);
+                        
+                        marker.on('click', () => highlightResult(index));
+                        permitMarkers.addLayer(marker);
+                    });
+                }
+                
+                // Update results
+                updateResults();
+                updateStats();
+                
+            } catch (error) {
+                console.error('Permit search error:', error);
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">⚠️</div>
+                        <h3>Error loading permits</h3>
+                        <p>Please try again. Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Format date
+        function formatDate(dateVal) {
+            if (!dateVal) return '-';
+            if (typeof dateVal === 'number') {
+                return new Date(dateVal).toLocaleDateString();
+            }
+            if (typeof dateVal === 'string' && dateVal.includes('/')) {
+                return dateVal.split(' ')[0];
+            }
+            return dateVal;
+        }
+        
+        // Calculate distance in miles
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 3959;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+        
+        // Update results list
+        function updateResults() {
+            const container = document.getElementById('resultsContainer');
+            const header = document.getElementById('resultsHeader');
+            
+            if (nearbyPermits.length === 0) {
+                header.style.display = 'none';
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📍</div>
+                        <h3>No DADU permits found</h3>
+                        <p>Try increasing the search distance or searching a different area.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            header.style.display = 'flex';
+            document.getElementById('resultsCount').textContent = nearbyPermits.length;
+            
+            // Count unique contractors
+            const contractors = new Set(nearbyPermits.map(p => p.contractor).filter(c => c !== 'Not listed'));
+            document.getElementById('contractorSummary').textContent = `${contractors.size} contractors`;
+            
+            container.innerHTML = `
+                <ul class="results-list">
+                    ${nearbyPermits.map((permit, index) => {
+                        const statusClass = permit.status.toLowerCase().includes('done') ? 'done' :
+                                          permit.status.toLowerCase().includes('issued') ? 'issued' : 'expired';
+                        return `
+                            <li class="result-item" onclick="selectResult(${index})" data-index="${index}">
+                                <span class="result-distance">${permit.distance.toFixed(2)} mi</span>
+                                <span class="result-status ${statusClass}">${permit.status}</span>
+                                <div class="result-address">${permit.address}</div>
+                                <div class="result-meta">
+                                    <span>📋 ${permit.permitNumber}</span>
+                                    <span>📅 ${permit.dateIssued}</span>
+                                </div>
+                                ${permit.contractor !== 'Not listed' ? `
+                                    <div class="contractor-badge">🔨 ${permit.contractor}</div>
+                                ` : ''}
+                            </li>
+                        `;
+                    }).join('')}
+                </ul>
+            `;
+        }
+        
+        // Update stats
+        function updateStats() {
+            const statsBar = document.getElementById('statsBar');
+            
+            if (nearbyPermits.length === 0) {
+                statsBar.classList.remove('active');
+                return;
+            }
+            
+            statsBar.classList.add('active');
+            
+            const contractors = new Set(nearbyPermits.map(p => p.contractor).filter(c => c !== 'Not listed'));
+            const completed = nearbyPermits.filter(p => p.status.toLowerCase().includes('done')).length;
+            
+            document.getElementById('statPermits').textContent = nearbyPermits.length;
+            document.getElementById('statContractors').textContent = contractors.size;
+            document.getElementById('statCompleted').textContent = completed;
+        }
+        
+        // Select result
+        function selectResult(index) {
+            const permit = nearbyPermits[index];
+            if (!permit) return;
+            
+            highlightResult(index);
+            map.setView([permit.lat, permit.lon], 17);
+            
+            // Open popup
+            let i = 0;
+            permitMarkers.eachLayer((layer) => {
+                if (i === index) {
+                    layer.openPopup();
+                }
+                i++;
+            });
+        }
+        
+        // Highlight result
+        function highlightResult(index) {
+            document.querySelectorAll('.result-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+        }
+        
+        // Update search when distance changes
+        function updateSearch() {
+            if (searchLocation) {
+                updateMapView();
+                searchNearbyPermits();
+            }
+        }
+        
+        // Enter key handler
+        document.getElementById('addressInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchAddress();
+        });
+    </script>
+</body>
+</html>
