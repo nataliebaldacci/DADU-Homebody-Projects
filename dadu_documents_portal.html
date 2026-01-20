@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Documents | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --warm-gray: #e8e4df;
+            --gold: #d4af37;
+            --white: #ffffff;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: #333;
+            line-height: 1.5;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .search-box {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 40px;
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        
+        .search-box button {
+            padding: 12px 24px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .search-box button:hover {
+            background: var(--olive-dark);
+        }
+        
+        /* Property Header */
+        .property-header {
+            background: white;
+            padding: 25px 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .property-address {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        
+        .property-meta {
+            display: flex;
+            gap: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .property-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        /* Section Title */
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title .badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            background: var(--gold);
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        /* Document Grid */
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        /* Document Card */
+        .doc-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        
+        .doc-card.premium {
+            border: 2px solid var(--gold);
+        }
+        
+        .premium-ribbon {
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: linear-gradient(135deg, var(--gold), #b8960c);
+            color: white;
+            padding: 5px 35px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transform: rotate(45deg);
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+        
+        /* Preview Area */
+        .doc-preview {
+            height: 200px;
+            background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .doc-preview.blurred::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: inherit;
+            filter: blur(8px);
+            transform: scale(1.1);
+        }
+        
+        .doc-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .doc-preview.blurred img {
+            filter: blur(6px);
+            opacity: 0.7;
+        }
+        
+        .preview-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(44, 62, 80, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .preview-overlay .lock-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .preview-overlay h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .preview-overlay p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        /* Free Preview */
+        .doc-preview.free {
+            background: linear-gradient(135deg, var(--teal), #4a6d7a);
+        }
+        
+        .doc-preview.free .preview-content {
+            color: white;
+            text-align: center;
+        }
+        
+        .doc-preview.free .preview-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .doc-preview.free .preview-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+        
+        /* Card Body */
+        .doc-body {
+            padding: 20px;
+        }
+        
+        .doc-type {
+            font-size: 11px;
+            color: var(--teal);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .doc-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+        
+        .doc-description {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .doc-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .doc-features li {
+            font-size: 12px;
+            color: #555;
+            padding: 6px 0;
+            padding-left: 22px;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .doc-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .doc-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--olive);
+            font-weight: 700;
+        }
+        
+        /* Card Footer */
+        .doc-footer {
+            padding: 15px 20px;
+            background: #fafafa;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .doc-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        .doc-price span {
+            font-size: 12px;
+            font-weight: 400;
+            color: #888;
+        }
+        
+        .doc-price.free {
+            color: var(--olive);
+        }
+        
+        .doc-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .doc-btn.primary {
+            background: var(--olive);
+            color: white;
+            border: none;
+        }
+        
+        .doc-btn.primary:hover {
+            background: var(--olive-dark);
+        }
+        
+        .doc-btn.premium {
+            background: linear-gradient(135deg, var(--gold), #b8960c);
+            color: white;
+            border: none;
+        }
+        
+        .doc-btn.premium:hover {
+            filter: brightness(1.1);
+        }
+        
+        .doc-btn.outline {
+            background: white;
+            color: var(--olive);
+            border: 2px solid var(--olive);
+        }
+        
+        .doc-btn.outline:hover {
+            background: #f0f7f0;
+        }
+        
+        /* Sample Report Section */
+        .sample-section {
+            background: linear-gradient(135deg, var(--navy) 0%, #3d566e 100%);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+            color: white;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .sample-content h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        
+        .sample-content p {
+            opacity: 0.9;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .sample-preview {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .sample-preview-header {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sample-preview-header .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .sample-preview-header .dot.red { background: #ff5f56; }
+        .sample-preview-header .dot.yellow { background: #ffbd2e; }
+        .sample-preview-header .dot.green { background: #27ca3f; }
+        
+        .sample-preview-body {
+            padding: 20px;
+            max-height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .sample-preview-body::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(to bottom, transparent, white);
+        }
+        
+        .sample-preview-body h4 {
+            font-size: 14px;
+            color: var(--navy);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--olive);
+        }
+        
+        .sample-data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+        }
+        
+        .sample-data-row .label {
+            color: #666;
+        }
+        
+        .sample-data-row .value {
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: var(--olive);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            margin: 40px 0;
+        }
+        
+        .cta-section h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        
+        .cta-section p {
+            opacity: 0.9;
+            margin-bottom: 25px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: white;
+            color: var(--olive);
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+        
+        .cta-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--navy-dark);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .footer p {
+            opacity: 0.7;
+            font-size: 13px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sample-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .doc-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .property-meta {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--gold), #b8960c);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .modal-header h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .modal-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .modal-price {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-price .amount {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        .modal-price .period {
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .modal-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+        
+        .modal-features li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        
+        .modal-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--olive);
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .modal-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        
+        .modal-btn:hover {
+            background: var(--olive-dark);
+        }
+        
+        .modal-close {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #888;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        
+        .modal-close:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">
+            <div class="logo-icon">🏠</div>
+            <span class="logo-text">Homebody Projects</span>
+        </a>
+        
+        <div class="search-box">
+            <input type="text" id="addressInput" placeholder="Enter Nashville address...">
+            <button onclick="searchProperty()">Search</button>
+        </div>
+    </header>
+    
+    <!-- Property Header -->
+    <div class="property-header" id="propertyHeader">
+        <div class="property-address" id="propertyAddress">Enter an address to view documents</div>
+        <div class="property-meta" id="propertyMeta">
+            <span>📍 Nashville-Davidson County, TN</span>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Free Documents Section -->
+        <h2 class="section-title">
+            📄 Available Documents
+            <span class="badge">FREE</span>
+        </h2>
+        
+        <div class="doc-grid">
+            <!-- Property Card - FREE -->
+            <div class="doc-card">
+                <div class="doc-preview free">
+                    <div class="preview-content">
+                        <div class="preview-icon">🏠</div>
+                        <div class="preview-label">Property Assessment Card</div>
+                    </div>
+                </div>
+                <div class="doc-body">
+                    <div class="doc-type">Public Record</div>
+                    <div class="doc-title">Property Assessment Card</div>
+                    <div class="doc-description">
+                        Official property assessment from Davidson County showing current value, building details, and tax information.
+                    </div>
+                    <ul class="doc-features">
+                        <li>Current assessed value</li>
+                        <li>Building characteristics</li>
+                        <li>Land dimensions</li>
+                        <li>Tax district info</li>
+                    </ul>
+                </div>
+                <div class="doc-footer">
+                    <div class="doc-price free">FREE</div>
+                    <a href="#" class="doc-btn primary" onclick="openPropertyCard()">
+                        View Document →
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Aerial Image - FREE -->
+            <div class="doc-card">
+                <div class="doc-preview free" style="background: linear-gradient(135deg, #6b8e4e, #4a6b35);">
+                    <div class="preview-content">
+                        <div class="preview-icon">🛰️</div>
+                        <div class="preview-label">Aerial Imagery</div>
+                    </div>
+                </div>
+                <div class="doc-body">
+                    <div class="doc-type">Public Record</div>
+                    <div class="doc-title">Property Aerial View</div>
+                    <div class="doc-description">
+                        High-resolution aerial imagery showing property boundaries, structures, and surrounding context.
+                    </div>
+                    <ul class="doc-features">
+                        <li>Property boundaries</li>
+                        <li>Building footprints</li>
+                        <li>Lot coverage view</li>
+                        <li>Neighborhood context</li>
+                    </ul>
+                </div>
+                <div class="doc-footer">
+                    <div class="doc-price free">FREE</div>
+                    <a href="#" class="doc-btn primary" onclick="openAerial()">
+                        View Image →
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Permit History - FREE -->
+            <div class="doc-card">
+                <div class="doc-preview free" style="background: linear-gradient(135deg, #c9a86c, #a8874d);">
+                    <div class="preview-content">
+                        <div class="preview-icon">📋</div>
+                        <div class="preview-label">Permit History</div>
+                    </div>
+                </div>
+                <div class="doc-body">
+                    <div class="doc-type">Public Record</div>
+                    <div class="doc-title">Building Permit History</div>
+                    <div class="doc-description">
+                        Complete list of all building permits filed for this property through Nashville ePermits.
+                    </div>
+                    <ul class="doc-features">
+                        <li>All permit types</li>
+                        <li>Issue & completion dates</li>
+                        <li>Contractor information</li>
+                        <li>Project descriptions</li>
+                    </ul>
+                </div>
+                <div class="doc-footer">
+                    <div class="doc-price free">FREE</div>
+                    <a href="#" class="doc-btn primary" onclick="openPermitHistory()">
+                        View History →
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Premium Documents Section -->
+        <h2 class="section-title">
+            🔒 Premium Documents
+            <span class="badge">PRO</span>
+        </h2>
+        
+        <div class="doc-grid">
+            <!-- DADU Eligibility Report - PREMIUM -->
+            <div class="doc-card premium">
+                <div class="premium-ribbon">Popular</div>
+                <div class="doc-preview blurred">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%23e8e8e8' width='400' height='200'/%3E%3Ctext x='50%25' y='30%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='14'%3EDADU Eligibility Report%3C/text%3E%3Crect x='20' y='60' width='360' height='20' fill='%23ddd' rx='4'/%3E%3Crect x='20' y='90' width='280' height='15' fill='%23ddd' rx='3'/%3E%3Crect x='20' y='115' width='320' height='15' fill='%23ddd' rx='3'/%3E%3Crect x='20' y='140' width='200' height='15' fill='%23ddd' rx='3'/%3E%3Crect x='20' y='165' width='260' height='15' fill='%23ddd' rx='3'/%3E%3C/svg%3E" alt="Report preview">
+                    <div class="preview-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <h4>Premium Report</h4>
+                        <p>Unlock full DADU eligibility analysis</p>
+                    </div>
+                </div>
+                <div class="doc-body">
+                    <div class="doc-type">Premium Analysis</div>
+                    <div class="doc-title">DADU Eligibility Report</div>
+                    <div class="doc-description">
+                        Comprehensive analysis of your property's eligibility for a Detached Accessory Dwelling Unit under BL2025-1007.
+                    </div>
+                    <ul class="doc-features">
+                        <li>Zoning eligibility determination</li>
+                        <li>Maximum DADU size calculations</li>
+                        <li>Setback requirements</li>
+                        <li>Height restrictions</li>
+                        <li>Restrictive covenant check</li>
+                        <li>Next steps & permit checklist</li>
+                    </ul>
+                </div>
+                <div class="doc-footer">
+                    <div class="doc-price">$19 <span>one-time</span></div>
+                    <button class="doc-btn premium" onclick="openUnlockModal('dadu')">
+                        🔓 Unlock Report
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Permit Documents Bundle - PREMIUM -->
+            <div class="doc-card premium">
+                <div class="doc-preview blurred">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%23f0f0f0' width='400' height='200'/%3E%3Crect x='20' y='20' width='180' height='160' fill='%23fff' stroke='%23ddd' rx='4'/%3E%3Crect x='30' y='30' width='100' height='15' fill='%23ddd' rx='2'/%3E%3Crect x='30' y='55' width='140' height='10' fill='%23eee' rx='2'/%3E%3Crect x='30' y='75' width='140' height='10' fill='%23eee' rx='2'/%3E%3Crect x='210' y='20' width='170' height='160' fill='%23fff' stroke='%23ddd' rx='4'/%3E%3Crect x='220' y='30' width='90' height='15' fill='%23ddd' rx='2'/%3E%3Crect x='220' y='55' width='130' height='10' fill='%23eee' rx='2'/%3E%3C/svg%3E" alt="Documents preview">
+                    <div class="preview-overlay">
+                        <div class="lock-icon">📁</div>
+                        <h4>Document Bundle</h4>
+                        <p>All permit PDFs & site plans</p>
+                    </div>
+                </div>
+                <div class="doc-body">
+                    <div class="doc-type">Document Package</div>
+                    <div class="doc-title">Complete Permit Documents</div>
+                    <div class="doc-description">
+                        Full package of all permit documents, site plans, and inspection records for this property.
+                    </div>
+                    <ul class="doc-features">
+                        <li>All permit application PDFs</li>
+                        <li>Site plans & drawings</li>
+                        <li>Inspection reports</li>
+                        <li>Certificate of occupancy</li>
+                        <li>Contractor details</li>
+                    </ul>
+                </div>
+                <div class="doc-footer">
+                    <div class="doc-price">$9 <span>one-time</span></div>
+                    <button class="doc-btn premium" onclick="openUnlockModal('permits')">
+                        🔓 Unlock Documents
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Restrictive Covenant Analysis - PREMIUM -->
+            <div class="doc-card premium">
+                <div class="doc-preview blurred">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%23f5f5e8' width='400' height='200'/%3E%3Crect x='40' y='30' width='320' height='140' fill='%23fff' stroke='%23ccc'/%3E%3Ctext x='200' y='60' text-anchor='middle' fill='%23999' font-family='serif' font-size='18'%3ECOVENANT%3C/text%3E%3Crect x='60' y='80' width='280' height='8' fill='%23ddd'/%3E%3Crect x='60' y='95' width='240' height='8' fill='%23ddd'/%3E%3Crect x='60' y='110' width='260' height='8' fill='%23ddd'/%3E%3Crect x='60' y='125' width='200' height='8' fill='%23ddd'/%3E%3Crect x='60' y='140' width='220' height='8' fill='%23ddd'/%3E%3C/svg%3E" alt="Covenant preview">
+                    <div class="preview-overlay">
+                        <div class="lock-icon">⚖️</div>
+                        <h4>Legal Analysis</h4>
+                        <p>Covenant restrictions decoded</p>
+                    </div>
+                </div>
+                <div class="doc-body">
+                    <div class="doc-type">Legal Document</div>
+                    <div class="doc-title">Restrictive Covenant Analysis</div>
+                    <div class="doc-description">
+                        Complete restrictive covenant documents with analysis of any ADU-related restrictions.
+                    </div>
+                    <ul class="doc-features">
+                        <li>Original covenant documents</li>
+                        <li>ADU restriction summary</li>
+                        <li>Setback requirements</li>
+                        <li>HOA rules (if applicable)</li>
+                        <li>Amendment history</li>
+                    </ul>
+                </div>
+                <div class="doc-footer">
+                    <div class="doc-price">$12 <span>one-time</span></div>
+                    <button class="doc-btn premium" onclick="openUnlockModal('covenant')">
+                        🔓 Unlock Analysis
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Complete Property Package - PREMIUM -->
+            <div class="doc-card premium">
+                <div class="premium-ribbon">Best Value</div>
+                <div class="doc-preview blurred" style="background: linear-gradient(135deg, var(--olive), var(--teal));">
+                    <div class="preview-overlay" style="background: rgba(107, 142, 78, 0.9);">
+                        <div class="lock-icon">⭐</div>
+                        <h4>Complete Package</h4>
+                        <p>Everything in one bundle</p>
+                    </div>
+                </div>
+                <div class="doc-body">
+                    <div class="doc-type">Complete Bundle</div>
+                    <div class="doc-title">Full Property Package</div>
+                    <div class="doc-description">
+                        Get everything: DADU eligibility report, all permit documents, covenant analysis, and more.
+                    </div>
+                    <ul class="doc-features">
+                        <li>✓ DADU Eligibility Report ($19 value)</li>
+                        <li>✓ Complete Permit Documents ($9 value)</li>
+                        <li>✓ Covenant Analysis ($12 value)</li>
+                        <li>✓ Contractor Recommendations</li>
+                        <li>✓ Cost Estimates</li>
+                        <li>✓ Priority Support</li>
+                    </ul>
+                </div>
+                <div class="doc-footer">
+                    <div class="doc-price">$29 <span>Save $11!</span></div>
+                    <button class="doc-btn premium" onclick="openUnlockModal('complete')">
+                        🔓 Unlock Everything
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sample Report Preview -->
+        <section class="sample-section">
+            <div class="sample-content">
+                <h2>📊 See What You'll Get</h2>
+                <p>Our DADU Eligibility Report provides everything you need to understand your property's potential for an accessory dwelling unit. Here's a preview of the detailed analysis included in every report.</p>
+                <a href="#" class="cta-btn" onclick="openUnlockModal('dadu'); return false;">Get Your Report →</a>
+            </div>
+            <div class="sample-preview">
+                <div class="sample-preview-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <div class="sample-preview-body">
+                    <h4>DADU ELIGIBILITY REPORT</h4>
+                    <div class="sample-data-row">
+                        <span class="label">Property Address</span>
+                        <span class="value">1234 Main Street</span>
+                    </div>
+                    <div class="sample-data-row">
+                        <span class="label">DADU Eligible</span>
+                        <span class="value" style="color: var(--olive);">✓ YES</span>
+                    </div>
+                    <div class="sample-data-row">
+                        <span class="label">Zoning District</span>
+                        <span class="value">RS10 (Single Family)</span>
+                    </div>
+                    <div class="sample-data-row">
+                        <span class="label">Service District</span>
+                        <span class="value">USD (By-Right)</span>
+                    </div>
+                    <div class="sample-data-row">
+                        <span class="label">Lot Size</span>
+                        <span class="value">12,500 SF</span>
+                    </div>
+                    <div class="sample-data-row">
+                        <span class="label">Max DADU Living Area</span>
+                        <span class="value">850 SF</span>
+                    </div>
+                    <div class="sample-data-row">
+                        <span class="label">Max Footprint</span>
+                        <span class="value">1,000 SF</span>
+                    </div>
+                    <div class="sample-data-row">
+                        <span class="label">Restrictive Covenant</span>
+                        <span class="value" style="color: #e67e22;">⚠️ Review Required</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2>🏠 Ready to Build Your DADU?</h2>
+            <p>Join thousands of Nashville homeowners who have used Homebody Projects to navigate DADU regulations and find the right contractors for their projects.</p>
+            <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/" class="cta-btn">Explore the Platform →</a>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 Homebody Projects | Nashville DADU Resource Platform</p>
+        <p style="margin-top: 10px;">Data sourced from Nashville-Davidson County public records</p>
+    </footer>
+    
+    <!-- Unlock Modal -->
+    <div class="modal-overlay" id="unlockModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">🔓 Unlock Report</h3>
+                <p id="modalSubtitle">Get instant access to your document</p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-price">
+                    <div class="amount" id="modalPrice">$19</div>
+                    <div class="period">one-time purchase</div>
+                </div>
+                <ul class="modal-features" id="modalFeatures">
+                    <li>Instant PDF download</li>
+                    <li>Property-specific analysis</li>
+                    <li>Based on current regulations</li>
+                    <li>30-day money-back guarantee</li>
+                </ul>
+                <button class="modal-btn" id="modalButton" onclick="processPayment()">
+                    Continue to Payment →
+                </button>
+                <span class="modal-close" onclick="closeModal()">Maybe later</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Google Drive Folder (your folder)
+        const GDRIVE_FOLDER = 'https://drive.google.com/drive/folders/1eD1TUNuYMOMK7VdVJW3Pc6mHYFS02VUj';
+        
+        // Current property data
+        let currentProperty = null;
+        let currentAPN = null;
+        
+        // Search property
+        async function searchProperty() {
+            const address = document.getElementById('addressInput').value.trim();
+            if (!address) return;
+            
+            // Update header
+            document.getElementById('propertyAddress').textContent = address;
+            document.getElementById('propertyMeta').innerHTML = `
+                <span>📍 Nashville-Davidson County, TN</span>
+                <span>🔍 Searching...</span>
+            `;
+            
+            try {
+                // Geocode address
+                const geocodeUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${encodeURIComponent(address + ', Nashville, TN')}&f=json&outFields=*`;
+                const geoRes = await fetch(geocodeUrl);
+                const geoData = await geoRes.json();
+                
+                if (geoData.candidates && geoData.candidates.length > 0) {
+                    const loc = geoData.candidates[0].location;
+                    
+                    // Query parcel
+                    const parcelUrl = `https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels/FeatureServer/0/query?where=1=1&geometry=${loc.x},${loc.y}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=*&f=json`;
+                    const parcelRes = await fetch(parcelUrl);
+                    const parcelData = await parcelRes.json();
+                    
+                    if (parcelData.features && parcelData.features.length > 0) {
+                        currentProperty = parcelData.features[0].attributes;
+                        currentAPN = currentProperty.APN || currentProperty.STANPAR || currentProperty.PIN;
+                        
+                        // Update meta
+                        document.getElementById('propertyMeta').innerHTML = `
+                            <span>📍 Nashville-Davidson County, TN</span>
+                            <span>🏷️ APN: ${currentAPN}</span>
+                            <span>📐 ${(currentProperty.ACRES || currentProperty.Shape__Area / 43560 || 0).toFixed(2)} acres</span>
+                            <span>🏠 ${currentProperty.ZONING || currentProperty.Zone || 'N/A'}</span>
+                        `;
+                    }
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+            }
+        }
+        
+        // Open Property Card (Nashville portal)
+        function openPropertyCard() {
+            if (currentAPN) {
+                // Nashville property card URL pattern
+                const accountNum = currentAPN.replace(/-/g, '');
+                window.open(`https://portal.padctn.org/OFS/WP/Print/${accountNum}`, '_blank');
+            } else {
+                alert('Please search for a property first');
+            }
+        }
+        
+        // Open Aerial (Nashville GIS)
+        function openAerial() {
+            if (currentAPN) {
+                window.open(`https://maps.nashville.gov/ParcelViewer/?pin=${currentAPN}`, '_blank');
+            } else {
+                alert('Please search for a property first');
+            }
+        }
+        
+        // Open Permit History (ePermits)
+        function openPermitHistory() {
+            if (currentProperty) {
+                const addr = document.getElementById('addressInput').value;
+                window.open(`https://epermits.nashville.gov/?#/search?address=${encodeURIComponent(addr)}`, '_blank');
+            } else {
+                alert('Please search for a property first');
+            }
+        }
+        
+        // Modal configurations
+        const modalConfigs = {
+            dadu: {
+                title: '🔓 Unlock DADU Eligibility Report',
+                subtitle: 'Complete analysis for your property',
+                price: '$19',
+                features: [
+                    'Full eligibility determination',
+                    'Maximum DADU size calculations',
+                    'Setback & height requirements',
+                    'Restrictive covenant check',
+                    'Permit checklist & next steps',
+                    '30-day money-back guarantee'
+                ],
+                driveFolder: GDRIVE_FOLDER
+            },
+            permits: {
+                title: '📁 Unlock Permit Documents',
+                subtitle: 'All permits & site plans',
+                price: '$9',
+                features: [
+                    'All permit application PDFs',
+                    'Site plans & drawings',
+                    'Inspection reports',
+                    'Certificate of occupancy',
+                    'Instant download'
+                ],
+                driveFolder: GDRIVE_FOLDER
+            },
+            covenant: {
+                title: '⚖️ Unlock Covenant Analysis',
+                subtitle: 'Legal restrictions decoded',
+                price: '$12',
+                features: [
+                    'Original covenant documents',
+                    'ADU restriction summary',
+                    'Professional legal analysis',
+                    'Amendment history',
+                    'Instant access'
+                ],
+                driveFolder: GDRIVE_FOLDER
+            },
+            complete: {
+                title: '⭐ Unlock Complete Package',
+                subtitle: 'Everything you need',
+                price: '$29',
+                features: [
+                    'DADU Eligibility Report ($19 value)',
+                    'All Permit Documents ($9 value)',
+                    'Covenant Analysis ($12 value)',
+                    'Contractor Recommendations',
+                    'Cost Estimates',
+                    'Priority Support'
+                ],
+                driveFolder: GDRIVE_FOLDER
+            }
+        };
+        
+        let currentModalType = null;
+        
+        // Open unlock modal
+        function openUnlockModal(type) {
+            currentModalType = type;
+            const config = modalConfigs[type];
+            
+            document.getElementById('modalTitle').textContent = config.title;
+            document.getElementById('modalSubtitle').textContent = config.subtitle;
+            document.getElementById('modalPrice').textContent = config.price;
+            
+            const featuresHtml = config.features.map(f => `<li>${f}</li>`).join('');
+            document.getElementById('modalFeatures').innerHTML = featuresHtml;
+            
+            document.getElementById('unlockModal').classList.add('active');
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('unlockModal').classList.remove('active');
+        }
+        
+        // Process payment (demo - opens Google Drive)
+        function processPayment() {
+            // In production, this would integrate with Stripe
+            // For now, direct to Google Drive folder
+            
+            const config = modalConfigs[currentModalType];
+            
+            // Show confirmation
+            alert(`Thank you! In the full version, this would process payment for ${config.price}.\n\nFor now, opening document folder...`);
+            
+            // Open Google Drive folder
+            window.open(config.driveFolder, '_blank');
+            
+            closeModal();
+        }
+        
+        // Close modal on overlay click
+        document.getElementById('unlockModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        
+        // Handle Enter key in search
+        document.getElementById('addressInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchProperty();
+        });
+    </script>
+</body>
+</html>
