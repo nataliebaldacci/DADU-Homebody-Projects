@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Eligibility Report | Homebody</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #e8e4df;
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #6b8fa3;
+            font-size: 1.1rem;
+        }
+
+        .price-badge {
+            display: inline-block;
+            background: #6b8e4e;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Search Section */
+        .search-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .search-card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-row input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e8e4df;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .search-row input:focus {
+            outline: none;
+            border-color: #6b8fa3;
+        }
+
+        .search-row button {
+            background: #6b8e4e;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .search-row button:hover {
+            background: #5a7a40;
+        }
+
+        /* Report Preview */
+        .report-preview {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .report-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3d5166 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .report-header .logo-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-header .address {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .report-header .date {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+        }
+
+        .eligibility-badge {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-top: 1rem;
+        }
+
+        .eligibility-badge.eligible {
+            background: #27ae60;
+            color: white;
+        }
+
+        .eligibility-badge.not-eligible {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .eligibility-badge.conditional {
+            background: #f39c12;
+            color: white;
+        }
+
+        .report-body {
+            padding: 2rem;
+        }
+
+        .report-section {
+            margin-bottom: 2rem;
+        }
+
+        .report-section h3 {
+            font-size: 1rem;
+            color: #6b8fa3;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e8e4df;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .info-item {
+            background: #f5f5f0;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .info-item .label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-item .value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e8e4df;
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checklist .icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .checklist .icon.pass {
+            background: #27ae60;
+            color: white;
+        }
+
+        .checklist .icon.fail {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .checklist .icon.warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .checklist .text {
+            flex: 1;
+        }
+
+        .checklist .status {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .checklist .status.pass {
+            color: #27ae60;
+        }
+
+        .checklist .status.fail {
+            color: #e74c3c;
+        }
+
+        .checklist .status.warning {
+            color: #f39c12;
+        }
+
+        .size-limits {
+            background: #e8f0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .size-limits h4 {
+            color: #6b8e4e;
+            margin-bottom: 1rem;
+        }
+
+        .size-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(107,142,78,0.2);
+        }
+
+        .size-row:last-child {
+            border-bottom: none;
+        }
+
+        .blur-overlay {
+            position: relative;
+        }
+
+        .blur-overlay::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to bottom, transparent, white);
+        }
+
+        .unlock-prompt {
+            text-align: center;
+            padding: 2rem;
+            background: #f5f5f0;
+            border-radius: 0 0 16px 16px;
+        }
+
+        .unlock-prompt h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .unlock-prompt p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-purchase {
+            background: #6b8e4e;
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.3s;
+        }
+
+        .btn-purchase:hover {
+            background: #5a7a40;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .sidebar-card h3 {
+            font-size: 1rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .included-list {
+            list-style: none;
+        }
+
+        .included-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .included-list li::before {
+            content: '✓';
+            color: #6b8e4e;
+            font-weight: 700;
+        }
+
+        .sample-link {
+            display: block;
+            text-align: center;
+            padding: 1rem;
+            background: #f5f5f0;
+            border-radius: 8px;
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: background 0.3s;
+        }
+
+        .sample-link:hover {
+            background: #e8e4df;
+        }
+
+        .popular-badge {
+            background: #6b8e4e;
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 16px 16px 0 0;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin: -1.5rem -1.5rem 1.5rem;
+        }
+
+        .other-reports h4 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .report-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: #f5f5f0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .report-link:hover {
+            background: #e8e4df;
+        }
+
+        .report-link img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .report-link .info {
+            flex: 1;
+        }
+
+        .report-link h5 {
+            font-size: 0.85rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .report-link .price {
+            font-size: 0.8rem;
+            color: #6b8e4e;
+            font-weight: 600;
+        }
+
+        /* Print styles */
+        @media print {
+            .header, .sidebar, .search-card, .unlock-prompt {
+                display: none;
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .blur-overlay::after {
+                display: none;
+            }
+
+            .report-preview {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="homebody_index_v3.html" class="logo">🏠 Homebody</a>
+        <nav class="nav-links">
+            <a href="homebody_index_v3.html">Home</a>
+            <a href="reports_pricing.html">All Reports</a>
+            <a href="am_i_eligible.html">Free Eligibility Check</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📄 DADU Eligibility Report</h1>
+            <p>Complete eligibility analysis with zoning details, size limits, and requirements</p>
+            <div class="price-badge">$4.99 per property</div>
+        </div>
+
+        <div class="layout">
+            <div class="main-content">
+                <!-- Search -->
+                <div class="search-card">
+                    <h2>Enter Property Address</h2>
+                    <div class="search-row">
+                        <input type="text" id="addressInput" placeholder="e.g., 1234 Main St, Nashville, TN">
+                        <button onclick="generateReport()">Generate Report</button>
+                    </div>
+                </div>
+
+                <!-- Report Preview -->
+                <div class="report-preview" id="reportPreview" style="display: none;">
+                    <div class="report-header">
+                        <div class="logo-text">🏠 HOMEBODY</div>
+                        <h2>DADU Eligibility Report</h2>
+                        <div class="address" id="reportAddress">1234 Main St, Nashville, TN 37211</div>
+                        <div class="date" id="reportDate">Generated January 30, 2026</div>
+                        <div class="eligibility-badge eligible" id="eligibilityBadge">✓ ELIGIBLE</div>
+                    </div>
+
+                    <div class="report-body">
+                        <div class="report-section">
+                            <h3>Property Information</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <div class="label">APN</div>
+                                    <div class="value" id="apnValue">105-07-0-123.00</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">Lot Size</div>
+                                    <div class="value" id="lotSizeValue">8,500 SF</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">Zoning</div>
+                                    <div class="value" id="zoningValue">RS10</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">District</div>
+                                    <div class="value" id="districtValue">Urban Services (USD)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="report-section">
+                            <h3>Eligibility Checklist</h3>
+                            <ul class="checklist">
+                                <li>
+                                    <span class="icon pass">✓</span>
+                                    <span class="text">Zoning Classification (R or RS)</span>
+                                    <span class="status pass">PASS</span>
+                                </li>
+                                <li>
+                                    <span class="icon pass">✓</span>
+                                    <span class="text">Urban Services District (USD)</span>
+                                    <span class="status pass">PASS</span>
+                                </li>
+                                <li>
+                                    <span class="icon pass">✓</span>
+                                    <span class="text">Single-Family Residential Use</span>
+                                    <span class="status pass">PASS</span>
+                                </li>
+                                <li>
+                                    <span class="icon pass">✓</span>
+                                    <span class="text">Minimum Lot Size Requirements</span>
+                                    <span class="status pass">PASS</span>
+                                </li>
+                                <li>
+                                    <span class="icon warning">!</span>
+                                    <span class="text">Historic Overlay District</span>
+                                    <span class="status warning">CHECK</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="report-section">
+                            <h3>Maximum DADU Size</h3>
+                            <div class="size-limits">
+                                <h4>📐 Based on Lot Size: 8,500 SF (Under 10,000 SF)</h4>
+                                <div class="size-row">
+                                    <span>Maximum Living Area</span>
+                                    <strong>700 SF</strong>
+                                </div>
+                                <div class="size-row">
+                                    <span>Maximum Footprint</span>
+                                    <strong>750 SF</strong>
+                                </div>
+                                <div class="size-row">
+                                    <span>Maximum Height</span>
+                                    <strong>Cannot exceed principal structure</strong>
+                                </div>
+                                <div class="size-row">
+                                    <span>Setbacks (Side/Rear)</span>
+                                    <strong>5 feet minimum</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="report-section blur-overlay">
+                            <h3>Additional Requirements</h3>
+                            <ul class="checklist">
+                                <li>
+                                    <span class="icon pass">✓</span>
+                                    <span class="text">Owner Occupancy Required</span>
+                                    <span class="status">Required</span>
+                                </li>
+                                <li>
+                                    <span class="icon pass">✓</span>
+                                    <span class="text">Restrictive Covenant Filing</span>
+                                    <span class="status">Required</span>
+                                </li>
+                                <li>
+                                    <span class="icon pass">✓</span>
+                                    <span class="text">Building Permit Application</span>
+                                    <span class="status">Required</span>
+                                </li>
+                            </ul>
+
+                            <h3>Permit History</h3>
+                            <p>This property has no existing DADU permits on record...</p>
+
+                            <h3>Estimated Costs</h3>
+                            <p>Based on similar projects in your area...</p>
+                        </div>
+                    </div>
+
+                    <div class="unlock-prompt">
+                        <h3>🔓 Unlock Full Report</h3>
+                        <p>Get complete details including permit history, estimated costs, contractor recommendations, and downloadable PDF</p>
+                        <button class="btn-purchase" onclick="purchaseReport()">Purchase Report - $4.99</button>
+                    </div>
+                </div>
+
+                <!-- Sample Report Card (shown before search) -->
+                <div class="report-preview" id="sampleCard">
+                    <div class="report-header">
+                        <div class="logo-text">🏠 HOMEBODY</div>
+                        <h2>DADU Eligibility Report</h2>
+                        <div class="address">Sample Report Preview</div>
+                    </div>
+                    <div class="report-body" style="text-align: center; padding: 3rem;">
+                        <p style="font-size: 1.1rem; color: #666; margin-bottom: 2rem;">Enter a Nashville address above to generate your eligibility report preview</p>
+                        <img src="assets/icons/Property Detail Report .png" alt="" style="width: 80px; opacity: 0.5;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="popular-badge">⭐ Most Popular</div>
+                    <h3>What's Included</h3>
+                    <ul class="included-list">
+                        <li>Full eligibility determination</li>
+                        <li>Zoning classification details</li>
+                        <li>Maximum size calculations</li>
+                        <li>Setback requirements</li>
+                        <li>Historic district check</li>
+                        <li>Permit history search</li>
+                        <li>Required forms checklist</li>
+                        <li>Downloadable PDF report</li>
+                    </ul>
+                    <a href="#" class="sample-link">📥 Download Sample Report</a>
+                </div>
+
+                <div class="sidebar-card other-reports">
+                    <h4>Other Reports</h4>
+                    <a href="project_report.html" class="report-link">
+                        <img src="assets/icons/APN Maps.png" alt="">
+                        <div class="info">
+                            <h5>Project Report</h5>
+                            <span class="price">$9.99</span>
+                        </div>
+                    </a>
+                    <a href="neighbors_report.html" class="report-link">
+                        <img src="assets/icons/Neighbors.png" alt="">
+                        <div class="info">
+                            <h5>Neighbors Report</h5>
+                            <span class="price">$14.99</span>
+                        </div>
+                    </a>
+                    <a href="market_report.html" class="report-link">
+                        <img src="assets/icons/Market Statistics Report .png" alt="">
+                        <div class="info">
+                            <h5>Market Report</h5>
+                            <span class="price">$19.99</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateReport() {
+            const address = document.getElementById('addressInput').value;
+            if (!address.trim()) {
+                alert('Please enter an address');
+                return;
+            }
+
+            // Hide sample, show report
+            document.getElementById('sampleCard').style.display = 'none';
+            document.getElementById('reportPreview').style.display = 'block';
+
+            // Update report with address
+            document.getElementById('reportAddress').textContent = address;
+            document.getElementById('reportDate').textContent = 'Generated ' + new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Simulate data (in production, this would call an API)
+            const mockData = generateMockData(address);
+
+            document.getElementById('apnValue').textContent = mockData.apn;
+            document.getElementById('lotSizeValue').textContent = mockData.lotSize.toLocaleString() + ' SF';
+            document.getElementById('zoningValue').textContent = mockData.zoning;
+            document.getElementById('districtValue').textContent = mockData.district;
+
+            // Update eligibility badge
+            const badge = document.getElementById('eligibilityBadge');
+            if (mockData.eligible) {
+                badge.className = 'eligibility-badge eligible';
+                badge.textContent = '✓ ELIGIBLE';
+            } else {
+                badge.className = 'eligibility-badge not-eligible';
+                badge.textContent = '✗ NOT ELIGIBLE';
+            }
+
+            // Scroll to report
+            document.getElementById('reportPreview').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generateMockData(address) {
+            // Simulate different results based on address
+            const hash = address.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+
+            const zones = ['RS10', 'RS7.5', 'RS5', 'R10', 'R8'];
+            const districts = ['Urban Services (USD)', 'General Services (GSD)'];
+
+            return {
+                apn: `${100 + (hash % 100)}-${(hash % 20).toString().padStart(2, '0')}-0-${(hash % 500).toString().padStart(3, '0')}.00`,
+                lotSize: 5000 + (hash % 15000),
+                zoning: zones[hash % zones.length],
+                district: hash % 3 === 0 ? districts[1] : districts[0],
+                eligible: hash % 4 !== 0 // 75% eligible
+            };
+        }
+
+        function purchaseReport() {
+            alert('Payment integration coming soon! For now, contact nataliebaldacci21@gmail.com to purchase reports.');
+        }
+
+        // Check for address in URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const addressParam = urlParams.get('address');
+        if (addressParam) {
+            document.getElementById('addressInput').value = addressParam;
+            generateReport();
+        }
+    </script>
+</body>
+</html>
