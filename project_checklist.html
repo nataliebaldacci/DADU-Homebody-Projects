@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Project Checklist | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-light: #8bb36d;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --warm-gray: #e8e4df;
+            --white: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --text-muted: #999999;
+            --border: #e0e0e0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--warm-gray);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .nav {
+            background: var(--navy);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .nav-logo-text { font-weight: 700; font-size: 18px; }
+        .nav-back { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; }
+        .nav-back:hover { color: white; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Progress Bar */
+        .progress-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .progress-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .progress-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .progress-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .progress-stat-value {
+            font-weight: 700;
+            color: var(--olive);
+        }
+
+        .progress-bar-container {
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--olive) 0%, var(--olive-light) 100%);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-phases {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .progress-phase {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .progress-phase.active {
+            color: var(--olive);
+            font-weight: 600;
+        }
+
+        /* Checklist Sections */
+        .checklist-section {
+            background: var(--white);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 20px 24px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .section-header:hover {
+            background: #e0dcd7;
+        }
+
+        .section-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .section-icon.planning { background: var(--teal); }
+        .section-icon.design { background: var(--tan); }
+        .section-icon.permits { background: var(--olive); }
+        .section-icon.construction { background: var(--navy); }
+        .section-icon.final { background: var(--success); }
+
+        .section-title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .section-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-progress-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .section-toggle {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
+
+        .section-header.collapsed .section-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            padding: 0 24px 24px;
+            display: block;
+        }
+
+        .section-header.collapsed + .section-content {
+            display: none;
+        }
+
+        /* Checklist Items */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox-wrapper {
+            flex-shrink: 0;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .checkbox:hover {
+            border-color: var(--olive);
+        }
+
+        .checkbox.checked {
+            background: var(--olive);
+            border-color: var(--olive);
+            color: white;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .checklist-item.completed .item-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .item-description {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .item-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--olive);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .item-link:hover {
+            text-decoration: underline;
+        }
+
+        .item-meta {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .item-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .item-tag.time {
+            background: rgba(107, 143, 163, 0.15);
+            color: var(--teal);
+        }
+
+        .item-tag.cost {
+            background: rgba(201, 168, 108, 0.15);
+            color: #a08045;
+        }
+
+        .item-tag.required {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        /* Actions */
+        .actions-bar {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn.primary {
+            background: var(--olive);
+            color: white;
+            border: none;
+        }
+
+        .action-btn.primary:hover {
+            background: var(--olive-light);
+        }
+
+        .action-btn.secondary {
+            background: white;
+            color: var(--navy);
+            border: 2px solid var(--border);
+        }
+
+        .action-btn.secondary:hover {
+            border-color: var(--navy);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer a { color: var(--olive); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">🏠</div>
+            <span class="nav-logo-text">Homebody Projects</span>
+        </a>
+        <a href="index.html" class="nav-back">← Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">DADU Project Checklist</h1>
+            <p class="page-subtitle">Track your Nashville DADU project from initial planning through final inspection</p>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="progress-card">
+            <div class="progress-header">
+                <div class="progress-title">📊 Overall Progress</div>
+                <div class="progress-stats">
+                    <div class="progress-stat">
+                        <span class="progress-stat-value" id="completedCount">0</span>
+                        <span>completed</span>
+                    </div>
+                    <div class="progress-stat">
+                        <span class="progress-stat-value" id="totalCount">0</span>
+                        <span>total</span>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+            <div class="progress-phases">
+                <span class="progress-phase active">Planning</span>
+                <span class="progress-phase">Design</span>
+                <span class="progress-phase">Permits</span>
+                <span class="progress-phase">Construction</span>
+                <span class="progress-phase">Final</span>
+            </div>
+        </div>
+
+        <!-- Phase 1: Planning -->
+        <div class="checklist-section" data-section="planning">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-header-left">
+                    <div class="section-icon planning">📋</div>
+                    <div class="section-title-group">
+                        <div class="section-title">Phase 1: Planning & Research</div>
+                        <div class="section-subtitle">Verify eligibility and understand requirements</div>
+                    </div>
+                </div>
+                <div class="section-progress">
+                    <span class="section-progress-text" data-progress>0/6</span>
+                    <span class="section-toggle">▼</span>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item" data-item="1">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Verify DADU eligibility for your property</div>
+                        <div class="item-description">Check that your property is in the Urban Services District (USD) and zoned R or RS. Verify lot size meets minimum requirements.</div>
+                        <a href="am_i_eligible.html" class="item-link">Use Eligibility Checker →</a>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                            <span class="item-tag time">~15 min</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="2">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Check for restrictive covenants</div>
+                        <div class="item-description">Search the Register of Deeds for any deed restrictions that might prohibit ADUs. Some older neighborhoods have HOA or covenant restrictions.</div>
+                        <a href="restrictive_covenants_v2.html" class="item-link">Search Covenants Database →</a>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                            <span class="item-tag time">~30 min</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="3">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Review DADU size limits for your lot</div>
+                        <div class="item-description">Lots under 10,000 sqft: max 700 sqft living area, 750 sqft footprint. Lots 10,000+ sqft: max 850 sqft living area, 1,000 sqft footprint.</div>
+                        <a href="dadu_building_requirements.html" class="item-link">View Building Requirements →</a>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="4">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Estimate project budget</div>
+                        <div class="item-description">Use the cost estimator to get a rough budget. Nashville DADUs typically cost $150-250 per square foot for construction, plus permits and site work.</div>
+                        <a href="project_cost_estimator.html" class="item-link">Use Cost Estimator →</a>
+                        <div class="item-meta">
+                            <span class="item-tag cost">$150-250/sqft</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="5">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Research financing options</div>
+                        <div class="item-description">Explore home equity loans, HELOCs, construction loans, or cash-out refinancing. Some lenders specialize in ADU financing.</div>
+                        <div class="item-meta">
+                            <span class="item-tag time">~1-2 weeks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="6">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Understand owner occupancy requirements</div>
+                        <div class="item-description">Nashville requires the property owner to occupy either the main house or the DADU. Review the requirements and plan accordingly.</div>
+                        <a href="owner_occupancy.html" class="item-link">Learn About Owner Occupancy →</a>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 2: Design -->
+        <div class="checklist-section" data-section="design">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-header-left">
+                    <div class="section-icon design">📐</div>
+                    <div class="section-title-group">
+                        <div class="section-title">Phase 2: Design & Planning</div>
+                        <div class="section-subtitle">Create plans and hire your team</div>
+                    </div>
+                </div>
+                <div class="section-progress">
+                    <span class="section-progress-text" data-progress>0/5</span>
+                    <span class="section-toggle">▼</span>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item" data-item="7">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Get a property survey</div>
+                        <div class="item-description">Hire a licensed surveyor to verify property boundaries and identify the buildable area. This is required for permit applications.</div>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                            <span class="item-tag cost">$400-800</span>
+                            <span class="item-tag time">1-2 weeks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="8">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Hire an architect or designer</div>
+                        <div class="item-description">Work with a licensed architect or designer to create construction drawings that meet Nashville codes. Some contractors offer design-build services.</div>
+                        <a href="contractor_dashboard.html" class="item-link">Find Contractors →</a>
+                        <div class="item-meta">
+                            <span class="item-tag cost">$3,000-12,000</span>
+                            <span class="item-tag time">4-8 weeks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="9">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Create site plan</div>
+                        <div class="item-description">Develop a site plan showing DADU location, setbacks, parking, and utility connections. Must meet all zoning setback requirements.</div>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="10">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Get contractor quotes</div>
+                        <div class="item-description">Obtain at least 3 quotes from licensed contractors. Verify their license, insurance, and check references from previous DADU projects.</div>
+                        <a href="contractor_dashboard.html" class="item-link">View Top Contractors →</a>
+                        <div class="item-meta">
+                            <span class="item-tag time">2-4 weeks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="11">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Finalize design and sign contract</div>
+                        <div class="item-description">Review and approve final construction drawings. Sign contract with your chosen contractor including scope, timeline, and payment schedule.</div>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 3: Permits -->
+        <div class="checklist-section" data-section="permits">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-header-left">
+                    <div class="section-icon permits">📝</div>
+                    <div class="section-title-group">
+                        <div class="section-title">Phase 3: Permits & Approvals</div>
+                        <div class="section-subtitle">Submit applications and get approvals</div>
+                    </div>
+                </div>
+                <div class="section-progress">
+                    <span class="section-progress-text" data-progress>0/6</span>
+                    <span class="section-toggle">▼</span>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item" data-item="12">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Submit building permit application</div>
+                        <div class="item-description">Apply through Nashville's ePermits system. Include construction drawings, site plan, survey, and owner affidavit.</div>
+                        <a href="https://epermits.nashville.gov" class="item-link" target="_blank">Go to ePermits →</a>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                            <span class="item-tag cost">$1,500-4,000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="13">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">File Owner Affidavit</div>
+                        <div class="item-description">Submit the required owner occupancy affidavit certifying you will occupy either the main dwelling or the DADU.</div>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="14">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Apply for utility connections</div>
+                        <div class="item-description">Contact Metro Water Services for water/sewer tap permits. Coordinate with NES for electrical service.</div>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                            <span class="item-tag cost">$2,000-5,000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="15">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Address plan review comments</div>
+                        <div class="item-description">Respond to any comments or required revisions from the Metro Codes plan review. May require multiple rounds.</div>
+                        <div class="item-meta">
+                            <span class="item-tag time">2-8 weeks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="16">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Receive building permit approval</div>
+                        <div class="item-description">Once approved, pay permit fees and receive your building permit. Post permit visibly at job site before starting work.</div>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="17">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Obtain trade permits</div>
+                        <div class="item-description">Ensure electrical, plumbing, and mechanical permits are pulled by licensed sub-contractors.</div>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 4: Construction -->
+        <div class="checklist-section" data-section="construction">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-header-left">
+                    <div class="section-icon construction">🏗️</div>
+                    <div class="section-title-group">
+                        <div class="section-title">Phase 4: Construction</div>
+                        <div class="section-subtitle">Build your DADU and pass inspections</div>
+                    </div>
+                </div>
+                <div class="section-progress">
+                    <span class="section-progress-text" data-progress>0/6</span>
+                    <span class="section-toggle">▼</span>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item" data-item="18">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Site preparation and foundation</div>
+                        <div class="item-description">Clear site, excavate, and pour foundation. Schedule and pass foundation inspection before proceeding.</div>
+                        <div class="item-meta">
+                            <span class="item-tag time">1-2 weeks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="19">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Framing and rough-in</div>
+                        <div class="item-description">Complete framing, install rough electrical, plumbing, and HVAC. Schedule and pass framing inspection.</div>
+                        <div class="item-meta">
+                            <span class="item-tag time">3-4 weeks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="20">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Insulation and drywall</div>
+                        <div class="item-description">Install insulation (pass insulation inspection), then hang and finish drywall.</div>
+                        <div class="item-meta">
+                            <span class="item-tag time">2-3 weeks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="21">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Interior finishes</div>
+                        <div class="item-description">Install flooring, cabinets, countertops, fixtures, and appliances. Complete painting and trim work.</div>
+                        <div class="item-meta">
+                            <span class="item-tag time">3-4 weeks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="22">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Exterior finishes</div>
+                        <div class="item-description">Complete siding, roofing, windows, doors, and exterior paint. Install any decks or patios.</div>
+                        <div class="item-meta">
+                            <span class="item-tag time">2-3 weeks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="23">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Landscaping and site work</div>
+                        <div class="item-description">Complete driveway, walkways, landscaping, and final grading. Ensure proper drainage away from structures.</div>
+                        <div class="item-meta">
+                            <span class="item-tag time">1-2 weeks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 5: Final -->
+        <div class="checklist-section" data-section="final">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-header-left">
+                    <div class="section-icon final">✅</div>
+                    <div class="section-title-group">
+                        <div class="section-title">Phase 5: Final Steps</div>
+                        <div class="section-subtitle">Complete inspections and move in</div>
+                    </div>
+                </div>
+                <div class="section-progress">
+                    <span class="section-progress-text" data-progress>0/4</span>
+                    <span class="section-toggle">▼</span>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item" data-item="24">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Pass final inspections</div>
+                        <div class="item-description">Schedule and pass all final inspections: building, electrical, plumbing, mechanical, and fire. Address any corrections.</div>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="25">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Obtain Certificate of Occupancy</div>
+                        <div class="item-description">Once all inspections pass, receive your CO. This is required before anyone can legally occupy the DADU.</div>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="26">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Update insurance</div>
+                        <div class="item-description">Contact your insurance company to add the DADU to your policy. Consider landlord insurance if renting.</div>
+                        <div class="item-meta">
+                            <span class="item-tag required">Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="checklist-item" data-item="27">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox" onclick="toggleItem(this)"></div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Final walkthrough and move-in</div>
+                        <div class="item-description">Complete final walkthrough with contractor, create punch list of any remaining items, and prepare for occupancy!</div>
+                        <div class="item-meta">
+                            <span class="item-tag time">🎉 Congratulations!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions-bar">
+            <button class="action-btn secondary" onclick="resetChecklist()">🔄 Reset Checklist</button>
+            <button class="action-btn secondary" onclick="printChecklist()">🖨️ Print Checklist</button>
+            <a href="permit_process_timeline.html" class="action-btn primary">📅 View Full Timeline →</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Your progress is saved automatically in your browser.</p>
+        <p style="margin-top: 8px;"><a href="index.html">Homebody Projects</a> | Nashville DADU Platform</p>
+    </footer>
+
+    <script>
+        // Load saved progress
+        function loadProgress() {
+            const saved = localStorage.getItem('daduChecklist');
+            if (saved) {
+                const completed = JSON.parse(saved);
+                completed.forEach(itemNum => {
+                    const item = document.querySelector(`[data-item="${itemNum}"]`);
+                    if (item) {
+                        item.classList.add('completed');
+                        item.querySelector('.checkbox').classList.add('checked');
+                    }
+                });
+            }
+            updateProgress();
+        }
+
+        // Save progress
+        function saveProgress() {
+            const completed = [];
+            document.querySelectorAll('.checklist-item.completed').forEach(item => {
+                completed.push(item.dataset.item);
+            });
+            localStorage.setItem('daduChecklist', JSON.stringify(completed));
+        }
+
+        // Toggle item
+        function toggleItem(checkbox) {
+            checkbox.classList.toggle('checked');
+            const item = checkbox.closest('.checklist-item');
+            item.classList.toggle('completed');
+            saveProgress();
+            updateProgress();
+        }
+
+        // Toggle section
+        function toggleSection(header) {
+            header.classList.toggle('collapsed');
+        }
+
+        // Update progress display
+        function updateProgress() {
+            const total = document.querySelectorAll('.checklist-item').length;
+            const completed = document.querySelectorAll('.checklist-item.completed').length;
+            const percent = total > 0 ? (completed / total) * 100 : 0;
+
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('progressBar').style.width = percent + '%';
+
+            // Update section progress
+            document.querySelectorAll('.checklist-section').forEach(section => {
+                const sectionTotal = section.querySelectorAll('.checklist-item').length;
+                const sectionCompleted = section.querySelectorAll('.checklist-item.completed').length;
+                const progressText = section.querySelector('[data-progress]');
+                if (progressText) {
+                    progressText.textContent = `${sectionCompleted}/${sectionTotal}`;
+                }
+            });
+
+            // Update phase indicators
+            const phases = ['planning', 'design', 'permits', 'construction', 'final'];
+            const phaseElements = document.querySelectorAll('.progress-phase');
+
+            phases.forEach((phase, index) => {
+                const section = document.querySelector(`[data-section="${phase}"]`);
+                if (section) {
+                    const sectionTotal = section.querySelectorAll('.checklist-item').length;
+                    const sectionCompleted = section.querySelectorAll('.checklist-item.completed').length;
+
+                    if (sectionCompleted === sectionTotal && sectionTotal > 0) {
+                        phaseElements[index].classList.add('active');
+                    } else if (sectionCompleted > 0) {
+                        phaseElements[index].classList.add('active');
+                    }
+                }
+            });
+        }
+
+        // Reset checklist
+        function resetChecklist() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                localStorage.removeItem('daduChecklist');
+                document.querySelectorAll('.checklist-item').forEach(item => {
+                    item.classList.remove('completed');
+                    item.querySelector('.checkbox').classList.remove('checked');
+                });
+                updateProgress();
+            }
+        }
+
+        // Print checklist
+        function printChecklist() {
+            window.print();
+        }
+
+        // Initialize
+        loadProgress();
+    </script>
+</body>
+</html>

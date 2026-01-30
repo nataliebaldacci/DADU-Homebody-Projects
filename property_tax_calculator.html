@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Tax Calculator | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-light: #8bb36d;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --warm-gray: #e8e4df;
+            --white: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --text-muted: #999999;
+            --border: #e0e0e0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--warm-gray);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .nav {
+            background: var(--navy);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .nav-logo-text { font-weight: 700; font-size: 18px; }
+        .nav-back { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; }
+        .nav-back:hover { color: white; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .calculator-card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .calc-section {
+            padding: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .calc-section:last-child { border-bottom: none; }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--tan);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .input-row { grid-template-columns: 1fr; }
+        }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group:last-child { margin-bottom: 0; }
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--olive);
+            box-shadow: 0 0 0 3px rgba(107, 142, 78, 0.1);
+        }
+
+        .calc-button {
+            width: 100%;
+            padding: 16px 32px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .calc-button:hover {
+            background: var(--olive-light);
+            transform: translateY(-2px);
+        }
+
+        /* Results */
+        .results-section {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            color: white;
+            display: none;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .results-grid { grid-template-columns: 1fr; }
+        }
+
+        .result-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .result-card.highlight {
+            background: rgba(107, 142, 78, 0.3);
+            border: 2px solid rgba(139, 179, 109, 0.5);
+        }
+
+        .result-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .result-subtext {
+            font-size: 13px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .comparison-table {
+            margin-top: 24px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .comparison-row:last-child { border-bottom: none; }
+
+        .comparison-row.header {
+            background: rgba(255,255,255,0.1);
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-cell {
+            font-size: 14px;
+        }
+
+        .comparison-cell:not(:first-child) {
+            text-align: right;
+        }
+
+        .increase-badge {
+            display: inline-block;
+            background: var(--warning);
+            color: var(--navy-dark);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        /* Info Section */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .info-grid { grid-template-columns: 1fr; }
+        }
+
+        .info-card {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .info-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card-text {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .tax-rate-box {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .tax-rate-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .tax-rate-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tax-rate-item:last-child { border-bottom: none; }
+
+        .footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer a { color: var(--olive); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">🏠</div>
+            <span class="nav-logo-text">Homebody Projects</span>
+        </a>
+        <a href="index.html" class="nav-back">← Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Property Tax Calculator</h1>
+            <p class="page-subtitle">Estimate how adding a DADU will affect your Davidson County property taxes</p>
+        </div>
+
+        <div class="calculator-card">
+            <!-- Current Property -->
+            <div class="calc-section">
+                <h2 class="section-title">
+                    <span class="section-icon">🏡</span>
+                    Current Property Information
+                </h2>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">
+                            Current Appraised Value
+                            <span class="input-hint">(from your property tax bill)</span>
+                        </label>
+                        <input type="number" class="input-field" id="currentValue" placeholder="450000" value="450000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">
+                            Current Annual Property Tax
+                            <span class="input-hint">(optional - we'll estimate if blank)</span>
+                        </label>
+                        <input type="number" class="input-field" id="currentTax" placeholder="Leave blank to estimate">
+                    </div>
+                </div>
+            </div>
+
+            <!-- DADU Details -->
+            <div class="calc-section">
+                <h2 class="section-title">
+                    <span class="section-icon">🏠</span>
+                    DADU Details
+                </h2>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">DADU Square Footage</label>
+                        <input type="number" class="input-field" id="daduSqft" placeholder="750" value="750">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Estimated DADU Build Cost</label>
+                        <input type="number" class="input-field" id="daduCost" placeholder="150000" value="150000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">DADU Finish Level</label>
+                    <select class="input-field" id="finishLevel">
+                        <option value="basic">Basic (adds ~$120/sqft to assessed value)</option>
+                        <option value="standard" selected>Standard (adds ~$150/sqft to assessed value)</option>
+                        <option value="premium">Premium (adds ~$180/sqft to assessed value)</option>
+                    </select>
+                </div>
+
+                <button class="calc-button" onclick="calculateTax()">Calculate Tax Impact</button>
+            </div>
+
+            <!-- Results -->
+            <div class="calc-section results-section" id="resultsSection">
+                <h2 class="section-title" style="color: white;">
+                    <span class="section-icon" style="background: rgba(255,255,255,0.2);">📊</span>
+                    Tax Impact Results
+                </h2>
+
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Current Annual Tax</div>
+                        <div class="result-value" id="resultCurrentTax">$3,825</div>
+                        <div class="result-subtext">Based on current assessment</div>
+                    </div>
+                    <div class="result-card highlight">
+                        <div class="result-label">Estimated New Annual Tax</div>
+                        <div class="result-value" id="resultNewTax">$4,781</div>
+                        <div class="result-subtext">After DADU completion</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Annual Increase</div>
+                        <div class="result-value" id="resultIncrease">$956</div>
+                        <div class="result-subtext" id="resultIncreasePercent">+25%</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Monthly Increase</div>
+                        <div class="result-value" id="resultMonthly">$80</div>
+                        <div class="result-subtext">Added to your budget</div>
+                    </div>
+                </div>
+
+                <div class="comparison-table">
+                    <div class="comparison-row header">
+                        <div class="comparison-cell">Detail</div>
+                        <div class="comparison-cell">Before DADU</div>
+                        <div class="comparison-cell">After DADU</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell">Appraised Value</div>
+                        <div class="comparison-cell" id="beforeAppraised">$450,000</div>
+                        <div class="comparison-cell" id="afterAppraised">$562,500</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell">Assessed Value (25%)</div>
+                        <div class="comparison-cell" id="beforeAssessed">$112,500</div>
+                        <div class="comparison-cell" id="afterAssessed">$140,625</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell">Annual Property Tax</div>
+                        <div class="comparison-cell" id="beforeTax">$3,825</div>
+                        <div class="comparison-cell" id="afterTax">$4,781</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-card-title">📋 How Davidson County Calculates Property Tax</div>
+                <div class="info-card-text">
+                    Property tax = Assessed Value × Tax Rate. In Tennessee, residential property is assessed at 25% of appraised value. The 2024-2025 Davidson County tax rate is $3.254 per $100 of assessed value (urban) or $2.953 (general services).
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">🏠 DADU Assessment Impact</div>
+                <div class="info-card-text">
+                    When you add a DADU, the Assessor will increase your property's appraised value. The increase is typically based on the DADU's square footage and quality, not necessarily your full construction cost. Reassessment usually occurs after you receive a Certificate of Occupancy.
+                </div>
+            </div>
+        </div>
+
+        <div class="tax-rate-box">
+            <div class="tax-rate-title">📊 2024-2025 Davidson County Tax Rates</div>
+            <div class="tax-rate-item">
+                <span>Urban Services District (USD)</span>
+                <span><strong>$3.254</strong> per $100 assessed</span>
+            </div>
+            <div class="tax-rate-item">
+                <span>General Services District (GSD)</span>
+                <span><strong>$2.953</strong> per $100 assessed</span>
+            </div>
+            <div class="tax-rate-item">
+                <span>Residential Assessment Rate</span>
+                <span><strong>25%</strong> of appraised value</span>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>This calculator provides estimates only. Actual tax assessments are determined by the Davidson County Property Assessor.</p>
+        <p style="margin-top: 8px;"><a href="index.html">Homebody Projects</a> | Nashville DADU Platform</p>
+    </footer>
+
+    <script>
+        function calculateTax() {
+            // Get inputs
+            const currentValue = parseFloat(document.getElementById('currentValue').value) || 0;
+            const currentTaxInput = document.getElementById('currentTax').value;
+            const daduSqft = parseFloat(document.getElementById('daduSqft').value) || 750;
+            const daduCost = parseFloat(document.getElementById('daduCost').value) || 150000;
+            const finishLevel = document.getElementById('finishLevel').value;
+
+            // Tax rate (USD default)
+            const taxRate = 3.254 / 100; // Per $100 assessed value
+
+            // Assessment rate (25% for residential in TN)
+            const assessmentRate = 0.25;
+
+            // Value added per sqft by finish level (conservative estimates)
+            const valuePerSqft = {
+                basic: 120,
+                standard: 150,
+                premium: 180
+            };
+
+            // Calculate DADU added value (typically less than build cost for tax purposes)
+            const daduAddedValue = daduSqft * valuePerSqft[finishLevel];
+
+            // New total appraised value
+            const newAppraisedValue = currentValue + daduAddedValue;
+
+            // Assessed values (25% of appraised)
+            const currentAssessed = currentValue * assessmentRate;
+            const newAssessed = newAppraisedValue * assessmentRate;
+
+            // Calculate taxes
+            let currentTax;
+            if (currentTaxInput && parseFloat(currentTaxInput) > 0) {
+                currentTax = parseFloat(currentTaxInput);
+            } else {
+                currentTax = currentAssessed * taxRate;
+            }
+
+            const newTax = newAssessed * taxRate;
+            const taxIncrease = newTax - currentTax;
+            const monthlyIncrease = taxIncrease / 12;
+            const percentIncrease = (taxIncrease / currentTax) * 100;
+
+            // Update display
+            document.getElementById('resultCurrentTax').textContent = '$' + currentTax.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('resultNewTax').textContent = '$' + newTax.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('resultIncrease').textContent = '$' + taxIncrease.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('resultIncreasePercent').textContent = '+' + percentIncrease.toFixed(0) + '%';
+            document.getElementById('resultMonthly').textContent = '$' + monthlyIncrease.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            // Comparison table
+            document.getElementById('beforeAppraised').textContent = '$' + currentValue.toLocaleString();
+            document.getElementById('afterAppraised').textContent = '$' + newAppraisedValue.toLocaleString();
+            document.getElementById('beforeAssessed').textContent = '$' + currentAssessed.toLocaleString();
+            document.getElementById('afterAssessed').textContent = '$' + newAssessed.toLocaleString();
+            document.getElementById('beforeTax').textContent = '$' + currentTax.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('afterTax').textContent = '$' + newTax.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            // Show results
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

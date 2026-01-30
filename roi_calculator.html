@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU ROI Calculator | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-light: #8bb36d;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --warm-gray: #e8e4df;
+            --white: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --text-muted: #999999;
+            --border: #e0e0e0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--warm-gray);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--navy);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .nav-logo-text {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .nav-back {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-back:hover { color: white; }
+
+        /* Main Content */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Calculator Card */
+        .calculator-card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .calc-section {
+            padding: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .calc-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--olive);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-left: 8px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--olive);
+            box-shadow: 0 0 0 3px rgba(107, 142, 78, 0.1);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .input-row { grid-template-columns: 1fr; }
+        }
+
+        /* Range Slider */
+        .range-container {
+            margin-top: 8px;
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--olive);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .range-value {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--olive);
+            margin-top: 12px;
+        }
+
+        /* Calculate Button */
+        .calc-button {
+            width: 100%;
+            padding: 16px 32px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calc-button:hover {
+            background: var(--olive-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 142, 78, 0.3);
+        }
+
+        /* Results Section */
+        .results-section {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            color: white;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .results-grid { grid-template-columns: 1fr; }
+        }
+
+        .result-card {
+            text-align: center;
+            padding: 24px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+        }
+
+        .result-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .result-value.highlight {
+            color: var(--olive-light);
+        }
+
+        .result-subtext {
+            font-size: 13px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            margin-top: 24px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border-left: 4px solid var(--olive);
+        }
+
+        .summary-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .summary-text {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        /* Info Cards */
+        .info-section {
+            margin-top: 32px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .info-section { grid-template-columns: 1fr; }
+        }
+
+        .info-card {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .info-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .info-card-text {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: var(--olive);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">🏠</div>
+            <span class="nav-logo-text">Homebody Projects</span>
+        </a>
+        <a href="index.html" class="nav-back">← Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">DADU ROI Calculator</h1>
+            <p class="page-subtitle">Estimate your return on investment for building a Detached Accessory Dwelling Unit in Nashville</p>
+        </div>
+
+        <div class="calculator-card">
+            <!-- Investment Inputs -->
+            <div class="calc-section">
+                <h2 class="section-title">
+                    <span class="section-icon">💰</span>
+                    Investment Costs
+                </h2>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">
+                            Total Build Cost
+                            <span class="input-hint">(construction + permits)</span>
+                        </label>
+                        <input type="number" class="input-field" id="buildCost" placeholder="150000" value="150000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">
+                            DADU Square Footage
+                        </label>
+                        <input type="number" class="input-field" id="sqft" placeholder="750" value="750">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">
+                        Financing
+                        <span class="input-hint">(if applicable)</span>
+                    </label>
+                    <div class="input-row">
+                        <input type="number" class="input-field" id="downPayment" placeholder="Down payment %" value="20">
+                        <input type="number" class="input-field" id="interestRate" placeholder="Interest rate %" value="7.5">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Income Inputs -->
+            <div class="calc-section">
+                <h2 class="section-title">
+                    <span class="section-icon">📈</span>
+                    Expected Income
+                </h2>
+
+                <div class="input-group">
+                    <label class="input-label">Monthly Rental Income</label>
+                    <input type="number" class="input-field" id="monthlyRent" placeholder="1800" value="1800">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Estimated Occupancy Rate</label>
+                    <div class="range-container">
+                        <input type="range" class="range-slider" id="occupancy" min="50" max="100" value="90">
+                        <div class="range-value" id="occupancyValue">90%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expenses -->
+            <div class="calc-section">
+                <h2 class="section-title">
+                    <span class="section-icon">📋</span>
+                    Annual Expenses
+                </h2>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">Property Tax Increase</label>
+                        <input type="number" class="input-field" id="propertyTax" placeholder="1200" value="1200">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Insurance</label>
+                        <input type="number" class="input-field" id="insurance" placeholder="600" value="600">
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">Maintenance (annual)</label>
+                        <input type="number" class="input-field" id="maintenance" placeholder="1500" value="1500">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Utilities (if included)</label>
+                        <input type="number" class="input-field" id="utilities" placeholder="0" value="0">
+                    </div>
+                </div>
+
+                <button class="calc-button" onclick="calculateROI()">Calculate ROI</button>
+            </div>
+
+            <!-- Results -->
+            <div class="calc-section results-section" id="resultsSection" style="display: none;">
+                <h2 class="section-title" style="color: white;">
+                    <span class="section-icon" style="background: rgba(255,255,255,0.2);">✨</span>
+                    Your ROI Results
+                </h2>
+
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Annual ROI</div>
+                        <div class="result-value highlight" id="annualROI">--</div>
+                        <div class="result-subtext">Cash-on-cash return</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Payback Period</div>
+                        <div class="result-value" id="paybackPeriod">--</div>
+                        <div class="result-subtext">Years to recover investment</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Monthly Cash Flow</div>
+                        <div class="result-value" id="monthlyCashFlow">--</div>
+                        <div class="result-subtext">After expenses</div>
+                    </div>
+                </div>
+
+                <div class="results-grid" style="margin-top: 20px;">
+                    <div class="result-card">
+                        <div class="result-label">Annual Gross Income</div>
+                        <div class="result-value" id="annualGross">--</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Annual Net Income</div>
+                        <div class="result-value" id="annualNet">--</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Cost Per Sq Ft</div>
+                        <div class="result-value" id="costPerSqft">--</div>
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <div class="summary-title">📊 Investment Summary</div>
+                    <div class="summary-text" id="summaryText">
+                        Your results will appear here after calculation.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="info-section">
+            <div class="info-card">
+                <div class="info-card-title">📍 Nashville DADU Market Data</div>
+                <div class="info-card-text">
+                    Average DADU rental rates in Nashville range from $1,400-$2,200/month depending on location, size, and finishes. Areas near downtown, 12 South, and East Nashville command premium rents.
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">💡 Maximize Your ROI</div>
+                <div class="info-card-text">
+                    Consider energy-efficient features, smart home technology, and quality finishes. These investments typically increase rental rates by 10-15% while reducing long-term maintenance costs.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>This calculator provides estimates only. Consult with financial and real estate professionals for specific advice.</p>
+        <p style="margin-top: 8px;"><a href="index.html">Homebody Projects</a> | Nashville DADU Platform</p>
+    </footer>
+
+    <script>
+        // Update occupancy display
+        document.getElementById('occupancy').addEventListener('input', function() {
+            document.getElementById('occupancyValue').textContent = this.value + '%';
+        });
+
+        function calculateROI() {
+            // Get input values
+            const buildCost = parseFloat(document.getElementById('buildCost').value) || 0;
+            const sqft = parseFloat(document.getElementById('sqft').value) || 1;
+            const downPayment = parseFloat(document.getElementById('downPayment').value) || 100;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const monthlyRent = parseFloat(document.getElementById('monthlyRent').value) || 0;
+            const occupancy = parseFloat(document.getElementById('occupancy').value) || 100;
+            const propertyTax = parseFloat(document.getElementById('propertyTax').value) || 0;
+            const insurance = parseFloat(document.getElementById('insurance').value) || 0;
+            const maintenance = parseFloat(document.getElementById('maintenance').value) || 0;
+            const utilities = parseFloat(document.getElementById('utilities').value) || 0;
+
+            // Calculate
+            const cashInvested = buildCost * (downPayment / 100);
+            const loanAmount = buildCost - cashInvested;
+
+            // Monthly loan payment (if financed)
+            let monthlyLoanPayment = 0;
+            if (loanAmount > 0 && interestRate > 0) {
+                const monthlyRate = interestRate / 100 / 12;
+                const numPayments = 30 * 12; // 30-year loan
+                monthlyLoanPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+            }
+
+            // Annual calculations
+            const annualGrossIncome = monthlyRent * 12 * (occupancy / 100);
+            const annualExpenses = propertyTax + insurance + maintenance + utilities + (monthlyLoanPayment * 12);
+            const annualNetIncome = annualGrossIncome - annualExpenses;
+            const monthlyCashFlow = annualNetIncome / 12;
+
+            // ROI (cash-on-cash return)
+            const annualROI = cashInvested > 0 ? (annualNetIncome / cashInvested) * 100 : 0;
+
+            // Payback period
+            const paybackYears = annualNetIncome > 0 ? cashInvested / annualNetIncome : Infinity;
+
+            // Cost per sqft
+            const costPerSqft = sqft > 0 ? buildCost / sqft : 0;
+
+            // Update display
+            document.getElementById('annualROI').textContent = annualROI.toFixed(1) + '%';
+            document.getElementById('paybackPeriod').textContent = paybackYears === Infinity ? 'N/A' : paybackYears.toFixed(1) + ' yrs';
+            document.getElementById('monthlyCashFlow').textContent = '$' + monthlyCashFlow.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('annualGross').textContent = '$' + annualGrossIncome.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('annualNet').textContent = '$' + annualNetIncome.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('costPerSqft').textContent = '$' + costPerSqft.toFixed(0);
+
+            // Summary text
+            let summaryText = `Based on your inputs, a $${buildCost.toLocaleString()} DADU investment `;
+            if (downPayment < 100) {
+                summaryText += `with ${downPayment}% down ($${cashInvested.toLocaleString()} cash invested) `;
+            }
+            summaryText += `would generate approximately $${annualNetIncome.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} in annual net income. `;
+
+            if (annualROI > 10) {
+                summaryText += `This represents an excellent ${annualROI.toFixed(1)}% cash-on-cash return. `;
+            } else if (annualROI > 5) {
+                summaryText += `This represents a solid ${annualROI.toFixed(1)}% cash-on-cash return. `;
+            } else if (annualROI > 0) {
+                summaryText += `This represents a modest ${annualROI.toFixed(1)}% cash-on-cash return. `;
+            } else {
+                summaryText += `With current inputs, the investment shows negative cash flow. Consider adjusting rent or expenses. `;
+            }
+
+            if (paybackYears !== Infinity && paybackYears < 15) {
+                summaryText += `You would recover your initial investment in approximately ${paybackYears.toFixed(1)} years.`;
+            }
+
+            document.getElementById('summaryText').textContent = summaryText;
+
+            // Show results
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

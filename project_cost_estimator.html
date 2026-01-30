@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Cost Estimator | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-light: #8bb36d;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --warm-gray: #e8e4df;
+            --white: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --text-muted: #999999;
+            --border: #e0e0e0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--warm-gray);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .nav {
+            background: var(--navy);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .nav-logo-text { font-weight: 700; font-size: 18px; }
+        .nav-back { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; }
+        .nav-back:hover { color: white; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .calculator-grid { grid-template-columns: 1fr; }
+        }
+
+        .calculator-card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .calc-section {
+            padding: 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .calc-section:last-child { border-bottom: none; }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--teal);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .input-group { margin-bottom: 18px; }
+        .input-group:last-child { margin-bottom: 0; }
+
+        .input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--olive);
+            box-shadow: 0 0 0 3px rgba(107, 142, 78, 0.1);
+        }
+
+        select.input-field {
+            cursor: pointer;
+            background: white;
+        }
+
+        /* Option Cards */
+        .option-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .option-card {
+            padding: 16px 12px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-card:hover {
+            border-color: var(--teal);
+            background: var(--cream);
+        }
+
+        .option-card.selected {
+            border-color: var(--olive);
+            background: rgba(107, 142, 78, 0.1);
+        }
+
+        .option-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .option-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .option-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Checkbox Options */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkbox-item:hover {
+            border-color: var(--teal);
+        }
+
+        .checkbox-item.checked {
+            border-color: var(--olive);
+            background: rgba(107, 142, 78, 0.05);
+        }
+
+        .checkbox-item input {
+            display: none;
+        }
+
+        .checkbox-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .checkbox-item.checked .checkbox-box {
+            background: var(--olive);
+            border-color: var(--olive);
+            color: white;
+        }
+
+        .checkbox-label {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .checkbox-price {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Calculate Button */
+        .calc-button {
+            width: 100%;
+            padding: 16px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calc-button:hover {
+            background: var(--olive-light);
+            transform: translateY(-2px);
+        }
+
+        /* Results Panel */
+        .results-panel {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 24px;
+            overflow: hidden;
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .results-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .results-total {
+            font-size: 36px;
+            font-weight: 800;
+        }
+
+        .results-range {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .results-body {
+            padding: 24px;
+        }
+
+        .cost-breakdown {
+            margin-bottom: 20px;
+        }
+
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .cost-item:last-child { border-bottom: none; }
+
+        .cost-label { color: var(--text-light); }
+        .cost-value { font-weight: 600; }
+
+        .cost-item.total {
+            border-top: 2px solid var(--navy);
+            border-bottom: none;
+            margin-top: 8px;
+            padding-top: 16px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .per-sqft-badge {
+            display: inline-block;
+            background: var(--cream);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-top: 16px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--cream);
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Market Data */
+        .market-data {
+            margin-top: 32px;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .market-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .market-grid { grid-template-columns: 1fr; }
+            .option-cards { grid-template-columns: 1fr; }
+            .checkbox-grid { grid-template-columns: 1fr; }
+        }
+
+        .market-stat {
+            text-align: center;
+            padding: 16px;
+            background: var(--cream);
+            border-radius: 10px;
+        }
+
+        .market-stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--olive);
+        }
+
+        .market-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer a { color: var(--olive); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">🏠</div>
+            <span class="nav-logo-text">Homebody Projects</span>
+        </a>
+        <a href="index.html" class="nav-back">← Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">DADU Cost Estimator</h1>
+            <p class="page-subtitle">Get a detailed cost estimate for your Nashville DADU project based on size, finishes, and features</p>
+        </div>
+
+        <div class="calculator-grid">
+            <!-- Input Section -->
+            <div class="calculator-card">
+                <!-- Size -->
+                <div class="calc-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📐</span>
+                        DADU Size
+                    </h2>
+
+                    <div class="input-group">
+                        <label class="input-label">Square Footage</label>
+                        <input type="number" class="input-field" id="sqft" placeholder="750" value="750" oninput="updateEstimate()">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Bedrooms</label>
+                        <select class="input-field" id="bedrooms" onchange="updateEstimate()">
+                            <option value="studio">Studio</option>
+                            <option value="1" selected>1 Bedroom</option>
+                            <option value="2">2 Bedrooms</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Bathrooms</label>
+                        <select class="input-field" id="bathrooms" onchange="updateEstimate()">
+                            <option value="1" selected>1 Bathroom</option>
+                            <option value="1.5">1.5 Bathrooms</option>
+                            <option value="2">2 Bathrooms</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Construction Type -->
+                <div class="calc-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">🏗️</span>
+                        Construction Type
+                    </h2>
+
+                    <div class="option-cards">
+                        <div class="option-card" data-value="prefab" onclick="selectOption(this, 'construction')">
+                            <div class="option-icon">📦</div>
+                            <div class="option-label">Prefab/Modular</div>
+                            <div class="option-desc">Factory-built</div>
+                        </div>
+                        <div class="option-card selected" data-value="standard" onclick="selectOption(this, 'construction')">
+                            <div class="option-icon">🔨</div>
+                            <div class="option-label">Site-Built</div>
+                            <div class="option-desc">Traditional</div>
+                        </div>
+                        <div class="option-card" data-value="custom" onclick="selectOption(this, 'construction')">
+                            <div class="option-icon">✨</div>
+                            <div class="option-label">Custom</div>
+                            <div class="option-desc">Architect-designed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finish Level -->
+                <div class="calc-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">🎨</span>
+                        Finish Level
+                    </h2>
+
+                    <div class="option-cards">
+                        <div class="option-card" data-value="basic" onclick="selectOption(this, 'finish')">
+                            <div class="option-icon">🏠</div>
+                            <div class="option-label">Basic</div>
+                            <div class="option-desc">$150-180/sqft</div>
+                        </div>
+                        <div class="option-card selected" data-value="standard" onclick="selectOption(this, 'finish')">
+                            <div class="option-icon">⭐</div>
+                            <div class="option-label">Standard</div>
+                            <div class="option-desc">$180-220/sqft</div>
+                        </div>
+                        <div class="option-card" data-value="premium" onclick="selectOption(this, 'finish')">
+                            <div class="option-icon">💎</div>
+                            <div class="option-label">Premium</div>
+                            <div class="option-desc">$220-280/sqft</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Features -->
+                <div class="calc-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">➕</span>
+                        Additional Features
+                    </h2>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" data-cost="8000" id="feature-solar">
+                            <span class="checkbox-box">✓</span>
+                            <span class="checkbox-label">Solar Panels</span>
+                            <span class="checkbox-price">+$8,000</span>
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" data-cost="5000" id="feature-ev">
+                            <span class="checkbox-box">✓</span>
+                            <span class="checkbox-label">EV Charger</span>
+                            <span class="checkbox-price">+$5,000</span>
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" data-cost="3500" id="feature-smart">
+                            <span class="checkbox-box">✓</span>
+                            <span class="checkbox-label">Smart Home</span>
+                            <span class="checkbox-price">+$3,500</span>
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" data-cost="12000" id="feature-deck">
+                            <span class="checkbox-box">✓</span>
+                            <span class="checkbox-label">Deck/Patio</span>
+                            <span class="checkbox-price">+$12,000</span>
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" data-cost="6000" id="feature-washer">
+                            <span class="checkbox-box">✓</span>
+                            <span class="checkbox-label">Washer/Dryer</span>
+                            <span class="checkbox-price">+$6,000</span>
+                        </label>
+                        <label class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <input type="checkbox" data-cost="15000" id="feature-garage">
+                            <span class="checkbox-box">✓</span>
+                            <span class="checkbox-label">Carport/Parking</span>
+                            <span class="checkbox-price">+$15,000</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Site Conditions -->
+                <div class="calc-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">🌍</span>
+                        Site Conditions
+                    </h2>
+
+                    <div class="input-group">
+                        <label class="input-label">Lot Slope</label>
+                        <select class="input-field" id="slope" onchange="updateEstimate()">
+                            <option value="flat" selected>Flat/Minimal Slope</option>
+                            <option value="moderate">Moderate Slope (5-15%)</option>
+                            <option value="steep">Steep Slope (15%+)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Utility Connection Distance</label>
+                        <select class="input-field" id="utilities" onchange="updateEstimate()">
+                            <option value="close" selected>Close to Main House (&lt;50ft)</option>
+                            <option value="medium">Medium Distance (50-100ft)</option>
+                            <option value="far">Far from Main House (100ft+)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div>
+                <div class="results-panel">
+                    <div class="results-header">
+                        <div class="results-title">Estimated Total Cost</div>
+                        <div class="results-total" id="totalCost">$150,000</div>
+                        <div class="results-range" id="costRange">Range: $135,000 - $165,000</div>
+                    </div>
+
+                    <div class="results-body">
+                        <div class="cost-breakdown">
+                            <div class="cost-item">
+                                <span class="cost-label">Construction</span>
+                                <span class="cost-value" id="constructionCost">$120,000</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">Site Work</span>
+                                <span class="cost-value" id="siteCost">$12,000</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">Permits & Fees</span>
+                                <span class="cost-value" id="permitCost">$8,000</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">Design & Engineering</span>
+                                <span class="cost-value" id="designCost">$6,000</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">Utility Connections</span>
+                                <span class="cost-value" id="utilityCost">$4,000</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">Add-on Features</span>
+                                <span class="cost-value" id="featuresCost">$0</span>
+                            </div>
+                            <div class="cost-item total">
+                                <span class="cost-label">Total Estimate</span>
+                                <span class="cost-value" id="totalCost2">$150,000</span>
+                            </div>
+                        </div>
+
+                        <div class="per-sqft-badge">
+                            <span id="perSqft">$200</span> per square foot
+                        </div>
+
+                        <div class="disclaimer">
+                            <strong>Disclaimer:</strong> This is an estimate only. Actual costs vary based on contractor, materials, market conditions, and specific site requirements. Get multiple quotes from licensed contractors.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market Data -->
+                <div class="market-data">
+                    <div class="market-title">📊 Nashville DADU Market Data</div>
+                    <div class="market-grid">
+                        <div class="market-stat">
+                            <div class="market-stat-value">$195</div>
+                            <div class="market-stat-label">Avg Cost/SqFt</div>
+                        </div>
+                        <div class="market-stat">
+                            <div class="market-stat-value">750</div>
+                            <div class="market-stat-label">Avg DADU Size</div>
+                        </div>
+                        <div class="market-stat">
+                            <div class="market-stat-value">8-12</div>
+                            <div class="market-stat-label">Months to Build</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Cost estimates based on Nashville market data as of January 2026.</p>
+        <p style="margin-top: 8px;"><a href="index.html">Homebody Projects</a> | Nashville DADU Platform</p>
+    </footer>
+
+    <script>
+        let selectedOptions = {
+            construction: 'standard',
+            finish: 'standard'
+        };
+
+        function selectOption(element, type) {
+            // Remove selected from siblings
+            element.parentElement.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            // Add selected to clicked
+            element.classList.add('selected');
+            selectedOptions[type] = element.dataset.value;
+            updateEstimate();
+        }
+
+        function toggleCheckbox(element) {
+            element.classList.toggle('checked');
+            const input = element.querySelector('input');
+            input.checked = !input.checked;
+            updateEstimate();
+        }
+
+        function updateEstimate() {
+            const sqft = parseFloat(document.getElementById('sqft').value) || 750;
+            const bedrooms = document.getElementById('bedrooms').value;
+            const bathrooms = parseFloat(document.getElementById('bathrooms').value) || 1;
+            const slope = document.getElementById('slope').value;
+            const utilities = document.getElementById('utilities').value;
+
+            // Base cost per sqft based on finish level
+            const finishCosts = {
+                basic: { low: 150, mid: 165, high: 180 },
+                standard: { low: 180, mid: 200, high: 220 },
+                premium: { low: 220, mid: 250, high: 280 }
+            };
+
+            // Construction type multipliers
+            const constructionMultipliers = {
+                prefab: 0.85,
+                standard: 1.0,
+                custom: 1.25
+            };
+
+            const finish = selectedOptions.finish;
+            const construction = selectedOptions.construction;
+
+            const baseCostPerSqft = finishCosts[finish].mid;
+            const constructionMultiplier = constructionMultipliers[construction];
+
+            // Calculate construction cost
+            let constructionCost = sqft * baseCostPerSqft * constructionMultiplier;
+
+            // Site work based on slope
+            const slopeCosts = { flat: 8000, moderate: 15000, steep: 25000 };
+            let siteCost = slopeCosts[slope];
+
+            // Utility costs
+            const utilityCosts = { close: 4000, medium: 8000, far: 15000 };
+            let utilityCost = utilityCosts[utilities];
+
+            // Permit costs (roughly 3-5% of construction)
+            let permitCost = constructionCost * 0.04;
+
+            // Design costs
+            let designCost = construction === 'custom' ? 12000 : 6000;
+
+            // Add-on features
+            let featuresCost = 0;
+            document.querySelectorAll('.checkbox-item input:checked').forEach(input => {
+                featuresCost += parseInt(input.dataset.cost) || 0;
+            });
+
+            // Total
+            let totalCost = constructionCost + siteCost + utilityCost + permitCost + designCost + featuresCost;
+
+            // Range (±10%)
+            let lowRange = totalCost * 0.9;
+            let highRange = totalCost * 1.1;
+
+            // Cost per sqft
+            let perSqft = totalCost / sqft;
+
+            // Update display
+            document.getElementById('constructionCost').textContent = '$' + Math.round(constructionCost).toLocaleString();
+            document.getElementById('siteCost').textContent = '$' + Math.round(siteCost).toLocaleString();
+            document.getElementById('permitCost').textContent = '$' + Math.round(permitCost).toLocaleString();
+            document.getElementById('designCost').textContent = '$' + Math.round(designCost).toLocaleString();
+            document.getElementById('utilityCost').textContent = '$' + Math.round(utilityCost).toLocaleString();
+            document.getElementById('featuresCost').textContent = '$' + Math.round(featuresCost).toLocaleString();
+            document.getElementById('totalCost').textContent = '$' + Math.round(totalCost).toLocaleString();
+            document.getElementById('totalCost2').textContent = '$' + Math.round(totalCost).toLocaleString();
+            document.getElementById('costRange').textContent = 'Range: $' + Math.round(lowRange).toLocaleString() + ' - $' + Math.round(highRange).toLocaleString();
+            document.getElementById('perSqft').textContent = '$' + Math.round(perSqft);
+        }
+
+        // Initialize
+        updateEstimate();
+    </script>
+</body>
+</html>
