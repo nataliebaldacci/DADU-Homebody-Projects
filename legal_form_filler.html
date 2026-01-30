@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Forms & Applications | Homebody DADU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #e8e4df;
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #2c3e50 0%, #3d5166 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-banner {
+            background: #6b8e4e;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+
+        .cta-banner a {
+            color: white;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e8e4df;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #6b8fa3;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: #e8e4df;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .filter-tab:hover {
+            background: #d0ccc7;
+        }
+
+        .filter-tab.active {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .forms-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .form-category {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .category-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .category-header:hover {
+            background: #f5f5f0;
+        }
+
+        .category-header.building { border-left: 4px solid #6b8e4e; }
+        .category-header.covenant { border-left: 4px solid #c9a86c; }
+        .category-header.historic { border-left: 4px solid #6b8fa3; }
+        .category-header.trade { border-left: 4px solid #e74c3c; }
+        .category-header.str { border-left: 4px solid #9b59b6; }
+        .category-header.site { border-left: 4px solid #3498db; }
+        .category-header.other { border-left: 4px solid #95a5a6; }
+
+        .category-icon {
+            font-size: 2rem;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-info h2 {
+            font-size: 1.25rem;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .category-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .category-count {
+            background: #e8e4df;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .category-toggle {
+            font-size: 1.5rem;
+            color: #6b8fa3;
+            transition: transform 0.3s;
+        }
+
+        .category-header.expanded .category-toggle {
+            transform: rotate(180deg);
+        }
+
+        .category-forms {
+            display: none;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .category-forms.expanded {
+            display: block;
+        }
+
+        .form-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f5f5f0;
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s;
+        }
+
+        .form-item:hover {
+            background: #e8f0e0;
+        }
+
+        .form-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .form-details {
+            flex: 1;
+        }
+
+        .form-details h3 {
+            font-size: 1rem;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-details p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-meta {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .form-tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .tag-required {
+            background: #fce4e4;
+            color: #c0392b;
+        }
+
+        .tag-official {
+            background: #e8f4f8;
+            color: #2980b9;
+        }
+
+        .tag-free {
+            background: #e8f0e0;
+            color: #27ae60;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-download {
+            padding: 0.5rem 1rem;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .btn-download:hover {
+            background: #3d5166;
+        }
+
+        .btn-info {
+            padding: 0.5rem;
+            background: #e8e4df;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .btn-info:hover {
+            background: #d0ccc7;
+        }
+
+        .quick-links {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-links h3 {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .quick-link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .quick-link-card {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: #f5f5f0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #2c3e50;
+            transition: all 0.3s;
+        }
+
+        .quick-link-card:hover {
+            background: #e8f0e0;
+            transform: translateY(-2px);
+        }
+
+        .quick-link-card .icon {
+            font-size: 1.5rem;
+        }
+
+        .quick-link-card span {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .helpful-resources {
+            background: #2c3e50;
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .helpful-resources h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .resource-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .resource-card h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-card p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 0.75rem;
+        }
+
+        .resource-card a {
+            color: #6b8e4e;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .resource-card a:hover {
+            text-decoration: underline;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .no-results .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .form-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .form-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🏠 Homebody</div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="determine_forms_required.html">Form Wizard</a>
+            <a href="am_i_eligible.html">Eligibility</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>📋 DADU Forms & Applications</h1>
+        <p>All the official Nashville Metro forms you need for your DADU project, organized and ready to download</p>
+    </section>
+
+    <div class="cta-banner">
+        Not sure which forms you need? <a href="determine_forms_required.html">Use our Form Wizard →</a>
+    </div>
+
+    <div class="container">
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search forms by name or keyword...">
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Forms</button>
+                <button class="filter-tab" data-filter="building">Building Permits</button>
+                <button class="filter-tab" data-filter="covenant">Covenants</button>
+                <button class="filter-tab" data-filter="historic">Historic</button>
+                <button class="filter-tab" data-filter="trade">Trade Permits</button>
+                <button class="filter-tab" data-filter="str">Short-Term Rental</button>
+                <button class="filter-tab" data-filter="site">Site Plans</button>
+            </div>
+        </div>
+
+        <div class="quick-links">
+            <h3>🚀 Quick Downloads - Most Used Forms</h3>
+            <div class="quick-link-grid">
+                <a href="https://www.nashville.gov/sites/default/files/2024-04/Codes-Residential-Building-Permit-Application.pdf" target="_blank" class="quick-link-card">
+                    <span class="icon">🏗️</span>
+                    <span>Residential Permit App</span>
+                </a>
+                <a href="https://www.nashville.gov/sites/default/files/2024-01/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf" target="_blank" class="quick-link-card">
+                    <span class="icon">📜</span>
+                    <span>DADU Covenant</span>
+                </a>
+                <a href="https://filetransfer.nashville.gov/portals/0/sitecontent/MHZC/docs/Preservation%20Permits/Application-DADU%20and%20outbuilding.pdf" target="_blank" class="quick-link-card">
+                    <span class="icon">🏛️</span>
+                    <span>Historic DADU App</span>
+                </a>
+                <a href="https://www.nashville.gov/sites/default/files/2022-09/ElectricalPermitApplication.pdf" target="_blank" class="quick-link-card">
+                    <span class="icon">⚡</span>
+                    <span>Electrical Permit</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="forms-grid" id="formsContainer">
+            <!-- Building Permits -->
+            <div class="form-category" data-category="building">
+                <div class="category-header building" onclick="toggleCategory(this)">
+                    <span class="category-icon">🏗️</span>
+                    <div class="category-info">
+                        <h2>Building Permit Applications</h2>
+                        <p>Core permits for DADU construction</p>
+                    </div>
+                    <span class="category-count">4 forms</span>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-forms">
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>Residential Building Permit Application</h3>
+                            <p>Main application for new DADU construction - required for all projects</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-required">Required</span>
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2024-04/Codes-Residential-Building-Permit-Application.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>Commercial Permit Application</h3>
+                            <p>For larger DADU projects that exceed residential thresholds</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Commercial-Permit-Application.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>Self-Permit Affidavit</h3>
+                            <p>For owner-builders who want to do their own work</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/SelfPermitAffidavit.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>Accessory Structure Permitting Instructions</h3>
+                            <p>Step-by-step guide for DADU permit process</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-free">Guide</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/accessory-structure-permitting-instructions" target="_blank" class="btn-download">🔗 View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restrictive Covenants -->
+            <div class="form-category" data-category="covenant">
+                <div class="category-header covenant" onclick="toggleCategory(this)">
+                    <span class="category-icon">📜</span>
+                    <div class="category-info">
+                        <h2>Restrictive Covenants</h2>
+                        <p>Required owner-occupancy covenant forms</p>
+                    </div>
+                    <span class="category-count">4 forms</span>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-forms">
+                    <div class="form-item">
+                        <div class="form-icon">📜</div>
+                        <div class="form-details">
+                            <h3>DADU Restrictive Covenant</h3>
+                            <p>Required covenant for all DADU permits - must be recorded with Register of Deeds</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-required">Required</span>
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2024-01/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>Covenant Filing Instructions</h3>
+                            <p>How to file your covenant with the Davidson County Register of Deeds</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-free">Guide</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Restrictive-Covenant-Filing-Instructions.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📜</div>
+                        <div class="form-details">
+                            <h3>Accessory Apartment Covenant</h3>
+                            <p>For attached accessory dwelling units (internal ADUs)</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Restrictive_Covenants_Accessory_Apartment_rev.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📜</div>
+                        <div class="form-details">
+                            <h3>Landscaping Restrictive Covenant</h3>
+                            <p>For properties requiring landscape buffer maintenance</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Landscaping-Restrictive-Covenant.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historic Permits -->
+            <div class="form-category" data-category="historic">
+                <div class="category-header historic" onclick="toggleCategory(this)">
+                    <span class="category-icon">🏛️</span>
+                    <div class="category-info">
+                        <h2>Historic Zoning Applications</h2>
+                        <p>For properties in Historic Overlay Districts</p>
+                    </div>
+                    <span class="category-count">4 forms</span>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-forms">
+                    <div class="form-item">
+                        <div class="form-icon">🏛️</div>
+                        <div class="form-details">
+                            <h3>Historic Preservation Permit - DADU & Outbuilding</h3>
+                            <p>Required for all DADU projects in Historic Overlay Districts</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-required">Required in Historic Areas</span>
+                                <span class="form-tag tag-official">MHZC Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://filetransfer.nashville.gov/portals/0/sitecontent/MHZC/docs/Preservation%20Permits/Application-DADU%20and%20outbuilding.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>Historic Zoning Application Cover Sheet</h3>
+                            <p>General cover sheet for MHZC applications</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">MHZC Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/HistoricZoning_Application_CoverSheet.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>Historic Overlay Application</h3>
+                            <p>General application for historic overlay districts</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">MHZC Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Historic-Overlay-Application.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📋</div>
+                        <div class="form-details">
+                            <h3>MHZC Public Notice Requirements</h3>
+                            <p>Guide for historic preservation permit public notice requirements</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-free">Guide</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/MHZC-Preservation-Permit-Application-Public-Notice-Requirements.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trade Permits -->
+            <div class="form-category" data-category="trade">
+                <div class="category-header trade" onclick="toggleCategory(this)">
+                    <span class="category-icon">🔧</span>
+                    <div class="category-info">
+                        <h2>Trade Permit Applications</h2>
+                        <p>Electrical, plumbing, gas & mechanical permits</p>
+                    </div>
+                    <span class="category-count">4 forms</span>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-forms">
+                    <div class="form-item">
+                        <div class="form-icon">⚡</div>
+                        <div class="form-details">
+                            <h3>Electrical Permit Application</h3>
+                            <p>For new electrical panels, wiring, circuits, and outlets</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-required">Required for electrical work</span>
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/ElectricalPermitApplication.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">🚿</div>
+                        <div class="form-details">
+                            <h3>Plumbing Permit Application</h3>
+                            <p>For new plumbing, fixtures, water heaters, sewer connections</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-required">Required for plumbing work</span>
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/PlumbingPermitApplication.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">🔥</div>
+                        <div class="form-details">
+                            <h3>Gas/Mechanical Permit Application</h3>
+                            <p>For HVAC systems, gas lines, heating and cooling equipment</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-required">Required for HVAC/gas work</span>
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/GasMechanicalPermitApplication.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📋</div>
+                        <div class="form-details">
+                            <h3>Detached Structure Trade Permits Combo Form</h3>
+                            <p>Combined electrical, plumbing, gas & mechanical for detached structures</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Detached_Structure_Elect-Plbg-Gas-Mech_011106.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Short-Term Rental -->
+            <div class="form-category" data-category="str">
+                <div class="category-header str" onclick="toggleCategory(this)">
+                    <span class="category-icon">🏨</span>
+                    <div class="category-info">
+                        <h2>Short-Term Rental Permits</h2>
+                        <p>STR permit applications and affidavits</p>
+                    </div>
+                    <span class="category-count">6 forms</span>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-forms">
+                    <div class="form-item">
+                        <div class="form-icon">📋</div>
+                        <div class="form-details">
+                            <h3>STR Permit Application Checklist</h3>
+                            <p>Complete checklist of requirements for STR permit applications</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-required">Required for STR</span>
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/STRP_PermitApplicationChecklist.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>Owner-Occupied STR Permit Affidavit</h3>
+                            <p>For STR properties where owner lives on-site</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-required">Required - Owner Occupied</span>
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Owner-Occupied-Short-Term-Rental-Permit-affidavit.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>Not-Owner-Occupied STR Permit Affidavit</h3>
+                            <p>For STR properties where owner doesn't live on-site</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-required">Required - Non-Owner</span>
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Not-Owner-Occupied-Short-Term-Rental-Permit-affidavit.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>STR Renewal Affidavit</h3>
+                            <p>For renewing existing STR permits</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/STRP-Renewal-Affidavit.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>STR Non-Owner Authorization Form</h3>
+                            <p>Notarized authorization for property manager to operate STR</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Notarized-STR-Non-Owner-Authorization-Form-revised.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">🚒</div>
+                        <div class="form-details">
+                            <h3>Fire Department STR Applicant Checklist</h3>
+                            <p>Fire safety requirements checklist for STR permits</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">Fire Marshal Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/FireDepartmentSTRPApplicantChecklist.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Site Plans & UDO -->
+            <div class="form-category" data-category="site">
+                <div class="category-header site" onclick="toggleCategory(this)">
+                    <span class="category-icon">📐</span>
+                    <div class="category-info">
+                        <h2>Site Plans & Development</h2>
+                        <p>Site plan applications and development guides</p>
+                    </div>
+                    <span class="category-count">4 forms</span>
+                    <span class="category-toggle">▼</span>
+                </div>
+                <div class="category-forms">
+                    <div class="form-item">
+                        <div class="form-icon">📐</div>
+                        <div class="form-details">
+                            <h3>Example Residential Site Plan</h3>
+                            <p>Sample site plan showing required elements and format</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-free">Example</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Building-Permits-Central-Example-Site-Plan.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📋</div>
+                        <div class="form-details">
+                            <h3>Single Family Residential Development Guide</h3>
+                            <p>Comprehensive guide for residential development including DADUs</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-free">Guide</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2025-04/Single_Family_Residential_Development_Guide-05.29.2025.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>UDO Final Site Plan Application</h3>
+                            <p>For final site plan approval under Unified Development Ordinance</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/UDO-Final-Site-Plan.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-icon">📄</div>
+                        <div class="form-details">
+                            <h3>UDO Modification Application</h3>
+                            <p>For requesting modifications to UDO requirements</p>
+                            <div class="form-meta">
+                                <span class="form-tag tag-official">Official Metro Form</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/UDO-Modification-Application.pdf" target="_blank" class="btn-download">📥 Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="helpful-resources">
+            <h3>📚 Helpful Resources</h3>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h4>Metro Codes Contact List</h4>
+                    <p>Directory of departments for permit questions</p>
+                    <a href="https://www.nashville.gov/departments/codes/construction-and-permits/contact-list" target="_blank">View Contacts →</a>
+                </div>
+                <div class="resource-card">
+                    <h4>ePermits Portal</h4>
+                    <p>Submit and track your permits online</p>
+                    <a href="https://epermits.nashville.gov/" target="_blank">Go to ePermits →</a>
+                </div>
+                <div class="resource-card">
+                    <h4>Register of Deeds</h4>
+                    <p>File your restrictive covenants here</p>
+                    <a href="https://www.nashville.gov/departments/county-clerk/recording-and-registration-services/register-deeds" target="_blank">Visit Register →</a>
+                </div>
+                <div class="resource-card">
+                    <h4>Building Requirements</h4>
+                    <p>Size, setback, and height requirements</p>
+                    <a href="dadu_building_requirements.html">View Requirements →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleCategory(header) {
+            header.classList.toggle('expanded');
+            const forms = header.nextElementSibling;
+            forms.classList.toggle('expanded');
+        }
+
+        // Expand first category by default
+        document.querySelector('.category-header').click();
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const formItems = document.querySelectorAll('.form-item');
+
+            formItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const category = item.closest('.form-category');
+
+                if (searchTerm === '' || text.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Show/hide categories based on visible items
+            document.querySelectorAll('.form-category').forEach(category => {
+                const visibleItems = category.querySelectorAll('.form-item[style="display: flex"]');
+                const hiddenItems = category.querySelectorAll('.form-item[style="display: none"]');
+
+                if (searchTerm === '') {
+                    category.style.display = 'block';
+                } else if (visibleItems.length > 0 || hiddenItems.length === 0) {
+                    category.style.display = 'block';
+                    // Auto-expand categories with results
+                    if (!category.querySelector('.category-header').classList.contains('expanded')) {
+                        category.querySelector('.category-header').click();
+                    }
+                } else if (hiddenItems.length === category.querySelectorAll('.form-item').length) {
+                    category.style.display = 'none';
+                }
+            });
+        });
+
+        // Filter tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Update active tab
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.dataset.filter;
+
+                document.querySelectorAll('.form-category').forEach(category => {
+                    if (filter === 'all' || category.dataset.category === filter) {
+                        category.style.display = 'block';
+                    } else {
+                        category.style.display = 'none';
+                    }
+                });
+
+                // Clear search
+                document.getElementById('searchInput').value = '';
+            });
+        });
+    </script>
+</body>
+</html>

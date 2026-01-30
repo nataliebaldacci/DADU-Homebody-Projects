@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Size Calculator | Homebody DADU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #e8e4df;
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #6b8fa3;
+            font-size: 1.1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .input-section {
+            margin-bottom: 2rem;
+        }
+
+        .input-section h2 {
+            font-size: 1.25rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group .hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .input-field {
+            flex: 1;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e8e4df;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .input-field input:focus {
+            outline: none;
+            border-color: #6b8fa3;
+        }
+
+        .input-field .unit {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .or-divider {
+            text-align: center;
+            color: #6b8fa3;
+            font-weight: 600;
+            padding: 0.5rem 0;
+        }
+
+        .quick-select {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+
+        .quick-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e8e4df;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .quick-btn:hover {
+            border-color: #6b8fa3;
+            background: #f5f5f0;
+        }
+
+        .quick-btn.active {
+            border-color: #6b8e4e;
+            background: #e8f0e0;
+        }
+
+        .btn-calculate {
+            width: 100%;
+            padding: 1rem;
+            background: #6b8e4e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-calculate:hover {
+            background: #5a7a40;
+        }
+
+        /* Results */
+        .results-section {
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-header {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #6b8e4e 0%, #5a7a40 100%);
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-header h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .lot-size-display {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .lot-category {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+        .max-sizes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .size-box {
+            background: #f5f5f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .size-box.highlight {
+            background: #e8f0e0;
+            border: 2px solid #6b8e4e;
+        }
+
+        .size-box .label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .size-box .value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+
+        .size-box .unit {
+            font-size: 0.9rem;
+            color: #6b8fa3;
+        }
+
+        .size-box .note {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .requirement-card {
+            background: #f5f5f0;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .requirement-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .requirement-card h4 {
+            font-size: 0.9rem;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .requirement-card p {
+            font-size: 1rem;
+            color: #6b8e4e;
+            font-weight: 600;
+        }
+
+        .visualization {
+            background: #f5f5f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .visualization h3 {
+            font-size: 1rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .lot-diagram {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: #d4e5d0;
+            border-radius: 8px;
+            border: 3px solid #6b8e4e;
+            overflow: hidden;
+        }
+
+        .main-house {
+            position: absolute;
+            background: #2c3e50;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .dadu-unit {
+            position: absolute;
+            background: #6b8e4e;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .setback-line {
+            position: absolute;
+            border: 1px dashed #c9a86c;
+        }
+
+        .setback-label {
+            position: absolute;
+            font-size: 0.65rem;
+            color: #c9a86c;
+            font-weight: 600;
+        }
+
+        .diagram-legend {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #6b8fa3;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1rem;
+        }
+
+        .info-box h4 {
+            color: #6b8fa3;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box p {
+            font-size: 0.85rem;
+            color: #2c3e50;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #f39c12;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box h4 {
+            color: #f39c12;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .warning-box p {
+            font-size: 0.85rem;
+            color: #2c3e50;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+            font-family: inherit;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3d5166;
+        }
+
+        .btn-secondary {
+            background: #e8e4df;
+            color: #2c3e50;
+        }
+
+        .btn-secondary:hover {
+            background: #d0ccc7;
+        }
+
+        .code-reference {
+            background: #f5f5f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .code-reference h3 {
+            font-size: 1rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .code-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .code-table th,
+        .code-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e8e4df;
+        }
+
+        .code-table th {
+            background: #e8e4df;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .code-table td {
+            font-size: 0.9rem;
+        }
+
+        .code-table tr.active {
+            background: #e8f0e0;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .max-sizes {
+                grid-template-columns: 1fr;
+            }
+
+            .input-row {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🏠 Homebody</div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="am_i_eligible.html">Eligibility</a>
+            <a href="project_cost_estimator.html">Cost Estimator</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📐 DADU Size Calculator</h1>
+            <p>Calculate the maximum allowable size for your DADU based on Nashville's zoning code</p>
+        </div>
+
+        <div class="calculator-card">
+            <div class="input-section">
+                <h2>📏 Enter Your Lot Size</h2>
+
+                <div class="input-group">
+                    <label>Lot Area</label>
+                    <p class="hint">Enter your total lot size in square feet. Find this on your property tax records or deed.</p>
+                    <div class="input-row">
+                        <div class="input-field">
+                            <input type="number" id="lotSize" placeholder="e.g., 7500" min="0">
+                            <div class="unit">square feet</div>
+                        </div>
+                    </div>
+
+                    <div class="or-divider">or select a common lot size:</div>
+
+                    <div class="quick-select">
+                        <button class="quick-btn" data-size="5000">5,000 SF</button>
+                        <button class="quick-btn" data-size="7500">7,500 SF</button>
+                        <button class="quick-btn" data-size="10000">10,000 SF</button>
+                        <button class="quick-btn" data-size="12000">12,000 SF</button>
+                        <button class="quick-btn" data-size="15000">15,000 SF</button>
+                        <button class="quick-btn" data-size="20000">20,000 SF</button>
+                    </div>
+                </div>
+
+                <button class="btn-calculate" onclick="calculateSize()">Calculate Maximum DADU Size</button>
+            </div>
+
+            <div class="results-section" id="results">
+                <div class="results-header">
+                    <h2>Your Lot Size</h2>
+                    <div class="lot-size-display" id="lotSizeDisplay">—</div>
+                    <div class="lot-category" id="lotCategory">—</div>
+                </div>
+
+                <div class="max-sizes">
+                    <div class="size-box highlight">
+                        <div class="label">Maximum Living Area</div>
+                        <div class="value" id="maxLiving">—</div>
+                        <div class="unit">square feet</div>
+                        <div class="note">Heated/cooled space</div>
+                    </div>
+                    <div class="size-box">
+                        <div class="label">Maximum Footprint</div>
+                        <div class="value" id="maxFootprint">—</div>
+                        <div class="unit">square feet</div>
+                        <div class="note">Total building coverage</div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 What's the difference?</h4>
+                    <p><strong>Living Area</strong> is the heated/conditioned floor space inside walls. <strong>Footprint</strong> is the total ground coverage including porches, overhangs, and exterior walls. Your footprint will always be larger than living area.</p>
+                </div>
+
+                <div class="requirements-grid">
+                    <div class="requirement-card">
+                        <div class="icon">📏</div>
+                        <h4>Max Height</h4>
+                        <p id="maxHeight">—</p>
+                    </div>
+                    <div class="requirement-card">
+                        <div class="icon">↔️</div>
+                        <h4>Side Setback</h4>
+                        <p>5 feet</p>
+                    </div>
+                    <div class="requirement-card">
+                        <div class="icon">⬆️</div>
+                        <h4>Rear Setback</h4>
+                        <p>5 feet</p>
+                    </div>
+                    <div class="requirement-card">
+                        <div class="icon">🚗</div>
+                        <h4>Parking</h4>
+                        <p>1 space</p>
+                    </div>
+                </div>
+
+                <div class="visualization">
+                    <h3>📐 Example Lot Layout</h3>
+                    <div class="lot-diagram" id="lotDiagram">
+                        <!-- Dynamically generated -->
+                    </div>
+                    <div class="diagram-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #2c3e50;"></div>
+                            <span>Main House</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #6b8e4e;"></div>
+                            <span>Max DADU</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #d4e5d0; border: 1px dashed #c9a86c;"></div>
+                            <span>Buildable Area</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box" id="ownerOccupancy">
+                    <h4>⚠️ Owner Occupancy Required</h4>
+                    <p>Nashville requires that either the main house OR the DADU be owner-occupied. You must file a restrictive covenant with the Register of Deeds before permit issuance.</p>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="project_cost_estimator.html" class="btn-action btn-primary">💰 Estimate Build Cost</a>
+                    <a href="determine_forms_required.html" class="btn-action btn-secondary">📋 Get Required Forms</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-reference">
+            <h3>📜 Nashville DADU Size Requirements (BL2025-1007)</h3>
+            <table class="code-table">
+                <thead>
+                    <tr>
+                        <th>Lot Size</th>
+                        <th>Max Living Area</th>
+                        <th>Max Footprint</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="row-small">
+                        <td>&lt; 10,000 SF</td>
+                        <td>700 SF</td>
+                        <td>750 SF</td>
+                        <td>Standard smaller lot</td>
+                    </tr>
+                    <tr id="row-large">
+                        <td>≥ 10,000 SF</td>
+                        <td>850 SF</td>
+                        <td>1,000 SF</td>
+                        <td>Larger lot allowance</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 1rem;">
+                Source: Metro Nashville BL2025-1007 (effective December 12, 2025). DADU height cannot exceed the principal structure.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Quick select buttons
+        document.querySelectorAll('.quick-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('lotSize').value = this.dataset.size;
+                calculateSize();
+            });
+        });
+
+        // Auto-calculate on input
+        document.getElementById('lotSize').addEventListener('input', function() {
+            document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+            if (this.value) {
+                calculateSize();
+            }
+        });
+
+        function calculateSize() {
+            const lotSize = parseFloat(document.getElementById('lotSize').value);
+
+            if (!lotSize || lotSize <= 0) {
+                alert('Please enter a valid lot size');
+                return;
+            }
+
+            // Show results
+            document.getElementById('results').classList.add('visible');
+
+            // Calculate based on Nashville code
+            let maxLiving, maxFootprint, category;
+
+            if (lotSize < 10000) {
+                maxLiving = 700;
+                maxFootprint = 750;
+                category = 'Standard Lot (under 10,000 SF)';
+                document.getElementById('row-small').classList.add('active');
+                document.getElementById('row-large').classList.remove('active');
+            } else {
+                maxLiving = 850;
+                maxFootprint = 1000;
+                category = 'Large Lot (10,000 SF or more)';
+                document.getElementById('row-small').classList.remove('active');
+                document.getElementById('row-large').classList.add('active');
+            }
+
+            // Update display
+            document.getElementById('lotSizeDisplay').textContent = lotSize.toLocaleString() + ' SF';
+            document.getElementById('lotCategory').textContent = category;
+            document.getElementById('maxLiving').textContent = maxLiving.toLocaleString();
+            document.getElementById('maxFootprint').textContent = maxFootprint.toLocaleString();
+            document.getElementById('maxHeight').textContent = 'Principal structure height';
+
+            // Update diagram
+            updateDiagram(lotSize, maxFootprint);
+
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function updateDiagram(lotSize, maxFootprint) {
+            const diagram = document.getElementById('lotDiagram');
+            const diagramWidth = diagram.offsetWidth;
+            const diagramHeight = diagram.offsetHeight;
+
+            // Calculate lot dimensions (assume rectangular, common Nashville lot is ~50x150)
+            const lotRatio = 3; // depth to width ratio
+            const lotWidth = Math.sqrt(lotSize / lotRatio);
+            const lotDepth = lotSize / lotWidth;
+
+            // Scale factors
+            const scaleX = (diagramWidth - 40) / lotWidth;
+            const scaleY = (diagramHeight - 40) / lotDepth;
+            const scale = Math.min(scaleX, scaleY);
+
+            // Setbacks (5 ft sides, 5 ft rear, 25 ft front)
+            const sideSetback = 5 * scale;
+            const rearSetback = 5 * scale;
+            const frontSetback = 25 * scale;
+
+            // Main house (assume 1500 SF, 30x50)
+            const houseWidth = 30 * scale;
+            const houseDepth = 50 * scale;
+            const houseX = (diagramWidth - lotWidth * scale) / 2 + (lotWidth * scale - houseWidth) / 2;
+            const houseY = 20 + frontSetback;
+
+            // DADU (max footprint)
+            const daduSide = Math.sqrt(maxFootprint);
+            const daduWidth = daduSide * scale;
+            const daduDepth = daduSide * scale;
+            const daduX = (diagramWidth - lotWidth * scale) / 2 + sideSetback;
+            const daduY = diagramHeight - 20 - rearSetback - daduDepth;
+
+            diagram.innerHTML = `
+                <!-- Buildable area (inside setbacks) -->
+                <div class="setback-line" style="
+                    left: ${(diagramWidth - lotWidth * scale) / 2 + sideSetback}px;
+                    right: ${(diagramWidth - lotWidth * scale) / 2 + sideSetback}px;
+                    top: ${20 + frontSetback}px;
+                    bottom: ${20 + rearSetback}px;
+                    border: 2px dashed #c9a86c;
+                "></div>
+
+                <!-- Main House -->
+                <div class="main-house" style="
+                    left: ${houseX}px;
+                    top: ${houseY}px;
+                    width: ${houseWidth}px;
+                    height: ${houseDepth}px;
+                ">Main House</div>
+
+                <!-- DADU -->
+                <div class="dadu-unit" style="
+                    left: ${daduX}px;
+                    top: ${daduY}px;
+                    width: ${daduWidth}px;
+                    height: ${daduDepth}px;
+                ">DADU<br>${maxFootprint} SF</div>
+
+                <!-- Setback labels -->
+                <div class="setback-label" style="left: 5px; top: ${diagramHeight/2}px;">5' side</div>
+                <div class="setback-label" style="right: 5px; top: ${diagramHeight/2}px;">5' side</div>
+                <div class="setback-label" style="left: ${diagramWidth/2 - 20}px; bottom: 5px;">5' rear</div>
+                <div class="setback-label" style="left: ${diagramWidth/2 - 25}px; top: 5px;">25' front</div>
+            `;
+        }
+
+        // Initialize diagram on load
+        window.addEventListener('load', function() {
+            const lotInput = document.getElementById('lotSize');
+            if (lotInput.value) {
+                calculateSize();
+            }
+        });
+    </script>
+</body>
+</html>

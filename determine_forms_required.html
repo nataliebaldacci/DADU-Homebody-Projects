@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Determine Forms Required | Homebody DADU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #e8e4df;
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #6b8fa3;
+            font-size: 1.1rem;
+        }
+
+        .wizard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e8e4df;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8e4df;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s;
+        }
+
+        .progress-step.active {
+            background: #6b8e4e;
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .question-section {
+            display: none;
+        }
+
+        .question-section.active {
+            display: block;
+        }
+
+        .question-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .question-section p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-card {
+            border: 2px solid #e8e4df;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .option-card:hover {
+            border-color: #6b8fa3;
+            background: #f5f5f0;
+        }
+
+        .option-card.selected {
+            border-color: #6b8e4e;
+            background: #e8f0e0;
+        }
+
+        .option-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-card h3 {
+            font-size: 1rem;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .option-card p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .checkbox-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border: 2px solid #e8e4df;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkbox-option:hover {
+            border-color: #6b8fa3;
+        }
+
+        .checkbox-option.checked {
+            border-color: #6b8e4e;
+            background: #e8f0e0;
+        }
+
+        .checkbox-option input {
+            width: 20px;
+            height: 20px;
+            accent-color: #6b8e4e;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e8e4df;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .btn-secondary {
+            background: #e8e4df;
+            color: #2c3e50;
+        }
+
+        .btn-secondary:hover {
+            background: #d0ccc7;
+        }
+
+        .btn-primary {
+            background: #6b8e4e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a7a40;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-header .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .results-header h2 {
+            font-size: 1.75rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .forms-category {
+            margin-bottom: 2rem;
+        }
+
+        .forms-category h3 {
+            font-size: 1.1rem;
+            color: #6b8fa3;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e8e4df;
+        }
+
+        .form-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f5f5f0;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-item .form-info {
+            flex: 1;
+        }
+
+        .form-item h4 {
+            font-size: 1rem;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-item p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .form-item .required-badge {
+            background: #e74c3c;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+
+        .form-item .optional-badge {
+            background: #6b8fa3;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+
+        .form-item .download-btn {
+            background: #2c3e50;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .form-item .download-btn:hover {
+            background: #3d5166;
+        }
+
+        .restart-btn {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: #6b8fa3;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .restart-btn:hover {
+            color: #2c3e50;
+        }
+
+        .summary-box {
+            background: #e8f0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-box h3 {
+            color: #6b8e4e;
+            margin-bottom: 1rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(107,142,78,0.2);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item .label {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .summary-item .value {
+            color: #6b8e4e;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🏠 Homebody</div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="legal_form_filler.html">All Forms</a>
+            <a href="am_i_eligible.html">Eligibility</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📋 Determine Forms Required</h1>
+            <p>Answer a few questions to get your personalized DADU permit checklist</p>
+        </div>
+
+        <div class="wizard-card">
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">1</div>
+                <div class="progress-step" data-step="2">2</div>
+                <div class="progress-step" data-step="3">3</div>
+                <div class="progress-step" data-step="4">4</div>
+                <div class="progress-step" data-step="5">5</div>
+            </div>
+
+            <!-- Question 1: Project Type -->
+            <div class="question-section active" data-question="1">
+                <h2>What type of DADU project are you planning?</h2>
+                <p>Select the option that best describes your project</p>
+                <div class="options-grid">
+                    <div class="option-card" data-value="new_construction">
+                        <div class="icon">🏗️</div>
+                        <h3>New Construction</h3>
+                        <p>Building a brand new DADU from scratch</p>
+                    </div>
+                    <div class="option-card" data-value="conversion">
+                        <div class="icon">🔄</div>
+                        <h3>Garage Conversion</h3>
+                        <p>Converting existing structure to DADU</p>
+                    </div>
+                    <div class="option-card" data-value="prefab">
+                        <div class="icon">📦</div>
+                        <h3>Prefab/Modular</h3>
+                        <p>Installing a prefabricated unit</p>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" disabled>Back</button>
+                    <button class="btn btn-primary btn-next" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Question 2: Historic District -->
+            <div class="question-section" data-question="2">
+                <h2>Is your property in a Historic Overlay District?</h2>
+                <p>This affects which permits and approvals you'll need</p>
+                <div class="options-grid">
+                    <div class="option-card" data-value="historic_yes">
+                        <div class="icon">🏛️</div>
+                        <h3>Yes, Historic District</h3>
+                        <p>My property is in a designated historic area</p>
+                    </div>
+                    <div class="option-card" data-value="historic_no">
+                        <div class="icon">🏘️</div>
+                        <h3>No, Standard Zoning</h3>
+                        <p>Not in a historic overlay district</p>
+                    </div>
+                    <div class="option-card" data-value="historic_unsure">
+                        <div class="icon">❓</div>
+                        <h3>Not Sure</h3>
+                        <p>I need to check this first</p>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary btn-back">Back</button>
+                    <button class="btn btn-primary btn-next" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Question 3: Rental Plans -->
+            <div class="question-section" data-question="3">
+                <h2>Do you plan to rent the DADU?</h2>
+                <p>This determines if you need additional permits</p>
+                <div class="options-grid">
+                    <div class="option-card" data-value="rental_long">
+                        <div class="icon">📅</div>
+                        <h3>Long-Term Rental</h3>
+                        <p>Renting to tenants (30+ days)</p>
+                    </div>
+                    <div class="option-card" data-value="rental_str">
+                        <div class="icon">🏨</div>
+                        <h3>Short-Term Rental</h3>
+                        <p>Airbnb, VRBO, etc. (under 30 days)</p>
+                    </div>
+                    <div class="option-card" data-value="rental_family">
+                        <div class="icon">👨‍👩‍👧</div>
+                        <h3>Family Use Only</h3>
+                        <p>For family members, not renting</p>
+                    </div>
+                    <div class="option-card" data-value="rental_unsure">
+                        <div class="icon">🤔</div>
+                        <h3>Not Decided Yet</h3>
+                        <p>I want to keep options open</p>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary btn-back">Back</button>
+                    <button class="btn btn-primary btn-next" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Question 4: Owner Occupancy -->
+            <div class="question-section" data-question="4">
+                <h2>Will you live on the property?</h2>
+                <p>Nashville requires owner occupancy for DADUs</p>
+                <div class="options-grid">
+                    <div class="option-card" data-value="owner_main">
+                        <div class="icon">🏠</div>
+                        <h3>Yes, in Main House</h3>
+                        <p>I'll live in the primary residence</p>
+                    </div>
+                    <div class="option-card" data-value="owner_dadu">
+                        <div class="icon">🏡</div>
+                        <h3>Yes, in the DADU</h3>
+                        <p>I'll move into the DADU</p>
+                    </div>
+                    <div class="option-card" data-value="owner_no">
+                        <div class="icon">🚗</div>
+                        <h3>No, Investment Property</h3>
+                        <p>This is not my primary residence</p>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary btn-back">Back</button>
+                    <button class="btn btn-primary btn-next" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Question 5: Trade Work -->
+            <div class="question-section" data-question="5">
+                <h2>What trade work will your DADU include?</h2>
+                <p>Select all that apply</p>
+                <div class="checkbox-options">
+                    <label class="checkbox-option">
+                        <input type="checkbox" value="electrical">
+                        <span>⚡ Electrical (new panel, wiring, outlets)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" value="plumbing">
+                        <span>🚿 Plumbing (bathroom, kitchen, water heater)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" value="gas">
+                        <span>🔥 Gas (gas lines, HVAC, water heater)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" value="mechanical">
+                        <span>❄️ Mechanical/HVAC (heating, cooling systems)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" value="sewer">
+                        <span>🚰 Sewer Connection (new sewer tap)</span>
+                    </label>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary btn-back">Back</button>
+                    <button class="btn btn-primary btn-finish">See My Forms</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" data-question="results">
+                <div class="results-header">
+                    <div class="icon">✅</div>
+                    <h2>Your Required Forms</h2>
+                    <p>Based on your answers, here's what you'll need</p>
+                </div>
+
+                <div class="summary-box">
+                    <h3>📋 Project Summary</h3>
+                    <div id="summary-content"></div>
+                </div>
+
+                <div id="forms-list"></div>
+
+                <a href="javascript:void(0)" class="restart-btn" onclick="restartWizard()">↺ Start Over</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Store user answers
+        const answers = {
+            projectType: null,
+            historic: null,
+            rental: null,
+            ownerOccupancy: null,
+            trades: []
+        };
+
+        let currentStep = 1;
+        const totalSteps = 5;
+
+        // Form database with Nashville URLs
+        const forms = {
+            // Building Permits
+            residential_permit: {
+                name: 'Residential Building Permit Application',
+                description: 'Required for all new DADU construction',
+                url: 'https://www.nashville.gov/sites/default/files/2024-04/Codes-Residential-Building-Permit-Application.pdf',
+                category: 'building'
+            },
+            self_permit: {
+                name: 'Self-Permit Affidavit',
+                description: 'For owner-builders doing their own work',
+                url: 'https://www.nashville.gov/sites/default/files/2022-09/SelfPermitAffidavit.pdf',
+                category: 'building'
+            },
+            // Restrictive Covenants
+            dadu_covenant: {
+                name: 'DADU Restrictive Covenant',
+                description: 'Required covenant for all DADUs - must be recorded',
+                url: 'https://www.nashville.gov/sites/default/files/2024-01/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf',
+                category: 'covenant'
+            },
+            covenant_instructions: {
+                name: 'Covenant Filing Instructions',
+                description: 'How to file your covenant with Register of Deeds',
+                url: 'https://www.nashville.gov/sites/default/files/2022-09/Restrictive-Covenant-Filing-Instructions.pdf',
+                category: 'covenant'
+            },
+            // Historic Permits
+            historic_dadu: {
+                name: 'Historic Preservation Permit - DADU & Outbuilding',
+                description: 'Required for properties in Historic Overlay Districts',
+                url: 'https://filetransfer.nashville.gov/portals/0/sitecontent/MHZC/docs/Preservation%20Permits/Application-DADU%20and%20outbuilding.pdf',
+                category: 'historic'
+            },
+            historic_general: {
+                name: 'Historic Zoning Application Cover Sheet',
+                description: 'General cover sheet for MHZC applications',
+                url: 'https://www.nashville.gov/sites/default/files/2022-09/HistoricZoning_Application_CoverSheet.pdf',
+                category: 'historic'
+            },
+            // Trade Permits
+            electrical: {
+                name: 'Electrical Permit Application',
+                description: 'For new electrical panels, wiring, outlets',
+                url: 'https://www.nashville.gov/sites/default/files/2022-09/ElectricalPermitApplication.pdf',
+                category: 'trade'
+            },
+            plumbing: {
+                name: 'Plumbing Permit Application',
+                description: 'For new plumbing, fixtures, water heaters',
+                url: 'https://www.nashville.gov/sites/default/files/2022-09/PlumbingPermitApplication.pdf',
+                category: 'trade'
+            },
+            gas_mechanical: {
+                name: 'Gas/Mechanical Permit Application',
+                description: 'For HVAC, gas lines, mechanical systems',
+                url: 'https://www.nashville.gov/sites/default/files/2022-09/GasMechanicalPermitApplication.pdf',
+                category: 'trade'
+            },
+            // Short-Term Rental
+            str_owner_occupied: {
+                name: 'Owner-Occupied STR Permit Affidavit',
+                description: 'For STR where owner lives on property',
+                url: 'https://www.nashville.gov/sites/default/files/2022-09/Owner-Occupied-Short-Term-Rental-Permit-affidavit.pdf',
+                category: 'str'
+            },
+            str_not_owner: {
+                name: 'Not-Owner-Occupied STR Permit Affidavit',
+                description: 'For STR where owner doesn\'t live on property',
+                url: 'https://www.nashville.gov/sites/default/files/2022-09/Not-Owner-Occupied-Short-Term-Rental-Permit-affidavit.pdf',
+                category: 'str'
+            },
+            str_checklist: {
+                name: 'STR Permit Application Checklist',
+                description: 'Complete checklist for STR applications',
+                url: 'https://www.nashville.gov/sites/default/files/2022-09/STRP_PermitApplicationChecklist.pdf',
+                category: 'str'
+            }
+        };
+
+        // Initialize event listeners
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const section = this.closest('.question-section');
+                section.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                section.querySelector('.btn-next').disabled = false;
+
+                // Store answer
+                const questionNum = section.dataset.question;
+                const value = this.dataset.value;
+
+                if (questionNum === '1') answers.projectType = value;
+                if (questionNum === '2') answers.historic = value;
+                if (questionNum === '3') answers.rental = value;
+                if (questionNum === '4') answers.ownerOccupancy = value;
+            });
+        });
+
+        document.querySelectorAll('.checkbox-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                if (e.target.type !== 'checkbox') {
+                    const checkbox = this.querySelector('input');
+                    checkbox.checked = !checkbox.checked;
+                }
+                this.classList.toggle('checked', this.querySelector('input').checked);
+
+                // Update trades array
+                answers.trades = Array.from(document.querySelectorAll('.checkbox-option input:checked'))
+                    .map(cb => cb.value);
+            });
+        });
+
+        document.querySelectorAll('.btn-next').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (currentStep < totalSteps) {
+                    goToStep(currentStep + 1);
+                }
+            });
+        });
+
+        document.querySelectorAll('.btn-back').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (currentStep > 1) {
+                    goToStep(currentStep - 1);
+                }
+            });
+        });
+
+        document.querySelector('.btn-finish').addEventListener('click', function() {
+            showResults();
+        });
+
+        function goToStep(step) {
+            // Hide current section
+            document.querySelector(`.question-section[data-question="${currentStep}"]`).classList.remove('active');
+
+            // Show new section
+            document.querySelector(`.question-section[data-question="${step}"]`).classList.add('active');
+
+            // Update progress bar
+            document.querySelectorAll('.progress-step').forEach(ps => {
+                const psStep = parseInt(ps.dataset.step);
+                ps.classList.remove('active', 'completed');
+                if (psStep < step) ps.classList.add('completed');
+                if (psStep === step) ps.classList.add('active');
+            });
+
+            currentStep = step;
+        }
+
+        function showResults() {
+            // Hide wizard
+            document.querySelector(`.question-section[data-question="${currentStep}"]`).classList.remove('active');
+
+            // Show results
+            document.querySelector('.results-section').classList.add('active');
+
+            // Mark all steps complete
+            document.querySelectorAll('.progress-step').forEach(ps => {
+                ps.classList.remove('active');
+                ps.classList.add('completed');
+            });
+
+            // Generate summary
+            const summaryHtml = `
+                <div class="summary-item">
+                    <span class="label">Project Type</span>
+                    <span class="value">${formatAnswer(answers.projectType)}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Historic District</span>
+                    <span class="value">${formatAnswer(answers.historic)}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Rental Plans</span>
+                    <span class="value">${formatAnswer(answers.rental)}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Owner Occupancy</span>
+                    <span class="value">${formatAnswer(answers.ownerOccupancy)}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Trade Work</span>
+                    <span class="value">${answers.trades.length > 0 ? answers.trades.map(t => t.charAt(0).toUpperCase() + t.slice(1)).join(', ') : 'None selected'}</span>
+                </div>
+            `;
+            document.getElementById('summary-content').innerHTML = summaryHtml;
+
+            // Generate forms list
+            const requiredForms = getRequiredForms();
+            document.getElementById('forms-list').innerHTML = generateFormsHtml(requiredForms);
+        }
+
+        function formatAnswer(value) {
+            const labels = {
+                'new_construction': 'New Construction',
+                'conversion': 'Garage Conversion',
+                'prefab': 'Prefab/Modular',
+                'historic_yes': 'Yes',
+                'historic_no': 'No',
+                'historic_unsure': 'Not Sure',
+                'rental_long': 'Long-Term Rental',
+                'rental_str': 'Short-Term Rental',
+                'rental_family': 'Family Use Only',
+                'rental_unsure': 'Undecided',
+                'owner_main': 'Main House',
+                'owner_dadu': 'In DADU',
+                'owner_no': 'Investment Property'
+            };
+            return labels[value] || value;
+        }
+
+        function getRequiredForms() {
+            const required = [];
+            const optional = [];
+
+            // Always required
+            required.push({ ...forms.residential_permit, required: true });
+            required.push({ ...forms.dadu_covenant, required: true });
+            required.push({ ...forms.covenant_instructions, required: true });
+
+            // Historic district
+            if (answers.historic === 'historic_yes') {
+                required.push({ ...forms.historic_dadu, required: true });
+                required.push({ ...forms.historic_general, required: true });
+            } else if (answers.historic === 'historic_unsure') {
+                optional.push({ ...forms.historic_dadu, required: false });
+            }
+
+            // Trade permits
+            if (answers.trades.includes('electrical')) {
+                required.push({ ...forms.electrical, required: true });
+            }
+            if (answers.trades.includes('plumbing') || answers.trades.includes('sewer')) {
+                required.push({ ...forms.plumbing, required: true });
+            }
+            if (answers.trades.includes('gas') || answers.trades.includes('mechanical')) {
+                required.push({ ...forms.gas_mechanical, required: true });
+            }
+
+            // Short-term rental
+            if (answers.rental === 'rental_str') {
+                required.push({ ...forms.str_checklist, required: true });
+                if (answers.ownerOccupancy === 'owner_main' || answers.ownerOccupancy === 'owner_dadu') {
+                    required.push({ ...forms.str_owner_occupied, required: true });
+                } else {
+                    required.push({ ...forms.str_not_owner, required: true });
+                }
+            }
+
+            // Self-permit option
+            optional.push({ ...forms.self_permit, required: false });
+
+            return { required, optional };
+        }
+
+        function generateFormsHtml(formsList) {
+            let html = '';
+
+            if (formsList.required.length > 0) {
+                html += `<div class="forms-category">
+                    <h3>📌 Required Forms (${formsList.required.length})</h3>`;
+
+                formsList.required.forEach(form => {
+                    html += `
+                        <div class="form-item">
+                            <div class="form-info">
+                                <h4>${form.name}<span class="required-badge">Required</span></h4>
+                                <p>${form.description}</p>
+                            </div>
+                            <a href="${form.url}" target="_blank" class="download-btn">Download PDF</a>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            if (formsList.optional.length > 0) {
+                html += `<div class="forms-category">
+                    <h3>📎 Optional/May Be Needed</h3>`;
+
+                formsList.optional.forEach(form => {
+                    html += `
+                        <div class="form-item">
+                            <div class="form-info">
+                                <h4>${form.name}<span class="optional-badge">Optional</span></h4>
+                                <p>${form.description}</p>
+                            </div>
+                            <a href="${form.url}" target="_blank" class="download-btn">Download PDF</a>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            return html;
+        }
+
+        function restartWizard() {
+            // Reset answers
+            answers.projectType = null;
+            answers.historic = null;
+            answers.rental = null;
+            answers.ownerOccupancy = null;
+            answers.trades = [];
+
+            // Reset UI
+            document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.checkbox-option').forEach(c => {
+                c.classList.remove('checked');
+                c.querySelector('input').checked = false;
+            });
+            document.querySelectorAll('.btn-next').forEach(b => b.disabled = true);
+
+            // Reset progress
+            document.querySelectorAll('.progress-step').forEach((ps, i) => {
+                ps.classList.remove('active', 'completed');
+                if (i === 0) ps.classList.add('active');
+            });
+
+            // Show first question
+            document.querySelector('.results-section').classList.remove('active');
+            document.querySelector('.question-section[data-question="1"]').classList.add('active');
+            currentStep = 1;
+        }
+    </script>
+</body>
+</html>
