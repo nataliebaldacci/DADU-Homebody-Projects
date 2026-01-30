@@ -194,13 +194,6 @@
             border-radius: 2px;
             border: 1px solid rgba(0,0,0,0.2);
         }
-        .legend-circle {
-            width: 12px;
-            height: 12px;
-            margin-right: 8px;
-            border-radius: 50%;
-            border: 2px solid;
-        }
 
         /* Info Panel */
         .info-panel {
@@ -328,25 +321,6 @@
             color: #856404;
         }
 
-        /* Permit marker popup */
-        .permit-popup {
-            font-size: 13px;
-        }
-        .permit-popup .popup-title {
-            border-bottom-color: #e74c3c;
-        }
-        .permit-status {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-        .permit-status.active { background: #d4edda; color: #155724; }
-        .permit-status.review { background: #fff3cd; color: #856404; }
-        .permit-status.expired { background: #f8d7da; color: #721c24; }
-
         /* Warning for large data */
         .data-warning {
             background: #e8f5e9;
@@ -373,10 +347,6 @@
                 <div class="header-stat-label">SF Parcels</div>
             </div>
             <div class="header-stat">
-                <div class="header-stat-value" id="permit-count">-</div>
-                <div class="header-stat-label">DADU Permits</div>
-            </div>
-            <div class="header-stat">
                 <div class="header-stat-value" id="footprint-count">-</div>
                 <div class="header-stat-label">Buildings</div>
             </div>
@@ -395,9 +365,6 @@
             </button>
             <button class="toggle-btn active" id="toggle-footprints" onclick="toggleLayer('footprints')">
                 <span class="dot" style="background: #95a5a6;"></span> Buildings
-            </button>
-            <button class="toggle-btn active" id="toggle-permits" onclick="toggleLayer('permits')">
-                <span class="dot" style="background: #e74c3c;"></span> DADU Permits
             </button>
         </div>
         <div class="control-group">
@@ -446,10 +413,6 @@
                 <div class="legend-color" style="background: rgba(149, 165, 166, 0.3); border-color: #95a5a6;"></div>
                 Building Footprints
             </div>
-            <div class="legend-item">
-                <div class="legend-circle" style="background: #e74c3c; border-color: #c0392b;"></div>
-                Existing DADU Permit
-            </div>
         </div>
     </div>
 
@@ -473,10 +436,8 @@
         // Layer groups
         let parcelsLayer = null;
         let footprintsLayer = null;
-        let permitsLayer = null;
         let parcelsVisible = true;
         let footprintsVisible = true;
-        let permitsVisible = true;
 
         // Quick zoom locations
         const locations = {
@@ -504,12 +465,6 @@
                 btn.classList.toggle('active');
                 if (footprintsLayer) {
                     footprintsVisible ? footprintsLayer.addTo(map) : map.removeLayer(footprintsLayer);
-                }
-            } else if (layer === 'permits') {
-                permitsVisible = !permitsVisible;
-                btn.classList.toggle('active');
-                if (permitsLayer) {
-                    permitsVisible ? permitsLayer.addTo(map) : map.removeLayer(permitsLayer);
                 }
             }
         }
@@ -672,60 +627,6 @@
             `;
         }
 
-        // Format popup for permits (combined dataset)
-        function permitPopup(feature) {
-            const props = feature.properties;
-            let statusClass = 'review';
-            const status = props.Status || '';
-            if (status === 'DONE' || status === 'ISSUED' || status === 'Active') {
-                statusClass = 'active';
-            } else if (status === 'EXPIRED' || status === 'VOID' || status === 'Inactive') {
-                statusClass = 'expired';
-            }
-
-            // Format date
-            let dateStr = 'N/A';
-            if (props.Date) {
-                try {
-                    const d = new Date(props.Date);
-                    dateStr = d.toLocaleDateString();
-                } catch { dateStr = props.Date; }
-            }
-
-            // Format sq ft
-            let sqftStr = props.SqFt ? Number(props.SqFt).toLocaleString() + ' sq ft' : 'N/A';
-
-            // Format value
-            let valueStr = props.Value ? '$' + Number(props.Value).toLocaleString() : 'N/A';
-
-            return `
-                <div class="permit-popup">
-                    <div class="popup-title">DADU Permit</div>
-                    <div class="popup-address">${props.Address || 'Address unavailable'}</div>
-                    <div class="popup-row">
-                        <span class="popup-label">Permit #:</span>
-                        <span class="popup-value">${props.PermitNumber || 'N/A'}</span>
-                    </div>
-                    <div class="popup-row">
-                        <span class="popup-label">Date:</span>
-                        <span class="popup-value">${dateStr}</span>
-                    </div>
-                    <div class="popup-row">
-                        <span class="popup-label">Contractor:</span>
-                        <span class="popup-value">${props.Contractor || 'N/A'}</span>
-                    </div>
-                    ${props.SqFt ? `<div class="popup-row"><span class="popup-label">Size:</span><span class="popup-value">${sqftStr}</span></div>` : ''}
-                    ${props.Value ? `<div class="popup-row"><span class="popup-label">Value:</span><span class="popup-value">${valueStr}</span></div>` : ''}
-                    <div class="popup-row">
-                        <span class="popup-label">Type:</span>
-                        <span class="popup-value">${props.PermitSubType || props.PermitType || 'DADU'}</span>
-                    </div>
-                    <div class="permit-status ${statusClass}">${status || 'Unknown'}</div>
-                    ${props.ePermitURL ? `<a href="${props.ePermitURL}" target="_blank" style="display:block; margin-top:10px; color:#3498db; font-size:12px;">View Permit Details →</a>` : ''}
-                </div>
-            `;
-        }
-
         // Load the data
         async function loadData() {
             try {
@@ -761,32 +662,6 @@
 
                 if (footprintsVisible) {
                     footprintsLayer.addTo(map);
-                }
-
-                // Load DADU permits (combined dataset with all permits)
-                updateProgress('Loading DADU permits (6,400+)...');
-                const permitsResponse = await fetch('DADU_Permits_All.geojson');
-                const permitsData = await permitsResponse.json();
-
-                document.getElementById('permit-count').textContent = permitsData.features.length.toLocaleString();
-
-                permitsLayer = L.geoJSON(permitsData, {
-                    pointToLayer: (feature, latlng) => {
-                        return L.circleMarker(latlng, {
-                            radius: 6,
-                            fillColor: '#e74c3c',
-                            color: '#c0392b',
-                            weight: 2,
-                            fillOpacity: 0.8
-                        });
-                    },
-                    onEachFeature: (feature, layer) => {
-                        layer.bindPopup(permitPopup(feature));
-                    }
-                });
-
-                if (permitsVisible) {
-                    permitsLayer.addTo(map);
                 }
 
                 // Hide loading overlay

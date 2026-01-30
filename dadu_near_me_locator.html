@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find DADUs Near Me | Homebody Projects</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --background: #e8e4df;
+            --card-bg: #ffffff;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #e74c3c;
+            --info: #2196f3;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .logo-subtitle {
+            font-size: 11px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
+            padding: 40px 25px;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .hero p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Search Section */
+        .search-section {
+            background: white;
+            padding: 25px;
+            margin: -30px 25px 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .search-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        
+        .search-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .search-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(107, 143, 163, 0.15);
+        }
+        
+        .radius-select {
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+            min-width: 150px;
+        }
+        
+        .search-btn {
+            padding: 14px 30px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .search-btn:hover {
+            background: var(--olive-dark);
+            transform: translateY(-1px);
+        }
+        
+        .search-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .location-btn {
+            padding: 14px 20px;
+            background: var(--teal);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .location-btn:hover {
+            background: #5a7d8f;
+        }
+        
+        /* Filters */
+        .filters-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            display: flex;
+            align-items: center;
+            margin-right: 5px;
+        }
+        
+        .filter-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: #f5f5f5;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        
+        .filter-chip:hover {
+            background: #eee;
+        }
+        
+        .filter-chip.active {
+            background: var(--navy);
+            color: white;
+            border-color: var(--navy);
+        }
+        
+        .filter-chip .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .filter-chip.completed .dot { background: var(--success); }
+        .filter-chip.issued .dot { background: var(--info); }
+        .filter-chip.expired .dot { background: var(--warning); }
+        .filter-chip.covenant .dot { background: #9c27b0; }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            gap: 25px;
+            padding: 0 25px 25px;
+            min-height: calc(100vh - 400px);
+        }
+        
+        /* Map Panel */
+        .map-panel {
+            flex: 1;
+            min-width: 400px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+        
+        .map-legend {
+            padding: 15px 20px;
+            background: #fafafa;
+            border-top: 1px solid #eee;
+        }
+        
+        .legend-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        
+        .legend-items {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        /* Results Panel */
+        .results-panel {
+            width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .results-header {
+            background: white;
+            padding: 18px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .results-count {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        .results-subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .results-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 600px;
+            padding-right: 5px;
+        }
+        
+        /* Result Card */
+        .result-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+        }
+        
+        .result-card:hover {
+            transform: translateX(3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .result-card.completed { border-left-color: var(--success); }
+        .result-card.issued { border-left-color: var(--info); }
+        .result-card.expired { border-left-color: var(--warning); }
+        
+        .result-card.active {
+            box-shadow: 0 0 0 2px var(--navy);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .card-address {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--navy);
+            line-height: 1.3;
+        }
+        
+        .card-distance {
+            font-size: 12px;
+            color: #666;
+            background: #f5f5f5;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .card-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        
+        .card-status.completed { background: #e8f5e9; color: #2e7d32; }
+        .card-status.issued { background: #e3f2fd; color: #1565c0; }
+        .card-status.expired { background: #fff3e0; color: #ef6c00; }
+        
+        .card-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .card-detail {
+            font-size: 12px;
+        }
+        
+        .card-detail-label {
+            color: #888;
+            margin-bottom: 2px;
+        }
+        
+        .card-detail-value {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .card-contractor {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .contractor-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #888;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .contractor-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .card-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        
+        .card-btn.primary {
+            background: var(--navy);
+            color: white;
+        }
+        
+        .card-btn.primary:hover {
+            background: var(--navy-dark);
+        }
+        
+        .card-btn.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .card-btn.secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            background: white;
+            border-radius: 16px;
+            color: #666;
+        }
+        
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+        
+        .empty-text {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* Loading State */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e0e0e0;
+            border-top-color: var(--olive);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Popup Styles */
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            padding: 0;
+        }
+        
+        .leaflet-popup-content {
+            margin: 0;
+            min-width: 250px;
+        }
+        
+        .popup-content {
+            padding: 15px;
+        }
+        
+        .popup-address {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        
+        .popup-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        
+        .popup-status.completed { background: #e8f5e9; color: #2e7d32; }
+        .popup-status.issued { background: #e3f2fd; color: #1565c0; }
+        .popup-status.expired { background: #fff3e0; color: #ef6c00; }
+        
+        .popup-info {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .popup-contractor {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            font-size: 12px;
+        }
+        
+        .popup-contractor strong {
+            color: var(--navy);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .map-panel {
+                min-width: 100%;
+            }
+            
+            .results-panel {
+                width: 100%;
+            }
+            
+            #map {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .search-row {
+                flex-direction: column;
+            }
+            
+            .search-group {
+                min-width: 100%;
+            }
+            
+            .hero h1 {
+                font-size: 24px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">🏠</div>
+            <div>
+                <div class="logo-text">Homebody Projects</div>
+                <div class="logo-subtitle">Nashville DADU Builder</div>
+            </div>
+        </a>
+        <nav class="nav-links">
+            <a href="dadu_property_explorer.html" class="nav-link">Property Explorer</a>
+            <a href="contractors.html" class="nav-link">Contractors</a>
+            <a href="dadu_code_legislation_v2.html" class="nav-link">Code &amp; Legislation</a>
+            <a href="homebody_dadu_pricing.html" class="nav-link">Pricing</a>
+        </nav>
+    </header>
+    
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Find DADUs Near You</h1>
+        <p>Discover completed and permitted Detached Accessory Dwelling Units in your neighborhood. See costs, contractors, and project details.</p>
+    </section>
+    
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-row">
+            <div class="search-group" style="flex: 2;">
+                <label>Your Address</label>
+                <input type="text" id="addressInput" class="search-input" placeholder="Enter your Nashville address..." autocomplete="off">
+            </div>
+            <div class="search-group" style="flex: 0; min-width: 160px;">
+                <label>Search Radius</label>
+                <select id="radiusSelect" class="radius-select">
+                    <option value="0.25">0.25 miles</option>
+                    <option value="0.5" selected>0.5 miles</option>
+                    <option value="1">1 mile</option>
+                    <option value="2">2 miles</option>
+                </select>
+            </div>
+            <button class="location-btn" onclick="useMyLocation()" title="Use my current location">
+                📍 My Location
+            </button>
+            <button class="search-btn" id="searchBtn" onclick="searchNearMe()">
+                🔍 Search
+            </button>
+        </div>
+        
+        <div class="filters-row">
+            <span class="filter-label">Filter by Status:</span>
+            <div class="filter-chip completed active" data-filter="DONE" onclick="toggleFilter(this)">
+                <span class="dot"></span> Completed (Inactive)
+            </div>
+            <div class="filter-chip issued active" data-filter="ISSUED" onclick="toggleFilter(this)">
+                <span class="dot"></span> Active
+            </div>
+            <div class="filter-chip expired active" data-filter="EXPIRED" onclick="toggleFilter(this)">
+                <span class="dot"></span> In Review
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Map Panel -->
+        <div class="map-panel">
+            <div id="map"></div>
+            <div class="map-legend">
+                <div class="legend-title">DADU Status</div>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #4caf50;"></div>
+                        <span>Completed</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #2196f3;"></div>
+                        <span>Issued</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #ff9800;"></div>
+                        <span>Expired</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #e74c3c; border: 2px solid white; box-shadow: 0 0 0 2px #e74c3c;"></div>
+                        <span>Your Location</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Panel -->
+        <div class="results-panel">
+            <div class="results-header">
+                <div class="results-count" id="resultsCount">0 DADUs Found</div>
+                <div class="results-subtitle" id="resultsSubtitle">Enter an address to search nearby</div>
+            </div>
+            
+            <div class="results-list" id="resultsList">
+                <div class="empty-state">
+                    <div class="empty-icon">🏘️</div>
+                    <div class="empty-title">Search Your Neighborhood</div>
+                    <div class="empty-text">
+                        Enter your address above to discover DADUs that have been built or permitted near you. 
+                        See project costs, contractors, and get inspired for your own build.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const PERMITS_LAYER = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_Final/FeatureServer/0';
+        const METERS_PER_MILE = 1609.34;
+        
+        // State
+        let map = null;
+        let userLocation = null;
+        let userMarker = null;
+        let radiusCircle = null;
+        let permitMarkers = L.layerGroup();
+        let allResults = [];
+        let activeFilters = ['DONE', 'ISSUED', 'EXPIRED'];
+        let activeCard = null;
+        
+        // Initialize map on load
+        document.addEventListener('DOMContentLoaded', initMap);
+        
+        // Enter key to search
+        document.getElementById('addressInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchNearMe();
+        });
+        
+        function initMap() {
+            map = L.map('map').setView([36.16, -86.78], 11);
+            
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap, &copy; CartoDB'
+            }).addTo(map);
+            
+            permitMarkers.addTo(map);
+        }
+        
+        // Toggle filter chips
+        function toggleFilter(el) {
+            el.classList.toggle('active');
+            const filter = el.dataset.filter;
+            
+            if (el.classList.contains('active')) {
+                if (!activeFilters.includes(filter)) activeFilters.push(filter);
+            } else {
+                activeFilters = activeFilters.filter(f => f !== filter);
+            }
+            
+            // Re-render if we have results
+            if (allResults.length > 0) {
+                renderResults(allResults);
+            }
+        }
+        
+        // Use geolocation
+        async function useMyLocation() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser');
+                return;
+            }
+            
+            showLoading(true);
+            
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude
+                    };
+                    
+                    // Reverse geocode to get address
+                    try {
+                        const response = await fetch(
+                            `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?` +
+                            `location=${userLocation.lon},${userLocation.lat}&f=json`
+                        );
+                        const data = await response.json();
+                        if (data.address) {
+                            document.getElementById('addressInput').value = data.address.Match_addr || data.address.Address;
+                        }
+                    } catch (e) {
+                        console.error('Reverse geocode error:', e);
+                    }
+                    
+                    await searchWithLocation(userLocation);
+                },
+                (error) => {
+                    showLoading(false);
+                    alert('Unable to get your location. Please enter an address manually.');
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+        
+        // Main search function
+        async function searchNearMe() {
+            const address = document.getElementById('addressInput').value.trim();
+            if (!address) {
+                alert('Please enter an address');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                // Geocode the address
+                const geocodeUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?` +
+                    `SingleLine=${encodeURIComponent(address + ', Nashville, TN')}&f=json&outFields=*&maxLocations=1`;
+                
+                const response = await fetch(geocodeUrl);
+                const data = await response.json();
+                
+                if (!data.candidates || data.candidates.length === 0) {
+                    throw new Error('Address not found. Please try a different address.');
+                }
+                
+                const candidate = data.candidates[0];
+                userLocation = {
+                    lat: candidate.location.y,
+                    lon: candidate.location.x,
+                    address: candidate.address
+                };
+                
+                await searchWithLocation(userLocation);
+                
+            } catch (error) {
+                showLoading(false);
+                alert(error.message || 'Error searching. Please try again.');
+                console.error('Search error:', error);
+            }
+        }
+        
+        // Search with a location
+        async function searchWithLocation(location) {
+            const radiusMiles = parseFloat(document.getElementById('radiusSelect').value);
+            const radiusMeters = radiusMiles * METERS_PER_MILE;
+            
+            try {
+                // Clear existing markers
+                permitMarkers.clearLayers();
+                
+                // Add user location marker
+                if (userMarker) map.removeLayer(userMarker);
+                userMarker = L.circleMarker([location.lat, location.lon], {
+                    radius: 12,
+                    fillColor: '#e74c3c',
+                    fillOpacity: 1,
+                    color: 'white',
+                    weight: 3
+                }).addTo(map);
+                
+                userMarker.bindPopup(`<div class="popup-content"><strong>Your Location</strong><br>${location.address || 'Current position'}</div>`);
+                
+                // Add radius circle
+                if (radiusCircle) map.removeLayer(radiusCircle);
+                radiusCircle = L.circle([location.lat, location.lon], {
+                    radius: radiusMeters,
+                    fillColor: '#6b8fa3',
+                    fillOpacity: 0.1,
+                    color: '#6b8fa3',
+                    weight: 2,
+                    dashArray: '5, 5'
+                }).addTo(map);
+                
+                // Query permits within radius
+                const queryUrl = `${PERMITS_LAYER}/query?` + new URLSearchParams({
+                    where: '1=1',
+                    geometry: JSON.stringify({
+                        x: location.lon,
+                        y: location.lat,
+                        spatialReference: { wkid: 4326 }
+                    }),
+                    geometryType: 'esriGeometryPoint',
+                    inSR: 4326,
+                    spatialRel: 'esriSpatialRelIntersects',
+                    distance: radiusMeters,
+                    units: 'esriSRUnit_Meter',
+                    outFields: '*',
+                    returnGeometry: true,
+                    outSR: 4326,
+                    f: 'json',
+                    resultRecordCount: 500
+                });
+                
+                const response = await fetch(queryUrl);
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error.message || 'Error querying permits');
+                }
+                
+                // Process results
+                allResults = (data.features || []).map(f => {
+                    const attrs = f.attributes;
+                    const geom = f.geometry;
+                    
+                    // Calculate distance
+                    let distance = null;
+                    if (geom && geom.x && geom.y) {
+                        distance = calculateDistance(location.lat, location.lon, geom.y, geom.x);
+                    }
+                    
+                    return {
+                        ...attrs,
+                        geometry: geom,
+                        distance: distance,
+                        distanceMiles: distance ? (distance / METERS_PER_MILE).toFixed(2) : null
+                    };
+                });
+                
+                // Sort by distance
+                allResults.sort((a, b) => (a.distance || Infinity) - (b.distance || Infinity));
+                
+                // Render results
+                renderResults(allResults);
+                
+                // Fit map to show all results
+                const bounds = radiusCircle.getBounds();
+                map.fitBounds(bounds, { padding: [20, 20] });
+                
+                showLoading(false);
+                
+            } catch (error) {
+                showLoading(false);
+                alert(error.message || 'Error loading permits. Please try again.');
+                console.error('Query error:', error);
+            }
+        }
+        
+        // Render results
+        function renderResults(results) {
+            const listEl = document.getElementById('resultsList');
+            const countEl = document.getElementById('resultsCount');
+            const subtitleEl = document.getElementById('resultsSubtitle');
+            
+            // Filter results
+            const filtered = results.filter(r => {
+                const status = normalizeStatus(r.status || r.STATUS || '');
+                return activeFilters.includes(status);
+            });
+            
+            // Update count
+            countEl.textContent = `${filtered.length} DADU${filtered.length !== 1 ? 's' : ''} Found`;
+            subtitleEl.textContent = `Within ${document.getElementById('radiusSelect').value} miles of your location`;
+            
+            // Clear markers and list
+            permitMarkers.clearLayers();
+            
+            if (filtered.length === 0) {
+                listEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div class="empty-title">No DADUs Found</div>
+                        <div class="empty-text">
+                            No DADU permits match your filters within this radius. 
+                            Try expanding your search radius or adjusting the status filters.
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Render cards and markers
+            listEl.innerHTML = filtered.map((r, i) => createResultCard(r, i)).join('');
+            
+            filtered.forEach((r, i) => {
+                if (r.geometry && r.geometry.x && r.geometry.y) {
+                    const status = normalizeStatus(r.status || r.STATUS || '');
+                    const color = getStatusColor(status);
+                    
+                    const marker = L.circleMarker([r.geometry.y, r.geometry.x], {
+                        radius: 8,
+                        fillColor: color,
+                        fillOpacity: 0.9,
+                        color: 'white',
+                        weight: 2
+                    });
+                    
+                    marker.bindPopup(createPopupContent(r));
+                    marker.on('click', () => highlightCard(i));
+                    
+                    permitMarkers.addLayer(marker);
+                }
+            });
+        }
+        
+        // Create result card HTML
+        function createResultCard(r, index) {
+            const status = normalizeStatus(r.Status || r.status || '');
+            const statusClass = status.toLowerCase();
+            const statusLabel = status === 'DONE' ? 'Completed' : status;
+            
+            const address = r.Address || r.address || 'Unknown Address';
+            const contractor = r.Contractor || r.contractor || null;
+            const permitNum = r.Permit_Number || r.permit_number || '';
+            const parcelId = r.Parcel_ID || r.parcel_id || '';
+            const dateIssued = formatDate(r.Date_Issued || r.date_issued);
+            const value = r.Construction_Cost || r.cost || null;
+            const sqft = r.Building_SqFt || r.sqft || null;
+            const costPerSqft = r.Cost_Per_SqFt || null;
+            const ePermitsLink = r.ePermits_Link || null;
+            const docsLink = r.Documents_Link || null;
+            
+            return `
+                <div class="result-card ${statusClass}" data-index="${index}" onclick="focusResult(${index})">
+                    <div class="card-header">
+                        <div class="card-address">${address}</div>
+                        <div class="card-distance">${r.distanceMiles ? r.distanceMiles + ' mi' : '--'}</div>
+                    </div>
+                    
+                    <div class="card-status ${statusClass}">${statusLabel}</div>
+                    
+                    <div class="card-details">
+                        <div class="card-detail">
+                            <div class="card-detail-label">Permit #</div>
+                            <div class="card-detail-value">${permitNum || '--'}</div>
+                        </div>
+                        <div class="card-detail">
+                            <div class="card-detail-label">Date Issued</div>
+                            <div class="card-detail-value">${dateIssued || '--'}</div>
+                        </div>
+                        ${value ? `
+                        <div class="card-detail">
+                            <div class="card-detail-label">Project Cost</div>
+                            <div class="card-detail-value">$${Number(value).toLocaleString()}</div>
+                        </div>
+                        ` : ''}
+                        ${sqft ? `
+                        <div class="card-detail">
+                            <div class="card-detail-label">Size</div>
+                            <div class="card-detail-value">${sqft} SF${costPerSqft ? ` ($${Math.round(costPerSqft)}/sf)` : ''}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    ${contractor ? `
+                    <div class="card-contractor">
+                        <div class="contractor-label">Contractor</div>
+                        <div class="contractor-name">${contractor}</div>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="card-actions">
+                        <a href="${ePermitsLink || `https://epermits.nashville.gov/?#/search?permitnumber=${permitNum}`}" class="card-btn primary" target="_blank" onclick="event.stopPropagation()">
+                            View Permit
+                        </a>
+                        <a href="https://maps.nashville.gov/ParcelViewer/?parcelID=${parcelId}" class="card-btn secondary" target="_blank" onclick="event.stopPropagation()">
+                            Parcel Map
+                        </a>
+                        ${docsLink ? `
+                        <a href="${docsLink}" class="card-btn secondary" target="_blank" onclick="event.stopPropagation()">
+                            Documents
+                        </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Create popup content
+        function createPopupContent(r) {
+            const status = normalizeStatus(r.Status || r.status || '');
+            const statusClass = status.toLowerCase();
+            const statusLabel = status === 'DONE' ? 'Completed' : status;
+            
+            const address = r.Address || r.address || 'Unknown Address';
+            const contractor = r.Contractor || r.contractor || null;
+            const permitNum = r.Permit_Number || r.permit_number || '';
+            const dateIssued = formatDate(r.Date_Issued || r.date_issued);
+            const sqft = r.Building_SqFt || null;
+            const cost = r.Construction_Cost || null;
+            
+            return `
+                <div class="popup-content">
+                    <div class="popup-address">${address}</div>
+                    <div class="popup-status ${statusClass}">${statusLabel}</div>
+                    <div class="popup-info">
+                        <strong>Permit:</strong> ${permitNum || 'N/A'}<br>
+                        <strong>Date:</strong> ${dateIssued || 'N/A'}
+                        ${sqft ? `<br><strong>Size:</strong> ${sqft} SF` : ''}
+                        ${cost ? `<br><strong>Cost:</strong> $${Number(cost).toLocaleString()}` : ''}
+                    </div>
+                    ${contractor ? `
+                    <div class="popup-contractor">
+                        <strong>Contractor:</strong> ${contractor}
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+        
+        // Focus on a result
+        function focusResult(index) {
+            const filtered = allResults.filter(r => {
+                const status = normalizeStatus(r.status || r.STATUS || '');
+                return activeFilters.includes(status);
+            });
+            
+            const result = filtered[index];
+            if (!result || !result.geometry) return;
+            
+            // Highlight card
+            highlightCard(index);
+            
+            // Pan map to location
+            map.setView([result.geometry.y, result.geometry.x], 17);
+            
+            // Find and open the marker popup
+            permitMarkers.eachLayer((layer, i) => {
+                const latlng = layer.getLatLng();
+                if (Math.abs(latlng.lat - result.geometry.y) < 0.0001 && 
+                    Math.abs(latlng.lng - result.geometry.x) < 0.0001) {
+                    layer.openPopup();
+                }
+            });
+        }
+        
+        // Highlight card
+        function highlightCard(index) {
+            // Remove active from all cards
+            document.querySelectorAll('.result-card').forEach(card => card.classList.remove('active'));
+            
+            // Add active to selected card
+            const card = document.querySelector(`.result-card[data-index="${index}"]`);
+            if (card) {
+                card.classList.add('active');
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+        
+        // Helper functions
+        function normalizeStatus(status) {
+            const s = String(status).toUpperCase().trim();
+            // ArcGIS layer uses: "Active", "Inactive", "In Review"
+            if (s === 'INACTIVE' || s === 'DONE' || s === 'COMPLETE' || s === 'COMPLETED' || s === 'CO' || s === 'CLOSED') return 'DONE';
+            if (s === 'ACTIVE' || s === 'ISSUED' || s === 'IN PROGRESS') return 'ISSUED';
+            if (s === 'IN REVIEW' || s === 'PENDING' || s === 'EXPIRED' || s === 'VOID' || s === 'CANCELLED') return 'EXPIRED';
+            return 'ISSUED'; // Default
+        }
+        
+        function getStatusColor(status) {
+            switch (status) {
+                case 'DONE': return '#4caf50';
+                case 'ISSUED': return '#2196f3';
+                case 'EXPIRED': return '#ff9800';
+                default: return '#9e9e9e';
+            }
+        }
+        
+        function formatDate(dateStr) {
+            if (!dateStr) return null;
+            try {
+                // Handle various date formats
+                const d = new Date(dateStr);
+                if (isNaN(d)) return dateStr;
+                return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            } catch (e) {
+                return dateStr;
+            }
+        }
+        
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371000; // Earth's radius in meters
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+        
+        function toRad(deg) {
+            return deg * (Math.PI / 180);
+        }
+        
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('active', show);
+            document.getElementById('searchBtn').disabled = show;
+        }
+    </script>
+</body>
+</html>
