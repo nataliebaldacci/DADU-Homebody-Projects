@@ -517,7 +517,7 @@
         <div class="page-header">
             <h1>📄 DADU Eligibility Report</h1>
             <p>Complete eligibility analysis with zoning details, size limits, and requirements</p>
-            <div class="price-badge">$4.99 per property</div>
+            <div class="price-badge">FREE - Limited Time</div>
         </div>
 
         <div class="layout">
@@ -649,7 +649,7 @@
                     <div class="unlock-prompt">
                         <h3>🔓 Unlock Full Report</h3>
                         <p>Get complete details including permit history, estimated costs, contractor recommendations, and downloadable PDF</p>
-                        <button class="btn-purchase" onclick="purchaseReport()">Purchase Report - $4.99</button>
+                        <button class="btn-purchase" onclick="unlockReport()">Unlock Full Report - FREE</button>
                     </div>
                 </div>
 
@@ -670,7 +670,7 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <div class="sidebar-card">
-                    <div class="popular-badge">⭐ Most Popular</div>
+                    <div class="popular-badge">🎉 FREE Limited Time</div>
                     <h3>What's Included</h3>
                     <ul class="included-list">
                         <li>Full eligibility determination</li>
@@ -691,21 +691,21 @@
                         <img src="assets/icons/APN Maps.png" alt="">
                         <div class="info">
                             <h5>Project Report</h5>
-                            <span class="price">$9.99</span>
+                            <span class="price">FREE</span>
                         </div>
                     </a>
                     <a href="neighbors_report.html" class="report-link">
                         <img src="assets/icons/Neighbors.png" alt="">
                         <div class="info">
                             <h5>Neighbors Report</h5>
-                            <span class="price">$14.99</span>
+                            <span class="price">FREE</span>
                         </div>
                     </a>
                     <a href="market_report.html" class="report-link">
                         <img src="assets/icons/Market Statistics Report .png" alt="">
                         <div class="info">
                             <h5>Market Report</h5>
-                            <span class="price">$19.99</span>
+                            <span class="price">FREE</span>
                         </div>
                     </a>
                 </div>
@@ -771,8 +771,11 @@
             };
         }
 
-        function purchaseReport() {
-            alert('Payment integration coming soon! For now, contact nataliebaldacci21@gmail.com to purchase reports.');
+        function unlockReport() {
+            // Remove blur and unlock prompt
+            document.querySelector('.blur-overlay').classList.remove('blur-overlay');
+            document.querySelector('.unlock-prompt').innerHTML = '<p style="color: #6b8e4e; font-weight: 600;">✓ Report Unlocked! Scroll up to see full details.</p>';
+            alert('Report unlocked! This is a free preview during our limited time launch period.');
         }
 
         // Check for address in URL params

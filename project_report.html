@@ -615,7 +615,7 @@
         <div class="page-header">
             <h1>🏠 DADU Project Report</h1>
             <p>Comprehensive property analysis with permits, costs, contractors, and building requirements</p>
-            <div class="price-badge">$9.99 per property</div>
+            <div class="price-badge">FREE - Limited Time</div>
         </div>
 
         <div class="layout">
@@ -899,7 +899,7 @@
                     <div class="unlock-prompt">
                         <h3>🔓 Unlock Full Project Report</h3>
                         <p>Get complete analysis with permit forms, contractor contact info, ROI calculations, and downloadable PDF</p>
-                        <button class="btn-purchase" onclick="purchaseReport()">Purchase Report - $9.99</button>
+                        <button class="btn-purchase" onclick="unlockReport()">Unlock Full Report - FREE</button>
                     </div>
                 </div>
 
@@ -919,7 +919,7 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <div class="sidebar-card">
-                    <div class="comparison-badge">📊 Compare Reports</div>
+                    <div class="comparison-badge">🎉 FREE Limited Time</div>
                     <table class="comparison-table">
                         <tr>
                             <th></th>
@@ -1020,8 +1020,11 @@
             document.getElementById('reportPreview').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function purchaseReport() {
-            alert('Payment integration coming soon! Contact nataliebaldacci21@gmail.com to purchase reports.');
+        function unlockReport() {
+            // Remove blur from all sections
+            document.querySelectorAll('.blur-section').forEach(el => el.classList.remove('blur-section'));
+            document.querySelector('.unlock-prompt').innerHTML = '<p style="color: #6b8e4e; font-weight: 600;">✓ Report Unlocked! Explore all tabs above for full details.</p>';
+            alert('Report unlocked! This is a free preview during our limited time launch period.');
         }
     </script>
 </body>
