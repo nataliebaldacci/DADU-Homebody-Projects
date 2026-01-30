@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw DADU on Your Parcel | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-light: #8bb36d;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --warm-gray: #e8e4df;
+            --white: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --text-muted: #999999;
+            --border: #e0e0e0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--warm-gray);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .nav {
+            background: var(--navy);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .nav-logo-text { font-weight: 700; font-size: 18px; }
+        .nav-back { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; }
+        .nav-back:hover { color: white; }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            height: calc(100vh - 72px);
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--white);
+            padding: 24px;
+            overflow-y: auto;
+            border-right: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            margin-top: 24px;
+        }
+
+        .section-title:first-of-type { margin-top: 0; }
+
+        .input-group { margin-bottom: 16px; }
+
+        .input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--olive);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: var(--olive);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--olive-light);
+        }
+
+        .btn-secondary {
+            background: var(--cream);
+            color: var(--navy);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* Size Presets */
+        .size-presets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .preset-btn {
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--teal);
+        }
+
+        .preset-btn.selected {
+            border-color: var(--olive);
+            background: rgba(107, 142, 78, 0.1);
+        }
+
+        .preset-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .preset-size {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            background: var(--cream);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .stat-row:last-child { border-bottom: none; }
+
+        .stat-label { color: var(--text-light); }
+        .stat-value { font-weight: 600; color: var(--navy); }
+
+        .stat-value.success { color: var(--success); }
+        .stat-value.warning { color: var(--warning); }
+        .stat-value.error { color: var(--error); }
+
+        /* Drawing Tips */
+        .tips-box {
+            background: rgba(107, 143, 163, 0.1);
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 20px;
+        }
+
+        .tips-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--teal);
+            margin-bottom: 8px;
+        }
+
+        .tips-list {
+            font-size: 12px;
+            color: var(--text-light);
+            padding-left: 16px;
+        }
+
+        .tips-list li { margin-bottom: 4px; }
+
+        /* Map Container */
+        .map-container {
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            min-width: 200px;
+        }
+
+        .overlay-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .setback-controls {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .setback-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .setback-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .setback-input {
+            width: 60px;
+            padding: 6px 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* Leaflet overrides */
+        .leaflet-draw-toolbar a {
+            background-color: var(--olive) !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">🏠</div>
+            <span class="nav-logo-text">Homebody Projects</span>
+        </a>
+        <a href="index.html" class="nav-back">← Back to Home</a>
+    </nav>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h1 class="sidebar-title">Draw DADU on Parcel</h1>
+            <p class="sidebar-subtitle">Visualize where your DADU could go and check setback requirements</p>
+
+            <div class="section-title">📍 Find Your Property</div>
+            <div class="input-group">
+                <label class="input-label">Enter Address</label>
+                <input type="text" class="input-field" id="addressInput" placeholder="123 Main St, Nashville, TN">
+            </div>
+            <button class="btn btn-primary" onclick="findProperty()">Find Property</button>
+
+            <div class="section-title">📐 DADU Size</div>
+            <div class="size-presets">
+                <div class="preset-btn" onclick="selectPreset(this, 700, 750)" data-sqft="700">
+                    <div class="preset-label">Small Lot</div>
+                    <div class="preset-size">700 SF living</div>
+                </div>
+                <div class="preset-btn selected" onclick="selectPreset(this, 850, 1000)" data-sqft="850">
+                    <div class="preset-label">Large Lot</div>
+                    <div class="preset-size">850 SF living</div>
+                </div>
+                <div class="preset-btn" onclick="selectPreset(this, 500, 600)" data-sqft="500">
+                    <div class="preset-label">Studio</div>
+                    <div class="preset-size">500 SF</div>
+                </div>
+                <div class="preset-btn" onclick="selectPreset(this, 0, 0)" data-sqft="custom">
+                    <div class="preset-label">Custom</div>
+                    <div class="preset-size">Draw your own</div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Footprint Dimensions (ft)</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="number" class="input-field" id="widthInput" placeholder="Width" value="25">
+                    <input type="number" class="input-field" id="depthInput" placeholder="Depth" value="30">
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="drawDADU()">📐 Place DADU on Map</button>
+            <button class="btn btn-secondary" onclick="clearDrawings()">🗑️ Clear Drawings</button>
+
+            <!-- Stats Panel -->
+            <div class="stats-panel">
+                <div class="stat-row">
+                    <span class="stat-label">DADU Footprint</span>
+                    <span class="stat-value" id="statFootprint">750 SF</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Front Setback</span>
+                    <span class="stat-value success" id="statFront">✓ OK</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Side Setback</span>
+                    <span class="stat-value success" id="statSide">✓ OK</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Rear Setback</span>
+                    <span class="stat-value success" id="statRear">✓ OK</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Lot Coverage</span>
+                    <span class="stat-value" id="statCoverage">--</span>
+                </div>
+            </div>
+
+            <div class="tips-box">
+                <div class="tips-title">💡 Drawing Tips</div>
+                <ul class="tips-list">
+                    <li>Click the rectangle tool to draw your DADU</li>
+                    <li>Stay within the green buildable area</li>
+                    <li>DADU cannot exceed principal structure height</li>
+                    <li>Must maintain setbacks from all property lines</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-container">
+            <div id="map"></div>
+
+            <div class="map-overlay">
+                <div class="overlay-title">🗺️ Map Legend</div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(44, 62, 80, 0.3); border: 2px solid #2c3e50;"></div>
+                    <span>Property Boundary</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(107, 142, 78, 0.2); border: 2px dashed #6b8e4e;"></div>
+                    <span>Buildable Area</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(107, 142, 78, 0.6); border: 2px solid #6b8e4e;"></div>
+                    <span>Your DADU</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(239, 68, 68, 0.3); border: 2px solid #ef4444;"></div>
+                    <span>Setback Zone</span>
+                </div>
+
+                <div class="setback-controls">
+                    <div class="overlay-title">⚙️ Setbacks (ft)</div>
+                    <div class="setback-row">
+                        <span class="setback-label">Front</span>
+                        <input type="number" class="setback-input" id="setbackFront" value="20" onchange="updateSetbacks()">
+                    </div>
+                    <div class="setback-row">
+                        <span class="setback-label">Side</span>
+                        <input type="number" class="setback-input" id="setbackSide" value="5" onchange="updateSetbacks()">
+                    </div>
+                    <div class="setback-row">
+                        <span class="setback-label">Rear</span>
+                        <input type="number" class="setback-input" id="setbackRear" value="5" onchange="updateSetbacks()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize map centered on Nashville
+        const map = L.map('map').setView([36.1627, -86.7816], 13);
+
+        // Add tile layer
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Esri World Imagery'
+        }).addTo(map);
+
+        // Add labels overlay
+        L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+            attribution: ''
+        }).addTo(map);
+
+        // Drawing layers
+        let propertyLayer = null;
+        let buildableLayer = null;
+        let daduLayer = null;
+        let setbackLayer = null;
+
+        // Initialize drawing controls
+        const drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        const drawControl = new L.Control.Draw({
+            draw: {
+                polygon: false,
+                polyline: false,
+                circle: false,
+                circlemarker: false,
+                marker: false,
+                rectangle: {
+                    shapeOptions: {
+                        color: '#6b8e4e',
+                        fillColor: '#6b8e4e',
+                        fillOpacity: 0.6,
+                        weight: 2
+                    }
+                }
+            },
+            edit: {
+                featureGroup: drawnItems,
+                remove: true
+            }
+        });
+        map.addControl(drawControl);
+
+        // Handle drawing events
+        map.on(L.Draw.Event.CREATED, function(e) {
+            drawnItems.addLayer(e.layer);
+            updateStats();
+        });
+
+        // Demo property - simulated parcel
+        function findProperty() {
+            const address = document.getElementById('addressInput').value;
+
+            // For demo, show a sample property
+            // In production, this would geocode and fetch actual parcel data
+            const demoProperty = [
+                [36.1580, -86.7980],
+                [36.1580, -86.7970],
+                [36.1572, -86.7970],
+                [36.1572, -86.7980]
+            ];
+
+            // Clear existing
+            if (propertyLayer) map.removeLayer(propertyLayer);
+            if (buildableLayer) map.removeLayer(buildableLayer);
+            if (setbackLayer) map.removeLayer(setbackLayer);
+
+            // Draw property boundary
+            propertyLayer = L.polygon(demoProperty, {
+                color: '#2c3e50',
+                fillColor: '#2c3e50',
+                fillOpacity: 0.1,
+                weight: 3
+            }).addTo(map);
+
+            // Calculate buildable area (inset by setbacks)
+            updateSetbacks();
+
+            // Zoom to property
+            map.fitBounds(propertyLayer.getBounds(), { padding: [50, 50] });
+
+            // Show info popup
+            propertyLayer.bindPopup(`
+                <strong>Sample Property</strong><br>
+                ${address || '123 Demo St, Nashville'}<br>
+                <em>Lot Size: ~8,500 SF</em>
+            `).openPopup();
+        }
+
+        function updateSetbacks() {
+            const front = parseFloat(document.getElementById('setbackFront').value) || 20;
+            const side = parseFloat(document.getElementById('setbackSide').value) || 5;
+            const rear = parseFloat(document.getElementById('setbackRear').value) || 5;
+
+            if (!propertyLayer) return;
+
+            // Remove old buildable area
+            if (buildableLayer) map.removeLayer(buildableLayer);
+            if (setbackLayer) map.removeLayer(setbackLayer);
+
+            // For demo, create approximate buildable area
+            // In production, this would use actual geometry calculations
+            const bounds = propertyLayer.getBounds();
+            const latDiff = (bounds.getNorth() - bounds.getSouth()) * 0.15;
+            const lngDiff = (bounds.getEast() - bounds.getWest()) * 0.15;
+
+            const buildableBounds = [
+                [bounds.getSouth() + latDiff, bounds.getWest() + lngDiff],
+                [bounds.getSouth() + latDiff, bounds.getEast() - lngDiff],
+                [bounds.getNorth() - latDiff * 2, bounds.getEast() - lngDiff],
+                [bounds.getNorth() - latDiff * 2, bounds.getWest() + lngDiff]
+            ];
+
+            buildableLayer = L.polygon(buildableBounds, {
+                color: '#6b8e4e',
+                fillColor: '#6b8e4e',
+                fillOpacity: 0.15,
+                weight: 2,
+                dashArray: '5, 10'
+            }).addTo(map);
+        }
+
+        function selectPreset(element, living, footprint) {
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+
+            if (footprint > 0) {
+                // Calculate approximate dimensions for a square-ish building
+                const width = Math.round(Math.sqrt(footprint * 0.8));
+                const depth = Math.round(footprint / width);
+                document.getElementById('widthInput').value = width;
+                document.getElementById('depthInput').value = depth;
+            }
+
+            updateStats();
+        }
+
+        function drawDADU() {
+            const width = parseFloat(document.getElementById('widthInput').value) || 25;
+            const depth = parseFloat(document.getElementById('depthInput').value) || 30;
+
+            if (!propertyLayer) {
+                alert('Please find your property first!');
+                return;
+            }
+
+            // Clear existing DADU
+            drawnItems.clearLayers();
+
+            // Get center of buildable area
+            const bounds = buildableLayer ? buildableLayer.getBounds() : propertyLayer.getBounds();
+            const center = bounds.getCenter();
+
+            // Convert feet to approximate lat/lng
+            // Rough conversion: 1 degree lat ≈ 364,000 ft, 1 degree lng varies
+            const latPerFoot = 1 / 364000;
+            const lngPerFoot = 1 / (364000 * Math.cos(center.lat * Math.PI / 180));
+
+            const halfWidth = (width / 2) * lngPerFoot;
+            const halfDepth = (depth / 2) * latPerFoot;
+
+            const daduBounds = [
+                [center.lat - halfDepth, center.lng - halfWidth],
+                [center.lat - halfDepth, center.lng + halfWidth],
+                [center.lat + halfDepth, center.lng + halfWidth],
+                [center.lat + halfDepth, center.lng - halfWidth]
+            ];
+
+            const dadu = L.polygon(daduBounds, {
+                color: '#6b8e4e',
+                fillColor: '#6b8e4e',
+                fillOpacity: 0.6,
+                weight: 3
+            });
+
+            drawnItems.addLayer(dadu);
+            updateStats();
+        }
+
+        function clearDrawings() {
+            drawnItems.clearLayers();
+            updateStats();
+        }
+
+        function updateStats() {
+            const width = parseFloat(document.getElementById('widthInput').value) || 0;
+            const depth = parseFloat(document.getElementById('depthInput').value) || 0;
+            const footprint = width * depth;
+
+            document.getElementById('statFootprint').textContent = footprint + ' SF';
+
+            // Check against limits
+            if (footprint > 1000) {
+                document.getElementById('statFootprint').className = 'stat-value error';
+                document.getElementById('statFootprint').textContent = footprint + ' SF ⚠️ Over limit';
+            } else if (footprint > 750) {
+                document.getElementById('statFootprint').className = 'stat-value warning';
+                document.getElementById('statFootprint').textContent = footprint + ' SF (Large lot only)';
+            } else {
+                document.getElementById('statFootprint').className = 'stat-value success';
+            }
+        }
+
+        // Initialize with demo
+        setTimeout(() => {
+            document.getElementById('addressInput').value = '1234 Demo Street, Nashville, TN 37206';
+            findProperty();
+        }, 500);
+    </script>
+</body>
+</html>
