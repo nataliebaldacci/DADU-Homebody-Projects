@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Eligibility Map | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --background: #e8e4df;
+            --white: #ffffff;
+            --border: #e0e0e0;
+            --text: #333333;
+            --text-light: #666666;
+            --eligible-green: #4caf50;
+            --not-eligible-red: #e74c3c;
+            --maybe-yellow: #f39c12;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Page Title Bar */
+        .title-bar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .title-content h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .title-content h1 img {
+            width: 28px;
+            height: 28px;
+        }
+
+        .title-content p {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            width: 320px;
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--olive);
+        }
+
+        .search-btn {
+            padding: 10px 20px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-btn:hover {
+            background: var(--olive-dark);
+        }
+
+        /* Main Layout */
+        .main-container {
+            margin-top: 130px;
+            display: flex;
+            height: calc(100vh - 130px);
+        }
+
+        /* Map */
+        #map {
+            flex: 1;
+        }
+
+        /* Legend Panel */
+        .legend-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 20px;
+            z-index: 1000;
+            min-width: 240px;
+        }
+
+        .legend-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .legend-color.eligible {
+            background: var(--eligible-green);
+        }
+
+        .legend-color.not-eligible {
+            background: var(--not-eligible-red);
+        }
+
+        .legend-color.maybe {
+            background: var(--maybe-yellow);
+        }
+
+        .legend-label {
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .legend-count {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-left: auto;
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            position: fixed;
+            top: 150px;
+            right: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 20px;
+            z-index: 1000;
+            min-width: 280px;
+        }
+
+        .stats-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .stat-value.eligible {
+            color: var(--eligible-green);
+        }
+
+        .stat-value.not-eligible {
+            color: var(--not-eligible-red);
+        }
+
+        .stat-value.maybe {
+            color: var(--maybe-yellow);
+        }
+
+        /* Filter Panel */
+        .filter-panel {
+            position: fixed;
+            top: 150px;
+            left: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 20px;
+            z-index: 1000;
+            min-width: 260px;
+        }
+
+        .filter-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .filter-checkbox input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .filter-checkbox span {
+            font-size: 13px;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        /* Info Popup */
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            padding: 0;
+        }
+
+        .leaflet-popup-content {
+            margin: 0;
+            min-width: 300px;
+        }
+
+        .popup-header {
+            padding: 16px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .popup-header.eligible {
+            background: var(--eligible-green);
+            color: white;
+        }
+
+        .popup-header.not-eligible {
+            background: var(--not-eligible-red);
+            color: white;
+        }
+
+        .popup-header.maybe {
+            background: var(--maybe-yellow);
+            color: white;
+        }
+
+        .popup-status {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .popup-address {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .popup-content {
+            padding: 16px;
+        }
+
+        .popup-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .popup-row:last-child {
+            border-bottom: none;
+        }
+
+        .popup-label {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .popup-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .popup-actions {
+            padding: 12px 16px;
+            background: var(--cream);
+            border-radius: 0 0 12px 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .popup-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .popup-btn-primary {
+            background: var(--olive);
+            color: white;
+        }
+
+        .popup-btn-secondary {
+            background: white;
+            color: var(--navy);
+            border: 1px solid var(--border);
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 130px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
+            border-top-color: var(--olive);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .loading-subtext {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+
+        /* Zoom to see parcels message */
+        .zoom-message {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--navy);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .zoom-message.visible {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title-bar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .search-input {
+                flex: 1;
+            }
+            .filter-panel,
+            .stats-panel {
+                display: none;
+            }
+            .legend-panel {
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="homebody_index_v3.html" class="logo">
+            <div class="logo-icon">
+                <img src="assets/icons/ADU.png" alt="">
+            </div>
+            <span class="logo-text">HOMEBODY</span>
+        </a>
+        <nav class="nav-links">
+            <a href="homebody_index_v3.html" class="nav-link">Home</a>
+            <a href="dadu_explorer_v2.html" class="nav-link">Explorer</a>
+            <a href="property_search.html" class="nav-link">Property Search</a>
+            <a href="eligibility_report.html" class="nav-link">Reports</a>
+        </nav>
+    </header>
+
+    <!-- Title Bar -->
+    <div class="title-bar">
+        <div class="title-content">
+            <h1>
+                <img src="assets/icons/Zoning.png" alt="">
+                DADU Eligibility Map
+            </h1>
+            <p>View parcel eligibility across Nashville-Davidson County under BL2025-1007</p>
+        </div>
+        <div class="search-box">
+            <input type="text" class="search-input" id="address-search" placeholder="Enter an address to check eligibility...">
+            <button class="search-btn" onclick="searchAddress()">Search</button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div id="map"></div>
+    </div>
+
+    <!-- Filter Panel -->
+    <div class="filter-panel">
+        <h3 class="filter-title">Filter Parcels</h3>
+        <div class="filter-group">
+            <label class="filter-label">Show Parcels</label>
+            <label class="filter-checkbox">
+                <input type="checkbox" id="show-eligible" checked onchange="updateFilters()">
+                <span style="color: var(--eligible-green);">✓ Eligible</span>
+            </label>
+            <label class="filter-checkbox">
+                <input type="checkbox" id="show-maybe" checked onchange="updateFilters()">
+                <span style="color: var(--maybe-yellow);">? Conditional</span>
+            </label>
+            <label class="filter-checkbox">
+                <input type="checkbox" id="show-not-eligible" checked onchange="updateFilters()">
+                <span style="color: var(--not-eligible-red);">✗ Not Eligible</span>
+            </label>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Zoning District</label>
+            <select class="filter-select" id="filter-zoning" onchange="updateFilters()">
+                <option value="">All Zoning</option>
+                <option value="R">R - Residential</option>
+                <option value="RS">RS - Residential Single</option>
+                <option value="R6">R6</option>
+                <option value="R8">R8</option>
+                <option value="R10">R10</option>
+                <option value="R15">R15</option>
+                <option value="R20">R20</option>
+                <option value="RS5">RS5</option>
+                <option value="RS7.5">RS7.5</option>
+                <option value="RS10">RS10</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Service District</label>
+            <select class="filter-select" id="filter-district" onchange="updateFilters()">
+                <option value="">All Districts</option>
+                <option value="USD">USD (Urban Services)</option>
+                <option value="GSD">GSD (General Services)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Stats Panel -->
+    <div class="stats-panel">
+        <h3 class="stats-title">Eligibility Statistics</h3>
+        <div class="stat-row">
+            <span class="stat-label">Total Parcels</span>
+            <span class="stat-value" id="stat-total">285,512</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Eligible (USD R/RS)</span>
+            <span class="stat-value eligible" id="stat-eligible">67,707</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Conditional (GSD)</span>
+            <span class="stat-value maybe" id="stat-maybe">12,450</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Not Eligible</span>
+            <span class="stat-value not-eligible" id="stat-not">205,355</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Eligibility Rate</span>
+            <span class="stat-value">23.7%</span>
+        </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend-panel">
+        <h3 class="legend-title">
+            <img src="assets/icons/Zoning.png" alt="" style="width: 20px; height: 20px;">
+            Eligibility Legend
+        </h3>
+        <div class="legend-item">
+            <div class="legend-color eligible"></div>
+            <span class="legend-label">Y - Eligible (USD R/RS)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color maybe"></div>
+            <span class="legend-label">M - Conditional (GSD)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color not-eligible"></div>
+            <span class="legend-label">N - Not Eligible</span>
+        </div>
+    </div>
+
+    <!-- Zoom Message -->
+    <div class="zoom-message" id="zoom-message">
+        Zoom in to see individual parcels
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading Eligibility Data</div>
+        <div class="loading-subtext">Analyzing 285,512 parcels...</div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Sample parcel data with eligibility
+        // In production, this would load from your ArcGIS Feature Service or GeoJSON
+        const sampleParcels = [
+            { id: 1, address: "2763 ROSEDALE PL", zipcode: "37211", zoning: "RS10", district: "USD", lotSqft: 8500, eligibility: "Y", lat: 36.1127, lng: -86.7603 },
+            { id: 2, address: "1812 FATHERLAND ST", zipcode: "37206", zoning: "R8", district: "USD", lotSqft: 6200, eligibility: "Y", lat: 36.1789, lng: -86.7432 },
+            { id: 3, address: "945 SHELBY AVE", zipcode: "37206", zoning: "RS7.5", district: "USD", lotSqft: 7800, eligibility: "Y", lat: 36.1745, lng: -86.7512 },
+            { id: 4, address: "2204 10TH AVE S", zipcode: "37204", zoning: "R10", district: "USD", lotSqft: 11200, eligibility: "Y", lat: 36.1298, lng: -86.7889 },
+            { id: 5, address: "3715 PARK AVE", zipcode: "37209", zoning: "RS10", district: "USD", lotSqft: 8900, eligibility: "Y", lat: 36.1567, lng: -86.8234 },
+            { id: 6, address: "612 STOCKELL ST", zipcode: "37207", zoning: "RS7.5", district: "GSD", lotSqft: 6800, eligibility: "M", lat: 36.1934, lng: -86.7645 },
+            { id: 7, address: "5200 HARDING PL", zipcode: "37211", zoning: "MUL", district: "USD", lotSqft: 12000, eligibility: "N", lat: 36.0912, lng: -86.7834 },
+            { id: 8, address: "1225 LITTON AVE", zipcode: "37216", zoning: "R8", district: "USD", lotSqft: 10500, eligibility: "Y", lat: 36.1978, lng: -86.7312 },
+            { id: 9, address: "400 BROADWAY", zipcode: "37201", zoning: "DTC", district: "USD", lotSqft: 5000, eligibility: "N", lat: 36.1618, lng: -86.7790 },
+            { id: 10, address: "2918 BRONTE AVE", zipcode: "37216", zoning: "RS10", district: "GSD", lotSqft: 8200, eligibility: "M", lat: 36.2012, lng: -86.7256 },
+            { id: 11, address: "123 MAIN ST", zipcode: "37208", zoning: "R6", district: "USD", lotSqft: 5500, eligibility: "Y", lat: 36.1750, lng: -86.7900 },
+            { id: 12, address: "456 OAK AVE", zipcode: "37210", zoning: "RS5", district: "USD", lotSqft: 4800, eligibility: "Y", lat: 36.1350, lng: -86.7650 },
+            { id: 13, address: "789 PINE ST", zipcode: "37212", zoning: "R10", district: "USD", lotSqft: 9200, eligibility: "Y", lat: 36.1420, lng: -86.8000 },
+            { id: 14, address: "321 ELM DR", zipcode: "37215", zoning: "R15", district: "USD", lotSqft: 14000, eligibility: "Y", lat: 36.1080, lng: -86.8300 },
+            { id: 15, address: "654 CEDAR LN", zipcode: "37203", zoning: "MUN", district: "USD", lotSqft: 3500, eligibility: "N", lat: 36.1560, lng: -86.7920 },
+            { id: 16, address: "987 MAPLE BLVD", zipcode: "37209", zoning: "RS7.5", district: "GSD", lotSqft: 7200, eligibility: "M", lat: 36.1490, lng: -86.8450 },
+            { id: 17, address: "147 BIRCH WAY", zipcode: "37206", zoning: "R8", district: "USD", lotSqft: 6700, eligibility: "Y", lat: 36.1820, lng: -86.7380 },
+            { id: 18, address: "258 WALNUT CT", zipcode: "37207", zoning: "CN", district: "USD", lotSqft: 4200, eligibility: "N", lat: 36.1980, lng: -86.7580 },
+            { id: 19, address: "369 SPRUCE ST", zipcode: "37216", zoning: "RS10", district: "USD", lotSqft: 9800, eligibility: "Y", lat: 36.2050, lng: -86.7200 },
+            { id: 20, address: "480 ASH AVE", zipcode: "37211", zoning: "R10", district: "GSD", lotSqft: 8800, eligibility: "M", lat: 36.1050, lng: -86.7550 }
+        ];
+
+        let map;
+        let parcelMarkers = [];
+        let currentFilters = {
+            showEligible: true,
+            showMaybe: true,
+            showNotEligible: true,
+            zoning: '',
+            district: ''
+        };
+
+        // Initialize map
+        function initMap() {
+            map = L.map('map').setView([36.1627, -86.7816], 11);
+
+            // Base layer
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Add zoom handler for message
+            map.on('zoomend', function() {
+                const zoom = map.getZoom();
+                const msg = document.getElementById('zoom-message');
+                if (zoom < 14) {
+                    msg.classList.add('visible');
+                } else {
+                    msg.classList.remove('visible');
+                }
+            });
+
+            // Load parcels
+            loadParcels();
+
+            // Hide loading after delay
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 1500);
+        }
+
+        // Get eligibility color
+        function getEligibilityColor(eligibility) {
+            switch (eligibility) {
+                case 'Y': return '#4caf50';
+                case 'M': return '#f39c12';
+                case 'N': return '#e74c3c';
+                default: return '#999';
+            }
+        }
+
+        // Get eligibility label
+        function getEligibilityLabel(eligibility) {
+            switch (eligibility) {
+                case 'Y': return 'Eligible';
+                case 'M': return 'Conditional';
+                case 'N': return 'Not Eligible';
+                default: return 'Unknown';
+            }
+        }
+
+        // Load parcels
+        function loadParcels() {
+            parcelMarkers.forEach(m => map.removeLayer(m));
+            parcelMarkers = [];
+
+            const filteredParcels = sampleParcels.filter(p => {
+                if (p.eligibility === 'Y' && !currentFilters.showEligible) return false;
+                if (p.eligibility === 'M' && !currentFilters.showMaybe) return false;
+                if (p.eligibility === 'N' && !currentFilters.showNotEligible) return false;
+                if (currentFilters.zoning && !p.zoning.startsWith(currentFilters.zoning)) return false;
+                if (currentFilters.district && p.district !== currentFilters.district) return false;
+                return true;
+            });
+
+            filteredParcels.forEach(parcel => {
+                const color = getEligibilityColor(parcel.eligibility);
+
+                // Create circle marker for each parcel
+                const marker = L.circleMarker([parcel.lat, parcel.lng], {
+                    radius: 12,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                });
+
+                // Create popup content
+                const popupContent = `
+                    <div class="popup-header ${parcel.eligibility === 'Y' ? 'eligible' : parcel.eligibility === 'M' ? 'maybe' : 'not-eligible'}">
+                        <div class="popup-status">${getEligibilityLabel(parcel.eligibility)}</div>
+                        <div class="popup-address">${parcel.address}</div>
+                    </div>
+                    <div class="popup-content">
+                        <div class="popup-row">
+                            <span class="popup-label">Zoning</span>
+                            <span class="popup-value">${parcel.zoning}</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Service District</span>
+                            <span class="popup-value">${parcel.district}</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Lot Size</span>
+                            <span class="popup-value">${parcel.lotSqft.toLocaleString()} SF</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Max DADU</span>
+                            <span class="popup-value">${parcel.lotSqft >= 10000 ? '850' : '700'} SF Living</span>
+                        </div>
+                    </div>
+                    <div class="popup-actions">
+                        <a href="eligibility_report.html?address=${encodeURIComponent(parcel.address)}" class="popup-btn popup-btn-primary">Full Report</a>
+                        <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
+                    </div>
+                `;
+
+                marker.bindPopup(popupContent, { maxWidth: 320 });
+                marker.addTo(map);
+                parcelMarkers.push(marker);
+            });
+
+            // Update counts
+            updateCounts(filteredParcels);
+        }
+
+        // Update filter counts
+        function updateCounts(filtered) {
+            const eligible = filtered.filter(p => p.eligibility === 'Y').length;
+            const maybe = filtered.filter(p => p.eligibility === 'M').length;
+            const notEligible = filtered.filter(p => p.eligibility === 'N').length;
+
+            // For demo, show sample counts
+            // In production, these would be real totals
+        }
+
+        // Update filters
+        function updateFilters() {
+            currentFilters = {
+                showEligible: document.getElementById('show-eligible').checked,
+                showMaybe: document.getElementById('show-maybe').checked,
+                showNotEligible: document.getElementById('show-not-eligible').checked,
+                zoning: document.getElementById('filter-zoning').value,
+                district: document.getElementById('filter-district').value
+            };
+            loadParcels();
+        }
+
+        // Search address
+        function searchAddress() {
+            const address = document.getElementById('address-search').value.trim().toUpperCase();
+            if (!address) return;
+
+            const found = sampleParcels.find(p =>
+                p.address.toUpperCase().includes(address)
+            );
+
+            if (found) {
+                map.setView([found.lat, found.lng], 17);
+                const marker = parcelMarkers.find(m => {
+                    const ll = m.getLatLng();
+                    return Math.abs(ll.lat - found.lat) < 0.0001 && Math.abs(ll.lng - found.lng) < 0.0001;
+                });
+                if (marker) {
+                    marker.openPopup();
+                }
+            } else {
+                alert('Address not found in sample data. In production, this would search the full parcel database.');
+            }
+        }
+
+        // Handle enter key in search
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('address-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchAddress();
+                }
+            });
+            initMap();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Explorer | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --background: #e8e4df;
+            --white: #ffffff;
+            --border: #e0e0e0;
+            --text: #333333;
+            --text-light: #666666;
+            --success: #4caf50;
+            --warning: #ff9800;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 12px 24px;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            z-index: 999;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Layout */
+        .main-container {
+            margin-top: 120px;
+            display: flex;
+            height: calc(100vh - 120px);
+        }
+
+        /* Sidebar Filters */
+        .sidebar {
+            width: 340px;
+            background: white;
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--cream);
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-title img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .filter-section {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-label img {
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--olive);
+        }
+
+        .filter-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-range input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .filter-range input:focus {
+            outline: none;
+            border-color: var(--olive);
+        }
+
+        .filter-range span {
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+        }
+
+        .filter-actions {
+            padding: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--olive);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--olive-dark);
+        }
+
+        .btn-secondary {
+            background: var(--cream);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* Map Area */
+        .map-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #map {
+            flex: 1;
+        }
+
+        /* Results Panel */
+        .results-panel {
+            width: 420px;
+            background: var(--cream);
+            border-left: 1px solid var(--border);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .results-header {
+            padding: 16px 20px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .results-count {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .results-sort {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .results-sort label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .results-sort select {
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .results-list {
+            padding: 15px;
+        }
+
+        /* Property Card */
+        .property-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .property-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .property-card.selected {
+            box-shadow: 0 0 0 3px var(--olive);
+        }
+
+        .property-image {
+            height: 140px;
+            background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .property-image-placeholder {
+            color: white;
+            text-align: center;
+        }
+
+        .property-image-placeholder .icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .property-image-placeholder .text {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        .property-badges {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-dadu {
+            background: var(--olive);
+            color: white;
+        }
+
+        .badge-permitted {
+            background: var(--success);
+            color: white;
+        }
+
+        .property-content {
+            padding: 16px;
+        }
+
+        .property-address {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 2px;
+        }
+
+        .property-city {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .property-type {
+            font-size: 13px;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .property-details {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .property-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 12px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 12px;
+        }
+
+        .property-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .property-stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .property-stat-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .property-stat-value.price {
+            color: var(--olive);
+        }
+
+        .property-sold {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .property-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .property-btn {
+            flex: 1;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .property-btn-primary {
+            background: var(--navy);
+            color: white;
+        }
+
+        .property-btn-primary:hover {
+            background: var(--navy-dark);
+        }
+
+        .property-btn-secondary {
+            background: var(--cream);
+            color: var(--navy);
+            border: 1px solid var(--border);
+        }
+
+        .property-btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--olive);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: var(--text-light);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Map Popup */
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            padding: 0;
+        }
+
+        .leaflet-popup-content {
+            margin: 0;
+            min-width: 280px;
+        }
+
+        .popup-content {
+            padding: 16px;
+        }
+
+        .popup-address {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .popup-city {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .popup-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .popup-stat {
+            background: var(--cream);
+            padding: 8px 10px;
+            border-radius: 6px;
+        }
+
+        .popup-stat-label {
+            font-size: 10px;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .popup-stat-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .popup-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: var(--olive);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .popup-btn:hover {
+            background: var(--olive-dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 280px;
+            }
+            .results-panel {
+                width: 360px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                max-height: 300px;
+            }
+            .results-panel {
+                width: 100%;
+                height: 50vh;
+            }
+            #map {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="homebody_index_v3.html" class="logo">
+            <div class="logo-icon">
+                <img src="assets/icons/ADU.png" alt="">
+            </div>
+            <span class="logo-text">HOMEBODY</span>
+        </a>
+        <nav class="nav-links">
+            <a href="homebody_index_v3.html" class="nav-link">Home</a>
+            <a href="dadu_near_me_locator.html" class="nav-link">Near Me</a>
+            <a href="property_search.html" class="nav-link">Property Search</a>
+            <a href="eligibility_report.html" class="nav-link">Reports</a>
+        </nav>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value" id="total-results">--</div>
+            <div class="stat-label">DADUs Found</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="avg-cost">--</div>
+            <div class="stat-label">Avg Cost</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="avg-sqft">--</div>
+            <div class="stat-label">Avg Sq Ft</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="date-range">--</div>
+            <div class="stat-label">Year Range</div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">
+                    <img src="assets/icons/Area Maps and Visual layers.png" alt="">
+                    Search Criteria
+                </h2>
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">
+                    <img src="assets/icons/Zoning.png" alt="">
+                    Zipcode
+                </label>
+                <input type="text" class="filter-input" id="filter-zipcode" placeholder="e.g., 37211">
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">
+                    <img src="assets/icons/Municipal.png" alt="">
+                    City / Area
+                </label>
+                <select class="filter-select" id="filter-city">
+                    <option value="">All Nashville</option>
+                    <option value="37201">Downtown (37201)</option>
+                    <option value="37203">Midtown (37203)</option>
+                    <option value="37206">East Nashville (37206)</option>
+                    <option value="37208">Germantown (37208)</option>
+                    <option value="37209">The Nations (37209)</option>
+                    <option value="37210">Wedgewood-Houston (37210)</option>
+                    <option value="37211">South Nashville (37211)</option>
+                    <option value="37212">12 South (37212)</option>
+                    <option value="37215">Green Hills (37215)</option>
+                    <option value="37216">Inglewood (37216)</option>
+                </select>
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">
+                    <img src="assets/icons/Property Detail Report.png" alt="">
+                    Year DADU Built (Est.)
+                </label>
+                <div class="filter-range">
+                    <input type="number" id="filter-year-from" placeholder="From" min="2000" max="2026">
+                    <span>to</span>
+                    <input type="number" id="filter-year-to" placeholder="To" min="2000" max="2026">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">
+                    <img src="assets/icons/Market Statistics Report.png" alt="">
+                    Construction Cost
+                </label>
+                <div class="filter-range">
+                    <input type="number" id="filter-cost-from" placeholder="$0" step="10000">
+                    <span>to</span>
+                    <input type="number" id="filter-cost-to" placeholder="$500,000" step="10000">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">
+                    <img src="assets/icons/Parcel Search.png" alt="">
+                    DADU Square Footage (Est.)
+                </label>
+                <div class="filter-range">
+                    <input type="number" id="filter-dadu-sqft-from" placeholder="0" step="50">
+                    <span>to</span>
+                    <input type="number" id="filter-dadu-sqft-to" placeholder="1000" step="50">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">
+                    <img src="assets/icons/Building and Construction.png" alt="">
+                    Home Square Footage
+                </label>
+                <div class="filter-range">
+                    <input type="number" id="filter-home-sqft-from" placeholder="0" step="100">
+                    <span>to</span>
+                    <input type="number" id="filter-home-sqft-to" placeholder="5000" step="100">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">
+                    <img src="assets/icons/APN Maps.png" alt="">
+                    Lot Area (Sq Ft)
+                </label>
+                <div class="filter-range">
+                    <input type="number" id="filter-lot-from" placeholder="0" step="1000">
+                    <span>to</span>
+                    <input type="number" id="filter-lot-to" placeholder="50000" step="1000">
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button class="btn btn-secondary" onclick="clearFilters()">Clear</button>
+                <button class="btn btn-primary" onclick="applyFilters()">Search</button>
+            </div>
+        </aside>
+
+        <!-- Map -->
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+
+        <!-- Results Panel -->
+        <aside class="results-panel">
+            <div class="results-header">
+                <span class="results-count"><span id="visible-count">0</span> Properties</span>
+                <div class="results-sort">
+                    <label>Sort by:</label>
+                    <select id="sort-by" onchange="sortResults()">
+                        <option value="date-desc">Newest First</option>
+                        <option value="date-asc">Oldest First</option>
+                        <option value="cost-desc">Highest Cost</option>
+                        <option value="cost-asc">Lowest Cost</option>
+                        <option value="sqft-desc">Largest DADU</option>
+                        <option value="sqft-asc">Smallest DADU</option>
+                    </select>
+                </div>
+            </div>
+            <div class="results-list" id="results-list">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading DADU properties...</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script>
+        // Sample DADU Data (in production, this would come from your data files)
+        const daduData = [
+            {
+                id: 1,
+                address: "2763 ROSEDALE PL",
+                city: "NASHVILLE",
+                state: "TN",
+                zipcode: "37211",
+                propertyType: "Single Family Residence",
+                homeSqft: 2177,
+                homeYearBuilt: 2000,
+                daduSqft: 750,
+                daduYearBuilt: 2023,
+                daduCost: 185000,
+                lotSqft: 8500,
+                lastSoldDate: "12/14/2018",
+                lastSoldPrice: 405000,
+                lat: 36.1127,
+                lng: -86.7603,
+                apn: "13115001800",
+                hasPermit: true
+            },
+            {
+                id: 2,
+                address: "1812 FATHERLAND ST",
+                city: "NASHVILLE",
+                state: "TN",
+                zipcode: "37206",
+                propertyType: "Single Family Residence",
+                homeSqft: 1850,
+                homeYearBuilt: 1925,
+                daduSqft: 600,
+                daduYearBuilt: 2022,
+                daduCost: 145000,
+                lotSqft: 6200,
+                lastSoldDate: "03/22/2020",
+                lastSoldPrice: 485000,
+                lat: 36.1789,
+                lng: -86.7432,
+                apn: "08306012100",
+                hasPermit: true
+            },
+            {
+                id: 3,
+                address: "945 SHELBY AVE",
+                city: "NASHVILLE",
+                state: "TN",
+                zipcode: "37206",
+                propertyType: "Single Family Residence",
+                homeSqft: 1620,
+                homeYearBuilt: 1948,
+                daduSqft: 700,
+                daduYearBuilt: 2024,
+                daduCost: 195000,
+                lotSqft: 7800,
+                lastSoldDate: "06/15/2021",
+                lastSoldPrice: 525000,
+                lat: 36.1745,
+                lng: -86.7512,
+                apn: "08306015600",
+                hasPermit: true
+            },
+            {
+                id: 4,
+                address: "2204 10TH AVE S",
+                city: "NASHVILLE",
+                state: "TN",
+                zipcode: "37204",
+                propertyType: "Single Family Residence",
+                homeSqft: 2450,
+                homeYearBuilt: 1935,
+                daduSqft: 850,
+                daduYearBuilt: 2023,
+                daduCost: 225000,
+                lotSqft: 11200,
+                lastSoldDate: "09/08/2019",
+                lastSoldPrice: 675000,
+                lat: 36.1298,
+                lng: -86.7889,
+                apn: "10509003400",
+                hasPermit: true
+            },
+            {
+                id: 5,
+                address: "1507 GARTLAND AVE",
+                city: "NASHVILLE",
+                state: "TN",
+                zipcode: "37206",
+                propertyType: "Single Family Residence",
+                homeSqft: 1920,
+                homeYearBuilt: 1952,
+                daduSqft: 680,
+                daduYearBuilt: 2022,
+                daduCost: 155000,
+                lotSqft: 7200,
+                lastSoldDate: "11/30/2017",
+                lastSoldPrice: 345000,
+                lat: 36.1812,
+                lng: -86.7398,
+                apn: "08306018200",
+                hasPermit: true
+            },
+            {
+                id: 6,
+                address: "3715 PARK AVE",
+                city: "NASHVILLE",
+                state: "TN",
+                zipcode: "37209",
+                propertyType: "Single Family Residence",
+                homeSqft: 1680,
+                homeYearBuilt: 1945,
+                daduSqft: 720,
+                daduYearBuilt: 2024,
+                daduCost: 175000,
+                lotSqft: 8900,
+                lastSoldDate: "02/14/2022",
+                lastSoldPrice: 495000,
+                lat: 36.1567,
+                lng: -86.8234,
+                apn: "10402007800",
+                hasPermit: true
+            },
+            {
+                id: 7,
+                address: "612 STOCKELL ST",
+                city: "NASHVILLE",
+                state: "TN",
+                zipcode: "37207",
+                propertyType: "Single Family Residence",
+                homeSqft: 1450,
+                homeYearBuilt: 1960,
+                daduSqft: 650,
+                daduYearBuilt: 2023,
+                daduCost: 135000,
+                lotSqft: 6800,
+                lastSoldDate: "07/22/2020",
+                lastSoldPrice: 315000,
+                lat: 36.1934,
+                lng: -86.7645,
+                apn: "07108004300",
+                hasPermit: true
+            },
+            {
+                id: 8,
+                address: "1225 LITTON AVE",
+                city: "NASHVILLE",
+                state: "TN",
+                zipcode: "37216",
+                propertyType: "Single Family Residence",
+                homeSqft: 2100,
+                homeYearBuilt: 1955,
+                daduSqft: 800,
+                daduYearBuilt: 2024,
+                daduCost: 210000,
+                lotSqft: 10500,
+                lastSoldDate: "04/18/2021",
+                lastSoldPrice: 445000,
+                lat: 36.1978,
+                lng: -86.7312,
+                apn: "07211006700",
+                hasPermit: true
+            },
+            {
+                id: 9,
+                address: "2918 BRONTE AVE",
+                city: "NASHVILLE",
+                state: "TN",
+                zipcode: "37216",
+                propertyType: "Single Family Residence",
+                homeSqft: 1780,
+                homeYearBuilt: 1948,
+                daduSqft: 700,
+                daduYearBuilt: 2022,
+                daduCost: 165000,
+                lotSqft: 8200,
+                lastSoldDate: "10/05/2019",
+                lastSoldPrice: 395000,
+                lat: 36.2012,
+                lng: -86.7256,
+                apn: "07212003400",
+                hasPermit: true
+            },
+            {
+                id: 10,
+                address: "4507 MICHIGAN AVE",
+                city: "NASHVILLE",
+                state: "TN",
+                zipcode: "37209",
+                propertyType: "Single Family Residence",
+                homeSqft: 1550,
+                homeYearBuilt: 1958,
+                daduSqft: 650,
+                daduYearBuilt: 2023,
+                daduCost: 142000,
+                lotSqft: 7500,
+                lastSoldDate: "01/28/2020",
+                lastSoldPrice: 365000,
+                lat: 36.1523,
+                lng: -86.8456,
+                apn: "10401005600",
+                hasPermit: true
+            }
+        ];
+
+        let map;
+        let markers = [];
+        let markerCluster;
+        let filteredData = [...daduData];
+
+        // Initialize map
+        function initMap() {
+            map = L.map('map').setView([36.1627, -86.7816], 12);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+                maxZoom: 19
+            }).addTo(map);
+
+            markerCluster = L.markerClusterGroup({
+                showCoverageOnHover: false,
+                maxClusterRadius: 50,
+                spiderfyOnMaxZoom: true
+            });
+
+            map.addLayer(markerCluster);
+            loadData();
+        }
+
+        // Load and display data
+        function loadData() {
+            updateMarkers(filteredData);
+            updateResults(filteredData);
+            updateStats(filteredData);
+        }
+
+        // Update markers on map
+        function updateMarkers(data) {
+            markerCluster.clearLayers();
+            markers = [];
+
+            data.forEach(property => {
+                const marker = L.marker([property.lat, property.lng], {
+                    icon: L.divIcon({
+                        className: 'custom-marker',
+                        html: `<div style="
+                            background: #6b8e4e;
+                            color: white;
+                            padding: 6px 10px;
+                            border-radius: 20px;
+                            font-size: 12px;
+                            font-weight: 600;
+                            font-family: Montserrat, sans-serif;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                            white-space: nowrap;
+                        ">$${(property.daduCost/1000).toFixed(0)}K</div>`,
+                        iconSize: null,
+                        iconAnchor: [30, 15]
+                    })
+                });
+
+                const popupContent = `
+                    <div class="popup-content">
+                        <div class="popup-address">${property.address}</div>
+                        <div class="popup-city">${property.city}, ${property.state} ${property.zipcode}</div>
+                        <div class="popup-stats">
+                            <div class="popup-stat">
+                                <div class="popup-stat-label">DADU Cost</div>
+                                <div class="popup-stat-value">$${property.daduCost.toLocaleString()}</div>
+                            </div>
+                            <div class="popup-stat">
+                                <div class="popup-stat-label">DADU Sq Ft</div>
+                                <div class="popup-stat-value">${property.daduSqft}</div>
+                            </div>
+                            <div class="popup-stat">
+                                <div class="popup-stat-label">Year Built</div>
+                                <div class="popup-stat-value">${property.daduYearBuilt}</div>
+                            </div>
+                            <div class="popup-stat">
+                                <div class="popup-stat-label">Lot Size</div>
+                                <div class="popup-stat-value">${property.lotSqft.toLocaleString()} SF</div>
+                            </div>
+                        </div>
+                        <a href="eligibility_report.html?address=${encodeURIComponent(property.address)}" class="popup-btn">View Property Report</a>
+                    </div>
+                `;
+
+                marker.bindPopup(popupContent, { maxWidth: 320 });
+                marker.propertyId = property.id;
+                markers.push(marker);
+                markerCluster.addLayer(marker);
+            });
+        }
+
+        // Update results list
+        function updateResults(data) {
+            const resultsList = document.getElementById('results-list');
+            document.getElementById('visible-count').textContent = data.length;
+
+            if (data.length === 0) {
+                resultsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🏠</div>
+                        <h3>No Properties Found</h3>
+                        <p>Try adjusting your search criteria to find more DADU properties.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            resultsList.innerHTML = data.map(property => `
+                <div class="property-card" data-id="${property.id}" onclick="selectProperty(${property.id})">
+                    <div class="property-image">
+                        <div class="property-image-placeholder">
+                            <div class="icon">🏠</div>
+                            <div class="text">Property Photo</div>
+                        </div>
+                        <div class="property-badges">
+                            <span class="badge badge-dadu">DADU</span>
+                            ${property.hasPermit ? '<span class="badge badge-permitted">Permitted</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="property-content">
+                        <div class="property-address">${property.address}</div>
+                        <div class="property-city">${property.city}, ${property.state} ${property.zipcode}</div>
+                        <div class="property-type">${property.propertyType}</div>
+                        <div class="property-details">${property.homeSqft.toLocaleString()} sqft, built in ${property.homeYearBuilt}</div>
+                        <div class="property-stats">
+                            <div class="property-stat">
+                                <div class="property-stat-label">DADU Cost</div>
+                                <div class="property-stat-value price">$${property.daduCost.toLocaleString()}</div>
+                            </div>
+                            <div class="property-stat">
+                                <div class="property-stat-label">DADU Sq Ft</div>
+                                <div class="property-stat-value">${property.daduSqft}</div>
+                            </div>
+                            <div class="property-stat">
+                                <div class="property-stat-label">DADU Year</div>
+                                <div class="property-stat-value">${property.daduYearBuilt}</div>
+                            </div>
+                            <div class="property-stat">
+                                <div class="property-stat-label">Lot Size</div>
+                                <div class="property-stat-value">${property.lotSqft.toLocaleString()} SF</div>
+                            </div>
+                        </div>
+                        <div class="property-sold">Last sold on ${property.lastSoldDate} for $${property.lastSoldPrice.toLocaleString()}</div>
+                        <div class="property-actions">
+                            <a href="eligibility_report.html?address=${encodeURIComponent(property.address)}&apn=${property.apn}" class="property-btn property-btn-primary">View Property Report</a>
+                            <button class="property-btn property-btn-secondary" onclick="event.stopPropagation(); zoomToProperty(${property.id})">Map</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update statistics
+        function updateStats(data) {
+            document.getElementById('total-results').textContent = data.length;
+
+            if (data.length > 0) {
+                const avgCost = Math.round(data.reduce((sum, p) => sum + p.daduCost, 0) / data.length);
+                const avgSqft = Math.round(data.reduce((sum, p) => sum + p.daduSqft, 0) / data.length);
+                const years = data.map(p => p.daduYearBuilt).sort();
+
+                document.getElementById('avg-cost').textContent = '$' + avgCost.toLocaleString();
+                document.getElementById('avg-sqft').textContent = avgSqft + ' SF';
+                document.getElementById('date-range').textContent = years[0] + '-' + years[years.length - 1];
+            } else {
+                document.getElementById('avg-cost').textContent = '--';
+                document.getElementById('avg-sqft').textContent = '--';
+                document.getElementById('date-range').textContent = '--';
+            }
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const zipcode = document.getElementById('filter-zipcode').value.trim();
+            const city = document.getElementById('filter-city').value;
+            const yearFrom = parseInt(document.getElementById('filter-year-from').value) || 0;
+            const yearTo = parseInt(document.getElementById('filter-year-to').value) || 9999;
+            const costFrom = parseInt(document.getElementById('filter-cost-from').value) || 0;
+            const costTo = parseInt(document.getElementById('filter-cost-to').value) || 999999999;
+            const daduSqftFrom = parseInt(document.getElementById('filter-dadu-sqft-from').value) || 0;
+            const daduSqftTo = parseInt(document.getElementById('filter-dadu-sqft-to').value) || 999999;
+            const homeSqftFrom = parseInt(document.getElementById('filter-home-sqft-from').value) || 0;
+            const homeSqftTo = parseInt(document.getElementById('filter-home-sqft-to').value) || 999999;
+            const lotFrom = parseInt(document.getElementById('filter-lot-from').value) || 0;
+            const lotTo = parseInt(document.getElementById('filter-lot-to').value) || 999999;
+
+            filteredData = daduData.filter(property => {
+                if (zipcode && property.zipcode !== zipcode) return false;
+                if (city && property.zipcode !== city) return false;
+                if (property.daduYearBuilt < yearFrom || property.daduYearBuilt > yearTo) return false;
+                if (property.daduCost < costFrom || property.daduCost > costTo) return false;
+                if (property.daduSqft < daduSqftFrom || property.daduSqft > daduSqftTo) return false;
+                if (property.homeSqft < homeSqftFrom || property.homeSqft > homeSqftTo) return false;
+                if (property.lotSqft < lotFrom || property.lotSqft > lotTo) return false;
+                return true;
+            });
+
+            updateMarkers(filteredData);
+            updateResults(filteredData);
+            updateStats(filteredData);
+
+            // Fit map to results
+            if (filteredData.length > 0) {
+                const bounds = L.latLngBounds(filteredData.map(p => [p.lat, p.lng]));
+                map.fitBounds(bounds, { padding: [50, 50] });
+            }
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('filter-zipcode').value = '';
+            document.getElementById('filter-city').value = '';
+            document.getElementById('filter-year-from').value = '';
+            document.getElementById('filter-year-to').value = '';
+            document.getElementById('filter-cost-from').value = '';
+            document.getElementById('filter-cost-to').value = '';
+            document.getElementById('filter-dadu-sqft-from').value = '';
+            document.getElementById('filter-dadu-sqft-to').value = '';
+            document.getElementById('filter-home-sqft-from').value = '';
+            document.getElementById('filter-home-sqft-to').value = '';
+            document.getElementById('filter-lot-from').value = '';
+            document.getElementById('filter-lot-to').value = '';
+
+            filteredData = [...daduData];
+            updateMarkers(filteredData);
+            updateResults(filteredData);
+            updateStats(filteredData);
+            map.setView([36.1627, -86.7816], 12);
+        }
+
+        // Sort results
+        function sortResults() {
+            const sortBy = document.getElementById('sort-by').value;
+
+            filteredData.sort((a, b) => {
+                switch (sortBy) {
+                    case 'date-desc': return b.daduYearBuilt - a.daduYearBuilt;
+                    case 'date-asc': return a.daduYearBuilt - b.daduYearBuilt;
+                    case 'cost-desc': return b.daduCost - a.daduCost;
+                    case 'cost-asc': return a.daduCost - b.daduCost;
+                    case 'sqft-desc': return b.daduSqft - a.daduSqft;
+                    case 'sqft-asc': return a.daduSqft - b.daduSqft;
+                    default: return 0;
+                }
+            });
+
+            updateResults(filteredData);
+        }
+
+        // Select property
+        function selectProperty(id) {
+            document.querySelectorAll('.property-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`.property-card[data-id="${id}"]`)?.classList.add('selected');
+            zoomToProperty(id);
+        }
+
+        // Zoom to property
+        function zoomToProperty(id) {
+            const property = daduData.find(p => p.id === id);
+            if (property) {
+                map.setView([property.lat, property.lng], 17);
+                const marker = markers.find(m => m.propertyId === id);
+                if (marker) {
+                    markerCluster.zoomToShowLayer(marker, () => {
+                        marker.openPopup();
+                    });
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', initMap);
+    </script>
+</body>
+</html>
