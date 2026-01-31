@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Report Card | Homebody - Nashville DADU Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --green: #6b8e4e;
+            --green-dark: #5a7a42;
+            --green-light: #8bb36d;
+            --tan: #c9a86c;
+            --background: #e8e4df;
+            --card-bg: #f5f5f0;
+            --white: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --text-muted: #999999;
+            --border: #e0e0e0;
+            --eligible: #27ae60;
+            --not-eligible: #c0392b;
+            --conditional: #f39c12;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* Shared Nav */
+        .top-bar {
+            background: var(--navy-dark);
+            color: rgba(255,255,255,0.9);
+            padding: 8px 24px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .top-bar span { color: var(--tan); font-weight: 600; }
+        .top-bar a { color: rgba(255,255,255,0.8); margin-left: 20px; }
+
+        .main-nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--green);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-logo-icon img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+        .nav-logo-text span { color: var(--green); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-link {
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            border-radius: 8px;
+        }
+        .nav-link:hover { background: var(--card-bg); }
+
+        /* Search Section */
+        .search-section {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 50px 24px;
+            color: white;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .search-container h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .search-container p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .search-form {
+            background: white;
+            border-radius: 12px;
+            padding: 6px;
+            display: flex;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .search-form input {
+            flex: 1;
+            padding: 16px 20px;
+            border: none;
+            font-size: 16px;
+            font-family: inherit;
+            background: transparent;
+        }
+
+        .search-form input:focus { outline: none; }
+
+        .search-form button {
+            padding: 16px 32px;
+            background: var(--green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .search-form button:hover { background: var(--green-dark); }
+
+        .search-hint {
+            margin-top: 16px;
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Report Card - Before Search */
+        .pre-search {
+            text-align: center;
+            padding: 60px 24px;
+        }
+
+        .pre-search h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .pre-search p {
+            font-size: 16px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .report-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .report-feature {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: left;
+        }
+
+        .report-feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .report-feature-icon img {
+            width: 28px;
+            height: 28px;
+        }
+
+        .report-feature h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .report-feature p {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* Report Card - After Search (Sample Layout) */
+        .report-card {
+            display: none;
+        }
+
+        .report-card.visible {
+            display: block;
+        }
+
+        .report-header {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .report-address {
+            flex: 1;
+        }
+
+        .report-address h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .report-address p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .report-eligibility {
+            text-align: right;
+        }
+
+        .eligibility-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .eligibility-badge.eligible {
+            background: var(--eligible);
+            color: white;
+        }
+
+        .eligibility-badge.not-eligible {
+            background: var(--not-eligible);
+            color: white;
+        }
+
+        .eligibility-badge.conditional {
+            background: var(--conditional);
+            color: white;
+        }
+
+        .report-eligibility p {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Report Tabs */
+        .report-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0;
+        }
+
+        .report-tab {
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .report-tab:hover {
+            color: var(--navy);
+        }
+
+        .report-tab.active {
+            color: var(--green);
+            border-bottom-color: var(--green);
+        }
+
+        /* Report Grid */
+        .report-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .report-main {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .report-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Report Cards */
+        .report-section {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .report-section-header {
+            background: var(--card-bg);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .report-section-header img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .report-section-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .report-section-body {
+            padding: 20px;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .data-item {
+            background: var(--card-bg);
+            padding: 14px;
+            border-radius: 10px;
+        }
+
+        .data-item-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .data-item-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .data-item-value.success { color: var(--eligible); }
+        .data-item-value.warning { color: var(--conditional); }
+        .data-item-value.error { color: var(--not-eligible); }
+
+        /* Documents List */
+        .documents-list {
+            list-style: none;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .document-item:last-child {
+            border-bottom: none;
+        }
+
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .document-info {
+            flex: 1;
+        }
+
+        .document-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .document-meta {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .document-link {
+            color: var(--green);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quick-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            transition: all 0.2s;
+        }
+
+        .quick-action-btn:hover {
+            background: var(--green);
+            color: white;
+        }
+
+        .quick-action-btn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .quick-action-btn:hover img {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Near Me Preview */
+        .near-me-preview {
+            padding: 20px;
+        }
+
+        .near-me-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .near-me-header h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .near-me-link {
+            font-size: 13px;
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .near-me-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .near-me-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--card-bg);
+            border-radius: 8px;
+        }
+
+        .near-me-item-dist {
+            background: var(--navy);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .near-me-item-info {
+            flex: 1;
+        }
+
+        .near-me-item-address {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .near-me-item-details {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--navy-dark);
+            color: rgba(255,255,255,0.8);
+            padding: 40px 24px;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 992px) {
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .search-container h1 { font-size: 24px; }
+            .search-form { flex-direction: column; }
+            .search-form button { width: 100%; }
+            .data-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div><span>NASHVILLE-DAVIDSON COUNTY</span> | Property Report Card</div>
+        <div>
+            <a href="features.html">Features</a>
+            <a href="homebody_dadu_pricing.html">Pricing</a>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="index_pq.html" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <img src="assets/icons/ADU.png" alt="">
+                </div>
+                <span class="nav-logo-text">HOME<span>BODY</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="features.html" class="nav-link">Features</a>
+                <a href="user-types.html" class="nav-link">User Types</a>
+                <a href="homebody_dadu_pricing.html" class="nav-link">Pricing</a>
+                <a href="dadu_code_legislation_v2.html" class="nav-link">Resources</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <h1>Property Report Card</h1>
+            <p>Enter any Nashville address to get a complete DADU eligibility analysis</p>
+            <form class="search-form" id="search-form">
+                <input type="text" id="address-input" placeholder="Enter address, e.g., 1234 Main St, Nashville TN" aria-label="Property address">
+                <button type="submit">Check Eligibility</button>
+            </form>
+            <p class="search-hint">Try: "1812 Fatherland St" or "2763 Rosedale Pl"</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Pre-Search State -->
+        <div class="pre-search" id="pre-search">
+            <h2>Everything You Need in One Place</h2>
+            <p>The Property Report Card is the central hub that connects eligibility, documents, nearby DADUs, costs, and contractors for any Nashville property.</p>
+
+            <div class="report-features-grid">
+                <div class="report-feature">
+                    <div class="report-feature-icon">
+                        <img src="assets/icons/Zoning.png" alt="">
+                    </div>
+                    <h3>Eligibility Status</h3>
+                    <p>Instant determination based on zoning, service district, and lot characteristics under BL2025-1007.</p>
+                </div>
+                <div class="report-feature">
+                    <div class="report-feature-icon">
+                        <img src="assets/icons/Recorded Docs.png" alt="">
+                    </div>
+                    <h3>Linked Documents</h3>
+                    <p>All permits, site plans, covenants, and surveys associated with the parcel, ready to download.</p>
+                </div>
+                <div class="report-feature">
+                    <div class="report-feature-icon">
+                        <img src="assets/icons/Neighbors.png" alt="">
+                    </div>
+                    <h3>Nearby DADUs</h3>
+                    <p>See existing DADUs near the property with construction costs and contractor information.</p>
+                </div>
+                <div class="report-feature">
+                    <div class="report-feature-icon">
+                        <img src="assets/icons/Market Statistics Report .png" alt="">
+                    </div>
+                    <h3>Cost Estimates</h3>
+                    <p>Construction cost ranges based on size, quality level, and local market data.</p>
+                </div>
+                <div class="report-feature">
+                    <div class="report-feature-icon">
+                        <img src="assets/icons/Legal.png" alt="">
+                    </div>
+                    <h3>Covenant Check</h3>
+                    <p>Search for restrictive covenants that may limit or prohibit DADU construction.</p>
+                </div>
+                <div class="report-feature">
+                    <div class="report-feature-icon">
+                        <img src="assets/icons/Building and Construction.png" alt="">
+                    </div>
+                    <h3>Contractor Matches</h3>
+                    <p>Verified contractors who have built DADUs in the area, with project history.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Card (shown after search) -->
+        <div class="report-card" id="report-card">
+            <!-- Header -->
+            <div class="report-header">
+                <div class="report-address">
+                    <h2 id="report-address-text">1812 Fatherland St</h2>
+                    <p>Nashville, TN 37206 | APN: 083-06-0-121-00</p>
+                </div>
+                <div class="report-eligibility">
+                    <span class="eligibility-badge eligible" id="eligibility-badge">✓ Eligible</span>
+                    <p>Based on BL2025-1007</p>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="report-tabs">
+                <button class="report-tab active" data-tab="overview">Overview</button>
+                <button class="report-tab" data-tab="documents">Documents</button>
+                <button class="report-tab" data-tab="nearby">Nearby DADUs</button>
+                <button class="report-tab" data-tab="costs">Cost Estimate</button>
+            </div>
+
+            <!-- Report Content -->
+            <div class="report-grid">
+                <div class="report-main">
+                    <!-- Property Details -->
+                    <section class="report-section">
+                        <div class="report-section-header">
+                            <img src="assets/icons/Parcel Search.png" alt="">
+                            <h3>Property Details</h3>
+                        </div>
+                        <div class="report-section-body">
+                            <div class="data-grid">
+                                <div class="data-item">
+                                    <div class="data-item-label">Zoning</div>
+                                    <div class="data-item-value">R8</div>
+                                </div>
+                                <div class="data-item">
+                                    <div class="data-item-label">Service District</div>
+                                    <div class="data-item-value success">USD</div>
+                                </div>
+                                <div class="data-item">
+                                    <div class="data-item-label">Lot Size</div>
+                                    <div class="data-item-value">6,200 SF</div>
+                                </div>
+                                <div class="data-item">
+                                    <div class="data-item-label">Max DADU Living</div>
+                                    <div class="data-item-value">700 SF</div>
+                                </div>
+                                <div class="data-item">
+                                    <div class="data-item-label">Max DADU Footprint</div>
+                                    <div class="data-item-value">750 SF</div>
+                                </div>
+                                <div class="data-item">
+                                    <div class="data-item-label">Covenants</div>
+                                    <div class="data-item-value success">None Found</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Eligibility Checklist -->
+                    <section class="report-section">
+                        <div class="report-section-header">
+                            <img src="assets/icons/Zoning.png" alt="">
+                            <h3>Eligibility Checklist</h3>
+                        </div>
+                        <div class="report-section-body">
+                            <div class="data-grid">
+                                <div class="data-item">
+                                    <div class="data-item-label">Residential Zoning</div>
+                                    <div class="data-item-value success">✓ Pass</div>
+                                </div>
+                                <div class="data-item">
+                                    <div class="data-item-label">Urban Services District</div>
+                                    <div class="data-item-value success">✓ Pass</div>
+                                </div>
+                                <div class="data-item">
+                                    <div class="data-item-label">Single Family Property</div>
+                                    <div class="data-item-value success">✓ Pass</div>
+                                </div>
+                                <div class="data-item">
+                                    <div class="data-item-label">No Covenant Restrictions</div>
+                                    <div class="data-item-value success">✓ Pass</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Documents Preview -->
+                    <section class="report-section">
+                        <div class="report-section-header">
+                            <img src="assets/icons/Recorded Docs.png" alt="">
+                            <h3>Related Documents</h3>
+                        </div>
+                        <div class="report-section-body">
+                            <ul class="documents-list">
+                                <li class="document-item">
+                                    <div class="document-icon">📄</div>
+                                    <div class="document-info">
+                                        <div class="document-title">Site Plan - 2024BL54321</div>
+                                        <div class="document-meta">Building Permit | Uploaded 2024-03-15</div>
+                                    </div>
+                                    <a href="#" class="document-link">View →</a>
+                                </li>
+                                <li class="document-item">
+                                    <div class="document-icon">📄</div>
+                                    <div class="document-info">
+                                        <div class="document-title">Property Survey</div>
+                                        <div class="document-meta">Survey | Uploaded 2023-11-20</div>
+                                    </div>
+                                    <a href="#" class="document-link">View →</a>
+                                </li>
+                            </ul>
+                            <a href="feature-documents.html" style="display: block; margin-top: 16px; color: var(--green); font-weight: 600; font-size: 14px;">
+                                View all documents →
+                            </a>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="report-sidebar">
+                    <!-- Quick Actions -->
+                    <section class="report-section">
+                        <div class="report-section-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="report-section-body">
+                            <div class="quick-actions">
+                                <a href="roi_calculator.html" class="quick-action-btn">
+                                    <img src="assets/icons/Market Statistics Report .png" alt="">
+                                    Calculate ROI
+                                </a>
+                                <a href="cost_estimator.html" class="quick-action-btn">
+                                    <img src="assets/icons/Appraisers.png" alt="">
+                                    Estimate Costs
+                                </a>
+                                <a href="contractors.html" class="quick-action-btn">
+                                    <img src="assets/icons/Building and Construction.png" alt="">
+                                    Find Contractors
+                                </a>
+                                <a href="#" class="quick-action-btn">
+                                    <img src="assets/icons/Exports & Reports.png" alt="">
+                                    Download Report
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Near Me Preview -->
+                    <section class="report-section">
+                        <div class="near-me-preview">
+                            <div class="near-me-header">
+                                <h4>DADUs Nearby</h4>
+                                <a href="dadu_near_me_locator.html" class="near-me-link">View all →</a>
+                            </div>
+                            <div class="near-me-list">
+                                <a href="#" class="near-me-item">
+                                    <span class="near-me-item-dist">0.2 mi</span>
+                                    <div class="near-me-item-info">
+                                        <div class="near-me-item-address">1903 Fatherland St</div>
+                                        <div class="near-me-item-details">650 SF | $145,000 | 2023</div>
+                                    </div>
+                                </a>
+                                <a href="#" class="near-me-item">
+                                    <span class="near-me-item-dist">0.3 mi</span>
+                                    <div class="near-me-item-info">
+                                        <div class="near-me-item-address">945 Shelby Ave</div>
+                                        <div class="near-me-item-details">700 SF | $175,000 | 2024</div>
+                                    </div>
+                                </a>
+                                <a href="#" class="near-me-item">
+                                    <span class="near-me-item-dist">0.4 mi</span>
+                                    <div class="near-me-item-info">
+                                        <div class="near-me-item-address">1507 Gartland Ave</div>
+                                        <div class="near-me-item-details">680 SF | $155,000 | 2022</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Cost Estimate Preview -->
+                    <section class="report-section">
+                        <div class="report-section-header">
+                            <img src="assets/icons/Market Statistics Report .png" alt="">
+                            <h3>Cost Estimate</h3>
+                        </div>
+                        <div class="report-section-body">
+                            <div class="data-item" style="margin-bottom: 12px;">
+                                <div class="data-item-label">Estimated Range (700 SF)</div>
+                                <div class="data-item-value">$140,000 - $210,000</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-item-label">Cost per SF</div>
+                                <div class="data-item-value">$200 - $300</div>
+                            </div>
+                            <a href="cost_estimator.html" style="display: block; margin-top: 16px; color: var(--green); font-weight: 600; font-size: 13px;">
+                                Get detailed estimate →
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 Homebody Projects. A Vanderbilt Law School Project.</p>
+    </footer>
+
+    <script>
+        // Search form handling
+        const searchForm = document.getElementById('search-form');
+        const addressInput = document.getElementById('address-input');
+        const preSearch = document.getElementById('pre-search');
+        const reportCard = document.getElementById('report-card');
+        const reportAddressText = document.getElementById('report-address-text');
+
+        // Check for address in URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const addressParam = urlParams.get('address');
+
+        if (addressParam) {
+            showReport(addressParam);
+        }
+
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const address = addressInput.value.trim();
+            if (address) {
+                showReport(address);
+                // Update URL
+                window.history.pushState({}, '', `?address=${encodeURIComponent(address)}`);
+            }
+        });
+
+        function showReport(address) {
+            preSearch.style.display = 'none';
+            reportCard.classList.add('visible');
+            reportAddressText.textContent = address;
+            addressInput.value = address;
+        }
+
+        // Tab switching
+        const tabs = document.querySelectorAll('.report-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                // In full implementation, this would show/hide tab content
+            });
+        });
+    </script>
+</body>
+</html>

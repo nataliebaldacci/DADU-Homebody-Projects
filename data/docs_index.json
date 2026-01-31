@@ -1,0 +1,119 @@
+{
+  "_schema_version": "1.0.0",
+  "_description": "Document index for all PDFs. Each document must be categorized and linked to parcels/permits where possible.",
+  "_matching_status": "pending",
+  "_last_updated": null,
+
+  "documents": [
+    {
+      "doc_id": "DOC-000001",
+      "filename": "example_permit_site_plan_2024BL12345.pdf",
+      "filepath": "/documents/permits/site_plans/example_permit_site_plan_2024BL12345.pdf",
+      "doc_type": "site_plan",
+      "doc_category": "permits",
+      "title": "Site Plan - 123 Main St",
+      "description": "Approved site plan for DADU construction",
+
+      "extracted_apn": "12345678900",
+      "extracted_apn_confidence": "high",
+      "extracted_permit_number": "2024BL12345",
+      "extracted_permit_confidence": "high",
+      "extracted_address": "123 Main St, Nashville TN 37206",
+      "extracted_address_confidence": "medium",
+
+      "linked_parcel_apn": "12345678900",
+      "linked_permit_id": "2024BL12345",
+      "link_method": "permit_number_match",
+
+      "source": "nashville_codes",
+      "source_url": "https://www.nashville.gov/...",
+      "download_date": "2026-01-15",
+      "file_size_bytes": 245000,
+      "page_count": 3,
+
+      "tags": ["dadu", "site_plan", "approved", "east_nashville"],
+      "manual_review_needed": false,
+      "review_notes": null
+    }
+  ],
+
+  "doc_types": {
+    "site_plan": {
+      "label": "Site Plan",
+      "category": "permits",
+      "description": "Approved site plans showing DADU placement, setbacks, and dimensions"
+    },
+    "building_permit": {
+      "label": "Building Permit",
+      "category": "permits",
+      "description": "Building permit applications and approvals"
+    },
+    "restrictive_covenant": {
+      "label": "Restrictive Covenant",
+      "category": "covenants",
+      "description": "Recorded covenants that may restrict DADU construction"
+    },
+    "property_report": {
+      "label": "Property Report",
+      "category": "reports",
+      "description": "Property assessment and valuation reports"
+    },
+    "survey": {
+      "label": "Survey/Plat",
+      "category": "surveys",
+      "description": "Property surveys and plat maps"
+    },
+    "inspection_report": {
+      "label": "Inspection Report",
+      "category": "permits",
+      "description": "Building inspection reports and certificates"
+    },
+    "zoning_letter": {
+      "label": "Zoning Letter",
+      "category": "zoning",
+      "description": "Zoning verification letters and determinations"
+    },
+    "hoa_docs": {
+      "label": "HOA Documents",
+      "category": "covenants",
+      "description": "HOA rules, bylaws, and architectural guidelines"
+    }
+  },
+
+  "categories": {
+    "permits": {
+      "label": "Permits & Applications",
+      "icon": "Building and Construction.png",
+      "sort_order": 1
+    },
+    "covenants": {
+      "label": "Covenants & Restrictions",
+      "icon": "Legal.png",
+      "sort_order": 2
+    },
+    "surveys": {
+      "label": "Surveys & Plats",
+      "icon": "GIS.png",
+      "sort_order": 3
+    },
+    "reports": {
+      "label": "Property Reports",
+      "icon": "Property Detail Report .png",
+      "sort_order": 4
+    },
+    "zoning": {
+      "label": "Zoning Documents",
+      "icon": "Zoning.png",
+      "sort_order": 5
+    }
+  },
+
+  "statistics": {
+    "total_documents": 0,
+    "matched_to_parcel": 0,
+    "matched_to_permit": 0,
+    "needs_manual_review": 0,
+    "by_type": {},
+    "by_category": {}
+  }
+}

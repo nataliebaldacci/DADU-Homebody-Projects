@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Types | Homebody - Nashville DADU Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --green: #6b8e4e;
+            --green-dark: #5a7a42;
+            --tan: #c9a86c;
+            --background: #e8e4df;
+            --card-bg: #f5f5f0;
+            --white: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --border: #e0e0e0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* Nav */
+        .top-bar {
+            background: var(--navy-dark);
+            color: rgba(255,255,255,0.9);
+            padding: 8px 24px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .top-bar span { color: var(--tan); font-weight: 600; }
+        .top-bar a { color: rgba(255,255,255,0.8); margin-left: 20px; }
+
+        .main-nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--green);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-logo-icon img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+        .nav-logo-text span { color: var(--green); }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+        }
+
+        .nav-link {
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            border-radius: 8px;
+        }
+        .nav-link:hover { background: var(--card-bg); }
+        .nav-link.active { color: var(--green); }
+
+        .nav-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--green);
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 60px 24px;
+            color: white;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 16px;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* User Types Grid */
+        .user-types-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .user-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .user-type-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .user-type-card:hover {
+            border-color: var(--green);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 50px rgba(0,0,0,0.12);
+        }
+
+        .user-type-card-header {
+            background: var(--card-bg);
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-type-icon {
+            width: 72px;
+            height: 72px;
+            background: var(--white);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .user-type-icon img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .user-type-card:hover .user-type-icon {
+            background: var(--green);
+        }
+
+        .user-type-card:hover .user-type-icon img {
+            filter: brightness(0) invert(1);
+        }
+
+        .user-type-card-header h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .user-type-card-header p {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .user-type-card-body {
+            padding: 30px;
+        }
+
+        .user-type-description {
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .user-type-features {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .user-type-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            font-size: 14px;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .user-type-features li:last-child {
+            border-bottom: none;
+        }
+
+        .user-type-features li::before {
+            content: "✓";
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .user-type-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--green);
+            color: white;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .user-type-cta:hover {
+            background: var(--green-dark);
+            gap: 12px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--navy);
+            padding: 60px 24px;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 24px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background: var(--green);
+            color: white;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .cta-btn:hover { background: var(--green-dark); }
+
+        /* Footer */
+        .footer {
+            background: var(--navy-dark);
+            color: rgba(255,255,255,0.8);
+            padding: 40px 24px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-header h1 { font-size: 28px; }
+            .user-types-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div><span>NASHVILLE-DAVIDSON COUNTY</span> | DADU Data Platform</div>
+        <div>
+            <a href="homebody_dadu_pricing.html">Pricing</a>
+            <a href="dadu_code_legislation_v2.html">Resources</a>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="index_pq.html" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <img src="assets/icons/ADU.png" alt="">
+                </div>
+                <span class="nav-logo-text">HOME<span>BODY</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="features.html" class="nav-link">Features</a>
+                <a href="user-types.html" class="nav-link active">User Types</a>
+                <a href="homebody_dadu_pricing.html" class="nav-link">Pricing</a>
+                <a href="dadu_code_legislation_v2.html" class="nav-link">Resources</a>
+            </div>
+            <a href="property-report-card.html" class="nav-search-btn">
+                <span>🔍</span> Check My Property
+            </a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <h1>Built for Every User</h1>
+        <p>Specialized tools and data tailored to your specific needs, whether you're a homeowner, contractor, investor, or professional</p>
+    </header>
+
+    <!-- User Types Content -->
+    <main class="user-types-section">
+        <div class="user-types-grid">
+            <!-- Homeowners -->
+            <a href="user-homeowners.html" class="user-type-card">
+                <div class="user-type-card-header">
+                    <div class="user-type-icon">
+                        <img src="assets/icons/Property Owners.png" alt="">
+                    </div>
+                    <div>
+                        <h2>Homeowners</h2>
+                        <p>Property owners exploring DADU options</p>
+                    </div>
+                </div>
+                <div class="user-type-card-body">
+                    <p class="user-type-description">Check if your property is eligible, understand the requirements, estimate costs, and find qualified contractors for your DADU project.</p>
+                    <ul class="user-type-features">
+                        <li>Instant eligibility check for your address</li>
+                        <li>Restrictive covenant search</li>
+                        <li>Cost and ROI calculators</li>
+                        <li>Verified contractor directory</li>
+                        <li>Step-by-step permit guide</li>
+                    </ul>
+                    <span class="user-type-cta">Get Started →</span>
+                </div>
+            </a>
+
+            <!-- Contractors -->
+            <a href="contractor_marketplace.html" class="user-type-card">
+                <div class="user-type-card-header">
+                    <div class="user-type-icon">
+                        <img src="assets/icons/Building and Construction.png" alt="">
+                    </div>
+                    <div>
+                        <h2>Contractors</h2>
+                        <p>Builders specializing in DADU construction</p>
+                    </div>
+                </div>
+                <div class="user-type-card-body">
+                    <p class="user-type-description">Access market intelligence, find homeowner leads, analyze competitor pricing, and showcase your completed DADU projects.</p>
+                    <ul class="user-type-features">
+                        <li>Eligible parcel lead lists</li>
+                        <li>Market pricing analytics</li>
+                        <li>Permit tracking dashboard</li>
+                        <li>Project portfolio showcase</li>
+                        <li>Competitor analysis tools</li>
+                    </ul>
+                    <span class="user-type-cta">View Marketplace →</span>
+                </div>
+            </a>
+
+            <!-- Designers -->
+            <a href="#" class="user-type-card">
+                <div class="user-type-card-header">
+                    <div class="user-type-icon">
+                        <img src="assets/icons/Surveyers adn Engineers.png" alt="">
+                    </div>
+                    <div>
+                        <h2>Designers & Architects</h2>
+                        <p>Design professionals creating DADU plans</p>
+                    </div>
+                </div>
+                <div class="user-type-card-body">
+                    <p class="user-type-description">Access building requirements, explore precedent projects, use setback calculators, and find design inspiration for Nashville DADUs.</p>
+                    <ul class="user-type-features">
+                        <li>Building code requirements database</li>
+                        <li>Precedent project gallery</li>
+                        <li>Setback and height calculators</li>
+                        <li>Site plan examples</li>
+                        <li>Zoning overlay information</li>
+                    </ul>
+                    <span class="user-type-cta">Access Resources →</span>
+                </div>
+            </a>
+
+            <!-- Investors -->
+            <a href="investor_tools.html" class="user-type-card">
+                <div class="user-type-card-header">
+                    <div class="user-type-icon">
+                        <img src="assets/icons/Investors.png" alt="">
+                    </div>
+                    <div>
+                        <h2>Developers & Investors</h2>
+                        <p>Real estate investors seeking opportunities</p>
+                    </div>
+                </div>
+                <div class="user-type-card-body">
+                    <p class="user-type-description">Download bulk parcel data, explore opportunity maps, run ROI analysis, and access market trend reports for DADU investments.</p>
+                    <ul class="user-type-features">
+                        <li>Bulk eligible parcel exports</li>
+                        <li>Opportunity scoring maps</li>
+                        <li>ROI analysis tools</li>
+                        <li>Market trend reports</li>
+                        <li>Comparable sales data</li>
+                    </ul>
+                    <span class="user-type-cta">Explore Data →</span>
+                </div>
+            </a>
+
+            <!-- Municipal -->
+            <a href="#" class="user-type-card">
+                <div class="user-type-card-header">
+                    <div class="user-type-icon">
+                        <img src="assets/icons/Municipal.png" alt="">
+                    </div>
+                    <div>
+                        <h2>Municipal & Agencies</h2>
+                        <p>Government staff and planning professionals</p>
+                    </div>
+                </div>
+                <div class="user-type-card-body">
+                    <p class="user-type-description">Monitor permit activity, analyze policy impact, track compliance, and access dashboards for DADU development across Nashville.</p>
+                    <ul class="user-type-features">
+                        <li>Permit tracking dashboards</li>
+                        <li>Policy impact analysis</li>
+                        <li>Geographic distribution maps</li>
+                        <li>Compliance monitoring</li>
+                        <li>Aggregate statistics</li>
+                    </ul>
+                    <span class="user-type-cta">View Dashboard →</span>
+                </div>
+            </a>
+
+            <!-- Legal -->
+            <a href="#" class="user-type-card">
+                <div class="user-type-card-header">
+                    <div class="user-type-icon">
+                        <img src="assets/icons/Legal.png" alt="">
+                    </div>
+                    <div>
+                        <h2>Legal Professionals</h2>
+                        <p>Attorneys handling property and zoning matters</p>
+                    </div>
+                </div>
+                <div class="user-type-card-body">
+                    <p class="user-type-description">Research restrictive covenants, verify zoning compliance, access legal citations, and review title issues related to DADU construction.</p>
+                    <ul class="user-type-features">
+                        <li>Covenant database with 43,000+ records</li>
+                        <li>111 legal citations indexed</li>
+                        <li>Zoning compliance verification</li>
+                        <li>Title issue research</li>
+                        <li>BL2025-1007 full text and analysis</li>
+                    </ul>
+                    <span class="user-type-cta">Research Now →</span>
+                </div>
+            </a>
+
+            <!-- Appraisers -->
+            <a href="#" class="user-type-card">
+                <div class="user-type-card-header">
+                    <div class="user-type-icon">
+                        <img src="assets/icons/Appraisers.png" alt="">
+                    </div>
+                    <div>
+                        <h2>Appraisers</h2>
+                        <p>Real estate valuation professionals</p>
+                    </div>
+                </div>
+                <div class="user-type-card-body">
+                    <p class="user-type-description">Access comparable DADU sales, construction cost data, market statistics, and property characteristics for accurate valuations.</p>
+                    <ul class="user-type-features">
+                        <li>DADU comparable sales</li>
+                        <li>Construction cost benchmarks</li>
+                        <li>Property characteristics data</li>
+                        <li>Market statistics by area</li>
+                        <li>Before/after value analysis</li>
+                    </ul>
+                    <span class="user-type-cta">Access Data →</span>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Not Sure Where to Start?</h2>
+        <p>Try our Property Report Card to see everything Homebody offers for any Nashville address.</p>
+        <a href="property-report-card.html" class="cta-btn">
+            Check My Property →
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 Homebody Projects. A Vanderbilt Law School Project.</p>
+    </footer>
+</body>
+</html>

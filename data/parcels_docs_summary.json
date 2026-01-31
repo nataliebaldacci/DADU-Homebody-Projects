@@ -1,0 +1,70 @@
+{
+  "_schema_version": "1.0.0",
+  "_description": "Per-parcel document summary keyed by APN. Used for fast rendering in Property Report Card and Document Portal.",
+  "_generated_from": "docs_index.json",
+  "_last_updated": null,
+
+  "parcels": {
+    "12345678900": {
+      "apn": "12345678900",
+      "apn_formatted": "123-45-678-900",
+      "address": "123 Main St, Nashville TN 37206",
+      "total_docs": 5,
+
+      "docs_by_category": {
+        "permits": {
+          "count": 3,
+          "doc_ids": ["DOC-000001", "DOC-000002", "DOC-000003"],
+          "has_site_plan": true,
+          "has_building_permit": true
+        },
+        "covenants": {
+          "count": 1,
+          "doc_ids": ["DOC-000010"],
+          "has_restrictive_covenant": true,
+          "restriction_summary": "May restrict detached structures > 500 sqft"
+        },
+        "surveys": {
+          "count": 1,
+          "doc_ids": ["DOC-000020"],
+          "most_recent_date": "2023-06-15"
+        },
+        "reports": {
+          "count": 0,
+          "doc_ids": []
+        },
+        "zoning": {
+          "count": 0,
+          "doc_ids": []
+        }
+      },
+
+      "permits": [
+        {
+          "permit_id": "2024BL12345",
+          "permit_type": "building",
+          "status": "approved",
+          "issue_date": "2024-03-15",
+          "doc_ids": ["DOC-000001", "DOC-000002"]
+        }
+      ],
+
+      "flags": {
+        "has_covenant_restriction": true,
+        "has_approved_dadu": true,
+        "needs_covenant_review": true
+      }
+    }
+  },
+
+  "index_by_address": {
+    "123 main st": ["12345678900"]
+  },
+
+  "statistics": {
+    "total_parcels_with_docs": 0,
+    "parcels_with_permits": 0,
+    "parcels_with_covenants": 0,
+    "parcels_with_restrictions": 0
+  }
+}
