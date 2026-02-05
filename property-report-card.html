@@ -255,6 +255,113 @@
             display: block;
         }
 
+        /* Property Image Header - ATTOM Style */
+        .property-image-header {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        .property-image-container {
+            width: 280px;
+            height: 210px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .property-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .property-image-container .no-image {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .property-image-container .no-image span {
+            display: block;
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .property-image-links {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .property-image-link {
+            flex: 1;
+            padding: 6px 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .property-image-link:hover {
+            background: var(--green);
+        }
+
+        .property-header-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .property-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .property-quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .quick-stat {
+            text-align: center;
+            padding: 12px;
+            background: var(--card-bg);
+            border-radius: 8px;
+        }
+
+        .quick-stat-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .quick-stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
         .report-header {
             background: var(--white);
             border-radius: 16px;
@@ -263,6 +370,18 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+        }
+
+        @media (max-width: 768px) {
+            .property-image-header {
+                grid-template-columns: 1fr;
+            }
+            .property-image-container {
+                width: 100%;
+            }
+            .property-quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         .report-address {
@@ -693,15 +812,48 @@
 
         <!-- Report Card (shown after search) -->
         <div class="report-card" id="report-card">
-            <!-- Header -->
-            <div class="report-header">
-                <div class="report-address">
-                    <h2 id="report-address-text">1812 Fatherland St</h2>
-                    <p>Nashville, TN 37206 | APN: 083-06-0-121-00</p>
+            <!-- Property Image Header - ATTOM Style -->
+            <div class="property-image-header">
+                <div class="property-image-container" id="property-image-container">
+                    <div class="no-image" id="property-image-placeholder">
+                        <span>🏠</span>
+                        Loading property image...
+                    </div>
+                    <img id="property-card-image" src="" alt="Property Card" style="display: none;" onerror="showImagePlaceholder()">
+                    <div class="property-image-links" id="property-image-links" style="display: none;">
+                        <a href="#" class="property-image-link" id="link-streetview" target="_blank">Street View</a>
+                        <a href="#" class="property-image-link" id="link-aerial" target="_blank">Aerial</a>
+                    </div>
                 </div>
-                <div class="report-eligibility">
-                    <span class="eligibility-badge eligible" id="eligibility-badge">✓ Eligible</span>
-                    <p>Based on BL2025-1007</p>
+                <div class="property-header-info">
+                    <div class="property-header-top">
+                        <div class="report-address">
+                            <h2 id="report-address-text">1812 Fatherland St</h2>
+                            <p id="report-subheader">Nashville, TN 37206 | APN: 083-06-0-121-00</p>
+                        </div>
+                        <div class="report-eligibility">
+                            <span class="eligibility-badge eligible" id="eligibility-badge">✓ Eligible</span>
+                            <p>Based on BL2025-1007</p>
+                        </div>
+                    </div>
+                    <div class="property-quick-stats">
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="stat-zoning">R8</div>
+                            <div class="quick-stat-label">Zoning</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="stat-lot-size">6,200 SF</div>
+                            <div class="quick-stat-label">Lot Size</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="stat-max-dadu">700 SF</div>
+                            <div class="quick-stat-label">Max DADU</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="stat-est-cost">$122K</div>
+                            <div class="quick-stat-label">Est. Cost</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -711,6 +863,25 @@
                 <button class="report-tab" data-tab="documents">Documents</button>
                 <button class="report-tab" data-tab="nearby">Nearby DADUs</button>
                 <button class="report-tab" data-tab="costs">Cost Estimate</button>
+            </div>
+
+            <!-- External Links Bar -->
+            <div style="display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;">
+                <a href="#" id="link-parcelviewer" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>🗺️</span> ParcelViewer
+                </a>
+                <a href="#" id="link-epermits" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>📋</span> ePermits Portal
+                </a>
+                <a href="#" id="link-assessor" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>🏛️</span> Property Assessor
+                </a>
+                <a href="#" id="link-documents" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>📄</span> Permit Documents
+                </a>
+                <a href="#" id="link-property-card" target="_blank" style="padding: 10px 16px; background: var(--green); border-radius: 8px; font-size: 13px; font-weight: 600; color: white; display: flex; align-items: center; gap: 8px;">
+                    <span>🏠</span> View Property Card
+                </a>
             </div>
 
             <!-- Report Content -->
@@ -726,27 +897,27 @@
                             <div class="data-grid">
                                 <div class="data-item">
                                     <div class="data-item-label">Zoning</div>
-                                    <div class="data-item-value">R8</div>
+                                    <div class="data-item-value" id="detail-zoning">R8</div>
                                 </div>
                                 <div class="data-item">
                                     <div class="data-item-label">Service District</div>
-                                    <div class="data-item-value success">USD</div>
+                                    <div class="data-item-value success" id="detail-district">USD</div>
                                 </div>
                                 <div class="data-item">
                                     <div class="data-item-label">Lot Size</div>
-                                    <div class="data-item-value">6,200 SF</div>
+                                    <div class="data-item-value" id="detail-lot-size">6,200 SF</div>
                                 </div>
                                 <div class="data-item">
                                     <div class="data-item-label">Max DADU Living</div>
-                                    <div class="data-item-value">700 SF</div>
+                                    <div class="data-item-value" id="detail-max-living">700 SF</div>
                                 </div>
                                 <div class="data-item">
                                     <div class="data-item-label">Max DADU Footprint</div>
-                                    <div class="data-item-value">750 SF</div>
+                                    <div class="data-item-value" id="detail-max-footprint">750 SF</div>
                                 </div>
                                 <div class="data-item">
                                     <div class="data-item-label">Covenants</div>
-                                    <div class="data-item-value success">None Found</div>
+                                    <div class="data-item-value success" id="detail-covenants">None Found</div>
                                 </div>
                             </div>
                         </div>
@@ -1139,9 +1310,18 @@
             }
         }
 
+        // Show image placeholder when image fails to load
+        function showImagePlaceholder() {
+            document.getElementById('property-card-image').style.display = 'none';
+            document.getElementById('property-image-placeholder').style.display = 'block';
+            document.getElementById('property-image-placeholder').innerHTML = '<span>🏠</span>No property card image available';
+        }
+
         function updateReportData(property) {
             const props = property.properties;
             const eligInfo = ELIG_LABELS[props.e] || ELIG_LABELS['N'];
+            const apn = props.a;
+            const coords = property.geometry?.coordinates;
 
             // Update eligibility badge
             const badge = document.getElementById('eligibility-badge');
@@ -1149,49 +1329,101 @@
             badge.className = `eligibility-badge ${eligInfo.class}`;
 
             // Update APN in header
-            const headerP = document.querySelector('.report-header .report-address p');
-            if (headerP && props.a) {
-                headerP.textContent = `Nashville, TN | APN: ${props.a}`;
+            const headerP = document.getElementById('report-subheader');
+            if (headerP && apn) {
+                headerP.textContent = `Nashville, TN | APN: ${apn}`;
             }
 
-            // Update data items
-            const dataItems = document.querySelectorAll('.data-item');
-            dataItems.forEach(item => {
-                const label = item.querySelector('.data-item-label')?.textContent;
-                const valueEl = item.querySelector('.data-item-value');
-                if (!valueEl) return;
+            // Calculate max DADU and cost
+            const maxLiving = props.m || (props.l >= 10000 ? 850 : 700);
+            const maxFootprint = maxLiving + 50;
+            const estCost = maxLiving * 175; // $175/sqft estimate
 
-                switch(label) {
-                    case 'Zoning':
-                        valueEl.textContent = props.z || 'N/A';
-                        break;
-                    case 'Service District':
-                        if (props.e && (props.e.startsWith('E') || props.e === 'U' || props.e === 'US')) {
-                            valueEl.textContent = 'USD';
-                            valueEl.className = 'data-item-value success';
-                        } else if (props.e && props.e.startsWith('C')) {
-                            valueEl.textContent = 'GSD';
-                            valueEl.className = 'data-item-value warning';
-                        } else {
-                            valueEl.textContent = 'Check';
-                            valueEl.className = 'data-item-value';
-                        }
-                        break;
-                    case 'Lot Size':
-                        valueEl.textContent = props.l ? `${props.l.toLocaleString()} SF` : 'N/A';
-                        break;
-                    case 'Max DADU Living':
-                        valueEl.textContent = props.m ? `${props.m} SF` : (props.l >= 10000 ? '850 SF' : '700 SF');
-                        break;
-                    case 'Max DADU Footprint':
-                        const maxLiving = props.m || (props.l >= 10000 ? 850 : 700);
-                        valueEl.textContent = `${maxLiving + 50} SF`;
-                        break;
-                }
-            });
+            // Update quick stats in header
+            document.getElementById('stat-zoning').textContent = props.z || 'N/A';
+            document.getElementById('stat-lot-size').textContent = props.l ? `${props.l.toLocaleString()} SF` : 'N/A';
+            document.getElementById('stat-max-dadu').textContent = `${maxLiving} SF`;
+            document.getElementById('stat-est-cost').textContent = `$${Math.round(estCost / 1000)}K`;
+
+            // Update property details
+            document.getElementById('detail-zoning').textContent = props.z || 'N/A';
+            document.getElementById('detail-lot-size').textContent = props.l ? `${props.l.toLocaleString()} SF` : 'N/A';
+            document.getElementById('detail-max-living').textContent = `${maxLiving} SF`;
+            document.getElementById('detail-max-footprint').textContent = `${maxFootprint} SF`;
+
+            // Update service district
+            const districtEl = document.getElementById('detail-district');
+            if (props.e && (props.e.startsWith('E') || props.e === 'U' || props.e === 'US')) {
+                districtEl.textContent = 'USD';
+                districtEl.className = 'data-item-value success';
+            } else if (props.e && props.e.startsWith('C')) {
+                districtEl.textContent = 'GSD';
+                districtEl.className = 'data-item-value warning';
+            } else {
+                districtEl.textContent = 'Check';
+                districtEl.className = 'data-item-value';
+            }
+
+            // Update external links
+            if (apn) {
+                // ParcelViewer
+                document.getElementById('link-parcelviewer').href = `https://maps.nashville.gov/ParcelViewer/?quickSearch=${apn}`;
+                // ePermits Portal
+                document.getElementById('link-epermits').href = `https://epermits.nashville.gov/?#/?searchCode=${apn}`;
+                // Property Assessor
+                document.getElementById('link-assessor').href = `https://davidson-tn-citizen.comper.info/template.aspx?propertyID=${apn}`;
+                // Permit Documents by parcel number
+                document.getElementById('link-documents').href = `https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${apn}`;
+                // Property Card in Google Drive
+                document.getElementById('link-property-card').href = `${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(apn)}`;
+            }
+
+            // Update map links if coordinates available
+            if (coords) {
+                const lat = coords[1];
+                const lng = coords[0];
+                // Google Street View
+                document.getElementById('link-streetview').href = `https://www.google.com/maps/@${lat},${lng},3a,75y,90t/data=!3m6!1e1!3m4!1s!2e0!7i16384!8i8192`;
+                // Aerial view (Google Maps satellite)
+                document.getElementById('link-aerial').href = `https://www.google.com/maps/@${lat},${lng},100m/data=!3m1!1e3`;
+                document.getElementById('property-image-links').style.display = 'flex';
+            }
+
+            // Try to load property card image
+            loadPropertyImage(apn);
 
             // Update eligibility checklist
             updateEligibilityChecklist(props);
+        }
+
+        // Load property card image from Google Drive
+        function loadPropertyImage(apn) {
+            if (!apn) return;
+
+            // Check if we have a document for this APN
+            const docs = documentsIndex[apn];
+            if (docs && docs.property_cards && docs.property_cards.length > 0) {
+                // We have a property card filename - show link to Drive folder
+                const filename = docs.property_cards[0];
+                const imageEl = document.getElementById('property-card-image');
+                const placeholderEl = document.getElementById('property-image-placeholder');
+
+                // Since we can't directly embed Google Drive images without file IDs,
+                // show the filename and a link to the folder
+                placeholderEl.innerHTML = `
+                    <span>🏠</span>
+                    <div style="font-size: 12px; margin-top: 8px;">Property Card Available</div>
+                    <a href="${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(filename)}" target="_blank"
+                       style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--green); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none;">
+                        Open in Google Drive
+                    </a>
+                `;
+                placeholderEl.style.display = 'block';
+                imageEl.style.display = 'none';
+            } else {
+                // No property card found
+                document.getElementById('property-image-placeholder').innerHTML = '<span>🏠</span>No property card on file';
+            }
         }
 
         function updateEligibilityChecklist(props) {
