@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Legislation & Design Standards | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --green: #6b8e4e;
+            --green-dark: #5a7a42;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --background: #e8e4df;
+            --white: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --border: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--background); color: var(--text); line-height: 1.6; }
+
+        /* Nav */
+        .nav { background: var(--navy); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 70px; }
+        .nav-logo { display: flex; align-items: center; gap: 12px; color: white; text-decoration: none; font-weight: 700; font-size: 20px; }
+        .nav-logo img { width: 40px; height: 40px; }
+        .nav-logo span { color: var(--teal); }
+        .nav-links { display: flex; gap: 24px; }
+        .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; }
+        .nav-cta { background: var(--green); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
+
+        /* Hero */
+        .hero { background: linear-gradient(135deg, var(--navy), var(--navy-dark)); padding: 60px 40px; color: white; }
+        .hero-content { max-width: 900px; margin: 0 auto; text-align: center; }
+        .hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 16px; }
+        .hero p { font-size: 18px; opacity: 0.9; max-width: 700px; margin: 0 auto; }
+
+        /* Main Content */
+        .main { max-width: 1100px; margin: 0 auto; padding: 50px 24px; }
+
+        /* Section */
+        .section { margin-bottom: 50px; }
+        .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--green); }
+        .section-header img { width: 36px; height: 36px; }
+        .section-header h2 { font-size: 24px; font-weight: 700; color: var(--navy); }
+        .section-header span { font-size: 14px; color: var(--text-light); margin-left: auto; }
+
+        /* Legislation Cards */
+        .leg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+
+        .leg-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); transition: transform 0.2s, box-shadow 0.2s; }
+        .leg-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+        .leg-card-header { background: var(--navy); color: white; padding: 16px 20px; }
+        .leg-card-header h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .leg-card-header p { font-size: 12px; opacity: 0.8; }
+
+        .leg-card-body { padding: 20px; }
+        .leg-card-desc { font-size: 14px; color: var(--text-light); margin-bottom: 16px; line-height: 1.5; }
+
+        .leg-card-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .leg-tag { background: var(--cream); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; color: var(--navy); }
+        .leg-tag.overlay { background: #e8f5e9; color: #2e7d32; }
+        .leg-tag.amendment { background: #fff3e0; color: #ef6c00; }
+        .leg-tag.design { background: #e3f2fd; color: #1565c0; }
+
+        .leg-card-actions { display: flex; gap: 10px; }
+        .leg-btn { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; text-align: center; transition: all 0.2s; }
+        .leg-btn-primary { background: var(--green); color: white; }
+        .leg-btn-primary:hover { background: var(--green-dark); }
+        .leg-btn-secondary { background: var(--cream); color: var(--navy); }
+        .leg-btn-secondary:hover { background: var(--border); }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px; background: var(--green); border-radius: 2px; }
+
+        .timeline-item { position: relative; margin-bottom: 30px; }
+        .timeline-item::before { content: ''; position: absolute; left: -26px; top: 4px; width: 14px; height: 14px; background: var(--green); border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 2px var(--green); }
+
+        .timeline-date { font-size: 12px; font-weight: 700; color: var(--green); text-transform: uppercase; margin-bottom: 4px; }
+        .timeline-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+        .timeline-desc { font-size: 14px; color: var(--text-light); }
+
+        /* Info Box */
+        .info-box { background: linear-gradient(135deg, var(--cream), #fff); border-left: 4px solid var(--green); padding: 24px; border-radius: 0 12px 12px 0; margin: 30px 0; }
+        .info-box h4 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .info-box p { font-size: 14px; color: var(--text-light); }
+        .info-box ul { margin-top: 12px; padding-left: 20px; }
+        .info-box li { font-size: 14px; color: var(--text-light); margin-bottom: 6px; }
+
+        /* Footer */
+        .footer { background: var(--navy-dark); padding: 40px; text-align: center; color: rgba(255,255,255,0.7); }
+        .footer a { color: var(--teal); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .leg-grid { grid-template-columns: 1fr; }
+            .nav { padding: 0 20px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAV -->
+    <nav class="nav">
+        <a href="homebody_main.html" class="nav-logo">
+            <img src="assets/icons/ADU.png" alt="">
+            Homebody<span>Projects</span>
+        </a>
+        <div class="nav-links">
+            <a href="homebody_main.html#features">Features</a>
+            <a href="dadu_resources.html">Resources</a>
+            <a href="reports_pricing.html">Pricing</a>
+        </div>
+        <a href="property-report-card.html" class="nav-cta">Check My Property</a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>DADU Legislation & Design Standards</h1>
+            <p>Official Nashville Metro legislation documents governing Detached Accessory Dwelling Units, including overlay district design standards and zoning amendments.</p>
+        </div>
+    </section>
+
+    <!-- MAIN -->
+    <main class="main">
+        <!-- Key Legislation Info -->
+        <div class="info-box">
+            <h4><img src="assets/icons/Legal.png" alt="" style="width:24px;height:24px;"> Understanding DADU Eligibility Paths</h4>
+            <p>Your property's DADU eligibility depends on its location and zoning. There are different design standards based on your eligibility path:</p>
+            <ul>
+                <li><strong>USD (Urban Services District):</strong> By-right construction in R/RS zones - follows standard DADU requirements</li>
+                <li><strong>GSD (General Services District):</strong> Requires DADU Overlay approval - must follow overlay-specific design standards</li>
+                <li><strong>Historic Districts:</strong> Additional MHZC review required - see historic overlay guidelines</li>
+            </ul>
+        </div>
+
+        <!-- Primary DADU Legislation -->
+        <section class="section">
+            <div class="section-header">
+                <img src="assets/icons/Legal.png" alt="">
+                <h2>Primary DADU Legislation</h2>
+                <span>Core bills establishing DADU regulations</span>
+            </div>
+
+            <div class="leg-grid">
+                <div class="leg-card">
+                    <div class="leg-card-header">
+                        <h3>BL2024-559</h3>
+                        <p>Effective 2024</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">Latest DADU legislation update - expands eligibility and clarifies design requirements for detached accessory dwelling units in Nashville.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag amendment">Amendment</span>
+                            <span class="leg-tag">2024</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/BL2024-559_ecba1856-82c4-4b1e-8443-b18670afba6a_MC-Legis20190722_105046_1.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                            <a href="https://www.nashville.gov/departments/law/metro-codes" target="_blank" class="leg-btn leg-btn-secondary">Metro Codes</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header">
+                        <h3>BL2023-2094</h3>
+                        <p>Effective 2023</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">2023 amendments to DADU regulations addressing overlay requirements and design standard updates.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag amendment">Amendment</span>
+                            <span class="leg-tag">2023</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/BL2023-2094_d1cd7abf-c715-4d24-9177-81bfca915a9a_MC-Legis20190722_103360_1 (1).pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header">
+                        <h3>BL2023-1761</h3>
+                        <p>Effective 2023</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">Comprehensive DADU legislation update with detailed requirements for overlay districts and GSD properties.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag overlay">Overlay Standards</span>
+                            <span class="leg-tag">2023</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/BL2023-1761_f4446edd-69b0-4c2b-a96c-9df05f74de1a_MC-Legis20190722_102683_1.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header">
+                        <h3>BL2022-1322</h3>
+                        <p>Effective 2022</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">2022 DADU legislation establishing expanded eligibility criteria and updated design standards.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag amendment">Amendment</span>
+                            <span class="leg-tag">2022</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/BL2022-1322_cf0e252a-e3ac-4db8-91ef-1961f2954f80_MC-Legis20190722_101611_1.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header">
+                        <h3>BL2021-791 / BL2021-953</h3>
+                        <p>Effective 2021</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">Combined legislation package addressing DADU regulations with specific overlay district requirements.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag overlay">Overlay Standards</span>
+                            <span class="leg-tag">2021</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/BL2021-791_BL2021-953_4fda61a9-1aa2-4c97-8cc6-a98ff7d222e4_MC-Legis20190722_95726_1.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header">
+                        <h3>BL2021-635 / BL2020-316</h3>
+                        <p>Original Legislation</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">Foundational DADU legislation establishing the framework for detached accessory dwelling units in Nashville.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag">Original</span>
+                            <span class="leg-tag">2020-2021</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/BL2021-635_BL2020-316_e7fe762d-ba78-40a0-8558-b723053d7d98_MC-Legis20190722_93626_1.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DADU Overlay District Plans -->
+        <section class="section">
+            <div class="section-header">
+                <img src="assets/icons/Zoning.png" alt="">
+                <h2>DADU Overlay District Plans</h2>
+                <span>Design standards for overlay-approved areas</span>
+            </div>
+
+            <div class="info-box">
+                <h4>What are DADU Overlay Districts?</h4>
+                <p>Properties in the General Services District (GSD) require approval through a DADU Overlay to build. These plans establish specific design standards for approved overlay areas, including setbacks, height limits, and architectural requirements.</p>
+            </div>
+
+            <div class="leg-grid">
+                <div class="leg-card">
+                    <div class="leg-card-header" style="background: var(--green);">
+                        <h3>2024 DDU-001-001</h3>
+                        <p>2024 DADU Overlay Plan</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">Latest DADU overlay district plan with updated design standards and requirements for 2024.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag design">Design Plan</span>
+                            <span class="leg-tag overlay">Overlay</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/2024DDU-001-001_plan.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header" style="background: var(--green);">
+                        <h3>2023 DDU-001-001</h3>
+                        <p>2023 DADU Overlay Plan</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">2023 DADU overlay district design standards and site requirements.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag design">Design Plan</span>
+                            <span class="leg-tag overlay">Overlay</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/2023DDU-001-001_plan.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header" style="background: var(--green);">
+                        <h3>2023 DDU-002-001</h3>
+                        <p>2023 DADU Overlay Plan (Area 2)</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">Second 2023 DADU overlay district with area-specific design requirements.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag design">Design Plan</span>
+                            <span class="leg-tag overlay">Overlay</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/2023DDU-002-001_plan.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header" style="background: var(--green);">
+                        <h3>2022 DDU-001-001</h3>
+                        <p>2022 DADU Overlay Plan</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">2022 DADU overlay district design standards.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag design">Design Plan</span>
+                            <span class="leg-tag overlay">Overlay</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/2022DDU-001-001_plan.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header" style="background: var(--green);">
+                        <h3>2021 DDU-001-001</h3>
+                        <p>2021 DADU Overlay Plan</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">Original 2021 DADU overlay district design standards.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag design">Design Plan</span>
+                            <span class="leg-tag overlay">Overlay</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/2021DDU-001-001_plan.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header" style="background: var(--teal);">
+                        <h3>2021 UD-001-001</h3>
+                        <p>Urban Design Overlay Plan</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">General urban design overlay standards that may apply to DADU construction in certain districts.</p>
+                        <div class="leg-card-meta">
+                            <span class="leg-tag design">Design Plan</span>
+                            <span class="leg-tag">Urban Design</span>
+                        </div>
+                        <div class="leg-card-actions">
+                            <a href="assets/legislation/2021UD-001-001_plan.pdf" target="_blank" class="leg-btn leg-btn-primary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legislative Timeline -->
+        <section class="section">
+            <div class="section-header">
+                <img src="assets/icons/Market Statistics Report .png" alt="">
+                <h2>DADU Legislative Timeline</h2>
+                <span>Evolution of Nashville's DADU regulations</span>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2024</div>
+                    <div class="timeline-title">BL2024-559 - Expanded Eligibility</div>
+                    <div class="timeline-desc">Latest amendments expanding DADU eligibility and clarifying construction requirements.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2023</div>
+                    <div class="timeline-title">BL2023-1761 & BL2023-2094</div>
+                    <div class="timeline-desc">Comprehensive updates to overlay requirements and design standards. New DDU overlay districts approved.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2022</div>
+                    <div class="timeline-title">BL2022-1322</div>
+                    <div class="timeline-desc">Expanded eligibility criteria and updated design requirements for DADUs.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2021</div>
+                    <div class="timeline-title">BL2021-635 & BL2021-791</div>
+                    <div class="timeline-desc">Major DADU legislation establishing framework for overlay districts and GSD requirements.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2020</div>
+                    <div class="timeline-title">BL2020-316 - Original DADU Law</div>
+                    <div class="timeline-desc">Foundational legislation establishing detached accessory dwelling units in Nashville's Urban Services District.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Resources -->
+        <section class="section">
+            <div class="section-header">
+                <img src="assets/icons/Recorded Docs.png" alt="">
+                <h2>Related Resources</h2>
+            </div>
+
+            <div class="leg-grid">
+                <div class="leg-card">
+                    <div class="leg-card-header" style="background: var(--tan);">
+                        <h3>DADU Zoning Standards</h3>
+                        <p>Building Requirements</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">Complete guide to DADU zoning requirements including setbacks, height limits, and lot coverage.</p>
+                        <div class="leg-card-actions">
+                            <a href="dadu_zoning_standards.html" class="leg-btn leg-btn-primary">View Standards</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header" style="background: var(--tan);">
+                        <h3>Overlay Districts Map</h3>
+                        <p>Interactive Map</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">View which areas have approved DADU overlay districts on our interactive eligibility map.</p>
+                        <div class="leg-card-actions">
+                            <a href="dadu_eligibility_map.html" class="leg-btn leg-btn-primary">View Map</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leg-card">
+                    <div class="leg-card-header" style="background: var(--tan);">
+                        <h3>Metro Codes Portal</h3>
+                        <p>Official Source</p>
+                    </div>
+                    <div class="leg-card-body">
+                        <p class="leg-card-desc">Access the official Metro Nashville codes and legislation portal for the most current regulations.</p>
+                        <div class="leg-card-actions">
+                            <a href="https://www.nashville.gov/departments/codes" target="_blank" class="leg-btn leg-btn-primary">Visit Metro Codes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>Homebody Projects | Nashville DADU Intelligence Platform</p>
+        <p style="margin-top: 8px;"><a href="homebody_main.html">Home</a> | <a href="dadu_resources.html">Resources</a> | <a href="reports_pricing.html">Pricing</a></p>
+        <p style="margin-top: 16px; font-size: 12px;">Disclaimer: These documents are provided for informational purposes. Always verify with Metro Nashville for the most current regulations.</p>
+    </footer>
+</body>
+</html>
