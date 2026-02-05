@@ -907,13 +907,23 @@
             'N': { text: 'Not Eligible', class: 'not-eligible', icon: '✗' }
         };
 
-        // Google Drive base URLs - UPDATE THESE after uploading to Drive
-        const GDRIVE_BASE = {
-            property_cards: 'https://drive.google.com/file/d/',  // Update with your folder share links
-            covenants: 'https://drive.google.com/file/d/',
-            aerials: 'https://drive.google.com/file/d/',
-            permits: 'https://drive.google.com/file/d/'
+        // Google Drive folder IDs - linked to DADU_PDFs folders
+        const GDRIVE_FOLDERS = {
+            property_cards: '1UGNXAbDE1RuXfzMc6Vk3YL2r1AlZMwLZ',
+            covenants: '1bEZN1kEZxqZLkdX0QjT0g9N7K0sXAy3Z',
+            aerials: '1eD1TUNuYMOMK7VdVJW3Pc6mHYFS02VUj',
+            permits: '1N_IpJaweqoFhbmBnYHjQJs1G1ItTQjC4',
+            udo_overlay: '1evPTz2SvAIDS74lwzgxjGF85kl2nDsrh',
+            dadu_overlay: '1KDQe3WhWz1H1ukTIlAfxtbDFmvX50kYu',
+            str_permits: '1_JGdEdlUS7IGWi4L93aSGOhHWZJfktql',
+            zoning_appeals: '1bjNIPyogxImJ5_zxnxKTmxlYCmO0clvH'
         };
+
+        // Build folder URLs
+        const GDRIVE_URLS = {};
+        for (const [key, id] of Object.entries(GDRIVE_FOLDERS)) {
+            GDRIVE_URLS[key] = `https://drive.google.com/drive/folders/${id}`;
+        }
 
         // Document icons
         const DOC_ICONS = {
@@ -984,14 +994,15 @@
             let html = '';
             let totalDocs = 0;
 
-            // Add each document type
+            // Add each document type with Google Drive links
             ['property_cards', 'covenants', 'aerials', 'permits'].forEach(docType => {
                 if (docs[docType] && docs[docType].length > 0) {
                     docs[docType].forEach(filename => {
                         totalDocs++;
                         const icon = DOC_ICONS[docType];
                         const label = DOC_LABELS[docType];
-                        // For now, show filename - once uploaded to Drive, these will be links
+                        const folderUrl = GDRIVE_URLS[docType];
+                        // Link to Google Drive folder - user can search for the file
                         html += `
                             <li class="document-item">
                                 <div class="document-icon">${icon}</div>
@@ -999,7 +1010,7 @@
                                     <div class="document-title">${label}</div>
                                     <div class="document-meta">${filename}</div>
                                 </div>
-                                <span class="document-link" style="color: var(--green); font-size: 12px;">Available</span>
+                                <a href="${folderUrl}" target="_blank" class="document-link" style="color: var(--green); font-size: 12px; text-decoration: none;">View in Drive →</a>
                             </li>`;
                     });
                 }
