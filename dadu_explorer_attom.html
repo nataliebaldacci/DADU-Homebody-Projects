@@ -10,13 +10,20 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     <style>
         :root {
-            --primary: #e55a33;
-            --primary-dark: #c94a28;
+            /* Original Homebody Colors */
             --navy: #2c3e50;
             --navy-dark: #1a252f;
-            --green: #27ae60;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --background: #e8e4df;
+            /* Status Colors */
+            --green: #6b8e4e;
             --yellow: #f39c12;
             --red: #c0392b;
+            /* Grays */
             --gray-100: #f8f9fa;
             --gray-200: #e9ecef;
             --gray-300: #dee2e6;
@@ -26,6 +33,7 @@
             --gray-700: #495057;
             --gray-800: #343a40;
             --white: #ffffff;
+            --border: #e0e0e0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,11 +45,11 @@
             overflow: hidden;
         }
 
-        /* Header - ATTOM Style */
+        /* Header - Homebody Style */
         .header {
-            background: var(--primary);
-            padding: 0 20px;
-            height: 56px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 0 24px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -50,21 +58,22 @@
             left: 0;
             right: 0;
             z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             text-decoration: none;
             color: white;
         }
 
         .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -108,30 +117,21 @@
         /* Location Bar */
         .location-bar {
             position: fixed;
-            top: 56px;
+            top: 64px;
             left: 0;
             right: 0;
             background: white;
-            padding: 12px 20px;
+            padding: 12px 24px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            border-bottom: 1px solid var(--gray-300);
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
             z-index: 999;
-        }
-
-        .location-select {
-            padding: 8px 12px;
-            border: 1px solid var(--gray-300);
-            border-radius: 4px;
-            font-size: 13px;
-            font-family: inherit;
-            min-width: 150px;
         }
 
         .search-wrapper {
             flex: 1;
-            max-width: 400px;
+            max-width: 500px;
             position: relative;
         }
 
@@ -173,20 +173,20 @@
         }
 
         .action-btn.primary {
-            background: var(--primary);
+            background: var(--olive);
             color: white;
-            border-color: var(--primary);
+            border-color: var(--olive);
         }
 
         .action-btn.primary:hover {
-            background: var(--primary-dark);
+            background: var(--olive-dark);
         }
 
         /* Main Layout */
         .main-container {
-            margin-top: 108px;
+            margin-top: 116px;
             display: flex;
-            height: calc(100vh - 108px);
+            height: calc(100vh - 116px);
         }
 
         /* Map Panel */
@@ -240,7 +240,7 @@
 
         /* Search Criteria Header */
         .criteria-header {
-            background: var(--primary);
+            background: var(--olive);
             color: white;
             padding: 12px 16px;
             display: flex;
@@ -312,7 +312,7 @@
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: var(--olive);
         }
 
         .range-inputs {
@@ -422,12 +422,12 @@
         }
 
         .property-card:hover {
-            border-color: var(--primary);
+            border-color: var(--olive);
             box-shadow: 0 2px 8px rgba(229, 90, 51, 0.15);
         }
 
         .property-card.selected {
-            border-color: var(--primary);
+            border-color: var(--olive);
             background: #fff5f2;
         }
 
@@ -541,7 +541,7 @@
         .view-report-btn {
             display: inline-block;
             padding: 6px 12px;
-            background: var(--primary);
+            background: var(--olive);
             color: white;
             text-decoration: none;
             border-radius: 4px;
@@ -551,7 +551,7 @@
         }
 
         .view-report-btn:hover {
-            background: var(--primary-dark);
+            background: var(--olive-dark);
         }
 
         /* Custom Cluster Icons */
@@ -604,14 +604,14 @@
         }
 
         .recent-searches a {
-            color: var(--primary);
+            color: var(--olive);
             text-decoration: none;
         }
 
         /* Loading */
         .loading-overlay {
             position: fixed;
-            top: 108px;
+            top: 116px;
             left: 0;
             right: 0;
             bottom: 0;
@@ -631,7 +631,7 @@
             width: 40px;
             height: 40px;
             border: 3px solid var(--gray-300);
-            border-top-color: var(--primary);
+            border-top-color: var(--olive);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 16px;
@@ -667,7 +667,7 @@
             right: 500px;
             width: 48px;
             height: 48px;
-            background: var(--primary);
+            background: var(--olive);
             color: white;
             border: none;
             border-radius: 50%;
@@ -685,7 +685,7 @@
             .right-panel {
                 width: 100%;
                 position: fixed;
-                top: 108px;
+                top: 116px;
                 right: 0;
                 bottom: 0;
                 transform: translateX(100%);
@@ -718,26 +718,17 @@
         </nav>
     </header>
 
-    <!-- Location Bar -->
+    <!-- Search Bar -->
     <div class="location-bar">
-        <select class="location-select" id="state-select">
-            <option value="TN">Tennessee</option>
-        </select>
-        <select class="location-select" id="county-select">
-            <option value="Davidson">Davidson</option>
-        </select>
         <div class="search-wrapper">
             <span class="search-icon">&#128269;</span>
-            <input type="text" class="search-input" id="address-search" placeholder="Enter address to locate or APN #">
+            <input type="text" class="search-input" id="address-search" placeholder="Enter address or APN to search Nashville-Davidson County...">
         </div>
-        <button class="action-btn" onclick="searchAddress()">
-            <span>&#128269;</span> Search
-        </button>
-        <button class="action-btn" id="filter-toggle" onclick="toggleFilters()">
-            <span>&#9881;</span> Filter
+        <button class="action-btn primary" onclick="searchAddress()">
+            Search
         </button>
         <button class="action-btn" onclick="clearFilters()">
-            <span>&#10005;</span> Clear
+            Clear Filters
         </button>
     </div>
 
