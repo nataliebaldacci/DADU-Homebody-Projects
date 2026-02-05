@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Eligibility Checklist | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #2c3e50; }
+        
+        /* Header */
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-logo {
+            font-weight: 700;
+            font-size: 18px;
+        }
+        .header-logo span { color: #6b8fa3; }
+        .header-nav { display: flex; gap: 20px; }
+        .header-nav a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .header-nav a:hover { color: #6b8fa3; }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 36px; margin-bottom: 12px; }
+        .hero p { opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        
+        /* Main */
+        .main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Flowchart */
+        .flowchart {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .flowchart h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        .flow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            align-items: center;
+        }
+        .flow-step {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .flow-step:hover {
+            border-color: #6b8fa3;
+            box-shadow: 0 4px 15px rgba(107, 143, 163, 0.2);
+        }
+        .flow-step.decision {
+            background: #fff8e6;
+            border-color: #c9a86c;
+            transform: rotate(0deg);
+        }
+        .flow-step.yes { background: #e8f5e9; border-color: #6b8e4e; }
+        .flow-step.no { background: #ffebee; border-color: #e57373; }
+        .flow-step h4 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .flow-step p {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+        .flow-step a {
+            display: inline-block;
+            color: #6b8fa3;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 12px;
+            background: rgba(107, 143, 163, 0.1);
+            border-radius: 6px;
+            margin: 4px;
+            transition: background 0.2s;
+        }
+        .flow-step a:hover { background: rgba(107, 143, 163, 0.2); }
+        .flow-arrow {
+            font-size: 24px;
+            color: #ccc;
+            padding: 10px 0;
+        }
+        .flow-branch {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            width: 100%;
+        }
+        .flow-branch .flow-step { max-width: 280px; }
+        
+        /* Checklist Sections */
+        .checklist-section {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        .section-header {
+            background: #2c3e50;
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        .section-header:hover { background: #34495e; }
+        .section-number {
+            background: #6b8fa3;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .section-header h3 { flex: 1; font-size: 16px; }
+        .section-toggle { font-size: 20px; }
+        
+        .section-content {
+            padding: 24px;
+        }
+        .checklist-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .checklist-table th {
+            text-align: left;
+            padding: 12px;
+            background: #f8f9fa;
+            font-size: 13px;
+            color: #666;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .checklist-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        .checklist-table tr:hover { background: #fafafa; }
+        .check-box {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .check-box:hover { border-color: #6b8e4e; }
+        .check-box.checked {
+            background: #6b8e4e;
+            border-color: #6b8e4e;
+            color: white;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #6b8fa3;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .info-box h5 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .info-box ul {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 13px;
+            color: #555;
+        }
+        .info-box li { margin: 4px 0; }
+        .info-box a { color: #6b8fa3; }
+        
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #6b8fa3;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 12px;
+            background: rgba(107, 143, 163, 0.1);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .link-btn:hover { background: rgba(107, 143, 163, 0.2); }
+        
+        /* Progress */
+        .progress-bar {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .progress-bar span { font-size: 14px; font-weight: 600; }
+        .progress-track {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6b8e4e, #8bc34a);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .progress-count {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Contacts */
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .contact-card {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .contact-card h5 {
+            font-size: 14px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        .contact-card a {
+            color: #6b8fa3;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        
+        @media (max-width: 768px) {
+            .flow-branch { flex-direction: column; }
+            .contacts-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-logo">🏠 Homebody <span>Projects</span></div>
+        <nav class="header-nav">
+            <a href="homebody_index.html">Home</a>
+            <a href="dadu_property_viewer_v3.html">Property Search</a>
+            <a href="dadu_resources.html">Resources</a>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <h1>📋 DADU Eligibility Checklist</h1>
+        <p>Complete guide to determine if your Nashville property qualifies for a Detached Accessory Dwelling Unit</p>
+    </section>
+    
+    <div class="progress-bar">
+        <span>Progress:</span>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-count"><span id="checkedCount">0</span> / <span id="totalCount">0</span></span>
+    </div>
+    
+    <main class="main">
+        <!-- Quick Flowchart -->
+        <div class="flowchart">
+            <h2>⚡ Quick Eligibility Flowchart</h2>
+            <div class="flow-steps">
+                <div class="flow-step decision">
+                    <h4>Step 1</h4>
+                    <p>Is your property zoned R, RS, RM, or OR?</p>
+                    <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank">🗺️ Check Parcel Viewer</a>
+                    <a href="dadu_zoning_standards.html">📖 Zoning Guide</a>
+                </div>
+                <div class="flow-arrow">↓</div>
+                
+                <div class="flow-step decision">
+                    <h4>Step 2</h4>
+                    <p>Is your parcel in the Urban Services District (USD)?</p>
+                    <a href="am_i_eligible.html">🗺️ Check USD Map</a>
+                </div>
+                <div class="flow-arrow">↓</div>
+                
+                <div class="flow-branch">
+                    <div>
+                        <div class="flow-step yes">
+                            <h4>If YES (USD)</h4>
+                            <p>✅ Eligible By-Right!</p>
+                            <a href="dadu_building_requirements.html">View Requirements →</a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flow-step">
+                            <h4>If NO (GSD)</h4>
+                            <p>Check for DADU Overlay or UDO</p>
+                            <a href="dadu_code_legislation_v3.html#overlays">🗺️ Check Overlays</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                
+                <div class="flow-step decision">
+                    <h4>Step 3</h4>
+                    <p>Do you have exactly ONE single-family home on the lot?</p>
+                    <a href="dadu_property_viewer_v3.html">🔍 Check Property</a>
+                </div>
+                <div class="flow-arrow">↓</div>
+                
+                <div class="flow-step yes">
+                    <h4>Ready to Build!</h4>
+                    <p>✅ Complete the checklist below for detailed requirements</p>
+                    <a href="permit_process_timeline.html">📋 Permit Process</a>
+                    <a href="contractor_dashboard.html">👷 Find Contractor</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 1: Zoning -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">1</div>
+                <h3>Zoning Eligibility</h3>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <table class="checklist-table">
+                    <tr>
+                        <th width="40">✓</th>
+                        <th>Requirement</th>
+                        <th width="120">Action</th>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Zoning is R, RS, RM, OR, or ORI district</td>
+                        <td><a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="link-btn">Check →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Lot meets minimum area for zoning district</td>
+                        <td><a href="dadu_zoning_standards.html" class="link-btn">Table →</a></td>
+                    </tr>
+                </table>
+                <div class="info-box">
+                    <h5>Eligible Zoning Districts</h5>
+                    <ul>
+                        <li><strong>R zones:</strong> R80, R40, R30, R20, R15, R10, R8, R8-A, R6, R6-A</li>
+                        <li><strong>RS zones:</strong> RS80, RS40, RS30, RS20, RS15, RS10, RS7.5, RS5, RS3.75 (and -A variants)</li>
+                        <li><strong>RM zones:</strong> RM2 through RM100-A (including -NS variants)</li>
+                        <li><strong>OR/ORI zones:</strong> OR20, OR40, ORI (including -A and -NS variants)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2: Location -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">2</div>
+                <h3>Location Eligibility (Must Meet ONE)</h3>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <table class="checklist-table">
+                    <tr>
+                        <th width="40">✓</th>
+                        <th>Option</th>
+                        <th width="120">Action</th>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td><strong>A.</strong> Parcel is in the Urban Services District (USD)</td>
+                        <td><a href="am_i_eligible.html" class="link-btn">Map →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td><strong>B.</strong> Parcel is in a DADU Overlay (GSD)</td>
+                        <td><a href="dadu_code_legislation_v3.html#overlays" class="link-btn">List →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td><strong>C.</strong> Parcel is in a UDO with DADU standards</td>
+                        <td><a href="#udo-list" class="link-btn">See Below</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td><strong>D.</strong> Parcel is in a Specific Plan (SP) with DADU standards</td>
+                        <td><a href="https://www.nashville.gov/departments/planning" target="_blank" class="link-btn">Planning →</a></td>
+                    </tr>
+                </table>
+                <div class="info-box" id="udo-list">
+                    <h5>UDOs with DADU Development Standards</h5>
+                    <ul>
+                        <li>Bellwood (2015UD-001-001)</li>
+                        <li>Carothers Crossing (2005UD-003G-12)</li>
+                        <li>Lenox Village (2005UD-007G-1)</li>
+                        <li>Moss Spring Drive / Edge-O-Lake Estates (2017UD-003-001)</li>
+                        <li>The Nations (2025UD-002-001)</li>
+                        <li>Payne Road Residential (2017UD-006-001)</li>
+                        <li>Wedgewood-Houston Chestnut Hill (2021UD-001-001)</li>
+                        <li>Whites Creek at Lloyd Road (TBD)</li>
+                        <li>Clayton Avenue (TBD)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 3: Principal Structure -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">3</div>
+                <h3>Principal Structure Requirement</h3>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <table class="checklist-table">
+                    <tr>
+                        <th width="40">✓</th>
+                        <th>Requirement</th>
+                        <th width="120">Action</th>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Parcel has exactly ONE single-family principal structure</td>
+                        <td><a href="dadu_property_viewer_v3.html" class="link-btn">Check →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>No existing DADU on parcel</td>
+                        <td><a href="dadu_explorer.html" class="link-btn">Map →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>If 2+ principal structures exist → NOT ELIGIBLE</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Step 4: Size Limits -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">4</div>
+                <h3>Size Limits (BL2025-1007)</h3>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <table class="checklist-table">
+                    <tr>
+                        <th width="40">✓</th>
+                        <th>Requirement</th>
+                        <th width="120">Your Lot</th>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Lot &lt; 10,000 SF → Max living space: <strong>850 SF</strong></td>
+                        <td><a href="dadu_property_viewer_v3.html" class="link-btn">Check →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Lot ≥ 10,000 SF → Max living space: <strong>1,200 SF</strong></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>DADU cannot exceed size of principal structure</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>DADU footprint ≤ footprint of principal structure</td>
+                        <td></td>
+                    </tr>
+                </table>
+                <div class="info-box">
+                    <h5>Footprint Limits</h5>
+                    <ul>
+                        <li>Lot &lt; 10,000 SF: Max footprint <strong>750 SF</strong></li>
+                        <li>Lot ≥ 10,000 SF: Max footprint <strong>1,000 SF</strong></li>
+                        <li>If DADU exists, no other accessory structure &gt; 200 SF</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 5: Height -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">5</div>
+                <h3>Height Limits</h3>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <table class="checklist-table">
+                    <tr>
+                        <th width="40">✓</th>
+                        <th>Requirement</th>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>DADU height ≤ principal structure eave line</td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Single-story: Max eave height = <strong>10 ft</strong> (from avg finished grade)</td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Two-story: Max eave height = <strong>17 ft</strong> (from avg finished grade)</td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Roof ridge &lt; principal structure ridge</td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Roof ridge ≤ <strong>27 ft</strong> (from avg finished grade)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Step 6: Setbacks -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">6</div>
+                <h3>Setback Requirements</h3>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <table class="checklist-table">
+                    <tr>
+                        <th width="40">✓</th>
+                        <th>Requirement</th>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>DADU located behind (rear of) principal structure</td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Not over easement or platted setback</td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Not over side street setback (corner lots)</td>
+                    </tr>
+                </table>
+                <div class="info-box">
+                    <h5>Setback Rules by Footprint Size</h5>
+                    <ul>
+                        <li><strong>Footprint ≤ 850 SF:</strong>
+                            <ul>
+                                <li>Side setback = ½ of zoning requirement (min 3 ft)</li>
+                                <li>Rear setback = min 3 ft</li>
+                                <li>If garage faces alley: rear setback = 10 ft</li>
+                            </ul>
+                        </li>
+                        <li><strong>Footprint > 850 SF:</strong> Full zoning district setbacks apply</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 7: Design -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">7</div>
+                <h3>Design Standards</h3>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <table class="checklist-table">
+                    <tr>
+                        <th width="40">✓</th>
+                        <th>Requirement</th>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Similar style, design, material color as principal structure</td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Similar architectural characteristics (roof form/pitch)</td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Dormers ≤ 50% of roof coverage</td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Dormers setback min 2 ft from exterior wall</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Step 8: Use Restrictions -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">8</div>
+                <h3>Use Restrictions</h3>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <table class="checklist-table">
+                    <tr>
+                        <th width="40">✓</th>
+                        <th>Requirement</th>
+                        <th width="120">Learn More</th>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>DADU owned by same person as principal structure</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>One dwelling must be owner-occupied</td>
+                        <td><a href="owner_occupancy.html" class="link-btn">Details →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>NO Short-Term Rental (STRP) in DADU on RS/R/RM lots</td>
+                        <td><a href="https://www.nashville.gov/departments/codes/short-term-rentals" target="_blank" class="link-btn">STRP Info →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>DADU cannot be subdivided from principal property</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Step 9: Special Overlays -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">9</div>
+                <h3>Special Overlays (If Applicable)</h3>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="info-box">
+                    <h5>Historic Overlay Properties</h5>
+                    <ul>
+                        <li>Historic Commission permit required</li>
+                        <li>Setbacks, size, design enforced by Historic</li>
+                        <li>Use/living space conditions enforced by Zoning</li>
+                        <li><a href="https://www.nashville.gov/departments/planning/historic-zoning-information" target="_blank">Historic Zoning Info →</a></li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h5>SP or UDO with DADU Standards</h5>
+                    <ul>
+                        <li>Planning Department determines requirements</li>
+                        <li>Building permit requires Planning approval</li>
+                        <li><a href="https://www.nashville.gov/departments/planning" target="_blank">Contact Planning →</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 10: Permit Application -->
+        <div class="checklist-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-number">10</div>
+                <h3>Permit Application Requirements</h3>
+                <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content">
+                <table class="checklist-table">
+                    <tr>
+                        <th width="40">✓</th>
+                        <th>Document Required</th>
+                        <th width="120">Get Form</th>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Residential Permit Application</td>
+                        <td><a href="https://www.nashville.gov/sites/default/files/2023-03/Residential-Permit-Application.pdf" target="_blank" class="link-btn">PDF →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Site Plan (location, distances, easements)</td>
+                        <td><a href="https://www.nashville.gov/sites/default/files/2022-09/Building-Permits-Central-Example-Site-Plan.pdf" target="_blank" class="link-btn">Example →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Elevations from all 4 corners</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Floor plan with fixtures/appliances</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Restrictive Covenant (recorded before permit)</td>
+                        <td><a href="https://www.nashville.gov/sites/default/files/2023-03/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf" target="_blank" class="link-btn">Form →</a></td>
+                    </tr>
+                    <tr>
+                        <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                        <td>Contractor must pull permit (not self-permit)</td>
+                        <td><a href="contractor_dashboard.html" class="link-btn">Find →</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Contacts -->
+        <div class="checklist-section">
+            <div class="section-header">
+                <div class="section-number">📞</div>
+                <h3>Contacts & Resources</h3>
+            </div>
+            <div class="section-content">
+                <div class="contacts-grid">
+                    <div class="contact-card">
+                        <h5>Zoning Help Desk</h5>
+                        <a href="tel:615-862-6550">615-862-6550</a>
+                    </div>
+                    <div class="contact-card">
+                        <h5>Parcel Viewer</h5>
+                        <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank">Open Map →</a>
+                    </div>
+                    <div class="contact-card">
+                        <h5>Planning Department</h5>
+                        <a href="https://www.nashville.gov/departments/planning" target="_blank">Website →</a>
+                    </div>
+                    <div class="contact-card">
+                        <h5>Historic Commission</h5>
+                        <a href="https://www.nashville.gov/departments/planning/historic-zoning-information" target="_blank">Website →</a>
+                    </div>
+                    <div class="contact-card">
+                        <h5>Metro Stormwater</h5>
+                        <a href="https://www.nashville.gov/departments/water/stormwater" target="_blank">Website →</a>
+                    </div>
+                    <div class="contact-card">
+                        <h5>Tennessee 811</h5>
+                        <a href="tel:811">Call 811 (3 days before digging)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Toggle checkboxes
+        function toggleCheck(el) {
+            el.classList.toggle('checked');
+            if (el.classList.contains('checked')) {
+                el.innerHTML = '✓';
+            } else {
+                el.innerHTML = '';
+            }
+            updateProgress();
+        }
+        
+        // Toggle sections
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const toggle = header.querySelector('.section-toggle');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                toggle.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                toggle.textContent = '▶';
+            }
+        }
+        
+        // Update progress bar
+        function updateProgress() {
+            const total = document.querySelectorAll('.check-box').length;
+            const checked = document.querySelectorAll('.check-box.checked').length;
+            const pct = (checked / total) * 100;
+            
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('checkedCount').textContent = checked;
+            document.getElementById('totalCount').textContent = total;
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
