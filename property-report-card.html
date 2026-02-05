@@ -785,28 +785,20 @@
                         <div class="report-section-header">
                             <img src="assets/icons/Recorded Docs.png" alt="">
                             <h3>Related Documents</h3>
+                            <span id="doc-count" style="margin-left: auto; font-size: 12px; color: var(--text-light);"></span>
                         </div>
                         <div class="report-section-body">
-                            <ul class="documents-list">
-                                <li class="document-item">
-                                    <div class="document-icon">📄</div>
+                            <ul class="documents-list" id="documents-list">
+                                <li class="document-item" id="no-docs-msg">
+                                    <div class="document-icon">📋</div>
                                     <div class="document-info">
-                                        <div class="document-title">Site Plan - 2024BL54321</div>
-                                        <div class="document-meta">Building Permit | Uploaded 2024-03-15</div>
+                                        <div class="document-title">Search for a property to see documents</div>
+                                        <div class="document-meta">Property cards, covenants, aerials, and permits</div>
                                     </div>
-                                    <a href="#" class="document-link">View →</a>
-                                </li>
-                                <li class="document-item">
-                                    <div class="document-icon">📄</div>
-                                    <div class="document-info">
-                                        <div class="document-title">Property Survey</div>
-                                        <div class="document-meta">Survey | Uploaded 2023-11-20</div>
-                                    </div>
-                                    <a href="#" class="document-link">View →</a>
                                 </li>
                             </ul>
-                            <a href="feature-documents.html" style="display: block; margin-top: 16px; color: var(--green); font-weight: 600; font-size: 14px;">
-                                View all documents →
+                            <a href="site_plan_downloads.html" style="display: block; margin-top: 16px; color: var(--green); font-weight: 600; font-size: 14px;">
+                                Search all documents →
                             </a>
                         </div>
                     </section>
@@ -915,10 +907,35 @@
             'N': { text: 'Not Eligible', class: 'not-eligible', icon: '✗' }
         };
 
+        // Google Drive base URLs - UPDATE THESE after uploading to Drive
+        const GDRIVE_BASE = {
+            property_cards: 'https://drive.google.com/file/d/',  // Update with your folder share links
+            covenants: 'https://drive.google.com/file/d/',
+            aerials: 'https://drive.google.com/file/d/',
+            permits: 'https://drive.google.com/file/d/'
+        };
+
+        // Document icons
+        const DOC_ICONS = {
+            property_cards: '🏠',
+            covenants: '⚖️',
+            aerials: '🛩️',
+            permits: '📋'
+        };
+
+        const DOC_LABELS = {
+            property_cards: 'Property Card',
+            covenants: 'Restrictive Covenant',
+            aerials: 'Aerial Image',
+            permits: 'Building Permit'
+        };
+
         // Data storage
         let propertyData = null;
         let allEligibilityData = [];
+        let documentsIndex = {};
         let dataLoaded = false;
+        let docsLoaded = false;
 
         // Search form handling
         const searchForm = document.getElementById('search-form');
@@ -931,6 +948,77 @@
         const urlParams = new URLSearchParams(window.location.search);
         const addressParam = urlParams.get('address');
         const apnParam = urlParams.get('apn');
+
+        // Load documents index
+        async function loadDocumentsIndex() {
+            if (docsLoaded) return;
+            try {
+                const response = await fetch('data/documents_index.json');
+                documentsIndex = await response.json();
+                docsLoaded = true;
+                console.log(`Loaded documents index: ${Object.keys(documentsIndex).length} APNs`);
+            } catch (error) {
+                console.error('Error loading documents index:', error);
+            }
+        }
+
+        // Display documents for an APN
+        function displayDocuments(apn) {
+            const docsList = document.getElementById('documents-list');
+            const docCount = document.getElementById('doc-count');
+
+            if (!apn || !documentsIndex[apn]) {
+                docsList.innerHTML = `
+                    <li class="document-item">
+                        <div class="document-icon">📋</div>
+                        <div class="document-info">
+                            <div class="document-title">No documents found</div>
+                            <div class="document-meta">No property cards, covenants, or permits on file for this APN</div>
+                        </div>
+                    </li>`;
+                docCount.textContent = '0 documents';
+                return;
+            }
+
+            const docs = documentsIndex[apn];
+            let html = '';
+            let totalDocs = 0;
+
+            // Add each document type
+            ['property_cards', 'covenants', 'aerials', 'permits'].forEach(docType => {
+                if (docs[docType] && docs[docType].length > 0) {
+                    docs[docType].forEach(filename => {
+                        totalDocs++;
+                        const icon = DOC_ICONS[docType];
+                        const label = DOC_LABELS[docType];
+                        // For now, show filename - once uploaded to Drive, these will be links
+                        html += `
+                            <li class="document-item">
+                                <div class="document-icon">${icon}</div>
+                                <div class="document-info">
+                                    <div class="document-title">${label}</div>
+                                    <div class="document-meta">${filename}</div>
+                                </div>
+                                <span class="document-link" style="color: var(--green); font-size: 12px;">Available</span>
+                            </li>`;
+                    });
+                }
+            });
+
+            if (totalDocs === 0) {
+                html = `
+                    <li class="document-item">
+                        <div class="document-icon">📋</div>
+                        <div class="document-info">
+                            <div class="document-title">No documents found</div>
+                            <div class="document-meta">No documents on file for APN: ${apn}</div>
+                        </div>
+                    </li>`;
+            }
+
+            docsList.innerHTML = html;
+            docCount.textContent = `${totalDocs} document${totalDocs !== 1 ? 's' : ''}`;
+        }
 
         // Load eligibility data
         async function loadEligibilityData() {
@@ -984,18 +1072,27 @@
 
         // Initialize page
         async function initPage() {
-            await loadEligibilityData();
+            // Load both eligibility data and documents index in parallel
+            await Promise.all([
+                loadEligibilityData(),
+                loadDocumentsIndex()
+            ]);
 
             if (apnParam) {
                 const property = findProperty(apnParam, 'apn');
                 if (property) {
                     showReport(property.properties.d || apnParam, property);
+                    displayDocuments(apnParam);
                 } else {
                     showReport(addressParam || apnParam);
+                    displayDocuments(apnParam);
                 }
             } else if (addressParam) {
                 const property = findProperty(addressParam, 'address');
                 showReport(addressParam, property);
+                if (property && property.properties.a) {
+                    displayDocuments(property.properties.a.toString());
+                }
             }
         }
 
@@ -1003,11 +1100,14 @@
             e.preventDefault();
             const address = addressInput.value.trim();
             if (address) {
-                await loadEligibilityData();
+                await Promise.all([loadEligibilityData(), loadDocumentsIndex()]);
                 const property = findProperty(address, 'address');
                 showReport(address, property);
-                // Update URL
+                // Update URL and display documents
                 const apn = property?.properties?.a;
+                if (apn) {
+                    displayDocuments(apn.toString());
+                }
                 const params = new URLSearchParams();
                 if (apn) params.set('apn', apn);
                 params.set('address', address);
