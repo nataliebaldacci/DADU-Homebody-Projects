@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Short-Term Rental Permits | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --olive: #6b8e4e;
+            --olive-dark: #5a7a42;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --background: #e8e4df;
+            --white: #ffffff;
+            --border: #e0e0e0;
+            --text: #333333;
+            --text-light: #666666;
+            --green: #27ae60;
+            --yellow: #f39c12;
+            --red: #c0392b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--olive);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--tan) 0%, var(--olive) 100%);
+            padding: 60px 24px;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 24px;
+        }
+
+        .alert-box {
+            background: linear-gradient(135deg, var(--yellow) 0%, #e67e22 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .alert-icon {
+            font-size: 48px;
+        }
+
+        .alert-content h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .alert-content p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .permit-types {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .permit-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .permit-header {
+            padding: 24px;
+            color: white;
+        }
+
+        .permit-header.owner {
+            background: linear-gradient(135deg, var(--olive) 0%, var(--olive-dark) 100%);
+        }
+
+        .permit-header.non-owner {
+            background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
+        }
+
+        .permit-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .permit-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .permit-body {
+            padding: 24px;
+        }
+
+        .permit-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .permit-detail:last-child {
+            border-bottom: none;
+        }
+
+        .permit-detail .label {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .permit-detail .value {
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 14px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.allowed {
+            background: rgba(39, 174, 96, 0.15);
+            color: var(--green);
+        }
+
+        .status-badge.restricted {
+            background: rgba(243, 156, 18, 0.15);
+            color: var(--yellow);
+        }
+
+        .status-badge.prohibited {
+            background: rgba(192, 57, 43, 0.15);
+            color: var(--red);
+        }
+
+        .requirements-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 48px;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .requirement-block {
+            padding: 20px;
+            background: var(--cream);
+            border-radius: 10px;
+        }
+
+        .requirement-block h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .requirement-block ul {
+            list-style: none;
+        }
+
+        .requirement-block li {
+            padding: 8px 0;
+            font-size: 13px;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .requirement-block li:last-child {
+            border-bottom: none;
+        }
+
+        .check { color: var(--green); }
+        .warn { color: var(--yellow); }
+
+        .process-timeline {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 48px;
+        }
+
+        .timeline-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+            position: relative;
+        }
+
+        .timeline-steps::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 80px;
+            right: 80px;
+            height: 4px;
+            background: var(--border);
+        }
+
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            width: 140px;
+        }
+
+        .step-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--olive);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .dadu-note {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+            border-radius: 12px;
+            padding: 32px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .dadu-note-icon {
+            font-size: 64px;
+        }
+
+        .dadu-note-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .dadu-note-content p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .dadu-note-content a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .dadu-note-content a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .permit-types {
+                grid-template-columns: 1fr;
+            }
+            .requirements-grid {
+                grid-template-columns: 1fr;
+            }
+            .timeline-steps {
+                flex-direction: column;
+                align-items: center;
+                gap: 24px;
+            }
+            .timeline-steps::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dadu-note {
+                flex-direction: column;
+                text-align: center;
+            }
+            .alert-box {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="homebody_main.html" class="logo">
+            <div class="logo-icon">🏠</div>
+            <span>Homebody</span>
+        </a>
+        <nav class="nav-links">
+            <a href="homebody_main.html" class="nav-link">Home</a>
+            <a href="dadu_explorer_attom.html" class="nav-link">Explorer</a>
+            <a href="owner_occupancy.html" class="nav-link">Owner Occupancy</a>
+            <a href="reports_pricing.html" class="nav-link">Reports</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Short-Term Rental Permits</h1>
+        <p>Understanding STR requirements for DADUs in Metro Nashville</p>
+    </section>
+
+    <main class="main">
+        <div class="alert-box">
+            <span class="alert-icon">⚠️</span>
+            <div class="alert-content">
+                <h3>Important: Owner Occupancy Requirement</h3>
+                <p>DADUs in Nashville require owner occupancy of either the primary dwelling OR the DADU itself. Short-term rentals of the DADU may only be permitted if you reside in the primary dwelling and obtain proper STR permits.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">STR Permit Types</h2>
+        <div class="permit-types">
+            <div class="permit-card">
+                <div class="permit-header owner">
+                    <h3>Owner-Occupied STR</h3>
+                    <p>Rent your DADU while living in the primary dwelling</p>
+                </div>
+                <div class="permit-body">
+                    <div class="permit-detail">
+                        <span class="label">Permit Type</span>
+                        <span class="value">Type 1 - Owner Occupied</span>
+                    </div>
+                    <div class="permit-detail">
+                        <span class="label">DADU Eligibility</span>
+                        <span class="status-badge allowed">Potentially Allowed</span>
+                    </div>
+                    <div class="permit-detail">
+                        <span class="label">Annual Permit Fee</span>
+                        <span class="value">$313</span>
+                    </div>
+                    <div class="permit-detail">
+                        <span class="label">Renewal</span>
+                        <span class="value">Annual</span>
+                    </div>
+                    <div class="permit-detail">
+                        <span class="label">Zoning Check</span>
+                        <span class="value">Required</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="permit-card">
+                <div class="permit-header non-owner">
+                    <h3>Non-Owner Occupied STR</h3>
+                    <p>Investment property short-term rental</p>
+                </div>
+                <div class="permit-body">
+                    <div class="permit-detail">
+                        <span class="label">Permit Type</span>
+                        <span class="value">Type 2/3 - Not Owner Occupied</span>
+                    </div>
+                    <div class="permit-detail">
+                        <span class="label">DADU Eligibility</span>
+                        <span class="status-badge prohibited">Not Allowed</span>
+                    </div>
+                    <div class="permit-detail">
+                        <span class="label">Reason</span>
+                        <span class="value">Owner occupancy required</span>
+                    </div>
+                    <div class="permit-detail">
+                        <span class="label">Alternative</span>
+                        <span class="value">Long-term rental only</span>
+                    </div>
+                    <div class="permit-detail">
+                        <span class="label">Note</span>
+                        <span class="value">DADU must be occupied by owner OR primary dwelling</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="requirements-section">
+            <h2 class="section-title">STR Permit Requirements</h2>
+            <div class="requirements-grid">
+                <div class="requirement-block">
+                    <h4>📋 Application Documents</h4>
+                    <ul>
+                        <li><span class="check">✓</span> Completed STR application form</li>
+                        <li><span class="check">✓</span> Proof of property ownership</li>
+                        <li><span class="check">✓</span> Valid government ID</li>
+                        <li><span class="check">✓</span> Floor plan of rental unit</li>
+                        <li><span class="check">✓</span> Proof of insurance ($1M liability)</li>
+                    </ul>
+                </div>
+                <div class="requirement-block">
+                    <h4>🏠 Property Requirements</h4>
+                    <ul>
+                        <li><span class="check">✓</span> Working smoke detectors</li>
+                        <li><span class="check">✓</span> Carbon monoxide detectors</li>
+                        <li><span class="check">✓</span> Fire extinguisher</li>
+                        <li><span class="check">✓</span> Posted emergency info</li>
+                        <li><span class="check">✓</span> Adequate parking</li>
+                    </ul>
+                </div>
+                <div class="requirement-block">
+                    <h4>⚠️ Restrictions</h4>
+                    <ul>
+                        <li><span class="warn">!</span> Not in R/RS zones without owner occupancy</li>
+                        <li><span class="warn">!</span> Distance requirements from other STRs</li>
+                        <li><span class="warn">!</span> Maximum occupancy limits (2/bedroom + 2)</li>
+                        <li><span class="warn">!</span> Quiet hours 10pm - 7am</li>
+                        <li><span class="warn">!</span> No events or parties</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="process-timeline">
+            <h2 class="section-title">STR Permit Application Process</h2>
+            <div class="timeline-steps">
+                <div class="timeline-step">
+                    <div class="step-icon">1️⃣</div>
+                    <div class="step-title">Check Eligibility</div>
+                    <div class="step-desc">Verify zoning and distance requirements</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-icon">2️⃣</div>
+                    <div class="step-title">Submit Application</div>
+                    <div class="step-desc">Complete forms and pay fee online</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-icon">3️⃣</div>
+                    <div class="step-title">Inspection</div>
+                    <div class="step-desc">Safety inspection scheduled</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-icon">4️⃣</div>
+                    <div class="step-title">Permit Issued</div>
+                    <div class="step-desc">Display permit number in listing</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="dadu-note">
+            <span class="dadu-note-icon">🏡</span>
+            <div class="dadu-note-content">
+                <h3>Considering a DADU for Rental Income?</h3>
+                <p>While STR permits for DADUs have restrictions, long-term rentals are permitted in all eligible zones. Many DADU owners find that long-term tenants provide more stable income with less management overhead.</p>
+                <a href="roi_calculator.html">Calculate Your ROI →</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
