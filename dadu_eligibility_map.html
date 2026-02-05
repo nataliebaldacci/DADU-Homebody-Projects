@@ -6,6 +6,8 @@
     <title>DADU Eligibility Map | Homebody Projects</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     <style>
         :root {
             --navy: #2c3e50;
@@ -20,9 +22,9 @@
             --border: #e0e0e0;
             --text: #333333;
             --text-light: #666666;
-            --eligible-green: #4caf50;
-            --not-eligible-red: #e74c3c;
-            --maybe-yellow: #f39c12;
+            --eligible-green: #6b8e4e;
+            --not-eligible-red: #c0392b;
+            --conditional-yellow: #f39c12;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -68,9 +70,8 @@
         }
 
         .logo-icon img {
-            width: 24px;
-            height: 24px;
-            filter: brightness(0) invert(1);
+            width: 28px;
+            height: 28px;
         }
 
         .logo-text {
@@ -181,6 +182,42 @@
             flex: 1;
         }
 
+        /* Custom cluster icons */
+        .marker-cluster-eligible {
+            background-color: rgba(107, 142, 78, 0.6);
+        }
+        .marker-cluster-eligible div {
+            background-color: rgba(107, 142, 78, 0.9);
+        }
+        .marker-cluster-conditional {
+            background-color: rgba(243, 156, 18, 0.6);
+        }
+        .marker-cluster-conditional div {
+            background-color: rgba(243, 156, 18, 0.9);
+        }
+        .marker-cluster-not-eligible {
+            background-color: rgba(192, 57, 43, 0.6);
+        }
+        .marker-cluster-not-eligible div {
+            background-color: rgba(192, 57, 43, 0.9);
+        }
+
+        .marker-cluster {
+            border-radius: 50%;
+        }
+        .marker-cluster div {
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            margin-top: 5px;
+            text-align: center;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            line-height: 30px;
+        }
+
         /* Legend Panel */
         .legend-panel {
             position: fixed;
@@ -191,7 +228,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             padding: 20px;
             z-index: 1000;
-            min-width: 240px;
+            min-width: 260px;
         }
 
         .legend-title {
@@ -230,8 +267,8 @@
             background: var(--not-eligible-red);
         }
 
-        .legend-color.maybe {
-            background: var(--maybe-yellow);
+        .legend-color.conditional {
+            background: var(--conditional-yellow);
         }
 
         .legend-label {
@@ -243,6 +280,7 @@
             font-size: 12px;
             color: var(--text-light);
             margin-left: auto;
+            font-weight: 600;
         }
 
         /* Stats Panel */
@@ -298,8 +336,8 @@
             color: var(--not-eligible-red);
         }
 
-        .stat-value.maybe {
-            color: var(--maybe-yellow);
+        .stat-value.conditional {
+            color: var(--conditional-yellow);
         }
 
         /* Filter Panel */
@@ -352,6 +390,7 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
+            accent-color: var(--olive);
         }
 
         .filter-checkbox span {
@@ -393,8 +432,8 @@
             color: white;
         }
 
-        .popup-header.maybe {
-            background: var(--maybe-yellow);
+        .popup-header.conditional {
+            background: var(--conditional-yellow);
             color: white;
         }
 
@@ -476,7 +515,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.95);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -512,6 +551,22 @@
             font-size: 13px;
             color: var(--text-light);
             margin-top: 8px;
+        }
+
+        .loading-progress {
+            width: 200px;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: var(--olive);
+            width: 0%;
+            transition: width 0.3s;
         }
 
         /* Zoom to see parcels message */
@@ -564,17 +619,17 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <a href="homebody_index_v3.html" class="logo">
+        <a href="homebody_main.html" class="logo">
             <div class="logo-icon">
                 <img src="assets/icons/ADU.png" alt="">
             </div>
             <span class="logo-text">HOMEBODY</span>
         </a>
         <nav class="nav-links">
-            <a href="homebody_index_v3.html" class="nav-link">Home</a>
-            <a href="dadu_explorer_v2.html" class="nav-link">Explorer</a>
-            <a href="property_search.html" class="nav-link">Property Search</a>
-            <a href="eligibility_report.html" class="nav-link">Reports</a>
+            <a href="homebody_main.html" class="nav-link">Home</a>
+            <a href="dadu_explorer_v3.html" class="nav-link">Explorer</a>
+            <a href="feature-property-search.html" class="nav-link">Property Search</a>
+            <a href="property-report-card.html" class="nav-link">Reports</a>
         </nav>
     </header>
 
@@ -605,39 +660,26 @@
             <label class="filter-label">Show Parcels</label>
             <label class="filter-checkbox">
                 <input type="checkbox" id="show-eligible" checked onchange="updateFilters()">
-                <span style="color: var(--eligible-green);">✓ Eligible</span>
+                <span style="color: var(--eligible-green); font-weight: 600;">Eligible (By Right)</span>
             </label>
             <label class="filter-checkbox">
-                <input type="checkbox" id="show-maybe" checked onchange="updateFilters()">
-                <span style="color: var(--maybe-yellow);">? Conditional</span>
+                <input type="checkbox" id="show-conditional" checked onchange="updateFilters()">
+                <span style="color: var(--conditional-yellow); font-weight: 600;">Conditional (Overlay Req.)</span>
             </label>
             <label class="filter-checkbox">
                 <input type="checkbox" id="show-not-eligible" checked onchange="updateFilters()">
-                <span style="color: var(--not-eligible-red);">✗ Not Eligible</span>
+                <span style="color: var(--not-eligible-red); font-weight: 600;">Not Eligible</span>
             </label>
         </div>
         <div class="filter-group">
             <label class="filter-label">Zoning District</label>
             <select class="filter-select" id="filter-zoning" onchange="updateFilters()">
                 <option value="">All Zoning</option>
+                <option value="RS">RS - Single Family</option>
                 <option value="R">R - Residential</option>
-                <option value="RS">RS - Residential Single</option>
-                <option value="R6">R6</option>
-                <option value="R8">R8</option>
-                <option value="R10">R10</option>
-                <option value="R15">R15</option>
-                <option value="R20">R20</option>
-                <option value="RS5">RS5</option>
-                <option value="RS7.5">RS7.5</option>
-                <option value="RS10">RS10</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label class="filter-label">Service District</label>
-            <select class="filter-select" id="filter-district" onchange="updateFilters()">
-                <option value="">All Districts</option>
-                <option value="USD">USD (Urban Services)</option>
-                <option value="GSD">GSD (General Services)</option>
+                <option value="RM">RM - Multi-Family</option>
+                <option value="AR">AR - Agricultural Res.</option>
+                <option value="SP">SP - Specific Plan</option>
             </select>
         </div>
     </div>
@@ -650,20 +692,20 @@
             <span class="stat-value" id="stat-total">285,512</span>
         </div>
         <div class="stat-row">
-            <span class="stat-label">Eligible (USD R/RS)</span>
-            <span class="stat-value eligible" id="stat-eligible">67,707</span>
+            <span class="stat-label">Eligible (USD)</span>
+            <span class="stat-value eligible" id="stat-eligible">135,714</span>
         </div>
         <div class="stat-row">
             <span class="stat-label">Conditional (GSD)</span>
-            <span class="stat-value maybe" id="stat-maybe">12,450</span>
+            <span class="stat-value conditional" id="stat-conditional">53,089</span>
         </div>
         <div class="stat-row">
             <span class="stat-label">Not Eligible</span>
-            <span class="stat-value not-eligible" id="stat-not">205,355</span>
+            <span class="stat-value not-eligible" id="stat-not">96,709</span>
         </div>
         <div class="stat-row">
             <span class="stat-label">Eligibility Rate</span>
-            <span class="stat-value">23.7%</span>
+            <span class="stat-value">66.1%</span>
         </div>
     </div>
 
@@ -675,15 +717,18 @@
         </h3>
         <div class="legend-item">
             <div class="legend-color eligible"></div>
-            <span class="legend-label">Y - Eligible (USD R/RS)</span>
+            <span class="legend-label">Eligible (USD - By Right)</span>
+            <span class="legend-count" id="count-eligible">135,714</span>
         </div>
         <div class="legend-item">
-            <div class="legend-color maybe"></div>
-            <span class="legend-label">M - Conditional (GSD)</span>
+            <div class="legend-color conditional"></div>
+            <span class="legend-label">Conditional (GSD - Overlay Req.)</span>
+            <span class="legend-count" id="count-conditional">53,089</span>
         </div>
         <div class="legend-item">
             <div class="legend-color not-eligible"></div>
-            <span class="legend-label">N - Not Eligible</span>
+            <span class="legend-label">Not Eligible (Zoning)</span>
+            <span class="legend-count" id="count-not">96,709</span>
         </div>
     </div>
 
@@ -696,204 +741,382 @@
     <div class="loading-overlay" id="loading">
         <div class="spinner"></div>
         <div class="loading-text">Loading Eligibility Data</div>
-        <div class="loading-subtext">Analyzing 285,512 parcels...</div>
+        <div class="loading-subtext" id="loading-status">Initializing map...</div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar" id="progress-bar"></div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <script>
-        // Sample parcel data with eligibility
-        // In production, this would load from your ArcGIS Feature Service or GeoJSON
-        const sampleParcels = [
-            { id: 1, address: "2763 ROSEDALE PL", zipcode: "37211", zoning: "RS10", district: "USD", lotSqft: 8500, eligibility: "Y", lat: 36.1127, lng: -86.7603 },
-            { id: 2, address: "1812 FATHERLAND ST", zipcode: "37206", zoning: "R8", district: "USD", lotSqft: 6200, eligibility: "Y", lat: 36.1789, lng: -86.7432 },
-            { id: 3, address: "945 SHELBY AVE", zipcode: "37206", zoning: "RS7.5", district: "USD", lotSqft: 7800, eligibility: "Y", lat: 36.1745, lng: -86.7512 },
-            { id: 4, address: "2204 10TH AVE S", zipcode: "37204", zoning: "R10", district: "USD", lotSqft: 11200, eligibility: "Y", lat: 36.1298, lng: -86.7889 },
-            { id: 5, address: "3715 PARK AVE", zipcode: "37209", zoning: "RS10", district: "USD", lotSqft: 8900, eligibility: "Y", lat: 36.1567, lng: -86.8234 },
-            { id: 6, address: "612 STOCKELL ST", zipcode: "37207", zoning: "RS7.5", district: "GSD", lotSqft: 6800, eligibility: "M", lat: 36.1934, lng: -86.7645 },
-            { id: 7, address: "5200 HARDING PL", zipcode: "37211", zoning: "MUL", district: "USD", lotSqft: 12000, eligibility: "N", lat: 36.0912, lng: -86.7834 },
-            { id: 8, address: "1225 LITTON AVE", zipcode: "37216", zoning: "R8", district: "USD", lotSqft: 10500, eligibility: "Y", lat: 36.1978, lng: -86.7312 },
-            { id: 9, address: "400 BROADWAY", zipcode: "37201", zoning: "DTC", district: "USD", lotSqft: 5000, eligibility: "N", lat: 36.1618, lng: -86.7790 },
-            { id: 10, address: "2918 BRONTE AVE", zipcode: "37216", zoning: "RS10", district: "GSD", lotSqft: 8200, eligibility: "M", lat: 36.2012, lng: -86.7256 },
-            { id: 11, address: "123 MAIN ST", zipcode: "37208", zoning: "R6", district: "USD", lotSqft: 5500, eligibility: "Y", lat: 36.1750, lng: -86.7900 },
-            { id: 12, address: "456 OAK AVE", zipcode: "37210", zoning: "RS5", district: "USD", lotSqft: 4800, eligibility: "Y", lat: 36.1350, lng: -86.7650 },
-            { id: 13, address: "789 PINE ST", zipcode: "37212", zoning: "R10", district: "USD", lotSqft: 9200, eligibility: "Y", lat: 36.1420, lng: -86.8000 },
-            { id: 14, address: "321 ELM DR", zipcode: "37215", zoning: "R15", district: "USD", lotSqft: 14000, eligibility: "Y", lat: 36.1080, lng: -86.8300 },
-            { id: 15, address: "654 CEDAR LN", zipcode: "37203", zoning: "MUN", district: "USD", lotSqft: 3500, eligibility: "N", lat: 36.1560, lng: -86.7920 },
-            { id: 16, address: "987 MAPLE BLVD", zipcode: "37209", zoning: "RS7.5", district: "GSD", lotSqft: 7200, eligibility: "M", lat: 36.1490, lng: -86.8450 },
-            { id: 17, address: "147 BIRCH WAY", zipcode: "37206", zoning: "R8", district: "USD", lotSqft: 6700, eligibility: "Y", lat: 36.1820, lng: -86.7380 },
-            { id: 18, address: "258 WALNUT CT", zipcode: "37207", zoning: "CN", district: "USD", lotSqft: 4200, eligibility: "N", lat: 36.1980, lng: -86.7580 },
-            { id: 19, address: "369 SPRUCE ST", zipcode: "37216", zoning: "RS10", district: "USD", lotSqft: 9800, eligibility: "Y", lat: 36.2050, lng: -86.7200 },
-            { id: 20, address: "480 ASH AVE", zipcode: "37211", zoning: "R10", district: "GSD", lotSqft: 8800, eligibility: "M", lat: 36.1050, lng: -86.7550 }
-        ];
+        // Configuration
+        const COLORS = {
+            eligible: '#6b8e4e',
+            conditional: '#f39c12',
+            notEligible: '#c0392b'
+        };
+
+        // Eligibility code mapping
+        const ELIG_LABELS = {
+            'E': 'Eligible - USD (By Right)',
+            'ES': 'Eligible - USD (Has Secondary)',
+            'C': 'Conditional - GSD (Overlay Required)',
+            'CS': 'Conditional - GSD (Has Secondary)',
+            'U': 'Check District',
+            'US': 'Check District (Has Secondary)',
+            'N': 'Not Eligible - Wrong Zoning'
+        };
 
         let map;
-        let parcelMarkers = [];
+        let eligibleLayer, conditionalLayer, notEligibleLayer;
+        let allData = { eligible: [], conditional: [], notEligible: [] };
         let currentFilters = {
             showEligible: true,
-            showMaybe: true,
+            showConditional: true,
             showNotEligible: true,
-            zoning: '',
-            district: ''
+            zoning: ''
         };
 
         // Initialize map
         function initMap() {
-            map = L.map('map').setView([36.1627, -86.7816], 11);
+            map = L.map('map', {
+                preferCanvas: true
+            }).setView([36.1627, -86.7816], 11);
 
-            // Base layer
+            // Base layer - clean CartoDB style
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+                attribution: '&copy; OpenStreetMap &copy; CARTO',
                 maxZoom: 19
             }).addTo(map);
 
-            // Add zoom handler for message
-            map.on('zoomend', function() {
-                const zoom = map.getZoom();
-                const msg = document.getElementById('zoom-message');
-                if (zoom < 14) {
-                    msg.classList.add('visible');
-                } else {
-                    msg.classList.remove('visible');
+            // Create marker cluster groups
+            eligibleLayer = L.markerClusterGroup({
+                maxClusterRadius: 50,
+                iconCreateFunction: function(cluster) {
+                    return L.divIcon({
+                        html: '<div>' + cluster.getChildCount() + '</div>',
+                        className: 'marker-cluster marker-cluster-eligible',
+                        iconSize: [40, 40]
+                    });
                 }
             });
 
-            // Load parcels
-            loadParcels();
-
-            // Hide loading after delay
-            setTimeout(() => {
-                document.getElementById('loading').classList.add('hidden');
-            }, 1500);
-        }
-
-        // Get eligibility color
-        function getEligibilityColor(eligibility) {
-            switch (eligibility) {
-                case 'Y': return '#4caf50';
-                case 'M': return '#f39c12';
-                case 'N': return '#e74c3c';
-                default: return '#999';
-            }
-        }
-
-        // Get eligibility label
-        function getEligibilityLabel(eligibility) {
-            switch (eligibility) {
-                case 'Y': return 'Eligible';
-                case 'M': return 'Conditional';
-                case 'N': return 'Not Eligible';
-                default: return 'Unknown';
-            }
-        }
-
-        // Load parcels
-        function loadParcels() {
-            parcelMarkers.forEach(m => map.removeLayer(m));
-            parcelMarkers = [];
-
-            const filteredParcels = sampleParcels.filter(p => {
-                if (p.eligibility === 'Y' && !currentFilters.showEligible) return false;
-                if (p.eligibility === 'M' && !currentFilters.showMaybe) return false;
-                if (p.eligibility === 'N' && !currentFilters.showNotEligible) return false;
-                if (currentFilters.zoning && !p.zoning.startsWith(currentFilters.zoning)) return false;
-                if (currentFilters.district && p.district !== currentFilters.district) return false;
-                return true;
+            conditionalLayer = L.markerClusterGroup({
+                maxClusterRadius: 50,
+                iconCreateFunction: function(cluster) {
+                    return L.divIcon({
+                        html: '<div>' + cluster.getChildCount() + '</div>',
+                        className: 'marker-cluster marker-cluster-conditional',
+                        iconSize: [40, 40]
+                    });
+                }
             });
 
-            filteredParcels.forEach(parcel => {
-                const color = getEligibilityColor(parcel.eligibility);
+            notEligibleLayer = L.markerClusterGroup({
+                maxClusterRadius: 50,
+                iconCreateFunction: function(cluster) {
+                    return L.divIcon({
+                        html: '<div>' + cluster.getChildCount() + '</div>',
+                        className: 'marker-cluster marker-cluster-not-eligible',
+                        iconSize: [40, 40]
+                    });
+                }
+            });
 
-                // Create circle marker for each parcel
-                const marker = L.circleMarker([parcel.lat, parcel.lng], {
-                    radius: 12,
+            // Add layers to map
+            map.addLayer(eligibleLayer);
+            map.addLayer(conditionalLayer);
+            map.addLayer(notEligibleLayer);
+
+            // Zoom handler
+            map.on('zoomend', function() {
+                const zoom = map.getZoom();
+                const msg = document.getElementById('zoom-message');
+                msg.classList.toggle('visible', zoom < 13);
+            });
+
+            // Load data
+            loadEligibilityData();
+        }
+
+        // Load eligibility data from GeoJSON files
+        async function loadEligibilityData() {
+            const statusEl = document.getElementById('loading-status');
+            const progressBar = document.getElementById('progress-bar');
+
+            try {
+                // Load eligible parcels (green)
+                statusEl.textContent = 'Loading eligible parcels...';
+                progressBar.style.width = '10%';
+
+                const greenResponse = await fetch('eligibility_green.geojson');
+                const greenData = await greenResponse.json();
+                progressBar.style.width = '40%';
+
+                // Load conditional parcels (yellow)
+                statusEl.textContent = 'Loading conditional parcels...';
+                const yellowResponse = await fetch('eligibility_yellow.geojson');
+                const yellowData = await yellowResponse.json();
+                progressBar.style.width = '60%';
+
+                // Load not eligible parcels (red)
+                statusEl.textContent = 'Loading not-eligible parcels...';
+                const redResponse = await fetch('eligibility_red.geojson');
+                const redData = await redResponse.json();
+                progressBar.style.width = '80%';
+
+                // Store data
+                allData.eligible = greenData.features;
+                allData.conditional = yellowData.features;
+                allData.notEligible = redData.features;
+
+                // Add markers
+                statusEl.textContent = 'Rendering parcels...';
+                addMarkersToLayers();
+                progressBar.style.width = '100%';
+
+                // Update stats
+                updateStats();
+
+                // Hide loading
+                setTimeout(() => {
+                    document.getElementById('loading').classList.add('hidden');
+                }, 500);
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                statusEl.textContent = 'Error loading data. Please refresh.';
+            }
+        }
+
+        // Add markers to cluster layers
+        function addMarkersToLayers() {
+            // Clear existing
+            eligibleLayer.clearLayers();
+            conditionalLayer.clearLayers();
+            notEligibleLayer.clearLayers();
+
+            const zoningFilter = currentFilters.zoning;
+
+            // Helper to create marker
+            function createMarker(feature, color, eligClass) {
+                const props = feature.properties;
+                const coords = feature.geometry.coordinates;
+
+                // Apply zoning filter
+                if (zoningFilter && props.z && !props.z.startsWith(zoningFilter)) {
+                    return null;
+                }
+
+                const marker = L.circleMarker([coords[1], coords[0]], {
+                    radius: 8,
                     fillColor: color,
                     color: '#fff',
-                    weight: 2,
+                    weight: 1,
                     opacity: 1,
-                    fillOpacity: 0.8
+                    fillOpacity: 0.85
                 });
 
-                // Create popup content
+                // Popup content
+                const eligLabel = ELIG_LABELS[props.e] || 'Unknown';
+                const lotSf = props.l ? props.l.toLocaleString() : 'N/A';
+                const maxSf = props.m || 'N/A';
+
                 const popupContent = `
-                    <div class="popup-header ${parcel.eligibility === 'Y' ? 'eligible' : parcel.eligibility === 'M' ? 'maybe' : 'not-eligible'}">
-                        <div class="popup-status">${getEligibilityLabel(parcel.eligibility)}</div>
-                        <div class="popup-address">${parcel.address}</div>
+                    <div class="popup-header ${eligClass}">
+                        <div class="popup-status">${eligLabel}</div>
+                        <div class="popup-address">${props.d || 'No Address'}</div>
                     </div>
                     <div class="popup-content">
                         <div class="popup-row">
-                            <span class="popup-label">Zoning</span>
-                            <span class="popup-value">${parcel.zoning}</span>
+                            <span class="popup-label">APN</span>
+                            <span class="popup-value">${props.a || 'N/A'}</span>
                         </div>
                         <div class="popup-row">
-                            <span class="popup-label">Service District</span>
-                            <span class="popup-value">${parcel.district}</span>
+                            <span class="popup-label">Zoning</span>
+                            <span class="popup-value">${props.z || 'N/A'}</span>
                         </div>
                         <div class="popup-row">
                             <span class="popup-label">Lot Size</span>
-                            <span class="popup-value">${parcel.lotSqft.toLocaleString()} SF</span>
+                            <span class="popup-value">${lotSf} SF</span>
                         </div>
                         <div class="popup-row">
                             <span class="popup-label">Max DADU</span>
-                            <span class="popup-value">${parcel.lotSqft >= 10000 ? '850' : '700'} SF Living</span>
+                            <span class="popup-value">${maxSf} SF Living</span>
                         </div>
                     </div>
                     <div class="popup-actions">
-                        <a href="eligibility_report.html?address=${encodeURIComponent(parcel.address)}" class="popup-btn popup-btn-primary">Full Report</a>
-                        <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
+                        <a href="property-report-card.html?apn=${props.a}&address=${encodeURIComponent(props.d || '')}" class="popup-btn popup-btn-primary">Full Report</a>
+                        <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${props.a}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
                     </div>
                 `;
 
                 marker.bindPopup(popupContent, { maxWidth: 320 });
-                marker.addTo(map);
-                parcelMarkers.push(marker);
-            });
+                return marker;
+            }
 
-            // Update counts
-            updateCounts(filteredParcels);
+            // Add eligible markers
+            if (currentFilters.showEligible) {
+                allData.eligible.forEach(feature => {
+                    const marker = createMarker(feature, COLORS.eligible, 'eligible');
+                    if (marker) eligibleLayer.addLayer(marker);
+                });
+            }
+
+            // Add conditional markers
+            if (currentFilters.showConditional) {
+                allData.conditional.forEach(feature => {
+                    const marker = createMarker(feature, COLORS.conditional, 'conditional');
+                    if (marker) conditionalLayer.addLayer(marker);
+                });
+            }
+
+            // Add not eligible markers
+            if (currentFilters.showNotEligible) {
+                allData.notEligible.forEach(feature => {
+                    const marker = createMarker(feature, COLORS.notEligible, 'not-eligible');
+                    if (marker) notEligibleLayer.addLayer(marker);
+                });
+            }
         }
 
         // Update filter counts
-        function updateCounts(filtered) {
-            const eligible = filtered.filter(p => p.eligibility === 'Y').length;
-            const maybe = filtered.filter(p => p.eligibility === 'M').length;
-            const notEligible = filtered.filter(p => p.eligibility === 'N').length;
+        function updateStats() {
+            const eligibleCount = allData.eligible.length;
+            const conditionalCount = allData.conditional.length;
+            const notEligibleCount = allData.notEligible.length;
+            const total = eligibleCount + conditionalCount + notEligibleCount;
 
-            // For demo, show sample counts
-            // In production, these would be real totals
+            document.getElementById('stat-total').textContent = total.toLocaleString();
+            document.getElementById('stat-eligible').textContent = eligibleCount.toLocaleString();
+            document.getElementById('stat-conditional').textContent = conditionalCount.toLocaleString();
+            document.getElementById('stat-not').textContent = notEligibleCount.toLocaleString();
+
+            document.getElementById('count-eligible').textContent = eligibleCount.toLocaleString();
+            document.getElementById('count-conditional').textContent = conditionalCount.toLocaleString();
+            document.getElementById('count-not').textContent = notEligibleCount.toLocaleString();
         }
 
         // Update filters
         function updateFilters() {
             currentFilters = {
                 showEligible: document.getElementById('show-eligible').checked,
-                showMaybe: document.getElementById('show-maybe').checked,
+                showConditional: document.getElementById('show-conditional').checked,
                 showNotEligible: document.getElementById('show-not-eligible').checked,
-                zoning: document.getElementById('filter-zoning').value,
-                district: document.getElementById('filter-district').value
+                zoning: document.getElementById('filter-zoning').value
             };
-            loadParcels();
+            addMarkersToLayers();
         }
 
-        // Search address
-        function searchAddress() {
-            const address = document.getElementById('address-search').value.trim().toUpperCase();
+        // Search address using Nashville geocoder
+        async function searchAddress() {
+            const address = document.getElementById('address-search').value.trim();
             if (!address) return;
 
-            const found = sampleParcels.find(p =>
-                p.address.toUpperCase().includes(address)
-            );
+            // Try to find in loaded data
+            const searchTerm = address.toUpperCase();
+            let found = null;
+            let foundType = null;
+
+            // Search through all data
+            for (const feature of allData.eligible) {
+                if (feature.properties.d && feature.properties.d.toUpperCase().includes(searchTerm)) {
+                    found = feature;
+                    foundType = 'eligible';
+                    break;
+                }
+            }
+            if (!found) {
+                for (const feature of allData.conditional) {
+                    if (feature.properties.d && feature.properties.d.toUpperCase().includes(searchTerm)) {
+                        found = feature;
+                        foundType = 'conditional';
+                        break;
+                    }
+                }
+            }
+            if (!found) {
+                for (const feature of allData.notEligible) {
+                    if (feature.properties.d && feature.properties.d.toUpperCase().includes(searchTerm)) {
+                        found = feature;
+                        foundType = 'not-eligible';
+                        break;
+                    }
+                }
+            }
 
             if (found) {
-                map.setView([found.lat, found.lng], 17);
-                const marker = parcelMarkers.find(m => {
-                    const ll = m.getLatLng();
-                    return Math.abs(ll.lat - found.lat) < 0.0001 && Math.abs(ll.lng - found.lng) < 0.0001;
-                });
-                if (marker) {
-                    marker.openPopup();
-                }
+                const coords = found.geometry.coordinates;
+                map.setView([coords[1], coords[0]], 17);
+
+                // Create a temporary marker at the location
+                const color = foundType === 'eligible' ? COLORS.eligible :
+                              foundType === 'conditional' ? COLORS.conditional : COLORS.notEligible;
+
+                const marker = L.circleMarker([coords[1], coords[0]], {
+                    radius: 15,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 3,
+                    opacity: 1,
+                    fillOpacity: 0.9
+                }).addTo(map);
+
+                // Create popup
+                const props = found.properties;
+                const eligLabel = ELIG_LABELS[props.e] || 'Unknown';
+                const popupContent = `
+                    <div class="popup-header ${foundType}">
+                        <div class="popup-status">${eligLabel}</div>
+                        <div class="popup-address">${props.d || 'No Address'}</div>
+                    </div>
+                    <div class="popup-content">
+                        <div class="popup-row">
+                            <span class="popup-label">APN</span>
+                            <span class="popup-value">${props.a || 'N/A'}</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Zoning</span>
+                            <span class="popup-value">${props.z || 'N/A'}</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Lot Size</span>
+                            <span class="popup-value">${props.l ? props.l.toLocaleString() : 'N/A'} SF</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Max DADU</span>
+                            <span class="popup-value">${props.m || 'N/A'} SF Living</span>
+                        </div>
+                    </div>
+                    <div class="popup-actions">
+                        <a href="property-report-card.html?apn=${props.a}&address=${encodeURIComponent(props.d || '')}" class="popup-btn popup-btn-primary">Full Report</a>
+                        <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${props.a}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
+                    </div>
+                `;
+                marker.bindPopup(popupContent, { maxWidth: 320 }).openPopup();
             } else {
-                alert('Address not found in sample data. In production, this would search the full parcel database.');
+                // Try Nashville geocoder as fallback
+                try {
+                    const geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Nashville, TN')}`;
+                    const response = await fetch(geocodeUrl);
+                    const results = await response.json();
+
+                    if (results && results.length > 0) {
+                        const lat = parseFloat(results[0].lat);
+                        const lon = parseFloat(results[0].lon);
+                        map.setView([lat, lon], 17);
+
+                        // Add temporary marker
+                        L.marker([lat, lon]).addTo(map)
+                            .bindPopup(`<b>${address}</b><br>Click nearby parcels to check eligibility.`)
+                            .openPopup();
+                    } else {
+                        alert('Address not found. Try a different search term.');
+                    }
+                } catch (err) {
+                    alert('Error searching for address. Please try again.');
+                }
             }
         }
 

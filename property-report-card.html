@@ -904,6 +904,22 @@
     </footer>
 
     <script>
+        // Eligibility code mapping
+        const ELIG_LABELS = {
+            'E': { text: 'Eligible - By Right', class: 'eligible', icon: '✓' },
+            'ES': { text: 'Eligible - Has Secondary', class: 'eligible', icon: '✓' },
+            'C': { text: 'Conditional - Overlay Required', class: 'conditional', icon: '⚠' },
+            'CS': { text: 'Conditional - Has Secondary', class: 'conditional', icon: '⚠' },
+            'U': { text: 'Check District', class: 'conditional', icon: '?' },
+            'US': { text: 'Check District', class: 'conditional', icon: '?' },
+            'N': { text: 'Not Eligible', class: 'not-eligible', icon: '✗' }
+        };
+
+        // Data storage
+        let propertyData = null;
+        let allEligibilityData = [];
+        let dataLoaded = false;
+
         // Search form handling
         const searchForm = document.getElementById('search-form');
         const addressInput = document.getElementById('address-input');
@@ -911,29 +927,210 @@
         const reportCard = document.getElementById('report-card');
         const reportAddressText = document.getElementById('report-address-text');
 
-        // Check for address in URL params
+        // Check for address or APN in URL params
         const urlParams = new URLSearchParams(window.location.search);
         const addressParam = urlParams.get('address');
+        const apnParam = urlParams.get('apn');
 
-        if (addressParam) {
-            showReport(addressParam);
+        // Load eligibility data
+        async function loadEligibilityData() {
+            if (dataLoaded) return;
+
+            try {
+                // Load all three files in parallel
+                const [greenRes, yellowRes, redRes] = await Promise.all([
+                    fetch('eligibility_green.geojson'),
+                    fetch('eligibility_yellow.geojson'),
+                    fetch('eligibility_red.geojson')
+                ]);
+
+                const [greenData, yellowData, redData] = await Promise.all([
+                    greenRes.json(),
+                    yellowRes.json(),
+                    redRes.json()
+                ]);
+
+                allEligibilityData = [
+                    ...greenData.features,
+                    ...yellowData.features,
+                    ...redData.features
+                ];
+
+                dataLoaded = true;
+                console.log(`Loaded ${allEligibilityData.length} properties`);
+
+            } catch (error) {
+                console.error('Error loading eligibility data:', error);
+            }
         }
 
-        searchForm.addEventListener('submit', (e) => {
+        // Find property by APN or address
+        function findProperty(searchTerm, searchType = 'address') {
+            if (!dataLoaded || !allEligibilityData.length) return null;
+
+            const term = searchTerm.toUpperCase().trim();
+
+            for (const feature of allEligibilityData) {
+                const props = feature.properties;
+                if (searchType === 'apn' && props.a && props.a.toString() === term) {
+                    return feature;
+                }
+                if (searchType === 'address' && props.d && props.d.toUpperCase().includes(term)) {
+                    return feature;
+                }
+            }
+            return null;
+        }
+
+        // Initialize page
+        async function initPage() {
+            await loadEligibilityData();
+
+            if (apnParam) {
+                const property = findProperty(apnParam, 'apn');
+                if (property) {
+                    showReport(property.properties.d || apnParam, property);
+                } else {
+                    showReport(addressParam || apnParam);
+                }
+            } else if (addressParam) {
+                const property = findProperty(addressParam, 'address');
+                showReport(addressParam, property);
+            }
+        }
+
+        searchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const address = addressInput.value.trim();
             if (address) {
-                showReport(address);
+                await loadEligibilityData();
+                const property = findProperty(address, 'address');
+                showReport(address, property);
                 // Update URL
-                window.history.pushState({}, '', `?address=${encodeURIComponent(address)}`);
+                const apn = property?.properties?.a;
+                const params = new URLSearchParams();
+                if (apn) params.set('apn', apn);
+                params.set('address', address);
+                window.history.pushState({}, '', `?${params.toString()}`);
             }
         });
 
-        function showReport(address) {
+        function showReport(address, property = null) {
             preSearch.style.display = 'none';
             reportCard.classList.add('visible');
             reportAddressText.textContent = address;
             addressInput.value = address;
+
+            // Update report with real data if available
+            if (property) {
+                updateReportData(property);
+            }
+        }
+
+        function updateReportData(property) {
+            const props = property.properties;
+            const eligInfo = ELIG_LABELS[props.e] || ELIG_LABELS['N'];
+
+            // Update eligibility badge
+            const badge = document.getElementById('eligibility-badge');
+            badge.textContent = `${eligInfo.icon} ${eligInfo.text}`;
+            badge.className = `eligibility-badge ${eligInfo.class}`;
+
+            // Update APN in header
+            const headerP = document.querySelector('.report-header .report-address p');
+            if (headerP && props.a) {
+                headerP.textContent = `Nashville, TN | APN: ${props.a}`;
+            }
+
+            // Update data items
+            const dataItems = document.querySelectorAll('.data-item');
+            dataItems.forEach(item => {
+                const label = item.querySelector('.data-item-label')?.textContent;
+                const valueEl = item.querySelector('.data-item-value');
+                if (!valueEl) return;
+
+                switch(label) {
+                    case 'Zoning':
+                        valueEl.textContent = props.z || 'N/A';
+                        break;
+                    case 'Service District':
+                        if (props.e && (props.e.startsWith('E') || props.e === 'U' || props.e === 'US')) {
+                            valueEl.textContent = 'USD';
+                            valueEl.className = 'data-item-value success';
+                        } else if (props.e && props.e.startsWith('C')) {
+                            valueEl.textContent = 'GSD';
+                            valueEl.className = 'data-item-value warning';
+                        } else {
+                            valueEl.textContent = 'Check';
+                            valueEl.className = 'data-item-value';
+                        }
+                        break;
+                    case 'Lot Size':
+                        valueEl.textContent = props.l ? `${props.l.toLocaleString()} SF` : 'N/A';
+                        break;
+                    case 'Max DADU Living':
+                        valueEl.textContent = props.m ? `${props.m} SF` : (props.l >= 10000 ? '850 SF' : '700 SF');
+                        break;
+                    case 'Max DADU Footprint':
+                        const maxLiving = props.m || (props.l >= 10000 ? 850 : 700);
+                        valueEl.textContent = `${maxLiving + 50} SF`;
+                        break;
+                }
+            });
+
+            // Update eligibility checklist
+            updateEligibilityChecklist(props);
+        }
+
+        function updateEligibilityChecklist(props) {
+            const eligCode = props.e || 'N';
+            const isEligible = eligCode.startsWith('E');
+            const isConditional = eligCode.startsWith('C') || eligCode.startsWith('U');
+            const zoning = props.z || '';
+
+            // Check residential zoning (RS, R, RM, AR zones)
+            const isResidential = /^(RS|R\d|R$|RM|AR)/.test(zoning);
+
+            // Find checklist items and update
+            const checklistItems = document.querySelectorAll('.report-section:nth-of-type(2) .data-item');
+            checklistItems.forEach(item => {
+                const label = item.querySelector('.data-item-label')?.textContent;
+                const valueEl = item.querySelector('.data-item-value');
+                if (!valueEl) return;
+
+                switch(label) {
+                    case 'Residential Zoning':
+                        if (isResidential) {
+                            valueEl.textContent = '✓ Pass';
+                            valueEl.className = 'data-item-value success';
+                        } else {
+                            valueEl.textContent = '✗ Fail';
+                            valueEl.className = 'data-item-value error';
+                        }
+                        break;
+                    case 'Urban Services District':
+                        if (isEligible) {
+                            valueEl.textContent = '✓ Pass';
+                            valueEl.className = 'data-item-value success';
+                        } else if (isConditional) {
+                            valueEl.textContent = '⚠ GSD - Overlay Needed';
+                            valueEl.className = 'data-item-value warning';
+                        } else {
+                            valueEl.textContent = '✗ Check Required';
+                            valueEl.className = 'data-item-value error';
+                        }
+                        break;
+                    case 'Single Family Property':
+                        if (eligCode.includes('S')) {
+                            valueEl.textContent = '⚠ Has Secondary Structure';
+                            valueEl.className = 'data-item-value warning';
+                        } else {
+                            valueEl.textContent = '✓ Pass';
+                            valueEl.className = 'data-item-value success';
+                        }
+                        break;
+                }
+            });
         }
 
         // Tab switching
@@ -945,6 +1142,9 @@
                 // In full implementation, this would show/hide tab content
             });
         });
+
+        // Initialize on page load
+        initPage();
     </script>
 </body>
 </html>
