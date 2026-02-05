@@ -215,6 +215,22 @@
             color: var(--eligible);
         }
 
+        .nav-dropdown-section .section-label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 12px;
+            margin-bottom: 4px;
+            padding-left: 10px;
+        }
+
+        .nav-dropdown-section .section-label:first-of-type {
+            margin-top: 0;
+        }
+
         .nav-dropdown[aria-expanded="true"] .nav-dropdown-panel {
             opacity: 1;
             visibility: visible;
@@ -891,52 +907,101 @@
             <!-- User Types Dropdown -->
             <div class="nav-dropdown" aria-expanded="false">
                 <button class="nav-dropdown-trigger" aria-haspopup="true" aria-controls="users-menu">
-                    Who It's For
+                    User Types
                     <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                 </button>
-                <div class="nav-dropdown-panel" id="users-menu" role="menu">
-                    <a href="user-homeowners.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Property Owners.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>Homeowners</h4>
-                            <p>Explore DADU potential for your property</p>
-                        </div>
-                    </a>
-                    <a href="contractor_dashboard.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Building and Construction.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>Contractors</h4>
-                            <p>Find leads and manage DADU projects</p>
-                        </div>
-                    </a>
-                    <a href="features.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Surveyers adn Engineers.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>Designers / Architects</h4>
-                            <p>Access site data and zoning requirements</p>
-                        </div>
-                    </a>
-                    <a href="features.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Investors.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>Developers / Investors</h4>
-                            <p>Identify DADU-eligible investment properties</p>
-                        </div>
-                    </a>
-                    <a href="features.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Municipal.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>Municipal / Agencies</h4>
-                            <p>Policy analysis and permit tracking</p>
-                        </div>
-                    </a>
-                    <a href="features.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Legal.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>Legal Professionals</h4>
-                            <p>Research covenants and restrictions</p>
-                        </div>
-                    </a>
+                <div class="nav-dropdown-panel mega" id="users-menu" role="menu">
+                    <!-- Column 1: Homeowner -->
+                    <div class="nav-dropdown-section">
+                        <h5>Homeowner</h5>
+                        <span class="section-label">Dashboards</span>
+                        <a href="dadu_eligibility_map.html" class="sub-item">Eligibility Maps</a>
+                        <a href="contractor_marketplace.html" class="sub-item">Marketplace</a>
+                        <a href="dadu_legislation.html" class="sub-item">Updates & Legislation</a>
+                        <span class="section-label">Tools</span>
+                        <a href="draw_dadu_on_parcel.html" class="sub-item">Draw DADU</a>
+                        <a href="project_checklist.html" class="sub-item">Interactive Checklist</a>
+                        <a href="project_cost_estimator.html" class="sub-item">Cost Calculator</a>
+                        <a href="property_tax_calculator.html" class="sub-item">Property Tax Calculator</a>
+                        <a href="size_calculator.html" class="sub-item">Size Calculator</a>
+                    </div>
+                    <!-- Column 2: Homeowner continued -->
+                    <div class="nav-dropdown-section">
+                        <h5 style="opacity: 0;">Homeowner</h5>
+                        <span class="section-label">Reports</span>
+                        <a href="property-report-card.html" class="sub-item">Eligibility Report</a>
+                        <a href="dadu_near_me_locator.html" class="sub-item">DADUs Near Me Report</a>
+                        <a href="dadu_reports_store.html" class="sub-item">Cost Estimate Report</a>
+                        <span class="section-label">Resources</span>
+                        <a href="owner_occupancy.html" class="sub-item">Owner Occupancy Req.</a>
+                        <a href="str_permit.html" class="sub-item">Short Term Rental Permit</a>
+                    </div>
+                    <!-- Column 3: Contractor & Trade -->
+                    <div class="nav-dropdown-section">
+                        <h5>Contractor</h5>
+                        <a href="contractor_dashboard.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Building and Construction.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Building Contractor</h4></div>
+                        </a>
+                        <a href="permit_activity_dashboard.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Municipal.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Permit Dashboard</h4></div>
+                        </a>
+                        <a href="market_trends.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Market Statistics Report .png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Market Trends</h4></div>
+                        </a>
+                        <h5 style="margin-top: 16px;">Trade</h5>
+                        <a href="trade_permits.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Utilities.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Trade Permits</h4></div>
+                        </a>
+                    </div>
+                    <!-- Column 4: Architect & Legal -->
+                    <div class="nav-dropdown-section">
+                        <h5>Architect</h5>
+                        <a href="designer_resources.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Surveyers adn Engineers.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Design Resources</h4></div>
+                        </a>
+                        <a href="site_plan_downloads.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/GIS.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Site Plans</h4></div>
+                        </a>
+                        <a href="dadu_design_standards.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Design Standards</h4></div>
+                        </a>
+                        <h5 style="margin-top: 16px;">Legal</h5>
+                        <a href="legal_resources.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Legal.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Legal Resources</h4></div>
+                        </a>
+                        <a href="dadu_documents_portal.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Covenants Search</h4></div>
+                        </a>
+                    </div>
+                    <!-- Column 5: Government -->
+                    <div class="nav-dropdown-section">
+                        <h5>Government</h5>
+                        <a href="municipal_dashboard.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Municipal.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Municipal Dashboard</h4></div>
+                        </a>
+                        <a href="permit_activity_dashboard.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Permit Activity</h4></div>
+                        </a>
+                        <a href="dadu_code_legislation_v2.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Legal.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Code & Legislation</h4></div>
+                        </a>
+                        <a href="dadu_legislation.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+                            <div class="nav-dropdown-content"><h4>Legislation PDFs</h4></div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
