@@ -73,20 +73,10 @@
             font-size: 20px;
         }
 
-        .nav-logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--eligible);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .nav-logo-icon svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
+        .nav-logo-img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
         }
 
         .nav-logo span {
@@ -718,9 +708,7 @@
     <!-- NAVIGATION -->
     <nav class="nav" role="navigation" aria-label="Main navigation">
         <a href="homebody_main.html" class="nav-logo">
-            <div class="nav-logo-icon">
-                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            </div>
+            <img src="assets/icons/ADU.png" alt="Homebody Projects" class="nav-logo-img">
             Homebody<span>Projects</span>
         </a>
 
