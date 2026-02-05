@@ -150,6 +150,33 @@
             z-index: 100;
         }
 
+        /* Wide dropdown for Features */
+        .nav-dropdown-panel.wide {
+            min-width: 680px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 0;
+        }
+
+        .nav-dropdown-section {
+            padding: 16px;
+        }
+
+        .nav-dropdown-section:first-child {
+            border-right: 1px solid var(--border);
+        }
+
+        .nav-dropdown-section h5 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--teal);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+
         .nav-dropdown[aria-expanded="true"] .nav-dropdown-panel {
             opacity: 1;
             visibility: visible;
@@ -719,56 +746,71 @@
                     Features
                     <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                 </button>
-                <div class="nav-dropdown-panel" id="features-menu" role="menu">
-                    <a href="dadu_eligibility_map.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Zoning.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>DADU Eligibility Map</h4>
-                            <p>Check if your property qualifies for a DADU</p>
-                        </div>
-                    </a>
-                    <a href="property_search.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Parcel Search.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>Property Search</h4>
-                            <p>Look up any Nashville property by address</p>
-                        </div>
-                    </a>
-                    <a href="dadu_explorer_attom.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Area Maps and Visual layers.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>DADU Explorer</h4>
-                            <p>Search properties with filters & map</p>
-                        </div>
-                    </a>
-                    <a href="dadu_documents_portal.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>Recorded Documents</h4>
-                            <p>Access permits, deeds, and covenants</p>
-                        </div>
-                    </a>
-                    <a href="dadu_reports_store.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Exports & Reports.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>Exports & Reports</h4>
-                            <p>Generate property and eligibility reports</p>
-                        </div>
-                    </a>
-                    <a href="secondary_structures_map.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/GIS.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>GIS / Layers</h4>
-                            <p>View parcel boundaries and structures</p>
-                        </div>
-                    </a>
-                    <a href="roi_calculator.html" class="nav-dropdown-item" role="menuitem">
-                        <div class="nav-dropdown-icon"><img src="assets/icons/Appraisers.png" alt=""></div>
-                        <div class="nav-dropdown-content">
-                            <h4>Calculators</h4>
-                            <p>ROI, size, and cost estimators</p>
-                        </div>
-                    </a>
+                <div class="nav-dropdown-panel wide" id="features-menu" role="menu">
+                    <!-- Discovery Tools Column -->
+                    <div class="nav-dropdown-section">
+                        <h5>Discovery Tools</h5>
+                        <a href="dadu_eligibility_map.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Zoning.png" alt=""></div>
+                            <div class="nav-dropdown-content">
+                                <h4>Eligibility Map</h4>
+                                <p>Interactive map of DADU-eligible parcels</p>
+                            </div>
+                        </a>
+                        <a href="property_search.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Parcel Search.png" alt=""></div>
+                            <div class="nav-dropdown-content">
+                                <h4>Property Search</h4>
+                                <p>Search by address, APN, or owner name</p>
+                            </div>
+                        </a>
+                        <a href="dadu_explorer_attom.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Area Maps and Visual layers.png" alt=""></div>
+                            <div class="nav-dropdown-content">
+                                <h4>DADU Explorer</h4>
+                                <p>Filter by cost, size, year built, and more</p>
+                            </div>
+                        </a>
+                        <a href="dadu_near_me_locator.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Neighbors.png" alt=""></div>
+                            <div class="nav-dropdown-content">
+                                <h4>DADUs Near Me</h4>
+                                <p>Find completed DADUs in your neighborhood</p>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Tools & Calculators Column -->
+                    <div class="nav-dropdown-section">
+                        <h5>Tools & Calculators</h5>
+                        <a href="size_calculator.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Appraisers.png" alt=""></div>
+                            <div class="nav-dropdown-content">
+                                <h4>Size Calculator</h4>
+                                <p>Max DADU size based on your lot</p>
+                            </div>
+                        </a>
+                        <a href="project_cost_estimator.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Valuations.png" alt=""></div>
+                            <div class="nav-dropdown-content">
+                                <h4>Cost Estimator</h4>
+                                <p>Estimate your build cost by finish level</p>
+                            </div>
+                        </a>
+                        <a href="roi_calculator.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Investments.png" alt=""></div>
+                            <div class="nav-dropdown-content">
+                                <h4>ROI Calculator</h4>
+                                <p>Calculate rental income and payback period</p>
+                            </div>
+                        </a>
+                        <a href="determine_forms_required.html" class="nav-dropdown-item" role="menuitem">
+                            <div class="nav-dropdown-icon"><img src="assets/icons/Legal.png" alt=""></div>
+                            <div class="nav-dropdown-content">
+                                <h4>Forms Wizard</h4>
+                                <p>Find which permits you need</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
