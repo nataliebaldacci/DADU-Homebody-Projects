@@ -757,15 +757,11 @@
             notEligible: '#c0392b'
         };
 
-        // Eligibility code mapping
+        // Eligibility labels by class
         const ELIG_LABELS = {
-            'E': 'Eligible - USD (By Right)',
-            'ES': 'Eligible - USD (Has Secondary)',
-            'C': 'Conditional - GSD (Overlay Required)',
-            'CS': 'Conditional - GSD (Has Secondary)',
-            'U': 'Check District',
-            'US': 'Check District (Has Secondary)',
-            'N': 'Not Eligible - Wrong Zoning'
+            'eligible': 'Eligible - USD (By Right)',
+            'conditional': 'Conditional - GSD (Overlay Required)',
+            'not-eligible': 'Not Eligible'
         };
 
         let map;
@@ -919,7 +915,7 @@
                 });
 
                 // Popup content
-                const eligLabel = ELIG_LABELS[props.e] || 'Unknown';
+                const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
                 const lotSf = props.l ? props.l.toLocaleString() : 'N/A';
                 const maxSf = props.m || 'N/A';
 
@@ -1065,7 +1061,7 @@
 
                 // Create popup
                 const props = found.properties;
-                const eligLabel = ELIG_LABELS[props.e] || 'Unknown';
+                const eligLabel = ELIG_LABELS[foundType] || 'Unknown';
                 const popupContent = `
                     <div class="popup-header ${foundType}">
                         <div class="popup-status">${eligLabel}</div>
