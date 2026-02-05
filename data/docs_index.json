@@ -1,119 +1,103 @@
 {
-  "_schema_version": "1.0.0",
-  "_description": "Document index for all PDFs. Each document must be categorized and linked to parcels/permits where possible.",
-  "_matching_status": "pending",
-  "_last_updated": null,
+  "_schema_version": "1.0",
+  "_description": "Document index for the Homebody Document Portal. All documents are indexed here with metadata for search and parcel linking.",
+  "_generated": null,
+  "_total_documents": 0,
 
   "documents": [
     {
-      "doc_id": "DOC-000001",
-      "filename": "example_permit_site_plan_2024BL12345.pdf",
-      "filepath": "/documents/permits/site_plans/example_permit_site_plan_2024BL12345.pdf",
-      "doc_type": "site_plan",
-      "doc_category": "permits",
-      "title": "Site Plan - 123 Main St",
-      "description": "Approved site plan for DADU construction",
+      "doc_id": "DOC_001_EXAMPLE",
+      "filename": "example_permit_2024BL12345.pdf",
+      "filepath": "/documents/permits/2024/example_permit_2024BL12345.pdf",
+      "doc_type": "permit",
+      "doc_subtype": "building_permit",
+      "title": "Building Permit - DADU Construction",
 
-      "extracted_apn": "12345678900",
-      "extracted_apn_confidence": "high",
+      "extracted_apn": "11801012200",
+      "normalized_apn": "11801012200",
+      "apn_confidence": "high",
+
       "extracted_permit_number": "2024BL12345",
-      "extracted_permit_confidence": "high",
-      "extracted_address": "123 Main St, Nashville TN 37206",
-      "extracted_address_confidence": "medium",
+      "permit_type": "building",
 
-      "linked_parcel_apn": "12345678900",
-      "linked_permit_id": "2024BL12345",
-      "link_method": "permit_number_match",
+      "extracted_address": "123 Main St, Nashville, TN 37206",
+      "normalized_address": "123 MAIN ST",
 
-      "source": "nashville_codes",
-      "source_url": "https://www.nashville.gov/...",
-      "download_date": "2026-01-15",
-      "file_size_bytes": 245000,
-      "page_count": 3,
+      "date_filed": "2024-01-15",
+      "date_indexed": "2024-02-01",
 
-      "tags": ["dadu", "site_plan", "approved", "east_nashville"],
-      "manual_review_needed": false,
-      "review_notes": null
+      "linked_parcel_id": "11801012200",
+      "link_method": "apn_exact_match",
+      "link_confidence": "high",
+
+      "requires_manual_review": false,
+      "review_reason": null,
+
+      "tags": ["dadu", "new_construction", "2024"],
+      "page_count": 12,
+      "file_size_bytes": 2456789
     }
   ],
 
   "doc_types": {
-    "site_plan": {
-      "label": "Site Plan",
-      "category": "permits",
-      "description": "Approved site plans showing DADU placement, setbacks, and dimensions"
+    "permit": {
+      "subtypes": ["building_permit", "electrical_permit", "plumbing_permit", "mechanical_permit", "demolition_permit"],
+      "icon": "Building and Construction.png",
+      "color": "#6b8e4e"
     },
-    "building_permit": {
-      "label": "Building Permit",
-      "category": "permits",
-      "description": "Building permit applications and approvals"
+    "property_card": {
+      "subtypes": ["assessor_card", "property_record"],
+      "icon": "Property Detail Report .png",
+      "color": "#6b8fa3"
     },
-    "restrictive_covenant": {
-      "label": "Restrictive Covenant",
-      "category": "covenants",
-      "description": "Recorded covenants that may restrict DADU construction"
+    "deed": {
+      "subtypes": ["warranty_deed", "quitclaim_deed", "trust_deed"],
+      "icon": "Recorded Docs.png",
+      "color": "#c9a86c"
     },
-    "property_report": {
-      "label": "Property Report",
-      "category": "reports",
-      "description": "Property assessment and valuation reports"
+    "covenant": {
+      "subtypes": ["restrictive_covenant", "hoa_rules", "easement"],
+      "icon": "Legal.png",
+      "color": "#c0392b"
     },
     "survey": {
-      "label": "Survey/Plat",
-      "category": "surveys",
-      "description": "Property surveys and plat maps"
+      "subtypes": ["boundary_survey", "site_plan", "topographic"],
+      "icon": "Surveyers adn Engineers.png",
+      "color": "#9b59b6"
     },
-    "inspection_report": {
-      "label": "Inspection Report",
-      "category": "permits",
-      "description": "Building inspection reports and certificates"
-    },
-    "zoning_letter": {
-      "label": "Zoning Letter",
-      "category": "zoning",
-      "description": "Zoning verification letters and determinations"
-    },
-    "hoa_docs": {
-      "label": "HOA Documents",
-      "category": "covenants",
-      "description": "HOA rules, bylaws, and architectural guidelines"
+    "inspection": {
+      "subtypes": ["building_inspection", "final_inspection", "code_violation"],
+      "icon": "Municipal.png",
+      "color": "#f39c12"
     }
   },
 
-  "categories": {
-    "permits": {
-      "label": "Permits & Applications",
-      "icon": "Building and Construction.png",
-      "sort_order": 1
-    },
-    "covenants": {
-      "label": "Covenants & Restrictions",
-      "icon": "Legal.png",
-      "sort_order": 2
-    },
-    "surveys": {
-      "label": "Surveys & Plats",
-      "icon": "GIS.png",
-      "sort_order": 3
-    },
-    "reports": {
-      "label": "Property Reports",
-      "icon": "Property Detail Report .png",
-      "sort_order": 4
-    },
-    "zoning": {
-      "label": "Zoning Documents",
-      "icon": "Zoning.png",
-      "sort_order": 5
+  "matching_rules": {
+    "apn_patterns": [
+      "^(\\d{11})$",
+      "^(\\d{3})[-_](\\d{2})[-_](\\d{3})[-_](\\d{2})[-_](\\d{3})$",
+      "^([A-Z0-9]{13,15})$"
+    ],
+    "permit_patterns": [
+      "^(\\d{4})(BL|EL|PL|ME)(\\d{5,6})$",
+      "^(T)(\\d{4})[-_](\\d{5})$"
+    ],
+    "address_normalization": {
+      "remove": [".", ",", "#", "APT", "UNIT", "STE", "SUITE"],
+      "standardize": {
+        "STREET": "ST",
+        "AVENUE": "AVE",
+        "BOULEVARD": "BLVD",
+        "DRIVE": "DR",
+        "ROAD": "RD",
+        "LANE": "LN",
+        "COURT": "CT",
+        "CIRCLE": "CIR",
+        "NORTH": "N",
+        "SOUTH": "S",
+        "EAST": "E",
+        "WEST": "W"
+      }
     }
-  },
-
-  "statistics": {
-    "total_documents": 0,
-    "matched_to_parcel": 0,
-    "matched_to_permit": 0,
-    "needs_manual_review": 0,
-    "by_type": {},
-    "by_category": {}
   }
 }

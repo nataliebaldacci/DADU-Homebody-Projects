@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Search | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --eligible: #6b8e4e;
+            --eligible-light: #8bb36a;
+            --not-eligible: #c0392b;
+            --conditional: #f39c12;
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --teal: #6b8fa3;
+            --white: #ffffff;
+            --cream: #f8f9fa;
+            --warm-gray: #e8e4df;
+            --text: #333333;
+            --text-light: #666666;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--warm-gray); color: var(--text); line-height: 1.6; }
+
+        /* Nav */
+        .nav { background: var(--navy); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 70px; }
+        .nav-logo { display: flex; align-items: center; gap: 12px; color: white; text-decoration: none; font-weight: 700; font-size: 20px; }
+        .nav-logo span { color: var(--teal); }
+        .nav-links { display: flex; gap: 24px; }
+        .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; }
+        .nav-cta { background: var(--eligible); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
+
+        /* Hero */
+        .hero { background: linear-gradient(135deg, var(--navy), var(--navy-dark)); padding: 80px 40px; color: white; text-align: center; }
+        .hero h1 { font-size: 42px; font-weight: 800; margin-bottom: 20px; }
+        .hero p { font-size: 18px; opacity: 0.9; max-width: 600px; margin: 0 auto 40px; }
+
+        /* Search Box */
+        .search-box { max-width: 700px; margin: 0 auto; background: white; padding: 10px; border-radius: 16px; display: flex; gap: 10px; box-shadow: var(--shadow-lg); }
+        .search-box input { flex: 1; border: none; padding: 18px 24px; font-size: 17px; border-radius: 10px; font-family: inherit; }
+        .search-box input:focus { outline: none; }
+        .search-box button { background: var(--eligible); color: white; border: none; padding: 18px 36px; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: inherit; }
+        .search-box button:hover { background: var(--eligible-light); }
+        .search-box button svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .search-hint { margin-top: 16px; font-size: 14px; opacity: 0.7; }
+
+        /* Section styles */
+        .section { padding: 80px 40px; }
+        .section-light { background: white; }
+        .section-gray { background: var(--cream); }
+        .section h2 { font-size: 32px; font-weight: 700; color: var(--navy); margin-bottom: 16px; text-align: center; }
+        .section > p { text-align: center; color: var(--text-light); max-width: 600px; margin: 0 auto 50px; }
+
+        /* Flow Diagram */
+        .flow { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .flow-step { background: white; padding: 24px; border-radius: 12px; text-align: center; width: 200px; border: 2px solid var(--cream); }
+        .flow-step.active { border-color: var(--eligible); background: #f0f7ed; }
+        .flow-step img { width: 48px; height: 48px; margin-bottom: 12px; }
+        .flow-step h4 { font-size: 14px; font-weight: 600; color: var(--navy); }
+        .flow-arrow { font-size: 24px; color: var(--eligible); }
+
+        /* What You Get */
+        .results-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .result-card { background: white; padding: 28px; border-radius: 12px; display: flex; gap: 20px; align-items: flex-start; }
+        .result-icon { width: 56px; height: 56px; flex-shrink: 0; }
+        .result-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .result-content h3 { font-size: 17px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+        .result-content p { font-size: 14px; color: var(--text-light); }
+
+        /* Search Options */
+        .options { max-width: 800px; margin: 0 auto; }
+        .option { display: flex; gap: 24px; margin-bottom: 30px; align-items: flex-start; }
+        .option-icon { width: 48px; height: 48px; background: var(--navy); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .option-icon svg { width: 24px; height: 24px; fill: white; }
+        .option-content h3 { font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+        .option-content p { color: var(--text-light); font-size: 14px; }
+        .option-content code { background: var(--cream); padding: 2px 8px; border-radius: 4px; font-size: 13px; }
+
+        /* Related Tools */
+        .tools-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .tool-card { background: white; padding: 24px; border-radius: 10px; text-decoration: none; color: var(--text); text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+        .tool-card:hover { border-color: var(--eligible); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .tool-card img { width: 48px; height: 48px; margin-bottom: 12px; }
+        .tool-card h4 { font-size: 14px; font-weight: 600; color: var(--navy); }
+
+        /* CTA */
+        .cta-section { background: var(--eligible); padding: 60px 40px; text-align: center; color: white; }
+        .cta-section h2 { font-size: 28px; font-weight: 700; margin-bottom: 16px; }
+        .cta-section p { opacity: 0.9; margin-bottom: 30px; }
+        .cta-btn { display: inline-flex; align-items: center; gap: 10px; background: white; color: var(--eligible); padding: 16px 32px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 16px; }
+
+        /* Footer */
+        .footer { background: var(--navy-dark); padding: 40px; text-align: center; color: rgba(255,255,255,0.7); }
+        .footer a { color: var(--teal); text-decoration: none; }
+
+        @media (max-width: 800px) {
+            .results-grid, .tools-grid { grid-template-columns: 1fr; }
+            .flow { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAV -->
+    <nav class="nav">
+        <a href="homebody_main.html" class="nav-logo">Homebody<span>Projects</span></a>
+        <div class="nav-links">
+            <a href="homebody_main.html#features">Features</a>
+            <a href="homebody_main.html#users">Who It's For</a>
+            <a href="reports_pricing.html">Pricing</a>
+        </div>
+        <a href="property-report-card.html" class="nav-cta">Check My Property</a>
+    </nav>
+
+    <!-- HERO WITH SEARCH -->
+    <section class="hero">
+        <h1>Property Search</h1>
+        <p>Look up any Nashville property by address, APN, or owner name. Get instant access to DADU eligibility, zoning, documents, and more.</p>
+
+        <div class="search-box">
+            <input type="text" placeholder="Enter address, APN, or owner name..." aria-label="Search">
+            <button type="button" onclick="window.location.href='property-report-card.html'">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                Search
+            </button>
+        </div>
+        <p class="search-hint">Try: "123 Main St Nashville" or "11801012200"</p>
+    </section>
+
+    <!-- FLOW TO REPORT CARD -->
+    <section class="section section-light">
+        <h2>Every Search Leads to Your Property Report Card</h2>
+        <p>Property Search is the entry point. The Report Card is the destination.</p>
+
+        <div class="flow">
+            <div class="flow-step active">
+                <img src="assets/icons/Parcel Search.png" alt="">
+                <h4>Property Search</h4>
+            </div>
+            <div class="flow-arrow">&#8594;</div>
+            <div class="flow-step">
+                <img src="assets/icons/Zoning.png" alt="">
+                <h4>Eligibility Check</h4>
+            </div>
+            <div class="flow-arrow">&#8594;</div>
+            <div class="flow-step">
+                <img src="assets/icons/Property Detail Report .png" alt="">
+                <h4>Property Report Card</h4>
+            </div>
+            <div class="flow-arrow">&#8594;</div>
+            <div class="flow-step">
+                <img src="assets/icons/Exports & Reports.png" alt="">
+                <h4>Reports & Tools</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT YOU GET -->
+    <section class="section section-gray">
+        <h2>What You'll Find</h2>
+        <p>Comprehensive property intelligence for DADU research</p>
+
+        <div class="results-grid">
+            <div class="result-card">
+                <div class="result-icon"><img src="assets/icons/Zoning.png" alt=""></div>
+                <div class="result-content">
+                    <h3>DADU Eligibility Status</h3>
+                    <p>Instant assessment of whether the property qualifies for a DADU based on zoning and lot requirements.</p>
+                </div>
+            </div>
+            <div class="result-card">
+                <div class="result-icon"><img src="assets/icons/GIS.png" alt=""></div>
+                <div class="result-content">
+                    <h3>Lot & Parcel Data</h3>
+                    <p>Lot size, dimensions, existing structures, and parcel boundaries from Metro GIS.</p>
+                </div>
+            </div>
+            <div class="result-card">
+                <div class="result-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+                <div class="result-content">
+                    <h3>Recorded Documents</h3>
+                    <p>Quick links to permits, deeds, covenants, and property cards on file.</p>
+                </div>
+            </div>
+            <div class="result-card">
+                <div class="result-icon"><img src="assets/icons/Building and Construction.png" alt=""></div>
+                <div class="result-content">
+                    <h3>Permit History</h3>
+                    <p>View all building permits including any existing DADU permits on the property.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEARCH OPTIONS -->
+    <section class="section section-light">
+        <h2>Search Methods</h2>
+        <p>Multiple ways to find any Davidson County property</p>
+
+        <div class="options">
+            <div class="option">
+                <div class="option-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                </div>
+                <div class="option-content">
+                    <h3>By Address</h3>
+                    <p>Enter the street address. We'll match it to the parcel and show you results. Example: <code>123 Main St Nashville</code></p>
+                </div>
+            </div>
+            <div class="option">
+                <div class="option-icon">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                </div>
+                <div class="option-content">
+                    <h3>By APN (Parcel Number)</h3>
+                    <p>Enter the 11-digit Assessor Parcel Number for exact matching. Example: <code>11801012200</code></p>
+                </div>
+            </div>
+            <div class="option">
+                <div class="option-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <div class="option-content">
+                    <h3>By Owner Name</h3>
+                    <p>Search by property owner name to find all their Davidson County properties. Example: <code>Smith John</code></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RELATED TOOLS -->
+    <section class="section section-gray">
+        <h2>Continue Your Research</h2>
+        <p>From your search results, launch into these connected tools</p>
+
+        <div class="tools-grid">
+            <a href="property-report-card.html" class="tool-card">
+                <img src="assets/icons/Property Detail Report .png" alt="">
+                <h4>Property Report Card</h4>
+            </a>
+            <a href="dadu_eligibility_map.html" class="tool-card">
+                <img src="assets/icons/Zoning.png" alt="">
+                <h4>Eligibility Map</h4>
+            </a>
+            <a href="dadu_documents_portal.html" class="tool-card">
+                <img src="assets/icons/Recorded Docs.png" alt="">
+                <h4>Document Portal</h4>
+            </a>
+            <a href="dadu_reports_store.html" class="tool-card">
+                <img src="assets/icons/Exports & Reports.png" alt="">
+                <h4>Generate Reports</h4>
+            </a>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Start Your Property Search</h2>
+        <p>Enter any Nashville address or APN to begin your DADU research.</p>
+        <a href="property_search.html" class="cta-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            Open Property Search
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>Homebody Projects | Nashville DADU Intelligence Platform</p>
+        <p style="margin-top: 8px;"><a href="homebody_main.html">Home</a> | <a href="dadu_resources.html">Resources</a> | <a href="reports_pricing.html">Pricing</a></p>
+    </footer>
+</body>
+</html>

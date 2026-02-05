@@ -1,70 +1,127 @@
 {
-  "_schema_version": "1.0.0",
-  "_description": "Per-parcel document summary keyed by APN. Used for fast rendering in Property Report Card and Document Portal.",
-  "_generated_from": "docs_index.json",
-  "_last_updated": null,
+  "_schema_version": "1.0",
+  "_description": "Parcel-keyed document summary for fast rendering in Property Report Card and parcel detail views. Keyed by normalized APN.",
+  "_generated": null,
+  "_total_parcels": 0,
 
   "parcels": {
-    "12345678900": {
-      "apn": "12345678900",
-      "apn_formatted": "123-45-678-900",
-      "address": "123 Main St, Nashville TN 37206",
-      "total_docs": 5,
+    "11801012200": {
+      "apn": "11801012200",
+      "address": "123 MAIN ST",
+      "total_documents": 5,
+      "last_updated": "2024-02-01",
 
-      "docs_by_category": {
-        "permits": {
-          "count": 3,
-          "doc_ids": ["DOC-000001", "DOC-000002", "DOC-000003"],
-          "has_site_plan": true,
-          "has_building_permit": true
+      "documents_by_type": {
+        "permit": {
+          "count": 2,
+          "docs": [
+            {
+              "doc_id": "DOC_001",
+              "title": "Building Permit - DADU",
+              "permit_number": "2024BL12345",
+              "date": "2024-01-15",
+              "filepath": "/documents/permits/2024/example_permit_2024BL12345.pdf"
+            },
+            {
+              "doc_id": "DOC_002",
+              "title": "Electrical Permit",
+              "permit_number": "2024EL67890",
+              "date": "2024-02-01",
+              "filepath": "/documents/permits/2024/example_electrical_2024EL67890.pdf"
+            }
+          ]
         },
-        "covenants": {
+        "property_card": {
           "count": 1,
-          "doc_ids": ["DOC-000010"],
-          "has_restrictive_covenant": true,
-          "restriction_summary": "May restrict detached structures > 500 sqft"
+          "docs": [
+            {
+              "doc_id": "DOC_003",
+              "title": "Property Card",
+              "date": "2023-06-15",
+              "filepath": "/documents/property_cards/11801012200.pdf"
+            }
+          ]
         },
-        "surveys": {
+        "covenant": {
           "count": 1,
-          "doc_ids": ["DOC-000020"],
-          "most_recent_date": "2023-06-15"
+          "docs": [
+            {
+              "doc_id": "DOC_004",
+              "title": "Restrictive Covenant",
+              "date": "1985-03-20",
+              "filepath": "/documents/covenants/11801012200_covenant.pdf"
+            }
+          ]
         },
-        "reports": {
-          "count": 0,
-          "doc_ids": []
-        },
-        "zoning": {
-          "count": 0,
-          "doc_ids": []
+        "deed": {
+          "count": 1,
+          "docs": [
+            {
+              "doc_id": "DOC_005",
+              "title": "Warranty Deed",
+              "date": "2020-09-15",
+              "filepath": "/documents/deeds/11801012200_deed.pdf"
+            }
+          ]
         }
       },
 
-      "permits": [
-        {
-          "permit_id": "2024BL12345",
-          "permit_type": "building",
-          "status": "approved",
-          "issue_date": "2024-03-15",
-          "doc_ids": ["DOC-000001", "DOC-000002"]
-        }
-      ],
+      "has_dadu_permit": true,
+      "has_covenant": true,
+      "has_hoa": false,
 
-      "flags": {
-        "has_covenant_restriction": true,
-        "has_approved_dadu": true,
-        "needs_covenant_review": true
-      }
+      "eligibility_status": "eligible",
+      "eligibility_notes": "Meets all requirements. Active DADU permit on file."
+    },
+
+    "_TEMPLATE_APN": {
+      "apn": "APN_HERE",
+      "address": "ADDRESS_HERE",
+      "total_documents": 0,
+      "last_updated": null,
+
+      "documents_by_type": {
+        "permit": { "count": 0, "docs": [] },
+        "property_card": { "count": 0, "docs": [] },
+        "covenant": { "count": 0, "docs": [] },
+        "deed": { "count": 0, "docs": [] },
+        "survey": { "count": 0, "docs": [] },
+        "inspection": { "count": 0, "docs": [] }
+      },
+
+      "has_dadu_permit": false,
+      "has_covenant": false,
+      "has_hoa": false,
+
+      "eligibility_status": null,
+      "eligibility_notes": null
     }
   },
 
-  "index_by_address": {
-    "123 main st": ["12345678900"]
-  },
-
-  "statistics": {
-    "total_parcels_with_docs": 0,
-    "parcels_with_permits": 0,
-    "parcels_with_covenants": 0,
-    "parcels_with_restrictions": 0
+  "eligibility_statuses": {
+    "eligible": {
+      "code": "E",
+      "label": "Eligible",
+      "color": "#6b8e4e",
+      "description": "Property meets all DADU requirements"
+    },
+    "conditional": {
+      "code": "C",
+      "label": "Conditional",
+      "color": "#f39c12",
+      "description": "May require variance or additional review"
+    },
+    "not_eligible": {
+      "code": "N",
+      "label": "Not Eligible",
+      "color": "#c0392b",
+      "description": "Property does not meet DADU requirements"
+    },
+    "unknown": {
+      "code": "U",
+      "label": "Unknown",
+      "color": "#999999",
+      "description": "Eligibility not yet determined"
+    }
   }
 }
