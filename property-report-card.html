@@ -994,23 +994,24 @@
             let html = '';
             let totalDocs = 0;
 
-            // Add each document type with Google Drive links
+            // Add each document type with Google Drive search links
             ['property_cards', 'covenants', 'aerials', 'permits'].forEach(docType => {
                 if (docs[docType] && docs[docType].length > 0) {
                     docs[docType].forEach(filename => {
                         totalDocs++;
                         const icon = DOC_ICONS[docType];
                         const label = DOC_LABELS[docType];
-                        const folderUrl = GDRIVE_URLS[docType];
-                        // Link to Google Drive folder - user can search for the file
+                        const folderId = GDRIVE_FOLDERS[docType];
+                        // Create search URL - searches for filename within the folder
+                        const searchUrl = `https://drive.google.com/drive/folders/${folderId}?q=${encodeURIComponent(filename)}`;
                         html += `
                             <li class="document-item">
                                 <div class="document-icon">${icon}</div>
                                 <div class="document-info">
                                     <div class="document-title">${label}</div>
-                                    <div class="document-meta">${filename}</div>
+                                    <div class="document-meta" style="font-size: 11px; word-break: break-all;">${filename}</div>
                                 </div>
-                                <a href="${folderUrl}" target="_blank" class="document-link" style="color: var(--green); font-size: 12px; text-decoration: none;">View in Drive →</a>
+                                <a href="${searchUrl}" target="_blank" class="document-link" style="color: var(--green); font-size: 12px; text-decoration: none;">Open →</a>
                             </li>`;
                     });
                 }
