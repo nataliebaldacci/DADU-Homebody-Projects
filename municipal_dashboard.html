@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Municipal Dashboard | Homebody Projects</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --navy: #2c3e50;
@@ -19,7 +20,7 @@
             --border: #e0e0e0;
             --text: #333333;
             --text-light: #666666;
-            --terracotta: #27ae60;
+            --success: #27ae60;
             --yellow: #f39c12;
             --red: #c0392b;
             --blue: #3498db;
@@ -704,6 +705,16 @@
             </div>
         </div>
 
+        <!-- Monthly Trend Chart -->
+        <div class="panel" style="margin-top: 24px;">
+            <div class="panel-header">
+                <span class="panel-title">Monthly Permit Activity</span>
+            </div>
+            <div class="panel-content" style="padding: 24px;">
+                <canvas id="monthlyTrendChart" height="200"></canvas>
+            </div>
+        </div>
+
         <div class="panel">
             <div class="panel-header">
                 <span class="panel-title">Recent Applications</span>
@@ -764,6 +775,94 @@
             </table>
         </div>
     </main>
+
+    <script>
+        // Monthly Trend Chart
+        const ctx = document.getElementById('monthlyTrendChart').getContext('2d');
+
+        const monthlyData = {
+            labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+            datasets: [
+                {
+                    label: 'Applications',
+                    data: [28, 35, 42, 38, 52, 47],
+                    backgroundColor: 'rgba(107, 143, 163, 0.8)',
+                    borderColor: '#6b8fa3',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    barPercentage: 0.6
+                },
+                {
+                    label: 'Permits Issued',
+                    data: [22, 28, 35, 31, 38, 29],
+                    backgroundColor: 'rgba(181, 90, 60, 0.8)',
+                    borderColor: '#B55A3C',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    barPercentage: 0.6
+                }
+            ]
+        };
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: monthlyData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+                        labels: {
+                            font: { family: 'Montserrat', size: 12 },
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#2c3e50',
+                        titleFont: { family: 'Montserrat', size: 13 },
+                        bodyFont: { family: 'Montserrat', size: 13 },
+                        padding: 12,
+                        cornerRadius: 8
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: { family: 'Montserrat', size: 11 },
+                            color: '#666'
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: { family: 'Montserrat', size: 12, weight: '600' },
+                            color: '#333'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Date range selector functionality
+        document.querySelector('.hero select').addEventListener('change', function() {
+            const range = this.value;
+            // In a real app, this would fetch new data
+            // For now, just show visual feedback
+            document.querySelectorAll('.kpi-card').forEach(card => {
+                card.style.opacity = '0.7';
+                setTimeout(() => card.style.opacity = '1', 300);
+            });
+        });
+    </script>
     <script src="homebody_header.js"></script>
 </body>
 </html>
