@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "description": "Nashville DADU GIS Data Sources - Live ArcGIS Feature Services",
+    "updated": "2026-02-05",
+    "owner": "Homebody Projects"
+  },
+  "featureServices": {
+    "eligibility": {
+      "name": "DADU Eligibility Enhanced",
+      "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0",
+      "recordCount": 161703,
+      "description": "Parcel eligibility for DADU construction",
+      "usedIn": ["dadu_eligibility_map.html", "am_i_eligible.html"]
+    },
+    "permits": {
+      "newPermits": {
+        "name": "NEW ADU Permits 2026",
+        "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/NEW_ADU_Permits_20260114/FeatureServer/0",
+        "recordCount": 4117,
+        "description": "Latest ADU permit applications"
+      },
+      "allPermits": {
+        "name": "DADU All Permits Final",
+        "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/DADU_All_Permits_Final/FeatureServer/0",
+        "description": "Complete historical permit data"
+      }
+    },
+    "buildingSpecs": {
+      "name": "DADU Building Specs",
+      "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Building_Specs_20260119_042856/FeatureServer",
+      "description": "Building specifications for permitted DADUs"
+    },
+    "existingDADUs": {
+      "name": "Existing DADUs (Secondary Structures Merged)",
+      "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Secondary_SFH_Merged_SHP_20251231_0015/FeatureServer/0",
+      "description": "Merged secondary structures on single-family parcels"
+    },
+    "sfhParcels": {
+      "name": "Single Family Home Parcels",
+      "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/SFH_parcels/FeatureServer/0",
+      "description": "All single family homes with property info URLs",
+      "webMapItem": "https://vanderbilt.maps.arcgis.com/home/item.html?id=741d5a8b91244ef0ad8fdbad9a118079"
+    },
+    "restrictiveCovenants": {
+      "parcelsWithCR": {
+        "name": "Parcels with Restrictive Covenants",
+        "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Parcels_with_Restrictive_Covenants_ohoMJQ/FeatureServer/0",
+        "description": "Parcels flagged with restrictive covenants"
+      },
+      "covenantLinks": {
+        "name": "Restrictive Covenant PDF Links",
+        "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/_Restrictive_Covenant_Links__A1_R2978_QuLdfD/FeatureServer/0",
+        "description": "Links to actual covenant PDF documents"
+      }
+    },
+    "secondaryStructures": {
+      "name": "Secondary Structures on SF Parcels",
+      "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Secondary_On_SF_Parcels_SHP_20251230_2352/FeatureServer/0",
+      "description": "Identified secondary structures"
+    }
+  },
+  "nashvilleOfficialServices": {
+    "zoningOverlays": {
+      "name": "Zoning Overlay Districts",
+      "url": "https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Zoning_Overlay_Districts/MapServer/0",
+      "description": "Official Metro Nashville zoning overlays",
+      "queryExample": "ZONE_DESC = 'Detached Accessory Dwelling Unit Overlay District'"
+    },
+    "zoningOverlaysView": {
+      "name": "Zoning Overlay Districts View (ArcGIS Online)",
+      "url": "https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Zoning_Overlay_Districts_Vw/FeatureServer/0",
+      "description": "Urban Design Overlays and other zoning districts"
+    },
+    "addressPoints": {
+      "name": "Nashville Address Points",
+      "url": "https://maps.nashville.gov/arcgis/rest/services/Addressing/AddressPoints/MapServer/0",
+      "description": "Official address points with descriptions",
+      "daduQuery": "Description like '%DADU%' OR DESCRIPTION LIKE '%ACCESSORY DWELL%' OR DESCRIPTION LIKE '%Carriage%'"
+    },
+    "parcelHistory": {
+      "name": "Parcel History",
+      "url": "https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5",
+      "description": "Historical parcel zoning changes"
+    },
+    "cadastral": {
+      "name": "Cadastral Layers",
+      "url": "https://maps.nashville.gov/arcgis/rest/services/Cadastral/Cadastral_Layers/MapServer/4",
+      "description": "Parcel boundaries and cadastral data"
+    }
+  },
+  "webMaps": {
+    "existingDADUs": {
+      "name": "Existing DADUs",
+      "url": "https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=9f40d0ca10b1453198617aa9cd2f6b9f"
+    },
+    "buildingSpecs": {
+      "name": "Building Specs",
+      "itemUrl": "https://vanderbilt.maps.arcgis.com/home/item.html?id=d7f2cf4e38f34eddba0a671aa0db4acf"
+    },
+    "daduNearMe": {
+      "name": "DADU Near Me",
+      "itemUrl": "https://vanderbilt.maps.arcgis.com/home/item.html?id=3e01dee4a4384062b0a0c1be98cd3839"
+    },
+    "daduPermits": {
+      "name": "DADU Permits",
+      "urls": [
+        "https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=50bbdc9cb0c24ab4aaaadc3951cc1555",
+        "https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=e07213bcf33748679b195c72ee421e42"
+      ]
+    },
+    "eligibilityBL2025": {
+      "name": "DADU Eligibility BL2025-1007",
+      "itemUrl": "https://vanderbilt.maps.arcgis.com/home/item.html?id=d6c2c06db5744bb0836cfb0227548275"
+    },
+    "daduFootprints": {
+      "name": "DADU Footprints",
+      "url": "https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=d3f149a92f1c4131b3fc711bc4809b5b"
+    },
+    "restrictiveCovenants": {
+      "name": "Restrictive Covenants for DADUs",
+      "url": "https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=168e16cf3b08411296759cf39f22dc6d"
+    }
+  }
+}

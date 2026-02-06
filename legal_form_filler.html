@@ -65,7 +65,7 @@
         }
 
         .cta-banner {
-            background: #6b8e4e;
+            background: #B55A3C;
             color: white;
             padding: 1rem 2rem;
             text-align: center;
@@ -164,7 +164,7 @@
             background: #f5f5f0;
         }
 
-        .category-header.building { border-left: 4px solid #6b8e4e; }
+        .category-header.building { border-left: 4px solid #B55A3C; }
         .category-header.covenant { border-left: 4px solid #c9a86c; }
         .category-header.historic { border-left: 4px solid #6b8fa3; }
         .category-header.trade { border-left: 4px solid #e74c3c; }
@@ -231,7 +231,7 @@
         }
 
         .form-item:hover {
-            background: #e8f0e0;
+            background: #f0e8e0;
         }
 
         .form-item:last-child {
@@ -290,7 +290,7 @@
         }
 
         .tag-free {
-            background: #e8f0e0;
+            background: #f0e8e0;
             color: #27ae60;
         }
 
@@ -365,7 +365,7 @@
         }
 
         .quick-link-card:hover {
-            background: #e8f0e0;
+            background: #f0e8e0;
             transform: translateY(-2px);
         }
 
@@ -415,7 +415,7 @@
         }
 
         .resource-card a {
-            color: #6b8e4e;
+            color: #B55A3C;
             font-weight: 600;
             text-decoration: none;
             font-size: 0.85rem;
@@ -452,16 +452,207 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-    <header class="header">
-        <div class="logo">🏠 Homebody</div>
-        <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="determine_forms_required.html">Form Wizard</a>
-            <a href="am_i_eligible.html">Eligibility</a>
-        </nav>
-    </header>
+<!-- Shared Header - Homebody Projects -->
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="top-bar-left">
+        Nashville-Davidson County <span>BL2025-1007</span> effective December 12, 2025
+    </div>
+    <div class="top-bar-right">
+        <a href="homebody_pricing.html">Pricing</a>
+        <a href="dadu_resources.html">Resources</a>
+        <a href="mailto:contact@homebodyprojects.com">Contact</a>
+    </div>
+</div>
+
+<!-- Main Navigation -->
+<nav class="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+        <!-- Logo -->
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">
+                <img src="assets/icons/ADU.png" alt="Homebody ADU Icon">
+            </div>
+            <div class="nav-logo-text">
+                <span class="nav-logo-title">Homebody Projects</span>
+                <span class="nav-logo-subtitle">Nashville DADU Platform</span>
+            </div>
+        </a>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <!-- Features Dropdown -->
+            <div class="nav-item">
+                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="features">
+                    Features <span class="chevron">▼</span>
+                </button>
+                <div class="dropdown-menu" id="features-dropdown" role="menu">
+                    <div class="dropdown-section">
+                        <div class="dropdown-section-title">Explore</div>
+                        <a href="dadu_eligibility_map.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Zoning.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">DADU Eligibility Map</div>
+                                <div class="dropdown-item-desc">Color-coded eligibility across Nashville parcels</div>
+                            </div>
+                        </a>
+                        <a href="property_search.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Parcel Search.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Property Search</div>
+                                <div class="dropdown-item-desc">Search by address or APN</div>
+                            </div>
+                        </a>
+                        <a href="dadu_explorer_v3.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Area Maps and Visual layers.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">DADU Explorer</div>
+                                <div class="dropdown-item-desc">Filter parcels by ZIP, cost, year, sqft</div>
+                            </div>
+                        </a>
+                        <a href="dadu_near_me_v2.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Neighbors.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Near Me Locator</div>
+                                <div class="dropdown-item-desc">Find permitted DADUs near any address</div>
+                            </div>
+                            <span class="dropdown-item-badge">Free</span>
+                        </a>
+                    </div>
+                    <div class="dropdown-section">
+                        <div class="dropdown-section-title">Documents & Data</div>
+                        <a href="dadu_documents_portal.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Recorded Docs.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Recorded Documents</div>
+                                <div class="dropdown-item-desc">Permits, covenants, site plans</div>
+                            </div>
+                        </a>
+                        <a href="dadu_reports_store.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Exports & Reports.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Reports Store</div>
+                                <div class="dropdown-item-desc">Property reports and data exports</div>
+                            </div>
+                        </a>
+                        <a href="parcel_footprint_map.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/GIS.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">GIS / Layers</div>
+                                <div class="dropdown-item-desc">Interactive parcel and footprint maps</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="dropdown-section">
+                        <div class="dropdown-section-title">Tools</div>
+                        <a href="roi_calculator.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Appraisers.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Calculators</div>
+                                <div class="dropdown-item-desc">ROI, costs, tax, timeline tools</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Types Dropdown -->
+            <div class="nav-item">
+                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="users">
+                    Who We Serve <span class="chevron">▼</span>
+                </button>
+                <div class="dropdown-menu" id="users-dropdown" role="menu">
+                    <a href="user-homeowners.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Property Owners.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Homeowners</div>
+                            <div class="dropdown-item-desc">Eligibility, constraints, timeline, ROI</div>
+                        </div>
+                    </a>
+                    <a href="contractor_marketplace.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Building and Construction.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Contractors</div>
+                            <div class="dropdown-item-desc">Leads, permit history, benchmarks</div>
+                        </div>
+                    </a>
+                    <a href="designer_resources.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Surveyers adn Engineers.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Designers / Architects</div>
+                            <div class="dropdown-item-desc">Setbacks, envelopes, precedents</div>
+                        </div>
+                    </a>
+                    <a href="market_trends.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Investors.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Developers / Investors</div>
+                            <div class="dropdown-item-desc">Opportunity maps, exports, trends</div>
+                        </div>
+                    </a>
+                    <a href="municipal_dashboard.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Municipal.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Municipal / Agencies</div>
+                            <div class="dropdown-item-desc">Permit tracking and policy impacts</div>
+                        </div>
+                    </a>
+                    <a href="legal_resources.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Legal.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Legal / Appraisers</div>
+                            <div class="dropdown-item-desc">Covenants, recorded docs, compliance</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pricing Link -->
+            <a href="homebody_pricing.html" class="nav-link">Pricing</a>
+        </div>
+
+        <!-- Search CTA -->
+        <a href="am_i_eligible.html" class="nav-search-btn">
+            <span>🔍</span>
+            <span>Check My Property</span>
+        </a>
+    </div>
+</nav>
+<!-- End Shared Header -->
+
+
+    
 
     <section class="hero">
         <h1>📋 DADU Forms & Applications</h1>
@@ -1043,5 +1234,6 @@
             });
         });
     </script>
+    <script src="homebody_header.js"></script>
 </body>
 </html>
