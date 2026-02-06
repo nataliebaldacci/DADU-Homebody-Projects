@@ -3139,8 +3139,9 @@
         }
 
         function toggleTool(name) {
-            document.getElementById(name + 'Tool').classList.toggle('active');
-            alert(name.charAt(0).toUpperCase() + name.slice(1) + ' tool coming soon!');
+            const tool = document.getElementById(name + 'Tool');
+            tool.classList.toggle('active');
+            // Tool functionality - toggle visual state only for now
         }
 
         // ============================================================
@@ -3156,7 +3157,11 @@
         }
 
         function openEditModal() {
-            alert('Edit modal coming soon!');
+            // Edit functionality - view full report for complete property details
+            const reportBtn = document.getElementById('viewFullReportBtn');
+            if (reportBtn && reportBtn.href) {
+                window.location.href = reportBtn.href;
+            }
         }
 
         // ============================================================

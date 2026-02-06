@@ -1271,9 +1271,12 @@
             }
         }
 
-        // Draw shape (placeholder)
+        // Draw shape - redirect to map view
         function drawShape() {
-            alert('Draw area feature coming soon! For now, use the filters and zoom to search.');
+            // For custom area searches, use the eligibility map
+            if (confirm('For custom area searches, use the Eligibility Map.\n\nGo to Eligibility Map now?')) {
+                window.location.href = 'dadu_eligibility_map.html';
+            }
         }
 
         // Helper functions

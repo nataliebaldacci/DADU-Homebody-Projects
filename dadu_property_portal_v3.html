@@ -1740,10 +1740,15 @@
         function switchMainTab(tabName) {
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
-            
-            // Handle different main tabs (eligibility, legislation, history)
-            if (tabName !== 'lookup') {
-                alert(tabName.charAt(0).toUpperCase() + tabName.slice(1) + ' page coming soon! For now, see the infographic pages.');
+
+            // Navigate to appropriate pages
+            const pageMap = {
+                'eligibility': 'dadu_eligibility_map.html',
+                'legislation': 'dadu_code_legislation_v3.html',
+                'history': 'dadu_history.html'
+            };
+            if (tabName !== 'lookup' && pageMap[tabName]) {
+                window.location.href = pageMap[tabName];
             }
         }
         
