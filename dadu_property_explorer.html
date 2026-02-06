@@ -1236,9 +1236,9 @@
                     <a href="https://maps.nashville.gov/ParcelViewer/?pin=${props.APN || props.apn || ''}" class="action-btn secondary" target="_blank">
                         🗺️ Nashville Parcel Viewer
                     </a>
-                    <button class="action-btn premium" onclick="alert('Coming soon! Full DADU reports with detailed analysis.')">
-                        🔓 Get Full DADU Report - $19
-                    </button>
+                    <a href="property-report-card.html?apn=${props.APN || props.apn || ''}&address=${encodeURIComponent(currentProperty.address)}" class="action-btn premium">
+                        🔓 Get Full Report
+                    </a>
                 </div>
             `;
             
@@ -1324,9 +1324,13 @@
             }
         }
         
-        // Premium modal
+        // Premium modal - redirect to full report
         function showPremiumModal() {
-            alert('Coming soon! Full DADU reports will include:\n\n• Detailed eligibility analysis\n• Maximum building specifications\n• Setback calculations\n• Covenant review\n• Permit checklist\n• Contractor recommendations');
+            if (currentProperty && currentProperty.address) {
+                window.location.href = `property-report-card.html?address=${encodeURIComponent(currentProperty.address)}`;
+            } else {
+                window.location.href = 'property-report-card.html';
+            }
         }
         
         // Enter key handler
