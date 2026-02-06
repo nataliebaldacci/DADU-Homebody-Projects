@@ -1705,6 +1705,7 @@
                 </div>
 
                 <div class="property-section">
+                    <a id="viewFullReportBtn" href="property-report-card.html" class="btn" style="width: 100%; background: var(--terracotta); color: white; margin-bottom: 12px; display: block; text-align: center;">View Full Property Report →</a>
                     <div style="display: flex; gap: 10px; margin-bottom: 16px;">
                         <button class="btn btn-outline" style="flex: 1;">Browse Designs</button>
                         <button class="btn btn-green" style="flex: 1;">Sketch a DADU</button>
@@ -2891,6 +2892,12 @@
 
             const maxDADU = currentProperty.lotArea >= 10000 ? 850 : 700;
             document.getElementById('propMaxDADU').textContent = maxDADU + ' sqft';
+
+            // Update View Full Report button
+            const reportBtn = document.getElementById('viewFullReportBtn');
+            const apnForReport = currentProperty.APN || currentProperty.STANPAR || currentProperty.apn || '';
+            const addressForReport = currentProperty.address || '';
+            reportBtn.href = `property-report-card.html?apn=${encodeURIComponent(apnForReport)}&address=${encodeURIComponent(addressForReport)}`;
 
             // Update DADU Design Standards based on lot size
             updateDesignStandards(maxDADU);

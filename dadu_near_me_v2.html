@@ -287,7 +287,23 @@
             font-weight: 600;
             margin-top: 8px;
         }
-        
+
+        .result-report-link {
+            display: block;
+            margin-top: 10px;
+            padding: 6px 12px;
+            background: var(--terracotta);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .result-report-link:hover {
+            background: var(--terracotta-hover);
+        }
+
         /* Empty State */
         .empty-state {
             padding: 40px 20px;
@@ -1023,6 +1039,7 @@
                             dateIssued: formatDate(props.date_issued || props.Date_Issued),
                             status: props.status || props.Status || '-',
                             purpose: props.purpose || props.Purpose || '',
+                            apn: props.APN || props.apn || props.STANPAR || props.stanpar || '',
                             lat: lat,
                             lon: lon,
                             distance: dist,
@@ -1074,6 +1091,9 @@
                                         View Permit Details →
                                     </a>
                                 ` : ''}
+                                <a href="property-report-card.html?address=${encodeURIComponent(permit.address)}${permit.apn ? '&apn=' + permit.apn : ''}" class="popup-btn" style="background: var(--terracotta); margin-top: 8px;">
+                                    View Property Report →
+                                </a>
                             </div>
                         `);
                         
@@ -1163,6 +1183,7 @@
                                 ${permit.contractor !== 'Not listed' ? `
                                     <div class="contractor-badge">🔨 ${permit.contractor}</div>
                                 ` : ''}
+                                <a href="property-report-card.html?address=${encodeURIComponent(permit.address)}${permit.apn ? '&apn=' + permit.apn : ''}" class="result-report-link" onclick="event.stopPropagation()">View Report →</a>
                             </li>
                         `;
                     }).join('')}
