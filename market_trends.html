@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market Trends | Homebody Projects</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --navy: #2c3e50;
@@ -19,7 +20,7 @@
             --border: #e0e0e0;
             --text: #333333;
             --text-light: #666666;
-            --terracotta: #27ae60;
+            --success: #27ae60;
             --yellow: #f39c12;
             --red: #c0392b;
             --blue: #3498db;
@@ -633,10 +634,7 @@
                     </div>
                 </div>
                 <div class="chart-card-body">
-                    <div class="chart-placeholder">
-                        📊 Cost trend line chart (2020-2026)<br>
-                        Shows increase from $145/SF to $185/SF
-                    </div>
+                    <canvas id="costTrendChart" height="280"></canvas>
                 </div>
             </div>
         </section>
@@ -833,6 +831,114 @@
     <footer class="footer">
         <p>&copy; 2026 Homebody Projects. A Vanderbilt Law School Project.</p>
     </footer>
+
+    <script>
+        // Cost Trend Chart
+        const ctx = document.getElementById('costTrendChart').getContext('2d');
+
+        const costData = {
+            labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2026'],
+            datasets: [{
+                label: 'Avg $/SF',
+                data: [145, 152, 158, 165, 171, 178, 185],
+                borderColor: '#B55A3C',
+                backgroundColor: 'rgba(181, 90, 60, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.3,
+                pointBackgroundColor: '#B55A3C',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8
+            }]
+        };
+
+        const costChart = new Chart(ctx, {
+            type: 'line',
+            data: costData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#2c3e50',
+                        titleFont: { family: 'Montserrat', size: 13 },
+                        bodyFont: { family: 'Montserrat', size: 14, weight: 'bold' },
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y + ' per SF';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 130,
+                        max: 200,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value;
+                            },
+                            font: { family: 'Montserrat', size: 12 },
+                            color: '#666'
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: { family: 'Montserrat', size: 12, weight: '600' },
+                            color: '#333'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+
+        // Time filter functionality
+        document.querySelectorAll('.time-filter').forEach(filter => {
+            filter.addEventListener('click', function() {
+                document.querySelectorAll('.time-filter').forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+
+                const range = this.textContent;
+                let labels, data;
+
+                if (range === '1Y') {
+                    labels = ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025', 'Q1 2026'];
+                    data = [175, 177, 179, 181, 185];
+                } else if (range === '3Y') {
+                    labels = ['2024', '2025', '2026'];
+                    data = [171, 178, 185];
+                } else if (range === '5Y') {
+                    labels = ['2022', '2023', '2024', '2025', '2026'];
+                    data = [158, 165, 171, 178, 185];
+                } else {
+                    labels = ['2020', '2021', '2022', '2023', '2024', '2025', '2026'];
+                    data = [145, 152, 158, 165, 171, 178, 185];
+                }
+
+                costChart.data.labels = labels;
+                costChart.data.datasets[0].data = data;
+                costChart.update();
+            });
+        });
+    </script>
     <script src="homebody_header.js"></script>
 </body>
 </html>
