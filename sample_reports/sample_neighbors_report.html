@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neighbors Report - Sample | Homebody Projects</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+        .report { max-width: 800px; margin: 20px auto; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 30px; }
+        .header h1 { font-size: 24px; margin-bottom: 5px; }
+        .sample-badge { background: #e74c3c; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; margin-top: 10px; }
+        .section { padding: 25px 30px; border-bottom: 1px solid #eee; }
+        .section h3 { font-size: 16px; color: #2c3e50; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #B55A3C; display: inline-block; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+        th { background: #f8f9fa; font-size: 11px; text-transform: uppercase; color: #666; }
+        .map-placeholder { background: #e8e4df; height: 300px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #666; margin-bottom: 20px; }
+        .summary-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+        .summary-stat { background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; }
+        .summary-stat .value { font-size: 24px; font-weight: bold; color: #2c3e50; }
+        .summary-stat .label { font-size: 11px; color: #666; text-transform: uppercase; }
+        .status-eligible { background: #d4edda; color: #155724; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .status-conditional { background: #fff3cd; color: #856404; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .status-not-eligible { background: #f8d7da; color: #721c24; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .status-has-dadu { background: #cce5ff; color: #004085; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .neighbor-card { border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 12px; }
+        .neighbor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .neighbor-address { font-weight: bold; color: #2c3e50; }
+        .neighbor-details { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 13px; }
+        .neighbor-detail .label { color: #999; font-size: 11px; }
+        .footer { background: #2c3e50; color: white; padding: 20px 30px; text-align: center; font-size: 12px; }
+        .footer a { color: #B55A3C; }
+    </style>
+</head>
+<body>
+    <div class="report">
+        <div class="header">
+            <h1>Neighbors Report</h1>
+            <div class="subtitle">Surrounding Properties Analysis | Homebody Projects</div>
+            <span class="sample-badge">SAMPLE REPORT - $9</span>
+        </div>
+
+        <div class="section">
+            <h3>Subject Property</h3>
+            <table>
+                <tr><td><strong>Address</strong></td><td>2763 Rosedale Pl, Nashville, TN 37206</td></tr>
+                <tr><td><strong>APN</strong></td><td>08305027100</td></tr>
+                <tr><td><strong>Search Radius</strong></td><td>500 feet (adjacent parcels)</td></tr>
+                <tr><td><strong>Neighbors Found</strong></td><td>12 properties</td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>Neighborhood Map</h3>
+            <div class="map-placeholder">[Interactive Map - Subject property and 12 neighboring parcels]</div>
+        </div>
+
+        <div class="section">
+            <h3>Neighborhood Summary</h3>
+            <div class="summary-stats">
+                <div class="summary-stat">
+                    <div class="value">12</div>
+                    <div class="label">Total Neighbors</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="value">8</div>
+                    <div class="label">DADU Eligible</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="value">2</div>
+                    <div class="label">Existing DADUs</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="value">9,850</div>
+                    <div class="label">Avg Lot SF</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Adjacent Properties</h3>
+
+            <div class="neighbor-card">
+                <div class="neighbor-header">
+                    <span class="neighbor-address">2765 Rosedale Pl</span>
+                    <span class="status-eligible">Eligible</span>
+                </div>
+                <div class="neighbor-details">
+                    <div class="neighbor-detail"><div class="label">Owner</div><div>M. Thompson</div></div>
+                    <div class="neighbor-detail"><div class="label">Lot Size</div><div>10,200 SF</div></div>
+                    <div class="neighbor-detail"><div class="label">Zoning</div><div>R6-A</div></div>
+                    <div class="neighbor-detail"><div class="label">Year Built</div><div>1952</div></div>
+                </div>
+            </div>
+
+            <div class="neighbor-card">
+                <div class="neighbor-header">
+                    <span class="neighbor-address">2761 Rosedale Pl</span>
+                    <span class="status-has-dadu">Has DADU</span>
+                </div>
+                <div class="neighbor-details">
+                    <div class="neighbor-detail"><div class="label">Owner</div><div>S. Williams</div></div>
+                    <div class="neighbor-detail"><div class="label">Lot Size</div><div>11,500 SF</div></div>
+                    <div class="neighbor-detail"><div class="label">Zoning</div><div>R6-A</div></div>
+                    <div class="neighbor-detail"><div class="label">DADU</div><div>650 SF (2024)</div></div>
+                </div>
+            </div>
+
+            <div class="neighbor-card">
+                <div class="neighbor-header">
+                    <span class="neighbor-address">2767 Rosedale Pl</span>
+                    <span class="status-eligible">Eligible</span>
+                </div>
+                <div class="neighbor-details">
+                    <div class="neighbor-detail"><div class="label">Owner</div><div>R. Johnson</div></div>
+                    <div class="neighbor-detail"><div class="label">Lot Size</div><div>8,500 SF</div></div>
+                    <div class="neighbor-detail"><div class="label">Zoning</div><div>R6-A</div></div>
+                    <div class="neighbor-detail"><div class="label">Year Built</div><div>1948</div></div>
+                </div>
+            </div>
+
+            <div class="neighbor-card">
+                <div class="neighbor-header">
+                    <span class="neighbor-address">1105 Holly St</span>
+                    <span class="status-conditional">Conditional</span>
+                </div>
+                <div class="neighbor-details">
+                    <div class="neighbor-detail"><div class="label">Owner</div><div>A. Martinez</div></div>
+                    <div class="neighbor-detail"><div class="label">Lot Size</div><div>7,200 SF</div></div>
+                    <div class="neighbor-detail"><div class="label">Zoning</div><div>RS5</div></div>
+                    <div class="neighbor-detail"><div class="label">Note</div><div>GSD - Needs Overlay</div></div>
+                </div>
+            </div>
+
+            <div class="neighbor-card">
+                <div class="neighbor-header">
+                    <span class="neighbor-address">1107 Holly St</span>
+                    <span class="status-has-dadu">Has DADU</span>
+                </div>
+                <div class="neighbor-details">
+                    <div class="neighbor-detail"><div class="label">Owner</div><div>K. Chen</div></div>
+                    <div class="neighbor-detail"><div class="label">Lot Size</div><div>9,800 SF</div></div>
+                    <div class="neighbor-detail"><div class="label">Zoning</div><div>RS5</div></div>
+                    <div class="neighbor-detail"><div class="label">DADU</div><div>720 SF (2023)</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>All Neighboring Properties</h3>
+            <table>
+                <tr>
+                    <th>Address</th>
+                    <th>Owner</th>
+                    <th>Lot Size</th>
+                    <th>Zoning</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>2765 Rosedale Pl</td>
+                    <td>M. Thompson</td>
+                    <td>10,200 SF</td>
+                    <td>R6-A</td>
+                    <td><span class="status-eligible">Eligible</span></td>
+                </tr>
+                <tr>
+                    <td>2761 Rosedale Pl</td>
+                    <td>S. Williams</td>
+                    <td>11,500 SF</td>
+                    <td>R6-A</td>
+                    <td><span class="status-has-dadu">Has DADU</span></td>
+                </tr>
+                <tr>
+                    <td>2767 Rosedale Pl</td>
+                    <td>R. Johnson</td>
+                    <td>8,500 SF</td>
+                    <td>R6-A</td>
+                    <td><span class="status-eligible">Eligible</span></td>
+                </tr>
+                <tr>
+                    <td>1105 Holly St</td>
+                    <td>A. Martinez</td>
+                    <td>7,200 SF</td>
+                    <td>RS5</td>
+                    <td><span class="status-conditional">Conditional</span></td>
+                </tr>
+                <tr>
+                    <td>1107 Holly St</td>
+                    <td>K. Chen</td>
+                    <td>9,800 SF</td>
+                    <td>RS5</td>
+                    <td><span class="status-has-dadu">Has DADU</span></td>
+                </tr>
+                <tr>
+                    <td>1109 Holly St</td>
+                    <td>J. Davis</td>
+                    <td>8,900 SF</td>
+                    <td>RS5</td>
+                    <td><span class="status-eligible">Eligible</span></td>
+                </tr>
+                <tr>
+                    <td>2760 Forrest Ave</td>
+                    <td>L. Brown</td>
+                    <td>12,100 SF</td>
+                    <td>R6-A</td>
+                    <td><span class="status-eligible">Eligible</span></td>
+                </tr>
+                <tr>
+                    <td>2762 Forrest Ave</td>
+                    <td>P. Wilson</td>
+                    <td>10,800 SF</td>
+                    <td>R6-A</td>
+                    <td><span class="status-eligible">Eligible</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>Generated by <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/">Homebody Projects</a></p>
+            <p style="margin-top: 5px; opacity: 0.8;">Sample report. Owner names shown are illustrative only.</p>
+        </div>
+    </div>
+</body>
+</html>
