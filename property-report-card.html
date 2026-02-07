@@ -1336,9 +1336,11 @@
         let allEligibilityData = [];
         let documentsIndex = {};
         let ordinanceIndex = {};
+        let udoDaduIndex = {};
         let dataLoaded = false;
         let docsLoaded = false;
         let ordinancesLoaded = false;
+        let udoIndexLoaded = false;
 
         // Search form handling
         const searchForm = document.getElementById('search-form');
@@ -1379,21 +1381,40 @@
             }
         }
 
-        // Fetch zoning history for a parcel from Nashville API
-        async function fetchZoningHistory(parcelId) {
+        // Load UDO DADU standards index
+        async function loadUdoDaduIndex() {
+            if (udoIndexLoaded) return;
+            try {
+                const response = await fetch('data/udo_dadu_standards.json');
+                udoDaduIndex = await response.json();
+                udoIndexLoaded = true;
+                console.log('Loaded UDO DADU standards index');
+            } catch (error) {
+                console.error('Error loading UDO DADU index:', error);
+            }
+        }
+
+        // Fetch parcel overlays from Nashville API
+        async function fetchParcelOverlays(apn) {
+            // Query the zoning overlay service by geometry (would need parcel geometry)
+            // For now, we'll query by case number patterns
             const baseUrl = 'https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5/query';
-            const params = new URLSearchParams({
-                where: `ParcelID=${parcelId}`,
-                outFields: 'ZoneCode,OrdinanceNumber,CaseNumber,url,Description,Status',
-                f: 'json'
-            });
 
             try {
+                // Try to find parcels matching this APN in overlay data
+                // This requires ParcelID which may differ from APN
+                const params = new URLSearchParams({
+                    where: `ZoneCode IN ('OV-DDU','UDO','OV-UDO') AND Status='Active'`,
+                    outFields: 'ZoneCode,OrdinanceNumber,CaseNumber,url,Description',
+                    resultRecordCount: 100,
+                    f: 'json'
+                });
+
                 const response = await fetch(`${baseUrl}?${params}`);
                 const data = await response.json();
                 return data.features || [];
             } catch (error) {
-                console.error('Error fetching zoning history:', error);
+                console.error('Error fetching parcel overlays:', error);
                 return [];
             }
         }
@@ -1403,83 +1424,79 @@
             const legislationList = document.getElementById('legislation-list');
             if (!legislationList) return;
 
-            // Clear existing items
-            legislationList.innerHTML = '';
+            // Show loading state
+            legislationList.innerHTML = '<li class="document-item"><div class="document-icon">⏳</div><div class="document-info"><div class="document-title">Loading legislation...</div></div></li>';
 
             const items = [];
 
-            // Always show BL2025-1007 for USD eligible properties
+            // 1. USD By-Right (BL2025-1007) for eligible properties
             if (eligCode && (eligCode.startsWith('E') || eligCode === 'U' || eligCode === 'US')) {
+                const usdInfo = udoDaduIndex.usd_by_right || {};
                 items.push({
                     type: 'USD_BY_RIGHT',
                     ordinance: 'BL2025-1007',
                     title: 'BL2025-1007 - DADU Expansion Act',
-                    description: 'Permits DADUs by right in Urban Services District',
-                    url: 'https://documents.nashville.gov/Request/Form/Legislation?legislationnumber=BL2025-1007',
+                    description: 'Permits DADUs by right in Urban Services District (R/RS zones)',
+                    url: usdInfo.pdf_url || 'https://documents.nashville.gov/Request/Form/Legislation?legislationnumber=BL2025-1007',
                     icon: '🏛️'
                 });
             }
 
-            // Try to get parcel-specific legislation from Nashville API
-            // First try APN as ParcelID (may need conversion)
-            if (apn) {
-                try {
-                    // Query by APN in the zoning overlay service
-                    const overlayUrl = 'https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5/query';
-                    const params = new URLSearchParams({
-                        where: `1=1`,
-                        outFields: 'ZoneCode,OrdinanceNumber,CaseNumber,url',
-                        resultRecordCount: 10,
-                        f: 'json'
-                    });
+            // 2. Check for DADU Overlay districts
+            if (udoDaduIndex.dadu_overlays) {
+                // For GSD conditional, show relevant DADU overlay info
+                if (eligCode && (eligCode.startsWith('C') || eligCode === 'G')) {
+                    for (const [caseNum, overlay] of Object.entries(udoDaduIndex.dadu_overlays)) {
+                        items.push({
+                            type: 'DADU_OVERLAY',
+                            ordinance: overlay.ordinance,
+                            title: `${overlay.ordinance} - ${overlay.name}`,
+                            description: `Case: ${caseNum}`,
+                            url: overlay.pdf_url,
+                            planUrl: overlay.plan_pdf,
+                            icon: '🏠'
+                        });
+                    }
+                }
+            }
 
-                    // Also check local ordinance index for any matches
-                    for (const [ordNum, ordData] of Object.entries(ordinanceIndex)) {
-                        // Check if this is a DADU overlay ordinance
-                        if (ordData.zone_type === 'DADU_OVERLAY') {
-                            // We'd need parcel-specific data to know if this applies
-                            // For now, show these as "Check if applicable"
+            // 3. Check for UDOs with DADU standards
+            if (udoDaduIndex.udos) {
+                // Show UDOs with DADU standards for R/RM zones
+                if (zoning && /^(R\d|R$|RM)/.test(zoning)) {
+                    let udoCount = 0;
+                    for (const [caseNum, udo] of Object.entries(udoDaduIndex.udos)) {
+                        if (udo.has_dadu_standards && udoCount < 3) {
+                            items.push({
+                                type: 'UDO',
+                                ordinance: caseNum,
+                                title: `${udo.name} UDO`,
+                                description: `Has DADU development standards`,
+                                url: udo.pdf_url,
+                                legislationUrl: udo.legislation_url,
+                                icon: '📐'
+                            });
+                            udoCount++;
                         }
                     }
-                } catch (error) {
-                    console.error('Error fetching overlay data:', error);
                 }
             }
 
-            // Check for zoning-specific legislation
-            if (zoning) {
-                // SP zones link to specific plan
-                if (zoning === 'SP' || zoning.startsWith('SP-')) {
-                    items.push({
-                        type: 'SP',
-                        ordinance: 'Specific Plan',
-                        title: 'Specific Plan District',
-                        description: 'Check if SP allows DADU development standards',
-                        url: `https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5/query?where=ZoneCode='SP'&outFields=OrdinanceNumber,url&f=html`,
-                        icon: '📋'
-                    });
-                }
-            }
-
-            // Show DADU overlay ordinances for reference
-            const daduOverlays = Object.entries(ordinanceIndex)
-                .filter(([_, data]) => data.zone_type === 'DADU_OVERLAY')
-                .slice(0, 3);
-
-            if (daduOverlays.length > 0 && eligCode && eligCode.startsWith('C')) {
-                daduOverlays.forEach(([ordNum, ordData]) => {
-                    items.push({
-                        type: 'DADU_OVERLAY',
-                        ordinance: ordNum,
-                        title: `${ordNum} - DADU Overlay`,
-                        description: `${ordData.case_number} (${ordData.parcel_count} parcels)`,
-                        url: ordData.url,
-                        icon: '🏠'
-                    });
+            // 4. Specific Plan zones
+            if (zoning && (zoning === 'SP' || zoning.startsWith('SP'))) {
+                items.push({
+                    type: 'SP',
+                    ordinance: 'Specific Plan',
+                    title: 'Specific Plan District',
+                    description: 'Check SP for DADU development standards',
+                    url: 'https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5/query?where=ZoneCode=%27SP%27&outFields=OrdinanceNumber,CaseNumber,url&returnDistinctValues=true&f=html',
+                    icon: '📋'
                 });
             }
 
             // Render items
+            legislationList.innerHTML = '';
+
             if (items.length === 0) {
                 legislationList.innerHTML = `
                     <li class="document-item">
@@ -1494,15 +1511,28 @@
                 items.forEach(item => {
                     const li = document.createElement('li');
                     li.className = 'document-item';
+
+                    // Build action buttons
+                    let buttons = '';
+                    if (item.url) {
+                        buttons += `<a href="${item.url}" target="_blank" style="padding: 6px 12px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Legislation ↗</a>`;
+                    }
+                    if (item.planUrl) {
+                        buttons += `<a href="${item.planUrl}" target="_blank" style="padding: 6px 12px; background: var(--terracotta); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Plan PDF ↗</a>`;
+                    }
+                    if (item.legislationUrl && item.legislationUrl !== item.url) {
+                        buttons += `<a href="${item.legislationUrl}" target="_blank" style="padding: 6px 12px; background: var(--navy); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Ordinance ↗</a>`;
+                    }
+
                     li.innerHTML = `
                         <div class="document-icon">${item.icon}</div>
                         <div class="document-info">
                             <div class="document-title">${item.title}</div>
                             <div class="document-meta">${item.description}</div>
                         </div>
-                        <a href="${item.url}" target="_blank" class="document-action" style="margin-left: auto; padding: 6px 12px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600;">
-                            View PDF ↗
-                        </a>
+                        <div style="display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap;">
+                            ${buttons}
+                        </div>
                     `;
                     legislationList.appendChild(li);
                 });
@@ -1621,11 +1651,12 @@
 
         // Initialize page
         async function initPage() {
-            // Load eligibility data, documents index, and ordinance index in parallel
+            // Load eligibility data, documents index, ordinance index, and UDO DADU index in parallel
             await Promise.all([
                 loadEligibilityData(),
                 loadDocumentsIndex(),
-                loadOrdinanceIndex()
+                loadOrdinanceIndex(),
+                loadUdoDaduIndex()
             ]);
 
             if (apnParam) {
@@ -1653,7 +1684,7 @@
             e.preventDefault();
             const address = addressInput.value.trim();
             if (address) {
-                await Promise.all([loadEligibilityData(), loadDocumentsIndex(), loadOrdinanceIndex()]);
+                await Promise.all([loadEligibilityData(), loadDocumentsIndex(), loadOrdinanceIndex(), loadUdoDaduIndex()]);
                 const property = findProperty(address, 'address');
                 showReport(address, property);
                 // Update URL and display documents/legislation
