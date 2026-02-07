@@ -1354,14 +1354,15 @@
         const addressParam = urlParams.get('address');
         const apnParam = urlParams.get('apn');
 
-        // Load documents index
+        // Load documents index (Google Drive version with clickable links)
         async function loadDocumentsIndex() {
             if (docsLoaded) return;
             try {
-                const response = await fetch('data/documents_index.json');
-                documentsIndex = await response.json();
+                const response = await fetch('data/gdrive_docs_index.json');
+                const data = await response.json();
+                documentsIndex = data.parcels || {};
                 docsLoaded = true;
-                console.log(`Loaded documents index: ${Object.keys(documentsIndex).length} APNs`);
+                console.log(`Loaded Google Drive documents index: ${Object.keys(documentsIndex).length} APNs`);
             } catch (error) {
                 console.error('Error loading documents index:', error);
             }
@@ -1539,7 +1540,7 @@
             }
         }
 
-        // Display documents for an APN
+        // Display documents for an APN (using Google Drive direct links)
         function displayDocuments(apn) {
             const docsList = document.getElementById('documents-list');
             const docCount = document.getElementById('doc-count');
@@ -1561,16 +1562,40 @@
             let html = '';
             let totalDocs = 0;
 
-            // Add each document type with Google Drive search links
-            ['property_cards', 'covenants', 'aerials', 'permits'].forEach(docType => {
-                if (docs[docType] && docs[docType].length > 0) {
-                    docs[docType].forEach(filename => {
+            // Document type display order and labels
+            const docTypes = [
+                { key: 'property_cards', icon: '🏠', label: 'Property Card' },
+                { key: 'assessor_cards', icon: '📊', label: 'Assessor Card' },
+                { key: 'covenants', icon: '📜', label: 'Recorded Covenant' },
+                { key: 'permits', icon: '📋', label: 'Building Permit' },
+                { key: 'aerials', icon: '🛰️', label: 'Aerial Image' },
+                { key: 'site_plans', icon: '📐', label: 'Site Plan' },
+                { key: 'other', icon: '📄', label: 'Document' }
+            ];
+
+            docTypes.forEach(({ key, icon, label }) => {
+                if (docs[key] && docs[key].length > 0) {
+                    docs[key].forEach(doc => {
                         totalDocs++;
-                        const icon = DOC_ICONS[docType];
-                        const label = DOC_LABELS[docType];
-                        const folderId = GDRIVE_FOLDERS[docType];
-                        // Create search URL - searches for filename within the folder
-                        const searchUrl = `https://drive.google.com/drive/folders/${folderId}?q=${encodeURIComponent(filename)}`;
+                        // Handle both object format (new) and string format (legacy)
+                        const filename = typeof doc === 'object' ? doc.filename : doc;
+                        const viewUrl = typeof doc === 'object' ? doc.gdrive_url : null;
+                        const downloadUrl = typeof doc === 'object' ? doc.download_url : null;
+
+                        let buttons = '';
+                        if (viewUrl) {
+                            buttons += `<a href="${viewUrl}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">View ↗</a>`;
+                        }
+                        if (downloadUrl) {
+                            buttons += `<a href="${downloadUrl}" target="_blank" style="padding: 5px 10px; background: var(--terracotta); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Download</a>`;
+                        }
+                        if (!viewUrl && !downloadUrl) {
+                            // Fallback to folder search
+                            const folderId = GDRIVE_FOLDERS[key] || GDRIVE_FOLDERS.property_cards;
+                            const searchUrl = `https://drive.google.com/drive/folders/${folderId}?q=${encodeURIComponent(filename)}`;
+                            buttons = `<a href="${searchUrl}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none;">Find in Drive ↗</a>`;
+                        }
+
                         html += `
                             <li class="document-item">
                                 <div class="document-icon">${icon}</div>
@@ -1578,7 +1603,9 @@
                                     <div class="document-title">${label}</div>
                                     <div class="document-meta" style="font-size: 11px; word-break: break-all;">${filename}</div>
                                 </div>
-                                <a href="${searchUrl}" target="_blank" class="document-link" style="color: var(--terracotta); font-size: 12px; text-decoration: none;">Open →</a>
+                                <div style="display: flex; gap: 4px; margin-left: auto;">
+                                    ${buttons}
+                                </div>
                             </li>`;
                     });
                 }
@@ -1807,20 +1834,44 @@
             // Check if we have a document for this APN
             const docs = documentsIndex[apn];
             if (docs && docs.property_cards && docs.property_cards.length > 0) {
-                // We have a property card filename - show link to Drive folder
-                const filename = docs.property_cards[0];
+                const doc = docs.property_cards[0];
+                // Handle both object format (new) and string format (legacy)
+                const filename = typeof doc === 'object' ? doc.filename : doc;
+                const viewUrl = typeof doc === 'object' ? doc.gdrive_url : null;
+                const downloadUrl = typeof doc === 'object' ? doc.download_url : null;
+
                 const imageEl = document.getElementById('property-card-image');
                 const placeholderEl = document.getElementById('property-image-placeholder');
 
-                // Since we can't directly embed Google Drive images without file IDs,
-                // show the filename and a link to the folder
+                // Show property card with direct Google Drive link
+                let buttonHtml = '';
+                if (viewUrl) {
+                    buttonHtml = `
+                        <a href="${viewUrl}" target="_blank"
+                           style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--teal); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; margin-right: 8px;">
+                            View PDF ↗
+                        </a>`;
+                }
+                if (downloadUrl) {
+                    buttonHtml += `
+                        <a href="${downloadUrl}" target="_blank"
+                           style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--terracotta); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none;">
+                            Download
+                        </a>`;
+                }
+                if (!viewUrl && !downloadUrl) {
+                    buttonHtml = `
+                        <a href="${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(filename)}" target="_blank"
+                           style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--terracotta); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none;">
+                            Find in Google Drive
+                        </a>`;
+                }
+
                 placeholderEl.innerHTML = `
                     <span>🏠</span>
                     <div style="font-size: 12px; margin-top: 8px;">Property Card Available</div>
-                    <a href="${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(filename)}" target="_blank"
-                       style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--terracotta); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none;">
-                        Open in Google Drive
-                    </a>
+                    <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${filename}</div>
+                    ${buttonHtml}
                 `;
                 placeholderEl.style.display = 'block';
                 imageEl.style.display = 'none';
