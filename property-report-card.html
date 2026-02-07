@@ -1174,6 +1174,25 @@
                             </a>
                         </div>
                     </section>
+
+                    <!-- Governing Legislation -->
+                    <section class="report-section" id="legislation-section">
+                        <div class="report-section-header">
+                            <img src="assets/icons/Legal.png" alt="">
+                            <h3>Governing Legislation</h3>
+                        </div>
+                        <div class="report-section-body">
+                            <ul class="documents-list" id="legislation-list">
+                                <li class="document-item" id="no-legislation-msg">
+                                    <div class="document-icon">📜</div>
+                                    <div class="document-info">
+                                        <div class="document-title">Loading legislation...</div>
+                                        <div class="document-meta">Overlay, UDO, and Specific Plan ordinances</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
                 </div>
 
                 <div class="report-sidebar">
@@ -1316,8 +1335,10 @@
         let propertyData = null;
         let allEligibilityData = [];
         let documentsIndex = {};
+        let ordinanceIndex = {};
         let dataLoaded = false;
         let docsLoaded = false;
+        let ordinancesLoaded = false;
 
         // Search form handling
         const searchForm = document.getElementById('search-form');
@@ -1341,6 +1362,150 @@
                 console.log(`Loaded documents index: ${Object.keys(documentsIndex).length} APNs`);
             } catch (error) {
                 console.error('Error loading documents index:', error);
+            }
+        }
+
+        // Load ordinance index
+        async function loadOrdinanceIndex() {
+            if (ordinancesLoaded) return;
+            try {
+                const response = await fetch('data/ordinance_index.json');
+                const data = await response.json();
+                ordinanceIndex = data.ordinances || {};
+                ordinancesLoaded = true;
+                console.log(`Loaded ordinance index: ${Object.keys(ordinanceIndex).length} ordinances`);
+            } catch (error) {
+                console.error('Error loading ordinance index:', error);
+            }
+        }
+
+        // Fetch zoning history for a parcel from Nashville API
+        async function fetchZoningHistory(parcelId) {
+            const baseUrl = 'https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5/query';
+            const params = new URLSearchParams({
+                where: `ParcelID=${parcelId}`,
+                outFields: 'ZoneCode,OrdinanceNumber,CaseNumber,url,Description,Status',
+                f: 'json'
+            });
+
+            try {
+                const response = await fetch(`${baseUrl}?${params}`);
+                const data = await response.json();
+                return data.features || [];
+            } catch (error) {
+                console.error('Error fetching zoning history:', error);
+                return [];
+            }
+        }
+
+        // Display legislation links for a parcel
+        async function displayLegislation(apn, eligCode, zoning) {
+            const legislationList = document.getElementById('legislation-list');
+            if (!legislationList) return;
+
+            // Clear existing items
+            legislationList.innerHTML = '';
+
+            const items = [];
+
+            // Always show BL2025-1007 for USD eligible properties
+            if (eligCode && (eligCode.startsWith('E') || eligCode === 'U' || eligCode === 'US')) {
+                items.push({
+                    type: 'USD_BY_RIGHT',
+                    ordinance: 'BL2025-1007',
+                    title: 'BL2025-1007 - DADU Expansion Act',
+                    description: 'Permits DADUs by right in Urban Services District',
+                    url: 'https://documents.nashville.gov/Request/Form/Legislation?legislationnumber=BL2025-1007',
+                    icon: '🏛️'
+                });
+            }
+
+            // Try to get parcel-specific legislation from Nashville API
+            // First try APN as ParcelID (may need conversion)
+            if (apn) {
+                try {
+                    // Query by APN in the zoning overlay service
+                    const overlayUrl = 'https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5/query';
+                    const params = new URLSearchParams({
+                        where: `1=1`,
+                        outFields: 'ZoneCode,OrdinanceNumber,CaseNumber,url',
+                        resultRecordCount: 10,
+                        f: 'json'
+                    });
+
+                    // Also check local ordinance index for any matches
+                    for (const [ordNum, ordData] of Object.entries(ordinanceIndex)) {
+                        // Check if this is a DADU overlay ordinance
+                        if (ordData.zone_type === 'DADU_OVERLAY') {
+                            // We'd need parcel-specific data to know if this applies
+                            // For now, show these as "Check if applicable"
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching overlay data:', error);
+                }
+            }
+
+            // Check for zoning-specific legislation
+            if (zoning) {
+                // SP zones link to specific plan
+                if (zoning === 'SP' || zoning.startsWith('SP-')) {
+                    items.push({
+                        type: 'SP',
+                        ordinance: 'Specific Plan',
+                        title: 'Specific Plan District',
+                        description: 'Check if SP allows DADU development standards',
+                        url: `https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5/query?where=ZoneCode='SP'&outFields=OrdinanceNumber,url&f=html`,
+                        icon: '📋'
+                    });
+                }
+            }
+
+            // Show DADU overlay ordinances for reference
+            const daduOverlays = Object.entries(ordinanceIndex)
+                .filter(([_, data]) => data.zone_type === 'DADU_OVERLAY')
+                .slice(0, 3);
+
+            if (daduOverlays.length > 0 && eligCode && eligCode.startsWith('C')) {
+                daduOverlays.forEach(([ordNum, ordData]) => {
+                    items.push({
+                        type: 'DADU_OVERLAY',
+                        ordinance: ordNum,
+                        title: `${ordNum} - DADU Overlay`,
+                        description: `${ordData.case_number} (${ordData.parcel_count} parcels)`,
+                        url: ordData.url,
+                        icon: '🏠'
+                    });
+                });
+            }
+
+            // Render items
+            if (items.length === 0) {
+                legislationList.innerHTML = `
+                    <li class="document-item">
+                        <div class="document-icon">📜</div>
+                        <div class="document-info">
+                            <div class="document-title">No specific overlay legislation</div>
+                            <div class="document-meta">Property may be eligible under USD by-right rules</div>
+                        </div>
+                    </li>
+                `;
+            } else {
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'document-item';
+                    li.innerHTML = `
+                        <div class="document-icon">${item.icon}</div>
+                        <div class="document-info">
+                            <div class="document-title">${item.title}</div>
+                            <div class="document-meta">${item.description}</div>
+                        </div>
+                        <a href="${item.url}" target="_blank" class="document-action" style="margin-left: auto; padding: 6px 12px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600;">
+                            View PDF ↗
+                        </a>
+                    `;
+                    legislationList.appendChild(li);
+                });
             }
         }
 
@@ -1456,10 +1621,11 @@
 
         // Initialize page
         async function initPage() {
-            // Load both eligibility data and documents index in parallel
+            // Load eligibility data, documents index, and ordinance index in parallel
             await Promise.all([
                 loadEligibilityData(),
-                loadDocumentsIndex()
+                loadDocumentsIndex(),
+                loadOrdinanceIndex()
             ]);
 
             if (apnParam) {
@@ -1467,15 +1633,18 @@
                 if (property) {
                     showReport(property.properties.d || apnParam, property);
                     displayDocuments(apnParam);
+                    displayLegislation(apnParam, property.properties.e, property.properties.z);
                 } else {
                     showReport(addressParam || apnParam);
                     displayDocuments(apnParam);
+                    displayLegislation(apnParam, null, null);
                 }
             } else if (addressParam) {
                 const property = findProperty(addressParam, 'address');
                 showReport(addressParam, property);
                 if (property && property.properties.a) {
                     displayDocuments(property.properties.a.toString());
+                    displayLegislation(property.properties.a.toString(), property.properties.e, property.properties.z);
                 }
             }
         }
@@ -1484,13 +1653,16 @@
             e.preventDefault();
             const address = addressInput.value.trim();
             if (address) {
-                await Promise.all([loadEligibilityData(), loadDocumentsIndex()]);
+                await Promise.all([loadEligibilityData(), loadDocumentsIndex(), loadOrdinanceIndex()]);
                 const property = findProperty(address, 'address');
                 showReport(address, property);
-                // Update URL and display documents
+                // Update URL and display documents/legislation
                 const apn = property?.properties?.a;
+                const eligCode = property?.properties?.e;
+                const zoning = property?.properties?.z;
                 if (apn) {
                     displayDocuments(apn.toString());
+                    displayLegislation(apn.toString(), eligCode, zoning);
                 }
                 const params = new URLSearchParams();
                 if (apn) params.set('apn', apn);
