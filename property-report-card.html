@@ -1175,6 +1175,26 @@
                         </div>
                     </section>
 
+                    <!-- ADU Permits -->
+                    <section class="report-section" id="adu-permits-section">
+                        <div class="report-section-header">
+                            <img src="assets/icons/Recorded Docs.png" alt="">
+                            <h3>ADU Permit History</h3>
+                            <span id="adu-permit-count" style="margin-left: auto; font-size: 12px; color: var(--text-light);"></span>
+                        </div>
+                        <div class="report-section-body">
+                            <ul class="documents-list" id="adu-permits-list">
+                                <li class="document-item" id="no-adu-permits-msg">
+                                    <div class="document-icon">📋</div>
+                                    <div class="document-info">
+                                        <div class="document-title">Search for a property to see ADU permits</div>
+                                        <div class="document-meta">Known ADU building permits for this parcel</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+
                     <!-- Governing Legislation -->
                     <section class="report-section" id="legislation-section">
                         <div class="report-section-header">
@@ -1337,10 +1357,12 @@
         let documentsIndex = {};
         let ordinanceIndex = {};
         let udoDaduIndex = {};
+        let aduPermitsIndex = {};
         let dataLoaded = false;
         let docsLoaded = false;
         let ordinancesLoaded = false;
         let udoIndexLoaded = false;
+        let aduPermitsLoaded = false;
 
         // Search form handling
         const searchForm = document.getElementById('search-form');
@@ -1393,6 +1415,63 @@
             } catch (error) {
                 console.error('Error loading UDO DADU index:', error);
             }
+        }
+
+        // Load ADU permits index
+        async function loadAduPermitsIndex() {
+            if (aduPermitsLoaded) return;
+            try {
+                const response = await fetch('data/adu_permits_slim.json');
+                const data = await response.json();
+                aduPermitsIndex = data.parcels || {};
+                aduPermitsLoaded = true;
+                console.log(`Loaded ADU permits index: ${Object.keys(aduPermitsIndex).length} parcels`);
+            } catch (error) {
+                console.error('Error loading ADU permits index:', error);
+            }
+        }
+
+        // Display ADU permits for an APN
+        function displayAduPermits(apn) {
+            const permitsList = document.getElementById('adu-permits-list');
+            const permitCount = document.getElementById('adu-permit-count');
+            if (!permitsList) return;
+
+            const permits = aduPermitsIndex[apn];
+            if (!permits || permits.length === 0) {
+                permitsList.innerHTML = `
+                    <li class="document-item">
+                        <div class="document-icon">📋</div>
+                        <div class="document-info">
+                            <div class="document-title">No ADU permits found</div>
+                            <div class="document-meta">No known ADU building permits on file for this parcel</div>
+                        </div>
+                    </li>`;
+                permitCount.textContent = '0 permits';
+                return;
+            }
+
+            let html = '';
+            permits.forEach(p => {
+                const statusColor = p.status === 'done' ? 'var(--olive)' : p.status === 'issued' ? 'var(--teal)' : p.status === 'expired' ? 'var(--terracotta)' : 'var(--text-light)';
+                const statusLabel = p.status ? p.status.charAt(0).toUpperCase() + p.status.slice(1) : 'Unknown';
+                const sqftText = p.sqft ? ` | ${p.sqft} SF` : '';
+
+                html += `
+                    <li class="document-item">
+                        <div class="document-icon">🔨</div>
+                        <div class="document-info">
+                            <div class="document-title">Permit #${p.permit}</div>
+                            <div class="document-meta">${p.date || 'Date unknown'}${sqftText} | <span style="color: ${statusColor}; font-weight: 600;">${statusLabel}</span></div>
+                        </div>
+                        <div style="display: flex; gap: 4px; margin-left: auto;">
+                            <a href="${p.docs_url}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none;">View Docs ↗</a>
+                        </div>
+                    </li>`;
+            });
+
+            permitsList.innerHTML = html;
+            permitCount.textContent = `${permits.length} permit${permits.length !== 1 ? 's' : ''}`;
         }
 
         // Fetch parcel overlays from Nashville API
@@ -1683,7 +1762,8 @@
                 loadEligibilityData(),
                 loadDocumentsIndex(),
                 loadOrdinanceIndex(),
-                loadUdoDaduIndex()
+                loadUdoDaduIndex(),
+                loadAduPermitsIndex()
             ]);
 
             if (apnParam) {
@@ -1691,10 +1771,12 @@
                 if (property) {
                     showReport(property.properties.d || apnParam, property);
                     displayDocuments(apnParam);
+                    displayAduPermits(apnParam);
                     displayLegislation(apnParam, property.properties.e, property.properties.z);
                 } else {
                     showReport(addressParam || apnParam);
                     displayDocuments(apnParam);
+                    displayAduPermits(apnParam);
                     displayLegislation(apnParam, null, null);
                 }
             } else if (addressParam) {
@@ -1702,6 +1784,7 @@
                 showReport(addressParam, property);
                 if (property && property.properties.a) {
                     displayDocuments(property.properties.a.toString());
+                    displayAduPermits(property.properties.a.toString());
                     displayLegislation(property.properties.a.toString(), property.properties.e, property.properties.z);
                 }
             }
@@ -1711,15 +1794,16 @@
             e.preventDefault();
             const address = addressInput.value.trim();
             if (address) {
-                await Promise.all([loadEligibilityData(), loadDocumentsIndex(), loadOrdinanceIndex(), loadUdoDaduIndex()]);
+                await Promise.all([loadEligibilityData(), loadDocumentsIndex(), loadOrdinanceIndex(), loadUdoDaduIndex(), loadAduPermitsIndex()]);
                 const property = findProperty(address, 'address');
                 showReport(address, property);
-                // Update URL and display documents/legislation
+                // Update URL and display documents/legislation/permits
                 const apn = property?.properties?.a;
                 const eligCode = property?.properties?.e;
                 const zoning = property?.properties?.z;
                 if (apn) {
                     displayDocuments(apn.toString());
+                    displayAduPermits(apn.toString());
                     displayLegislation(apn.toString(), eligCode, zoning);
                 }
                 const params = new URLSearchParams();
