@@ -1037,8 +1037,13 @@
     </div>
     
     <script>
-        // Google Drive Folder (fallback)
-        const GDRIVE_FOLDER = 'https://drive.google.com/drive/folders/1eD1TUNuYMOMK7VdVJW3Pc6mHYFS02VUj';
+        // Google Drive Folders by document type
+        const GDRIVE_FOLDERS = {
+            permit_pdfs: 'https://drive.google.com/drive/folders/1N_IpJaweqoFhbmBnYHjQJs1G1ItTQjC4',
+            property_cards: 'https://drive.google.com/drive/folders/1UGNXAbDE1RuXfzMc6Vk3YL2r1AlZMwLZ',
+            restrictive_covenants: 'https://drive.google.com/drive/folders/1bEZN1kEZxqZLkdX0QjT0g9N7K0sXAy3Z'
+        };
+        const GDRIVE_FOLDER = GDRIVE_FOLDERS.permit_pdfs; // default fallback
 
         // Document index cache
         let docsIndex = null;
@@ -1253,20 +1258,19 @@
             }
         }
 
-        // Open Aerial (Nashville GIS)
+        // Open Aerial (Nashville GIS ParcelViewer)
         function openAerial() {
             if (currentAPN) {
-                window.open(`https://maps.nashville.gov/ParcelViewer/?pin=${currentAPN}`, '_blank');
+                window.open(`https://maps.nashville.gov/ParcelViewer/?parcelID=${currentAPN}`, '_blank');
             } else {
                 alert('Please search for a property first');
             }
         }
 
-        // Open Permit History (ePermits)
+        // Open Permit History (ePermits - search by APN)
         function openPermitHistory() {
-            if (currentProperty) {
-                const addr = document.getElementById('addressInput').value;
-                window.open(`https://epermits.nashville.gov/?#/search?address=${encodeURIComponent(addr)}`, '_blank');
+            if (currentAPN) {
+                window.open(`https://epermits.nashville.gov/#/search?searchCode=APN&searchText=${currentAPN}`, '_blank');
             } else {
                 alert('Please search for a property first');
             }
@@ -1286,7 +1290,7 @@
                     'Permit checklist & next steps',
                     '30-day money-back guarantee'
                 ],
-                driveFolder: GDRIVE_FOLDER
+                driveFolder: GDRIVE_FOLDERS.permit_pdfs
             },
             permits: {
                 title: '📁 Unlock Permit Documents',
@@ -1299,7 +1303,7 @@
                     'Certificate of occupancy',
                     'Instant download'
                 ],
-                driveFolder: GDRIVE_FOLDER
+                driveFolder: GDRIVE_FOLDERS.permit_pdfs
             },
             covenant: {
                 title: '⚖️ Unlock Covenant Analysis',
@@ -1312,7 +1316,7 @@
                     'Amendment history',
                     'Instant access'
                 ],
-                driveFolder: GDRIVE_FOLDER
+                driveFolder: GDRIVE_FOLDERS.restrictive_covenants
             },
             complete: {
                 title: '⭐ Unlock Complete Package',
@@ -1326,7 +1330,7 @@
                     'Cost Estimates',
                     'Priority Support'
                 ],
-                driveFolder: GDRIVE_FOLDER
+                driveFolder: GDRIVE_FOLDERS.permit_pdfs
             }
         };
 

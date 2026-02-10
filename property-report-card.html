@@ -1670,18 +1670,18 @@
 
             // Update external links
             if (apn) {
-                // ParcelViewer
-                document.getElementById('link-parcelviewer').href = `https://maps.nashville.gov/ParcelViewer/?quickSearch=${apn}`;
-                // ePermits Portal
-                document.getElementById('link-epermits').href = `https://epermits.nashville.gov/?#/?searchCode=${apn}`;
+                // ParcelViewer (STANPAR = APN)
+                document.getElementById('link-parcelviewer').href = `https://maps.nashville.gov/ParcelViewer/?parcelID=${apn}`;
+                // ePermits Portal (search by APN for all permits on this parcel)
+                document.getElementById('link-epermits').href = `https://epermits.nashville.gov/#/search?searchCode=APN&searchText=${apn}`;
                 // Property Assessor
                 document.getElementById('link-assessor').href = `https://davidson-tn-citizen.comper.info/template.aspx?propertyID=${apn}`;
-                // Permit Documents by parcel number
+                // Permit Documents (search by parcel number)
                 document.getElementById('link-documents').href = `https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${apn}`;
                 // Parcel Report (PrintRecord)
                 document.getElementById('link-parcel-report').href = `https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin=${apn}`;
-                // Property Card in Google Drive
-                document.getElementById('link-property-card').href = `${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(apn)}`;
+                // Property Card (PAD portal)
+                document.getElementById('link-property-card').href = `https://portal.padctn.org/OFS/WP/Print/${apn}`;
             }
 
             // Update map links if coordinates available
