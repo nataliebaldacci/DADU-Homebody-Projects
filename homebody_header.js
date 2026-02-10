@@ -7,10 +7,18 @@
 (function() {
     'use strict';
 
+    // ── Detect base path for subdirectory pages ──
+    var scriptTag = document.querySelector('script[src*="homebody_header.js"]');
+    var basePath = '';
+    if (scriptTag) {
+        var src = scriptTag.getAttribute('src');
+        basePath = src.replace('homebody_header.js', '');
+    }
+
     // ── Helper: build a dropdown menu item ──
     function item(href, icon, title) {
-        return `<a href="${href}" class="dropdown-item" role="menuitem">
-            <div class="dropdown-item-icon"><img src="assets/icons/${icon}" alt=""></div>
+        return `<a href="${basePath}${href}" class="dropdown-item" role="menuitem">
+            <div class="dropdown-item-icon"><img src="${basePath}assets/icons/${icon}" alt=""></div>
             <div class="dropdown-item-content"><div class="dropdown-item-title">${title}</div></div>
         </a>`;
     }
@@ -18,7 +26,7 @@
     // ── Helper: build a mega-menu column ──
     function col(icon, label, items) {
         return `<div class="mega-menu-column">
-            <div class="mega-menu-column-title"><img src="assets/icons/${icon}" alt=""> ${label}</div>
+            <div class="mega-menu-column-title"><img src="${basePath}assets/icons/${icon}" alt=""> ${label}</div>
             ${items}
         </div>`;
     }
@@ -32,9 +40,9 @@
 <nav class="main-nav" role="navigation" aria-label="Main navigation">
     <div class="nav-container">
         <!-- Logo -->
-        <a href="index.html" class="nav-logo">
+        <a href="${basePath}index.html" class="nav-logo">
             <div class="nav-logo-icon castle-icon">
-                <img src="assets/castlehold-logo.png" alt="Castlehold" width="44" height="37" style="object-fit:contain;">
+                <img src="${basePath}assets/castlehold-logo.png" alt="Castlehold" width="44" height="37" style="object-fit:contain;">
             </div>
             <span class="nav-logo-title">CASTLEHOLD</span>
         </a>
@@ -133,15 +141,15 @@
             </div>
 
             <!-- ═══ PRICING ═══ -->
-            <a href="homebody_pricing.html" class="nav-link">PRICING</a>
+            <a href="${basePath}homebody_pricing.html" class="nav-link">PRICING</a>
         </div>
 
         <!-- Right-side: Search + CTA -->
         <div style="display:flex;align-items:center;gap:12px;">
-            <a href="property_search.html" class="nav-link" title="Search" style="padding:12px;">
+            <a href="${basePath}property_search.html" class="nav-link" title="Search" style="padding:12px;">
                 &#128269;
             </a>
-            <a href="am_i_eligible.html" class="nav-search-btn">
+            <a href="${basePath}am_i_eligible.html" class="nav-search-btn">
                 <span>Get Started</span>
                 <span>&rarr;</span>
             </a>
