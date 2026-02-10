@@ -7,13 +7,15 @@
     <title>DADU Eligibility Map | Homebody Projects</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     <style>
         :root {
             --navy: #2c3e50;
             --navy-dark: #1a252f;
             --teal: #6b8fa3;
-            --olive: #6b8e4e;
-            --olive-dark: #5a7a42;
+            --terracotta: #B55A3C;
+            --terracotta-hover: #9A4A30;
             --tan: #c9a86c;
             --cream: #f5f5f0;
             --background: #e8e4df;
@@ -21,9 +23,9 @@
             --border: #e0e0e0;
             --text: #333333;
             --text-light: #666666;
-            --eligible-green: #4caf50;
-            --not-eligible-red: #e74c3c;
-            --maybe-yellow: #f39c12;
+            --eligible-green: #B55A3C;
+            --not-eligible-red: #c0392b;
+            --conditional-yellow: #f39c12;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -61,7 +63,7 @@
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: var(--olive);
+            background: var(--terracotta);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -69,9 +71,8 @@
         }
 
         .logo-icon img {
-            width: 24px;
-            height: 24px;
-            filter: brightness(0) invert(1);
+            width: 28px;
+            height: 28px;
         }
 
         .logo-text {
@@ -150,12 +151,12 @@
 
         .search-input:focus {
             outline: none;
-            border-color: var(--olive);
+            border-color: var(--terracotta);
         }
 
         .search-btn {
             padding: 10px 20px;
-            background: var(--olive);
+            background: var(--terracotta);
             color: white;
             border: none;
             border-radius: 8px;
@@ -167,7 +168,7 @@
         }
 
         .search-btn:hover {
-            background: var(--olive-dark);
+            background: var(--terracotta-hover);
         }
 
         /* Main Layout */
@@ -182,6 +183,42 @@
             flex: 1;
         }
 
+        /* Custom cluster icons */
+        .marker-cluster-eligible {
+            background-color: rgba(181, 90, 60, 0.6);
+        }
+        .marker-cluster-eligible div {
+            background-color: rgba(181, 90, 60, 0.9);
+        }
+        .marker-cluster-conditional {
+            background-color: rgba(243, 156, 18, 0.6);
+        }
+        .marker-cluster-conditional div {
+            background-color: rgba(243, 156, 18, 0.9);
+        }
+        .marker-cluster-not-eligible {
+            background-color: rgba(192, 57, 43, 0.6);
+        }
+        .marker-cluster-not-eligible div {
+            background-color: rgba(192, 57, 43, 0.9);
+        }
+
+        .marker-cluster {
+            border-radius: 50%;
+        }
+        .marker-cluster div {
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            margin-top: 5px;
+            text-align: center;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            line-height: 30px;
+        }
+
         /* Legend Panel */
         .legend-panel {
             position: fixed;
@@ -192,7 +229,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             padding: 20px;
             z-index: 1000;
-            min-width: 240px;
+            min-width: 260px;
         }
 
         .legend-title {
@@ -231,8 +268,8 @@
             background: var(--not-eligible-red);
         }
 
-        .legend-color.maybe {
-            background: var(--maybe-yellow);
+        .legend-color.conditional {
+            background: var(--conditional-yellow);
         }
 
         .legend-label {
@@ -244,6 +281,7 @@
             font-size: 12px;
             color: var(--text-light);
             margin-left: auto;
+            font-weight: 600;
         }
 
         /* Stats Panel */
@@ -299,8 +337,8 @@
             color: var(--not-eligible-red);
         }
 
-        .stat-value.maybe {
-            color: var(--maybe-yellow);
+        .stat-value.conditional {
+            color: var(--conditional-yellow);
         }
 
         /* Filter Panel */
@@ -353,6 +391,7 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
+            accent-color: var(--terracotta);
         }
 
         .filter-checkbox span {
@@ -394,8 +433,8 @@
             color: white;
         }
 
-        .popup-header.maybe {
-            background: var(--maybe-yellow);
+        .popup-header.conditional {
+            background: var(--conditional-yellow);
             color: white;
         }
 
@@ -460,7 +499,7 @@
         }
 
         .popup-btn-primary {
-            background: var(--olive);
+            background: var(--terracotta);
             color: white;
         }
 
@@ -477,7 +516,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.95);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -493,7 +532,7 @@
             width: 50px;
             height: 50px;
             border: 4px solid var(--border);
-            border-top-color: var(--olive);
+            border-top-color: var(--terracotta);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
@@ -513,6 +552,22 @@
             font-size: 13px;
             color: var(--text-light);
             margin-top: 8px;
+        }
+
+        .loading-progress {
+            width: 200px;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: var(--terracotta);
+            width: 0%;
+            transition: width 0.3s;
         }
 
         /* Zoom to see parcels message */
@@ -604,65 +659,52 @@
             <label class="filter-label">Show Parcels</label>
             <label class="filter-checkbox">
                 <input type="checkbox" id="show-eligible" checked onchange="updateFilters()">
-                <span style="color: var(--eligible-green);">✓ Eligible</span>
+                <span style="color: var(--eligible-green); font-weight: 600;">Eligible (By Right)</span>
             </label>
             <label class="filter-checkbox">
-                <input type="checkbox" id="show-maybe" checked onchange="updateFilters()">
-                <span style="color: var(--maybe-yellow);">? Conditional</span>
+                <input type="checkbox" id="show-conditional" checked onchange="updateFilters()">
+                <span style="color: var(--conditional-yellow); font-weight: 600;">Conditional (Overlay Req.)</span>
             </label>
             <label class="filter-checkbox">
                 <input type="checkbox" id="show-not-eligible" checked onchange="updateFilters()">
-                <span style="color: var(--not-eligible-red);">✗ Not Eligible</span>
+                <span style="color: var(--not-eligible-red); font-weight: 600;">Not Eligible</span>
             </label>
         </div>
         <div class="filter-group">
             <label class="filter-label">Zoning District</label>
             <select class="filter-select" id="filter-zoning" onchange="updateFilters()">
                 <option value="">All Zoning</option>
+                <option value="RS">RS - Single Family</option>
                 <option value="R">R - Residential</option>
-                <option value="RS">RS - Residential Single</option>
-                <option value="R6">R6</option>
-                <option value="R8">R8</option>
-                <option value="R10">R10</option>
-                <option value="R15">R15</option>
-                <option value="R20">R20</option>
-                <option value="RS5">RS5</option>
-                <option value="RS7.5">RS7.5</option>
-                <option value="RS10">RS10</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label class="filter-label">Service District</label>
-            <select class="filter-select" id="filter-district" onchange="updateFilters()">
-                <option value="">All Districts</option>
-                <option value="USD">USD (Urban Services)</option>
-                <option value="GSD">GSD (General Services)</option>
+                <option value="RM">RM - Multi-Family</option>
+                <option value="AR">AR - Agricultural Res.</option>
+                <option value="SP">SP - Specific Plan</option>
             </select>
         </div>
     </div>
 
     <!-- Stats Panel -->
     <div class="stats-panel">
-        <h3 class="stats-title">Eligibility Statistics</h3>
+        <h3 class="stats-title">Eligibility Statistics <span style="background: #27ae60; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-left: 8px;">LIVE</span></h3>
         <div class="stat-row">
             <span class="stat-label">Total Parcels</span>
-            <span class="stat-value" id="stat-total">285,512</span>
+            <span class="stat-value" id="stat-total">123,574</span>
         </div>
         <div class="stat-row">
-            <span class="stat-label">Eligible (USD R/RS)</span>
-            <span class="stat-value eligible" id="stat-eligible">67,707</span>
+            <span class="stat-label">Eligible (SP-USD)</span>
+            <span class="stat-value eligible" id="stat-eligible">10,072</span>
         </div>
         <div class="stat-row">
             <span class="stat-label">Conditional (GSD)</span>
-            <span class="stat-value maybe" id="stat-maybe">12,450</span>
+            <span class="stat-value conditional" id="stat-conditional">65,433</span>
         </div>
         <div class="stat-row">
             <span class="stat-label">Not Eligible</span>
-            <span class="stat-value not-eligible" id="stat-not">205,355</span>
+            <span class="stat-value not-eligible" id="stat-not">48,069</span>
         </div>
         <div class="stat-row">
             <span class="stat-label">Eligibility Rate</span>
-            <span class="stat-value">23.7%</span>
+            <span class="stat-value">61.1%</span>
         </div>
     </div>
 
@@ -674,15 +716,18 @@
         </h3>
         <div class="legend-item">
             <div class="legend-color eligible"></div>
-            <span class="legend-label">Y - Eligible (USD R/RS)</span>
+            <span class="legend-label">Eligible (SP-USD)</span>
+            <span class="legend-count" id="count-eligible">10,072</span>
         </div>
         <div class="legend-item">
-            <div class="legend-color maybe"></div>
-            <span class="legend-label">M - Conditional (GSD)</span>
+            <div class="legend-color conditional"></div>
+            <span class="legend-label">Conditional (GSD/Overlay Req.)</span>
+            <span class="legend-count" id="count-conditional">65,433</span>
         </div>
         <div class="legend-item">
             <div class="legend-color not-eligible"></div>
-            <span class="legend-label">N - Not Eligible</span>
+            <span class="legend-label">Not Eligible</span>
+            <span class="legend-count" id="count-not">48,069</span>
         </div>
     </div>
 
@@ -695,203 +740,906 @@
     <div class="loading-overlay" id="loading">
         <div class="spinner"></div>
         <div class="loading-text">Loading Eligibility Data</div>
-        <div class="loading-subtext">Analyzing 285,512 parcels...</div>
+        <div class="loading-subtext" id="loading-status">Initializing map...</div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar" id="progress-bar"></div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <script>
-        // Sample parcel data with eligibility
-        // In production, this would load from your ArcGIS Feature Service or GeoJSON
-        const sampleParcels = [
-            { id: 1, address: "2763 ROSEDALE PL", zipcode: "37211", zoning: "RS10", district: "USD", lotSqft: 8500, eligibility: "Y", lat: 36.1127, lng: -86.7603 },
-            { id: 2, address: "1812 FATHERLAND ST", zipcode: "37206", zoning: "R8", district: "USD", lotSqft: 6200, eligibility: "Y", lat: 36.1789, lng: -86.7432 },
-            { id: 3, address: "945 SHELBY AVE", zipcode: "37206", zoning: "RS7.5", district: "USD", lotSqft: 7800, eligibility: "Y", lat: 36.1745, lng: -86.7512 },
-            { id: 4, address: "2204 10TH AVE S", zipcode: "37204", zoning: "R10", district: "USD", lotSqft: 11200, eligibility: "Y", lat: 36.1298, lng: -86.7889 },
-            { id: 5, address: "3715 PARK AVE", zipcode: "37209", zoning: "RS10", district: "USD", lotSqft: 8900, eligibility: "Y", lat: 36.1567, lng: -86.8234 },
-            { id: 6, address: "612 STOCKELL ST", zipcode: "37207", zoning: "RS7.5", district: "GSD", lotSqft: 6800, eligibility: "M", lat: 36.1934, lng: -86.7645 },
-            { id: 7, address: "5200 HARDING PL", zipcode: "37211", zoning: "MUL", district: "USD", lotSqft: 12000, eligibility: "N", lat: 36.0912, lng: -86.7834 },
-            { id: 8, address: "1225 LITTON AVE", zipcode: "37216", zoning: "R8", district: "USD", lotSqft: 10500, eligibility: "Y", lat: 36.1978, lng: -86.7312 },
-            { id: 9, address: "400 BROADWAY", zipcode: "37201", zoning: "DTC", district: "USD", lotSqft: 5000, eligibility: "N", lat: 36.1618, lng: -86.7790 },
-            { id: 10, address: "2918 BRONTE AVE", zipcode: "37216", zoning: "RS10", district: "GSD", lotSqft: 8200, eligibility: "M", lat: 36.2012, lng: -86.7256 },
-            { id: 11, address: "123 MAIN ST", zipcode: "37208", zoning: "R6", district: "USD", lotSqft: 5500, eligibility: "Y", lat: 36.1750, lng: -86.7900 },
-            { id: 12, address: "456 OAK AVE", zipcode: "37210", zoning: "RS5", district: "USD", lotSqft: 4800, eligibility: "Y", lat: 36.1350, lng: -86.7650 },
-            { id: 13, address: "789 PINE ST", zipcode: "37212", zoning: "R10", district: "USD", lotSqft: 9200, eligibility: "Y", lat: 36.1420, lng: -86.8000 },
-            { id: 14, address: "321 ELM DR", zipcode: "37215", zoning: "R15", district: "USD", lotSqft: 14000, eligibility: "Y", lat: 36.1080, lng: -86.8300 },
-            { id: 15, address: "654 CEDAR LN", zipcode: "37203", zoning: "MUN", district: "USD", lotSqft: 3500, eligibility: "N", lat: 36.1560, lng: -86.7920 },
-            { id: 16, address: "987 MAPLE BLVD", zipcode: "37209", zoning: "RS7.5", district: "GSD", lotSqft: 7200, eligibility: "M", lat: 36.1490, lng: -86.8450 },
-            { id: 17, address: "147 BIRCH WAY", zipcode: "37206", zoning: "R8", district: "USD", lotSqft: 6700, eligibility: "Y", lat: 36.1820, lng: -86.7380 },
-            { id: 18, address: "258 WALNUT CT", zipcode: "37207", zoning: "CN", district: "USD", lotSqft: 4200, eligibility: "N", lat: 36.1980, lng: -86.7580 },
-            { id: 19, address: "369 SPRUCE ST", zipcode: "37216", zoning: "RS10", district: "USD", lotSqft: 9800, eligibility: "Y", lat: 36.2050, lng: -86.7200 },
-            { id: 20, address: "480 ASH AVE", zipcode: "37211", zoning: "R10", district: "GSD", lotSqft: 8800, eligibility: "M", lat: 36.1050, lng: -86.7550 }
-        ];
+        // Configuration
+        const COLORS = {
+            eligible: '#B55A3C',
+            conditional: '#f39c12',
+            notEligible: '#c0392b'
+        };
+
+        // Eligibility labels by class
+        const ELIG_LABELS = {
+            'eligible': 'Eligible (SP-USD)',
+            'conditional': 'Conditional (Overlay Required)',
+            'not-eligible': 'Not Eligible'
+        };
+
+        // ArcGIS Feature Service URLs - LIVE DATA
+        const ARCGIS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0';
+        const CADASTRAL_SERVICE = 'https://maps.nashville.gov/arcgis/rest/services/Cadastral/Cadastral_Layers/MapServer/4';
 
         let map;
-        let parcelMarkers = [];
+        let parcelLayer; // Single layer for all parcel polygons
+        let eligibleLayer, conditionalLayer, notEligibleLayer;
+        let allData = { eligible: [], conditional: [], notEligible: [] };
+        let loadedBounds = null;
+        let isLoading = false;
         let currentFilters = {
             showEligible: true,
-            showMaybe: true,
+            showConditional: true,
             showNotEligible: true,
-            zoning: '',
-            district: ''
+            zoning: ''
         };
+
+        // Query ArcGIS service (Table - no geometry, uses Lat/Lon fields)
+        async function queryArcGIS(options = {}) {
+            const defaults = {
+                where: '1=1',
+                outFields: 'STANPAR,Address,Zoning,Acres,Lot_SqFt,In_USD,Service_District,Eligibility_Status,Max_DADU_Living_SF,Lat,Lon',
+                returnGeometry: false,
+                f: 'json',
+                resultRecordCount: 2000
+            };
+            const params = { ...defaults, ...options };
+            const queryString = new URLSearchParams(params).toString();
+            const url = `${ARCGIS_SERVICE}/query?${queryString}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return await response.json();
+            } catch (err) {
+                console.error('ArcGIS query error:', err);
+                throw err;
+            }
+        }
+
+        // Query by map bounds using Lat/Lon WHERE clause
+        async function queryByBounds(bounds, options = {}) {
+            const south = bounds.getSouth();
+            const north = bounds.getNorth();
+            const west = bounds.getWest();
+            const east = bounds.getEast();
+
+            // Build WHERE clause for bounding box using Lat/Lon fields
+            const boundsWhere = `Lat >= ${south} AND Lat <= ${north} AND Lon >= ${west} AND Lon <= ${east}`;
+
+            // Combine with any existing where clause
+            let whereClause = boundsWhere;
+            if (options.where && options.where !== '1=1') {
+                whereClause = `(${boundsWhere}) AND (${options.where})`;
+            }
+
+            return queryArcGIS({
+                ...options,
+                where: whereClause
+            });
+        }
+
+        // Query Nashville Cadastral service for parcel polygons
+        async function queryCadastral(stanpars) {
+            if (!stanpars || stanpars.length === 0) return null;
+
+            // Build WHERE clause for multiple STANPARs
+            const whereClause = stanpars.map(s => `STANPAR = '${s}'`).join(' OR ');
+
+            const params = new URLSearchParams({
+                where: whereClause,
+                outFields: 'STANPAR,PropAddr,Acres',
+                returnGeometry: true,
+                outSR: 4326,
+                f: 'geojson'
+            });
+
+            const url = `${CADASTRAL_SERVICE}/query?${params.toString()}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Cadastral query failed: ${response.status}`);
+                return await response.json();
+            } catch (err) {
+                console.error('Cadastral query error:', err);
+                return null;
+            }
+        }
+
+        // Query cadastral by geometry envelope (for viewport)
+        async function queryCadastralByBounds(bounds) {
+            const geometry = JSON.stringify({
+                xmin: bounds.getWest(),
+                ymin: bounds.getSouth(),
+                xmax: bounds.getEast(),
+                ymax: bounds.getNorth(),
+                spatialReference: { wkid: 4326 }
+            });
+
+            const params = new URLSearchParams({
+                where: '1=1',
+                geometry: geometry,
+                geometryType: 'esriGeometryEnvelope',
+                spatialRel: 'esriSpatialRelIntersects',
+                outFields: 'STANPAR,PropAddr,Acres',
+                returnGeometry: true,
+                outSR: 4326,
+                f: 'geojson',
+                resultRecordCount: 500
+            });
+
+            const url = `${CADASTRAL_SERVICE}/query?${params.toString()}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Cadastral query failed: ${response.status}`);
+                return await response.json();
+            } catch (err) {
+                console.error('Cadastral bounds query error:', err);
+                return null;
+            }
+        }
+
+        // Get total counts for stats
+        async function getServiceCounts() {
+            try {
+                // Get eligible count (CHECK_SP_USD = SP zoning in Urban Services District)
+                const eligibleResult = await queryArcGIS({
+                    where: "Eligibility_Status = 'CHECK_SP_USD'",
+                    returnCountOnly: true,
+                    returnGeometry: false,
+                    f: 'json'
+                });
+
+                // Get conditional count (GSD needs overlay or CHECK_SP_GSD)
+                const conditionalResult = await queryArcGIS({
+                    where: "Eligibility_Status = 'GSD_NEEDS_OVERLAY' OR Eligibility_Status = 'CHECK_SP_GSD'",
+                    returnCountOnly: true,
+                    returnGeometry: false,
+                    f: 'json'
+                });
+
+                // Get not eligible count (NOT_ELIGIBLE or REVIEW_REQUIRED)
+                const notEligibleResult = await queryArcGIS({
+                    where: "Eligibility_Status = 'NOT_ELIGIBLE' OR Eligibility_Status = 'REVIEW_REQUIRED'",
+                    returnCountOnly: true,
+                    returnGeometry: false,
+                    f: 'json'
+                });
+
+                return {
+                    eligible: eligibleResult.count || 10072,
+                    conditional: conditionalResult.count || 65433,
+                    notEligible: notEligibleResult.count || 48069
+                };
+            } catch (e) {
+                console.log('Using cached counts');
+                return { eligible: 10072, conditional: 65433, notEligible: 48069 };
+            }
+        }
 
         // Initialize map
         function initMap() {
-            map = L.map('map').setView([36.1627, -86.7816], 11);
+            map = L.map('map', {
+                preferCanvas: true
+            }).setView([36.1627, -86.7816], 11);
 
-            // Base layer
+            // Base layer - clean CartoDB style
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+                attribution: '&copy; OpenStreetMap &copy; CARTO | Data: Nashville Metro GIS',
                 maxZoom: 19
             }).addTo(map);
 
-            // Add zoom handler for message
+            // Create marker cluster groups
+            eligibleLayer = L.markerClusterGroup({
+                maxClusterRadius: 50,
+                disableClusteringAtZoom: 17,
+                iconCreateFunction: function(cluster) {
+                    const count = cluster.getChildCount();
+                    return L.divIcon({
+                        html: '<div>' + (count > 999 ? Math.round(count/1000) + 'k' : count) + '</div>',
+                        className: 'marker-cluster marker-cluster-eligible',
+                        iconSize: [40, 40]
+                    });
+                }
+            });
+
+            conditionalLayer = L.markerClusterGroup({
+                maxClusterRadius: 50,
+                disableClusteringAtZoom: 17,
+                iconCreateFunction: function(cluster) {
+                    const count = cluster.getChildCount();
+                    return L.divIcon({
+                        html: '<div>' + (count > 999 ? Math.round(count/1000) + 'k' : count) + '</div>',
+                        className: 'marker-cluster marker-cluster-conditional',
+                        iconSize: [40, 40]
+                    });
+                }
+            });
+
+            notEligibleLayer = L.markerClusterGroup({
+                maxClusterRadius: 50,
+                disableClusteringAtZoom: 17,
+                iconCreateFunction: function(cluster) {
+                    const count = cluster.getChildCount();
+                    return L.divIcon({
+                        html: '<div>' + (count > 999 ? Math.round(count/1000) + 'k' : count) + '</div>',
+                        className: 'marker-cluster marker-cluster-not-eligible',
+                        iconSize: [40, 40]
+                    });
+                }
+            });
+
+            // Create parcel polygon layer (GeoJSON)
+            parcelLayer = L.geoJSON(null, {
+                style: function(feature) {
+                    return {
+                        color: '#fff',
+                        weight: 1,
+                        fillColor: feature.properties.fillColor || '#999',
+                        fillOpacity: 0.7
+                    };
+                },
+                onEachFeature: function(feature, layer) {
+                    if (feature.properties && feature.properties.popupContent) {
+                        layer.bindPopup(feature.properties.popupContent, { maxWidth: 320 });
+                    }
+                }
+            });
+
+            // Add layers to map
+            map.addLayer(parcelLayer);
+            map.addLayer(eligibleLayer);
+            map.addLayer(conditionalLayer);
+            map.addLayer(notEligibleLayer);
+
+            // Zoom handler - show different messages based on zoom level
             map.on('zoomend', function() {
                 const zoom = map.getZoom();
                 const msg = document.getElementById('zoom-message');
-                if (zoom < 14) {
+                if (zoom < 13) {
+                    msg.textContent = 'Zoom in to see parcel markers';
+                    msg.classList.add('visible');
+                } else if (zoom < 15) {
+                    msg.textContent = 'Zoom in more to see parcel boundaries';
                     msg.classList.add('visible');
                 } else {
                     msg.classList.remove('visible');
                 }
             });
 
-            // Load parcels
-            loadParcels();
-
-            // Hide loading after delay
-            setTimeout(() => {
-                document.getElementById('loading').classList.add('hidden');
-            }, 1500);
-        }
-
-        // Get eligibility color
-        function getEligibilityColor(eligibility) {
-            switch (eligibility) {
-                case 'Y': return '#4caf50';
-                case 'M': return '#f39c12';
-                case 'N': return '#e74c3c';
-                default: return '#999';
-            }
-        }
-
-        // Get eligibility label
-        function getEligibilityLabel(eligibility) {
-            switch (eligibility) {
-                case 'Y': return 'Eligible';
-                case 'M': return 'Conditional';
-                case 'N': return 'Not Eligible';
-                default: return 'Unknown';
-            }
-        }
-
-        // Load parcels
-        function loadParcels() {
-            parcelMarkers.forEach(m => map.removeLayer(m));
-            parcelMarkers = [];
-
-            const filteredParcels = sampleParcels.filter(p => {
-                if (p.eligibility === 'Y' && !currentFilters.showEligible) return false;
-                if (p.eligibility === 'M' && !currentFilters.showMaybe) return false;
-                if (p.eligibility === 'N' && !currentFilters.showNotEligible) return false;
-                if (currentFilters.zoning && !p.zoning.startsWith(currentFilters.zoning)) return false;
-                if (currentFilters.district && p.district !== currentFilters.district) return false;
-                return true;
+            // Load data on move (debounced)
+            let moveTimeout;
+            map.on('moveend', function() {
+                clearTimeout(moveTimeout);
+                moveTimeout = setTimeout(() => {
+                    if (map.getZoom() >= 13) {
+                        loadViewportData();
+                    }
+                }, 300);
             });
 
-            filteredParcels.forEach(parcel => {
-                const color = getEligibilityColor(parcel.eligibility);
+            // Initial load
+            loadEligibilityData();
+        }
 
-                // Create circle marker for each parcel
-                const marker = L.circleMarker([parcel.lat, parcel.lng], {
-                    radius: 12,
-                    fillColor: color,
-                    color: '#fff',
-                    weight: 2,
-                    opacity: 1,
-                    fillOpacity: 0.8
+        // Load eligibility data from live ArcGIS service
+        async function loadEligibilityData() {
+            const statusEl = document.getElementById('loading-status');
+            const progressBar = document.getElementById('progress-bar');
+
+            try {
+                statusEl.textContent = 'Connecting to Nashville GIS...';
+                progressBar.style.width = '10%';
+
+                // Get total counts from service
+                const counts = await getServiceCounts();
+                progressBar.style.width = '30%';
+
+                // Update stats with live counts
+                document.getElementById('stat-eligible').textContent = counts.eligible.toLocaleString();
+                document.getElementById('stat-conditional').textContent = counts.conditional.toLocaleString();
+                document.getElementById('stat-not').textContent = counts.notEligible.toLocaleString();
+                document.getElementById('stat-total').textContent = (counts.eligible + counts.conditional + counts.notEligible).toLocaleString();
+
+                document.getElementById('count-eligible').textContent = counts.eligible.toLocaleString();
+                document.getElementById('count-conditional').textContent = counts.conditional.toLocaleString();
+                document.getElementById('count-not').textContent = counts.notEligible.toLocaleString();
+
+                statusEl.textContent = 'Loading initial view...';
+                progressBar.style.width = '50%';
+
+                // Load initial viewport data (Nashville center area)
+                await loadViewportData();
+                progressBar.style.width = '100%';
+
+                // Hide loading
+                setTimeout(() => {
+                    document.getElementById('loading').classList.add('hidden');
+                }, 500);
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                statusEl.textContent = 'Error connecting. Trying fallback...';
+                // Fallback to static files if service is down
+                await loadStaticFallback();
+            }
+        }
+
+        // Load data for current viewport - with parcel polygons
+        async function loadViewportData() {
+            if (isLoading) return;
+
+            const zoom = map.getZoom();
+            if (zoom < 15) {
+                // At lower zoom, show circle markers for performance
+                if (zoom >= 13) {
+                    await loadViewportMarkers();
+                }
+                return;
+            }
+
+            const bounds = map.getBounds();
+
+            // Check if we already loaded this area
+            if (loadedBounds && loadedBounds.contains(bounds)) return;
+
+            isLoading = true;
+
+            try {
+                console.log('Loading parcel polygons from Nashville Cadastral...');
+
+                // Step 1: Get parcel polygons from Nashville Cadastral
+                const cadastralData = await queryCadastralByBounds(bounds);
+
+                if (!cadastralData || !cadastralData.features || cadastralData.features.length === 0) {
+                    console.log('No cadastral features, falling back to markers');
+                    await loadViewportMarkers();
+                    return;
+                }
+
+                console.log(`Got ${cadastralData.features.length} parcel polygons`);
+
+                // Step 2: Get STANPARs from cadastral data
+                const stanpars = cadastralData.features
+                    .map(f => f.properties.STANPAR)
+                    .filter(s => s);
+
+                if (stanpars.length === 0) {
+                    console.log('No STANPARs found');
+                    return;
+                }
+
+                // Step 3: Query eligibility status for these parcels
+                const eligibilityMap = {};
+
+                // Query in batches of 50 to avoid URL length limits
+                const batchSize = 50;
+                for (let i = 0; i < stanpars.length; i += batchSize) {
+                    const batch = stanpars.slice(i, i + batchSize);
+                    const whereClause = batch.map(s => `STANPAR = '${s}'`).join(' OR ');
+
+                    const eligData = await queryArcGIS({
+                        where: whereClause,
+                        outFields: 'STANPAR,Address,Zoning,Eligibility_Status,Max_DADU_Living_SF,Lot_SqFt,Acres',
+                        resultRecordCount: batchSize
+                    });
+
+                    if (eligData.features) {
+                        eligData.features.forEach(f => {
+                            const attrs = f.attributes || f;
+                            eligibilityMap[attrs.STANPAR] = attrs;
+                        });
+                    }
+                }
+
+                console.log(`Got eligibility data for ${Object.keys(eligibilityMap).length} parcels`);
+
+                // Step 4: Clear existing and add colored polygons
+                parcelLayer.clearLayers();
+
+                cadastralData.features.forEach(feature => {
+                    const stanpar = feature.properties.STANPAR;
+                    const eligData = eligibilityMap[stanpar];
+
+                    if (!eligData) return; // Skip if no eligibility data
+
+                    // Determine eligibility and color
+                    const status = eligData.Eligibility_Status || '';
+                    let eligClass = 'not-eligible';
+                    let fillColor = COLORS.notEligible;
+
+                    if (status === 'CHECK_SP_USD') {
+                        eligClass = 'eligible';
+                        fillColor = COLORS.eligible;
+                    } else if (status === 'GSD_NEEDS_OVERLAY' || status === 'CHECK_SP_GSD') {
+                        eligClass = 'conditional';
+                        fillColor = COLORS.conditional;
+                    }
+
+                    // Apply filters
+                    if (eligClass === 'eligible' && !currentFilters.showEligible) return;
+                    if (eligClass === 'conditional' && !currentFilters.showConditional) return;
+                    if (eligClass === 'not-eligible' && !currentFilters.showNotEligible) return;
+
+                    // Build popup content
+                    const lotSf = eligData.Lot_SqFt || (eligData.Acres ? Math.round(eligData.Acres * 43560) : 0);
+                    const maxDadu = eligData.Max_DADU_Living_SF || (lotSf >= 43560 ? 1200 : (lotSf >= 20000 ? 900 : (lotSf >= 10000 ? 700 : 600)));
+                    const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
+
+                    const popupContent = `
+                        <div class="popup-header ${eligClass}">
+                            <div class="popup-status">${eligLabel}</div>
+                            <div class="popup-address">${eligData.Address || feature.properties.PropAddr || 'No Address'}</div>
+                        </div>
+                        <div class="popup-content">
+                            <div class="popup-row">
+                                <span class="popup-label">APN</span>
+                                <span class="popup-value">${stanpar}</span>
+                            </div>
+                            <div class="popup-row">
+                                <span class="popup-label">Zoning</span>
+                                <span class="popup-value">${eligData.Zoning || 'N/A'}</span>
+                            </div>
+                            <div class="popup-row">
+                                <span class="popup-label">Lot Size</span>
+                                <span class="popup-value">${lotSf ? lotSf.toLocaleString() : 'N/A'} SF</span>
+                            </div>
+                            <div class="popup-row">
+                                <span class="popup-label">Max DADU</span>
+                                <span class="popup-value">${maxDadu} SF Living</span>
+                            </div>
+                        </div>
+                        <div class="popup-actions">
+                            <a href="property-report-card.html?apn=${stanpar}&address=${encodeURIComponent(eligData.Address || '')}" class="popup-btn popup-btn-primary">Full Report</a>
+                            <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${stanpar}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
+                        </div>
+                    `;
+
+                    // Add properties for styling
+                    feature.properties.fillColor = fillColor;
+                    feature.properties.eligClass = eligClass;
+                    feature.properties.popupContent = popupContent;
+
+                    parcelLayer.addData(feature);
                 });
 
-                // Create popup content
+                loadedBounds = bounds;
+                console.log('Parcel polygons loaded successfully');
+
+            } catch (error) {
+                console.error('Viewport load error:', error);
+                // Fallback to markers
+                await loadViewportMarkers();
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Fallback: Load circle markers (for lower zoom or when polygons fail)
+        async function loadViewportMarkers() {
+            const bounds = map.getBounds();
+
+            try {
+                let whereClause = '1=1';
+                if (currentFilters.zoning) {
+                    whereClause = `Zoning LIKE '${currentFilters.zoning}%'`;
+                }
+
+                const data = await queryByBounds(bounds, {
+                    where: whereClause,
+                    outFields: 'STANPAR,Address,Zoning,Acres,Lot_SqFt,In_USD,Service_District,Eligibility_Status,Max_DADU_Living_SF,Lat,Lon',
+                    resultRecordCount: 2000
+                });
+
+                if (data.features && data.features.length > 0) {
+                    console.log(`Loaded ${data.features.length} markers from ArcGIS`);
+                    processFeatures(data.features);
+                }
+
+                loadedBounds = bounds;
+
+            } catch (error) {
+                console.error('Marker load error:', error);
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Process features from ArcGIS JSON response (Table format with Lat/Lon fields)
+        function processFeatures(features) {
+            features.forEach(feature => {
+                // JSON format uses 'attributes' not 'properties'
+                const props = feature.attributes || feature;
+
+                // Get coordinates from Lat/Lon fields
+                const lat = props.Lat;
+                const lon = props.Lon;
+
+                // Skip if no valid coordinates
+                if (!lat || !lon || isNaN(lat) || isNaN(lon)) return;
+
+                // Determine eligibility class
+                let eligClass = 'not-eligible';
+                let color = COLORS.notEligible;
+                let targetLayer = notEligibleLayer;
+
+                // Eligibility based on Eligibility_Status field:
+                // - CHECK_SP_USD = Eligible (SP zoning in USD)
+                // - CHECK_SP_GSD, GSD_NEEDS_OVERLAY = Conditional (needs overlay)
+                // - NOT_ELIGIBLE, REVIEW_REQUIRED = Not Eligible
+                const status = props.Eligibility_Status || '';
+                if (status === 'CHECK_SP_USD') {
+                    eligClass = 'eligible';
+                    color = COLORS.eligible;
+                    targetLayer = eligibleLayer;
+                } else if (status === 'GSD_NEEDS_OVERLAY' || status === 'CHECK_SP_GSD') {
+                    eligClass = 'conditional';
+                    color = COLORS.conditional;
+                    targetLayer = conditionalLayer;
+                }
+
+                // Skip if filter is off
+                if (eligClass === 'eligible' && !currentFilters.showEligible) return;
+                if (eligClass === 'conditional' && !currentFilters.showConditional) return;
+                if (eligClass === 'not-eligible' && !currentFilters.showNotEligible) return;
+
+                // Create marker using Lat/Lon
+                const marker = L.circleMarker([lat, lon], {
+                    radius: 8,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.85
+                });
+
+                // Use Lot_SqFt if available, otherwise calculate from Acres
+                const lotSf = props.Lot_SqFt || (props.Acres ? Math.round(props.Acres * 43560) : 0);
+                const maxDadu = props.Max_DADU_Living_SF || (lotSf >= 43560 ? 1200 : (lotSf >= 20000 ? 900 : (lotSf >= 10000 ? 700 : 600)));
+
+                // Popup content
+                const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
                 const popupContent = `
                     
                         <div class="popup-address">${parcel.address}</div>
                     </div>
                     <div class="popup-content">
                         <div class="popup-row">
-                            <span class="popup-label">Zoning</span>
-                            <span class="popup-value">${parcel.zoning}</span>
+                            <span class="popup-label">APN</span>
+                            <span class="popup-value">${props.STANPAR || 'N/A'}</span>
                         </div>
                         <div class="popup-row">
-                            <span class="popup-label">Service District</span>
-                            <span class="popup-value">${parcel.district}</span>
+                            <span class="popup-label">Zoning</span>
+                            <span class="popup-value">${props.Zoning || 'N/A'}</span>
                         </div>
                         <div class="popup-row">
                             <span class="popup-label">Lot Size</span>
-                            <span class="popup-value">${parcel.lotSqft.toLocaleString()} SF</span>
+                            <span class="popup-value">${lotSf ? lotSf.toLocaleString() : 'N/A'} SF</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Service District</span>
+                            <span class="popup-value">${props.Service_District || 'N/A'}</span>
                         </div>
                         <div class="popup-row">
                             <span class="popup-label">Max DADU</span>
-                            <span class="popup-value">${parcel.lotSqft >= 10000 ? '850' : '700'} SF Living</span>
+                            <span class="popup-value">${maxDadu} SF Living</span>
                         </div>
                     </div>
                     <div class="popup-actions">
-                        <a href="eligibility_report.html?address=${encodeURIComponent(parcel.address)}" class="popup-btn popup-btn-primary">Full Report</a>
-                        <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
+                        <a href="property-report-card.html?apn=${props.STANPAR}&address=${encodeURIComponent(props.Address || '')}" class="popup-btn popup-btn-primary">Full Report</a>
+                        <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${props.STANPAR}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
                     </div>
                 `;
 
                 marker.bindPopup(popupContent, { maxWidth: 320 });
-                marker.addTo(map);
-                parcelMarkers.push(marker);
+                targetLayer.addLayer(marker);
             });
+        }
 
-            // Update counts
-            updateCounts(filteredParcels);
+        // Fallback to static GeoJSON files
+        async function loadStaticFallback() {
+            const statusEl = document.getElementById('loading-status');
+            const progressBar = document.getElementById('progress-bar');
+
+            try {
+                statusEl.textContent = 'Loading cached data...';
+                progressBar.style.width = '10%';
+
+                const greenResponse = await fetch('eligibility_green.geojson');
+                const greenData = await greenResponse.json();
+                progressBar.style.width = '40%';
+
+                const yellowResponse = await fetch('eligibility_yellow.geojson');
+                const yellowData = await yellowResponse.json();
+                progressBar.style.width = '60%';
+
+                const redResponse = await fetch('eligibility_red.geojson');
+                const redData = await redResponse.json();
+                progressBar.style.width = '80%';
+
+                allData.eligible = greenData.features;
+                allData.conditional = yellowData.features;
+                allData.notEligible = redData.features;
+
+                statusEl.textContent = 'Rendering parcels...';
+                addMarkersToLayers();
+                progressBar.style.width = '100%';
+                updateStats();
+
+                setTimeout(() => {
+                    document.getElementById('loading').classList.add('hidden');
+                }, 500);
+
+            } catch (error) {
+                console.error('Fallback also failed:', error);
+                statusEl.textContent = 'Error loading data. Please refresh.';
+            }
+        }
+
+        // Add markers to cluster layers
+        function addMarkersToLayers() {
+            // Clear existing
+            eligibleLayer.clearLayers();
+            conditionalLayer.clearLayers();
+            notEligibleLayer.clearLayers();
+
+            const zoningFilter = currentFilters.zoning;
+
+            // Helper to create marker
+            function createMarker(feature, color, eligClass) {
+                const props = feature.properties;
+                const coords = feature.geometry.coordinates;
+
+                // Apply zoning filter
+                if (zoningFilter && props.z && !props.z.startsWith(zoningFilter)) {
+                    return null;
+                }
+
+                const marker = L.circleMarker([coords[1], coords[0]], {
+                    radius: 8,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.85
+                });
+
+                // Popup content
+                const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
+                const lotSf = props.l ? props.l.toLocaleString() : 'N/A';
+                const maxSf = props.m || 'N/A';
+
+                const popupContent = `
+                    <div class="popup-header ${eligClass}">
+                        <div class="popup-status">${eligLabel}</div>
+                        <div class="popup-address">${props.d || 'No Address'}</div>
+                    </div>
+                    <div class="popup-content">
+                        <div class="popup-row">
+                            <span class="popup-label">APN</span>
+                            <span class="popup-value">${props.a || 'N/A'}</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Zoning</span>
+                            <span class="popup-value">${props.z || 'N/A'}</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Lot Size</span>
+                            <span class="popup-value">${lotSf} SF</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Max DADU</span>
+                            <span class="popup-value">${maxSf} SF Living</span>
+                        </div>
+                    </div>
+                    <div class="popup-actions">
+                        <a href="property-report-card.html?apn=${props.a}&address=${encodeURIComponent(props.d || '')}" class="popup-btn popup-btn-primary">Full Report</a>
+                        <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${props.a}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
+                    </div>
+                `;
+
+                marker.bindPopup(popupContent, { maxWidth: 320 });
+                return marker;
+            }
+
+            // Add eligible markers
+            if (currentFilters.showEligible) {
+                allData.eligible.forEach(feature => {
+                    const marker = createMarker(feature, COLORS.eligible, 'eligible');
+                    if (marker) eligibleLayer.addLayer(marker);
+                });
+            }
+
+            // Add conditional markers
+            if (currentFilters.showConditional) {
+                allData.conditional.forEach(feature => {
+                    const marker = createMarker(feature, COLORS.conditional, 'conditional');
+                    if (marker) conditionalLayer.addLayer(marker);
+                });
+            }
+
+            // Add not eligible markers
+            if (currentFilters.showNotEligible) {
+                allData.notEligible.forEach(feature => {
+                    const marker = createMarker(feature, COLORS.notEligible, 'not-eligible');
+                    if (marker) notEligibleLayer.addLayer(marker);
+                });
+            }
         }
 
         // Update filter counts
-        function updateCounts(filtered) {
-            const eligible = filtered.filter(p => p.eligibility === 'Y').length;
-            const maybe = filtered.filter(p => p.eligibility === 'M').length;
-            const notEligible = filtered.filter(p => p.eligibility === 'N').length;
+        function updateStats() {
+            const eligibleCount = allData.eligible.length;
+            const conditionalCount = allData.conditional.length;
+            const notEligibleCount = allData.notEligible.length;
+            const total = eligibleCount + conditionalCount + notEligibleCount;
 
-            // For demo, show sample counts
-            // In production, these would be real totals
+            document.getElementById('stat-total').textContent = total.toLocaleString();
+            document.getElementById('stat-eligible').textContent = eligibleCount.toLocaleString();
+            document.getElementById('stat-conditional').textContent = conditionalCount.toLocaleString();
+            document.getElementById('stat-not').textContent = notEligibleCount.toLocaleString();
+
+            document.getElementById('count-eligible').textContent = eligibleCount.toLocaleString();
+            document.getElementById('count-conditional').textContent = conditionalCount.toLocaleString();
+            document.getElementById('count-not').textContent = notEligibleCount.toLocaleString();
         }
 
         // Update filters
         function updateFilters() {
             currentFilters = {
                 showEligible: document.getElementById('show-eligible').checked,
-                showMaybe: document.getElementById('show-maybe').checked,
+                showConditional: document.getElementById('show-conditional').checked,
                 showNotEligible: document.getElementById('show-not-eligible').checked,
-                zoning: document.getElementById('filter-zoning').value,
-                district: document.getElementById('filter-district').value
+                zoning: document.getElementById('filter-zoning').value
             };
-            loadParcels();
+
+            // Clear layers and reload
+            parcelLayer.clearLayers();
+            eligibleLayer.clearLayers();
+            conditionalLayer.clearLayers();
+            notEligibleLayer.clearLayers();
+            loadedBounds = null;
+
+            // Reload data with new filters
+            if (map.getZoom() >= 13) {
+                loadViewportData();
+            }
         }
 
-        // Search address
-        function searchAddress() {
-            const address = document.getElementById('address-search').value.trim().toUpperCase();
+        // Search address using live ArcGIS service
+        async function searchAddress() {
+            const address = document.getElementById('address-search').value.trim();
             if (!address) return;
 
-            const found = sampleParcels.find(p =>
-                p.address.toUpperCase().includes(address)
-            );
+            const searchBtn = document.querySelector('.search-btn');
+            searchBtn.textContent = 'Searching...';
+            searchBtn.disabled = true;
 
-            if (found) {
-                map.setView([found.lat, found.lng], 17);
-                const marker = parcelMarkers.find(m => {
-                    const ll = m.getLatLng();
-                    return Math.abs(ll.lat - found.lat) < 0.0001 && Math.abs(ll.lng - found.lng) < 0.0001;
+            try {
+                // Query live ArcGIS service for address
+                const searchTerm = address.toUpperCase().replace(/'/g, "''");
+                const data = await queryArcGIS({
+                    where: `Address LIKE '%${searchTerm}%'`,
+                    outFields: 'STANPAR,Address,Zoning,Acres,Lot_SqFt,In_USD,Service_District,Eligibility_Status,Max_DADU_Living_SF,Lat,Lon',
+                    resultRecordCount: 10
                 });
-                if (marker) {
-                    marker.openPopup();
+
+                if (data.features && data.features.length > 0) {
+                    const feature = data.features[0];
+                    // JSON format uses 'attributes' not 'properties'
+                    const props = feature.attributes || feature;
+                    const lat = props.Lat;
+                    const lon = props.Lon;
+
+                    if (!lat || !lon) {
+                        alert('Property found but no coordinates available.');
+                        return;
+                    }
+
+                    // Determine eligibility based on Eligibility_Status
+                    let eligClass = 'not-eligible';
+                    let color = COLORS.notEligible;
+                    const status = props.Eligibility_Status || '';
+
+                    if (status === 'CHECK_SP_USD') {
+                        eligClass = 'eligible';
+                        color = COLORS.eligible;
+                    } else if (status === 'GSD_NEEDS_OVERLAY' || status === 'CHECK_SP_GSD') {
+                        eligClass = 'conditional';
+                        color = COLORS.conditional;
+                    }
+
+                    // Pan to location using Lat/Lon
+                    map.setView([lat, lon], 17);
+
+                    // Create highlighted marker
+                    const marker = L.circleMarker([lat, lon], {
+                        radius: 15,
+                        fillColor: color,
+                        color: '#fff',
+                        weight: 3,
+                        opacity: 1,
+                        fillOpacity: 0.9
+                    }).addTo(map);
+
+                    // Use stored values or calculate
+                    const lotSf = props.Lot_SqFt || (props.Acres ? Math.round(props.Acres * 43560) : 0);
+                    const maxDadu = props.Max_DADU_Living_SF || (lotSf >= 43560 ? 1200 : (lotSf >= 20000 ? 900 : (lotSf >= 10000 ? 700 : 600)));
+
+                    const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
+                    const popupContent = `
+                        <div class="popup-header ${eligClass}">
+                            <div class="popup-status">${eligLabel}</div>
+                            <div class="popup-address">${props.Address || 'No Address'}</div>
+                        </div>
+                        <div class="popup-content">
+                            <div class="popup-row">
+                                <span class="popup-label">APN</span>
+                                <span class="popup-value">${props.STANPAR || 'N/A'}</span>
+                            </div>
+                            <div class="popup-row">
+                                <span class="popup-label">Zoning</span>
+                                <span class="popup-value">${props.Zoning || 'N/A'}</span>
+                            </div>
+                            <div class="popup-row">
+                                <span class="popup-label">Lot Size</span>
+                                <span class="popup-value">${lotSf ? lotSf.toLocaleString() : 'N/A'} SF</span>
+                            </div>
+                            <div class="popup-row">
+                                <span class="popup-label">Service District</span>
+                                <span class="popup-value">${props.Service_District || 'N/A'}</span>
+                            </div>
+                            <div class="popup-row">
+                                <span class="popup-label">Max DADU</span>
+                                <span class="popup-value">${maxDadu} SF Living</span>
+                            </div>
+                        </div>
+                        <div class="popup-actions">
+                            <a href="property-report-card.html?apn=${props.STANPAR}&address=${encodeURIComponent(props.Address || '')}" class="popup-btn popup-btn-primary">Full Report</a>
+                            <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${props.STANPAR}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
+                        </div>
+                    `;
+                    marker.bindPopup(popupContent, { maxWidth: 320 }).openPopup();
+
+                    // Load viewport data
+                    loadedBounds = null; // Reset to force reload
+                    setTimeout(() => loadViewportData(), 500);
+
+                } else {
+                    // Fallback to geocoder
+                    const geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Nashville, TN')}`;
+                    const response = await fetch(geocodeUrl);
+                    const results = await response.json();
+
+                    if (results && results.length > 0) {
+                        const lat = parseFloat(results[0].lat);
+                        const lon = parseFloat(results[0].lon);
+                        map.setView([lat, lon], 17);
+
+                        L.marker([lat, lon]).addTo(map)
+                            .bindPopup(`<b>${address}</b><br>Zoom in and click nearby parcels to check eligibility.`)
+                            .openPopup();
+
+                        // Load viewport data
+                        loadedBounds = null;
+                        setTimeout(() => loadViewportData(), 500);
+                    } else {
+                        alert('Address not found. Try entering a Nashville street address.');
+                    }
                 }
-            } else {
-                alert('Address not found in sample data. In production, this would search the full parcel database.');
+            } catch (err) {
+                console.error('Search error:', err);
+                alert('Error searching. Please try again.');
+            } finally {
+                searchBtn.textContent = 'Search';
+                searchBtn.disabled = false;
             }
         }
 
@@ -905,5 +1653,6 @@
             initMap();
         });
     </script>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

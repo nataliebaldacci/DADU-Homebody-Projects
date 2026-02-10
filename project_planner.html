@@ -11,8 +11,8 @@
             --navy: #2c3e50;
             --navy-dark: #1a252f;
             --teal: #6b8fa3;
-            --olive: #6b8e4e;
-            --olive-light: #8bb36d;
+            --terracotta: #B55A3C;
+            --terracotta-light: #c97a60;
             --tan: #c9a86c;
             --cream: #f5f5f0;
             --warm-gray: #e8e4df;
@@ -55,7 +55,7 @@
         .nav-logo-icon {
             width: 40px;
             height: 40px;
-            background: var(--olive);
+            background: var(--terracotta);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -117,12 +117,12 @@
         }
 
         .btn-primary {
-            background: var(--olive);
+            background: var(--terracotta);
             color: white;
         }
 
         .btn-primary:hover {
-            background: var(--olive-light);
+            background: var(--terracotta-light);
         }
 
         .btn-secondary {
@@ -172,7 +172,7 @@
             color: var(--navy);
         }
 
-        .summary-card-value.green { color: var(--olive); }
+        .summary-card-value.green { color: var(--terracotta); }
         .summary-card-value.blue { color: var(--teal); }
 
         .summary-card-sub {
@@ -210,7 +210,7 @@
 
         .date-input:focus {
             outline: none;
-            border-color: var(--olive);
+            border-color: var(--terracotta);
         }
 
         .scenario-btns {
@@ -375,7 +375,7 @@
 
         .gantt-bar.planning { background: var(--teal); }
         .gantt-bar.design { background: var(--tan); }
-        .gantt-bar.permits { background: var(--olive); }
+        .gantt-bar.permits { background: var(--terracotta); }
         .gantt-bar.construction { background: var(--navy); }
         .gantt-bar.final { background: var(--success); }
 
@@ -404,7 +404,7 @@
 
         .phase-icon.planning { background: rgba(107, 143, 163, 0.2); }
         .phase-icon.design { background: rgba(201, 168, 108, 0.2); }
-        .phase-icon.permits { background: rgba(107, 142, 78, 0.2); }
+        .phase-icon.permits { background: rgba(181, 90, 60, 0.2); }
         .phase-icon.construction { background: rgba(44, 62, 80, 0.2); }
         .phase-icon.final { background: rgba(34, 197, 94, 0.2); }
 
@@ -477,7 +477,7 @@
         .milestone-date {
             font-size: 14px;
             font-weight: 700;
-            color: var(--olive-light);
+            color: var(--terracotta-light);
         }
 
         /* Tips Section */
@@ -508,7 +508,7 @@
             justify-content: center;
             font-size: 24px;
             margin-bottom: 16px;
-            background: rgba(107, 142, 78, 0.15);
+            background: rgba(181, 90, 60, 0.15);
         }
 
         .tip-title {
@@ -530,7 +530,7 @@
             font-size: 13px;
         }
 
-        .footer a { color: var(--olive); text-decoration: none; }
+        .footer a { color: var(--terracotta); text-decoration: none; }
     </style>
 
 </head>
@@ -603,7 +603,7 @@
                         <span>Design</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-color" style="background: var(--olive);"></div>
+                        <div class="legend-color" style="background: var(--terracotta);"></div>
                         <span>Permits</span>
                     </div>
                     <div class="legend-item">
@@ -814,5 +814,6 @@
         // Initialize
         updateTimeline();
     </script>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

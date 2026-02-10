@@ -11,8 +11,8 @@
             --navy: #2c3e50;
             --navy-dark: #1a252f;
             --teal: #6b8fa3;
-            --olive: #6b8e4e;
-            --olive-light: #8bb36d;
+            --terracotta: #B55A3C;
+            --terracotta-light: #c97a60;
             --tan: #c9a86c;
             --cream: #f5f5f0;
             --warm-gray: #e8e4df;
@@ -55,7 +55,7 @@
         .nav-logo-icon {
             width: 40px;
             height: 40px;
-            background: var(--olive);
+            background: var(--terracotta);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -135,7 +135,7 @@
         .section-icon {
             width: 32px;
             height: 32px;
-            background: var(--olive);
+            background: var(--terracotta);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -176,8 +176,8 @@
 
         .input-field:focus {
             outline: none;
-            border-color: var(--olive);
-            box-shadow: 0 0 0 3px rgba(107, 142, 78, 0.1);
+            border-color: var(--terracotta);
+            box-shadow: 0 0 0 3px rgba(181, 90, 60, 0.1);
         }
 
         .input-row {
@@ -209,7 +209,7 @@
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: var(--olive);
+            background: var(--terracotta);
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
@@ -218,7 +218,7 @@
             text-align: center;
             font-size: 24px;
             font-weight: 700;
-            color: var(--olive);
+            color: var(--terracotta);
             margin-top: 12px;
         }
 
@@ -226,7 +226,7 @@
         .calc-button {
             width: 100%;
             padding: 16px 32px;
-            background: var(--olive);
+            background: var(--terracotta);
             color: white;
             border: none;
             border-radius: 10px;
@@ -238,9 +238,9 @@
         }
 
         .calc-button:hover {
-            background: var(--olive-light);
+            background: var(--terracotta-light);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(107, 142, 78, 0.3);
+            box-shadow: 0 4px 12px rgba(181, 90, 60, 0.3);
         }
 
         /* Results Section */
@@ -280,7 +280,7 @@
         }
 
         .result-value.highlight {
-            color: var(--olive-light);
+            color: var(--terracotta-light);
         }
 
         .result-subtext {
@@ -295,7 +295,7 @@
             padding: 20px;
             background: rgba(255,255,255,0.05);
             border-radius: 10px;
-            border-left: 4px solid var(--olive);
+            border-left: 4px solid var(--terracotta);
         }
 
         .summary-title {
@@ -348,7 +348,7 @@
         }
 
         .footer a {
-            color: var(--olive);
+            color: var(--terracotta);
             text-decoration: none;
         }
     </style>
@@ -618,5 +618,6 @@
             document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

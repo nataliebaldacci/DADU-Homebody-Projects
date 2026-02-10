@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Report | Homebody Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #e8e4df;
+            color: #333333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .report-header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .report-header .subtitle {
+            color: #6b8fa3;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .search-section h2 {
+            color: #2c3e50;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-section h2 svg {
+            width: 24px;
+            height: 24px;
+            color: #6b8fa3;
+        }
+        .search-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+        .search-input {
+            width: 100%;
+            padding: 14px 16px;
+            padding-left: 44px;
+            border: 2px solid #e8e4df;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            transition: border-color 0.2s ease;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #6b8fa3;
+        }
+        .search-input-wrapper svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #888;
+        }
+        .search-btn {
+            padding: 14px 28px;
+            background: #6b8fa3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .search-btn:hover { background: #5a7d91; }
+        .search-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* Property Info Card */
+        .property-info {
+            background: linear-gradient(135deg, #2c3e50 0%, #3d5a73 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+        .property-info.visible { display: block; }
+        .property-info h3 {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .property-address {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .property-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+        .property-stat {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .property-stat .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+        .property-stat .value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .property-stat .value.eligible { color: #7bed9f; }
+        .property-stat .value.not-eligible { color: #ff6b6b; }
+        .property-stat .value.maybe { color: #ffd93d; }
+
+        /* Status Messages */
+        .status-msg {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            display: none;
+        }
+        .status-msg.visible { display: block; }
+        .status-msg.error {
+            background: #ffe0e0;
+            color: #c0392b;
+            border: 1px solid #e74c3c;
+        }
+        .status-msg.success {
+            background: #e0ffe0;
+            color: #27ae60;
+            border: 1px solid #2ecc71;
+        }
+        .status-msg.loading {
+            background: #e0f0ff;
+            color: #2980b9;
+            border: 1px solid #3498db;
+        }
+
+        /* DADU Requirements Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 640px) {
+            .cards-grid { grid-template-columns: 1fr; }
+        }
+        .report-card {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .report-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        .report-card.active {
+            border: 3px solid #B55A3C;
+        }
+        .card-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #e8e4df;
+        }
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 12px;
+            background: #f0e8e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-icon svg {
+            width: 32px;
+            height: 32px;
+            color: #B55A3C;
+        }
+        .card-icon.teal { background: #e8f4fc; }
+        .card-icon.teal svg { color: #6b8fa3; }
+        .card-header h3 {
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .card-header .lot-size {
+            color: #6b8fa3;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .card-metrics { padding: 16px 20px; }
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #e8e4df;
+        }
+        .metric-row:last-child { border-bottom: none; }
+        .metric-label {
+            color: #666666;
+            font-size: 13px;
+        }
+        .metric-value {
+            color: #2c3e50;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: right;
+        }
+        .metric-value.highlight { color: #B55A3C; }
+
+        /* Requirements Section */
+        .requirements-section {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .requirements-section h2 {
+            color: #2c3e50;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #6b8fa3;
+        }
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .requirement-item:last-child { border-bottom: none; }
+        .req-icon {
+            width: 24px;
+            height: 24px;
+            background: #f0e8e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .req-icon svg {
+            width: 14px;
+            height: 14px;
+            color: #B55A3C;
+        }
+        .req-content h4 {
+            color: #2c3e50;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .req-content p {
+            color: #666666;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Debug Panel */
+        .debug-panel {
+            background: #1a1a2e;
+            color: #00ff88;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .debug-panel h3 {
+            color: #fff;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        .debug-line {
+            margin: 4px 0;
+            padding: 4px 0;
+            border-bottom: 1px solid #333;
+        }
+        .debug-line.error { color: #ff6b6b; }
+        .debug-line.success { color: #7bed9f; }
+        .debug-line.info { color: #74b9ff; }
+        .debug-toggle {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+
+        /* Footer */
+        .report-footer {
+            text-align: center;
+            padding: 20px;
+            color: #888888;
+            font-size: 12px;
+        }
+        .report-footer a {
+            color: #6b8fa3;
+            text-decoration: none;
+        }
+        .report-footer a:hover { text-decoration: underline; }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Info Banner */
+        .info-banner {
+            background: #2c3e50;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .info-banner .icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        .info-banner p {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .info-banner strong { color: #6b8fa3; }
+    </style>
+    <link rel="stylesheet" href="homebody_shared.css">
+</head>
+<body>
+<!-- Shared Header - Homebody Projects -->
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="top-bar-left">
+        Nashville-Davidson County <span>BL2025-1007</span> effective December 12, 2025
+    </div>
+    <div class="top-bar-right">
+        <a href="homebody_pricing.html">Pricing</a>
+        <a href="dadu_resources.html">Resources</a>
+        <a href="mailto:contact@homebodyprojects.com">Contact</a>
+    </div>
+</div>
+
+<!-- Main Navigation -->
+<nav class="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+        <!-- Logo -->
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">
+                <img src="assets/icons/ADU.png" alt="Homebody ADU Icon">
+            </div>
+            <div class="nav-logo-text">
+                <span class="nav-logo-title">Homebody Projects</span>
+                <span class="nav-logo-subtitle">Nashville DADU Platform</span>
+            </div>
+        </a>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <!-- Features Dropdown -->
+            <div class="nav-item">
+                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="features">
+                    Features <span class="chevron">▼</span>
+                </button>
+                <div class="dropdown-menu" id="features-dropdown" role="menu">
+                    <div class="dropdown-section">
+                        <div class="dropdown-section-title">Explore</div>
+                        <a href="dadu_eligibility_map.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Zoning.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">DADU Eligibility Map</div>
+                                <div class="dropdown-item-desc">Color-coded eligibility across Nashville parcels</div>
+                            </div>
+                        </a>
+                        <a href="property_search.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Parcel Search.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Property Search</div>
+                                <div class="dropdown-item-desc">Search by address or APN</div>
+                            </div>
+                        </a>
+                        <a href="dadu_explorer_v3.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Area Maps and Visual layers.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">DADU Explorer</div>
+                                <div class="dropdown-item-desc">Filter parcels by ZIP, cost, year, sqft</div>
+                            </div>
+                        </a>
+                        <a href="dadu_near_me_v2.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Neighbors.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Near Me Locator</div>
+                                <div class="dropdown-item-desc">Find permitted DADUs near any address</div>
+                            </div>
+                            <span class="dropdown-item-badge">Free</span>
+                        </a>
+                    </div>
+                    <div class="dropdown-section">
+                        <div class="dropdown-section-title">Documents & Data</div>
+                        <a href="dadu_documents_portal.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Recorded Docs.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Recorded Documents</div>
+                                <div class="dropdown-item-desc">Permits, covenants, site plans</div>
+                            </div>
+                        </a>
+                        <a href="dadu_reports_store.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Exports & Reports.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Reports Store</div>
+                                <div class="dropdown-item-desc">Property reports and data exports</div>
+                            </div>
+                        </a>
+                        <a href="parcel_footprint_map.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/GIS.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">GIS / Layers</div>
+                                <div class="dropdown-item-desc">Interactive parcel and footprint maps</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="dropdown-section">
+                        <div class="dropdown-section-title">Tools</div>
+                        <a href="roi_calculator.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Appraisers.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Calculators</div>
+                                <div class="dropdown-item-desc">ROI, costs, tax, timeline tools</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Types Dropdown -->
+            <div class="nav-item">
+                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="users">
+                    Who We Serve <span class="chevron">▼</span>
+                </button>
+                <div class="dropdown-menu" id="users-dropdown" role="menu">
+                    <a href="user-homeowners.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Property Owners.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Homeowners</div>
+                            <div class="dropdown-item-desc">Eligibility, constraints, timeline, ROI</div>
+                        </div>
+                    </a>
+                    <a href="contractor_marketplace.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Building and Construction.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Contractors</div>
+                            <div class="dropdown-item-desc">Leads, permit history, benchmarks</div>
+                        </div>
+                    </a>
+                    <a href="designer_resources.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Surveyers adn Engineers.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Designers / Architects</div>
+                            <div class="dropdown-item-desc">Setbacks, envelopes, precedents</div>
+                        </div>
+                    </a>
+                    <a href="market_trends.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Investors.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Developers / Investors</div>
+                            <div class="dropdown-item-desc">Opportunity maps, exports, trends</div>
+                        </div>
+                    </a>
+                    <a href="municipal_dashboard.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Municipal.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Municipal / Agencies</div>
+                            <div class="dropdown-item-desc">Permit tracking and policy impacts</div>
+                        </div>
+                    </a>
+                    <a href="legal_resources.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Legal.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Legal / Appraisers</div>
+                            <div class="dropdown-item-desc">Covenants, recorded docs, compliance</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Resources Link -->
+            <a href="dadu_resources.html" class="nav-link">Resources</a>
+
+            <!-- Pricing Link -->
+            <a href="homebody_pricing.html" class="nav-link">Pricing</a>
+        </div>
+
+        <!-- Search CTA -->
+        <a href="am_i_eligible.html" class="nav-search-btn">
+            <span>🔍</span>
+            <span>Check My Property</span>
+        </a>
+    </div>
+</nav>
+<!-- End Shared Header -->
+
+
+    <div class="container">
+        <!-- Header -->
+        <div class="report-header">
+            <h1>DADU Eligibility Report</h1>
+            <p class="subtitle">Nashville-Davidson County, Tennessee</p>
+        </div>
+
+        <!-- Debug Toggle -->
+        <button class="debug-toggle" onclick="toggleDebug()">🔧 Show API Debug Panel</button>
+
+        <!-- Debug Panel (hidden by default) -->
+        <div class="debug-panel" id="debugPanel" style="display: none;">
+            <h3>API Connection Log</h3>
+            <div id="debugLog"></div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <h2>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Check Your Property
+            </h2>
+            
+            <!-- Status Message -->
+            <div class="status-msg" id="statusMsg"></div>
+            
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" class="search-input" id="addressInput" 
+                           placeholder="Enter Nashville address (e.g., 1000 Broadway)"
+                           onkeypress="if(event.key==='Enter') searchAddress()">
+                </div>
+                <button class="search-btn" id="searchBtn" onclick="searchAddress()">
+                    <span id="searchBtnText">Search</span>
+                </button>
+            </div>
+            
+            <p style="font-size: 12px; color: #888; text-align: center;">
+                Enter a street address in Nashville-Davidson County to check DADU eligibility
+            </p>
+        </div>
+
+        <!-- Property Info Card (hidden until search) -->
+        <div class="property-info" id="propertyInfo">
+            <h3>Property Found</h3>
+            <div class="property-address" id="propertyAddress">-</div>
+            <div class="property-stats">
+                <div class="property-stat">
+                    <div class="label">Parcel ID (APN)</div>
+                    <div class="value" id="propAPN">-</div>
+                </div>
+                <div class="property-stat">
+                    <div class="label">Lot Size</div>
+                    <div class="value" id="propLotSize">-</div>
+                </div>
+                <div class="property-stat">
+                    <div class="label">Zoning</div>
+                    <div class="value" id="propZoning">-</div>
+                </div>
+                <div class="property-stat">
+                    <div class="label">Service District</div>
+                    <div class="value" id="propDistrict">-</div>
+                </div>
+                <div class="property-stat">
+                    <div class="label">DADU Eligible</div>
+                    <div class="value" id="propEligible">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Banner -->
+        <div class="info-banner">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <p>Based on <strong>BL2025-1007</strong>, effective December 12, 2025. Properties in the <strong>Urban Services District</strong> with R or RS zoning are eligible by-right. Properties in the <strong>General Services District</strong> require a DADU Overlay.</p>
+        </div>
+
+        <!-- DADU Size Cards -->
+        <div class="cards-grid" id="sizeCards">
+            <!-- Standard Lot Card -->
+            <div class="report-card" id="standardCard">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Standard Lot</h3>
+                    <p class="lot-size">Under 10,000 SF</p>
+                </div>
+                <div class="card-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label">Max Living Space</span>
+                        <span class="metric-value highlight">700 SF</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Max Footprint</span>
+                        <span class="metric-value">750 SF</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Height (1-Story)</span>
+                        <span class="metric-value">10 ft eave</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Height (2-Story)</span>
+                        <span class="metric-value">17 ft eave</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Parking Required</span>
+                        <span class="metric-value">1 space</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Large Lot Card -->
+            <div class="report-card" id="largeCard">
+                <div class="card-header">
+                    <div class="card-icon teal">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Large Lot</h3>
+                    <p class="lot-size">10,000 SF or more</p>
+                </div>
+                <div class="card-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label">Max Living Space</span>
+                        <span class="metric-value highlight">850 SF</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Max Footprint</span>
+                        <span class="metric-value">1,000 SF</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Height (1-Story)</span>
+                        <span class="metric-value">10 ft eave</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Height (2-Story)</span>
+                        <span class="metric-value">17 ft eave</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Parking Required</span>
+                        <span class="metric-value">1 space</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Requirements Section -->
+        <div class="requirements-section">
+            <h2>Requirements for All DADUs</h2>
+            
+            <div class="requirement-item">
+                <div class="req-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <div class="req-content">
+                    <h4>Owner Occupancy</h4>
+                    <p>Property owner must live in either the main house OR the DADU. You cannot rent out both units while living elsewhere.</p>
+                </div>
+            </div>
+
+            <div class="requirement-item">
+                <div class="req-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                </div>
+                <div class="req-content">
+                    <h4>Restrictive Covenant</h4>
+                    <p>A restrictive covenant must be recorded with the Davidson County Register of Deeds before your building permit can be issued.</p>
+                </div>
+            </div>
+
+            <div class="requirement-item">
+                <div class="req-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </div>
+                <div class="req-content">
+                    <h4>Height & Size Subordination</h4>
+                    <p>DADU cannot be taller or larger than the principal structure. Max roof ridge is 27 ft but must be less than the main house.</p>
+                </div>
+            </div>
+
+            <div class="requirement-item">
+                <div class="req-icon" style="background: #fff3cd;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#c9a86c" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                    </svg>
+                </div>
+                <div class="req-content">
+                    <h4>No Short-Term Rentals</h4>
+                    <p>Short-term rental permits (Airbnb/VRBO) are NOT allowed for DADUs in RS, RN, or RL zoning districts.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="report-footer">
+            <p>Source: <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644" target="_blank">Metro Nashville BL2025-1007</a> • <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.16LAUSDEST_ARTIIUSPECOPC_17.16.030REUS" target="_blank">Metro Code § 17.16.030(G)</a></p>
+            <p style="margin-top: 8px;">Homebody Projects • Updated January 2026</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // NASHVILLE API CONFIGURATION
+        // ============================================================
+        
+        // ArcGIS World Geocoder (public, works for address lookup)
+        const GEOCODE_API = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates';
+        
+        // Nashville Parcel Services - these are the REAL working endpoints
+        const PARCEL_API = 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_with_Building_Characteristics_view/FeatureServer/0/query';
+        
+        // Base Zoning layer
+        const ZONING_API = 'https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/BaseZoning/MapServer/0/query';
+        
+        // Urban Services District boundary
+        const USD_API = 'https://maps.nashville.gov/arcgis/rest/services/Boundaries/USD_GSD/MapServer/0/query';
+        
+        // DADU Overlay districts
+        const DADU_OVERLAY_API = 'https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Zoning_Overlay_Districts/MapServer/0/query';
+
+        // ============================================================
+        // DEBUG LOGGING
+        // ============================================================
+        
+        let debugVisible = false;
+        
+        function toggleDebug() {
+            debugVisible = !debugVisible;
+            document.getElementById('debugPanel').style.display = debugVisible ? 'block' : 'none';
+            document.querySelector('.debug-toggle').textContent = debugVisible ? '🔧 Hide API Debug Panel' : '🔧 Show API Debug Panel';
+        }
+        
+        function log(message, type = 'info') {
+            const debugLog = document.getElementById('debugLog');
+            const time = new Date().toLocaleTimeString();
+            const line = document.createElement('div');
+            line.className = `debug-line ${type}`;
+            line.textContent = `[${time}] ${message}`;
+            debugLog.appendChild(line);
+            debugLog.scrollTop = debugLog.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function showStatus(message, type = 'loading') {
+            const statusMsg = document.getElementById('statusMsg');
+            statusMsg.textContent = message;
+            statusMsg.className = `status-msg visible ${type}`;
+        }
+
+        function hideStatus() {
+            document.getElementById('statusMsg').className = 'status-msg';
+        }
+
+        // ============================================================
+        // MAIN SEARCH FUNCTION
+        // ============================================================
+        
+        async function searchAddress() {
+            const addressInput = document.getElementById('addressInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const searchBtnText = document.getElementById('searchBtnText');
+            const address = addressInput.value.trim();
+            
+            if (!address) {
+                showStatus('Please enter an address', 'error');
+                return;
+            }
+            
+            // Clear previous results
+            document.getElementById('propertyInfo').classList.remove('visible');
+            document.getElementById('standardCard').classList.remove('active');
+            document.getElementById('largeCard').classList.remove('active');
+            
+            // Show loading state
+            searchBtn.disabled = true;
+            searchBtnText.innerHTML = '<span class="spinner"></span>Searching...';
+            showStatus('Searching for address...', 'loading');
+            log(`Starting search for: ${address}`);
+            
+            try {
+                // STEP 1: Geocode the address
+                log('Step 1: Geocoding address via ArcGIS...');
+                const location = await geocodeAddress(address);
+                
+                if (!location) {
+                    showStatus('Address not found. Please try a different address.', 'error');
+                    log('Geocoding failed - no results', 'error');
+                    return;
+                }
+                
+                log(`Geocoded to: ${location.x}, ${location.y}`, 'success');
+                
+                // STEP 2: Query parcel data at this location
+                log('Step 2: Querying Nashville parcel data...');
+                const parcelData = await queryParcel(location.x, location.y);
+                
+                // STEP 3: Query zoning data
+                log('Step 3: Querying zoning information...');
+                const zoningData = await queryZoning(location.x, location.y);
+                
+                // STEP 4: Check if in USD
+                log('Step 4: Checking service district (USD/GSD)...');
+                const inUSD = await checkUSD(location.x, location.y);
+                
+                // STEP 5: Check for DADU Overlay (if in GSD)
+                let inDADUOverlay = false;
+                if (!inUSD) {
+                    log('Step 5: Property in GSD - checking for DADU Overlay...');
+                    inDADUOverlay = await checkDADUOverlay(location.x, location.y);
+                }
+                
+                // Display results
+                displayResults(address, location, parcelData, zoningData, inUSD, inDADUOverlay);
+                showStatus('Property found!', 'success');
+                
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                showStatus(`Error: ${error.message}`, 'error');
+            } finally {
+                // Reset button state
+                searchBtn.disabled = false;
+                searchBtnText.textContent = 'Search';
+            }
+        }
+
+        // ============================================================
+        // API QUERY FUNCTIONS
+        // ============================================================
+        
+        async function geocodeAddress(address) {
+            const fullAddress = address.toLowerCase().includes('nashville') ? address : `${address}, Nashville, TN`;
+            const url = `${GEOCODE_API}?f=json&singleLine=${encodeURIComponent(fullAddress)}&outFields=*&maxLocations=1`;
+            
+            log(`Geocode URL: ${url.substring(0, 80)}...`);
+            
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data.candidates && data.candidates.length > 0) {
+                return data.candidates[0].location;
+            }
+            return null;
+        }
+        
+        async function queryParcel(x, y) {
+            // Query using point geometry
+            const params = new URLSearchParams({
+                f: 'json',
+                geometry: JSON.stringify({x: x, y: y, spatialReference: {wkid: 4326}}),
+                geometryType: 'esriGeometryPoint',
+                spatialRel: 'esriSpatialRelIntersects',
+                outFields: '*',
+                returnGeometry: 'false'
+            });
+            
+            const url = `${PARCEL_API}?${params}`;
+            log(`Parcel query URL: ${url.substring(0, 80)}...`);
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.features && data.features.length > 0) {
+                    log(`Found parcel: ${JSON.stringify(data.features[0].attributes).substring(0, 100)}...`, 'success');
+                    return data.features[0].attributes;
+                }
+                log('No parcel found at location', 'error');
+            } catch (e) {
+                log(`Parcel query error: ${e.message}`, 'error');
+            }
+            return null;
+        }
+        
+        async function queryZoning(x, y) {
+            const params = new URLSearchParams({
+                f: 'json',
+                geometry: JSON.stringify({x: x, y: y, spatialReference: {wkid: 4326}}),
+                geometryType: 'esriGeometryPoint',
+                spatialRel: 'esriSpatialRelIntersects',
+                outFields: '*',
+                returnGeometry: 'false'
+            });
+            
+            const url = `${ZONING_API}?${params}`;
+            log(`Zoning query URL: ${url.substring(0, 80)}...`);
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.features && data.features.length > 0) {
+                    log(`Found zoning: ${JSON.stringify(data.features[0].attributes)}`, 'success');
+                    return data.features[0].attributes;
+                }
+                log('No zoning found', 'error');
+            } catch (e) {
+                log(`Zoning query error: ${e.message}`, 'error');
+            }
+            return null;
+        }
+        
+        async function checkUSD(x, y) {
+            const params = new URLSearchParams({
+                f: 'json',
+                geometry: JSON.stringify({x: x, y: y, spatialReference: {wkid: 4326}}),
+                geometryType: 'esriGeometryPoint',
+                spatialRel: 'esriSpatialRelIntersects',
+                outFields: '*',
+                returnGeometry: 'false'
+            });
+            
+            const url = `${USD_API}?${params}`;
+            log(`USD check URL: ${url.substring(0, 80)}...`);
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.features && data.features.length > 0) {
+                    const districtType = data.features[0].attributes.DISTRICT || data.features[0].attributes.Name || '';
+                    const isUSD = districtType.toUpperCase().includes('URBAN');
+                    log(`Service district: ${districtType} (USD: ${isUSD})`, 'success');
+                    return isUSD;
+                }
+            } catch (e) {
+                log(`USD check error: ${e.message}`, 'error');
+            }
+            
+            // Default to USD for central Nashville
+            log('USD check failed, defaulting to USD assumption', 'info');
+            return true;
+        }
+        
+        async function checkDADUOverlay(x, y) {
+            const params = new URLSearchParams({
+                f: 'json',
+                geometry: JSON.stringify({x: x, y: y, spatialReference: {wkid: 4326}}),
+                geometryType: 'esriGeometryPoint',
+                spatialRel: 'esriSpatialRelIntersects',
+                where: "OVERLAY_TYPE LIKE '%DADU%' OR OVERLAY_NAME LIKE '%DADU%' OR OVERLAY_NAME LIKE '%Detached Accessory%'",
+                outFields: '*',
+                returnGeometry: 'false'
+            });
+            
+            const url = `${DADU_OVERLAY_API}?${params}`;
+            log(`DADU Overlay check URL: ${url.substring(0, 80)}...`);
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.features && data.features.length > 0) {
+                    log(`In DADU Overlay!`, 'success');
+                    return true;
+                }
+            } catch (e) {
+                log(`DADU Overlay check error: ${e.message}`, 'error');
+            }
+            return false;
+        }
+
+        // ============================================================
+        // DISPLAY RESULTS
+        // ============================================================
+        
+        function displayResults(searchAddress, location, parcelData, zoningData, inUSD, inDADUOverlay) {
+            const propertyInfo = document.getElementById('propertyInfo');
+            
+            // Extract data from parcel attributes (field names may vary)
+            let apn = '-';
+            let lotSize = 0;
+            let zoning = '-';
+            
+            if (parcelData) {
+                // Try different field names for APN
+                apn = parcelData.APN || parcelData.STANPAR || parcelData.PIN || parcelData.PARCELID || parcelData.OBJECTID || '-';
+                
+                // Try different field names for lot size (in SF)
+                lotSize = parcelData.LANDAREA || parcelData.LOTSIZE || parcelData.LAND_AREA || 
+                          parcelData.ACREAGE * 43560 || parcelData.CalcAcres * 43560 || 
+                          parcelData.ShapeArea / 0.09290304 || 0; // Convert from sq meters if needed
+                
+                log(`Extracted APN: ${apn}, Lot Size: ${lotSize}`);
+            }
+            
+            if (zoningData) {
+                zoning = zoningData.ZONE_CODE || zoningData.ZONING || zoningData.ZONE || zoningData.ZoneCode || '-';
+                log(`Extracted Zoning: ${zoning}`);
+            }
+            
+            // Determine eligibility
+            const eligibleZones = ['R', 'RS', 'RS3.75', 'RS5', 'RS7.5', 'RS10', 'RS15', 'RS20', 'RS40', 
+                                   'R6', 'R8', 'R10', 'R15', 'R20', 'R6-A', 'R8-A'];
+            const isEligibleZone = eligibleZones.some(z => zoning.toUpperCase().startsWith(z));
+            
+            let isEligible = false;
+            let eligibilityText = '';
+            let eligibilityClass = '';
+            
+            if (inUSD && isEligibleZone) {
+                isEligible = true;
+                eligibilityText = 'Yes ✓';
+                eligibilityClass = 'eligible';
+            } else if (!inUSD && inDADUOverlay && isEligibleZone) {
+                isEligible = true;
+                eligibilityText = 'Yes (Overlay) ✓';
+                eligibilityClass = 'eligible';
+            } else if (!inUSD && !inDADUOverlay && isEligibleZone) {
+                eligibilityText = 'Maybe*';
+                eligibilityClass = 'maybe';
+            } else {
+                eligibilityText = 'No ✗';
+                eligibilityClass = 'not-eligible';
+            }
+            
+            // Update display
+            document.getElementById('propertyAddress').textContent = searchAddress;
+            document.getElementById('propAPN').textContent = apn;
+            document.getElementById('propLotSize').textContent = lotSize > 0 ? formatNumber(Math.round(lotSize)) + ' SF' : 'Unknown';
+            document.getElementById('propZoning').textContent = zoning;
+            document.getElementById('propDistrict').textContent = inUSD ? 'USD' : 'GSD';
+            
+            const eligibleEl = document.getElementById('propEligible');
+            eligibleEl.textContent = eligibilityText;
+            eligibleEl.className = `value ${eligibilityClass}`;
+            
+            // Show property info card
+            propertyInfo.classList.add('visible');
+            
+            // Highlight the appropriate lot size card
+            if (lotSize > 0) {
+                if (lotSize >= 10000) {
+                    document.getElementById('largeCard').classList.add('active');
+                    log(`Large lot (${formatNumber(Math.round(lotSize))} SF) - 850 SF max living space`, 'success');
+                } else {
+                    document.getElementById('standardCard').classList.add('active');
+                    log(`Standard lot (${formatNumber(Math.round(lotSize))} SF) - 700 SF max living space`, 'success');
+                }
+            }
+            
+            log(`Final eligibility: ${eligibilityText}`, isEligible ? 'success' : 'info');
+        }
+        
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // ============================================================
+        // INITIALIZATION
+        // ============================================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            log('DADU Report page loaded');
+            log(`Geocoding API: ${GEOCODE_API.substring(0, 50)}...`);
+            log(`Parcel API: ${PARCEL_API.substring(0, 50)}...`);
+            log('Ready for address search');
+        });
+    </script>
+    <script src="homebody_header.js"></script>
+</body>
+</html>

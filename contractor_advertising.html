@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contractor Advertising | Homebody Projects</title>
+    <link rel="stylesheet" href="homebody_shared.css">
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --navy-dark: #1a252f;
+            --terracotta: #B55A3C;
+            --teal: #6b8fa3;
+            --tan: #c9a86c;
+            --cream: #f5f5f0;
+            --warm-gray: #e8e4df;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--warm-gray);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, #34495e 100%);
+            padding: 80px 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .stats-bar {
+            background: var(--navy-dark);
+            padding: 30px 40px;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            color: white;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--terracotta);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* Pricing Cards */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .pricing-card.featured {
+            border: 3px solid var(--terracotta);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--terracotta);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .pricing-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .pricing-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .pricing-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            min-height: 40px;
+        }
+
+        .pricing-price {
+            margin-bottom: 30px;
+        }
+
+        .pricing-amount {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .pricing-card.featured .pricing-amount {
+            color: var(--terracotta);
+        }
+
+        .pricing-period {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features .check {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .pricing-features .x {
+            color: #ccc;
+        }
+
+        .pricing-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .pricing-btn.primary {
+            background: var(--terracotta);
+            color: white;
+        }
+
+        .pricing-btn.primary:hover {
+            background: #a34d32;
+        }
+
+        .pricing-btn.secondary {
+            background: var(--cream);
+            color: var(--navy);
+            border: 1px solid #ddd;
+        }
+
+        .pricing-btn.secondary:hover {
+            background: var(--warm-gray);
+        }
+
+        /* Add-ons Section */
+        .addons-section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+
+        .addons-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .addon-item {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .addon-info h4 {
+            font-size: 16px;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+
+        .addon-info p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .addon-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--terracotta);
+        }
+
+        .addon-price span {
+            font-size: 12px;
+            color: #999;
+            font-weight: normal;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            margin-bottom: 60px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .benefit-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .benefit-card h4 {
+            font-size: 18px;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .benefit-card p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Testimonial */
+        .testimonial-section {
+            background: linear-gradient(135deg, var(--teal) 0%, #5a7a8c 100%);
+            border-radius: 16px;
+            padding: 50px;
+            color: white;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .testimonial-quote {
+            font-size: 22px;
+            font-style: italic;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+        }
+
+        .testimonial-company {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--navy);
+            border-radius: 16px;
+            padding: 50px;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .cta-section p {
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: var(--terracotta);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .cta-btn:hover {
+            background: #a34d32;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--navy-dark);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        .footer a {
+            color: var(--terracotta);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            .pricing-card.featured {
+                transform: none;
+            }
+            .pricing-card.featured:hover {
+                transform: translateY(-5px);
+            }
+            .addons-grid {
+                grid-template-columns: 1fr;
+            }
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-bar {
+                flex-wrap: wrap;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Shared Header -->
+<div class="top-bar">
+    <div class="top-bar-left">
+        Nashville-Davidson County <span>BL2025-1007</span> effective December 12, 2025
+    </div>
+    <div class="top-bar-right">
+        <a href="homebody_pricing.html">Pricing</a>
+        <a href="dadu_resources.html">Resources</a>
+        <a href="mailto:contact@homebodyprojects.com">Contact</a>
+    </div>
+</div>
+
+<nav class="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">
+                <img src="assets/icons/ADU.png" alt="Homebody ADU Icon">
+            </div>
+            <div class="nav-logo-text">
+                <span class="nav-logo-title">Homebody Projects</span>
+                <span class="nav-logo-subtitle">Nashville DADU Platform</span>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="contractor_marketplace.html" class="nav-link">Marketplace</a>
+            <a href="contractor_dashboard.html" class="nav-link">Dashboard</a>
+            <a href="homebody_pricing.html" class="nav-link">Pricing</a>
+        </div>
+        <a href="am_i_eligible.html" class="nav-search-btn">
+            <span>Check My Property</span>
+        </a>
+    </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+    <h1>Grow Your DADU Business</h1>
+    <p>Connect with Nashville homeowners actively planning DADU projects. Get qualified leads and showcase your work to property owners searching for experienced contractors.</p>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stat">
+        <div class="stat-value">67,707</div>
+        <div class="stat-label">Eligible Properties</div>
+    </div>
+    <div class="stat">
+        <div class="stat-value">2,500+</div>
+        <div class="stat-label">Monthly Visitors</div>
+    </div>
+    <div class="stat">
+        <div class="stat-value">1,168</div>
+        <div class="stat-label">Listed Contractors</div>
+    </div>
+    <div class="stat">
+        <div class="stat-value">$165K</div>
+        <div class="stat-label">Avg Project Value</div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<main class="main">
+    <div class="section-title">
+        <h2>Advertising Plans</h2>
+        <p>Choose the visibility level that's right for your business</p>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div class="pricing-grid">
+        <!-- Basic Listing -->
+        <div class="pricing-card">
+            <div class="pricing-icon">📋</div>
+            <div class="pricing-name">Basic Listing</div>
+            <div class="pricing-desc">Essential visibility in our contractor directory</div>
+            <div class="pricing-price">
+                <div class="pricing-amount">$49</div>
+                <div class="pricing-period">per month</div>
+            </div>
+            <ul class="pricing-features">
+                <li><span class="check">✓</span> Company profile page</li>
+                <li><span class="check">✓</span> Contact information displayed</li>
+                <li><span class="check">✓</span> Permit history visible</li>
+                <li><span class="check">✓</span> Basic search visibility</li>
+                <li><span class="x">✗</span> Featured placement</li>
+                <li><span class="x">✗</span> Project photos</li>
+                <li><span class="x">✗</span> Lead notifications</li>
+            </ul>
+            <a href="mailto:advertise@homebodyprojects.com?subject=Basic Listing Inquiry" class="pricing-btn secondary">Get Started</a>
+        </div>
+
+        <!-- Featured Listing -->
+        <div class="pricing-card featured">
+            <div class="featured-badge">Most Popular</div>
+            <div class="pricing-icon">⭐</div>
+            <div class="pricing-name">Featured Listing</div>
+            <div class="pricing-desc">Enhanced visibility with priority placement</div>
+            <div class="pricing-price">
+                <div class="pricing-amount">$149</div>
+                <div class="pricing-period">per month</div>
+            </div>
+            <ul class="pricing-features">
+                <li><span class="check">✓</span> Everything in Basic</li>
+                <li><span class="check">✓</span> Featured badge & priority ranking</li>
+                <li><span class="check">✓</span> Up to 10 project photos</li>
+                <li><span class="check">✓</span> Customer testimonials</li>
+                <li><span class="check">✓</span> Lead notifications</li>
+                <li><span class="check">✓</span> Zip code targeting</li>
+                <li><span class="x">✗</span> Exclusive leads</li>
+            </ul>
+            <a href="mailto:advertise@homebodyprojects.com?subject=Featured Listing Inquiry" class="pricing-btn primary">Get Started</a>
+        </div>
+
+        <!-- Premium Partner -->
+        <div class="pricing-card">
+            <div class="pricing-icon">🏆</div>
+            <div class="pricing-name">Premium Partner</div>
+            <div class="pricing-desc">Maximum exposure and exclusive benefits</div>
+            <div class="pricing-price">
+                <div class="pricing-amount">$299</div>
+                <div class="pricing-period">per month</div>
+            </div>
+            <ul class="pricing-features">
+                <li><span class="check">✓</span> Everything in Featured</li>
+                <li><span class="check">✓</span> Top of search results</li>
+                <li><span class="check">✓</span> Unlimited project photos</li>
+                <li><span class="check">✓</span> Homepage showcase</li>
+                <li><span class="check">✓</span> Exclusive leads (your zip codes)</li>
+                <li><span class="check">✓</span> Monthly performance reports</li>
+                <li><span class="check">✓</span> Co-branded marketing materials</li>
+            </ul>
+            <a href="mailto:advertise@homebodyprojects.com?subject=Premium Partner Inquiry" class="pricing-btn secondary">Contact Sales</a>
+        </div>
+    </div>
+
+    <!-- Add-ons Section -->
+    <div class="addons-section">
+        <div class="section-title" style="margin-bottom: 30px;">
+            <h2>Advertising Add-Ons</h2>
+            <p>Boost your visibility with additional promotional options</p>
+        </div>
+        <div class="addons-grid">
+            <div class="addon-item">
+                <div class="addon-info">
+                    <h4>Homepage Spotlight</h4>
+                    <p>Featured placement on the homepage for maximum visibility</p>
+                </div>
+                <div class="addon-price">$199<span>/month</span></div>
+            </div>
+            <div class="addon-item">
+                <div class="addon-info">
+                    <h4>Contractor Report Inclusion</h4>
+                    <p>Appear in paid Contractor Match Reports for your service areas</p>
+                </div>
+                <div class="addon-price">$99<span>/month</span></div>
+            </div>
+            <div class="addon-item">
+                <div class="addon-info">
+                    <h4>Email Newsletter Feature</h4>
+                    <p>Sponsored feature in our monthly homeowner newsletter</p>
+                </div>
+                <div class="addon-price">$249<span>/issue</span></div>
+            </div>
+            <div class="addon-item">
+                <div class="addon-info">
+                    <h4>Project Case Study</h4>
+                    <p>Professional write-up of a completed DADU project</p>
+                </div>
+                <div class="addon-price">$399<span>one-time</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <div class="benefits-section">
+        <div class="section-title">
+            <h2>Why Advertise With Us?</h2>
+            <p>Reach homeowners at the moment they're planning their DADU project</p>
+        </div>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">🎯</div>
+                <h4>Targeted Audience</h4>
+                <p>Connect with homeowners actively researching DADU construction on eligible properties in Nashville.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">📊</div>
+                <h4>Data-Driven Credibility</h4>
+                <p>Your permit history and completed projects are displayed, building trust with potential clients.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🏠</div>
+                <h4>Local Focus</h4>
+                <p>Target specific Nashville zip codes and neighborhoods where you want to grow your business.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">📱</div>
+                <h4>Lead Notifications</h4>
+                <p>Get notified when homeowners in your service area are searching for contractors.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">⚡</div>
+                <h4>Quick Setup</h4>
+                <p>Your profile is pre-populated with permit data. Just add photos and go live in minutes.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">📈</div>
+                <h4>Growing Market</h4>
+                <p>DADU permits up 42% year-over-year. Get positioned now for the market expansion.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonial -->
+    <div class="testimonial-section">
+        <div class="testimonial-quote">
+            "Since listing with Homebody Projects, we've connected with 15 new clients in East Nashville alone. The leads are high-quality because homeowners have already checked their eligibility and are ready to build."
+        </div>
+        <div class="testimonial-author">Mike Palmer</div>
+        <div class="testimonial-company">Palmetto Construction LLC</div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <h2>Ready to Grow Your DADU Business?</h2>
+        <p>Join 1,168 contractors already listed on Nashville's premier DADU platform.</p>
+        <a href="mailto:advertise@homebodyprojects.com?subject=Contractor Advertising Inquiry" class="cta-btn">Get Started Today</a>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>© 2026 Homebody Projects. All rights reserved. | <a href="index.html">Home</a> | <a href="contractor_marketplace.html">Contractor Marketplace</a></p>
+    <p style="margin-top: 12px;">Questions? Email <a href="mailto:advertise@homebodyprojects.com">advertise@homebodyprojects.com</a></p>
+</footer>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>

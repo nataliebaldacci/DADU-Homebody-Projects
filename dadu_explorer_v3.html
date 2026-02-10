@@ -11,8 +11,8 @@
             --navy: #2c3e50;
             --navy-dark: #1a252f;
             --teal: #6b8fa3;
-            --olive: #6b8e4e;
-            --olive-dark: #5a7a42;
+            --terracotta: #B55A3C;
+            --terracotta-hover: #9A4A30;
             --tan: #c9a86c;
             --cream: #f5f5f0;
             --accent: #c0392b;
@@ -52,7 +52,7 @@
         .logo-icon {
             width: 36px;
             height: 36px;
-            background: var(--olive);
+            background: var(--terracotta);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -146,8 +146,8 @@
 
         .map-btn {
             background: white;
-            border: 1px solid var(--olive);
-            color: var(--olive);
+            border: 1px solid var(--terracotta);
+            color: var(--terracotta);
             padding: 8px 16px;
             border-radius: 6px;
             font-size: 12px;
@@ -161,7 +161,7 @@
         }
 
         .map-btn:hover {
-            background: var(--olive);
+            background: var(--terracotta);
             color: white;
         }
 
@@ -173,6 +173,12 @@
         .map-btn.clear:hover {
             background: var(--accent);
             color: white;
+        }
+
+        .map-btn.active {
+            background: var(--terracotta);
+            color: white;
+            border-color: var(--terracotta);
         }
 
         /* Search Criteria Panel - ATTOM Style */
@@ -229,7 +235,7 @@
 
         .search-input:focus {
             outline: none;
-            border-color: var(--olive);
+            border-color: var(--terracotta);
         }
 
         .search-row-inline {
@@ -349,9 +355,9 @@
         }
 
         .results-btn.csv {
-            background: var(--olive);
+            background: var(--terracotta);
             color: white;
-            border-color: var(--olive);
+            border-color: var(--terracotta);
         }
 
         .results-search {
@@ -450,7 +456,7 @@
 
         .property-sold {
             font-size: 11px;
-            color: var(--olive);
+            color: var(--terracotta);
             margin-bottom: 8px;
         }
 
@@ -516,7 +522,7 @@
 
         .popup-link {
             display: block;
-            background: var(--olive);
+            background: var(--terracotta);
             color: white;
             text-decoration: none;
             text-align: center;
@@ -539,25 +545,211 @@
             .results-panel { width: 100%; height: 30vh; }
         }
     </style>
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <a href="homebody_index_v4.html" class="logo">
-            <div class="logo-icon">
-                <img src="assets/icons/ADU.png" alt="">
+<!-- Shared Header - Homebody Projects -->
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="top-bar-left">
+        Nashville-Davidson County <span>BL2025-1007</span> effective December 12, 2025
+    </div>
+    <div class="top-bar-right">
+        <a href="homebody_pricing.html">Pricing</a>
+        <a href="dadu_resources.html">Resources</a>
+        <a href="mailto:contact@homebodyprojects.com">Contact</a>
+    </div>
+</div>
+
+<!-- Main Navigation -->
+<nav class="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+        <!-- Logo -->
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">
+                <img src="assets/icons/ADU.png" alt="Homebody ADU Icon">
             </div>
-            <span class="logo-text">HOMEBODY</span>
+            <div class="nav-logo-text">
+                <span class="nav-logo-title">Homebody Projects</span>
+                <span class="nav-logo-subtitle">Nashville DADU Platform</span>
+            </div>
         </a>
-        <div class="header-right">
-            <select class="header-select">
-                <option>Tennessee</option>
-            </select>
-            <select class="header-select">
-                <option>Davidson</option>
-            </select>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <!-- Features Dropdown -->
+            <div class="nav-item">
+                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="features">
+                    Features <span class="chevron">▼</span>
+                </button>
+                <div class="dropdown-menu" id="features-dropdown" role="menu">
+                    <div class="dropdown-section">
+                        <div class="dropdown-section-title">Explore</div>
+                        <a href="dadu_eligibility_map.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Zoning.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">DADU Eligibility Map</div>
+                                <div class="dropdown-item-desc">Color-coded eligibility across Nashville parcels</div>
+                            </div>
+                        </a>
+                        <a href="property_search.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Parcel Search.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Property Search</div>
+                                <div class="dropdown-item-desc">Search by address or APN</div>
+                            </div>
+                        </a>
+                        <a href="dadu_explorer_v3.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Area Maps and Visual layers.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">DADU Explorer</div>
+                                <div class="dropdown-item-desc">Filter parcels by ZIP, cost, year, sqft</div>
+                            </div>
+                        </a>
+                        <a href="dadu_near_me_v2.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Neighbors.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Near Me Locator</div>
+                                <div class="dropdown-item-desc">Find permitted DADUs near any address</div>
+                            </div>
+                            <span class="dropdown-item-badge">Free</span>
+                        </a>
+                    </div>
+                    <div class="dropdown-section">
+                        <div class="dropdown-section-title">Documents & Data</div>
+                        <a href="dadu_documents_portal.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Recorded Docs.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Recorded Documents</div>
+                                <div class="dropdown-item-desc">Permits, covenants, site plans</div>
+                            </div>
+                        </a>
+                        <a href="dadu_reports_store.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Exports & Reports.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Reports Store</div>
+                                <div class="dropdown-item-desc">Property reports and data exports</div>
+                            </div>
+                        </a>
+                        <a href="parcel_footprint_map.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/GIS.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">GIS / Layers</div>
+                                <div class="dropdown-item-desc">Interactive parcel and footprint maps</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="dropdown-section">
+                        <div class="dropdown-section-title">Tools</div>
+                        <a href="roi_calculator.html" class="dropdown-item" role="menuitem">
+                            <div class="dropdown-item-icon">
+                                <img src="assets/icons/Appraisers.png" alt="">
+                            </div>
+                            <div class="dropdown-item-content">
+                                <div class="dropdown-item-title">Calculators</div>
+                                <div class="dropdown-item-desc">ROI, costs, tax, timeline tools</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Types Dropdown -->
+            <div class="nav-item">
+                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="users">
+                    Who We Serve <span class="chevron">▼</span>
+                </button>
+                <div class="dropdown-menu" id="users-dropdown" role="menu">
+                    <a href="user-homeowners.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Property Owners.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Homeowners</div>
+                            <div class="dropdown-item-desc">Eligibility, constraints, timeline, ROI</div>
+                        </div>
+                    </a>
+                    <a href="contractor_marketplace.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Building and Construction.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Contractors</div>
+                            <div class="dropdown-item-desc">Leads, permit history, benchmarks</div>
+                        </div>
+                    </a>
+                    <a href="designer_resources.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Surveyers adn Engineers.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Designers / Architects</div>
+                            <div class="dropdown-item-desc">Setbacks, envelopes, precedents</div>
+                        </div>
+                    </a>
+                    <a href="market_trends.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Investors.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Developers / Investors</div>
+                            <div class="dropdown-item-desc">Opportunity maps, exports, trends</div>
+                        </div>
+                    </a>
+                    <a href="municipal_dashboard.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Municipal.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Municipal / Agencies</div>
+                            <div class="dropdown-item-desc">Permit tracking and policy impacts</div>
+                        </div>
+                    </a>
+                    <a href="legal_resources.html" class="dropdown-item" role="menuitem">
+                        <div class="dropdown-item-icon">
+                            <img src="assets/icons/Legal.png" alt="">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <div class="dropdown-item-title">Legal / Appraisers</div>
+                            <div class="dropdown-item-desc">Covenants, recorded docs, compliance</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Resources Link -->
+            <a href="dadu_resources.html" class="nav-link">Resources</a>
+
+            <!-- Pricing Link -->
+            <a href="homebody_pricing.html" class="nav-link">Pricing</a>
         </div>
-    </header>
+
+        <!-- Search CTA -->
+        <a href="am_i_eligible.html" class="nav-search-btn">
+            <span>🔍</span>
+            <span>Check My Property</span>
+        </a>
+    </div>
+</nav>
+<!-- End Shared Header -->
+
+
+    <!-- Header -->
+    
 
     <!-- Navigation Tabs -->
     <nav class="nav-tabs">
@@ -578,9 +770,32 @@
                 <button class="map-btn" onclick="drawShape()">
                     <span>☐</span> Create a Shape
                 </button>
+                <button class="map-btn active" id="footprints-btn" onclick="toggleFootprints()">
+                    <span>&#9632;</span> Footprints
+                </button>
                 <button class="map-btn clear" onclick="clearMap()">
                     <span>✕</span> Clear
                 </button>
+            </div>
+            <!-- Layer Legend -->
+            <div style="position:absolute;bottom:15px;left:15px;background:white;padding:12px 16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);z-index:1000;font-size:11px;">
+                <div style="font-weight:600;margin-bottom:8px;">Map Layers</div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                    <div style="width:16px;height:16px;background:#4a4a4a;border-radius:2px;"></div>
+                    <span>Building Footprints</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                    <div style="width:16px;height:16px;background:#B55A3C;border-radius:50%;"></div>
+                    <span>Eligible (By Right)</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                    <div style="width:16px;height:16px;background:#f39c12;border-radius:50%;"></div>
+                    <span>Conditional (Overlay)</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <div style="width:16px;height:16px;background:#c0392b;border-radius:50%;"></div>
+                    <span>Not Eligible</span>
+                </div>
             </div>
         </div>
 
@@ -711,124 +926,270 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Sample data
-        const properties = [
-            {
-                id: 1,
-                address: "513 GRANWOOD BLVD",
-                city: "OLD HICKORY, TN 37138",
-                type: "Single Family Residence",
-                owner: "MEGAN BRAGG",
-                sqft: 1840,
-                yearBuilt: 1994,
-                lastSold: "8/11/2021",
-                lastPrice: 370000,
-                hasDadu: true,
-                daduCost: 145000,
-                lat: 36.2534,
-                lng: -86.6245
-            },
-            {
-                id: 2,
-                address: "1511 CAHAL AVE",
-                city: "NASHVILLE, TN 37206",
-                type: "Single Family Residence",
-                owner: "NICOLE BUCKLEY",
-                sqft: 1748,
-                yearBuilt: 1945,
-                lastSold: "7/9/2018",
-                lastPrice: 325000,
-                hasDadu: true,
-                daduCost: 175000,
-                lat: 36.1789,
-                lng: -86.7432
-            },
-            {
-                id: 3,
-                address: "3303 FALLS CREEK DR",
-                city: "NASHVILLE, TN 37214",
-                type: "Single Family Residence",
-                owner: "COREY BARKER",
-                sqft: 1313,
-                yearBuilt: 1981,
-                lastSold: "8/15/2025",
-                lastPrice: 105000,
-                hasDadu: false,
-                lat: 36.1456,
-                lng: -86.6789
-            },
-            {
-                id: 4,
-                address: "2763 ROSEDALE PL",
-                city: "NASHVILLE, TN 37211",
-                type: "Single Family Residence",
-                owner: "JAMES WILSON",
-                sqft: 2177,
-                yearBuilt: 2000,
-                lastSold: "12/14/2018",
-                lastPrice: 405000,
-                hasDadu: true,
-                daduCost: 185000,
-                lat: 36.1127,
-                lng: -86.7603
-            },
-            {
-                id: 5,
-                address: "945 SHELBY AVE",
-                city: "NASHVILLE, TN 37206",
-                type: "Single Family Residence",
-                owner: "SARAH JOHNSON",
-                sqft: 1620,
-                yearBuilt: 1948,
-                lastSold: "6/15/2021",
-                lastPrice: 525000,
-                hasDadu: true,
-                daduCost: 195000,
-                lat: 36.1745,
-                lng: -86.7512
-            },
-            {
-                id: 6,
-                address: "2204 10TH AVE S",
-                city: "NASHVILLE, TN 37204",
-                type: "Single Family Residence",
-                owner: "MICHAEL CHEN",
-                sqft: 2450,
-                yearBuilt: 1935,
-                lastSold: "9/8/2019",
-                lastPrice: 675000,
-                hasDadu: true,
-                daduCost: 225000,
-                lat: 36.1298,
-                lng: -86.7889
-            }
-        ];
+        // ArcGIS Feature Service URLs - LIVE DATA
+        const ARCGIS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0';
+        const FOOTPRINTS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Secondary_SFH_Merged_SHP_20251231_0015/FeatureServer/0';
+        const SECONDARY_STRUCTURES_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Secondary_On_SF_Parcels_SHP_20251230_2352/FeatureServer/0';
+
+        const COLORS = {
+            eligible: '#B55A3C',
+            conditional: '#f39c12',
+            notEligible: '#c0392b',
+            footprint: '#4a4a4a',
+            footprintSecondary: '#2d2d2d'
+        };
 
         let map;
-        let markers = [];
+        let markersLayer;
+        let footprintsLayer;
+        let parcelBoundariesLayer;
+        let selectedParcel = null;
+        let visibleResults = [];
+        let isLoading = false;
+        let showFootprints = true;
+
+        // Query any ArcGIS service
+        async function queryService(serviceUrl, options = {}) {
+            const defaults = {
+                where: '1=1',
+                outFields: '*',
+                returnGeometry: true,
+                outSR: 4326,
+                f: 'geojson',
+                resultRecordCount: 500
+            };
+            const params = { ...defaults, ...options };
+            const queryString = new URLSearchParams(params).toString();
+            const response = await fetch(`${serviceUrl}/query?${queryString}`);
+            return await response.json();
+        }
+
+        // Query ArcGIS service (eligibility)
+        async function queryArcGIS(options = {}) {
+            const defaults = {
+                where: '1=1',
+                outFields: 'STANPAR,Address,Zoning,Acres,In_USD,Service_District,Eligibility_Status',
+                returnGeometry: true,
+                outSR: 4326,
+                f: 'geojson',
+                resultRecordCount: 200
+            };
+            const params = { ...defaults, ...options };
+            const queryString = new URLSearchParams(params).toString();
+            const response = await fetch(`${ARCGIS_SERVICE}/query?${queryString}`);
+            return await response.json();
+        }
 
         // Initialize map
         function initMap() {
-            map = L.map('map').setView([36.1627, -86.7816], 11);
+            map = L.map('map').setView([36.1627, -86.7816], 12);
 
+            // Light base map (Symbium-style pale purple/gray)
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap &copy; CARTO',
+                attribution: '&copy; OpenStreetMap &copy; CARTO | Data: Nashville Metro',
                 maxZoom: 19
             }).addTo(map);
 
-            loadProperties(properties);
+            // Layer for parcel boundaries (light purple like Symbium)
+            parcelBoundariesLayer = L.layerGroup().addTo(map);
+
+            // Layer for building footprints (dark gray like Symbium)
+            footprintsLayer = L.layerGroup().addTo(map);
+
+            // Layer for markers (on top)
+            markersLayer = L.layerGroup().addTo(map);
+
+            // Load data on map move
+            let moveTimeout;
+            map.on('moveend', () => {
+                clearTimeout(moveTimeout);
+                moveTimeout = setTimeout(() => {
+                    if (map.getZoom() >= 15) {
+                        loadViewportData();
+                        if (showFootprints) loadBuildingFootprints();
+                    } else if (map.getZoom() >= 14) {
+                        loadViewportData();
+                        footprintsLayer.clearLayers();
+                        parcelBoundariesLayer.clearLayers();
+                    } else {
+                        footprintsLayer.clearLayers();
+                        parcelBoundariesLayer.clearLayers();
+                    }
+                }, 300);
+            });
+
+            // Initial load
+            loadViewportData();
         }
 
-        // Load properties
-        function loadProperties(data) {
-            // Clear existing markers
-            markers.forEach(m => map.removeLayer(m));
-            markers = [];
+        // Load building footprints (Symbium-style dark gray)
+        async function loadBuildingFootprints() {
+            if (map.getZoom() < 15) return;
 
-            // Add markers
-            data.forEach(prop => {
-                const color = prop.hasDadu ? '#6b8e4e' : '#6b8fa3';
-                const marker = L.circleMarker([prop.lat, prop.lng], {
+            const bounds = map.getBounds();
+            const geometry = JSON.stringify({
+                xmin: bounds.getWest(),
+                ymin: bounds.getSouth(),
+                xmax: bounds.getEast(),
+                ymax: bounds.getNorth(),
+                spatialReference: { wkid: 4326 }
+            });
+
+            try {
+                // Load secondary structures (existing DADUs/buildings)
+                const data = await queryService(FOOTPRINTS_SERVICE, {
+                    geometry: geometry,
+                    geometryType: 'esriGeometryEnvelope',
+                    spatialRel: 'esriSpatialRelIntersects',
+                    resultRecordCount: 500
+                });
+
+                footprintsLayer.clearLayers();
+
+                if (data.features) {
+                    data.features.forEach(feature => {
+                        const geom = feature.geometry;
+                        if (!geom) return;
+
+                        // Handle different geometry types
+                        if (geom.type === 'Polygon') {
+                            const coords = geom.coordinates[0].map(c => [c[1], c[0]]);
+                            const polygon = L.polygon(coords, {
+                                fillColor: COLORS.footprint,
+                                fillOpacity: 0.85,
+                                color: COLORS.footprint,
+                                weight: 1
+                            });
+                            footprintsLayer.addLayer(polygon);
+                        } else if (geom.type === 'MultiPolygon') {
+                            geom.coordinates.forEach(poly => {
+                                const coords = poly[0].map(c => [c[1], c[0]]);
+                                const polygon = L.polygon(coords, {
+                                    fillColor: COLORS.footprint,
+                                    fillOpacity: 0.85,
+                                    color: COLORS.footprint,
+                                    weight: 1
+                                });
+                                footprintsLayer.addLayer(polygon);
+                            });
+                        } else if (geom.type === 'Point') {
+                            // For point data, create a small rectangle to represent building
+                            const lat = geom.coordinates[1];
+                            const lng = geom.coordinates[0];
+                            const size = 0.00008; // ~8 meters
+                            const rect = L.rectangle([
+                                [lat - size, lng - size * 1.2],
+                                [lat + size, lng + size * 1.2]
+                            ], {
+                                fillColor: COLORS.footprintSecondary,
+                                fillOpacity: 0.9,
+                                color: COLORS.footprintSecondary,
+                                weight: 1
+                            });
+                            footprintsLayer.addLayer(rect);
+                        }
+                    });
+                }
+            } catch (err) {
+                console.log('Footprints load error:', err);
+            }
+        }
+
+        // Toggle footprints visibility
+        function toggleFootprints() {
+            showFootprints = !showFootprints;
+            if (showFootprints) {
+                loadBuildingFootprints();
+                document.getElementById('footprints-btn').classList.add('active');
+            } else {
+                footprintsLayer.clearLayers();
+                document.getElementById('footprints-btn').classList.remove('active');
+            }
+        }
+
+        // Load viewport data from live ArcGIS service
+        async function loadViewportData() {
+            if (isLoading || map.getZoom() < 14) {
+                if (map.getZoom() < 14) {
+                    document.getElementById('results-list').innerHTML = '<div style="padding:20px;text-align:center;color:#666;">Zoom in to see properties</div>';
+                }
+                return;
+            }
+
+            isLoading = true;
+            const bounds = map.getBounds();
+
+            const geometry = JSON.stringify({
+                xmin: bounds.getWest(),
+                ymin: bounds.getSouth(),
+                xmax: bounds.getEast(),
+                ymax: bounds.getNorth(),
+                spatialReference: { wkid: 4326 }
+            });
+
+            try {
+                // Build where clause from filters
+                let whereClause = '1=1';
+                const eligibleOnly = document.getElementById('eligible-only').checked;
+                if (eligibleOnly) {
+                    whereClause = "(In_USD = 1 OR Eligibility_Status LIKE '%ELIGIBLE_BY_RIGHT%' OR Eligibility_Status LIKE '%GSD_NEEDS_OVERLAY%')";
+                }
+
+                const data = await queryArcGIS({
+                    where: whereClause,
+                    geometry: geometry,
+                    geometryType: 'esriGeometryEnvelope',
+                    spatialRel: 'esriSpatialRelIntersects'
+                });
+
+                if (data.features) {
+                    visibleResults = data.features;
+                    displayResults(data.features);
+                }
+            } catch (err) {
+                console.error('Load error:', err);
+                document.getElementById('results-list').innerHTML = '<div style="padding:20px;text-align:center;color:#c00;">Error loading data</div>';
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Display results on map and in list
+        function displayResults(features) {
+            markersLayer.clearLayers();
+
+            const container = document.getElementById('results-list');
+            const lotMin = parseInt(document.getElementById('lot-from').value) || 0;
+            const lotMax = parseInt(document.getElementById('lot-to').value) || Infinity;
+
+            // Filter results
+            const filtered = features.filter(f => {
+                const lotSf = f.properties.Acres ? Math.round(f.properties.Acres * 43560) : 0;
+                return lotSf >= lotMin && lotSf <= lotMax;
+            });
+
+            // Build cards and markers
+            const cards = filtered.map((feature, idx) => {
+                const props = feature.properties;
+                const coords = feature.geometry.coordinates;
+
+                // Determine eligibility class and color
+                let eligClass = 'not-eligible';
+                let color = COLORS.notEligible;
+                let eligLabel = 'Not Eligible';
+
+                if (props.In_USD === 1 || (props.Eligibility_Status && props.Eligibility_Status.includes('ELIGIBLE_BY_RIGHT'))) {
+                    eligClass = 'eligible';
+                    color = COLORS.eligible;
+                    eligLabel = 'Eligible';
+                } else if (props.Eligibility_Status && props.Eligibility_Status.includes('GSD_NEEDS_OVERLAY')) {
+                    eligClass = 'conditional';
+                    color = COLORS.conditional;
+                    eligLabel = 'Conditional';
+                }
+
+                // Add marker
+                const marker = L.circleMarker([coords[1], coords[0]], {
                     radius: 8,
                     fillColor: color,
                     color: '#fff',
@@ -836,75 +1197,108 @@
                     fillOpacity: 0.9
                 });
 
-                const popup = `
-                    <div class="popup-content">
-                        <div class="popup-address">${prop.address}</div>
-                        <div class="popup-details">
-                            ${prop.city}<br>
-                            ${prop.sqft} sqft | Built ${prop.yearBuilt}<br>
-                            ${prop.hasDadu ? `DADU Cost: $${prop.daduCost.toLocaleString()}` : 'No DADU'}
+                marker.featureIdx = idx;
+                marker.on('click', () => selectProperty(idx));
+                markersLayer.addLayer(marker);
+
+                // Calculate stats
+                const lotSf = props.Acres ? Math.round(props.Acres * 43560) : 0;
+                const maxDadu = lotSf >= 43560 ? 1200 : (lotSf >= 20000 ? 900 : (lotSf >= 10000 ? 700 : 600));
+                const estCost = maxDadu * 175;
+
+                return `
+                    <div class="property-card" data-idx="${idx}" onclick="selectProperty(${idx})">
+                        <div class="property-checkbox">
+                            <input type="checkbox" onclick="event.stopPropagation()">
                         </div>
-                        <a href="eligibility_report.html?address=${encodeURIComponent(prop.address)}" class="popup-link">View Property Report</a>
+                        <div class="property-image" style="background:${color};">
+                            <span style="color:white;font-size:10px;text-align:center;">${eligLabel}</span>
+                        </div>
+                        <div class="property-content">
+                            <div class="property-address">${props.Address || 'No Address'}</div>
+                            <div class="property-city">NASHVILLE, TN</div>
+                            <div class="property-type">Single Family | ${props.Zoning || 'N/A'}</div>
+                            <div class="property-details">${lotSf.toLocaleString()} SF lot | Max DADU: ${maxDadu} SF</div>
+                            <div class="property-sold">Est. DADU Cost: $${estCost.toLocaleString()}</div>
+                            <a href="property-report-card.html?apn=${props.STANPAR}&address=${encodeURIComponent(props.Address || '')}" class="property-link" onclick="event.stopPropagation()">View Property Report</a>
+                        </div>
                     </div>
                 `;
-
-                marker.bindPopup(popup);
-                marker.addTo(map);
-                markers.push(marker);
             });
 
-            // Update results list
-            updateResults(data);
+            container.innerHTML = cards.length > 0 ? cards.join('') : '<div style="padding:20px;text-align:center;color:#666;">No properties found. Adjust filters or pan map.</div>';
         }
 
-        // Update results list
-        function updateResults(data) {
-            const container = document.getElementById('results-list');
-            container.innerHTML = data.map(prop => `
-                <div class="property-card" onclick="focusProperty(${prop.lat}, ${prop.lng})">
-                    <div class="property-checkbox">
-                        <input type="checkbox" onclick="event.stopPropagation()">
-                    </div>
-                    <div class="property-image">🏠</div>
-                    <div class="property-content">
-                        <div class="property-address">${prop.address}</div>
-                        <div class="property-city">${prop.city}</div>
-                        <div class="property-type">${prop.type}</div>
-                        <div class="property-owner">Owned by: ${prop.owner}</div>
-                        <div class="property-details">${prop.sqft} sqft, built in ${prop.yearBuilt}</div>
-                        <div class="property-sold">Last sold on ${prop.lastSold} for $${prop.lastPrice.toLocaleString()}</div>
-                        <a href="eligibility_report.html?address=${encodeURIComponent(prop.address)}" class="property-link" onclick="event.stopPropagation()">View Property Report</a>
-                    </div>
-                </div>
-            `).join('');
+        // Select a property
+        function selectProperty(idx) {
+            const feature = visibleResults[idx];
+            if (!feature) return;
+
+            // Highlight card
+            document.querySelectorAll('.property-card').forEach(c => c.classList.remove('selected'));
+            const card = document.querySelector(`.property-card[data-idx="${idx}"]`);
+            if (card) {
+                card.classList.add('selected');
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            // Pan to property
+            const coords = feature.geometry.coordinates;
+            map.setView([coords[1], coords[0]], 17);
+
+            // Draw Symbium-style parcel highlight (dashed border)
+            if (selectedParcel) map.removeLayer(selectedParcel);
+
+            const lat = coords[1];
+            const lng = coords[0];
+            const offset = 0.0003; // Approximate parcel size
+            selectedParcel = L.rectangle([
+                [lat - offset, lng - offset],
+                [lat + offset, lng + offset]
+            ], {
+                color: '#B55A3C',
+                weight: 3,
+                dashArray: '8, 4',
+                fillColor: '#B55A3C',
+                fillOpacity: 0.1
+            }).addTo(map);
         }
 
-        // Focus on property
+        // Focus on property from map click
         function focusProperty(lat, lng) {
-            map.setView([lat, lng], 16);
+            map.setView([lat, lng], 17);
         }
 
-        // Search functions
+        // Run search with filters
         function runSearch() {
-            // In production, this would filter based on criteria
-            alert('Search executed! In production, this filters properties based on your criteria.');
+            loadViewportData();
         }
 
+        // Clear all filters
         function clearFilters() {
             document.querySelectorAll('.search-input').forEach(input => input.value = '');
             document.querySelectorAll('.search-select').forEach(select => select.selectedIndex = 0);
+            document.getElementById('eligible-only').checked = true;
+            loadViewportData();
         }
 
         function drawShape() {
-            alert('Draw shape mode activated. Click on the map to draw a polygon.');
+            alert('Draw mode: Click on map to define a custom search area.');
         }
 
         function clearMap() {
-            map.setView([36.1627, -86.7816], 11);
+            if (selectedParcel) map.removeLayer(selectedParcel);
+            map.setView([36.1627, -86.7816], 12);
         }
+
+        // Add selected card styling
+        const style = document.createElement('style');
+        style.textContent = '.property-card.selected { border: 2px solid #B55A3C; background: #f5fff5; }';
+        document.head.appendChild(style);
 
         // Initialize
         document.addEventListener('DOMContentLoaded', initMap);
     </script>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

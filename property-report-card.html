@@ -11,9 +11,9 @@
             --navy: #2c3e50;
             --navy-dark: #1a252f;
             --teal: #6b8fa3;
-            --green: #6b8e4e;
-            --green-dark: #5a7a42;
-            --green-light: #8bb36d;
+            --terracotta: #B55A3C;
+            --terracotta-hover: #9A4A30;
+            --terracotta-light: #c97a60;
             --tan: #c9a86c;
             --background: #e8e4df;
             --card-bg: #f5f5f0;
@@ -77,7 +77,7 @@
         .nav-logo-icon {
             width: 44px;
             height: 44px;
-            background: var(--green);
+            background: var(--terracotta);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -95,7 +95,7 @@
             font-weight: 800;
             color: var(--navy);
         }
-        .nav-logo-text span { color: var(--green); }
+        .nav-logo-text span { color: var(--terracotta); }
 
         .nav-links {
             display: flex;
@@ -158,7 +158,7 @@
 
         .search-form button {
             padding: 16px 32px;
-            background: var(--green);
+            background: var(--terracotta);
             color: white;
             border: none;
             border-radius: 8px;
@@ -168,7 +168,7 @@
             cursor: pointer;
         }
 
-        .search-form button:hover { background: var(--green-dark); }
+        .search-form button:hover { background: var(--terracotta-hover); }
 
         .search-hint {
             margin-top: 16px;
@@ -256,6 +256,113 @@
             display: block;
         }
 
+        /* Property Image Header - ATTOM Style */
+        .property-image-header {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        .property-image-container {
+            width: 280px;
+            height: 210px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .property-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .property-image-container .no-image {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .property-image-container .no-image span {
+            display: block;
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .property-image-links {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .property-image-link {
+            flex: 1;
+            padding: 6px 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .property-image-link:hover {
+            background: var(--terracotta);
+        }
+
+        .property-header-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .property-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .property-quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .quick-stat {
+            text-align: center;
+            padding: 12px;
+            background: var(--card-bg);
+            border-radius: 8px;
+        }
+
+        .quick-stat-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .quick-stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
         .report-header {
             background: var(--white);
             border-radius: 16px;
@@ -264,6 +371,18 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+        }
+
+        @media (max-width: 768px) {
+            .property-image-header {
+                grid-template-columns: 1fr;
+            }
+            .property-image-container {
+                width: 100%;
+            }
+            .property-quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         .report-address {
@@ -343,8 +462,8 @@
         }
 
         .report-tab.active {
-            color: var(--green);
-            border-bottom-color: var(--green);
+            color: var(--terracotta);
+            border-bottom-color: var(--terracotta);
         }
 
         /* Report Grid */
@@ -471,7 +590,7 @@
         }
 
         .document-link {
-            color: var(--green);
+            color: var(--terracotta);
             font-size: 13px;
             font-weight: 600;
         }
@@ -497,7 +616,7 @@
         }
 
         .quick-action-btn:hover {
-            background: var(--green);
+            background: var(--terracotta);
             color: white;
         }
 
@@ -530,7 +649,7 @@
 
         .near-me-link {
             font-size: 13px;
-            color: var(--green);
+            color: var(--terracotta);
             font-weight: 600;
         }
 
@@ -710,6 +829,37 @@
                 <button class="report-tab" data-tab="costs">Cost Estimate</button>
             </div>
 
+            <!-- External Links Bar -->
+            <div style="display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;">
+                <a href="#" id="link-parcelviewer" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>🗺️</span> ParcelViewer
+                </a>
+                <a href="#" id="link-epermits" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>📋</span> ePermits Portal
+                </a>
+                <a href="#" id="link-assessor" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>🏛️</span> Property Assessor
+                </a>
+                <a href="#" id="link-documents" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>📄</span> Permit Documents
+                </a>
+                <a href="#" id="link-parcel-report" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>📊</span> Parcel Report
+                </a>
+                <a href="dadu_zoning_standards.html" id="link-zoning-standards" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>📐</span> Zoning Standards
+                </a>
+                <a href="overlay-districts.html" id="link-overlay-districts" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>📑</span> SP & Overlay Docs
+                </a>
+                <a href="dadu_design_standards.html" id="link-design-standards" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>📏</span> Design Standards
+                </a>
+                <a href="#" id="link-property-card" target="_blank" style="padding: 10px 16px; background: var(--terracotta); border-radius: 8px; font-size: 13px; font-weight: 600; color: white; display: flex; align-items: center; gap: 8px;">
+                    <span>🏠</span> View Property Card
+                </a>
+            </div>
+
             <!-- Report Content -->
             <div class="report-grid">
                 <div class="report-main">
@@ -720,27 +870,27 @@
                             <div class="data-grid">
                                 <div class="data-item">
                                     <div class="data-item-label">Zoning</div>
-                                    <div class="data-item-value">R8</div>
+                                    <div class="data-item-value" id="detail-zoning">R8</div>
                                 </div>
                                 <div class="data-item">
                                     <div class="data-item-label">Service District</div>
-                                    <div class="data-item-value success">USD</div>
+                                    <div class="data-item-value success" id="detail-district">USD</div>
                                 </div>
                                 <div class="data-item">
                                     <div class="data-item-label">Lot Size</div>
-                                    <div class="data-item-value">6,200 SF</div>
+                                    <div class="data-item-value" id="detail-lot-size">6,200 SF</div>
                                 </div>
                                 <div class="data-item">
                                     <div class="data-item-label">Max DADU Living</div>
-                                    <div class="data-item-value">700 SF</div>
+                                    <div class="data-item-value" id="detail-max-living">700 SF</div>
                                 </div>
                                 <div class="data-item">
                                     <div class="data-item-label">Max DADU Footprint</div>
-                                    <div class="data-item-value">750 SF</div>
+                                    <div class="data-item-value" id="detail-max-footprint">750 SF</div>
                                 </div>
                                 <div class="data-item">
                                     <div class="data-item-label">Covenants</div>
-                                    <div class="data-item-value success">None Found</div>
+                                    <div class="data-item-value success" id="detail-covenants">None Found</div>
                                 </div>
                             </div>
                         </div>
@@ -775,27 +925,57 @@
                     <section class="report-section">
                         
                         <div class="report-section-body">
-                            <ul class="documents-list">
-                                <li class="document-item">
-                                    <div class="document-icon">📄</div>
+                            <ul class="documents-list" id="documents-list">
+                                <li class="document-item" id="no-docs-msg">
+                                    <div class="document-icon">📋</div>
                                     <div class="document-info">
-                                        <div class="document-title">Site Plan - 2024BL54321</div>
-                                        <div class="document-meta">Building Permit | Uploaded 2024-03-15</div>
+                                        <div class="document-title">Search for a property to see documents</div>
+                                        <div class="document-meta">Property cards, covenants, aerials, and permits</div>
                                     </div>
-                                    <a href="#" class="document-link">View →</a>
-                                </li>
-                                <li class="document-item">
-                                    <div class="document-icon">📄</div>
-                                    <div class="document-info">
-                                        <div class="document-title">Property Survey</div>
-                                        <div class="document-meta">Survey | Uploaded 2023-11-20</div>
-                                    </div>
-                                    <a href="#" class="document-link">View →</a>
                                 </li>
                             </ul>
-                            <a href="feature-documents.html" style="display: block; margin-top: 16px; color: var(--green); font-weight: 600; font-size: 14px;">
-                                View all documents →
+                            <a href="site_plan_downloads.html" style="display: block; margin-top: 16px; color: var(--terracotta); font-weight: 600; font-size: 14px;">
+                                Search all documents →
                             </a>
+                        </div>
+                    </section>
+
+                    <!-- ADU Permits -->
+                    <section class="report-section" id="adu-permits-section">
+                        <div class="report-section-header">
+                            <img src="assets/icons/Recorded Docs.png" alt="">
+                            <h3>ADU Permit History</h3>
+                            <span id="adu-permit-count" style="margin-left: auto; font-size: 12px; color: var(--text-light);"></span>
+                        </div>
+                        <div class="report-section-body">
+                            <ul class="documents-list" id="adu-permits-list">
+                                <li class="document-item" id="no-adu-permits-msg">
+                                    <div class="document-icon">📋</div>
+                                    <div class="document-info">
+                                        <div class="document-title">Search for a property to see ADU permits</div>
+                                        <div class="document-meta">Known ADU building permits for this parcel</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Governing Legislation -->
+                    <section class="report-section" id="legislation-section">
+                        <div class="report-section-header">
+                            <img src="assets/icons/Legal.png" alt="">
+                            <h3>Governing Legislation</h3>
+                        </div>
+                        <div class="report-section-body">
+                            <ul class="documents-list" id="legislation-list">
+                                <li class="document-item" id="no-legislation-msg">
+                                    <div class="document-icon">📜</div>
+                                    <div class="document-info">
+                                        <div class="document-title">Loading legislation...</div>
+                                        <div class="document-meta">Overlay, UDO, and Specific Plan ordinances</div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </section>
                 </div>
@@ -868,7 +1048,7 @@
                                 <div class="data-item-label">Cost per SF</div>
                                 <div class="data-item-value">$200 - $300</div>
                             </div>
-                            <a href="cost_estimator.html" style="display: block; margin-top: 16px; color: var(--green); font-weight: 600; font-size: 13px;">
+                            <a href="cost_estimator.html" style="display: block; margin-top: 16px; color: var(--terracotta); font-weight: 600; font-size: 13px;">
                                 Get detailed estimate →
                             </a>
                         </div>
@@ -884,6 +1064,63 @@
     </footer>
 
     <script>
+        // Eligibility code mapping
+        const ELIG_LABELS = {
+            'E': { text: 'Eligible - By Right', class: 'eligible', icon: '✓' },
+            'ES': { text: 'Eligible - Has Secondary', class: 'eligible', icon: '✓' },
+            'C': { text: 'Conditional - Overlay Required', class: 'conditional', icon: '⚠' },
+            'CS': { text: 'Conditional - Has Secondary', class: 'conditional', icon: '⚠' },
+            'U': { text: 'Check District', class: 'conditional', icon: '?' },
+            'US': { text: 'Check District', class: 'conditional', icon: '?' },
+            'N': { text: 'Not Eligible', class: 'not-eligible', icon: '✗' }
+        };
+
+        // Google Drive folder IDs - linked to DADU_PDFs folders
+        const GDRIVE_FOLDERS = {
+            property_cards: '1UGNXAbDE1RuXfzMc6Vk3YL2r1AlZMwLZ',
+            covenants: '1bEZN1kEZxqZLkdX0QjT0g9N7K0sXAy3Z',
+            aerials: '1eD1TUNuYMOMK7VdVJW3Pc6mHYFS02VUj',
+            permits: '1N_IpJaweqoFhbmBnYHjQJs1G1ItTQjC4',
+            udo_overlay: '1evPTz2SvAIDS74lwzgxjGF85kl2nDsrh',
+            dadu_overlay: '1KDQe3WhWz1H1ukTIlAfxtbDFmvX50kYu',
+            str_permits: '1_JGdEdlUS7IGWi4L93aSGOhHWZJfktql',
+            zoning_appeals: '1bjNIPyogxImJ5_zxnxKTmxlYCmO0clvH'
+        };
+
+        // Build folder URLs
+        const GDRIVE_URLS = {};
+        for (const [key, id] of Object.entries(GDRIVE_FOLDERS)) {
+            GDRIVE_URLS[key] = `https://drive.google.com/drive/folders/${id}`;
+        }
+
+        // Document icons
+        const DOC_ICONS = {
+            property_cards: '🏠',
+            covenants: '⚖️',
+            aerials: '🛩️',
+            permits: '📋'
+        };
+
+        const DOC_LABELS = {
+            property_cards: 'Property Card',
+            covenants: 'Restrictive Covenant',
+            aerials: 'Aerial Image',
+            permits: 'Building Permit'
+        };
+
+        // Data storage
+        let propertyData = null;
+        let allEligibilityData = [];
+        let documentsIndex = {};
+        let ordinanceIndex = {};
+        let udoDaduIndex = {};
+        let aduPermitsIndex = {};
+        let dataLoaded = false;
+        let docsLoaded = false;
+        let ordinancesLoaded = false;
+        let udoIndexLoaded = false;
+        let aduPermitsLoaded = false;
+
         // Search form handling
         const searchForm = document.getElementById('search-form');
         const addressInput = document.getElementById('address-input');
@@ -891,29 +1128,651 @@
         const reportCard = document.getElementById('report-card');
         const reportAddressText = document.getElementById('report-address-text');
 
-        // Check for address in URL params
+        // Check for address or APN in URL params
         const urlParams = new URLSearchParams(window.location.search);
         const addressParam = urlParams.get('address');
+        const apnParam = urlParams.get('apn');
 
-        if (addressParam) {
-            showReport(addressParam);
+        // Load documents index (Google Drive version with clickable links)
+        async function loadDocumentsIndex() {
+            if (docsLoaded) return;
+            try {
+                const response = await fetch('data/gdrive_docs_index.json');
+                const data = await response.json();
+                documentsIndex = data.parcels || {};
+                docsLoaded = true;
+                console.log(`Loaded Google Drive documents index: ${Object.keys(documentsIndex).length} APNs`);
+            } catch (error) {
+                console.error('Error loading documents index:', error);
+            }
         }
 
-        searchForm.addEventListener('submit', (e) => {
+        // Load ordinance index
+        async function loadOrdinanceIndex() {
+            if (ordinancesLoaded) return;
+            try {
+                const response = await fetch('data/ordinance_index.json');
+                const data = await response.json();
+                ordinanceIndex = data.ordinances || {};
+                ordinancesLoaded = true;
+                console.log(`Loaded ordinance index: ${Object.keys(ordinanceIndex).length} ordinances`);
+            } catch (error) {
+                console.error('Error loading ordinance index:', error);
+            }
+        }
+
+        // Load UDO DADU standards index
+        async function loadUdoDaduIndex() {
+            if (udoIndexLoaded) return;
+            try {
+                const response = await fetch('data/udo_dadu_standards.json');
+                udoDaduIndex = await response.json();
+                udoIndexLoaded = true;
+                console.log('Loaded UDO DADU standards index');
+            } catch (error) {
+                console.error('Error loading UDO DADU index:', error);
+            }
+        }
+
+        // Load ADU permits index
+        async function loadAduPermitsIndex() {
+            if (aduPermitsLoaded) return;
+            try {
+                const response = await fetch('data/adu_permits_slim.json');
+                const data = await response.json();
+                aduPermitsIndex = data.parcels || {};
+                aduPermitsLoaded = true;
+                console.log(`Loaded ADU permits index: ${Object.keys(aduPermitsIndex).length} parcels`);
+            } catch (error) {
+                console.error('Error loading ADU permits index:', error);
+            }
+        }
+
+        // Display ADU permits for an APN
+        function displayAduPermits(apn) {
+            const permitsList = document.getElementById('adu-permits-list');
+            const permitCount = document.getElementById('adu-permit-count');
+            if (!permitsList) return;
+
+            const permits = aduPermitsIndex[apn];
+            if (!permits || permits.length === 0) {
+                permitsList.innerHTML = `
+                    <li class="document-item">
+                        <div class="document-icon">📋</div>
+                        <div class="document-info">
+                            <div class="document-title">No ADU permits found</div>
+                            <div class="document-meta">No known ADU building permits on file for this parcel</div>
+                        </div>
+                    </li>`;
+                permitCount.textContent = '0 permits';
+                return;
+            }
+
+            let html = '';
+            permits.forEach(p => {
+                const statusColor = p.status === 'done' ? 'var(--olive)' : p.status === 'issued' ? 'var(--teal)' : p.status === 'expired' ? 'var(--terracotta)' : 'var(--text-light)';
+                const statusLabel = p.status ? p.status.charAt(0).toUpperCase() + p.status.slice(1) : 'Unknown';
+                const sqftText = p.sqft ? ` | ${p.sqft} SF` : '';
+
+                html += `
+                    <li class="document-item">
+                        <div class="document-icon">🔨</div>
+                        <div class="document-info">
+                            <div class="document-title">Permit #${p.permit}</div>
+                            <div class="document-meta">${p.date || 'Date unknown'}${sqftText} | <span style="color: ${statusColor}; font-weight: 600;">${statusLabel}</span></div>
+                        </div>
+                        <div style="display: flex; gap: 4px; margin-left: auto;">
+                            <a href="${p.docs_url}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none;">View Docs ↗</a>
+                        </div>
+                    </li>`;
+            });
+
+            permitsList.innerHTML = html;
+            permitCount.textContent = `${permits.length} permit${permits.length !== 1 ? 's' : ''}`;
+        }
+
+        // Fetch parcel overlays from Nashville API
+        async function fetchParcelOverlays(apn) {
+            // Query the zoning overlay service by geometry (would need parcel geometry)
+            // For now, we'll query by case number patterns
+            const baseUrl = 'https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5/query';
+
+            try {
+                // Try to find parcels matching this APN in overlay data
+                // This requires ParcelID which may differ from APN
+                const params = new URLSearchParams({
+                    where: `ZoneCode IN ('OV-DDU','UDO','OV-UDO') AND Status='Active'`,
+                    outFields: 'ZoneCode,OrdinanceNumber,CaseNumber,url,Description',
+                    resultRecordCount: 100,
+                    f: 'json'
+                });
+
+                const response = await fetch(`${baseUrl}?${params}`);
+                const data = await response.json();
+                return data.features || [];
+            } catch (error) {
+                console.error('Error fetching parcel overlays:', error);
+                return [];
+            }
+        }
+
+        // Display legislation links for a parcel
+        async function displayLegislation(apn, eligCode, zoning) {
+            const legislationList = document.getElementById('legislation-list');
+            if (!legislationList) return;
+
+            // Show loading state
+            legislationList.innerHTML = '<li class="document-item"><div class="document-icon">⏳</div><div class="document-info"><div class="document-title">Loading legislation...</div></div></li>';
+
+            const items = [];
+
+            // 1. USD By-Right (BL2025-1007) for eligible properties
+            if (eligCode && (eligCode.startsWith('E') || eligCode === 'U' || eligCode === 'US')) {
+                const usdInfo = udoDaduIndex.usd_by_right || {};
+                items.push({
+                    type: 'USD_BY_RIGHT',
+                    ordinance: 'BL2025-1007',
+                    title: 'BL2025-1007 - DADU Expansion Act',
+                    description: 'Permits DADUs by right in Urban Services District (R/RS zones)',
+                    url: usdInfo.pdf_url || 'https://documents.nashville.gov/Request/Form/Legislation?legislationnumber=BL2025-1007',
+                    icon: '🏛️'
+                });
+            }
+
+            // 2. Check for DADU Overlay districts
+            if (udoDaduIndex.dadu_overlays) {
+                // For GSD conditional, show relevant DADU overlay info
+                if (eligCode && (eligCode.startsWith('C') || eligCode === 'G')) {
+                    for (const [caseNum, overlay] of Object.entries(udoDaduIndex.dadu_overlays)) {
+                        items.push({
+                            type: 'DADU_OVERLAY',
+                            ordinance: overlay.ordinance,
+                            title: `${overlay.ordinance} - ${overlay.name}`,
+                            description: `Case: ${caseNum}`,
+                            url: overlay.pdf_url,
+                            planUrl: overlay.plan_pdf,
+                            icon: '🏠'
+                        });
+                    }
+                }
+            }
+
+            // 3. Check for UDOs with DADU standards
+            if (udoDaduIndex.udos) {
+                // Show UDOs with DADU standards for R/RM zones
+                if (zoning && /^(R\d|R$|RM)/.test(zoning)) {
+                    let udoCount = 0;
+                    for (const [caseNum, udo] of Object.entries(udoDaduIndex.udos)) {
+                        if (udo.has_dadu_standards && udoCount < 3) {
+                            items.push({
+                                type: 'UDO',
+                                ordinance: caseNum,
+                                title: `${udo.name} UDO`,
+                                description: `Has DADU development standards`,
+                                url: udo.pdf_url,
+                                legislationUrl: udo.legislation_url,
+                                icon: '📐'
+                            });
+                            udoCount++;
+                        }
+                    }
+                }
+            }
+
+            // 4. Specific Plan zones
+            if (zoning && (zoning === 'SP' || zoning.startsWith('SP'))) {
+                items.push({
+                    type: 'SP',
+                    ordinance: 'Specific Plan',
+                    title: 'Specific Plan District',
+                    description: 'Check SP for DADU development standards',
+                    url: 'https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5/query?where=ZoneCode=%27SP%27&outFields=OrdinanceNumber,CaseNumber,url&returnDistinctValues=true&f=html',
+                    icon: '📋'
+                });
+            }
+
+            // Render items
+            legislationList.innerHTML = '';
+
+            if (items.length === 0) {
+                legislationList.innerHTML = `
+                    <li class="document-item">
+                        <div class="document-icon">📜</div>
+                        <div class="document-info">
+                            <div class="document-title">No specific overlay legislation</div>
+                            <div class="document-meta">Property may be eligible under USD by-right rules</div>
+                        </div>
+                    </li>
+                `;
+            } else {
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'document-item';
+
+                    // Build action buttons
+                    let buttons = '';
+                    if (item.url) {
+                        buttons += `<a href="${item.url}" target="_blank" style="padding: 6px 12px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Legislation ↗</a>`;
+                    }
+                    if (item.planUrl) {
+                        buttons += `<a href="${item.planUrl}" target="_blank" style="padding: 6px 12px; background: var(--terracotta); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Plan PDF ↗</a>`;
+                    }
+                    if (item.legislationUrl && item.legislationUrl !== item.url) {
+                        buttons += `<a href="${item.legislationUrl}" target="_blank" style="padding: 6px 12px; background: var(--navy); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Ordinance ↗</a>`;
+                    }
+
+                    li.innerHTML = `
+                        <div class="document-icon">${item.icon}</div>
+                        <div class="document-info">
+                            <div class="document-title">${item.title}</div>
+                            <div class="document-meta">${item.description}</div>
+                        </div>
+                        <div style="display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap;">
+                            ${buttons}
+                        </div>
+                    `;
+                    legislationList.appendChild(li);
+                });
+            }
+        }
+
+        // Display documents for an APN (using Google Drive direct links)
+        function displayDocuments(apn) {
+            const docsList = document.getElementById('documents-list');
+            const docCount = document.getElementById('doc-count');
+
+            if (!apn || !documentsIndex[apn]) {
+                docsList.innerHTML = `
+                    <li class="document-item">
+                        <div class="document-icon">📋</div>
+                        <div class="document-info">
+                            <div class="document-title">No documents found</div>
+                            <div class="document-meta">No property cards, covenants, or permits on file for this APN</div>
+                        </div>
+                    </li>`;
+                docCount.textContent = '0 documents';
+                return;
+            }
+
+            const docs = documentsIndex[apn];
+            let html = '';
+            let totalDocs = 0;
+
+            // Document type display order and labels
+            const docTypes = [
+                { key: 'property_cards', icon: '🏠', label: 'Property Card' },
+                { key: 'assessor_cards', icon: '📊', label: 'Assessor Card' },
+                { key: 'covenants', icon: '📜', label: 'Recorded Covenant' },
+                { key: 'permits', icon: '📋', label: 'Building Permit' },
+                { key: 'aerials', icon: '🛰️', label: 'Aerial Image' },
+                { key: 'site_plans', icon: '📐', label: 'Site Plan' },
+                { key: 'other', icon: '📄', label: 'Document' }
+            ];
+
+            docTypes.forEach(({ key, icon, label }) => {
+                if (docs[key] && docs[key].length > 0) {
+                    docs[key].forEach(doc => {
+                        totalDocs++;
+                        // Handle both object format (new) and string format (legacy)
+                        const filename = typeof doc === 'object' ? doc.filename : doc;
+                        const viewUrl = typeof doc === 'object' ? doc.gdrive_url : null;
+                        const downloadUrl = typeof doc === 'object' ? doc.download_url : null;
+
+                        let buttons = '';
+                        if (viewUrl) {
+                            buttons += `<a href="${viewUrl}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">View ↗</a>`;
+                        }
+                        if (downloadUrl) {
+                            buttons += `<a href="${downloadUrl}" target="_blank" style="padding: 5px 10px; background: var(--terracotta); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Download</a>`;
+                        }
+                        if (!viewUrl && !downloadUrl) {
+                            // Fallback to folder search
+                            const folderId = GDRIVE_FOLDERS[key] || GDRIVE_FOLDERS.property_cards;
+                            const searchUrl = `https://drive.google.com/drive/folders/${folderId}?q=${encodeURIComponent(filename)}`;
+                            buttons = `<a href="${searchUrl}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none;">Find in Drive ↗</a>`;
+                        }
+
+                        html += `
+                            <li class="document-item">
+                                <div class="document-icon">${icon}</div>
+                                <div class="document-info">
+                                    <div class="document-title">${label}</div>
+                                    <div class="document-meta" style="font-size: 11px; word-break: break-all;">${filename}</div>
+                                </div>
+                                <div style="display: flex; gap: 4px; margin-left: auto;">
+                                    ${buttons}
+                                </div>
+                            </li>`;
+                    });
+                }
+            });
+
+            if (totalDocs === 0) {
+                html = `
+                    <li class="document-item">
+                        <div class="document-icon">📋</div>
+                        <div class="document-info">
+                            <div class="document-title">No documents found</div>
+                            <div class="document-meta">No documents on file for APN: ${apn}</div>
+                        </div>
+                    </li>`;
+            }
+
+            docsList.innerHTML = html;
+            docCount.textContent = `${totalDocs} document${totalDocs !== 1 ? 's' : ''}`;
+        }
+
+        // Load eligibility data
+        async function loadEligibilityData() {
+            if (dataLoaded) return;
+
+            try {
+                // Load all three files in parallel
+                const [greenRes, yellowRes, redRes] = await Promise.all([
+                    fetch('eligibility_green.geojson'),
+                    fetch('eligibility_yellow.geojson'),
+                    fetch('eligibility_red.geojson')
+                ]);
+
+                const [greenData, yellowData, redData] = await Promise.all([
+                    greenRes.json(),
+                    yellowRes.json(),
+                    redRes.json()
+                ]);
+
+                allEligibilityData = [
+                    ...greenData.features,
+                    ...yellowData.features,
+                    ...redData.features
+                ];
+
+                dataLoaded = true;
+                console.log(`Loaded ${allEligibilityData.length} properties`);
+
+            } catch (error) {
+                console.error('Error loading eligibility data:', error);
+            }
+        }
+
+        // Find property by APN or address
+        function findProperty(searchTerm, searchType = 'address') {
+            if (!dataLoaded || !allEligibilityData.length) return null;
+
+            const term = searchTerm.toUpperCase().trim();
+
+            for (const feature of allEligibilityData) {
+                const props = feature.properties;
+                if (searchType === 'apn' && props.a && props.a.toString() === term) {
+                    return feature;
+                }
+                if (searchType === 'address' && props.d && props.d.toUpperCase().includes(term)) {
+                    return feature;
+                }
+            }
+            return null;
+        }
+
+        // Initialize page
+        async function initPage() {
+            // Load eligibility data, documents index, ordinance index, and UDO DADU index in parallel
+            await Promise.all([
+                loadEligibilityData(),
+                loadDocumentsIndex(),
+                loadOrdinanceIndex(),
+                loadUdoDaduIndex(),
+                loadAduPermitsIndex()
+            ]);
+
+            if (apnParam) {
+                const property = findProperty(apnParam, 'apn');
+                if (property) {
+                    showReport(property.properties.d || apnParam, property);
+                    displayDocuments(apnParam);
+                    displayAduPermits(apnParam);
+                    displayLegislation(apnParam, property.properties.e, property.properties.z);
+                } else {
+                    showReport(addressParam || apnParam);
+                    displayDocuments(apnParam);
+                    displayAduPermits(apnParam);
+                    displayLegislation(apnParam, null, null);
+                }
+            } else if (addressParam) {
+                const property = findProperty(addressParam, 'address');
+                showReport(addressParam, property);
+                if (property && property.properties.a) {
+                    displayDocuments(property.properties.a.toString());
+                    displayAduPermits(property.properties.a.toString());
+                    displayLegislation(property.properties.a.toString(), property.properties.e, property.properties.z);
+                }
+            }
+        }
+
+        searchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const address = addressInput.value.trim();
             if (address) {
-                showReport(address);
-                // Update URL
-                window.history.pushState({}, '', `?address=${encodeURIComponent(address)}`);
+                await Promise.all([loadEligibilityData(), loadDocumentsIndex(), loadOrdinanceIndex(), loadUdoDaduIndex(), loadAduPermitsIndex()]);
+                const property = findProperty(address, 'address');
+                showReport(address, property);
+                // Update URL and display documents/legislation/permits
+                const apn = property?.properties?.a;
+                const eligCode = property?.properties?.e;
+                const zoning = property?.properties?.z;
+                if (apn) {
+                    displayDocuments(apn.toString());
+                    displayAduPermits(apn.toString());
+                    displayLegislation(apn.toString(), eligCode, zoning);
+                }
+                const params = new URLSearchParams();
+                if (apn) params.set('apn', apn);
+                params.set('address', address);
+                window.history.pushState({}, '', `?${params.toString()}`);
             }
         });
 
-        function showReport(address) {
+        function showReport(address, property = null) {
             preSearch.style.display = 'none';
             reportCard.classList.add('visible');
             reportAddressText.textContent = address;
             addressInput.value = address;
+
+            // Update report with real data if available
+            if (property) {
+                updateReportData(property);
+            }
+        }
+
+        // Show image placeholder when image fails to load
+        function showImagePlaceholder() {
+            document.getElementById('property-card-image').style.display = 'none';
+            document.getElementById('property-image-placeholder').style.display = 'block';
+            document.getElementById('property-image-placeholder').innerHTML = '<span>🏠</span>No property card image available';
+        }
+
+        function updateReportData(property) {
+            const props = property.properties;
+            const eligInfo = ELIG_LABELS[props.e] || ELIG_LABELS['N'];
+            const apn = props.a;
+            const coords = property.geometry?.coordinates;
+
+            // Update eligibility badge
+            const badge = document.getElementById('eligibility-badge');
+            badge.textContent = `${eligInfo.icon} ${eligInfo.text}`;
+            badge.className = `eligibility-badge ${eligInfo.class}`;
+
+            // Update APN in header
+            const headerP = document.getElementById('report-subheader');
+            if (headerP && apn) {
+                headerP.textContent = `Nashville, TN | APN: ${apn}`;
+            }
+
+            // Calculate max DADU and cost
+            const maxLiving = props.m || (props.l >= 10000 ? 850 : 700);
+            const maxFootprint = maxLiving + 50;
+            const estCost = maxLiving * 175; // $175/sqft estimate
+
+            // Update quick stats in header
+            document.getElementById('stat-zoning').textContent = props.z || 'N/A';
+            document.getElementById('stat-lot-size').textContent = props.l ? `${props.l.toLocaleString()} SF` : 'N/A';
+            document.getElementById('stat-max-dadu').textContent = `${maxLiving} SF`;
+            document.getElementById('stat-est-cost').textContent = `$${Math.round(estCost / 1000)}K`;
+
+            // Update property details
+            document.getElementById('detail-zoning').textContent = props.z || 'N/A';
+            document.getElementById('detail-lot-size').textContent = props.l ? `${props.l.toLocaleString()} SF` : 'N/A';
+            document.getElementById('detail-max-living').textContent = `${maxLiving} SF`;
+            document.getElementById('detail-max-footprint').textContent = `${maxFootprint} SF`;
+
+            // Update service district
+            const districtEl = document.getElementById('detail-district');
+            if (props.e && (props.e.startsWith('E') || props.e === 'U' || props.e === 'US')) {
+                districtEl.textContent = 'USD';
+                districtEl.className = 'data-item-value success';
+            } else if (props.e && props.e.startsWith('C')) {
+                districtEl.textContent = 'GSD';
+                districtEl.className = 'data-item-value warning';
+            } else {
+                districtEl.textContent = 'Check';
+                districtEl.className = 'data-item-value';
+            }
+
+            // Update external links
+            if (apn) {
+                // ParcelViewer
+                document.getElementById('link-parcelviewer').href = `https://maps.nashville.gov/ParcelViewer/?quickSearch=${apn}`;
+                // ePermits Portal
+                document.getElementById('link-epermits').href = `https://epermits.nashville.gov/?#/?searchCode=${apn}`;
+                // Property Assessor
+                document.getElementById('link-assessor').href = `https://davidson-tn-citizen.comper.info/template.aspx?propertyID=${apn}`;
+                // Permit Documents by parcel number
+                document.getElementById('link-documents').href = `https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${apn}`;
+                // Parcel Report (PrintRecord)
+                document.getElementById('link-parcel-report').href = `https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin=${apn}`;
+                // Property Card in Google Drive
+                document.getElementById('link-property-card').href = `${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(apn)}`;
+            }
+
+            // Update map links if coordinates available
+            if (coords) {
+                const lat = coords[1];
+                const lng = coords[0];
+                // Google Street View
+                document.getElementById('link-streetview').href = `https://www.google.com/maps/@${lat},${lng},3a,75y,90t/data=!3m6!1e1!3m4!1s!2e0!7i16384!8i8192`;
+                // Aerial view (Patriot Properties)
+                document.getElementById('link-aerial').href = `https://portal.patriotproperties.com/?APIKEY=5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F&LAT=${lat}&LONG=${lng}`;
+                document.getElementById('property-image-links').style.display = 'flex';
+            }
+
+            // Try to load property card image
+            loadPropertyImage(apn);
+
+            // Update eligibility checklist
+            updateEligibilityChecklist(props);
+        }
+
+        // Load property card image from Google Drive
+        function loadPropertyImage(apn) {
+            if (!apn) return;
+
+            // Check if we have a document for this APN
+            const docs = documentsIndex[apn];
+            if (docs && docs.property_cards && docs.property_cards.length > 0) {
+                const doc = docs.property_cards[0];
+                // Handle both object format (new) and string format (legacy)
+                const filename = typeof doc === 'object' ? doc.filename : doc;
+                const viewUrl = typeof doc === 'object' ? doc.gdrive_url : null;
+                const downloadUrl = typeof doc === 'object' ? doc.download_url : null;
+
+                const imageEl = document.getElementById('property-card-image');
+                const placeholderEl = document.getElementById('property-image-placeholder');
+
+                // Show property card with direct Google Drive link
+                let buttonHtml = '';
+                if (viewUrl) {
+                    buttonHtml = `
+                        <a href="${viewUrl}" target="_blank"
+                           style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--teal); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; margin-right: 8px;">
+                            View PDF ↗
+                        </a>`;
+                }
+                if (downloadUrl) {
+                    buttonHtml += `
+                        <a href="${downloadUrl}" target="_blank"
+                           style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--terracotta); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none;">
+                            Download
+                        </a>`;
+                }
+                if (!viewUrl && !downloadUrl) {
+                    buttonHtml = `
+                        <a href="${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(filename)}" target="_blank"
+                           style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--terracotta); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none;">
+                            Find in Google Drive
+                        </a>`;
+                }
+
+                placeholderEl.innerHTML = `
+                    <span>🏠</span>
+                    <div style="font-size: 12px; margin-top: 8px;">Property Card Available</div>
+                    <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${filename}</div>
+                    ${buttonHtml}
+                `;
+                placeholderEl.style.display = 'block';
+                imageEl.style.display = 'none';
+            } else {
+                // No property card found
+                document.getElementById('property-image-placeholder').innerHTML = '<span>🏠</span>No property card on file';
+            }
+        }
+
+        function updateEligibilityChecklist(props) {
+            const eligCode = props.e || 'N';
+            const isEligible = eligCode.startsWith('E');
+            const isConditional = eligCode.startsWith('C') || eligCode.startsWith('U');
+            const zoning = props.z || '';
+
+            // Check residential zoning (RS, R, RM, AR zones)
+            const isResidential = /^(RS|R\d|R$|RM|AR)/.test(zoning);
+
+            // Find checklist items and update
+            const checklistItems = document.querySelectorAll('.report-section:nth-of-type(2) .data-item');
+            checklistItems.forEach(item => {
+                const label = item.querySelector('.data-item-label')?.textContent;
+                const valueEl = item.querySelector('.data-item-value');
+                if (!valueEl) return;
+
+                switch(label) {
+                    case 'Residential Zoning':
+                        if (isResidential) {
+                            valueEl.textContent = '✓ Pass';
+                            valueEl.className = 'data-item-value success';
+                        } else {
+                            valueEl.textContent = '✗ Fail';
+                            valueEl.className = 'data-item-value error';
+                        }
+                        break;
+                    case 'Urban Services District':
+                        if (isEligible) {
+                            valueEl.textContent = '✓ Pass';
+                            valueEl.className = 'data-item-value success';
+                        } else if (isConditional) {
+                            valueEl.textContent = '⚠ GSD - Overlay Needed';
+                            valueEl.className = 'data-item-value warning';
+                        } else {
+                            valueEl.textContent = '✗ Check Required';
+                            valueEl.className = 'data-item-value error';
+                        }
+                        break;
+                    case 'Single Family Property':
+                        if (eligCode.includes('S')) {
+                            valueEl.textContent = '⚠ Has Secondary Structure';
+                            valueEl.className = 'data-item-value warning';
+                        } else {
+                            valueEl.textContent = '✓ Pass';
+                            valueEl.className = 'data-item-value success';
+                        }
+                        break;
+                }
+            });
         }
 
         // Tab switching
@@ -925,6 +1784,10 @@
                 // In full implementation, this would show/hide tab content
             });
         });
+
+        // Initialize on page load
+        initPage();
     </script>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

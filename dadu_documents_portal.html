@@ -11,8 +11,8 @@
             --navy: #2c3e50;
             --navy-dark: #1a252f;
             --teal: #6b8fa3;
-            --olive: #6b8e4e;
-            --olive-dark: #5a7a42;
+            --terracotta: #B55A3C;
+            --terracotta-hover: #9A4A30;
             --tan: #c9a86c;
             --cream: #f5f5f0;
             --warm-gray: #e8e4df;
@@ -48,7 +48,7 @@
         
         .logo-icon {
             width: 40px; height: 40px;
-            background: var(--olive);
+            background: var(--terracotta);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -81,7 +81,7 @@
         
         .search-box button {
             padding: 12px 24px;
-            background: var(--olive);
+            background: var(--terracotta);
             color: white;
             border: none;
             font-family: inherit;
@@ -90,7 +90,7 @@
         }
         
         .search-box button:hover {
-            background: var(--olive-dark);
+            background: var(--terracotta-hover);
         }
         
         /* Property Header */
@@ -320,7 +320,7 @@
             content: "✓";
             position: absolute;
             left: 0;
-            color: var(--olive);
+            color: var(--terracotta);
             font-weight: 700;
         }
         
@@ -347,7 +347,7 @@
         }
         
         .doc-price.free {
-            color: var(--olive);
+            color: var(--terracotta);
         }
         
         .doc-btn {
@@ -365,13 +365,13 @@
         }
         
         .doc-btn.primary {
-            background: var(--olive);
+            background: var(--terracotta);
             color: white;
             border: none;
         }
         
         .doc-btn.primary:hover {
-            background: var(--olive-dark);
+            background: var(--terracotta-hover);
         }
         
         .doc-btn.premium {
@@ -386,8 +386,8 @@
         
         .doc-btn.outline {
             background: white;
-            color: var(--olive);
-            border: 2px solid var(--olive);
+            color: var(--terracotta);
+            border: 2px solid var(--terracotta);
         }
         
         .doc-btn.outline:hover {
@@ -465,7 +465,7 @@
             color: var(--navy);
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid var(--olive);
+            border-bottom: 2px solid var(--terracotta);
         }
         
         .sample-data-row {
@@ -487,7 +487,7 @@
         
         /* CTA Section */
         .cta-section {
-            background: var(--olive);
+            background: var(--terracotta);
             border-radius: 16px;
             padding: 40px;
             text-align: center;
@@ -512,7 +512,7 @@
             display: inline-block;
             padding: 16px 40px;
             background: white;
-            color: var(--olive);
+            color: var(--terracotta);
             border-radius: 8px;
             font-weight: 700;
             text-decoration: none;
@@ -630,7 +630,7 @@
             content: "✓";
             position: absolute;
             left: 0;
-            color: var(--olive);
+            color: var(--terracotta);
             font-weight: 700;
             font-size: 18px;
         }
@@ -638,7 +638,7 @@
         .modal-btn {
             width: 100%;
             padding: 16px;
-            background: var(--olive);
+            background: var(--terracotta);
             color: white;
             border: none;
             border-radius: 8px;
@@ -649,7 +649,7 @@
         }
         
         .modal-btn:hover {
-            background: var(--olive-dark);
+            background: var(--terracotta-hover);
         }
         
         .modal-close {
@@ -681,6 +681,23 @@
 <!-- Header -->
     
     
+    
+    <!-- Search Header -->
+    <div style="background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%); padding: 40px 30px; text-align: center;">
+        <h1 style="color: white; font-size: 28px; margin-bottom: 10px;">Property Document Search</h1>
+        <p style="color: rgba(255,255,255,0.9); margin-bottom: 20px;">Enter an address to find available documents</p>
+        <div style="max-width: 600px; margin: 0 auto; display: flex; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+            <input type="text" id="addressInput" placeholder="Enter Nashville address (e.g., 1234 Main St)"
+                   style="flex: 1; padding: 16px 20px; border: none; font-family: inherit; font-size: 15px;">
+            <button onclick="searchProperty()" style="padding: 16px 30px; background: var(--terracotta); color: white; border: none; font-family: inherit; font-weight: 600; font-size: 15px; cursor: pointer;">
+                Search
+            </button>
+        </div>
+        <p style="color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 15px;">
+            📄 <strong>7,178 documents</strong> indexed across <strong>5,389 parcels</strong>
+        </p>
+    </div>
+
     <!-- Property Header -->
     
         <div class="property-meta" id="propertyMeta">
@@ -728,7 +745,7 @@
             
             <!-- Aerial Image - FREE -->
             <div class="doc-card">
-                <div class="doc-preview free" style="background: linear-gradient(135deg, #6b8e4e, #4a6b35);">
+                <div class="doc-preview free" style="background: linear-gradient(135deg, #B55A3C, #4a6b35);">
                     <div class="preview-content">
                         <div class="preview-icon">🛰️</div>
                         <div class="preview-label">Aerial Imagery</div>
@@ -785,6 +802,15 @@
             </div>
         </div>
         
+        <!-- Found Documents Section (populated dynamically) -->
+        <div id="foundDocsSection" style="display: none;">
+            <h2 class="section-title">
+                📂 Documents Found for This Property
+                <span class="badge" style="background: #27ae60;">AVAILABLE</span>
+            </h2>
+            <div id="foundDocsGrid" class="doc-grid"></div>
+        </div>
+
         <!-- Premium Documents Section -->
         <h2 class="section-title">
             🔒 Premium Documents
@@ -893,8 +919,8 @@
             <!-- Complete Property Package - PREMIUM -->
             <div class="doc-card premium">
                 <div class="premium-ribbon">Best Value</div>
-                <div class="doc-preview blurred" style="background: linear-gradient(135deg, var(--olive), var(--teal));">
-                    <div class="preview-overlay" style="background: rgba(107, 142, 78, 0.9);">
+                <div class="doc-preview blurred" style="background: linear-gradient(135deg, var(--terracotta), var(--teal));">
+                    <div class="preview-overlay" style="background: rgba(181, 90, 60, 0.9);">
                         <div class="lock-icon">⭐</div>
                         <h4>Complete Package</h4>
                         <p>Everything in one bundle</p>
@@ -944,7 +970,7 @@
                     </div>
                     <div class="sample-data-row">
                         <span class="label">DADU Eligible</span>
-                        <span class="value" style="color: var(--olive);">✓ YES</span>
+                        <span class="value" style="color: var(--terracotta);">✓ YES</span>
                     </div>
                     <div class="sample-data-row">
                         <span class="label">Zoning District</span>
@@ -1012,68 +1038,222 @@
     </div>
     
     <script>
-        // Google Drive Folder (your folder)
+        // Google Drive Folder (fallback)
         const GDRIVE_FOLDER = 'https://drive.google.com/drive/folders/1eD1TUNuYMOMK7VdVJW3Pc6mHYFS02VUj';
-        
+
+        // Document index cache
+        let docsIndex = null;
+        let docsIndexLoaded = false;
+
         // Current property data
         let currentProperty = null;
         let currentAPN = null;
-        
+        let currentDocs = null;
+
+        // Load document index on page load
+        async function loadDocsIndex() {
+            try {
+                const response = await fetch('data/gdrive_docs_index.json');
+                if (response.ok) {
+                    docsIndex = await response.json();
+                    docsIndexLoaded = true;
+                    console.log(`Loaded document index: ${docsIndex._total_parcels} parcels, ${docsIndex._total_documents} documents`);
+                }
+            } catch (error) {
+                console.warn('Could not load document index:', error);
+            }
+        }
+
+        // Load index on startup
+        loadDocsIndex();
+
         // Search property
         async function searchProperty() {
             const address = document.getElementById('addressInput').value.trim();
             if (!address) return;
-            
+
             // Update header
             document.getElementById('propertyAddress').textContent = address;
             document.getElementById('propertyMeta').innerHTML = `
                 <span>📍 Nashville-Davidson County, TN</span>
                 <span>🔍 Searching...</span>
             `;
-            
+
+            // Hide found docs section while searching
+            document.getElementById('foundDocsSection').style.display = 'none';
+
             try {
                 // Geocode address
                 const geocodeUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${encodeURIComponent(address + ', Nashville, TN')}&f=json&outFields=*`;
                 const geoRes = await fetch(geocodeUrl);
                 const geoData = await geoRes.json();
-                
+
                 if (geoData.candidates && geoData.candidates.length > 0) {
                     const loc = geoData.candidates[0].location;
-                    
+
                     // Query parcel
                     const parcelUrl = `https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels/FeatureServer/0/query?where=1=1&geometry=${loc.x},${loc.y}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=*&f=json`;
                     const parcelRes = await fetch(parcelUrl);
                     const parcelData = await parcelRes.json();
-                    
+
                     if (parcelData.features && parcelData.features.length > 0) {
                         currentProperty = parcelData.features[0].attributes;
                         currentAPN = currentProperty.APN || currentProperty.STANPAR || currentProperty.PIN;
-                        
+
+                        // Normalize APN (remove dashes, ensure 11 digits)
+                        let normalizedAPN = (currentAPN || '').toString().replace(/[^0-9]/g, '');
+                        if (normalizedAPN.length < 11) {
+                            normalizedAPN = normalizedAPN.padStart(11, '0');
+                        }
+
+                        // Check for documents
+                        currentDocs = null;
+                        if (docsIndexLoaded && docsIndex && docsIndex.parcels) {
+                            currentDocs = docsIndex.parcels[normalizedAPN] || docsIndex.parcels[currentAPN];
+                        }
+
+                        // Count available docs
+                        let docCount = 0;
+                        if (currentDocs) {
+                            docCount = (currentDocs.property_cards?.length || 0) +
+                                       (currentDocs.covenants?.length || 0) +
+                                       (currentDocs.permits?.length || 0);
+                        }
+
                         // Update meta
                         document.getElementById('propertyMeta').innerHTML = `
                             <span>📍 Nashville-Davidson County, TN</span>
                             <span>🏷️ APN: ${currentAPN}</span>
                             <span>📐 ${(currentProperty.ACRES || currentProperty.Shape__Area / 43560 || 0).toFixed(2)} acres</span>
                             <span>🏠 ${currentProperty.ZONING || currentProperty.Zone || 'N/A'}</span>
+                            ${docCount > 0 ? `<span style="color: #27ae60; font-weight: 600;">📄 ${docCount} docs found</span>` : ''}
                         `;
+
+                        // Display found documents
+                        if (currentDocs && docCount > 0) {
+                            displayFoundDocs(currentDocs, normalizedAPN);
+                        }
                     }
                 }
             } catch (error) {
                 console.error('Search error:', error);
             }
         }
-        
-        // Open Property Card (Nashville portal)
+
+        // Display found documents
+        function displayFoundDocs(docs, apn) {
+            const section = document.getElementById('foundDocsSection');
+            const grid = document.getElementById('foundDocsGrid');
+            grid.innerHTML = '';
+
+            let hasContent = false;
+
+            // Property Cards
+            if (docs.property_cards && docs.property_cards.length > 0) {
+                hasContent = true;
+                docs.property_cards.forEach((doc, idx) => {
+                    grid.innerHTML += createDocCard({
+                        icon: '🏠',
+                        type: 'Property Card',
+                        title: `Property Assessment Card`,
+                        description: `Official property assessment from Davidson County Assessor's office.`,
+                        features: ['Property details', 'Assessed value', 'Building info', 'Tax data'],
+                        url: doc.gdrive_url,
+                        downloadUrl: doc.download_url,
+                        isFree: true
+                    });
+                });
+            }
+
+            // Covenants
+            if (docs.covenants && docs.covenants.length > 0) {
+                hasContent = true;
+                docs.covenants.forEach((doc, idx) => {
+                    const recDate = doc.rec_date ? new Date(doc.rec_date).toLocaleDateString() : 'N/A';
+                    grid.innerHTML += createDocCard({
+                        icon: '⚖️',
+                        type: 'Restrictive Covenant',
+                        title: `Covenant Document`,
+                        description: `Recorded ${recDate}. Instrument #${doc.instrument}`,
+                        features: ['Original recorded document', 'Owner occupancy terms', 'ADU restrictions', 'Legal requirements'],
+                        url: doc.gdrive_url,
+                        downloadUrl: doc.download_url,
+                        isFree: false,
+                        grantor: doc.grantor
+                    });
+                });
+            }
+
+            // Permits
+            if (docs.permits && docs.permits.length > 0) {
+                hasContent = true;
+                docs.permits.forEach((doc, idx) => {
+                    grid.innerHTML += createDocCard({
+                        icon: '📋',
+                        type: 'Permit Document',
+                        title: `Building Permit`,
+                        description: `Permit document from Metro Nashville Codes.`,
+                        features: ['Permit application', 'Approval details', 'Project specs'],
+                        url: doc.gdrive_url,
+                        downloadUrl: doc.download_url,
+                        isFree: false
+                    });
+                });
+            }
+
+            if (hasContent) {
+                section.style.display = 'block';
+                // Scroll to found docs
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Create document card HTML
+        function createDocCard(config) {
+            const bgColor = config.isFree ? 'var(--teal)' : 'var(--gold)';
+            const priceLabel = config.isFree ? 'FREE' : 'View';
+            const btnClass = config.isFree ? 'primary' : 'premium';
+
+            return `
+                <div class="doc-card ${config.isFree ? '' : 'premium'}">
+                    <div class="doc-preview free" style="background: linear-gradient(135deg, ${bgColor}, ${bgColor}dd);">
+                        <div class="preview-content">
+                            <div class="preview-icon">${config.icon}</div>
+                            <div class="preview-label">${config.type}</div>
+                        </div>
+                    </div>
+                    <div class="doc-body">
+                        <div class="doc-type">${config.type}</div>
+                        <div class="doc-title">${config.title}</div>
+                        <div class="doc-description">${config.description}</div>
+                        <ul class="doc-features">
+                            ${config.features.map(f => `<li>${f}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="doc-footer">
+                        <div class="doc-price ${config.isFree ? 'free' : ''}">${priceLabel}</div>
+                        <a href="${config.url}" target="_blank" class="doc-btn ${btnClass}">
+                            Open Document →
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Open Property Card (Nashville portal or Google Drive)
         function openPropertyCard() {
-            if (currentAPN) {
-                // Nashville property card URL pattern
+            // First check if we have a Google Drive version
+            if (currentDocs && currentDocs.property_cards && currentDocs.property_cards.length > 0) {
+                window.open(currentDocs.property_cards[0].gdrive_url, '_blank');
+            } else if (currentAPN) {
+                // Fallback to Nashville property card URL
                 const accountNum = currentAPN.replace(/-/g, '');
                 window.open(`https://portal.padctn.org/OFS/WP/Print/${accountNum}`, '_blank');
             } else {
                 alert('Please search for a property first');
             }
         }
-        
+
         // Open Aerial (Nashville GIS)
         function openAerial() {
             if (currentAPN) {
@@ -1082,7 +1262,7 @@
                 alert('Please search for a property first');
             }
         }
-        
+
         // Open Permit History (ePermits)
         function openPermitHistory() {
             if (currentProperty) {
@@ -1092,7 +1272,7 @@
                 alert('Please search for a property first');
             }
         }
-        
+
         // Modal configurations
         const modalConfigs = {
             dadu: {
@@ -1150,54 +1330,62 @@
                 driveFolder: GDRIVE_FOLDER
             }
         };
-        
+
         let currentModalType = null;
-        
+
         // Open unlock modal
         function openUnlockModal(type) {
+            // Check if we have actual documents for covenant type
+            if (type === 'covenant' && currentDocs && currentDocs.covenants && currentDocs.covenants.length > 0) {
+                // Open first covenant directly
+                window.open(currentDocs.covenants[0].gdrive_url, '_blank');
+                return;
+            }
+
             currentModalType = type;
             const config = modalConfigs[type];
-            
+
             document.getElementById('modalTitle').textContent = config.title;
             document.getElementById('modalSubtitle').textContent = config.subtitle;
             document.getElementById('modalPrice').textContent = config.price;
-            
+
             const featuresHtml = config.features.map(f => `<li>${f}</li>`).join('');
             document.getElementById('modalFeatures').innerHTML = featuresHtml;
-            
+
             document.getElementById('unlockModal').classList.add('active');
         }
-        
+
         // Close modal
         function closeModal() {
             document.getElementById('unlockModal').classList.remove('active');
         }
-        
+
         // Process payment (demo - opens Google Drive)
         function processPayment() {
             // In production, this would integrate with Stripe
             // For now, direct to Google Drive folder
-            
+
             const config = modalConfigs[currentModalType];
-            
+
             // Show confirmation
             alert(`Thank you! In the full version, this would process payment for ${config.price}.\n\nFor now, opening document folder...`);
-            
+
             // Open Google Drive folder
             window.open(config.driveFolder, '_blank');
-            
+
             closeModal();
         }
-        
+
         // Close modal on overlay click
         document.getElementById('unlockModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
-        
+
         // Handle Enter key in search
-        document.getElementById('addressInput').addEventListener('keypress', function(e) {
+        document.getElementById('addressInput')?.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') searchProperty();
         });
     </script>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

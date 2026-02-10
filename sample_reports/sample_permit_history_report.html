@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permit History Report - Sample | Homebody Projects</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+        .report { max-width: 800px; margin: 20px auto; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 30px; }
+        .header h1 { font-size: 24px; margin-bottom: 5px; }
+        .sample-badge { background: #e74c3c; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; margin-top: 10px; }
+        .section { padding: 25px 30px; border-bottom: 1px solid #eee; }
+        .section h3 { font-size: 16px; color: #2c3e50; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #B55A3C; display: inline-block; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+        th { background: #f8f9fa; font-size: 11px; text-transform: uppercase; color: #666; }
+        .status-active { color: #27ae60; font-weight: 600; }
+        .status-complete { color: #6b8fa3; }
+        .status-expired { color: #999; }
+        .summary-box { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; }
+        .summary-item .value { font-size: 28px; font-weight: bold; color: #2c3e50; }
+        .summary-item .label { font-size: 11px; color: #666; text-transform: uppercase; }
+        .permit-link { color: #B55A3C; text-decoration: none; }
+        .permit-link:hover { text-decoration: underline; }
+        .footer { background: #2c3e50; color: white; padding: 20px 30px; text-align: center; font-size: 12px; }
+        .footer a { color: #B55A3C; }
+    
+        .property-visuals { padding: 0; border-bottom: 1px solid #eee; }
+        .visuals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+        .visuals-grid iframe { width: 100%; height: 220px; border: none; display: block; }
+        .visual-label { font-size: 10px; text-transform: uppercase; color: #666; padding: 6px 12px; background: #f8f9fa; letter-spacing: 0.5px; font-weight: 600; }
+        .visual-links { display: flex; gap: 10px; padding: 12px 20px; background: #f8f9fa; flex-wrap: wrap; }
+        .visual-links a { font-size: 12px; color: #B55A3C; text-decoration: none; font-weight: 600; padding: 4px 12px; border: 1px solid #B55A3C; border-radius: 4px; }
+        .visual-links a:hover { background: #B55A3C; color: white; }
+        @media (max-width: 600px) { .visuals-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="report">
+        <div class="header">
+            <h1>Permit History Report</h1>
+            <div class="subtitle">Complete Permit Records | Homebody Projects</div>
+
+        <div class="property-visuals">
+            <div class="visuals-grid">
+                <div>
+                    <div class="visual-label">Aerial View</div>
+                    <iframe src="https://portal.patriotproperties.com/?APIKEY=5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F&LAT=36.17266&LONG=-86.73745" loading="lazy" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <div class="visual-label">Street View</div>
+                    <iframe src="https://maps.google.com/maps?q=36.17266,-86.73745&layer=c&cbll=36.17266,-86.73745&cbp=12,0,0,0,0&output=embed" loading="lazy" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="visual-links">
+                <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=08311012300" target="_blank">ParcelViewer</a>
+                <a href="https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=08311012300" target="_blank">Permit Docs</a>
+                <a href="https://epermits.nashville.gov/#/search?searchCode=APN&searchText=08311012300" target="_blank">ePermits</a>
+                <a href="https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin=08311012300" target="_blank">Parcel Report</a>
+                <a href="https://davidson-tn-citizen.comper.info/template.aspx?propertyID=08311012300" target="_blank">Comparable Map</a>
+                <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/property-report-card.html?apn=08311012300" target="_blank">Property Report Card</a>
+                <a href="https://www.google.com/maps/@36.17266,-86.73745,3a,75y,90t/data=!3m6!1e1!3m4!1s!2e0!7i16384!8i8192" target="_blank">Google Street View</a>
+                <a href="https://portal.patriotproperties.com/?APIKEY=5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F&LAT=36.17266&LONG=-86.73745" target="_blank">Aerial Photo</a>
+            </div>
+        </div>
+
+            <span class="sample-badge">SAMPLE REPORT - $9</span>
+        </div>
+
+        <div class="section">
+            <h3>Property Information</h3>
+            <table>
+                <tr><td><strong>Address</strong></td><td>1812 Fatherland St, Nashville, TN 37206</td></tr>
+                <tr><td><strong>APN</strong></td><td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/property-report-card.html?apn=08311012300" target="_blank" style="color: #B55A3C; text-decoration: none;">08311012300</a></td></tr>
+                <tr><td><strong>Owner</strong></td><td>Johnson Properties LLC</td></tr>
+                <tr><td><strong>Zoning</strong></td><td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/dadu_zoning_standards.html" target="_blank" style="color: #B55A3C; text-decoration: none;">RS5</a></td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>Permit Summary</h3>
+            <div class="summary-box">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="value">12</div>
+                        <div class="label">Total Permits</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="value">1</div>
+                        <div class="label">DADU Permits</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="value">$285K</div>
+                        <div class="label">Total Value</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="value">2019</div>
+                        <div class="label">First Permit</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Building Permits</h3>
+            <table>
+                <tr>
+                    <th>Permit #</th>
+                    <th>Type</th>
+                    <th>Issued</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td><a href="https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=2025BL-DADU-1847" target="_blank" class="permit-link">2025BL-DADU-1847</a></td>
+                    <td>DADU - New Construction</td>
+                    <td>2025-01-15</td>
+                    <td>$165,000</td>
+                    <td class="status-active">Active</td>
+                </tr>
+                <tr>
+                    <td><a href="https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=2023BL45678" target="_blank" class="permit-link">2023BL45678</a></td>
+                    <td>Residential Renovation</td>
+                    <td>2023-05-12</td>
+                    <td>$45,000</td>
+                    <td class="status-complete">Complete</td>
+                </tr>
+                <tr>
+                    <td><a href="https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=2021BL23456" target="_blank" class="permit-link">2021BL23456</a></td>
+                    <td>Kitchen Remodel</td>
+                    <td>2021-08-03</td>
+                    <td>$32,000</td>
+                    <td class="status-complete">Complete</td>
+                </tr>
+                <tr>
+                    <td><a href="https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=2019BL12345" target="_blank" class="permit-link">2019BL12345</a></td>
+                    <td>Deck Addition</td>
+                    <td>2019-04-22</td>
+                    <td>$8,500</td>
+                    <td class="status-complete">Complete</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>Trade Permits</h3>
+            <table>
+                <tr>
+                    <th>Permit #</th>
+                    <th>Type</th>
+                    <th>Issued</th>
+                    <th>Contractor</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>2025EL-9876</td>
+                    <td>Electrical - DADU</td>
+                    <td>2025-01-20</td>
+                    <td>Bright Electric Co</td>
+                    <td class="status-active">Active</td>
+                </tr>
+                <tr>
+                    <td>2025PL-5432</td>
+                    <td>Plumbing - DADU</td>
+                    <td>2025-01-18</td>
+                    <td>Nashville Plumbing</td>
+                    <td class="status-active">Active</td>
+                </tr>
+                <tr>
+                    <td>2025MC-2345</td>
+                    <td>Mechanical - DADU</td>
+                    <td>2025-01-22</td>
+                    <td>Cool Air HVAC</td>
+                    <td class="status-active">Active</td>
+                </tr>
+                <tr>
+                    <td>2023EL-4567</td>
+                    <td>Electrical Panel Upgrade</td>
+                    <td>2023-05-15</td>
+                    <td>Bright Electric Co</td>
+                    <td class="status-complete">Complete</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>DADU Permit Details</h3>
+            <table>
+                <tr><td><strong>Permit Number</strong></td><td>2025BL-DADU-1847</td></tr>
+                <tr><td><strong>Issue Date</strong></td><td>January 15, 2025</td></tr>
+                <tr><td><strong>Contractor</strong></td><td>Palmetto Construction LLC</td></tr>
+                <tr><td><strong>Building Size</strong></td><td>700 SF</td></tr>
+                <tr><td><strong>Stories</strong></td><td>1</td></tr>
+                <tr><td><strong>Est. Completion</strong></td><td>June 2025</td></tr>
+                <tr><td><strong>Current Status</strong></td><td class="status-active">Under Construction - Framing Complete</td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>Inspection History</h3>
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Result</th>
+                    <th>Inspector</th>
+                </tr>
+                <tr>
+                    <td>2025-02-01</td>
+                    <td>Framing Inspection</td>
+                    <td style="color: #27ae60;">Passed</td>
+                    <td>J. Williams</td>
+                </tr>
+                <tr>
+                    <td>2025-01-25</td>
+                    <td>Foundation Inspection</td>
+                    <td style="color: #27ae60;">Passed</td>
+                    <td>M. Chen</td>
+                </tr>
+                <tr>
+                    <td>2025-01-18</td>
+                    <td>Footings Inspection</td>
+                    <td style="color: #27ae60;">Passed</td>
+                    <td>M. Chen</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>Generated by <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/">Homebody Projects</a></p>
+            <p style="margin-top: 5px; opacity: 0.8;">Sample report. Data sourced from Metro Nashville permit records.</p>
+        </div>
+    </div>
+</body>
+</html>
