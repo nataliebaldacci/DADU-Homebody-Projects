@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Contractor Activity Dashboard | Homebody Projects</title>
@@ -513,12 +514,20 @@
             }
         }
     </style>
+
 </head>
 <body>
-    <div class="header">
-        <div class="logo">
-            <div class="logo-icon">👷</div>
-            <div>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
+<div>
                 <div class="logo-text">DADU Contractor Dashboard</div>
                 <div class="logo-sub">Homebody Projects - Nashville Contractor Activity & Pricing</div>
             </div>
@@ -564,8 +573,7 @@
 
     <div class="main-content">
         <div class="card">
-            <div class="card-header">
-                <div class="card-title">All Contractors</div>
+            
                 <div id="showing-count" style="font-size: 13px; color: #888;">Loading...</div>
             </div>
             <div class="card-body">
@@ -613,8 +621,7 @@
 
         <div class="sidebar">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title">💰 Best Value Contractors</div>
+                
                     <div style="font-size: 11px; color: #888;">Lowest avg $/SF (5+ records)</div>
                 </div>
                 <div class="card-body">
@@ -623,18 +630,14 @@
             </div>
 
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title">🏗️ Top DADU Builders</div>
-                </div>
+                
                 <div class="card-body">
                     <ul class="top-list" id="top-dadu"></ul>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title">📍 $/SF by Zip Code</div>
-                </div>
+                
                 <div class="card-body">
                     <table class="zipcode-table" id="zipcode-table">
                         <thead>
@@ -655,8 +658,7 @@
     <!-- Modal -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title" id="modal-title">Contractor Details</div>
+            
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body" id="modal-body"></div>

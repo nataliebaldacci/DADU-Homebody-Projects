@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find DADUs Near Me | Homebody Projects</title>
@@ -549,16 +550,21 @@
             }
         }
     </style>
+
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/" class="logo">
-            <div class="logo-icon">🏠</div>
-            <span class="logo-text">Homebody</span>
-        </a>
-        <h1>📍 Find DADUs & Contractors Near You</h1>
-    </header>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
+<!-- Header -->
+    
     
     <!-- Main Content -->
     <div class="main-container">
@@ -591,10 +597,7 @@
             
             <!-- Results -->
             <div class="results-section">
-                <div class="results-header" id="resultsHeader" style="display: none;">
-                    <div>
-                        <span id="resultsCount">0</span> DADU Permits Found
-                    </div>
+                
                     <div class="contractor-summary" id="contractorSummary">0 contractors</div>
                 </div>
                 
@@ -856,10 +859,7 @@
                         });
                         
                         marker.bindPopup(`
-                            <div class="popup-header">
-                                <h4>${permit.address}</h4>
-                                <div class="distance">${permit.distance.toFixed(2)} miles away</div>
-                            </div>
+                            
                             <div class="popup-body">
                                 <div class="popup-row">
                                     <span class="popup-label">Permit #</span>

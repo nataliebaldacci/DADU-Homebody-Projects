@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Documents | Homebody Projects</title>
@@ -664,24 +665,24 @@
             color: #333;
         }
     </style>
+
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <a href="#" class="logo">
-            <div class="logo-icon">🏠</div>
-            <span class="logo-text">Homebody Projects</span>
-        </a>
-        
-        <div class="search-box">
-            <input type="text" id="addressInput" placeholder="Enter Nashville address...">
-            <button onclick="searchProperty()">Search</button>
-        </div>
-    </header>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
+<!-- Header -->
+    
     
     <!-- Property Header -->
-    <div class="property-header" id="propertyHeader">
-        <div class="property-address" id="propertyAddress">Enter an address to view documents</div>
+    
         <div class="property-meta" id="propertyMeta">
             <span>📍 Nashville-Davidson County, TN</span>
         </div>
@@ -931,8 +932,7 @@
                 <a href="#" class="cta-btn" onclick="openUnlockModal('dadu'); return false;">Get Your Report →</a>
             </div>
             <div class="sample-preview">
-                <div class="sample-preview-header">
-                    <div class="dot red"></div>
+                
                     <div class="dot yellow"></div>
                     <div class="dot green"></div>
                 </div>
@@ -991,10 +991,7 @@
     <!-- Unlock Modal -->
     <div class="modal-overlay" id="unlockModal">
         <div class="modal">
-            <div class="modal-header">
-                <h3 id="modalTitle">🔓 Unlock Report</h3>
-                <p id="modalSubtitle">Get instant access to your document</p>
-            </div>
+            
             <div class="modal-body">
                 <div class="modal-price">
                     <div class="amount" id="modalPrice">$19</div>

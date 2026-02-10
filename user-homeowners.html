@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Homeowners | Homebody - Nashville DADU Platform</title>
@@ -508,20 +509,20 @@
             .steps-grid { grid-template-columns: 1fr; }
         }
     </style>
+
 </head>
 <body>
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div><span>NASHVILLE-DAVIDSON COUNTY</span> | For Homeowners</div>
-        <div>
-            <a href="user-types.html">All User Types</a>
-            <a href="homebody_dadu_pricing.html">Pricing</a>
-        </div>
-    </div>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
 
-    <!-- Navigation -->
-    <nav class="main-nav">
-        <div class="nav-container">
+
+<div class="nav-container">
             <a href="index_pq.html" class="nav-logo">
                 <div class="nav-logo-icon">
                     <img src="assets/icons/ADU.png" alt="">
@@ -563,10 +564,7 @@
 
     <!-- How It Works -->
     <section class="section">
-        <div class="section-header">
-            <h2>How It Works</h2>
-            <p>Four simple steps from eligibility check to breaking ground</p>
-        </div>
+        
 
         <div class="steps-grid">
             <div class="step-card">
@@ -594,10 +592,7 @@
 
     <!-- Tools for Homeowners -->
     <section class="section" style="padding-top: 0;">
-        <div class="section-header">
-            <h2>Tools for Homeowners</h2>
-            <p>Everything you need to plan and execute your DADU project</p>
-        </div>
+        
 
         <div class="tools-grid">
             <a href="property-report-card.html" class="tool-card">

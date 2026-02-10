@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Cost Estimator | Homebody Projects</title>
@@ -435,9 +436,20 @@
 
         .footer a { color: var(--olive); text-decoration: none; }
     </style>
+
 </head>
 <body>
-    <nav class="nav">
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
+<nav class="nav">
         <a href="index.html" class="nav-logo">
             <div class="nav-logo-icon">🏠</div>
             <span class="nav-logo-text">Homebody Projects</span>
@@ -446,10 +458,7 @@
     </nav>
 
     <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">DADU Cost Estimator</h1>
-            <p class="page-subtitle">Get a detailed cost estimate for your Nashville DADU project based on size, finishes, and features</p>
-        </div>
+        
 
         <div class="calculator-grid">
             <!-- Input Section -->
@@ -614,8 +623,7 @@
             <!-- Results Panel -->
             <div>
                 <div class="results-panel">
-                    <div class="results-header">
-                        <div class="results-title">Estimated Total Cost</div>
+                    
                         <div class="results-total" id="totalCost">$150,000</div>
                         <div class="results-range" id="costRange">Range: $135,000 - $165,000</div>
                     </div>

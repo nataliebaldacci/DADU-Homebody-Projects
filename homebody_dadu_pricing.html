@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <<<<<<< HEAD
@@ -982,42 +983,22 @@
 >>>>>>> 9ada0eae1ce4f04a82d52aa25a5137955ebee80f
         }
     </style>
+
 </head>
 <body>
-<<<<<<< HEAD
-    <!-- Header -->
-    <header class="header">
-        <div class="header-inner">
-=======
-<!-- Homebody Navigation -->
-<div id="homebody-nav" style="background:#1e2a38;padding:0 20px;font-family:Montserrat,sans-serif;position:sticky;top:0;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.3);"><div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;"><a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:white;"><div style="width:32px;height:32px;background:#4a9;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏠</div><span style="font-weight:700;font-size:16px;">Homebody Projects</span></a><div style="display:flex;gap:6px;"><a href="am_i_eligible.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Eligibility</a><a href="dadu_opportunity_explorer_v2.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Explorer</a><a href="nashville_permit_explorer_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Permits</a><a href="dadu_code_legislation_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Code</a></div></div></div>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
 
-    <!-- Header -->
-    <header class="header">
-        <div class="header-top">
->>>>>>> 9ada0eae1ce4f04a82d52aa25a5137955ebee80f
-            <a href="index.html" class="logo">
-                <div class="logo-icon">🏠</div>
-                <span class="logo-text">Homebody Projects</span>
-            </a>
-            <nav class="nav">
-                <a href="index.html">Home</a>
+
 <<<<<<< HEAD
-                <a href="property_search.html">Property Search</a>
-                <a href="dadu_opportunity_explorer_v2.html">DADU Explorer</a>
-                <a href="nashville_permit_analytics.html">Analytics</a>
-                <a href="homebody_dadu_pricing.html" class="active">Pricing</a>
-                <a href="am_i_eligible.html" class="nav-btn">Get Started</a>
-=======
-                <a href="pricing.html" class="active">DADU Reports</a>
-                <a href="adu_opportunity_explorer.html">Explorer</a>
-                <a href="nashville_permit_analytics.html">Analytics</a>
-                <a href="faq.html">FAQ</a>
-                <a href="login.html" class="nav-btn">Login</a>
->>>>>>> 9ada0eae1ce4f04a82d52aa25a5137955ebee80f
-            </nav>
-        </div>
-    </header>
+    <!-- Header -->
+    
     
 <<<<<<< HEAD
     <!-- Hero -->
@@ -1152,10 +1133,7 @@
         
         <!-- Subscriptions -->
         <section class="subscriptions">
-            <div class="section-header">
-                <h2>Subscription Plans</h2>
-                <p>For homeowners planning a project or professionals needing regular access</p>
-            </div>
+            
             
             <div class="sub-grid">
                 <div class="sub-card">
@@ -1235,10 +1213,7 @@
         
         <!-- Data Downloads -->
         <section class="data-section">
-            <div class="section-header">
-                <h2>Bulk Data Downloads</h2>
-                <p>For researchers, analysts, and developers</p>
-            </div>
+            
             
             <div class="data-grid">
                 <div class="data-card">

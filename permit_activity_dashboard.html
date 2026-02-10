@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permit Activity Dashboard | Castlehold</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="header-container"></div>
+    <script>
+        fetch('homebody_header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
+    </script>
+
+    <div style="max-width: 900px; margin: 80px auto; padding: 40px; background: var(--background); font-family: Inter, sans-serif;">
+        <h1 style="color: var(--navy); margin-bottom: 20px;">Permit Activity Dashboard</h1>
+        <p style="color: var(--text); line-height: 1.6;">
+            This page is currently under development. Real-time permit activity analytics will be available soon.
+        </p>
+        <div style="margin-top: 24px;">
+            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 16px;">
+                For now, explore permit data here:
+            </p>
+            <a href="nashville_permit_explorer_v3.html" style="display: inline-block; padding: 12px 24px; background: var(--navy); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-right: 12px;">Permit Explorer</a>
+            <a href="index.html" style="display: inline-block; padding: 12px 24px; background: var(--terracotta); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">← Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

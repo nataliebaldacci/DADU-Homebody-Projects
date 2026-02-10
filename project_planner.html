@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Project Planner & Timeline | Homebody Projects</title>
@@ -531,9 +532,20 @@
 
         .footer a { color: var(--olive); text-decoration: none; }
     </style>
+
 </head>
 <body>
-    <nav class="nav">
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
+<nav class="nav">
         <a href="index.html" class="nav-logo">
             <div class="nav-logo-icon">🏠</div>
             <span class="nav-logo-text">Homebody Projects</span>
@@ -542,16 +554,8 @@
     </nav>
 
     <div class="container">
-        <div class="page-header">
-            <div class="page-title-group">
-                <h1 class="page-title">DADU Project Planner</h1>
-                <p class="page-subtitle">Plan your Nashville DADU timeline from start to finish</p>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" onclick="window.print()">🖨️ Print Timeline</button>
-                <a href="project_checklist.html" class="btn btn-primary">📋 View Checklist</a>
-            </div>
-        </div>
+        
+            
 
         <!-- Summary Cards -->
         <div class="summary-cards">
@@ -591,11 +595,7 @@
 
         <!-- Timeline -->
         <div class="timeline-container">
-            <div class="timeline-header">
-                <span class="timeline-title">📊 Project Timeline</span>
-                <div class="timeline-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: var(--teal);"></div>
+            
                         <span>Planning</span>
                     </div>
                     <div class="legend-item">

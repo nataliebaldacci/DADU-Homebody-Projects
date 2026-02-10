@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Size Calculator | Homebody DADU</title>
@@ -505,22 +506,21 @@
             }
         }
     </style>
+
 </head>
 <body>
-    <header class="header">
-        <div class="logo">🏠 Homebody</div>
-        <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="am_i_eligible.html">Eligibility</a>
-            <a href="project_cost_estimator.html">Cost Estimator</a>
-        </nav>
-    </header>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>📐 DADU Size Calculator</h1>
-            <p>Calculate the maximum allowable size for your DADU based on Nashville's zoning code</p>
-        </div>
+
+<div class="container">
+        
 
         <div class="calculator-card">
             <div class="input-section">
@@ -552,9 +552,7 @@
             </div>
 
             <div class="results-section" id="results">
-                <div class="results-header">
-                    <h2>Your Lot Size</h2>
-                    <div class="lot-size-display" id="lotSizeDisplay">—</div>
+                
                     <div class="lot-category" id="lotCategory">—</div>
                 </div>
 

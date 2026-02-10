@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Project Report | Homebody</title>
@@ -600,23 +601,21 @@
             font-size: 1.1rem;
         }
     </style>
+
 </head>
 <body>
-    <header class="header">
-        <a href="homebody_index_v3.html" class="logo">🏠 Homebody</a>
-        <nav class="nav-links">
-            <a href="homebody_index_v3.html">Home</a>
-            <a href="reports_pricing.html">All Reports</a>
-            <a href="eligibility_report.html">Eligibility Report</a>
-        </nav>
-    </header>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>🏠 DADU Project Report</h1>
-            <p>Comprehensive property analysis with permits, costs, contractors, and building requirements</p>
-            <div class="price-badge">FREE - Limited Time</div>
-        </div>
+
+<div class="container">
+        
 
         <div class="layout">
             <div class="main-content">
@@ -631,9 +630,7 @@
 
                 <!-- Report Preview -->
                 <div class="report-preview" id="reportPreview" style="display: none;">
-                    <div class="report-header">
-                        <div class="report-header-top">
-                            <div class="logo-text">🏠 HOMEBODY PROJECT REPORT</div>
+                    
                             <span class="report-type">DADU Analysis</span>
                         </div>
                         <h2 id="reportAddress">1234 Main St</h2>
@@ -905,8 +902,7 @@
 
                 <!-- Sample Card -->
                 <div class="report-preview" id="sampleCard">
-                    <div class="report-header" style="padding: 2rem;">
-                        <div class="logo-text">🏠 HOMEBODY PROJECT REPORT</div>
+                    
                         <h2>Sample Report Preview</h2>
                     </div>
                     <div class="sample-preview">

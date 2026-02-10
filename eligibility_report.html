@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Eligibility Report | Homebody</title>
@@ -502,23 +503,21 @@
             }
         }
     </style>
+
 </head>
 <body>
-    <header class="header">
-        <a href="homebody_index_v3.html" class="logo">🏠 Homebody</a>
-        <nav class="nav-links">
-            <a href="homebody_index_v3.html">Home</a>
-            <a href="reports_pricing.html">All Reports</a>
-            <a href="am_i_eligible.html">Free Eligibility Check</a>
-        </nav>
-    </header>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>📄 DADU Eligibility Report</h1>
-            <p>Complete eligibility analysis with zoning details, size limits, and requirements</p>
-            <div class="price-badge">FREE - Limited Time</div>
-        </div>
+
+<div class="container">
+        
 
         <div class="layout">
             <div class="main-content">
@@ -533,8 +532,7 @@
 
                 <!-- Report Preview -->
                 <div class="report-preview" id="reportPreview" style="display: none;">
-                    <div class="report-header">
-                        <div class="logo-text">🏠 HOMEBODY</div>
+                    
                         <h2>DADU Eligibility Report</h2>
                         <div class="address" id="reportAddress">1234 Main St, Nashville, TN 37211</div>
                         <div class="date" id="reportDate">Generated January 30, 2026</div>
@@ -655,8 +653,7 @@
 
                 <!-- Sample Report Card (shown before search) -->
                 <div class="report-preview" id="sampleCard">
-                    <div class="report-header">
-                        <div class="logo-text">🏠 HOMEBODY</div>
+                    
                         <h2>DADU Eligibility Report</h2>
                         <div class="address">Sample Report Preview</div>
                     </div>

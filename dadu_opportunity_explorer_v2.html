@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Opportunity Explorer | Homebody Projects</title>
@@ -500,34 +501,23 @@
             margin-bottom: 15px;
         }
     </style>
+
 </head>
 <body>
-<!-- Homebody Navigation -->
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
 <div id="homebody-nav" style="background:#1e2a38;padding:0 20px;font-family:Montserrat,sans-serif;position:sticky;top:0;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.3);"><div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;"><a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:white;"><div style="width:32px;height:32px;background:#4a9;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏠</div><span style="font-weight:700;font-size:16px;">Homebody Projects</span></a><div style="display:flex;gap:6px;"><a href="am_i_eligible.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Eligibility</a><a href="dadu_opportunity_explorer_v2.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Explorer</a><a href="nashville_permit_explorer_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Permits</a><a href="dadu_code_legislation_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Code</a></div></div></div>
 
     <!-- Header -->
-    <header class="header">
-        <div class="logo">
-            <div class="logo-icon">🏠</div>
-            <div>
-                <div class="logo-text">Homebody Projects</div>
-                <div class="logo-sub">DADU Opportunity Explorer</div>
-            </div>
-        </div>
-        <div class="search-container">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search address or APN...">
-        </div>
-        <div class="header-stats">
-            <div class="header-stat">
-                <div class="header-stat-value" id="totalProps">—</div>
-                <div>Properties</div>
-            </div>
-            <div class="header-stat">
-                <div class="header-stat-value" id="avgScore">—</div>
-                <div>Avg Score</div>
-            </div>
-        </div>
-    </header>
+    
     
     <!-- Filter Bar -->
     <div class="filter-bar">
@@ -595,8 +585,7 @@
             </div>
         </div>
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-title">🏆 Top DADU Opportunities</div>
+            
                 <div class="sidebar-stats">
                     <span>📍 <span id="visibleCount">0</span> visible</span>
                     <span>🎯 Avg: <span id="visibleAvg">0</span></span>
@@ -614,9 +603,7 @@
     <!-- Links Modal -->
     <div class="modal-overlay" id="linksModal">
         <div class="modal">
-            <div class="modal-header">
-                <div>
-                    <div class="modal-title" id="modalTitle">Property Links</div>
+            
                     <div class="modal-subtitle" id="modalSubtitle">APN: ---</div>
                 </div>
                 <button class="modal-close" onclick="closeModal()">×</button>
@@ -769,8 +756,7 @@
         // Show popup
         function showPopup(p, marker) {
             const content = `
-                <div class="popup-header">
-                    <div class="popup-address">${p.address}</div>
+                
                     <div class="popup-score ${getScoreClass(p.score)}">${p.score}</div>
                 </div>
                 <div class="popup-grid">
@@ -845,8 +831,7 @@
             
             list.innerHTML = sorted.map(p => `
                 <div class="property-item" onclick="flyTo(${p.lat}, ${p.lon})">
-                    <div class="property-header">
-                        <div class="property-address">${p.address}</div>
+                    
                         <div class="property-score ${getScoreClass(p.score)}">${p.score}</div>
                     </div>
                     <div class="property-details">

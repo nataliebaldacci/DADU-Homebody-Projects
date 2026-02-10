@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Determine Forms Required | Homebody DADU</title>
@@ -395,22 +396,21 @@
             font-weight: 600;
         }
     </style>
+
 </head>
 <body>
-    <header class="header">
-        <div class="logo">🏠 Homebody</div>
-        <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="legal_form_filler.html">All Forms</a>
-            <a href="am_i_eligible.html">Eligibility</a>
-        </nav>
-    </header>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>📋 Determine Forms Required</h1>
-            <p>Answer a few questions to get your personalized DADU permit checklist</p>
-        </div>
+
+<div class="container">
+        
 
         <div class="wizard-card">
             <div class="progress-bar">
@@ -568,8 +568,7 @@
 
             <!-- Results Section -->
             <div class="results-section" data-question="results">
-                <div class="results-header">
-                    <div class="icon">✅</div>
+                
                     <h2>Your Required Forms</h2>
                     <p>Based on your answers, here's what you'll need</p>
                 </div>

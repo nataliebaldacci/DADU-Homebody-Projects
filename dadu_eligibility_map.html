@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Eligibility Map | Homebody Projects</title>
@@ -560,23 +561,21 @@
             }
         }
     </style>
+
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <a href="homebody_index_v3.html" class="logo">
-            <div class="logo-icon">
-                <img src="assets/icons/ADU.png" alt="">
-            </div>
-            <span class="logo-text">HOMEBODY</span>
-        </a>
-        <nav class="nav-links">
-            <a href="homebody_index_v3.html" class="nav-link">Home</a>
-            <a href="dadu_explorer_v2.html" class="nav-link">Explorer</a>
-            <a href="property_search.html" class="nav-link">Property Search</a>
-            <a href="eligibility_report.html" class="nav-link">Reports</a>
-        </nav>
-    </header>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
+<!-- Header -->
+    
 
     <!-- Title Bar -->
     <div class="title-bar">
@@ -815,8 +814,7 @@
 
                 // Create popup content
                 const popupContent = `
-                    <div class="popup-header ${parcel.eligibility === 'Y' ? 'eligible' : parcel.eligibility === 'M' ? 'maybe' : 'not-eligible'}">
-                        <div class="popup-status">${getEligibilityLabel(parcel.eligibility)}</div>
+                    
                         <div class="popup-address">${parcel.address}</div>
                     </div>
                     <div class="popup-content">

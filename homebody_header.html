@@ -1,0 +1,392 @@
+<!-- Homebody Projects - Shared Header -->
+<!-- DO NOT MODIFY - This is the canonical header for all pages -->
+<style>
+    :root {
+        /* Castlehold Palette */
+        --navy: #3A5566;
+        --navy-dark: #2E4553;
+        --navy-light: #4A6B7D;
+        --teal: #7B746D;
+        --teal-light: #918A83;
+        --terracotta: #C58B2A;
+        --terracotta-hover: #A8761F;
+        --terracotta-light: #D4A54E;
+        --tan: #7B746D;
+        --tan-light: #918A83;
+        --background: #F2F0ED;
+        --card-bg: #f5f5f0;
+        --error: #7A2A1D;
+        --status-eligible: #2E6F4E;
+
+        /* Compatibility tokens */
+        --olive: var(--status-eligible);
+        --olive-dark: #254D3C;
+        --olive-light: #3F8A62;
+        --cream: var(--background);
+        --warm-gray: #e8e4df;
+        --white: #ffffff;
+        --text: #1a1a1a;
+        --text-light: #666666;
+        --text-muted: #999999;
+        --border: #e0e0e0;
+        --border-light: #f0f0f0;
+        --success: var(--status-eligible);
+        --warning: var(--terracotta);
+        --info: var(--navy-light);
+        --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+        --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+        --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+        --radius: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
+    }
+
+    .homebody-header {
+        background: var(--white);
+        padding: 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 70px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: var(--shadow);
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .homebody-header .header-left {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+    }
+
+    .homebody-header .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--navy);
+    }
+
+    .homebody-header .logo-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .homebody-header .logo-text {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .homebody-header .main-nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .homebody-header .nav-item {
+        position: relative;
+        padding: 24px 16px;
+        color: var(--text);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .homebody-header .nav-item:hover {
+        color: var(--navy);
+        background: rgba(58, 85, 102, 0.05);
+    }
+
+    .homebody-header .nav-item.active {
+        color: var(--navy);
+        font-weight: 600;
+    }
+
+    .homebody-header .nav-item.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 16px;
+        right: 16px;
+        height: 3px;
+        background: var(--terracotta);
+        border-radius: 3px 3px 0 0;
+    }
+
+    /* Dropdown Menus */
+    .homebody-header .nav-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-xl);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.2s;
+        z-index: 100;
+        min-width: 240px;
+    }
+
+    .homebody-header .nav-item:hover .nav-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    /* Mega menu for Explore, Build, Data */
+    .homebody-header .nav-dropdown.mega-menu {
+        min-width: 600px;
+        padding: 24px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+    }
+
+    .homebody-header .mega-column {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .homebody-header .mega-column-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 8px 12px 8px 12px;
+        margin-bottom: 4px;
+    }
+
+    .homebody-header .dropdown-item {
+        display: block;
+        padding: 10px 12px;
+        color: var(--text);
+        text-decoration: none;
+        font-size: 13px;
+        transition: all 0.2s;
+        border-radius: 6px;
+    }
+
+    .homebody-header .dropdown-item:hover {
+        background: var(--background);
+        color: var(--navy);
+    }
+
+    .homebody-header .dropdown-divider {
+        height: 1px;
+        background: var(--border-light);
+        margin: 12px 0;
+    }
+
+    /* Header Actions */
+    .homebody-header .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .homebody-header .btn-search {
+        width: 36px;
+        height: 36px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        color: var(--text);
+        font-size: 16px;
+    }
+
+    .homebody-header .btn-search:hover {
+        background: var(--background);
+        border-color: var(--navy);
+    }
+
+    .homebody-header .btn-secondary {
+        padding: 10px 18px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .homebody-header .btn-secondary:hover {
+        background: var(--background);
+        border-color: var(--navy);
+        color: var(--navy);
+    }
+
+    .homebody-header .btn-primary {
+        padding: 10px 20px;
+        background: var(--terracotta);
+        color: var(--white);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .homebody-header .btn-primary:hover {
+        background: var(--terracotta-hover);
+    }
+</style>
+
+<header class="homebody-header">
+    <div class="header-left">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Left castle (smaller/DADU) - Tan -->
+                    <rect x="4" y="20" width="6" height="14" fill="#D4C5A9"/>
+                    <rect x="5" y="23" width="1.5" height="2" fill="#F2F0ED"/>
+                    <rect x="8" y="23" width="1.5" height="2" fill="#F2F0ED"/>
+                    <rect x="6" y="30" width="2" height="4" fill="#F2F0ED"/>
+                    <rect x="4" y="19" width="2" height="2" fill="#D4C5A9"/>
+                    <rect x="8" y="19" width="2" height="2" fill="#D4C5A9"/>
+
+                    <!-- Right castle (larger/main) - Slate blue -->
+                    <rect x="16" y="14" width="10" height="20" fill="#3A5566"/>
+                    <rect x="17" y="17" width="2" height="3" fill="#F2F0ED"/>
+                    <rect x="23" y="17" width="2" height="3" fill="#F2F0ED"/>
+                    <rect x="19" y="26" width="3" height="8" fill="#F2F0ED"/>
+                    <rect x="16" y="13" width="2.5" height="2" fill="#3A5566"/>
+                    <rect x="23.5" y="13" width="2.5" height="2" fill="#3A5566"/>
+
+                    <!-- Ground line - Warm stone -->
+                    <line x1="0" y1="35" x2="42" y2="35" stroke="#7B746D" stroke-width="2"/>
+                </svg>
+            </div>
+            <span class="logo-text">Castlehold</span>
+        </a>
+
+        <nav class="main-nav">
+            <!-- EXPLORE -->
+            <div class="nav-item">
+                EXPLORE
+                <div class="nav-dropdown mega-menu">
+                    <div class="mega-column">
+                        <div class="mega-column-title">Learn</div>
+                        <a href="what_is_dadu.html" class="dropdown-item">What is a DADU?</a>
+                        <a href="dadu_history.html" class="dropdown-item">DADU History</a>
+                        <a href="dadu_building_requirements.html" class="dropdown-item">Building Requirements</a>
+                        <a href="dadu_zoning_standards.html" class="dropdown-item">Zoning Standards</a>
+                        <a href="dadu_code_legislation_v3.html" class="dropdown-item">Code & Legislation</a>
+                        <a href="permit_process_timeline.html" class="dropdown-item">Permit Process Timeline</a>
+                    </div>
+                    <div class="mega-column">
+                        <div class="mega-column-title">Discover</div>
+                        <a href="dadu_eligibility_map.html" class="dropdown-item">Eligibility Map</a>
+                        <a href="property_search.html" class="dropdown-item">Property Search</a>
+                        <a href="dadu_near_me_v2.html" class="dropdown-item">DADUs Near Me</a>
+                        <a href="dadu_opportunity_explorer_v2.html" class="dropdown-item">Opportunity Explorer</a>
+                    </div>
+                    <div class="mega-column">
+                        <div class="mega-column-title">User Types</div>
+                        <a href="user-homeowners.html" class="dropdown-item">Homeowners</a>
+                        <a href="contractor_marketplace.html" class="dropdown-item">Contractor Marketplace</a>
+                        <a href="designer_resources.html" class="dropdown-item">Designer Resources</a>
+                        <a href="municipal_dashboard.html" class="dropdown-item">Municipal Dashboard</a>
+                        <a href="legal_resources.html" class="dropdown-item">Legal Resources</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUILD -->
+            <div class="nav-item">
+                BUILD
+                <div class="nav-dropdown mega-menu">
+                    <div class="mega-column">
+                        <div class="mega-column-title">Plan</div>
+                        <a href="project_planner.html" class="dropdown-item">Project Planner</a>
+                        <a href="project_checklist.html" class="dropdown-item">Project Checklist</a>
+                        <a href="draw_dadu_on_parcel.html" class="dropdown-item">Draw DADU on Parcel</a>
+
+                        <div class="mega-column-title" style="margin-top: 16px;">Design</div>
+                        <a href="site_plan_downloads.html" class="dropdown-item">Site Plan Downloads</a>
+                    </div>
+                    <div class="mega-column">
+                        <div class="mega-column-title">Calculate</div>
+                        <a href="project_cost_estimator.html" class="dropdown-item">Cost Estimator</a>
+                        <a href="roi_calculator.html" class="dropdown-item">ROI Calculator</a>
+                        <a href="size_calculator.html" class="dropdown-item">Size Calculator</a>
+                        <a href="property_tax_calculator.html" class="dropdown-item">Property Tax Calculator</a>
+                    </div>
+                    <div class="mega-column">
+                        <div class="mega-column-title">Hire</div>
+                        <a href="contractor_marketplace.html" class="dropdown-item">Contractor Marketplace</a>
+
+                        <div class="mega-column-title" style="margin-top: 16px;">File</div>
+                        <a href="determine_forms_required.html" class="dropdown-item">Forms Wizard: Step 1</a>
+                        <a href="legal_form_filler.html" class="dropdown-item">Forms Wizard: Step 2</a>
+                        <a href="owner_occupancy.html" class="dropdown-item">Owner Occupancy Forms</a>
+                        <a href="short_term_rental_permit.html" class="dropdown-item">STR Permit Forms</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATA -->
+            <div class="nav-item">
+                DATA
+                <div class="nav-dropdown mega-menu">
+                    <div class="mega-column">
+                        <div class="mega-column-title">Activity</div>
+                        <a href="permit_activity_dashboard.html" class="dropdown-item">Permit Activity Dashboard</a>
+                        <a href="contractor_dashboard.html" class="dropdown-item">Contractor Dashboard</a>
+                        <a href="market_trends.html" class="dropdown-item">Market Trends</a>
+                    </div>
+                    <div class="mega-column">
+                        <div class="mega-column-title">Reports</div>
+                        <a href="eligibility_report.html" class="dropdown-item">Eligibility Report</a>
+                        <a href="project_report.html" class="dropdown-item">Project Report</a>
+                        <a href="dadu_reports_store.html" class="dropdown-item">Report Generator</a>
+                        <a href="sample_reports/sample_property_report.html" class="dropdown-item">Property Report (Sample)</a>
+                        <a href="sample_reports/sample_contractor_report.html" class="dropdown-item">Contractor Report (Sample)</a>
+                        <a href="sample_reports/sample_market_stats_report.html" class="dropdown-item">Market Analysis (Sample)</a>
+                        <a href="sample_reports/sample_neighbors_report.html" class="dropdown-item">Area Analysis (Sample)</a>
+                    </div>
+                    <div class="mega-column">
+                        <div class="mega-column-title">Records</div>
+                        <a href="nashville_permit_explorer_v3.html" class="dropdown-item">Permit Explorer</a>
+                        <a href="site_plan_downloads.html" class="dropdown-item">Permit Site Plans</a>
+                        <a href="dadu_documents_portal.html" class="dropdown-item">Recorded Documents</a>
+                        <a href="restrictive_covenants_v2.html" class="dropdown-item">Restrictive Covenants</a>
+                        <a href="overlay-districts.html" class="dropdown-item">Zoning: Overlays & Plans</a>
+                        <a href="pdf_database_lookup.html" class="dropdown-item">PDF Database Lookup</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRICING -->
+            <a href="homebody_pricing.html" class="nav-item">PRICING</a>
+        </nav>
+    </div>
+
+    <div class="header-actions">
+        <a href="property_search.html" class="btn-search" title="Search Properties">🔍</a>
+        <a href="project_planner.html" class="btn-secondary">My Projects</a>
+        <a href="am_i_eligible.html" class="btn-primary">Get Started →</a>
+    </div>
+</header>

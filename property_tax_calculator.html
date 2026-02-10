@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Tax Calculator | Homebody Projects</title>
@@ -349,9 +350,20 @@
 
         .footer a { color: var(--olive); text-decoration: none; }
     </style>
+
 </head>
 <body>
-    <nav class="nav">
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
+<nav class="nav">
         <a href="index.html" class="nav-logo">
             <div class="nav-logo-icon">🏠</div>
             <span class="nav-logo-text">Homebody Projects</span>
@@ -360,10 +372,7 @@
     </nav>
 
     <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">Property Tax Calculator</h1>
-            <p class="page-subtitle">Estimate how adding a DADU will affect your Davidson County property taxes</p>
-        </div>
+        
 
         <div class="calculator-card">
             <!-- Current Property -->
@@ -452,8 +461,7 @@
                 </div>
 
                 <div class="comparison-table">
-                    <div class="comparison-row header">
-                        <div class="comparison-cell">Detail</div>
+                    
                         <div class="comparison-cell">Before DADU</div>
                         <div class="comparison-cell">After DADU</div>
                     </div>

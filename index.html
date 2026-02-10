@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <<<<<<< HEAD
@@ -1905,151 +1906,22 @@
 >>>>>>> 9ada0eae1ce4f04a82d52aa25a5137955ebee80f
         }
     </style>
+
 </head>
 <body>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
 <<<<<<< HEAD
     <!-- Header -->
-    <header class="header">
-        <a href="#" class="logo" onclick="showSection('home')">
-            <div class="logo-icon">🏠</div>
-            <div>
-                <div class="logo-text">Homebody Projects</div>
-                <div class="logo-sub">Nashville DADU Platform</div>
-            </div>
-        </a>
-
-        <nav class="main-nav">
-            <!-- Home - Property Search Portal -->
-            <a href="property_search.html" class="nav-item active">Home</a>
-
-            <!-- About DADU -->
-            <div class="nav-item">
-                About DADU
-                <div class="nav-dropdown">
-                    <a class="dropdown-item" href="what_is_dadu.html">What is a DADU?</a>
-                    <a class="dropdown-item" href="dadu_history.html">History & Timeline</a>
-                    <a class="dropdown-item" href="dadu_building_requirements.html">Building Requirements</a>
-                    <a class="dropdown-item" href="am_i_eligible.html">Am I Eligible?</a>
-                </div>
-            </div>
-
-            <!-- Project Requirements -->
-            <div class="nav-item">
-                Requirements
-                <div class="nav-dropdown mega-menu" style="min-width: 520px;">
-                    <div class="mega-column">
-                        <div class="mega-column-title">🏗️ Permits</div>
-                        <a class="dropdown-item" href="permit_process_timeline.html">Building Permit</a>
-                        <a class="dropdown-item" href="permit_process_timeline.html">Trade Permits</a>
-                        <a class="dropdown-item" href="permit_process_timeline.html">Historic Preservation</a>
-                    </div>
-                    <div class="mega-column">
-                        <div class="mega-column-title">📄 Documents</div>
-                        <a class="dropdown-item" href="restrictive_covenants.html">Restrictive Covenant</a>
-                        <a class="dropdown-item" href="owner_occupancy.html">Owner Occupancy</a>
-                        <a class="dropdown-item" href="dadu_building_requirements.html">Flood Plain / BZE</a>
-                    </div>
-                    <div class="mega-column">
-                        <div class="mega-column-title">🗺️ DADU Zoning</div>
-                        <a class="dropdown-item" href="dadu_zoning_standards.html">Urban Design Overlay</a>
-                        <a class="dropdown-item" href="dadu_zoning_standards.html">DADU Overlay District</a>
-                        <a class="dropdown-item" href="dadu_zoning_standards.html">Specific Plan (SP)</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Insights / Plan Your Project -->
-            <div class="nav-item">
-                Insights
-                <div class="nav-dropdown mega-menu" style="min-width: 520px;">
-                    <div class="mega-column">
-                        <div class="mega-column-title">🏡 Homeowners</div>
-                        <a class="dropdown-item" href="property_search.html">Check My Property</a>
-                        <a class="dropdown-item" href="am_i_eligible.html">Eligibility Flowchart</a>
-                        <a class="dropdown-item" href="reports_pricing.html">Cost Estimator</a>
-                        <a class="dropdown-item" href="reports_pricing.html">ROI Calculator</a>
-                    </div>
-                    <div class="mega-column">
-                        <div class="mega-column-title">🔨 Contractors</div>
-                        <a class="dropdown-item" href="property_search.html#contractors">Find Leads</a>
-                        <a class="dropdown-item" href="reports_pricing.html">Market Reports</a>
-                        <a class="dropdown-item" href="reports_pricing.html">Competitor Analysis</a>
-                    </div>
-                    <div class="mega-column">
-                        <div class="mega-column-title">🛠️ Tools</div>
-                        <a class="dropdown-item" href="property_search.html#nearby">DADUs Near Me</a>
-                        <a class="dropdown-item" href="nashville_permit_explorer_v3.html">Permit Map</a>
-                        <a class="dropdown-item" href="dadu_opportunity_explorer_v2.html">Opportunity Score</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DADU Explorer -->
-            <div class="nav-item">
-                Explorer
-                <div class="nav-dropdown">
-                    <a class="dropdown-item" href="property_search.html">Property Reports</a>
-                    <a class="dropdown-item" href="nashville_permit_explorer_v3.html">Completed DADUs</a>
-                    <a class="dropdown-item" href="dadu_opportunity_explorer_v2.html">Opportunity Explorer</a>
-                    <a class="dropdown-item" href="parcel_footprint_map.html">Parcel & Footprint Map</a>
-                </div>
-            </div>
-
-            <!-- Activity Dashboard -->
-            <div class="nav-item">
-                Dashboard
-                <div class="nav-dropdown">
-                    <a class="dropdown-item" href="nashville_permit_explorer_v3.html">Permit Activity</a>
-                    <a class="dropdown-item" href="contractor_dashboard.html">Contractor Dashboard</a>
-                    <a class="dropdown-item" href="property_search.html#contractors">Contractor Marketplace</a>
-                </div>
-            </div>
-
-            <!-- Resources -->
-            <div class="nav-item">
-                Resources
-                <div class="nav-dropdown" style="min-width: 320px;">
-                    <div class="dropdown-header">Nashville.gov</div>
-                    <a class="dropdown-item" href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/detached-accessory-dwelling-unit" target="_blank">DADU Permits Page →</a>
-                    <a class="dropdown-item" href="https://www.nashville.gov/departments/codes/construction-and-permits/residential-building-permits" target="_blank">Residential Permits →</a>
-                    <a class="dropdown-item" href="https://www.nashville.gov/departments/planning" target="_blank">Planning Department →</a>
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-header">Metro Code (Municode)</div>
-                    <a class="dropdown-item" href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.16LAUSDEST_ARTIIUSPECOPC_17.16.030REUS" target="_blank">§ 17.16.030(G) - DADU Standards →</a>
-                    <a class="dropdown-item" href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.04GEPRDE_17.04.060DEGETE" target="_blank">§ 17.04.060 - Definitions →</a>
-                    <a class="dropdown-item" href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.08ZODILAUS_17.08.030DILAUSTA" target="_blank">§ 17.08.030 - Land Use Tables →</a>
-                    <a class="dropdown-item" href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.730DEACDWUNOVDI" target="_blank">§ 17.36.730 - DADU Overlay →</a>
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-header">Legislation (Legistar)</div>
-                    <a class="dropdown-item" href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank">BL2025-1007 (Major Reform) →</a>
-                    <a class="dropdown-item" href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639642&GUID=96017288-C7B7-4CA9-AFC9-537582A5DB22" target="_blank">BL2025-1005 (RN/RL Zones) →</a>
-                    <a class="dropdown-item" href="https://nashville.legistar.com/LegislationDetail.aspx?ID=4766502&GUID=47267D2D-9439-4CA9-9735-981C6DD80AB0" target="_blank">BL2021-620 (DADU Overlay) →</a>
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-header">Other Resources</div>
-                    <a class="dropdown-item" href="https://registerofdeeds.nashville.gov" target="_blank">Register of Deeds →</a>
-                    <a class="dropdown-item" href="https://maps.nashville.gov/ParcelViewer/" target="_blank">Parcel Viewer Map →</a>
-                </div>
-            </div>
-
-            <!-- Pricing -->
-            <a href="reports_pricing.html" class="nav-item">Pricing</a>
-
-        </nav>
-
-        <div class="user-type-selector">
-            <button class="user-type-btn active" onclick="setUserType('homeowner')">
-                🏡 Homeowner
-            </button>
-            <button class="user-type-btn" onclick="setUserType('contractor')">
-                🔨 Contractor
-            </button>
-            <button class="user-type-btn" onclick="setUserType('government')">
-                🏛️ Government
-            </button>
-        </div>
-
-        <button class="header-cta" onclick="showSection('pricing')">Get Started</button>
-    </header>
+    
 
     <!-- Page Content -->
     <div class="page-content">
@@ -2151,8 +2023,7 @@
 
             <div class="section">
                 <div class="search-results">
-                    <div class="search-results-header">
-                        <div class="search-results-title">Sample Search Results</div>
+                    
                         <div class="search-results-count">Showing 3 of 250,000+ properties</div>
                     </div>
 
@@ -2234,8 +2105,7 @@
 
                     <div>
                         <div class="requirement-card">
-                            <div class="requirement-header">
-                                <div class="requirement-icon">👤</div>
+                            
                                 <div class="requirement-title">Owner Occupancy Requirement</div>
                             </div>
                             <div class="requirement-content">
@@ -2249,8 +2119,7 @@
                         </div>
 
                         <div class="requirement-card">
-                            <div class="requirement-header">
-                                <div class="requirement-icon">📐</div>
+                            
                                 <div class="requirement-title">Size Requirements</div>
                             </div>
                             <div class="requirement-content">
@@ -2264,8 +2133,7 @@
                         </div>
 
                         <div class="requirement-card">
-                            <div class="requirement-header">
-                                <div class="requirement-icon">🅿️</div>
+                            
                                 <div class="requirement-title">Parking Requirements</div>
                             </div>
                             <div class="requirement-content">
@@ -2309,10 +2177,7 @@
         <!-- DASHBOARD SECTION -->
         <section class="page-section" id="section-dashboard">
             <div class="section">
-                <div class="section-header">
-                    <h2>DADU Activity Dashboard</h2>
-                    <p>Real-time insights into Nashville's DADU permit activity, contractor performance, and legislative updates.</p>
-                </div>
+                
 
                 <div class="dashboard-tabs">
                     <button class="dashboard-tab active" onclick="switchDashboardTab('permits')">📋 Permit Activity</button>
@@ -2345,8 +2210,7 @@
 
                 <div class="dashboard-grid">
                     <div class="dashboard-card">
-                        <div class="card-header">
-                            <div class="card-title">Recent Permit Activity</div>
+                        
                             <a href="#" class="card-action">View All →</a>
                         </div>
                         <div class="card-body">
@@ -2388,8 +2252,7 @@
                     </div>
 
                     <div class="dashboard-card">
-                        <div class="card-header">
-                            <div class="card-title">DADU Locations Map</div>
+                        
                             <a href="#" class="card-action">Full Screen →</a>
                         </div>
                         <div class="map-container">
@@ -2403,10 +2266,7 @@
         <!-- REPORTS SECTION -->
         <section class="page-section" id="section-reports">
             <div class="section">
-                <div class="section-header">
-                    <h2>DADU Reports & Data</h2>
-                    <p>Pay-per-report pricing. No subscription required. Get exactly what you need.</p>
-                </div>
+                
 
                 <div class="reports-intro">
                     <div>
@@ -2418,12 +2278,7 @@
 
                 <!-- DADU Reports Category -->
                 <div class="report-category">
-                    <div class="category-header">
-                        <div class="category-title">
-                            <span class="category-icon">🏠</span>
-                            DADU Reports
-                        </div>
-                    </div>
+                    
 
                     <div class="reports-grid">
                         <div class="report-card featured">
@@ -2502,12 +2357,7 @@
 
                 <!-- Search Reports Category -->
                 <div class="report-category">
-                    <div class="category-header">
-                        <div class="category-title">
-                            <span class="category-icon">🔍</span>
-                            Search Reports
-                        </div>
-                    </div>
+                    
 
                     <div class="reports-grid">
                         <div class="report-card">
@@ -2587,10 +2437,7 @@
         <!-- PREMIUM TOOLS SECTION -->
         <section class="page-section" id="section-tools">
             <div class="section">
-                <div class="section-header">
-                    <h2>Premium Tools</h2>
-                    <p>Advanced calculators and tools to help you make informed decisions about your DADU project.</p>
-                </div>
+                
 
                 <div class="tools-grid">
                     <div class="tool-card">
@@ -2623,10 +2470,7 @@
         <!-- LINKS/RESOURCES SECTION -->
         <section class="page-section" id="section-links">
             <div class="section">
-                <div class="section-header">
-                    <h2>Resources & Documents</h2>
-                    <p>Access important documents, covenants, and permit information.</p>
-                </div>
+                
 
                 <div class="links-grid">
                     <a href="#" class="link-card">
@@ -2688,17 +2532,7 @@
 
         <!-- PRICING SECTION -->
         <section class="page-section" id="section-pricing">
-            <div class="pricing-header">
-                <div class="hero-content">
-                    <h1 style="font-size: 40px;">Simple, Transparent Pricing</h1>
-                    <p style="opacity: 0.8;">Choose the plan that fits your needs. All reports available à la carte.</p>
-                    <div class="pricing-toggle">
-                        <button class="pricing-toggle-btn active">Homeowner</button>
-                        <button class="pricing-toggle-btn">Contractor</button>
-                        <button class="pricing-toggle-btn">Government</button>
-                    </div>
-                </div>
-            </div>
+            
 
             <div class="section">
                 <div class="pricing-cards">

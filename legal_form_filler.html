@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Forms & Applications | Homebody DADU</title>
@@ -452,18 +453,20 @@
             }
         }
     </style>
+
 </head>
 <body>
-    <header class="header">
-        <div class="logo">🏠 Homebody</div>
-        <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="determine_forms_required.html">Form Wizard</a>
-            <a href="am_i_eligible.html">Eligibility</a>
-        </nav>
-    </header>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
 
-    <section class="hero">
+
+<section class="hero">
         <h1>📋 DADU Forms & Applications</h1>
         <p>All the official Nashville Metro forms you need for your DADU project, organized and ready to download</p>
     </section>
@@ -513,12 +516,7 @@
         <div class="forms-grid" id="formsContainer">
             <!-- Building Permits -->
             <div class="form-category" data-category="building">
-                <div class="category-header building" onclick="toggleCategory(this)">
-                    <span class="category-icon">🏗️</span>
-                    <div class="category-info">
-                        <h2>Building Permit Applications</h2>
-                        <p>Core permits for DADU construction</p>
-                    </div>
+                
                     <span class="category-count">4 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
@@ -581,12 +579,7 @@
 
             <!-- Restrictive Covenants -->
             <div class="form-category" data-category="covenant">
-                <div class="category-header covenant" onclick="toggleCategory(this)">
-                    <span class="category-icon">📜</span>
-                    <div class="category-info">
-                        <h2>Restrictive Covenants</h2>
-                        <p>Required owner-occupancy covenant forms</p>
-                    </div>
+                
                     <span class="category-count">4 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
@@ -649,12 +642,7 @@
 
             <!-- Historic Permits -->
             <div class="form-category" data-category="historic">
-                <div class="category-header historic" onclick="toggleCategory(this)">
-                    <span class="category-icon">🏛️</span>
-                    <div class="category-info">
-                        <h2>Historic Zoning Applications</h2>
-                        <p>For properties in Historic Overlay Districts</p>
-                    </div>
+                
                     <span class="category-count">4 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
@@ -717,12 +705,7 @@
 
             <!-- Trade Permits -->
             <div class="form-category" data-category="trade">
-                <div class="category-header trade" onclick="toggleCategory(this)">
-                    <span class="category-icon">🔧</span>
-                    <div class="category-info">
-                        <h2>Trade Permit Applications</h2>
-                        <p>Electrical, plumbing, gas & mechanical permits</p>
-                    </div>
+                
                     <span class="category-count">4 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
@@ -787,12 +770,7 @@
 
             <!-- Short-Term Rental -->
             <div class="form-category" data-category="str">
-                <div class="category-header str" onclick="toggleCategory(this)">
-                    <span class="category-icon">🏨</span>
-                    <div class="category-info">
-                        <h2>Short-Term Rental Permits</h2>
-                        <p>STR permit applications and affidavits</p>
-                    </div>
+                
                     <span class="category-count">6 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
@@ -883,12 +861,7 @@
 
             <!-- Site Plans & UDO -->
             <div class="form-category" data-category="site">
-                <div class="category-header site" onclick="toggleCategory(this)">
-                    <span class="category-icon">📐</span>
-                    <div class="category-info">
-                        <h2>Site Plans & Development</h2>
-                        <p>Site plan applications and development guides</p>
-                    </div>
+                
                     <span class="category-count">4 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>

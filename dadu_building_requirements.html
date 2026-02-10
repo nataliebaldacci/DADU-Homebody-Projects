@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Building Requirements | Homebody Projects</title>
@@ -510,21 +511,28 @@
             text-decoration: none;
         }
     </style>
+
 </head>
 <body>
-<!-- Homebody Navigation -->
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
 <div id="homebody-nav" style="background:#1e2a38;padding:0 20px;font-family:Montserrat,sans-serif;position:sticky;top:0;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.3);"><div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;"><a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:white;"><div style="width:32px;height:32px;background:#4a9;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏠</div><span style="font-weight:700;font-size:16px;">Homebody Projects</span></a><div style="display:flex;gap:6px;"><a href="am_i_eligible.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Eligibility</a><a href="dadu_opportunity_explorer_v2.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Explorer</a><a href="nashville_permit_explorer_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Permits</a><a href="dadu_code_legislation_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Code</a></div></div></div>
 
     <div class="container">
         <!-- Header -->
-        <div class="header">
-            <h1>Nashville DADU Building Requirements</h1>
-            <div class="subtitle">BL2025-1007 · Effective December 12, 2025</div>
-        </div>
+        
 
         <!-- Eligibility Section -->
         <div class="section">
-            <div class="section-header">DADU Eligibility Requirements</div>
+            
             <div class="section-content">
                 <ul class="eligibility-list">
                     <li>Parcel zoning must permit DADUs with conditions (PC) per the Land Use Table</li>
@@ -539,7 +547,7 @@
 
         <!-- Living Space Limits -->
         <div class="section">
-            <div class="section-header">Living Space Limits</div>
+            
             <div class="section-content">
                 <div class="two-col">
                     <div class="stat-box">
@@ -562,7 +570,7 @@
 
         <!-- Height Requirements -->
         <div class="section">
-            <div class="section-header">Height Requirements</div>
+            
             <div class="section-content">
                 <div class="height-specs">
                     <div class="height-row">
@@ -607,7 +615,7 @@
 
         <!-- Setback Requirements -->
         <div class="section">
-            <div class="section-header">Setback Requirements</div>
+            
             <div class="section-content">
                 <table class="setback-table">
                     <tr>
@@ -638,7 +646,7 @@
 
         <!-- Use Restrictions -->
         <div class="section">
-            <div class="section-header">Use Restrictions</div>
+            
             <div class="section-content">
                 <div class="restrictions-grid">
                     <div class="restriction-card">
@@ -663,7 +671,7 @@
 
         <!-- Design Standards -->
         <div class="section">
-            <div class="section-header">Design Standards</div>
+            
             <div class="section-content">
                 <div class="restrictions-grid">
                     <div class="restriction-card">
@@ -688,11 +696,10 @@
 
         <!-- Historic Overlay -->
         <div class="section">
-            <div class="section-header">Historic Overlay Properties</div>
+            
             <div class="section-content">
                 <div class="historic-box">
-                    <div class="icon-header">
-                        <div class="icon-circle">🏛</div>
+                    
                         <h3>Additional Requirements Apply</h3>
                     </div>
                     <ul class="historic-list">
@@ -707,7 +714,7 @@
 
         <!-- How to Apply -->
         <div class="section">
-            <div class="section-header">How to Apply for a Permit</div>
+            
             <div class="section-content">
                 <div class="process-steps">
                     <div class="step">

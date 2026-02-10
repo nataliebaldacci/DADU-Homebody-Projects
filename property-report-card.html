@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Report Card | Homebody - Nashville DADU Platform</title>
@@ -596,20 +597,20 @@
             .data-grid { grid-template-columns: 1fr; }
         }
     </style>
+
 </head>
 <body>
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div><span>NASHVILLE-DAVIDSON COUNTY</span> | Property Report Card</div>
-        <div>
-            <a href="features.html">Features</a>
-            <a href="homebody_dadu_pricing.html">Pricing</a>
-        </div>
-    </div>
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
 
-    <!-- Navigation -->
-    <nav class="main-nav">
-        <div class="nav-container">
+
+<div class="nav-container">
             <a href="index_pq.html" class="nav-logo">
                 <div class="nav-logo-icon">
                     <img src="assets/icons/ADU.png" alt="">
@@ -694,11 +695,7 @@
         <!-- Report Card (shown after search) -->
         <div class="report-card" id="report-card">
             <!-- Header -->
-            <div class="report-header">
-                <div class="report-address">
-                    <h2 id="report-address-text">1812 Fatherland St</h2>
-                    <p>Nashville, TN 37206 | APN: 083-06-0-121-00</p>
-                </div>
+            
                 <div class="report-eligibility">
                     <span class="eligibility-badge eligible" id="eligibility-badge">✓ Eligible</span>
                     <p>Based on BL2025-1007</p>
@@ -718,10 +715,7 @@
                 <div class="report-main">
                     <!-- Property Details -->
                     <section class="report-section">
-                        <div class="report-section-header">
-                            <img src="assets/icons/Parcel Search.png" alt="">
-                            <h3>Property Details</h3>
-                        </div>
+                        
                         <div class="report-section-body">
                             <div class="data-grid">
                                 <div class="data-item">
@@ -754,10 +748,7 @@
 
                     <!-- Eligibility Checklist -->
                     <section class="report-section">
-                        <div class="report-section-header">
-                            <img src="assets/icons/Zoning.png" alt="">
-                            <h3>Eligibility Checklist</h3>
-                        </div>
+                        
                         <div class="report-section-body">
                             <div class="data-grid">
                                 <div class="data-item">
@@ -782,10 +773,7 @@
 
                     <!-- Documents Preview -->
                     <section class="report-section">
-                        <div class="report-section-header">
-                            <img src="assets/icons/Recorded Docs.png" alt="">
-                            <h3>Related Documents</h3>
-                        </div>
+                        
                         <div class="report-section-body">
                             <ul class="documents-list">
                                 <li class="document-item">
@@ -815,9 +803,7 @@
                 <div class="report-sidebar">
                     <!-- Quick Actions -->
                     <section class="report-section">
-                        <div class="report-section-header">
-                            <h3>Quick Actions</h3>
-                        </div>
+                        
                         <div class="report-section-body">
                             <div class="quick-actions">
                                 <a href="roi_calculator.html" class="quick-action-btn">
@@ -843,10 +829,7 @@
                     <!-- Near Me Preview -->
                     <section class="report-section">
                         <div class="near-me-preview">
-                            <div class="near-me-header">
-                                <h4>DADUs Nearby</h4>
-                                <a href="dadu_near_me_locator.html" class="near-me-link">View all →</a>
-                            </div>
+                            
                             <div class="near-me-list">
                                 <a href="#" class="near-me-item">
                                     <span class="near-me-item-dist">0.2 mi</span>
@@ -875,10 +858,7 @@
 
                     <!-- Cost Estimate Preview -->
                     <section class="report-section">
-                        <div class="report-section-header">
-                            <img src="assets/icons/Market Statistics Report .png" alt="">
-                            <h3>Cost Estimate</h3>
-                        </div>
+                        
                         <div class="report-section-body">
                             <div class="data-item" style="margin-bottom: 12px;">
                                 <div class="data-item-label">Estimated Range (700 SF)</div>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Draw DADU on Your Parcel | Homebody Projects</title>
@@ -333,9 +334,20 @@
             background-color: var(--olive) !important;
         }
     </style>
+
 </head>
 <body>
-    <nav class="nav">
+<div id="homebody-header-container"></div>
+<script>
+    fetch('homebody_header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('homebody-header-container').innerHTML = data;
+        });
+</script>
+
+
+<nav class="nav">
         <a href="index.html" class="nav-logo">
             <div class="nav-logo-icon">🏠</div>
             <span class="nav-logo-text">Homebody Projects</span>
