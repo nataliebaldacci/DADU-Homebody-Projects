@@ -1438,7 +1438,7 @@
             tax: { assessmentRatio: 0.25, taxRate: 3.254 },
             apis: {
                 geocode: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates',
-                parcels: 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_with_Building_Characteristics_view/FeatureServer/0',
+                parcels: 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_view/FeatureServer/0',
                 buildings: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Footprints_With_ParcelData_20260118_011423/FeatureServer/0',
                 zoning: 'https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/BaseZoning/MapServer/0',
                 usdBoundary: 'https://maps.nashville.gov/arcgis/rest/services/Boundaries/USD_GSD/MapServer/0',
@@ -1560,6 +1560,10 @@
                     const parcel = data.features[0];
                     Object.assign(currentProperty, parcel.properties);
                     currentProperty.geometry = parcel.geometry;
+                    // Map Parcels_view fields as fallbacks
+                    if (!currentProperty.zoning && currentProperty.Zoning) currentProperty.zoning = currentProperty.Zoning;
+                    if (!currentProperty.zoningCode && currentProperty.Zoning) currentProperty.zoningCode = currentProperty.Zoning;
+                    if (!currentProperty.serviceDistrict && currentProperty.TaxDist) currentProperty.serviceDistrict = currentProperty.TaxDist;
                     drawParcel(parcel);
                     await queryBuildings(parcel.geometry);
                     await queryZoning(lon, lat);
@@ -1900,15 +1904,16 @@
         function updatePropertyUI() {
             document.getElementById('propAddress').textContent = currentProperty.address || '-';
             
-            const lotArea = currentProperty.LANDAREA || currentProperty.LotSize || (currentProperty.ACREAGE ? currentProperty.ACREAGE * 43560 : 0);
-            currentProperty.lotArea = Math.round(lotArea);
-            document.getElementById('propLotArea').textContent = lotArea > 0 ? Math.round(lotArea).toLocaleString() + ' sqft' : '-';
+            const lotAreaSqft = currentProperty.Shape__Area || currentProperty.LANDAREA || currentProperty.LotSize || (currentProperty.Acres ? currentProperty.Acres * 43560 : (currentProperty.ACREAGE ? currentProperty.ACREAGE * 43560 : 0));
+            currentProperty.lotArea = Math.round(lotAreaSqft);
+            const acres = currentProperty.Acres || (lotAreaSqft > 0 ? (lotAreaSqft / 43560) : 0);
+            document.getElementById('propLotArea').textContent = lotAreaSqft > 0 ? `${parseFloat(acres).toFixed(2)} acres (${Math.round(lotAreaSqft).toLocaleString()} sqft)` : '-';
 
             document.getElementById('propAPN').textContent = currentProperty.APN || currentProperty.STANPAR || '-';
-            document.getElementById('propZoning').textContent = currentProperty.zoning || '-';
-            document.getElementById('propDistrict').textContent = currentProperty.serviceDistrict || '-';
+            document.getElementById('propZoning').textContent = currentProperty.zoning || currentProperty.Zoning || '-';
+            document.getElementById('propDistrict').textContent = currentProperty.serviceDistrict || currentProperty.TaxDist || '-';
 
-            const appraised = currentProperty.APPRAISAL || currentProperty.TOTAL_APPR || currentProperty.TOTALVALUE || 0;
+            const appraised = currentProperty.TotlAppr || currentProperty.APPRAISAL || currentProperty.TOTAL_APPR || currentProperty.TOTALVALUE || 0;
             currentProperty.appraisedValue = appraised;
             document.getElementById('propAppraisedValue').textContent = appraised > 0 ? '$' + appraised.toLocaleString() : '-';
 
