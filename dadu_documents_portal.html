@@ -1244,15 +1244,23 @@
             `;
         }
 
-        // Open Property Card (Nashville portal or Google Drive)
-        function openPropertyCard() {
-            // First check if we have a Google Drive version
+        // Open Property Card — fetches ACCOUNTNUMBER from Nashville SOAP API
+        async function openPropertyCard() {
             if (currentDocs && currentDocs.property_cards && currentDocs.property_cards.length > 0) {
                 window.open(currentDocs.property_cards[0].gdrive_url, '_blank');
             } else if (currentAPN) {
-                // Fallback to Nashville property card URL
-                const accountNum = currentAPN.replace(/-/g, '');
-                window.open(`https://portal.padctn.org/OFS/WP/Print/${accountNum}`, '_blank');
+                try {
+                    const resp = await fetch(`https://maps.nashville.gov/ParcelService/Search.asmx/GetAssesorAccount?apn=${currentAPN}`);
+                    const xml = await resp.text();
+                    const match = xml.match(/<accountnumber>(\d+)<\/accountnumber>/);
+                    if (match) {
+                        window.open(`https://portal.padctn.org/OFS/WP/Print/${match[1]}`, '_blank');
+                    } else {
+                        window.open(`${GDRIVE_FOLDERS.property_cards}?q=${encodeURIComponent(currentAPN)}`, '_blank');
+                    }
+                } catch (e) {
+                    window.open(`${GDRIVE_FOLDERS.property_cards}?q=${encodeURIComponent(currentAPN)}`, '_blank');
+                }
             } else {
                 alert('Please search for a property first');
             }
@@ -1270,7 +1278,7 @@
         // Open Permit History (ePermits - search by APN)
         function openPermitHistory() {
             if (currentAPN) {
-                window.open(`https://epermits.nashville.gov/#/search?searchCode=APN&searchText=${currentAPN}`, '_blank');
+                window.open(`https://epermits.nashville.gov/#/search?searchCode=APN&page=1&searchText=${currentAPN}&searchType=permit`, '_blank');
             } else {
                 alert('Please search for a property first');
             }
