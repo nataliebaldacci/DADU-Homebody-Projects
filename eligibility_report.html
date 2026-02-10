@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Eligibility Report | Homebody</title>
@@ -15,13 +14,13 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #e8e4df;
-            color: #2c3e50;
+            background: #F2F0ED;
+            color: #3A5566;
             min-height: 100vh;
         }
 
         .header {
-            background: #2c3e50;
+            background: #3A5566;
             color: white;
             padding: 1rem 2rem;
             display: flex;
@@ -61,18 +60,18 @@
         .page-header h1 {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 0.5rem;
         }
 
         .page-header p {
-            color: #6b8fa3;
+            color: #7B746D;
             font-size: 1.1rem;
         }
 
         .price-badge {
             display: inline-block;
-            background: #B55A3C;
+            background: #C58B2A;
             color: white;
             padding: 0.5rem 1.5rem;
             border-radius: 20px;
@@ -114,7 +113,7 @@
         .search-row input {
             flex: 1;
             padding: 1rem;
-            border: 2px solid #e8e4df;
+            border: 2px solid #F2F0ED;
             border-radius: 8px;
             font-size: 1rem;
             font-family: inherit;
@@ -122,11 +121,11 @@
 
         .search-row input:focus {
             outline: none;
-            border-color: #6b8fa3;
+            border-color: #7B746D;
         }
 
         .search-row button {
-            background: #B55A3C;
+            background: #C58B2A;
             color: white;
             border: none;
             padding: 1rem 2rem;
@@ -149,7 +148,7 @@
         }
 
         .report-header {
-            background: linear-gradient(135deg, #2c3e50 0%, #3d5166 100%);
+            background: linear-gradient(135deg, #3A5566 0%, #3d5166 100%);
             color: white;
             padding: 2rem;
             text-align: center;
@@ -212,10 +211,10 @@
 
         .report-section h3 {
             font-size: 1rem;
-            color: #6b8fa3;
+            color: #7B746D;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e8e4df;
+            border-bottom: 2px solid #F2F0ED;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -241,7 +240,7 @@
         .info-item .value {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
         }
 
         .checklist {
@@ -253,7 +252,7 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.75rem 0;
-            border-bottom: 1px solid #e8e4df;
+            border-bottom: 1px solid #F2F0ED;
         }
 
         .checklist li:last-child {
@@ -313,7 +312,7 @@
         }
 
         .size-limits h4 {
-            color: #B55A3C;
+            color: #C58B2A;
             margin-bottom: 1rem;
         }
 
@@ -359,7 +358,7 @@
         }
 
         .btn-purchase {
-            background: #B55A3C;
+            background: #C58B2A;
             color: white;
             border: none;
             padding: 1rem 3rem;
@@ -391,7 +390,7 @@
 
         .sidebar-card h3 {
             font-size: 1rem;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 1rem;
         }
 
@@ -409,7 +408,7 @@
 
         .included-list li::before {
             content: '✓';
-            color: #B55A3C;
+            color: #C58B2A;
             font-weight: 700;
         }
 
@@ -419,7 +418,7 @@
             padding: 1rem;
             background: #f5f5f0;
             border-radius: 8px;
-            color: #2c3e50;
+            color: #3A5566;
             text-decoration: none;
             font-weight: 600;
             margin-top: 1rem;
@@ -427,11 +426,11 @@
         }
 
         .sample-link:hover {
-            background: #e8e4df;
+            background: #F2F0ED;
         }
 
         .popular-badge {
-            background: #B55A3C;
+            background: #C58B2A;
             color: white;
             text-align: center;
             padding: 0.5rem;
@@ -455,13 +454,13 @@
             background: #f5f5f0;
             border-radius: 8px;
             text-decoration: none;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 0.5rem;
             transition: background 0.3s;
         }
 
         .report-link:hover {
-            background: #e8e4df;
+            background: #F2F0ED;
         }
 
         .report-link img {
@@ -480,7 +479,7 @@
 
         .report-link .price {
             font-size: 0.8rem;
-            color: #B55A3C;
+            color: #C58B2A;
             font-weight: 600;
         }
 
@@ -503,21 +502,23 @@
             }
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<div class="container">
-        
+    
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📄 DADU Eligibility Report</h1>
+            <p>Complete eligibility analysis with zoning details, size limits, and requirements</p>
+            <div class="price-badge">FREE - Limited Time</div>
+        </div>
 
         <div class="layout">
             <div class="main-content">
@@ -532,7 +533,8 @@
 
                 <!-- Report Preview -->
                 <div class="report-preview" id="reportPreview" style="display: none;">
-                    
+                    <div class="report-header">
+                        <div class="logo-text">🏠 HOMEBODY</div>
                         <h2>DADU Eligibility Report</h2>
                         <div class="address" id="reportAddress">1234 Main St, Nashville, TN 37211</div>
                         <div class="date" id="reportDate">Generated January 30, 2026</div>
@@ -653,7 +655,8 @@
 
                 <!-- Sample Report Card (shown before search) -->
                 <div class="report-preview" id="sampleCard">
-                    
+                    <div class="report-header">
+                        <div class="logo-text">🏠 HOMEBODY</div>
                         <h2>DADU Eligibility Report</h2>
                         <div class="address">Sample Report Preview</div>
                     </div>
@@ -771,7 +774,7 @@
         function unlockReport() {
             // Remove blur and unlock prompt
             document.querySelector('.blur-overlay').classList.remove('blur-overlay');
-            document.querySelector('.unlock-prompt').innerHTML = '<p style="color: #B55A3C; font-weight: 600;">✓ Report Unlocked! Scroll up to see full details.</p>';
+            document.querySelector('.unlock-prompt').innerHTML = '<p style="color: #C58B2A; font-weight: 600;">✓ Report Unlocked! Scroll up to see full details.</p>';
             alert('Report unlocked! This is a free preview during our limited time launch period.');
         }
 

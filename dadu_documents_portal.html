@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Documents | Homebody Projects</title>
+    <title>Property Documents | Castlehold</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #2c3e50;
-            --navy-dark: #1a252f;
-            --teal: #6b8fa3;
-            --terracotta: #B55A3C;
-            --terracotta-hover: #9A4A30;
-            --tan: #c9a86c;
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-hover: #A8761F;
+            --tan: #7B746D;
             --cream: #f5f5f0;
-            --warm-gray: #e8e4df;
+            --warm-gray: #F2F0ED;
             --gold: #d4af37;
             --white: #ffffff;
         }
@@ -665,21 +664,16 @@
             color: #333;
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<!-- Header -->
-    
+    <!-- Header -->
     
     
     <!-- Search Header -->
@@ -699,7 +693,8 @@
     </div>
 
     <!-- Property Header -->
-    
+    <div class="property-header" id="propertyHeader">
+        <div class="property-address" id="propertyAddress">Search for a property above</div>
         <div class="property-meta" id="propertyMeta">
             <span>📍 Nashville-Davidson County, TN</span>
         </div>
@@ -745,7 +740,7 @@
             
             <!-- Aerial Image - FREE -->
             <div class="doc-card">
-                <div class="doc-preview free" style="background: linear-gradient(135deg, #B55A3C, #4a6b35);">
+                <div class="doc-preview free" style="background: linear-gradient(135deg, #C58B2A, #4a6b35);">
                     <div class="preview-content">
                         <div class="preview-icon">🛰️</div>
                         <div class="preview-label">Aerial Imagery</div>
@@ -774,7 +769,7 @@
             
             <!-- Permit History - FREE -->
             <div class="doc-card">
-                <div class="doc-preview free" style="background: linear-gradient(135deg, #c9a86c, #a8874d);">
+                <div class="doc-preview free" style="background: linear-gradient(135deg, #7B746D, #a8874d);">
                     <div class="preview-content">
                         <div class="preview-icon">📋</div>
                         <div class="preview-label">Permit History</div>
@@ -958,7 +953,8 @@
                 <a href="#" class="cta-btn" onclick="openUnlockModal('dadu'); return false;">Get Your Report →</a>
             </div>
             <div class="sample-preview">
-                
+                <div class="sample-preview-header">
+                    <div class="dot red"></div>
                     <div class="dot yellow"></div>
                     <div class="dot green"></div>
                 </div>
@@ -1003,21 +999,24 @@
         <!-- CTA Section -->
         <section class="cta-section">
             <h2>🏠 Ready to Build Your DADU?</h2>
-            <p>Join thousands of Nashville homeowners who have used Homebody Projects to navigate DADU regulations and find the right contractors for their projects.</p>
+            <p>Join thousands of Nashville homeowners who have used Castlehold to navigate DADU regulations and find the right contractors for their projects.</p>
             <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/" class="cta-btn">Explore the Platform →</a>
         </section>
     </main>
     
     <!-- Footer -->
     <footer class="footer">
-        <p>© 2026 Homebody Projects | Nashville DADU Resource Platform</p>
+        <p>© 2026 Castlehold | Nashville DADU Resource Platform</p>
         <p style="margin-top: 10px;">Data sourced from Nashville-Davidson County public records</p>
     </footer>
     
     <!-- Unlock Modal -->
     <div class="modal-overlay" id="unlockModal">
         <div class="modal">
-            
+            <div class="modal-header">
+                <h3 id="modalTitle">🔓 Unlock Report</h3>
+                <p id="modalSubtitle">Get instant access to your document</p>
+            </div>
             <div class="modal-body">
                 <div class="modal-price">
                     <div class="amount" id="modalPrice">$19</div>

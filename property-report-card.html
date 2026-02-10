@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Report Card | Homebody - Nashville DADU Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #2c3e50;
-            --navy-dark: #1a252f;
-            --teal: #6b8fa3;
-            --terracotta: #B55A3C;
-            --terracotta-hover: #9A4A30;
-            --terracotta-light: #c97a60;
-            --tan: #c9a86c;
-            --background: #e8e4df;
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-hover: #A8761F;
+            --terracotta-light: #D4A54E;
+            --tan: #7B746D;
+            --background: #F2F0ED;
             --card-bg: #f5f5f0;
             --white: #ffffff;
             --text: #333333;
@@ -716,36 +715,14 @@
             .data-grid { grid-template-columns: 1fr; }
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
 
-
-<div class="nav-container">
-            <a href="index_pq.html" class="nav-logo">
-                <div class="nav-logo-icon">
-                    <img src="assets/icons/ADU.png" alt="">
-                </div>
-                <span class="nav-logo-text">HOME<span>BODY</span></span>
-            </a>
-            <div class="nav-links">
-                <a href="features.html" class="nav-link">Features</a>
-                <a href="user-types.html" class="nav-link">User Types</a>
-                <a href="homebody_dadu_pricing.html" class="nav-link">Pricing</a>
-                <a href="dadu_code_legislation_v2.html" class="nav-link">Resources</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Search Section -->
+<!-- End Shared Header -->
+<!-- Search Section -->
     <section class="search-section">
         <div class="search-container">
             <h1>Property Report Card</h1>
@@ -813,11 +790,48 @@
 
         <!-- Report Card (shown after search) -->
         <div class="report-card" id="report-card">
-            <!-- Header -->
-            
-                <div class="report-eligibility">
-                    <span class="eligibility-badge eligible" id="eligibility-badge">✓ Eligible</span>
-                    <p>Based on BL2025-1007</p>
+            <!-- Property Image Header - ATTOM Style -->
+            <div class="property-image-header">
+                <div class="property-image-container" id="property-image-container">
+                    <div class="no-image" id="property-image-placeholder">
+                        <span>🏠</span>
+                        Loading property image...
+                    </div>
+                    <img id="property-card-image" src="" alt="Property Card" style="display: none;" onerror="showImagePlaceholder()">
+                    <div class="property-image-links" id="property-image-links" style="display: none;">
+                        <a href="#" class="property-image-link" id="link-streetview" target="_blank">Street View</a>
+                        <a href="#" class="property-image-link" id="link-aerial" target="_blank">Aerial</a>
+                    </div>
+                </div>
+                <div class="property-header-info">
+                    <div class="property-header-top">
+                        <div class="report-address">
+                            <h2 id="report-address-text">1812 Fatherland St</h2>
+                            <p id="report-subheader">Nashville, TN 37206 | APN: 083-06-0-121-00</p>
+                        </div>
+                        <div class="report-eligibility">
+                            <span class="eligibility-badge eligible" id="eligibility-badge">✓ Eligible</span>
+                            <p>Based on BL2025-1007</p>
+                        </div>
+                    </div>
+                    <div class="property-quick-stats">
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="stat-zoning">R8</div>
+                            <div class="quick-stat-label">Zoning</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="stat-lot-size">6,200 SF</div>
+                            <div class="quick-stat-label">Lot Size</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="stat-max-dadu">700 SF</div>
+                            <div class="quick-stat-label">Max DADU</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="stat-est-cost">$122K</div>
+                            <div class="quick-stat-label">Est. Cost</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -865,7 +879,10 @@
                 <div class="report-main">
                     <!-- Property Details -->
                     <section class="report-section">
-                        
+                        <div class="report-section-header">
+                            <img src="assets/icons/Parcel Search.png" alt="">
+                            <h3>Property Details</h3>
+                        </div>
                         <div class="report-section-body">
                             <div class="data-grid">
                                 <div class="data-item">
@@ -898,7 +915,10 @@
 
                     <!-- Eligibility Checklist -->
                     <section class="report-section">
-                        
+                        <div class="report-section-header">
+                            <img src="assets/icons/Zoning.png" alt="">
+                            <h3>Eligibility Checklist</h3>
+                        </div>
                         <div class="report-section-body">
                             <div class="data-grid">
                                 <div class="data-item">
@@ -923,7 +943,11 @@
 
                     <!-- Documents Preview -->
                     <section class="report-section">
-                        
+                        <div class="report-section-header">
+                            <img src="assets/icons/Recorded Docs.png" alt="">
+                            <h3>Related Documents</h3>
+                            <span id="doc-count" style="margin-left: auto; font-size: 12px; color: var(--text-light);"></span>
+                        </div>
                         <div class="report-section-body">
                             <ul class="documents-list" id="documents-list">
                                 <li class="document-item" id="no-docs-msg">
@@ -983,7 +1007,9 @@
                 <div class="report-sidebar">
                     <!-- Quick Actions -->
                     <section class="report-section">
-                        
+                        <div class="report-section-header">
+                            <h3>Quick Actions</h3>
+                        </div>
                         <div class="report-section-body">
                             <div class="quick-actions">
                                 <a href="roi_calculator.html" class="quick-action-btn">
@@ -1009,7 +1035,10 @@
                     <!-- Near Me Preview -->
                     <section class="report-section">
                         <div class="near-me-preview">
-                            
+                            <div class="near-me-header">
+                                <h4>DADUs Nearby</h4>
+                                <a href="dadu_near_me_locator.html" class="near-me-link">View all →</a>
+                            </div>
                             <div class="near-me-list">
                                 <a href="#" class="near-me-item">
                                     <span class="near-me-item-dist">0.2 mi</span>
@@ -1038,7 +1067,10 @@
 
                     <!-- Cost Estimate Preview -->
                     <section class="report-section">
-                        
+                        <div class="report-section-header">
+                            <img src="assets/icons/Market Statistics Report .png" alt="">
+                            <h3>Cost Estimate</h3>
+                        </div>
                         <div class="report-section-body">
                             <div class="data-item" style="margin-bottom: 12px;">
                                 <div class="data-item-label">Estimated Range (700 SF)</div>
@@ -1060,7 +1092,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>© 2026 Homebody Projects. A Vanderbilt Law School Project.</p>
+        <p>© 2026 Castlehold. A Vanderbilt Law School Project.</p>
     </footer>
 
     <script>

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nashville DADU Code & Legislation</title>
@@ -10,7 +9,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Montserrat', Arial, sans-serif;
-            background-color: #e8e4df;
+            background-color: #F2F0ED;
             color: #333;
             line-height: 1.6;
             padding: 20px;
@@ -24,34 +23,34 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #2c3e50;
+            color: #3A5566;
             text-align: center;
             margin-bottom: 10px;
             font-size: 28px;
         }
         .subtitle {
             text-align: center;
-            color: #6b8fa3;
+            color: #7B746D;
             margin-bottom: 30px;
             font-size: 14px;
         }
         h2 {
             color: #fff;
-            background: #2c3e50;
+            background: #3A5566;
             padding: 12px 20px;
             margin: 25px 0 15px 0;
             border-radius: 4px;
             font-size: 15px;
         }
         h3 {
-            color: #B55A3C;
+            color: #C58B2A;
             margin: 20px 0 10px 0;
             font-size: 14px;
-            border-bottom: 2px solid #B55A3C;
+            border-bottom: 2px solid #C58B2A;
             padding-bottom: 5px;
         }
         .stats-box {
-            background: #2c3e50;
+            background: #3A5566;
             color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -63,7 +62,7 @@
         }
         .stat-item h4 {
             font-size: 28px;
-            color: #6b8fa3;
+            color: #7B746D;
         }
         .stat-item p {
             font-size: 11px;
@@ -76,7 +75,7 @@
             font-size: 12px;
         }
         th {
-            background: #2c3e50;
+            background: #3A5566;
             color: #fff;
             padding: 10px 8px;
             text-align: left;
@@ -100,8 +99,8 @@
         .status-pending { background: #fff3cd; color: #856404; }
         .status-withdrawn { background: #e2e3e5; color: #383d41; }
         .status-deferred { background: #cce5ff; color: #004085; }
-        a { color: #6b8fa3; text-decoration: none; }
-        a:hover { text-decoration: underline; color: #2c3e50; }
+        a { color: #7B746D; text-decoration: none; }
+        a:hover { text-decoration: underline; color: #3A5566; }
         .url-cell { 
             font-size: 11px; 
             word-break: break-all;
@@ -109,12 +108,12 @@
         }
         .toc {
             background: #f5f5f0;
-            border: 2px solid #6b8fa3;
+            border: 2px solid #7B746D;
             padding: 20px;
             border-radius: 4px;
             margin-bottom: 25px;
         }
-        .toc h3 { color: #2c3e50; border: none; margin-top: 0; }
+        .toc h3 { color: #3A5566; border: none; margin-top: 0; }
         .toc ul { list-style: none; columns: 2; }
         .toc li { margin: 5px 0; font-size: 13px; }
         .section-grid {
@@ -128,9 +127,9 @@
             padding: 12px;
             border-radius: 4px;
             border: 1px solid #ddd;
-            border-left: 4px solid #6b8fa3;
+            border-left: 4px solid #7B746D;
         }
-        .grid-card h4 { color: #2c3e50; font-size: 12px; margin-bottom: 5px; }
+        .grid-card h4 { color: #3A5566; font-size: 12px; margin-bottom: 5px; }
         .grid-card p { font-size: 11px; color: #666; margin-bottom: 5px; }
         .highlight-box {
             background: #d4edda;
@@ -142,12 +141,12 @@
         .highlight-box h4 { color: #155724; margin-bottom: 10px; }
         .info-box {
             background: #e8f4fc;
-            border: 1px solid #6b8fa3;
+            border: 1px solid #7B746D;
             border-radius: 4px;
             padding: 15px;
             margin: 20px 0;
         }
-        .info-box h4 { color: #2c3e50; margin-bottom: 10px; }
+        .info-box h4 { color: #3A5566; margin-bottom: 10px; }
         .warning-box {
             background: #fff3cd;
             border: 1px solid #ffc107;
@@ -178,20 +177,17 @@
             th, td { padding: 6px 4px; }
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<div id="homebody-nav" style="background:#1e2a38;padding:0 20px;font-family:Montserrat,sans-serif;position:sticky;top:0;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.3);"><div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;"><a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:white;"><div style="width:32px;height:32px;background:#4a9;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏠</div><span style="font-weight:700;font-size:16px;">Homebody Projects</span></a><div style="display:flex;gap:6px;"><a href="am_i_eligible.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Eligibility</a><a href="dadu_opportunity_explorer_v2.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Explorer</a><a href="nashville_permit_explorer_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Permits</a><a href="dadu_code_legislation_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Code</a></div></div></div>
+<!-- Homebody Navigation -->
+<div id="homebody-nav" style="background:#1e2a38;padding:0 20px;font-family:Montserrat,sans-serif;position:sticky;top:0;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.3);"><div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;"><a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:white;"><div style="width:32px;height:32px;background:#4a9;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏠</div><span style="font-weight:700;font-size:16px;">Castlehold</span></a><div style="display:flex;gap:6px;"><a href="am_i_eligible.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Eligibility</a><a href="dadu_opportunity_explorer_v2.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Explorer</a><a href="nashville_permit_explorer_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Permits</a><a href="dadu_code_legislation_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Code</a></div></div></div>
 
     <div class="container">
         <h1>NASHVILLE DADU CODE & LEGISLATION</h1>
@@ -1040,7 +1036,7 @@
         </ul>
 
         <footer>
-            <p>Homebody Projects | Nashville DADU Code & Legislation</p>
+            <p>Castlehold | Nashville DADU Code & Legislation</p>
             <p>150+ Citations | Last Updated: January 2026</p>
             <p style="margin-top: 10px; font-size: 11px;">Citations follow The Bluebook: A Uniform System of Citation (21st ed. 2020)</p>
         </footer>

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Size Calculator | Homebody DADU</title>
@@ -15,13 +14,13 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #e8e4df;
-            color: #2c3e50;
+            background: #F2F0ED;
+            color: #3A5566;
             min-height: 100vh;
         }
 
         .header {
-            background: #2c3e50;
+            background: #3A5566;
             color: white;
             padding: 1rem 2rem;
             display: flex;
@@ -59,12 +58,12 @@
         .page-header h1 {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 0.5rem;
         }
 
         .page-header p {
-            color: #6b8fa3;
+            color: #7B746D;
             font-size: 1.1rem;
         }
 
@@ -82,7 +81,7 @@
 
         .input-section h2 {
             font-size: 1.25rem;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
@@ -96,7 +95,7 @@
         .input-group label {
             display: block;
             font-weight: 600;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 0.5rem;
         }
 
@@ -119,7 +118,7 @@
         .input-field input {
             width: 100%;
             padding: 0.75rem 1rem;
-            border: 2px solid #e8e4df;
+            border: 2px solid #F2F0ED;
             border-radius: 8px;
             font-size: 1.1rem;
             font-family: inherit;
@@ -128,7 +127,7 @@
 
         .input-field input:focus {
             outline: none;
-            border-color: #6b8fa3;
+            border-color: #7B746D;
         }
 
         .input-field .unit {
@@ -139,7 +138,7 @@
 
         .or-divider {
             text-align: center;
-            color: #6b8fa3;
+            color: #7B746D;
             font-weight: 600;
             padding: 0.5rem 0;
         }
@@ -153,7 +152,7 @@
 
         .quick-btn {
             padding: 0.5rem 1rem;
-            border: 2px solid #e8e4df;
+            border: 2px solid #F2F0ED;
             background: white;
             border-radius: 8px;
             cursor: pointer;
@@ -163,19 +162,19 @@
         }
 
         .quick-btn:hover {
-            border-color: #6b8fa3;
+            border-color: #7B746D;
             background: #f5f5f0;
         }
 
         .quick-btn.active {
-            border-color: #B55A3C;
+            border-color: #C58B2A;
             background: #f0e8e0;
         }
 
         .btn-calculate {
             width: 100%;
             padding: 1rem;
-            background: #B55A3C;
+            background: #C58B2A;
             color: white;
             border: none;
             border-radius: 8px;
@@ -201,7 +200,7 @@
         .results-header {
             text-align: center;
             padding: 1.5rem;
-            background: linear-gradient(135deg, #B55A3C 0%, #5a7a40 100%);
+            background: linear-gradient(135deg, #C58B2A 0%, #5a7a40 100%);
             border-radius: 12px;
             color: white;
             margin-bottom: 1.5rem;
@@ -239,7 +238,7 @@
 
         .size-box.highlight {
             background: #f0e8e0;
-            border: 2px solid #B55A3C;
+            border: 2px solid #C58B2A;
         }
 
         .size-box .label {
@@ -251,12 +250,12 @@
         .size-box .value {
             font-size: 2rem;
             font-weight: 800;
-            color: #2c3e50;
+            color: #3A5566;
         }
 
         .size-box .unit {
             font-size: 0.9rem;
-            color: #6b8fa3;
+            color: #7B746D;
         }
 
         .size-box .note {
@@ -285,13 +284,13 @@
 
         .requirement-card h4 {
             font-size: 0.9rem;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 0.25rem;
         }
 
         .requirement-card p {
             font-size: 1rem;
-            color: #B55A3C;
+            color: #C58B2A;
             font-weight: 600;
         }
 
@@ -304,7 +303,7 @@
 
         .visualization h3 {
             font-size: 1rem;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 1rem;
         }
 
@@ -314,13 +313,13 @@
             height: 300px;
             background: #d4e5d0;
             border-radius: 8px;
-            border: 3px solid #B55A3C;
+            border: 3px solid #C58B2A;
             overflow: hidden;
         }
 
         .main-house {
             position: absolute;
-            background: #2c3e50;
+            background: #3A5566;
             border-radius: 4px;
             display: flex;
             align-items: center;
@@ -332,7 +331,7 @@
 
         .dadu-unit {
             position: absolute;
-            background: #B55A3C;
+            background: #C58B2A;
             border-radius: 4px;
             display: flex;
             align-items: center;
@@ -344,13 +343,13 @@
 
         .setback-line {
             position: absolute;
-            border: 1px dashed #c9a86c;
+            border: 1px dashed #7B746D;
         }
 
         .setback-label {
             position: absolute;
             font-size: 0.65rem;
-            color: #c9a86c;
+            color: #7B746D;
             font-weight: 600;
         }
 
@@ -377,21 +376,21 @@
 
         .info-box {
             background: #e8f4f8;
-            border-left: 4px solid #6b8fa3;
+            border-left: 4px solid #7B746D;
             padding: 1rem;
             border-radius: 0 8px 8px 0;
             margin-bottom: 1rem;
         }
 
         .info-box h4 {
-            color: #6b8fa3;
+            color: #7B746D;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
 
         .info-box p {
             font-size: 0.85rem;
-            color: #2c3e50;
+            color: #3A5566;
         }
 
         .warning-box {
@@ -409,7 +408,7 @@
 
         .warning-box p {
             font-size: 0.85rem;
-            color: #2c3e50;
+            color: #3A5566;
         }
 
         .action-buttons {
@@ -432,7 +431,7 @@
         }
 
         .btn-primary {
-            background: #2c3e50;
+            background: #3A5566;
             color: white;
         }
 
@@ -441,8 +440,8 @@
         }
 
         .btn-secondary {
-            background: #e8e4df;
-            color: #2c3e50;
+            background: #F2F0ED;
+            color: #3A5566;
         }
 
         .btn-secondary:hover {
@@ -458,7 +457,7 @@
 
         .code-reference h3 {
             font-size: 1rem;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 1rem;
         }
 
@@ -471,11 +470,11 @@
         .code-table td {
             padding: 0.75rem;
             text-align: left;
-            border-bottom: 1px solid #e8e4df;
+            border-bottom: 1px solid #F2F0ED;
         }
 
         .code-table th {
-            background: #e8e4df;
+            background: #F2F0ED;
             font-weight: 600;
             font-size: 0.85rem;
         }
@@ -506,21 +505,22 @@
             }
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<div class="container">
-        
+    
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📐 DADU Size Calculator</h1>
+            <p>Calculate the maximum allowable size for your DADU based on Nashville's zoning code</p>
+        </div>
 
         <div class="calculator-card">
             <div class="input-section">
@@ -552,7 +552,9 @@
             </div>
 
             <div class="results-section" id="results">
-                
+                <div class="results-header">
+                    <h2>Your Lot Size</h2>
+                    <div class="lot-size-display" id="lotSizeDisplay">—</div>
                     <div class="lot-category" id="lotCategory">—</div>
                 </div>
 
@@ -606,15 +608,15 @@
                     </div>
                     <div class="diagram-legend">
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #2c3e50;"></div>
+                            <div class="legend-color" style="background: #3A5566;"></div>
                             <span>Main House</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #B55A3C;"></div>
+                            <div class="legend-color" style="background: #C58B2A;"></div>
                             <span>Max DADU</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #d4e5d0; border: 1px dashed #c9a86c;"></div>
+                            <div class="legend-color" style="background: #d4e5d0; border: 1px dashed #7B746D;"></div>
                             <span>Buildable Area</span>
                         </div>
                     </div>
@@ -765,7 +767,7 @@
                     right: ${(diagramWidth - lotWidth * scale) / 2 + sideSetback}px;
                     top: ${20 + frontSetback}px;
                     bottom: ${20 + rearSetback}px;
-                    border: 2px dashed #c9a86c;
+                    border: 2px dashed #7B746D;
                 "></div>
 
                 <!-- Main House -->

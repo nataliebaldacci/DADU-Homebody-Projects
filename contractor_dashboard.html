@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DADU Contractor Activity Dashboard | Homebody Projects</title>
+    <title>DADU Contractor Activity Dashboard | Castlehold</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -15,7 +14,7 @@
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: linear-gradient(135deg, #3A5566 0%, #4A6B7D 100%);
             color: white;
             padding: 20px 30px;
             display: flex;
@@ -30,7 +29,7 @@
         .logo-icon {
             width: 45px;
             height: 45px;
-            background: #B55A3C;
+            background: #C58B2A;
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -55,7 +54,7 @@
         .stat-value {
             font-size: 28px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
         }
         .stat-label {
             font-size: 12px;
@@ -66,7 +65,7 @@
 
         /* Area Pricing Tool */
         .pricing-tool {
-            background: linear-gradient(135deg, #B55A3C 0%, #c97a60 100%);
+            background: linear-gradient(135deg, #C58B2A 0%, #c97a60 100%);
             padding: 20px 30px;
             color: white;
         }
@@ -90,7 +89,7 @@
         }
         .pricing-btn {
             padding: 12px 25px;
-            background: #2c3e50;
+            background: #3A5566;
             color: white;
             border: none;
             border-radius: 8px;
@@ -99,7 +98,7 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        .pricing-btn:hover { background: #1a252f; }
+        .pricing-btn:hover { background: #2E4553; }
         .pricing-results {
             margin-top: 15px;
             display: none;
@@ -153,7 +152,7 @@
         .card-title {
             font-size: 16px;
             font-weight: 600;
-            color: #2c3e50;
+            color: #3A5566;
         }
         .card-body {
             padding: 15px 20px;
@@ -181,7 +180,7 @@
         }
         .search-input:focus {
             outline: none;
-            border-color: #B55A3C;
+            border-color: #C58B2A;
         }
         .search-icon {
             position: absolute;
@@ -222,7 +221,7 @@
             background: #eef0f2;
         }
         .contractor-table th.sorted {
-            color: #B55A3C;
+            color: #C58B2A;
         }
         .contractor-table td {
             padding: 10px;
@@ -234,19 +233,19 @@
         }
         .contractor-name {
             font-weight: 600;
-            color: #2c3e50;
+            color: #3A5566;
             max-width: 200px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
         .contractor-name:hover {
-            color: #B55A3C;
+            color: #C58B2A;
             cursor: pointer;
         }
         .permit-count {
             font-weight: 700;
-            color: #B55A3C;
+            color: #C58B2A;
         }
         .cost-per-sf {
             font-weight: 600;
@@ -279,9 +278,9 @@
         }
         .page-btn:hover { background: #f5f5f5; }
         .page-btn.active {
-            background: #B55A3C;
+            background: #C58B2A;
             color: white;
-            border-color: #B55A3C;
+            border-color: #C58B2A;
         }
 
         /* Sidebar - Top Lists */
@@ -304,7 +303,7 @@
         .rank {
             width: 24px;
             height: 24px;
-            background: #B55A3C;
+            background: #C58B2A;
             color: white;
             border-radius: 50%;
             display: flex;
@@ -328,7 +327,7 @@
         }
         .top-value {
             font-weight: 700;
-            color: #B55A3C;
+            color: #C58B2A;
             font-size: 14px;
         }
         .top-value.price { color: #e65100; }
@@ -359,7 +358,7 @@
         }
         .bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #B55A3C 0%, #c97a60 100%);
+            background: linear-gradient(90deg, #C58B2A 0%, #c97a60 100%);
             border-radius: 4px;
             display: flex;
             align-items: center;
@@ -448,7 +447,7 @@
         .detail-value {
             font-size: 24px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
         }
         .detail-label {
             font-size: 12px;
@@ -514,22 +513,21 @@
             }
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<div>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">👷</div>
+            <div>
                 <div class="logo-text">DADU Contractor Dashboard</div>
-                <div class="logo-sub">Homebody Projects - Nashville Contractor Activity & Pricing</div>
+                <div class="logo-sub">Castlehold - Nashville Contractor Activity & Pricing</div>
             </div>
         </div>
         <a href="parcel_footprint_map.html" style="color: white; text-decoration: none; font-size: 14px;">← Back to Map</a>
@@ -573,7 +571,8 @@
 
     <div class="main-content">
         <div class="card">
-            
+            <div class="card-header">
+                <div class="card-title">All Contractors</div>
                 <div id="showing-count" style="font-size: 13px; color: #888;">Loading...</div>
             </div>
             <div class="card-body">
@@ -621,7 +620,8 @@
 
         <div class="sidebar">
             <div class="card">
-                
+                <div class="card-header">
+                    <div class="card-title">💰 Best Value Contractors</div>
                     <div style="font-size: 11px; color: #888;">Lowest avg $/SF (5+ records)</div>
                 </div>
                 <div class="card-body">
@@ -630,14 +630,18 @@
             </div>
 
             <div class="card">
-                
+                <div class="card-header">
+                    <div class="card-title">🏗️ Top DADU Builders</div>
+                </div>
                 <div class="card-body">
                     <ul class="top-list" id="top-dadu"></ul>
                 </div>
             </div>
 
             <div class="card">
-                
+                <div class="card-header">
+                    <div class="card-title">📍 $/SF by Zip Code</div>
+                </div>
                 <div class="card-body">
                     <table class="zipcode-table" id="zipcode-table">
                         <thead>
@@ -658,7 +662,8 @@
     <!-- Modal -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
-            
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title">Contractor Details</div>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body" id="modal-body"></div>

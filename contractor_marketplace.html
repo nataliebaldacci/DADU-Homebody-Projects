@@ -4,30 +4,744 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contractor Marketplace | Castlehold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-hover: #A8761F;
+            --tan: #7B746D;
+            --cream: #f5f5f0;
+            --background: #F2F0ED;
+            --white: #ffffff;
+            --border: #e0e0e0;
+            --text: #333333;
+            --text-light: #666666;
+            --terracotta: #27ae60;
+            --yellow: #f39c12;
+            --red: #c0392b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--terracotta);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+            padding: 60px 24px;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--white);
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Search & Filter */
+        .search-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--terracotta);
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            min-width: 150px;
+        }
+
+        .search-btn {
+            padding: 12px 24px;
+            background: var(--terracotta);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background: var(--terracotta-hover);
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title img {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Contractor Grid */
+        .contractor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .contractor-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .contractor-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .contractor-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 16px;
+        }
+
+        .contractor-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--cream);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .contractor-info {
+            flex: 1;
+        }
+
+        .contractor-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .contractor-specialty {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .contractor-badge {
+            padding: 4px 10px;
+            background: var(--terracotta);
+            color: white;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .contractor-stats {
+            padding: 16px 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            background: var(--cream);
+        }
+
+        .contractor-stat {
+            text-align: center;
+        }
+
+        .contractor-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .contractor-stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .contractor-body {
+            padding: 20px;
+        }
+
+        .contractor-projects {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .contractor-projects strong {
+            color: var(--text);
+        }
+
+        .contractor-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--terracotta);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--terracotta-hover);
+        }
+
+        .btn-secondary {
+            background: var(--cream);
+            color: var(--navy);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--background);
+        }
+
+        /* Leaderboard */
+        .leaderboard {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 48px;
+        }
+
+        .leaderboard-header {
+            background: var(--navy);
+            color: white;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .leaderboard-table th {
+            background: var(--cream);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .leaderboard-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .leaderboard-table tr:hover td {
+            background: var(--cream);
+        }
+
+        .rank {
+            width: 32px;
+            height: 32px;
+            background: var(--navy);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .rank.gold { background: #f1c40f; color: #333; }
+        .rank.silver { background: #95a5a6; }
+        .rank.bronze { background: #cd6133; }
+
+        /* Footer */
+        .footer {
+            background: var(--navy-dark);
+            color: rgba(255,255,255,0.7);
+            padding: 40px 24px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-bar {
+                flex-wrap: wrap;
+                gap: 24px;
+            }
+            .contractor-grid {
+                grid-template-columns: 1fr;
+            }
+            .leaderboard-table {
+                font-size: 13px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-    <div id="header-container"></div>
-    <script>
-        fetch('homebody_header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-    </script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
 
-    <div style="max-width: 900px; margin: 80px auto; padding: 40px; background: var(--background); font-family: Inter, sans-serif;">
-        <h1 style="color: var(--navy); margin-bottom: 20px;">Contractor Marketplace</h1>
-        <p style="color: var(--text); line-height: 1.6;">
-            This page is currently under development. Browse and connect with qualified DADU contractors in Nashville.
-        </p>
-        <div style="margin-top: 24px;">
-            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 16px;">
-                For now, view contractor analytics and permit history:
-            </p>
-            <a href="contractor_dashboard.html" style="display: inline-block; padding: 12px 24px; background: var(--navy); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-right: 12px;">Contractor Dashboard</a>
-            <a href="index.html" style="display: inline-block; padding: 12px 24px; background: var(--terracotta); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">← Back to Home</a>
+<!-- End Shared Header -->
+
+
+    
+
+    <section class="hero">
+        <h1>Contractor Marketplace</h1>
+        <p>Find verified DADU builders in Nashville-Davidson County with real project history and cost data</p>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat">
+            <div class="stat-value">393</div>
+            <div class="stat-label">Active Contractors</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">827</div>
+            <div class="stat-label">DADU Projects</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">$185</div>
+            <div class="stat-label">Avg Cost/SF</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">4.2</div>
+            <div class="stat-label">Avg Rating</div>
         </div>
     </div>
+
+    <main class="main">
+        <div class="search-section">
+            <input type="text" class="search-input" placeholder="Search contractors by name or specialty...">
+            <select class="filter-select">
+                <option value="">All Specialties</option>
+                <option value="general">General Contractor</option>
+                <option value="design-build">Design-Build</option>
+                <option value="modular">Modular/Prefab</option>
+                <option value="custom">Custom Build</option>
+            </select>
+            <select class="filter-select">
+                <option value="">All Areas</option>
+                <option value="east">East Nashville</option>
+                <option value="west">West Nashville</option>
+                <option value="south">South Nashville</option>
+                <option value="north">North Nashville</option>
+            </select>
+            <select class="filter-select">
+                <option value="">Sort By</option>
+                <option value="projects">Most Projects</option>
+                <option value="rating">Highest Rated</option>
+                <option value="cost">Lowest Cost/SF</option>
+            </select>
+            <button class="search-btn">Search</button>
+        </div>
+
+        <h2 class="section-title">
+            <img src="assets/icons/Building and Construction.png" alt="">
+            Top Rated Contractors
+        </h2>
+
+        <div class="contractor-grid">
+            <div class="contractor-card">
+                <div class="contractor-header">
+                    <div class="contractor-avatar">🏗️</div>
+                    <div class="contractor-info">
+                        <div class="contractor-name">Nashville ADU Builders</div>
+                        <div class="contractor-specialty">Design-Build Specialist</div>
+                    </div>
+                    <span class="contractor-badge">Verified</span>
+                </div>
+                <div class="contractor-stats">
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">47</div>
+                        <div class="contractor-stat-label">Projects</div>
+                    </div>
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">$175</div>
+                        <div class="contractor-stat-label">Avg $/SF</div>
+                    </div>
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">4.8</div>
+                        <div class="contractor-stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="contractor-body">
+                    <p class="contractor-projects"><strong>Recent:</strong> East Nashville, Germantown, 12 South</p>
+                    <div class="contractor-actions">
+                        <a href="contractor_profile.html" class="btn btn-primary">View Profile</a>
+                        <button class="btn btn-secondary">Contact</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contractor-card">
+                <div class="contractor-header">
+                    <div class="contractor-avatar">🏠</div>
+                    <div class="contractor-info">
+                        <div class="contractor-name">TN Modular Homes</div>
+                        <div class="contractor-specialty">Modular/Prefab</div>
+                    </div>
+                    <span class="contractor-badge">Verified</span>
+                </div>
+                <div class="contractor-stats">
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">32</div>
+                        <div class="contractor-stat-label">Projects</div>
+                    </div>
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">$165</div>
+                        <div class="contractor-stat-label">Avg $/SF</div>
+                    </div>
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">4.6</div>
+                        <div class="contractor-stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="contractor-body">
+                    <p class="contractor-projects"><strong>Recent:</strong> Bellevue, Donelson, Madison</p>
+                    <div class="contractor-actions">
+                        <a href="contractor_profile.html" class="btn btn-primary">View Profile</a>
+                        <button class="btn btn-secondary">Contact</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contractor-card">
+                <div class="contractor-header">
+                    <div class="contractor-avatar">🔨</div>
+                    <div class="contractor-info">
+                        <div class="contractor-name">Davidson Custom Builds</div>
+                        <div class="contractor-specialty">Custom Construction</div>
+                    </div>
+                    <span class="contractor-badge">Verified</span>
+                </div>
+                <div class="contractor-stats">
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">28</div>
+                        <div class="contractor-stat-label">Projects</div>
+                    </div>
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">$210</div>
+                        <div class="contractor-stat-label">Avg $/SF</div>
+                    </div>
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">4.9</div>
+                        <div class="contractor-stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="contractor-body">
+                    <p class="contractor-projects"><strong>Recent:</strong> Green Hills, Belle Meade, Sylvan Park</p>
+                    <div class="contractor-actions">
+                        <a href="contractor_profile.html" class="btn btn-primary">View Profile</a>
+                        <button class="btn btn-secondary">Contact</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contractor-card">
+                <div class="contractor-header">
+                    <div class="contractor-avatar">🏡</div>
+                    <div class="contractor-info">
+                        <div class="contractor-name">Music City ADU</div>
+                        <div class="contractor-specialty">General Contractor</div>
+                    </div>
+                    <span class="contractor-badge">Verified</span>
+                </div>
+                <div class="contractor-stats">
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">24</div>
+                        <div class="contractor-stat-label">Projects</div>
+                    </div>
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">$180</div>
+                        <div class="contractor-stat-label">Avg $/SF</div>
+                    </div>
+                    <div class="contractor-stat">
+                        <div class="contractor-stat-value">4.5</div>
+                        <div class="contractor-stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="contractor-body">
+                    <p class="contractor-projects"><strong>Recent:</strong> Inglewood, Lockeland Springs, Five Points</p>
+                    <div class="contractor-actions">
+                        <a href="contractor_profile.html" class="btn btn-primary">View Profile</a>
+                        <button class="btn btn-secondary">Contact</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">
+            <img src="assets/icons/Market Statistics Report .png" alt="">
+            Contractor Leaderboard
+        </h2>
+
+        <div class="leaderboard">
+            <div class="leaderboard-header">Top 10 by DADU Permits (2020-2025)</div>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Contractor</th>
+                        <th>Total Projects</th>
+                        <th>Avg Cost/SF</th>
+                        <th>Avg Size</th>
+                        <th>Top Area</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="rank gold">1</span></td>
+                        <td><strong>Nashville ADU Builders</strong></td>
+                        <td>47</td>
+                        <td>$175</td>
+                        <td>720 SF</td>
+                        <td>East Nashville</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank silver">2</span></td>
+                        <td><strong>TN Modular Homes</strong></td>
+                        <td>32</td>
+                        <td>$165</td>
+                        <td>680 SF</td>
+                        <td>Bellevue</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank bronze">3</span></td>
+                        <td><strong>Davidson Custom Builds</strong></td>
+                        <td>28</td>
+                        <td>$210</td>
+                        <td>800 SF</td>
+                        <td>Green Hills</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank">4</span></td>
+                        <td><strong>Music City ADU</strong></td>
+                        <td>24</td>
+                        <td>$180</td>
+                        <td>700 SF</td>
+                        <td>Inglewood</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank">5</span></td>
+                        <td><strong>Accessory Dwelling Co.</strong></td>
+                        <td>21</td>
+                        <td>$195</td>
+                        <td>750 SF</td>
+                        <td>Sylvan Park</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank">6</span></td>
+                        <td><strong>Cumberland Builders</strong></td>
+                        <td>19</td>
+                        <td>$170</td>
+                        <td>650 SF</td>
+                        <td>Madison</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank">7</span></td>
+                        <td><strong>Backyard Homes Nashville</strong></td>
+                        <td>17</td>
+                        <td>$185</td>
+                        <td>700 SF</td>
+                        <td>12 South</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank">8</span></td>
+                        <td><strong>Metro ADU Solutions</strong></td>
+                        <td>15</td>
+                        <td>$175</td>
+                        <td>680 SF</td>
+                        <td>Donelson</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank">9</span></td>
+                        <td><strong>Volunteer State Builders</strong></td>
+                        <td>14</td>
+                        <td>$190</td>
+                        <td>720 SF</td>
+                        <td>Germantown</td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank">10</span></td>
+                        <td><strong>Southern Comfort ADU</strong></td>
+                        <td>12</td>
+                        <td>$200</td>
+                        <td>780 SF</td>
+                        <td>The Nations</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Contractor CTA -->
+    <div style="background: linear-gradient(135deg, #3A5566, #4A6B7D); padding: 50px 24px; text-align: center; color: white;">
+        <h2 style="font-size: 28px; margin-bottom: 12px;">Are You a DADU Contractor?</h2>
+        <p style="font-size: 16px; opacity: 0.9; margin-bottom: 24px; max-width: 600px; margin-left: auto; margin-right: auto;">Get featured in our marketplace and connect with Nashville homeowners actively planning DADU projects.</p>
+        <a href="contractor_advertising.html" style="display: inline-block; background: #C58B2A; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px;">View Advertising Options</a>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Castlehold. A Vanderbilt Law School Project. | <a href="contractor_advertising.html" style="color: #7B746D;">Contractor Advertising</a></p>
+    </footer>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DADU Project Checklist | Homebody Projects</title>
+    <title>DADU Project Checklist | Castlehold</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #2c3e50;
-            --navy-dark: #1a252f;
-            --teal: #6b8fa3;
-            --terracotta: #B55A3C;
-            --terracotta-light: #c97a60;
-            --tan: #c9a86c;
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-light: #D4A54E;
+            --tan: #7B746D;
             --cream: #f5f5f0;
-            --warm-gray: #e8e4df;
+            --warm-gray: #F2F0ED;
             --white: #ffffff;
             --text: #333333;
             --text-light: #666666;
@@ -422,33 +421,38 @@
 
         .footer a { color: var(--terracotta); text-decoration: none; }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<nav class="nav">
+    <nav class="nav">
         <a href="index.html" class="nav-logo">
-            <div class="nav-logo-icon">🏠</div>
-            <span class="nav-logo-text">Homebody Projects</span>
+            <div class="nav-logo-icon castle-icon">
+                <img src="assets/castlehold-logo.png" alt="Castlehold" width="44" height="37" style="object-fit:contain;">
+            </div>
+            <div class="nav-logo-text">
+                <span class="nav-logo-title">Castlehold</span>
+                <span class="nav-logo-subtitle">DADU Zoning &amp; Buildability Intelligence</span>
+            </div>
         </a>
         <a href="index.html" class="nav-back">← Back to Home</a>
     </nav>
 
     <div class="container">
-        
+        <div class="page-header">
+            <h1 class="page-title">DADU Project Checklist</h1>
+            <p class="page-subtitle">Track your Nashville DADU project from initial planning through final inspection</p>
+        </div>
 
         <!-- Progress Card -->
         <div class="progress-card">
-            
+            <div class="progress-header">
+                <div class="progress-title">📊 Overall Progress</div>
                 <div class="progress-stats">
                     <div class="progress-stat">
                         <span class="progress-stat-value" id="completedCount">0</span>
@@ -474,7 +478,9 @@
 
         <!-- Phase 1: Planning -->
         <div class="checklist-section" data-section="planning">
-            
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-header-left">
+                    <div class="section-icon planning">📋</div>
                     <div class="section-title-group">
                         <div class="section-title">Phase 1: Planning & Research</div>
                         <div class="section-subtitle">Verify eligibility and understand requirements</div>
@@ -570,7 +576,9 @@
 
         <!-- Phase 2: Design -->
         <div class="checklist-section" data-section="design">
-            
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-header-left">
+                    <div class="section-icon design">📐</div>
                     <div class="section-title-group">
                         <div class="section-title">Phase 2: Design & Planning</div>
                         <div class="section-subtitle">Create plans and hire your team</div>
@@ -652,7 +660,9 @@
 
         <!-- Phase 3: Permits -->
         <div class="checklist-section" data-section="permits">
-            
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-header-left">
+                    <div class="section-icon permits">📝</div>
                     <div class="section-title-group">
                         <div class="section-title">Phase 3: Permits & Approvals</div>
                         <div class="section-subtitle">Submit applications and get approvals</div>
@@ -744,7 +754,9 @@
 
         <!-- Phase 4: Construction -->
         <div class="checklist-section" data-section="construction">
-            
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-header-left">
+                    <div class="section-icon construction">🏗️</div>
                     <div class="section-title-group">
                         <div class="section-title">Phase 4: Construction</div>
                         <div class="section-subtitle">Build your DADU and pass inspections</div>
@@ -833,7 +845,9 @@
 
         <!-- Phase 5: Final -->
         <div class="checklist-section" data-section="final">
-            
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-header-left">
+                    <div class="section-icon final">✅</div>
                     <div class="section-title-group">
                         <div class="section-title">Phase 5: Final Steps</div>
                         <div class="section-subtitle">Complete inspections and move in</div>
@@ -906,7 +920,7 @@
 
     <footer class="footer">
         <p>Your progress is saved automatically in your browser.</p>
-        <p style="margin-top: 8px;"><a href="index.html">Homebody Projects</a> | Nashville DADU Platform</p>
+        <p style="margin-top: 8px;"><a href="index.html">Castlehold</a> | Nashville DADU Platform</p>
     </footer>
 
     <script>

@@ -1,20 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homebody | Nashville DADU Data Platform</title>
+    <title>Castlehold | DADU Zoning & Buildability Intelligence</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="homebody_shared.css">
     <style>
-        /* ========================================
-           RESET & BASE
-           ======================================== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        /* ========== PAGE-SPECIFIC: Homepage ========== */
+        :root {
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --navy-light: #4A6B7D;
+            --teal: #7B746D;
+            --teal-light: #918A83;
+            --terracotta: #C58B2A;
+            --terracotta-hover: #A8761F;
+            --terracotta-light: #D4A54E;
+            --tan: #7B746D;
+            --tan-light: #918A83;
+            --background: #F2F0ED;
+            --card-bg: #f5f5f0;
+            --white: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --text-muted: #999999;
+            --border: #e0e0e0;
+            --border-light: #f0f0f0;
+            --error: #7A2A1D;
+            --success: #27ae60;
+            --warning: #f39c12;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -23,385 +44,59 @@
             line-height: 1.6;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+        a { text-decoration: none; color: inherit; }
 
-        /* ========================================
-           TOP BAR (Above main nav)
-           ======================================== */
-        .top-bar {
-            background: var(--navy-dark);
-            color: rgba(255,255,255,0.9);
-            padding: 8px 24px;
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .top-bar-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .top-bar-left span {
-            color: var(--tan);
-            font-weight: 600;
-        }
-
-        .top-bar-right {
-            display: flex;
-            gap: 20px;
-        }
-
-        .top-bar-right a {
-            color: rgba(255,255,255,0.8);
-            transition: color 0.2s;
-        }
-
-        .top-bar-right a:hover {
-            color: white;
-        }
-
-        /* ========================================
-           MAIN NAVIGATION - ParcelQuest Style
-           ======================================== */
-        .main-nav {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 70px;
-        }
-
-        /* Logo */
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .nav-logo-icon {
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .nav-logo-icon img {
-            width: 44px;
-            height: 44px;
-            object-fit: contain;
-        }
-
-        .nav-logo-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .nav-logo-title {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--navy);
-            letter-spacing: -0.5px;
-            line-height: 1.1;
-        }
-
-        .nav-logo-subtitle {
-            font-size: 11px;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-
-        /* Nav Links */
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .nav-item {
-            position: relative;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 12px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-            border-radius: 8px;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-family: inherit;
-        }
-
-        .nav-link:hover,
-        .nav-link:focus {
-            background: var(--card-bg);
-            color: var(--navy);
-            outline: none;
-        }
-
-        .nav-link[aria-expanded="true"] {
-            background: var(--card-bg);
-            color: var(--terracotta);
-        }
-
-        .nav-link .chevron {
-            font-size: 10px;
-            transition: transform 0.2s;
-        }
-
-        .nav-link[aria-expanded="true"] .chevron {
-            transform: rotate(180deg);
-        }
-
-        /* Dropdown Menus */
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            min-width: 320px;
-            padding: 12px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.2s ease;
-            z-index: 100;
-        }
-
-        .dropdown-menu.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-section {
-            padding: 8px 0;
-        }
-
-        .dropdown-section:not(:last-child) {
-            border-bottom: 1px solid var(--border-light);
-            margin-bottom: 8px;
-        }
-
-        .dropdown-section-title {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 4px 12px 8px;
-        }
-
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 14px;
-            border-radius: 8px;
-            transition: background 0.15s;
-        }
-
-        .dropdown-item:hover,
-        .dropdown-item:focus {
-            background: var(--card-bg);
-            outline: none;
-        }
-
-        .dropdown-item-icon {
-            width: 36px;
-            height: 36px;
-            background: var(--card-bg);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .dropdown-item-icon img {
-            width: 22px;
-            height: 22px;
-        }
-
-        .dropdown-item:hover .dropdown-item-icon {
-            background: var(--terracotta);
-        }
-
-        .dropdown-item:hover .dropdown-item-icon img {
-            filter: brightness(0) invert(1);
-        }
-
-        .dropdown-item-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .dropdown-item-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--navy);
-            margin-bottom: 2px;
-        }
-
-        .dropdown-item-desc {
-            font-size: 12px;
-            color: var(--text-light);
-            line-height: 1.4;
-        }
-
-        .dropdown-item-badge {
-            background: var(--terracotta);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 10px;
-            text-transform: uppercase;
-        }
-
-        /* Search Button */
-        .nav-search-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: var(--terracotta);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .nav-search-btn:hover {
-            background: var(--terracotta-hover);
-            transform: translateY(-1px);
-        }
-
-        .nav-search-btn:focus {
-            outline: 2px solid var(--terracotta);
-            outline-offset: 2px;
-        }
-
-        /* ========================================
-           HERO SECTION
-           ======================================== */
-        .hero {
+        /* ========== SEARCH HERO ========== */
+        .search-hero {
             background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
-            padding: 80px 24px;
+            padding: 48px 24px 40px;
             text-align: center;
             color: white;
         }
 
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.1);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 24px;
+        .search-hero h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
-        .hero-badge-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--terracotta);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
+        .search-hero .subtitle {
+            font-size: 16px;
+            opacity: 0.85;
+            margin-bottom: 28px;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .hero h1 {
-            font-size: 52px;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-        }
-
-        .hero h1 span {
-            color: var(--tan);
-        }
-
-        .hero p {
-            font-size: 20px;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
-        }
-
-        /* Hero Search */
-        .hero-search {
-            max-width: 640px;
-            margin: 0 auto 50px;
-            background: white;
-            border-radius: 12px;
-            padding: 6px;
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto 24px;
             display: flex;
+            background: white;
+            border-radius: 10px;
+            padding: 5px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
-        .hero-search input {
+        .search-bar input {
             flex: 1;
-            padding: 16px 20px;
+            padding: 14px 18px;
             border: none;
-            font-size: 16px;
+            font-size: 15px;
             font-family: inherit;
             background: transparent;
+            color: var(--text);
         }
 
-        .hero-search input:focus {
-            outline: none;
-        }
+        .search-bar input:focus { outline: none; }
+        .search-bar input::placeholder { color: var(--text-muted); }
 
-        .hero-search input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .hero-search button {
-            padding: 16px 32px;
+        .search-bar button {
+            padding: 14px 28px;
             background: var(--terracotta);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 7px;
+            font-size: 15px;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
@@ -409,300 +104,258 @@
             white-space: nowrap;
         }
 
-        .hero-search button:hover {
-            background: var(--terracotta-hover);
+        .search-bar button:hover { background: var(--terracotta-hover); }
+
+        .hero-ctas {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 28px;
         }
 
-        /* Hero Stats */
+        .hero-cta-primary {
+            padding: 12px 28px;
+            background: var(--terracotta);
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .hero-cta-primary:hover {
+            background: var(--terracotta-hover);
+            transform: translateY(-1px);
+        }
+
+        .hero-cta-secondary {
+            padding: 12px 28px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.2s;
+        }
+
+        .hero-cta-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
         .hero-stats {
             display: flex;
             justify-content: center;
-            gap: 60px;
+            gap: 40px;
             flex-wrap: wrap;
         }
 
-        .hero-stat {
-            text-align: center;
-        }
+        .hero-stat { text-align: center; }
 
         .hero-stat-value {
-            font-size: 42px;
+            font-size: 24px;
             font-weight: 800;
-            margin-bottom: 4px;
         }
 
         .hero-stat-label {
-            font-size: 14px;
-            opacity: 0.8;
+            font-size: 11px;
+            opacity: 0.75;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        /* ========================================
-           FEATURES SECTION
-           ======================================== */
-        .section {
-            padding: 80px 24px;
-            max-width: 1400px;
+        /* ========== MAP SECTION ========== */
+        .map-section {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Cluster icons */
+        .marker-cluster-eligible { background-color: rgba(197, 139, 42, 0.6); }
+        .marker-cluster-eligible div { background-color: rgba(197, 139, 42, 0.9); }
+        .marker-cluster-conditional { background-color: rgba(243, 156, 18, 0.6); }
+        .marker-cluster-conditional div { background-color: rgba(243, 156, 18, 0.9); }
+        .marker-cluster-not-eligible { background-color: rgba(122, 42, 29, 0.6); }
+        .marker-cluster-not-eligible div { background-color: rgba(122, 42, 29, 0.9); }
+
+        .marker-cluster { border-radius: 50%; }
+        .marker-cluster div {
+            width: 30px; height: 30px;
+            margin-left: 5px; margin-top: 5px;
+            text-align: center; border-radius: 50%;
+            font-size: 12px; font-weight: bold;
+            color: white; line-height: 30px;
+        }
+
+        /* Popup styles */
+        .leaflet-popup-content-wrapper { border-radius: 12px; padding: 0; }
+        .leaflet-popup-content { margin: 0; min-width: 280px; }
+        .popup-header { padding: 14px 16px; border-radius: 12px 12px 0 0; }
+        .popup-header.eligible { background: var(--terracotta); color: white; }
+        .popup-header.not-eligible { background: var(--error); color: white; }
+        .popup-header.conditional { background: #f39c12; color: white; }
+        .popup-status { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .popup-address { font-size: 15px; font-weight: 700; }
+        .popup-content { padding: 14px 16px; }
+        .popup-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; }
+        .popup-row:last-child { border-bottom: none; }
+        .popup-label { font-size: 12px; color: #666; }
+        .popup-value { font-size: 12px; font-weight: 600; color: var(--navy); }
+        .popup-actions { padding: 10px 16px; background: var(--card-bg); border-radius: 0 0 12px 12px; display: flex; gap: 8px; }
+        .popup-btn { flex: 1; padding: 8px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; font-family: inherit; }
+        .popup-btn-primary { background: var(--terracotta); color: white; }
+        .popup-btn-secondary { background: white; color: var(--navy); border: 1px solid var(--border); }
+
+        /* Map legend */
+        .map-legend {
+            position: absolute;
+            bottom: 30px;
+            left: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            padding: 14px 16px;
+            z-index: 800;
+            font-size: 12px;
+        }
+
+        .map-legend h4 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .legend-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .legend-row:last-child { margin-bottom: 0; }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        /* Zoom message */
+        .zoom-message {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--navy);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 800;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+            white-space: nowrap;
+        }
+
+        .zoom-message.visible { display: block; }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.92);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 900;
+        }
+
+        .loading-overlay.hidden { display: none; }
+
+        .spinner {
+            width: 44px; height: 44px;
+            border: 4px solid var(--border);
+            border-top-color: var(--terracotta);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text { font-size: 15px; font-weight: 600; color: var(--navy); }
+        .loading-subtext { font-size: 12px; color: var(--text-light); margin-top: 6px; }
+
+        .loading-progress {
+            width: 180px; height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: var(--terracotta);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* ========== USER CARDS ========== */
+        .user-cards-section {
+            padding: 60px 24px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
-        .section-header {
+        .user-cards-section h2 {
             text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
-            font-size: 36px;
+            font-size: 28px;
             font-weight: 800;
             color: var(--navy);
             margin-bottom: 12px;
         }
 
-        .section-header p {
-            font-size: 18px;
+        .user-cards-section .section-desc {
+            text-align: center;
+            font-size: 16px;
             color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
+            margin-bottom: 40px;
         }
 
-        /* Feature Cards */
-        .features-grid {
+        .user-cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
 
-        .feature-card {
+        .user-card {
             background: var(--white);
             border-radius: 16px;
-            padding: 32px;
-            transition: all 0.3s;
-            border: 1px solid transparent;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
-            border-color: var(--terracotta);
-        }
-
-        .feature-card-icon {
-            width: 56px;
-            height: 56px;
-            background: var(--card-bg);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .feature-card-icon img {
-            width: 32px;
-            height: 32px;
-        }
-
-        .feature-card:hover .feature-card-icon {
-            background: var(--terracotta);
-        }
-
-        .feature-card:hover .feature-card-icon img {
-            filter: brightness(0) invert(1);
-        }
-
-        .feature-card h3 {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 10px;
-        }
-
-        .feature-card p {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .feature-card-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--terracotta);
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .feature-card-link:hover {
-            gap: 10px;
-        }
-
-        /* ========================================
-           PROPERTY REPORT CARD SECTION
-           ======================================== */
-        .report-card-section {
-            background: var(--navy);
-            padding: 80px 24px;
-            color: white;
-        }
-
-        .report-card-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .report-card-text h2 {
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .report-card-text h2 span {
-            color: var(--tan);
-        }
-
-        .report-card-text p {
-            font-size: 18px;
-            opacity: 0.9;
-            margin-bottom: 30px;
-            line-height: 1.7;
-        }
-
-        .report-card-features {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-
-        .report-card-features li {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 0;
-            font-size: 15px;
-        }
-
-        .report-card-features li::before {
-            content: "✓";
-            width: 24px;
-            height: 24px;
-            background: var(--terracotta);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .report-card-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 16px 32px;
-            background: var(--terracotta);
-            color: white;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 700;
-            transition: all 0.2s;
-        }
-
-        .report-card-cta:hover {
-            background: var(--terracotta-light);
-            transform: translateY(-2px);
-        }
-
-        .report-card-preview {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 24px;
-            color: var(--text);
-        }
-
-        .report-card-preview-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 20px;
-        }
-
-        .report-card-preview-badge {
-            background: var(--eligible);
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .report-card-preview-address {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--navy);
-        }
-
-        .report-card-preview-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .report-card-preview-item {
-            background: var(--card-bg);
-            padding: 16px;
-            border-radius: 10px;
-        }
-
-        .report-card-preview-item-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-
-        .report-card-preview-item-value {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--navy);
-        }
-
-        /* ========================================
-           USER TYPES SECTION
-           ======================================== */
-        .user-types-section {
-            background: var(--card-bg);
-        }
-
-        .user-types-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .user-type-card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 28px;
+            padding: 32px 28px;
             text-align: center;
             transition: all 0.3s;
             border: 2px solid transparent;
         }
 
-        .user-type-card:hover {
+        .user-card:hover {
             border-color: var(--terracotta);
             transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
         }
 
-        .user-type-card-icon {
+        .user-card-icon {
             width: 64px;
             height: 64px;
             background: var(--card-bg);
@@ -713,186 +366,125 @@
             margin: 0 auto 20px;
         }
 
-        .user-type-card-icon img {
+        .user-card-icon img {
             width: 36px;
             height: 36px;
         }
 
-        .user-type-card:hover .user-type-card-icon {
+        .user-card:hover .user-card-icon {
             background: var(--terracotta);
         }
 
-        .user-type-card:hover .user-type-card-icon img {
+        .user-card:hover .user-card-icon img {
             filter: brightness(0) invert(1);
         }
 
-        .user-type-card h3 {
-            font-size: 18px;
+        .user-card h3 {
+            font-size: 20px;
             font-weight: 700;
             color: var(--navy);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
-        .user-type-card p {
-            font-size: 13px;
-            color: var(--text-light);
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        .user-type-card-link {
-            color: var(--terracotta);
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        /* ========================================
-           CTA SECTION
-           ======================================== */
-        .cta-section {
-            background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-hover) 100%);
-            padding: 80px 24px;
-            text-align: center;
-            color: white;
-        }
-
-        .cta-section h2 {
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .cta-section p {
-            font-size: 18px;
-            opacity: 0.9;
-            margin-bottom: 30px;
-        }
-
-        .cta-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 18px 40px;
-            background: white;
-            color: var(--terracotta);
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 700;
-            transition: all 0.2s;
-        }
-
-        .cta-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-        }
-
-        /* ========================================
-           FOOTER
-           ======================================== */
-        .footer {
-            background: var(--navy-dark);
-            color: white;
-            padding: 60px 24px 30px;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-brand h3 {
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .footer-brand p {
+        .user-card p {
             font-size: 14px;
-            opacity: 0.8;
+            color: var(--text-light);
+            margin-bottom: 20px;
             line-height: 1.6;
         }
 
-        .footer-links h4 {
+        .user-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--terracotta);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-card:hover .user-card-link { gap: 10px; }
+
+        /* ========== FOOTER ========== */
+        .page-footer {
+            background: var(--navy-dark);
+            color: white;
+            padding: 40px 24px 24px;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-brand h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .footer-brand p {
             font-size: 13px;
+            opacity: 0.7;
+            max-width: 300px;
+            line-height: 1.5;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .footer-col h4 {
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 16px;
             color: var(--tan);
+            margin-bottom: 12px;
         }
 
-        .footer-links a {
+        .footer-col a {
             display: block;
             color: rgba(255,255,255,0.7);
-            font-size: 14px;
-            margin-bottom: 10px;
+            font-size: 13px;
+            margin-bottom: 8px;
             transition: color 0.2s;
         }
 
-        .footer-links a:hover {
-            color: white;
-        }
+        .footer-col a:hover { color: white; }
 
         .footer-bottom {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-top: 20px;
+            max-width: 1100px;
+            margin: 20px auto 0;
+            padding-top: 16px;
             border-top: 1px solid rgba(255,255,255,0.1);
             display: flex;
             justify-content: space-between;
-            font-size: 13px;
-            opacity: 0.7;
+            font-size: 12px;
+            opacity: 0.6;
         }
 
-        /* ========================================
-           RESPONSIVE
-           ======================================== */
-        @media (max-width: 1024px) {
-            .report-card-content {
-                grid-template-columns: 1fr;
-            }
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            .top-bar {
-                display: none;
-            }
-            .nav-container {
-                height: 60px;
-            }
-            .nav-links {
-                display: none;
-            }
-            .hero h1 {
-                font-size: 32px;
-            }
-            .hero-stats {
-                gap: 30px;
-            }
-            .hero-stat-value {
-                font-size: 28px;
-            }
-            .section-header h2 {
-                font-size: 28px;
-            }
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
+            .search-hero h1 { font-size: 22px; }
+            .search-hero .subtitle { font-size: 14px; }
+            .hero-stats { gap: 24px; }
+            .hero-stat-value { font-size: 20px; }
+            .hero-ctas { flex-direction: column; align-items: center; }
+            .map-section { height: 50vh; min-height: 300px; }
+            .user-cards-grid { grid-template-columns: 1fr; }
+            .user-cards-section { padding: 40px 16px; }
+            .footer-inner { flex-direction: column; }
+            .footer-links { flex-direction: column; gap: 24px; }
+            .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
         }
 
-        /* Mobile menu (simplified for mockup) */
+        /* Mobile menu */
         .mobile-menu-btn {
             display: none;
             padding: 10px;
@@ -902,24 +494,14 @@
         }
 
         @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block;
-            }
+            .mobile-menu-btn { display: block; }
         }
 
-        /* ========================================
-           ACCESSIBILITY
-           ======================================== */
+        /* Accessibility */
         .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
+            position: absolute; width: 1px; height: 1px; padding: 0;
+            margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+            white-space: nowrap; border: 0;
         }
 
         *:focus-visible {
@@ -927,489 +509,506 @@
             outline-offset: 2px;
         }
 
-        /* Skip link */
         .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: var(--terracotta);
-            color: white;
-            padding: 8px 16px;
-            z-index: 9999;
-            transition: top 0.3s;
+            position: absolute; top: -40px; left: 0;
+            background: var(--terracotta); color: white;
+            padding: 8px 16px; z-index: 9999; transition: top 0.3s;
         }
 
-        .skip-link:focus {
-            top: 0;
-        }
+        .skip-link:focus { top: 0; }
     </style>
-
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div id="site-header"></div>
 
+<!-- Main Content -->
+<main id="main-content">
 
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <!-- Search Hero -->
+    <section class="search-hero">
+        <h1>DADU Zoning &amp; Buildability Intelligence</h1>
+        <p class="subtitle">Check eligibility for any Nashville property</p>
 
-    <!-- Old header removed - using shared header above -->
+        <form class="search-bar" id="hero-search-form" action="property-report-card.html" method="GET">
+            <input type="text" name="address" placeholder="Enter a Nashville address to check eligibility..." aria-label="Property address">
+            <button type="submit">Check Eligibility</button>
+        </form>
 
-    <!-- Main Content -->
-    <main id="main-content">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-badge">
-                <span class="hero-badge-dot"></span>
-                BL2025-1007 Now in Effect
+        <div class="hero-ctas">
+            <a href="am_i_eligible.html" class="hero-cta-primary">Get Started</a>
+            <a href="#map-section" class="hero-cta-secondary" id="explore-map-btn">Explore Map</a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value">67,707</div>
+                <div class="hero-stat-label">Eligible Parcels</div>
             </div>
-            <h1>Nashville's Complete<br><span>DADU Data Platform</span></h1>
-            <p>Everything you need to research, plan, and build a Detached Accessory Dwelling Unit. Eligibility data for 285,000+ parcels, updated daily from Metro Nashville sources.</p>
+            <div class="hero-stat">
+                <div class="hero-stat-value">827+</div>
+                <div class="hero-stat-label">Permitted</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">3,200+</div>
+                <div class="hero-stat-label">Documents</div>
+            </div>
+        </div>
+    </section>
 
-            <form class="hero-search" action="property-report-card.html" method="GET">
-                <input type="text" name="address" placeholder="Enter a Nashville address to check eligibility..." aria-label="Property address">
-                <button type="submit">Check Eligibility</button>
-            </form>
-
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="hero-stat-value">67,707</div>
-                    <div class="hero-stat-label">Eligible Parcels</div>
+    <!-- Interactive Map -->
+    <section class="map-section" id="map-section">
+        <div id="map">
+            <!-- Legend overlay -->
+            <div class="map-legend">
+                <h4>Eligibility</h4>
+                <div class="legend-row">
+                    <div class="legend-dot" style="background:#C58B2A"></div>
+                    <span>Eligible (SP in USD)</span>
                 </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value">827+</div>
-                    <div class="hero-stat-label">Permitted DADUs</div>
+                <div class="legend-row">
+                    <div class="legend-dot" style="background:#f39c12"></div>
+                    <span>Conditional</span>
                 </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value">3,200+</div>
-                    <div class="hero-stat-label">Documents Indexed</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value">Daily</div>
-                    <div class="hero-stat-label">Data Updates</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="section">
-            <div class="section-header">
-                <h2>Platform Features</h2>
-                <p>Comprehensive tools for every stage of your DADU journey</p>
-            </div>
-
-            <div class="features-grid">
-                <a href="dadu_eligibility_map.html" class="feature-card">
-                    <div class="feature-card-icon">
-                        <img src="assets/icons/Zoning.png" alt="">
-                    </div>
-                    <h3>Eligibility Map</h3>
-                    <p>Interactive map showing DADU eligibility for every parcel in Nashville. Color-coded by status: Eligible, Not Eligible, Conditional.</p>
-                    <span class="feature-card-link">Explore map →</span>
-                </a>
-
-                <a href="property-report-card.html" class="feature-card">
-                    <div class="feature-card-icon">
-                        <img src="assets/icons/Parcel Search.png" alt="">
-                    </div>
-                    <h3>Property Report Card</h3>
-                    <p>Complete property analysis including eligibility, zoning, covenants, nearby DADUs, cost estimates, and all related documents.</p>
-                    <span class="feature-card-link">Search property →</span>
-                </a>
-
-                <a href="feature-documents.html" class="feature-card">
-                    <div class="feature-card-icon">
-                        <img src="assets/icons/Recorded Docs.png" alt="">
-                    </div>
-                    <h3>Document Portal</h3>
-                    <p>Access thousands of permits, site plans, restrictive covenants, and surveys. Linked to parcels and searchable by address.</p>
-                    <span class="feature-card-link">Browse documents →</span>
-                </a>
-
-                <a href="dadu_near_me_locator.html" class="feature-card">
-                    <div class="feature-card-icon">
-                        <img src="assets/icons/Neighbors.png" alt="">
-                    </div>
-                    <h3>Near Me Locator</h3>
-                    <p>Find existing DADUs near any address. See construction costs, contractors, permit details, and photos.</p>
-                    <span class="feature-card-link">Find nearby →</span>
-                </a>
-
-                <a href="roi_calculator.html" class="feature-card">
-                    <div class="feature-card-icon">
-                        <img src="assets/icons/Market Statistics Report .png" alt="">
-                    </div>
-                    <h3>ROI Calculator</h3>
-                    <p>Estimate construction costs, rental income potential, and return on investment for your DADU project.</p>
-                    <span class="feature-card-link">Calculate ROI →</span>
-                </a>
-
-                <a href="contractor_marketplace.html" class="feature-card">
-                    <div class="feature-card-icon">
-                        <img src="assets/icons/Building and Construction.png" alt="">
-                    </div>
-                    <h3>Contractor Marketplace</h3>
-                    <p>393 verified DADU contractors with project history, pricing data, and customer reviews.</p>
-                    <span class="feature-card-link">Find contractors →</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- Data Dashboards Section -->
-        <section class="features-section" style="background: #f5f5f0;">
-            <div class="features-header">
-                <h2>Data <span>Dashboards</span></h2>
-                <p>Real-time analytics from Metro Nashville permit records</p>
-            </div>
-
-            <div class="features-grid">
-                <a href="contractor_dashboard.html" class="feature-card">
-                    <div class="feature-card-icon">
-                        <img src="assets/icons/Market Statistics Report .png" alt="">
-                    </div>
-                    <h3>Contractor Dashboard</h3>
-                    <p>Real contractor data from 1,168 permit holders. Rankings, cost per SF, zip code pricing, and DADU specialization metrics.</p>
-                    <span class="feature-card-link">View dashboard →</span>
-                </a>
-
-                <a href="permit_activity_dashboard.html" class="feature-card">
-                    <div class="feature-card-icon">
-                        <img src="assets/icons/Municipal.png" alt="">
-                    </div>
-                    <h3>Permit Activity</h3>
-                    <p>Track DADU permit applications, approvals, and processing times. Monthly trends and cumulative statistics.</p>
-                    <span class="feature-card-link">View activity →</span>
-                </a>
-
-                <a href="market_trends.html" class="feature-card">
-                    <div class="feature-card-icon">
-                        <img src="assets/icons/ROI Calculator.png" alt="">
-                    </div>
-                    <h3>Market Trends</h3>
-                    <p>Construction cost trends, permit volume over time, and pricing analytics with interactive Chart.js visualizations.</p>
-                    <span class="feature-card-link">View trends →</span>
-                </a>
-
-                <a href="dadu_code_legislation_v3.html" class="feature-card">
-                    <div class="feature-card-icon">
-                        <img src="assets/icons/Legal.png" alt="">
-                    </div>
-                    <h3>Legislation Tracker</h3>
-                    <p>Current and upcoming DADU legislation including BL2025-1007, overlay districts, and zoning changes. 150+ citations.</p>
-                    <span class="feature-card-link">View legislation →</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- Property Report Card Section -->
-        <section class="report-card-section">
-            <div class="report-card-content">
-                <div class="report-card-text">
-                    <h2>The <span>Property Report Card</span> is Your Hub</h2>
-                    <p>Every feature on Homebody connects to the Property Report Card. Search any address and get a complete picture of DADU potential, requirements, documents, and market data in one place.</p>
-
-                    <ul class="report-card-features">
-                        <li>Instant eligibility determination</li>
-                        <li>Zoning and service district verification</li>
-                        <li>Restrictive covenant search</li>
-                        <li>Linked permits and site plans</li>
-                        <li>Nearby DADU comparables</li>
-                        <li>Cost and ROI estimates</li>
-                        <li>Contractor recommendations</li>
-                    </ul>
-
-                    <a href="property-report-card.html" class="report-card-cta">
-                        Check Your Property
-                        <span>→</span>
-                    </a>
-                </div>
-
-                <div class="report-card-preview">
-                    <div class="report-card-preview-header">
-                        <span class="report-card-preview-badge">✓ Eligible</span>
-                        <span class="report-card-preview-address">1234 Example Ave, Nashville 37206</span>
-                    </div>
-                    <div class="report-card-preview-grid">
-                        <div class="report-card-preview-item">
-                            <div class="report-card-preview-item-label">Zoning</div>
-                            <div class="report-card-preview-item-value">RS10</div>
-                        </div>
-                        <div class="report-card-preview-item">
-                            <div class="report-card-preview-item-label">Service District</div>
-                            <div class="report-card-preview-item-value">USD</div>
-                        </div>
-                        <div class="report-card-preview-item">
-                            <div class="report-card-preview-item-label">Lot Size</div>
-                            <div class="report-card-preview-item-value">8,500 SF</div>
-                        </div>
-                        <div class="report-card-preview-item">
-                            <div class="report-card-preview-item-label">Max DADU</div>
-                            <div class="report-card-preview-item-value">700 SF Living</div>
-                        </div>
-                        <div class="report-card-preview-item">
-                            <div class="report-card-preview-item-label">Covenants</div>
-                            <div class="report-card-preview-item-value">None Found</div>
-                        </div>
-                        <div class="report-card-preview-item">
-                            <div class="report-card-preview-item-label">Documents</div>
-                            <div class="report-card-preview-item-value">3 Available</div>
-                        </div>
-                    </div>
+                <div class="legend-row">
+                    <div class="legend-dot" style="background:#7A2A1D"></div>
+                    <span>Not Eligible</span>
                 </div>
             </div>
-        </section>
 
-        <!-- User Types Section -->
-        <section class="section user-types-section">
-            <div class="section-header">
-                <h2>Built for Every User</h2>
-                <p>Specialized tools and data for your specific needs</p>
+            <!-- Zoom message -->
+            <div class="zoom-message" id="zoom-message">Zoom in to see parcels</div>
+
+            <!-- Loading overlay -->
+            <div class="loading-overlay" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text" id="loading-status">Connecting to Nashville GIS...</div>
+                <div class="loading-subtext">Loading parcel eligibility data</div>
+                <div class="loading-progress">
+                    <div class="loading-progress-bar" id="progress-bar"></div>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <div class="user-types-grid">
-                <a href="user-homeowners.html" class="user-type-card">
-                    <div class="user-type-card-icon">
-                        <img src="assets/icons/Property Owners.png" alt="">
-                    </div>
-                    <h3>Homeowners</h3>
-                    <p>Check your eligibility, understand requirements, estimate costs, and find qualified contractors.</p>
-                    <span class="user-type-card-link">Get started →</span>
-                </a>
+    <!-- Three User Cards -->
+    <section class="user-cards-section">
+        <h2>Built for Every Stage of Your DADU Journey</h2>
+        <p class="section-desc">Specialized tools and data for homeowners, contractors, and professionals</p>
 
-                <a href="contractor_marketplace.html" class="user-type-card">
-                    <div class="user-type-card-icon">
-                        <img src="assets/icons/Building and Construction.png" alt="">
-                    </div>
-                    <h3>Contractors</h3>
-                    <p>Access market intelligence, find leads, analyze competitor pricing, and showcase your projects.</p>
-                    <span class="user-type-card-link">View marketplace →</span>
-                </a>
-
-                <a href="designer_resources.html" class="user-type-card">
-                    <div class="user-type-card-icon">
-                        <img src="assets/icons/Surveyers adn Engineers.png" alt="">
-                    </div>
-                    <h3>Designers</h3>
-                    <p>Building requirements database, precedent projects, setback calculators, and design tools.</p>
-                    <span class="user-type-card-link">Access resources →</span>
-                </a>
-
-                <a href="market_trends.html" class="user-type-card">
-                    <div class="user-type-card-icon">
-                        <img src="assets/icons/Investors.png" alt="">
-                    </div>
-                    <h3>Investors</h3>
-                    <p>Bulk parcel data, opportunity maps, ROI analysis, and market trend reports.</p>
-                    <span class="user-type-card-link">Explore data →</span>
-                </a>
-
-                <a href="municipal_dashboard.html" class="user-type-card">
-                    <div class="user-type-card-icon">
-                        <img src="assets/icons/Municipal.png" alt="">
-                    </div>
-                    <h3>Municipal</h3>
-                    <p>Permit tracking dashboards, policy impact analysis, and compliance monitoring.</p>
-                    <span class="user-type-card-link">View dashboard →</span>
-                </a>
-
-                <a href="legal_resources.html" class="user-type-card">
-                    <div class="user-type-card-icon">
-                        <img src="assets/icons/Legal.png" alt="">
-                    </div>
-                    <h3>Legal</h3>
-                    <p>Covenant research, title issues, zoning compliance, and 111 legal citations database.</p>
-                    <span class="user-type-card-link">Research now →</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="cta-section">
-            <h2>Ready to Check Your Property?</h2>
-            <p>Get instant eligibility results and a complete DADU analysis. It's free.</p>
-            <a href="property-report-card.html" class="cta-btn">
-                Check Eligibility Now
-                <span>→</span>
+        <div class="user-cards-grid">
+            <a href="user-homeowners.html" class="user-card">
+                <div class="user-card-icon">
+                    <img src="assets/icons/Property Owners.png" alt="">
+                </div>
+                <h3>Homeowner</h3>
+                <p>Check your eligibility, understand requirements, estimate costs, and find qualified contractors for your DADU project.</p>
+                <span class="user-card-link">Get started &rarr;</span>
             </a>
-        </section>
-    </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h3>HOMEBODY</h3>
-                <p>Nashville's most comprehensive DADU eligibility and development platform. Built for homeowners, contractors, and professionals. A Vanderbilt Law School project.</p>
-            </div>
-            <div class="footer-links">
-                <h4>Features</h4>
+            <a href="contractor_marketplace.html" class="user-card">
+                <div class="user-card-icon">
+                    <img src="assets/icons/Building and Construction.png" alt="">
+                </div>
+                <h3>Contractor</h3>
+                <p>Access market intelligence, find leads, analyze competitor pricing, and showcase your DADU projects to homeowners.</p>
+                <span class="user-card-link">View marketplace &rarr;</span>
+            </a>
+
+            <a href="designer_resources.html" class="user-card">
+                <div class="user-card-icon">
+                    <img src="assets/icons/Surveyers adn Engineers.png" alt="">
+                </div>
+                <h3>Professional</h3>
+                <p>Building requirements, precedent projects, setback calculators, legal citations, and design tools for architects and consultants.</p>
+                <span class="user-card-link">Access resources &rarr;</span>
+            </a>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="page-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <h3>CASTLEHOLD</h3>
+            <p>Nashville's authority for DADU zoning and buildability intelligence. Built for homeowners, contractors, and professionals.</p>
+        </div>
+        <div class="footer-links">
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <a href="what_is_dadu.html">What is a DADU?</a>
                 <a href="dadu_eligibility_map.html">Eligibility Map</a>
-                <a href="property-report-card.html">Property Search</a>
-                <a href="dadu_explorer_attom.html">DADU Explorer</a>
-                <a href="feature-documents.html">Documents</a>
-                <a href="roi_calculator.html">Calculators</a>
+                <a href="property_search.html">Property Search</a>
+                <a href="dadu_near_me_v2.html">DADUs Near Me</a>
             </div>
-            <div class="footer-links">
-                <h4>User Types</h4>
-                <a href="user-homeowners.html">Homeowners</a>
+            <div class="footer-col">
+                <h4>Build</h4>
+                <a href="project_planner.html">Project Planner</a>
+                <a href="project_cost_estimator.html">Cost Estimator</a>
                 <a href="contractor_marketplace.html">Contractors</a>
-                <a href="designer_resources.html">Designers</a>
-                <a href="market_trends.html">Investors</a>
+                <a href="roi_calculator.html">ROI Calculator</a>
             </div>
-            <div class="footer-links">
-                <h4>Resources</h4>
-                <a href="dadu_code_legislation_v3.html">Code & Legislation</a>
-                <a href="what_is_dadu.html">What is DADU?</a>
-                <a href="permit_process_timeline.html">Permit Process</a>
-                <a href="dadu_history.html">DADU History</a>
-            </div>
-            <div class="footer-links">
-                <h4>Company</h4>
+            <div class="footer-col">
+                <h4>Data</h4>
+                <a href="permit_activity_dashboard.html">Permit Activity</a>
+                <a href="dadu_reports_store.html">Reports</a>
+                <a href="dadu_documents_portal.html">Documents</a>
                 <a href="homebody_pricing.html">Pricing</a>
-                <a href="what_is_dadu.html">About DADU</a>
-                <a href="mailto:contact@homebodyprojects.com">Contact</a>
-                <a href="dadu_resources.html">Resources</a>
             </div>
         </div>
-        <div class="footer-bottom">
-            <span>© 2026 Homebody Projects. All rights reserved.</span>
-            <span>A Vanderbilt Law School Project</span>
-        </div>
-    </footer>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; 2026 Castlehold. All rights reserved.</span>
+        <span>Data: Nashville Open Data, Metro Codes, Property Assessor. Not legal advice.</span>
+    </div>
+</footer>
 
-    <!-- JavaScript for Dropdown Navigation -->
-    <script>
-        (function() {
-            'use strict';
+<!-- Scripts -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script>
+    // ========== CONFIGURATION ==========
+    const COLORS = {
+        eligible: '#C58B2A',
+        conditional: '#f39c12',
+        notEligible: '#7A2A1D'
+    };
 
-            // Dropdown functionality
-            const dropdownButtons = document.querySelectorAll('[aria-haspopup="true"]');
+    const ELIG_LABELS = {
+        'eligible': 'Eligible (SP-USD)',
+        'conditional': 'Conditional (Overlay Required)',
+        'not-eligible': 'Not Eligible'
+    };
 
-            dropdownButtons.forEach(button => {
-                const menuId = button.getAttribute('aria-controls');
-                const menu = document.getElementById(menuId);
+    const ARCGIS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0';
+    const CADASTRAL_SERVICE = 'https://maps.nashville.gov/arcgis/rest/services/Cadastral/Cadastral_Layers/MapServer/4';
 
-                if (!menu) return;
+    let map;
+    let parcelLayer;
+    let eligibleLayer, conditionalLayer, notEligibleLayer;
+    let loadedBounds = null;
+    let isLoading = false;
 
-                // Click to toggle
-                button.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+    // ========== ArcGIS QUERIES ==========
+    async function queryArcGIS(options = {}) {
+        const defaults = {
+            where: '1=1',
+            outFields: 'STANPAR,Address,Zoning,Acres,Lot_SqFt,In_USD,Service_District,Eligibility_Status,Max_DADU_Living_SF,Lat,Lon',
+            returnGeometry: false,
+            f: 'json',
+            resultRecordCount: 2000
+        };
+        const params = { ...defaults, ...options };
+        const queryString = new URLSearchParams(params).toString();
+        const url = `${ARCGIS_SERVICE}/query?${queryString}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return await response.json();
+        } catch (err) {
+            console.error('ArcGIS query error:', err);
+            throw err;
+        }
+    }
 
-                    // Close all other dropdowns first
-                    closeAllDropdowns();
+    async function queryByBounds(bounds, options = {}) {
+        const south = bounds.getSouth(), north = bounds.getNorth();
+        const west = bounds.getWest(), east = bounds.getEast();
+        const boundsWhere = `Lat >= ${south} AND Lat <= ${north} AND Lon >= ${west} AND Lon <= ${east}`;
+        let whereClause = boundsWhere;
+        if (options.where && options.where !== '1=1') {
+            whereClause = `(${boundsWhere}) AND (${options.where})`;
+        }
+        return queryArcGIS({ ...options, where: whereClause });
+    }
 
-                    if (!isExpanded) {
-                        button.setAttribute('aria-expanded', 'true');
-                        menu.classList.add('open');
-                    }
+    async function queryCadastralByBounds(bounds) {
+        const geometry = JSON.stringify({
+            xmin: bounds.getWest(), ymin: bounds.getSouth(),
+            xmax: bounds.getEast(), ymax: bounds.getNorth(),
+            spatialReference: { wkid: 4326 }
+        });
+        const params = new URLSearchParams({
+            where: '1=1', geometry: geometry,
+            geometryType: 'esriGeometryEnvelope',
+            spatialRel: 'esriSpatialRelIntersects',
+            outFields: 'STANPAR,PropAddr,Acres',
+            returnGeometry: true, outSR: 4326, f: 'geojson',
+            resultRecordCount: 500
+        });
+        try {
+            const response = await fetch(`${CADASTRAL_SERVICE}/query?${params.toString()}`);
+            if (!response.ok) throw new Error(`Cadastral query failed: ${response.status}`);
+            return await response.json();
+        } catch (err) {
+            console.error('Cadastral bounds query error:', err);
+            return null;
+        }
+    }
+
+    // ========== MAP INIT ==========
+    function initMap() {
+        map = L.map('map', { preferCanvas: true }).setView([36.1627, -86.7816], 11);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap &copy; CARTO | Data: Nashville Metro GIS',
+            maxZoom: 19
+        }).addTo(map);
+
+        function clusterIcon(className) {
+            return function(cluster) {
+                const count = cluster.getChildCount();
+                return L.divIcon({
+                    html: '<div>' + (count > 999 ? Math.round(count/1000) + 'k' : count) + '</div>',
+                    className: 'marker-cluster ' + className,
+                    iconSize: [40, 40]
                 });
+            };
+        }
 
-                // Keyboard navigation
-                button.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        button.click();
-                    }
+        eligibleLayer = L.markerClusterGroup({ maxClusterRadius: 50, disableClusteringAtZoom: 17, iconCreateFunction: clusterIcon('marker-cluster-eligible') });
+        conditionalLayer = L.markerClusterGroup({ maxClusterRadius: 50, disableClusteringAtZoom: 17, iconCreateFunction: clusterIcon('marker-cluster-conditional') });
+        notEligibleLayer = L.markerClusterGroup({ maxClusterRadius: 50, disableClusteringAtZoom: 17, iconCreateFunction: clusterIcon('marker-cluster-not-eligible') });
 
-                    if (e.key === 'Escape') {
-                        closeAllDropdowns();
-                        button.focus();
-                    }
+        parcelLayer = L.geoJSON(null, {
+            style: function(feature) {
+                return { color: '#fff', weight: 1, fillColor: feature.properties.fillColor || '#999', fillOpacity: 0.7 };
+            },
+            onEachFeature: function(feature, layer) {
+                if (feature.properties && feature.properties.popupContent) {
+                    layer.bindPopup(feature.properties.popupContent, { maxWidth: 320 });
+                }
+            }
+        });
 
-                    if (e.key === 'ArrowDown') {
-                        e.preventDefault();
-                        const firstItem = menu.querySelector('.dropdown-item');
-                        if (firstItem) firstItem.focus();
-                    }
+        map.addLayer(parcelLayer);
+        map.addLayer(eligibleLayer);
+        map.addLayer(conditionalLayer);
+        map.addLayer(notEligibleLayer);
+
+        // Zoom handler
+        map.on('zoomend', function() {
+            const zoom = map.getZoom();
+            const msg = document.getElementById('zoom-message');
+            if (zoom < 13) {
+                msg.textContent = 'Zoom in to see parcel markers';
+                msg.classList.add('visible');
+            } else if (zoom < 15) {
+                msg.textContent = 'Zoom in more to see parcel boundaries';
+                msg.classList.add('visible');
+            } else {
+                msg.classList.remove('visible');
+            }
+        });
+
+        // Load data on move (debounced)
+        let moveTimeout;
+        map.on('moveend', function() {
+            clearTimeout(moveTimeout);
+            moveTimeout = setTimeout(() => {
+                if (map.getZoom() >= 13) loadViewportData();
+            }, 300);
+        });
+
+        loadInitialData();
+    }
+
+    // ========== DATA LOADING ==========
+    async function loadInitialData() {
+        const statusEl = document.getElementById('loading-status');
+        const progressBar = document.getElementById('progress-bar');
+
+        try {
+            statusEl.textContent = 'Connecting to Nashville GIS...';
+            progressBar.style.width = '10%';
+            progressBar.style.width = '50%';
+
+            await loadViewportData();
+            progressBar.style.width = '100%';
+
+            setTimeout(() => { document.getElementById('loading').classList.add('hidden'); }, 500);
+        } catch (error) {
+            console.error('Error loading data:', error);
+            statusEl.textContent = 'Map loading. Zoom in to explore parcels.';
+            setTimeout(() => { document.getElementById('loading').classList.add('hidden'); }, 2000);
+        }
+    }
+
+    async function loadViewportData() {
+        if (isLoading) return;
+        const zoom = map.getZoom();
+
+        if (zoom < 15) {
+            if (zoom >= 13) await loadViewportMarkers();
+            return;
+        }
+
+        const bounds = map.getBounds();
+        if (loadedBounds && loadedBounds.contains(bounds)) return;
+        isLoading = true;
+
+        try {
+            const cadastralData = await queryCadastralByBounds(bounds);
+            if (!cadastralData || !cadastralData.features || cadastralData.features.length === 0) {
+                await loadViewportMarkers();
+                return;
+            }
+
+            const stanpars = cadastralData.features.map(f => f.properties.STANPAR).filter(s => s);
+            if (stanpars.length === 0) return;
+
+            const eligibilityMap = {};
+            const batchSize = 50;
+            for (let i = 0; i < stanpars.length; i += batchSize) {
+                const batch = stanpars.slice(i, i + batchSize);
+                const whereClause = batch.map(s => `STANPAR = '${s}'`).join(' OR ');
+                const eligData = await queryArcGIS({
+                    where: whereClause,
+                    outFields: 'STANPAR,Address,Zoning,Eligibility_Status,Max_DADU_Living_SF,Lot_SqFt,Acres,Service_District',
+                    resultRecordCount: batchSize
                 });
-
-                // Menu item keyboard navigation
-                const menuItems = menu.querySelectorAll('.dropdown-item');
-                menuItems.forEach((item, index) => {
-                    item.addEventListener('keydown', (e) => {
-                        if (e.key === 'Escape') {
-                            closeAllDropdowns();
-                            button.focus();
-                        }
-
-                        if (e.key === 'ArrowDown') {
-                            e.preventDefault();
-                            const nextItem = menuItems[index + 1];
-                            if (nextItem) nextItem.focus();
-                        }
-
-                        if (e.key === 'ArrowUp') {
-                            e.preventDefault();
-                            const prevItem = menuItems[index - 1];
-                            if (prevItem) {
-                                prevItem.focus();
-                            } else {
-                                button.focus();
-                            }
-                        }
-
-                        if (e.key === 'Tab' && !e.shiftKey && index === menuItems.length - 1) {
-                            closeAllDropdowns();
-                        }
+                if (eligData.features) {
+                    eligData.features.forEach(f => {
+                        const attrs = f.attributes || f;
+                        eligibilityMap[attrs.STANPAR] = attrs;
                     });
-                });
-
-                // Hover behavior (desktop only)
-                const navItem = button.closest('.nav-item');
-                let hoverTimeout;
-
-                navItem.addEventListener('mouseenter', () => {
-                    if (window.innerWidth > 768) {
-                        clearTimeout(hoverTimeout);
-                        closeAllDropdowns();
-                        button.setAttribute('aria-expanded', 'true');
-                        menu.classList.add('open');
-                    }
-                });
-
-                navItem.addEventListener('mouseleave', () => {
-                    if (window.innerWidth > 768) {
-                        hoverTimeout = setTimeout(() => {
-                            button.setAttribute('aria-expanded', 'false');
-                            menu.classList.remove('open');
-                        }, 150);
-                    }
-                });
-            });
-
-            // Close dropdowns when clicking outside
-            document.addEventListener('click', () => {
-                closeAllDropdowns();
-            });
-
-            function closeAllDropdowns() {
-                dropdownButtons.forEach(btn => {
-                    btn.setAttribute('aria-expanded', 'false');
-                    const menuId = btn.getAttribute('aria-controls');
-                    const menu = document.getElementById(menuId);
-                    if (menu) menu.classList.remove('open');
-                });
+                }
             }
 
-            // Hero search form
-            const heroSearch = document.querySelector('.hero-search');
-            if (heroSearch) {
-                heroSearch.addEventListener('submit', (e) => {
-                    const input = heroSearch.querySelector('input');
-                    if (!input.value.trim()) {
-                        e.preventDefault();
-                        input.focus();
-                    }
-                });
+            parcelLayer.clearLayers();
+
+            cadastralData.features.forEach(feature => {
+                const stanpar = feature.properties.STANPAR;
+                const eligData = eligibilityMap[stanpar];
+                if (!eligData) return;
+
+                const status = eligData.Eligibility_Status || '';
+                let eligClass = 'not-eligible', fillColor = COLORS.notEligible;
+
+                if (status === 'CHECK_SP_USD') { eligClass = 'eligible'; fillColor = COLORS.eligible; }
+                else if (status === 'GSD_NEEDS_OVERLAY' || status === 'CHECK_SP_GSD') { eligClass = 'conditional'; fillColor = COLORS.conditional; }
+
+                const lotSf = eligData.Lot_SqFt || (eligData.Acres ? Math.round(eligData.Acres * 43560) : 0);
+                const maxDadu = eligData.Max_DADU_Living_SF || (lotSf >= 10000 ? 850 : 700);
+                const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
+
+                const popupContent = `
+                    <div class="popup-header ${eligClass}">
+                        <div class="popup-status">${eligLabel}</div>
+                        <div class="popup-address">${eligData.Address || feature.properties.PropAddr || 'No Address'}</div>
+                    </div>
+                    <div class="popup-content">
+                        <div class="popup-row"><span class="popup-label">APN</span><span class="popup-value">${stanpar}</span></div>
+                        <div class="popup-row"><span class="popup-label">Zoning</span><span class="popup-value">${eligData.Zoning || 'N/A'}</span></div>
+                        <div class="popup-row"><span class="popup-label">Lot Size</span><span class="popup-value">${lotSf ? lotSf.toLocaleString() : 'N/A'} SF</span></div>
+                        <div class="popup-row"><span class="popup-label">Max DADU</span><span class="popup-value">${maxDadu} SF</span></div>
+                    </div>
+                    <div class="popup-actions">
+                        <a href="property-report-card.html?apn=${stanpar}&address=${encodeURIComponent(eligData.Address || '')}" class="popup-btn popup-btn-primary">Full Report</a>
+                        <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${stanpar}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
+                    </div>`;
+
+                feature.properties.fillColor = fillColor;
+                feature.properties.popupContent = popupContent;
+                parcelLayer.addData(feature);
+            });
+
+            loadedBounds = bounds;
+        } catch (error) {
+            console.error('Viewport load error:', error);
+            await loadViewportMarkers();
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    async function loadViewportMarkers() {
+        const bounds = map.getBounds();
+        try {
+            const data = await queryByBounds(bounds, {
+                outFields: 'STANPAR,Address,Zoning,Acres,Lot_SqFt,In_USD,Service_District,Eligibility_Status,Max_DADU_Living_SF,Lat,Lon',
+                resultRecordCount: 2000
+            });
+
+            if (data.features && data.features.length > 0) {
+                processFeatures(data.features);
             }
-        })();
-    </script>
-    <script src="homebody_header.js"></script>
+            loadedBounds = bounds;
+        } catch (error) {
+            console.error('Marker load error:', error);
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    function processFeatures(features) {
+        features.forEach(feature => {
+            const props = feature.attributes || feature;
+            const lat = props.Lat, lon = props.Lon;
+            if (!lat || !lon || isNaN(lat) || isNaN(lon)) return;
+
+            let eligClass = 'not-eligible', color = COLORS.notEligible, targetLayer = notEligibleLayer;
+            const status = props.Eligibility_Status || '';
+
+            if (status === 'CHECK_SP_USD') { eligClass = 'eligible'; color = COLORS.eligible; targetLayer = eligibleLayer; }
+            else if (status === 'GSD_NEEDS_OVERLAY' || status === 'CHECK_SP_GSD') { eligClass = 'conditional'; color = COLORS.conditional; targetLayer = conditionalLayer; }
+
+            const marker = L.circleMarker([lat, lon], {
+                radius: 8, fillColor: color, color: '#fff', weight: 1, opacity: 1, fillOpacity: 0.85
+            });
+
+            const lotSf = props.Lot_SqFt || (props.Acres ? Math.round(props.Acres * 43560) : 0);
+            const maxDadu = props.Max_DADU_Living_SF || (lotSf >= 10000 ? 850 : 700);
+            const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
+
+            const popupContent = `
+                <div class="popup-header ${eligClass}">
+                    <div class="popup-status">${eligLabel}</div>
+                    <div class="popup-address">${props.Address || 'No Address'}</div>
+                </div>
+                <div class="popup-content">
+                    <div class="popup-row"><span class="popup-label">APN</span><span class="popup-value">${props.STANPAR || 'N/A'}</span></div>
+                    <div class="popup-row"><span class="popup-label">Zoning</span><span class="popup-value">${props.Zoning || 'N/A'}</span></div>
+                    <div class="popup-row"><span class="popup-label">Lot Size</span><span class="popup-value">${lotSf ? lotSf.toLocaleString() : 'N/A'} SF</span></div>
+                    <div class="popup-row"><span class="popup-label">Max DADU</span><span class="popup-value">${maxDadu} SF</span></div>
+                </div>
+                <div class="popup-actions">
+                    <a href="property-report-card.html?apn=${props.STANPAR}&address=${encodeURIComponent(props.Address || '')}" class="popup-btn popup-btn-primary">Full Report</a>
+                    <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${props.STANPAR}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
+                </div>`;
+
+            marker.bindPopup(popupContent, { maxWidth: 320 });
+            targetLayer.addLayer(marker);
+        });
+    }
+
+    // ========== INIT ==========
+    document.addEventListener('DOMContentLoaded', function() {
+        initMap();
+
+        // Hero search form
+        const heroSearch = document.getElementById('hero-search-form');
+        if (heroSearch) {
+            heroSearch.addEventListener('submit', function(e) {
+                const input = heroSearch.querySelector('input');
+                if (!input.value.trim()) {
+                    e.preventDefault();
+                    input.focus();
+                }
+            });
+        }
+
+        // Explore map button — smooth scroll
+        const exploreBtn = document.getElementById('explore-map-btn');
+        if (exploreBtn) {
+            exploreBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('map-section').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+    });
+</script>
+<script src="homebody_header.js"></script>
 </body>
 </html>

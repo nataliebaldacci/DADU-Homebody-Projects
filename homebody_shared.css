@@ -1,26 +1,26 @@
 /* ========================================
-   HOMEBODY PROJECTS - Shared CSS
-   Nashville DADU Platform
+   CASTLEHOLD - Shared CSS
+   DADU Zoning & Buildability Intelligence
    ======================================== */
 
 /* ========================================
    DESIGN TOKENS
    ======================================== */
 :root {
-    /* Brand Colors */
-    --navy: #2c3e50;
-    --navy-dark: #1a252f;
-    --navy-light: #34495e;
-    --teal: #6b8fa3;
-    --teal-light: #8fb5c9;
-    --terracotta: #B55A3C;
-    --terracotta-hover: #9A4A30;
-    --terracotta-light: #c97a60;
-    --tan: #c9a86c;
-    --tan-light: #dbc291;
+    /* Brand Colors — Castlehold Palette */
+    --navy: #3A5566;           /* Deep Slate */
+    --navy-dark: #2E4553;      /* Darker Slate */
+    --navy-light: #4A6B7D;     /* Lighter Slate */
+    --teal: #7B746D;           /* Warm Stone */
+    --teal-light: #918A83;     /* Lighter Stone */
+    --terracotta: #C58B2A;     /* Ochre accent */
+    --terracotta-hover: #A8761F; /* Darker Ochre */
+    --terracotta-light: #D4A54E; /* Lighter Ochre */
+    --tan: #7B746D;            /* Warm Stone (secondary) */
+    --tan-light: #918A83;      /* Lighter Stone */
 
     /* Backgrounds */
-    --background: #e8e4df;
+    --background: #F2F0ED;     /* Lighter warm background */
     --card-bg: #f5f5f0;
     --card-alt: #f0e8e0;
     --light-warm: #f0e8e0;
@@ -36,14 +36,14 @@
     --border-light: #f0f0f0;
 
     /* Status Colors */
-    --error: #c0392b;
+    --error: #7A2A1D;          /* Oxide Red */
     --success: #27ae60;
     --warning: #f39c12;
 
     /* Eligibility (for maps only) */
-    --eligible-map: #6b8e4e;
+    --eligible-map: #3A5566;
     --not-eligible: #888888;
-    --conditional: #c9a86c;
+    --conditional: #7B746D;
 
     /* Shadows */
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
@@ -120,7 +120,7 @@ a {
    MAIN NAVIGATION - ParcelQuest Style
    ======================================== */
 .main-nav {
-    background: var(--white);
+    background: var(--background);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
@@ -160,16 +160,26 @@ a {
     object-fit: contain;
 }
 
+.nav-logo-icon.castle-icon svg {
+    width: 44px;
+    height: 44px;
+    transition: transform 0.2s ease;
+}
+
+.nav-logo:hover .castle-icon svg {
+    transform: scale(1.05);
+}
+
 .nav-logo-text {
     display: flex;
     flex-direction: column;
 }
 
 .nav-logo-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
     color: var(--navy);
-    letter-spacing: -0.5px;
+    letter-spacing: 1.5px;
     line-height: 1.1;
 }
 
@@ -197,7 +207,8 @@ a {
     padding: 12px 16px;
     font-size: 14px;
     font-weight: 600;
-    color: var(--text);
+    color: var(--navy);
+    letter-spacing: 0.5px;
     border-radius: 8px;
     transition: all 0.2s;
     cursor: pointer;
@@ -480,6 +491,119 @@ a.text-link {
 
 a.text-link:hover {
     color: var(--terracotta-hover);
+}
+
+/* ========================================
+   MEGA MENU (Variable Column Support)
+   ======================================== */
+.dropdown-menu.mega-menu {
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    display: grid;
+    gap: 0;
+    padding: 16px 8px;
+}
+
+.dropdown-menu.mega-menu.open {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* 3-column mega menu (EXPLORE, DATA) */
+.dropdown-menu.mega-menu.mega-menu-3 {
+    min-width: 720px;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* 4-column mega menu */
+.dropdown-menu.mega-menu.mega-menu-4 {
+    min-width: 880px;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* 5-column mega menu (BUILD) */
+.dropdown-menu.mega-menu.mega-menu-5 {
+    min-width: 1060px;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.mega-menu-column {
+    padding: 0 12px;
+    border-right: 1px solid var(--border-light);
+}
+
+.mega-menu-column:last-child {
+    border-right: none;
+}
+
+.mega-menu-column-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--terracotta);
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+    padding: 4px 10px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mega-menu-column-title img {
+    width: 14px;
+    height: 14px;
+    opacity: 0.5;
+}
+
+/* Compact dropdown items inside mega menu */
+.mega-menu .dropdown-item {
+    padding: 8px 10px;
+    gap: 10px;
+}
+
+.mega-menu .dropdown-item-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+}
+
+.mega-menu .dropdown-item-icon img {
+    width: 16px;
+    height: 16px;
+}
+
+.mega-menu .dropdown-item-title {
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.mega-menu .dropdown-item-desc {
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+/* Responsive mega menu */
+@media (max-width: 1200px) {
+    .dropdown-menu.mega-menu.mega-menu-5 {
+        min-width: 800px;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1100px) {
+    .dropdown-menu.mega-menu.mega-menu-4 {
+        min-width: 700px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .dropdown-menu.mega-menu.mega-menu-3 {
+        min-width: 500px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .dropdown-menu.mega-menu.mega-menu-5 {
+        min-width: 500px;
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* ========================================

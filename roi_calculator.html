@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DADU ROI Calculator | Homebody Projects</title>
+    <title>DADU ROI Calculator | Castlehold</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #2c3e50;
-            --navy-dark: #1a252f;
-            --teal: #6b8fa3;
-            --terracotta: #B55A3C;
-            --terracotta-light: #c97a60;
-            --tan: #c9a86c;
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-light: #D4A54E;
+            --tan: #7B746D;
             --cream: #f5f5f0;
-            --warm-gray: #e8e4df;
+            --warm-gray: #F2F0ED;
             --white: #ffffff;
             --text: #333333;
             --text-light: #666666;
@@ -352,29 +351,33 @@
             text-decoration: none;
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<nav class="nav">
+    <nav class="nav">
         <a href="index.html" class="nav-logo">
-            <div class="nav-logo-icon">🏠</div>
-            <span class="nav-logo-text">Homebody Projects</span>
+            <div class="nav-logo-icon castle-icon">
+                <img src="assets/castlehold-logo.png" alt="Castlehold" width="44" height="37" style="object-fit:contain;">
+            </div>
+            <div class="nav-logo-text">
+                <span class="nav-logo-title">Castlehold</span>
+                <span class="nav-logo-subtitle">DADU Zoning &amp; Buildability Intelligence</span>
+            </div>
         </a>
         <a href="index.html" class="nav-back">← Back to Home</a>
     </nav>
 
     <div class="container">
-        
+        <div class="page-header">
+            <h1 class="page-title">DADU ROI Calculator</h1>
+            <p class="page-subtitle">Estimate your return on investment for building a Detached Accessory Dwelling Unit in Nashville</p>
+        </div>
 
         <div class="calculator-card">
             <!-- Investment Inputs -->
@@ -533,7 +536,7 @@
 
     <footer class="footer">
         <p>This calculator provides estimates only. Consult with financial and real estate professionals for specific advice.</p>
-        <p style="margin-top: 8px;"><a href="index.html">Homebody Projects</a> | Nashville DADU Platform</p>
+        <p style="margin-top: 8px;"><a href="index.html">Castlehold</a> | Nashville DADU Platform</p>
     </footer>
 
     <script>

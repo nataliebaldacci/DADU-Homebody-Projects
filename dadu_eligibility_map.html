@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DADU Eligibility Map | Homebody Projects</title>
+    <title>DADU Eligibility Map | Castlehold</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     <style>
         :root {
-            --navy: #2c3e50;
-            --navy-dark: #1a252f;
-            --teal: #6b8fa3;
-            --terracotta: #B55A3C;
-            --terracotta-hover: #9A4A30;
-            --tan: #c9a86c;
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-hover: #A8761F;
+            --tan: #7B746D;
             --cream: #f5f5f0;
-            --background: #e8e4df;
+            --background: #F2F0ED;
             --white: #ffffff;
             --border: #e0e0e0;
             --text: #333333;
             --text-light: #666666;
-            --eligible-green: #B55A3C;
+            --eligible-green: #C58B2A;
             --not-eligible-red: #c0392b;
             --conditional-yellow: #f39c12;
         }
@@ -616,20 +615,16 @@
             }
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<!-- Header -->
+    <!-- Header -->
     
 
     <!-- Title Bar -->
@@ -751,7 +746,7 @@
     <script>
         // Configuration
         const COLORS = {
-            eligible: '#B55A3C',
+            eligible: '#C58B2A',
             conditional: '#f39c12',
             notEligible: '#c0392b'
         };
@@ -1307,8 +1302,9 @@
                 // Popup content
                 const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
                 const popupContent = `
-                    
-                        <div class="popup-address">${parcel.address}</div>
+                    <div class="popup-header ${eligClass}">
+                        <div class="popup-status">${eligLabel}</div>
+                        <div class="popup-address">${props.Address || 'No Address'}</div>
                     </div>
                     <div class="popup-content">
                         <div class="popup-row">

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Draw DADU on Your Parcel | Homebody Projects</title>
+    <title>Draw DADU on Your Parcel | Castlehold</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
@@ -12,14 +11,14 @@
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
     <style>
         :root {
-            --navy: #2c3e50;
-            --navy-dark: #1a252f;
-            --teal: #6b8fa3;
-            --terracotta: #B55A3C;
-            --terracotta-light: #c97a60;
-            --tan: #c9a86c;
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-light: #D4A54E;
+            --tan: #7B746D;
             --cream: #f5f5f0;
-            --warm-gray: #e8e4df;
+            --warm-gray: #F2F0ED;
             --white: #ffffff;
             --text: #333333;
             --text-light: #666666;
@@ -334,23 +333,24 @@
             background-color: var(--terracotta) !important;
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<nav class="nav">
+    <nav class="nav">
         <a href="index.html" class="nav-logo">
-            <div class="nav-logo-icon">🏠</div>
-            <span class="nav-logo-text">Homebody Projects</span>
+            <div class="nav-logo-icon castle-icon">
+                <img src="assets/castlehold-logo.png" alt="Castlehold" width="44" height="37" style="object-fit:contain;">
+            </div>
+            <div class="nav-logo-text">
+                <span class="nav-logo-title">Castlehold</span>
+                <span class="nav-logo-subtitle">DADU Zoning &amp; Buildability Intelligence</span>
+            </div>
         </a>
         <a href="index.html" class="nav-back">← Back to Home</a>
     </nav>
@@ -441,15 +441,15 @@
             <div class="map-overlay">
                 <div class="overlay-title">🗺️ Map Legend</div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(44, 62, 80, 0.3); border: 2px solid #2c3e50;"></div>
+                    <div class="legend-color" style="background: rgba(44, 62, 80, 0.3); border: 2px solid #3A5566;"></div>
                     <span>Property Boundary</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(181, 90, 60, 0.2); border: 2px dashed #B55A3C;"></div>
+                    <div class="legend-color" style="background: rgba(181, 90, 60, 0.2); border: 2px dashed #C58B2A;"></div>
                     <span>Buildable Area</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background: rgba(181, 90, 60, 0.6); border: 2px solid #B55A3C;"></div>
+                    <div class="legend-color" style="background: rgba(181, 90, 60, 0.6); border: 2px solid #C58B2A;"></div>
                     <span>Your DADU</span>
                 </div>
                 <div class="legend-item">
@@ -509,8 +509,8 @@
                 marker: false,
                 rectangle: {
                     shapeOptions: {
-                        color: '#B55A3C',
-                        fillColor: '#B55A3C',
+                        color: '#C58B2A',
+                        fillColor: '#C58B2A',
                         fillOpacity: 0.6,
                         weight: 2
                     }
@@ -549,8 +549,8 @@
 
             // Draw property boundary
             propertyLayer = L.polygon(demoProperty, {
-                color: '#2c3e50',
-                fillColor: '#2c3e50',
+                color: '#3A5566',
+                fillColor: '#3A5566',
                 fillOpacity: 0.1,
                 weight: 3
             }).addTo(map);
@@ -594,8 +594,8 @@
             ];
 
             buildableLayer = L.polygon(buildableBounds, {
-                color: '#B55A3C',
-                fillColor: '#B55A3C',
+                color: '#C58B2A',
+                fillColor: '#C58B2A',
                 fillOpacity: 0.15,
                 weight: 2,
                 dashArray: '5, 10'
@@ -649,8 +649,8 @@
             ];
 
             const dadu = L.polygon(daduBounds, {
-                color: '#B55A3C',
-                fillColor: '#B55A3C',
+                color: '#C58B2A',
+                fillColor: '#C58B2A',
                 fillOpacity: 0.6,
                 weight: 3
             });

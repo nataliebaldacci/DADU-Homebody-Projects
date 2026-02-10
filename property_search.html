@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Search | Homebody Projects</title>
+    <title>Property Search | Castlehold</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         :root {
-            --navy: #2c3e50;
-            --navy-dark: #1a252f;
-            --navy-light: #34495e;
-            --teal: #6b8fa3;
-            --teal-light: #8fb5c9;
-            --terracotta: #B55A3C;
-            --terracotta-hover: #9A4A30;
-            --terracotta-light: #c97a60;
-            --tan: #c9a86c;
-            --tan-light: #dbc291;
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --navy-light: #4A6B7D;
+            --teal: #7B746D;
+            --teal-light: #918A83;
+            --terracotta: #C58B2A;
+            --terracotta-hover: #A8761F;
+            --terracotta-light: #D4A54E;
+            --tan: #7B746D;
+            --tan-light: #918A83;
             --cream: #f8f9fa;
-            --warm-gray: #e8e4df;
+            --warm-gray: #F2F0ED;
             --white: #ffffff;
             --text: #1a1a1a;
             --text-light: #666666;
@@ -211,8 +210,8 @@
         }
 
         .sidebar-tab.active {
-            color: #B55A3C;
-            border-bottom-color: #B55A3C;
+            color: #C58B2A;
+            border-bottom-color: #C58B2A;
             background: #fff;
         }
 
@@ -294,7 +293,7 @@
         .section-title {
             font-size: 15px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -303,7 +302,7 @@
         .section-title svg {
             width: 18px;
             height: 18px;
-            color: #6b8fa3;
+            color: #7B746D;
         }
 
         .section-subtitle {
@@ -325,8 +324,8 @@
         }
 
         .edit-btn:hover {
-            border-color: #6b8fa3;
-            color: #6b8fa3;
+            border-color: #7B746D;
+            color: #7B746D;
         }
 
         .property-row {
@@ -354,7 +353,7 @@
         }
 
         .property-value.highlight {
-            color: #B55A3C;
+            color: #C58B2A;
         }
 
         .property-value.warning {
@@ -370,7 +369,7 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: linear-gradient(135deg, #3A5566 0%, #4A6B7D 100%);
             border-radius: 10px;
             padding: 14px;
             color: white;
@@ -378,11 +377,11 @@
         }
 
         .stat-card.green {
-            background: linear-gradient(135deg, #B55A3C 0%, #5a7a3f 100%);
+            background: linear-gradient(135deg, #C58B2A 0%, #5a7a3f 100%);
         }
 
         .stat-card.blue {
-            background: linear-gradient(135deg, #6b8fa3 0%, #5a7d91 100%);
+            background: linear-gradient(135deg, #7B746D 0%, #5a7d91 100%);
         }
 
         .stat-value {
@@ -415,12 +414,12 @@
         }
 
         .permit-card:hover {
-            border-color: #6b8fa3;
+            border-color: #7B746D;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .permit-card.active {
-            border-color: #B55A3C;
+            border-color: #C58B2A;
             background: #f0f7ec;
         }
 
@@ -434,7 +433,7 @@
         .permit-address {
             font-size: 13px;
             font-weight: 600;
-            color: #2c3e50;
+            color: #3A5566;
         }
 
         .permit-distance {
@@ -466,7 +465,7 @@
             align-items: center;
             gap: 6px;
             font-size: 12px;
-            color: #6b8fa3;
+            color: #7B746D;
         }
 
         .permit-contractor svg {
@@ -494,7 +493,7 @@
         }
 
         .contractor-card:hover {
-            border-color: #B55A3C;
+            border-color: #C58B2A;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
@@ -502,7 +501,7 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: #B55A3C;
+            background: #C58B2A;
             color: white;
             display: flex;
             align-items: center;
@@ -517,7 +516,7 @@
         }
 
         .contractor-rank.bronze {
-            background: #c9a86c;
+            background: #7B746D;
         }
 
         .contractor-info {
@@ -527,7 +526,7 @@
         .contractor-name {
             font-size: 13px;
             font-weight: 600;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 2px;
         }
 
@@ -563,8 +562,8 @@
         }
 
         .btn-green {
-            background: #B55A3C;
-            border: 2px solid #B55A3C;
+            background: #C58B2A;
+            border: 2px solid #C58B2A;
             color: white;
         }
 
@@ -580,13 +579,13 @@
         }
 
         .btn-outline:hover {
-            border-color: #6b8fa3;
-            color: #6b8fa3;
+            border-color: #7B746D;
+            color: #7B746D;
         }
 
         /* Tax Card */
         .tax-card {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: linear-gradient(135deg, #3A5566 0%, #4A6B7D 100%);
             border-radius: 12px;
             padding: 20px;
             color: white;
@@ -687,7 +686,7 @@
             -webkit-appearance: none;
             width: 18px;
             height: 18px;
-            background: #B55A3C;
+            background: #C58B2A;
             border-radius: 50%;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -758,7 +757,7 @@
         }
 
         .checklist-link {
-            color: #6b8fa3;
+            color: #7B746D;
             text-decoration: none;
         }
 
@@ -797,7 +796,7 @@
 
         .roi-input:focus {
             outline: none;
-            border-color: #6b8fa3;
+            border-color: #7B746D;
         }
 
         .roi-results {
@@ -831,7 +830,7 @@
 
         .roi-result-value.highlight {
             font-size: 16px;
-            color: #B55A3C;
+            color: #C58B2A;
         }
 
         /* Info Callout */
@@ -910,7 +909,7 @@
         }
 
         .map-tool.active svg {
-            color: #B55A3C;
+            color: #C58B2A;
         }
 
         .map-tool span {
@@ -934,7 +933,7 @@
         .legend-title {
             font-weight: 600;
             margin-bottom: 8px;
-            color: #2c3e50;
+            color: #3A5566;
         }
 
         .legend-item {
@@ -955,16 +954,16 @@
         }
 
         .legend-dot.parcel {
-            background: #6b8fa3;
-            border: 2px dashed #2c3e50;
+            background: #7B746D;
+            border: 2px dashed #3A5566;
         }
 
         .legend-dot.permit {
-            background: #B55A3C;
+            background: #C58B2A;
         }
 
         .legend-dot.building {
-            background: #2c3e50;
+            background: #3A5566;
         }
 
         /* Zoom Controls */
@@ -1019,7 +1018,7 @@
             width: 40px;
             height: 40px;
             border: 3px solid #e0e0e0;
-            border-top-color: #B55A3C;
+            border-top-color: #C58B2A;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
@@ -1044,7 +1043,7 @@
 
         .footer-link {
             font-size: 12px;
-            color: #6b8fa3;
+            color: #7B746D;
             text-decoration: none;
         }
 
@@ -1054,7 +1053,7 @@
 
         /* Custom marker */
         .permit-marker {
-            background: #B55A3C;
+            background: #C58B2A;
             border: 2px solid #fff;
             border-radius: 50%;
             width: 24px;
@@ -1086,7 +1085,7 @@
         }
 
         .design-standard:hover {
-            border-color: #6b8fa3;
+            border-color: #7B746D;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
@@ -1106,7 +1105,7 @@
         .design-value {
             font-size: 15px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 2px;
         }
 
@@ -1117,7 +1116,7 @@
 
         /* Cost Estimate Card */
         .cost-estimate-card {
-            background: linear-gradient(135deg, #B55A3C 0%, #5a7a3f 100%);
+            background: linear-gradient(135deg, #C58B2A 0%, #5a7a3f 100%);
             border-radius: 12px;
             padding: 20px;
             color: white;
@@ -1210,7 +1209,7 @@
         .lock-icon {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+            background: linear-gradient(135deg, #3A5566 0%, #2E4553 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1227,7 +1226,7 @@
         .lock-title {
             font-size: 14px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 4px;
         }
 
@@ -1240,13 +1239,13 @@
 
         .lock-price {
             font-size: 11px;
-            color: #B55A3C;
+            color: #C58B2A;
             font-weight: 600;
             margin-bottom: 10px;
         }
 
         .btn-unlock {
-            background: linear-gradient(135deg, #B55A3C 0%, #5a7a3f 100%);
+            background: linear-gradient(135deg, #C58B2A 0%, #5a7a3f 100%);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -1272,7 +1271,7 @@
 
         /* Tab Lock Badge */
         .sidebar-tab .lock-badge {
-            background: #c9a86c;
+            background: #7B746D;
             color: white;
             font-size: 7px;
             padding: 2px 4px;
@@ -1288,7 +1287,7 @@
 
         /* Premium Banner */
         .premium-banner {
-            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+            background: linear-gradient(135deg, #3A5566 0%, #2E4553 100%);
             color: white;
             padding: 12px 16px;
             display: flex;
@@ -1310,7 +1309,7 @@
         .premium-banner .btn-sm {
             padding: 6px 12px;
             font-size: 10px;
-            background: #B55A3C;
+            background: #C58B2A;
             color: white;
             border: none;
             border-radius: 4px;
@@ -1320,7 +1319,7 @@
 
         /* Unlock All Button */
         .unlock-all-btn {
-            background: linear-gradient(135deg, #c9a86c 0%, #b8975b 100%);
+            background: linear-gradient(135deg, #7B746D 0%, #b8975b 100%);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -1379,12 +1378,12 @@
         }
 
         .timeline-step.active::before {
-            background: #B55A3C;
+            background: #C58B2A;
             box-shadow: 0 0 0 4px rgba(181, 90, 60, 0.2);
         }
 
         .timeline-step.completed::before {
-            background: #B55A3C;
+            background: #C58B2A;
         }
 
         .timeline-icon {
@@ -1411,7 +1410,7 @@
         .timeline-title {
             font-size: 13px;
             font-weight: 600;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 2px;
         }
 
@@ -1423,24 +1422,20 @@
 
         .timeline-time {
             font-size: 10px;
-            color: #B55A3C;
+            color: #C58B2A;
             font-weight: 600;
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<!-- Header -->
+    <!-- Header -->
     
 
     <!-- Main Container -->
@@ -1528,7 +1523,10 @@
                 </div>
 
                 <div class="property-section">
-                    
+                    <div class="section-header">
+                        <h2 class="section-title">Property Information</h2>
+                        <button class="edit-btn" onclick="openEditModal()">Edit</button>
+                    </div>
 
                     <div class="property-row">
                         <div class="property-label">Address</div>
@@ -1562,7 +1560,15 @@
 
                 <!-- DADU Design Standards Section -->
                 <div class="property-section">
-                    
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            DADU Design Standards
+                        </h2>
+                    </div>
                     <div class="section-subtitle">Based on Nashville zoning code & BL2025-1007</div>
 
                     <div class="design-standards-grid">
@@ -1607,7 +1613,15 @@
 
                 <!-- Cost Estimate Section (LOCKED) -->
                 <div class="property-section premium-section locked" id="costSection">
-                    
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            Estimated Project Cost
+                        </h2>
+                    </div>
 
                     <!-- Lock Overlay -->
                     <div class="premium-lock-overlay">
@@ -1672,7 +1686,15 @@
 
                 <!-- Next Steps Timeline (LOCKED) -->
                 <div class="property-section premium-section locked" id="timelineSection">
-                    
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            Your DADU Journey
+                        </h2>
+                    </div>
 
                     <!-- Lock Overlay -->
                     <div class="premium-lock-overlay">
@@ -1781,8 +1803,8 @@
                             <div class="stat-value" id="avgSize">0</div>
                             <div class="stat-label">Avg SqFt</div>
                         </div>
-                        <div class="stat-card" style="background: linear-gradient(135deg, #B55A3C20, #B55A3C10); border: 1px solid #B55A3C40;">
-                            <div class="stat-value" id="avgCostPerSF" style="color: #B55A3C;">$0/SF</div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #C58B2A20, #C58B2A10); border: 1px solid #C58B2A40;">
+                            <div class="stat-value" id="avgCostPerSF" style="color: #C58B2A;">$0/SF</div>
                             <div class="stat-label">Cost Per SF</div>
                         </div>
                     </div>
@@ -1860,7 +1882,9 @@
 
                     <div class="premium-content">
                         <div class="tax-card">
-                            
+                            <div class="tax-card-header">
+                                <div>
+                                    <div class="tax-card-title">Estimated Annual Tax Increase</div>
                                     <div class="tax-amount" id="taxIncrease">+$0</div>
                                     <div class="tax-amount-label">per year after adding DADU</div>
                                 </div>
@@ -2329,7 +2353,7 @@
                 if (p.lat && p.lon) {
                     const marker = L.circleMarker([p.lat, p.lon], {
                         radius: 5,
-                        fillColor: '#B55A3C',
+                        fillColor: '#C58B2A',
                         color: '#fff',
                         weight: 1,
                         fillOpacity: 0.6
@@ -2338,9 +2362,9 @@
                     marker.bindPopup(`
                         <div style="font-family:Inter,sans-serif;min-width:180px;">
                             <strong style="font-size:12px;">${p.address}</strong><br>
-                            <span style="color:#B55A3C;font-weight:600;">$${(p.cost || 0).toLocaleString()}</span><br>
+                            <span style="color:#C58B2A;font-weight:600;">$${(p.cost || 0).toLocaleString()}</span><br>
                             <span style="color:#666;font-size:11px;">${p.contractor}</span><br>
-                            ${p.url_epermits ? `<a href="${p.url_epermits}" target="_blank" style="color:#6b8fa3;font-size:11px;">View Permit →</a>` : ''}
+                            ${p.url_epermits ? `<a href="${p.url_epermits}" target="_blank" style="color:#7B746D;font-size:11px;">View Permit →</a>` : ''}
                         </div>
                     `);
                 }
@@ -2433,7 +2457,7 @@
         function drawParcel(parcel) {
             if (parcelLayer) map.removeLayer(parcelLayer);
             parcelLayer = L.geoJSON(parcel, {
-                style: { color: '#2c3e50', weight: 3, fillColor: '#6b8fa3', fillOpacity: 0.15, dashArray: '5,5' }
+                style: { color: '#3A5566', weight: 3, fillColor: '#7B746D', fillOpacity: 0.15, dashArray: '5,5' }
             }).addTo(map);
         }
 
@@ -2461,7 +2485,7 @@
 
                 data.features?.forEach(b => {
                     const layer = L.geoJSON(b, {
-                        style: { color: '#2c3e50', weight: 2, fillColor: '#2c3e50', fillOpacity: 0.4 }
+                        style: { color: '#3A5566', weight: 2, fillColor: '#3A5566', fillOpacity: 0.4 }
                     }).addTo(map);
                     buildingLayers.push(layer);
                 });
@@ -2568,17 +2592,18 @@
 
             container.innerHTML = nearbyPermits.slice(0, 10).map((p, i) => `
                 <div class="permit-card" onclick="focusPermit(${i})">
-                    
+                    <div class="permit-header">
+                        <div class="permit-address">${p.address}</div>
                         <div class="permit-distance">${p.distance.toFixed(2)} mi</div>
                     </div>
                     <div class="permit-details">
                         <div class="permit-detail"><strong>$${(p.cost/1000).toFixed(0)}K</strong></div>
                         <div class="permit-detail">${p.sqft} SF</div>
-                        ${p.costPerSF ? `<div class="permit-detail" style="color:#B55A3C;font-weight:600;">$${p.costPerSF}/SF</div>` : ''}
+                        ${p.costPerSF ? `<div class="permit-detail" style="color:#C58B2A;font-weight:600;">$${p.costPerSF}/SF</div>` : ''}
                     </div>
                     <div class="permit-details" style="margin-top:4px;">
                         <div class="permit-detail" style="font-size:10px;color:#888;">${p.status || ''}</div>
-                        ${p.url_epermits ? `<div class="permit-detail"><a href="${p.url_epermits}" target="_blank" style="color:#6b8fa3;">View →</a></div>` : ''}
+                        ${p.url_epermits ? `<div class="permit-detail"><a href="${p.url_epermits}" target="_blank" style="color:#7B746D;">View →</a></div>` : ''}
                     </div>
                     <div class="permit-contractor">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -2598,7 +2623,7 @@
             nearbyPermits.forEach((p, i) => {
                 const marker = L.circleMarker([p.lat, p.lon], {
                     radius: 8,
-                    fillColor: '#B55A3C',
+                    fillColor: '#C58B2A',
                     color: '#fff',
                     weight: 2,
                     fillOpacity: 0.9
@@ -2607,11 +2632,11 @@
                 marker.bindPopup(`
                     <div style="font-family:Inter,sans-serif;min-width:200px;">
                         <strong>${p.address}</strong><br>
-                        <span style="color:#B55A3C;font-weight:600;">$${p.cost.toLocaleString()}</span> · ${p.sqft} SF
+                        <span style="color:#C58B2A;font-weight:600;">$${p.cost.toLocaleString()}</span> · ${p.sqft} SF
                         ${p.costPerSF ? ` · <strong>$${p.costPerSF}/SF</strong>` : ''}<br>
                         <span style="color:#666;font-size:12px;">${p.contractor}</span><br>
                         <span style="color:#888;font-size:11px;">${p.status}</span>
-                        ${p.url_epermits ? ` · <a href="${p.url_epermits}" target="_blank" style="color:#6b8fa3;font-size:11px;">View Permit →</a>` : ''}
+                        ${p.url_epermits ? ` · <a href="${p.url_epermits}" target="_blank" style="color:#7B746D;font-size:11px;">View Permit →</a>` : ''}
                     </div>
                 `);
 

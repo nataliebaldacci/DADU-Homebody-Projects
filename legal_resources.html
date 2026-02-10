@@ -4,26 +4,460 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Legal Resources | Castlehold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-hover: #A8761F;
+            --tan: #7B746D;
+            --cream: #f5f5f0;
+            --background: #F2F0ED;
+            --white: #ffffff;
+            --border: #e0e0e0;
+            --text: #333333;
+            --text-light: #666666;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--terracotta);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 60px 24px;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 24px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .category-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 28px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .category-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .category-card p {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .category-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .category-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--cream);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .category-link:hover {
+            background: var(--terracotta);
+            color: white;
+        }
+
+        .category-link span {
+            opacity: 0.5;
+        }
+
+        .quick-links {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 48px;
+        }
+
+        .quick-links-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .quick-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 16px;
+            background: var(--cream);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quick-link:hover {
+            border-color: var(--terracotta);
+            background: var(--white);
+        }
+
+        .quick-link-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .quick-link h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .quick-link span {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .resources-list {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s ease;
+        }
+
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+
+        .resource-item:hover {
+            background: var(--cream);
+        }
+
+        .resource-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--cream);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 24px;
+        }
+
+        .resource-info {
+            flex: 1;
+        }
+
+        .resource-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .resource-info p {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .resource-action {
+            padding: 10px 20px;
+            background: var(--terracotta);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .resource-action:hover {
+            background: var(--terracotta-hover);
+        }
+
+        @media (max-width: 1024px) {
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .quick-links-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .categories-grid,
+            .quick-links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-    <div id="header-container"></div>
-    <script>
-        fetch('homebody_header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-    </script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
 
-    <div style="max-width: 900px; margin: 80px auto; padding: 40px; background: var(--background); font-family: Inter, sans-serif;">
-        <h1 style="color: var(--navy); margin-bottom: 20px;">Legal Resources</h1>
-        <p style="color: var(--text); line-height: 1.6;">
-            This page is currently under development. Legal resources and documentation for DADU projects will be available soon.
-        </p>
-        <div style="margin-top: 32px;">
-            <a href="index.html" style="display: inline-block; padding: 12px 24px; background: var(--terracotta); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">← Back to Home</a>
+<!-- End Shared Header -->
+
+
+    
+
+    <section class="hero">
+        <h1>Legal Resources</h1>
+        <p>Comprehensive legal reference materials for DADU projects in Metro Nashville</p>
+    </section>
+
+    <main class="main">
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-icon">📜</div>
+                <h3>Code & Legislation</h3>
+                <p>Official Metro Nashville zoning codes, ordinances, and legislative history for DADUs.</p>
+                <div class="category-links">
+                    <a href="dadu_code_legislation_v3.html" class="category-link">
+                        Code Database <span>→</span>
+                    </a>
+                    <a href="dadu_legislation.html" class="category-link">
+                        Legislation PDFs <span>→</span>
+                    </a>
+                    <a href="dadu_history.html" class="category-link">
+                        Legislative History <span>→</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">📋</div>
+                <h3>Zoning & Standards</h3>
+                <p>Zoning district requirements, setbacks, lot coverage, and building standards.</p>
+                <div class="category-links">
+                    <a href="dadu_zoning_standards.html" class="category-link">
+                        Zoning Standards <span>→</span>
+                    </a>
+                    <a href="dadu_building_requirements.html" class="category-link">
+                        Building Requirements <span>→</span>
+                    </a>
+                    <a href="overlay-districts.html" class="category-link">
+                        Overlay Districts <span>→</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">📑</div>
+                <h3>Forms & Applications</h3>
+                <p>Permit applications, required forms, and submission checklists.</p>
+                <div class="category-links">
+                    <a href="determine_forms_required.html" class="category-link">
+                        Forms Wizard <span>→</span>
+                    </a>
+                    <a href="legal_form_filler.html" class="category-link">
+                        Auto Form Filler <span>→</span>
+                    </a>
+                    <a href="dadu_documents_portal.html" class="category-link">
+                        Document Portal <span>→</span>
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
+
+        <section class="quick-links">
+            <h2 class="section-title">Quick Access</h2>
+            <div class="quick-links-grid">
+                <a href="dadu_legal_citations.html" class="quick-link">
+                    <span class="quick-link-icon">⚖️</span>
+                    <h4>Legal Citations</h4>
+                    <span>Code references</span>
+                </a>
+                <a href="restrictive_covenants_v2.html" class="quick-link">
+                    <span class="quick-link-icon">🔍</span>
+                    <h4>Covenant Search</h4>
+                    <span>Check restrictions</span>
+                </a>
+                <a href="owner_occupancy.html" class="quick-link">
+                    <span class="quick-link-icon">🏡</span>
+                    <h4>Owner Occupancy</h4>
+                    <span>Requirements</span>
+                </a>
+                <a href="short_term_rental_permit.html" class="quick-link">
+                    <span class="quick-link-icon">🔑</span>
+                    <h4>STR Permits</h4>
+                    <span>Rental rules</span>
+                </a>
+            </div>
+        </section>
+
+        <h2 class="section-title">Reference Documents</h2>
+        <div class="resources-list">
+            <div class="resource-item">
+                <div class="resource-icon">📄</div>
+                <div class="resource-info">
+                    <h4>Complete DADU Citations Reference</h4>
+                    <p>All Metro Code sections relevant to DADU construction and permitting</p>
+                </div>
+                <a href="dadu_citations_complete.html" class="resource-action">View</a>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon">📊</div>
+                <div class="resource-info">
+                    <h4>Zoning District Quick Reference</h4>
+                    <p>Side-by-side comparison of RS zoning district requirements</p>
+                </div>
+                <a href="dadu_zoning_standards.html" class="resource-action">View</a>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon">🗺️</div>
+                <div class="resource-info">
+                    <h4>Overlay District Maps</h4>
+                    <p>Interactive map of conservation, historic, and contextual overlay districts</p>
+                </div>
+                <a href="overlay-districts.html" class="resource-action">View</a>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon">📝</div>
+                <div class="resource-info">
+                    <h4>Permit Application Checklist</h4>
+                    <p>Complete checklist of required documents for DADU permit submission</p>
+                </div>
+                <a href="project_checklist.html" class="resource-action">View</a>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon">💼</div>
+                <div class="resource-info">
+                    <h4>PDF Legislation Database</h4>
+                    <p>Downloadable PDF copies of all DADU-related Metro legislation</p>
+                </div>
+                <a href="pdf_database_lookup.html" class="resource-action">Search</a>
+            </div>
+        </div>
+    </main>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

@@ -3,28 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area Analysis Report (Sample) | Castlehold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Neighbors Report - Sample | Castlehold</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+        .report { max-width: 800px; margin: 20px auto; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #3A5566, #4A6B7D); color: white; padding: 30px; }
+        .header h1 { font-size: 24px; margin-bottom: 5px; }
+        .sample-badge { background: #e74c3c; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; margin-top: 10px; }
+        .section { padding: 25px 30px; border-bottom: 1px solid #eee; }
+        .section h3 { font-size: 16px; color: #3A5566; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #C58B2A; display: inline-block; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+        th { background: #f8f9fa; font-size: 11px; text-transform: uppercase; color: #666; }
+        .map-placeholder { background: #F2F0ED; height: 300px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #666; margin-bottom: 20px; }
+        .summary-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+        .summary-stat { background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; }
+        .summary-stat .value { font-size: 24px; font-weight: bold; color: #3A5566; }
+        .summary-stat .label { font-size: 11px; color: #666; text-transform: uppercase; }
+        .status-eligible { background: #d4edda; color: #155724; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .status-conditional { background: #fff3cd; color: #856404; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .status-not-eligible { background: #f8d7da; color: #721c24; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .status-has-dadu { background: #cce5ff; color: #004085; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .neighbor-card { border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 12px; }
+        .neighbor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .neighbor-address { font-weight: bold; color: #3A5566; }
+        .neighbor-details { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 13px; }
+        .neighbor-detail .label { color: #999; font-size: 11px; }
+        .footer { background: #3A5566; color: white; padding: 20px 30px; text-align: center; font-size: 12px; }
+        .footer a { color: #C58B2A; }
+    
+        .property-visuals { padding: 0; border-bottom: 1px solid #eee; }
+        .visuals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+        .visuals-grid iframe { width: 100%; height: 220px; border: none; display: block; }
+        .visual-label { font-size: 10px; text-transform: uppercase; color: #666; padding: 6px 12px; background: #f8f9fa; letter-spacing: 0.5px; font-weight: 600; }
+        .visual-links { display: flex; gap: 10px; padding: 12px 20px; background: #f8f9fa; flex-wrap: wrap; }
+        .visual-links a { font-size: 12px; color: #C58B2A; text-decoration: none; font-weight: 600; padding: 4px 12px; border: 1px solid #C58B2A; border-radius: 4px; }
+        .visual-links a:hover { background: #C58B2A; color: white; }
+        @media (max-width: 600px) { .visuals-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-    <div id="header-container"></div>
-    <script>
-        fetch('../homebody_header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-    </script>
+    <div class="report">
+        <div class="header">
+            <h1>Neighbors Report</h1>
+            <div class="subtitle">Surrounding Properties Analysis | Castlehold</div>
 
-    <div style="max-width: 900px; margin: 80px auto; padding: 40px; background: var(--background); font-family: Inter, sans-serif;">
-        <div style="display: inline-block; padding: 6px 12px; background: var(--terracotta); color: white; border-radius: 4px; font-size: 12px; font-weight: 700; margin-bottom: 16px;">SAMPLE</div>
-        <h1 style="color: var(--navy); margin-bottom: 20px;">Area Analysis Report</h1>
-        <p style="color: var(--text); line-height: 1.6;">
-            This is a sample placeholder. Full area analysis reports will include nearby DADU activity, zoning patterns, and neighborhood characteristics.
-        </p>
-        <div style="margin-top: 32px;">
-            <a href="../dadu_near_me_v2.html" style="display: inline-block; padding: 12px 24px; background: var(--navy); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-right: 12px;">DADUs Near Me</a>
-            <a href="../index.html" style="display: inline-block; padding: 12px 24px; background: var(--terracotta); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">← Back to Home</a>
+        <div class="property-visuals">
+            <div class="visuals-grid">
+                <div>
+                    <div class="visual-label">Aerial View</div>
+                    <iframe src="https://portal.patriotproperties.com/?APIKEY=5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F&LAT=36.18375&LONG=-86.74628" loading="lazy" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <div class="visual-label">Street View</div>
+                    <iframe src="https://maps.google.com/maps?q=36.18375,-86.74628&layer=c&cbll=36.18375,-86.74628&cbp=12,0,0,0,0&output=embed" loading="lazy" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="visual-links">
+                <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=08305027100" target="_blank">ParcelViewer</a>
+                <a href="https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=08305027100" target="_blank">Permit Docs</a>
+                <a href="https://epermits.nashville.gov/#/search?searchCode=APN&searchText=08305027100" target="_blank">ePermits</a>
+                <a href="https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin=08305027100" target="_blank">Parcel Report</a>
+                <a href="https://davidson-tn-citizen.comper.info/template.aspx?propertyID=08305027100" target="_blank">Comparable Map</a>
+                <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/property-report-card.html?apn=08305027100" target="_blank">Property Report Card</a>
+                <a href="https://www.google.com/maps/@36.18375,-86.74628,3a,75y,90t/data=!3m6!1e1!3m4!1s!2e0!7i16384!8i8192" target="_blank">Google Street View</a>
+                <a href="https://portal.patriotproperties.com/?APIKEY=5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F&LAT=36.18375&LONG=-86.74628" target="_blank">Aerial Photo</a>
+                <a href="https://drive.google.com/file/d/1LOTXfhsxPk-wGsccojl8s5hNAjkNrozQ/view" target="_blank">Property Card PDF</a>
+            </div>
+        </div>
+
+            <span class="sample-badge">SAMPLE REPORT - $9</span>
+        </div>
+
+        <div class="section">
+            <h3>Subject Property</h3>
+            <table>
+                <tr><td><strong>Address</strong></td><td>2763 Rosedale Pl, Nashville, TN 37206</td></tr>
+                <tr><td><strong>APN</strong></td><td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/property-report-card.html?apn=08305027100" target="_blank" style="color: #C58B2A; text-decoration: none;">08305027100</a></td></tr>
+                <tr><td><strong>Search Radius</strong></td><td>500 feet (adjacent parcels)</td></tr>
+                <tr><td><strong>Neighbors Found</strong></td><td>12 properties</td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>Neighborhood Map</h3>
+            <div class="map-placeholder">[Interactive Map - Subject property and 12 neighboring parcels]</div>
+        </div>
+
+        <div class="section">
+            <h3>Neighborhood Summary</h3>
+            <div class="summary-stats">
+                <div class="summary-stat">
+                    <div class="value">12</div>
+                    <div class="label">Total Neighbors</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="value">8</div>
+                    <div class="label">DADU Eligible</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="value">2</div>
+                    <div class="label">Existing DADUs</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="value">9,850</div>
+                    <div class="label">Avg Lot SF</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Adjacent Properties</h3>
+
+            <div class="neighbor-card">
+                <div class="neighbor-header">
+                    <span class="neighbor-address">2765 Rosedale Pl</span>
+                    <span class="status-eligible">Eligible</span>
+                </div>
+                <div class="neighbor-details">
+                    <div class="neighbor-detail"><div class="label">Owner</div><div>M. Thompson</div></div>
+                    <div class="neighbor-detail"><div class="label">Lot Size</div><div>10,200 SF</div></div>
+                    <div class="neighbor-detail"><div class="label">Zoning</div><div>R6-A</div></div>
+                    <div class="neighbor-detail"><div class="label">Year Built</div><div>1952</div></div>
+                </div>
+            </div>
+
+            <div class="neighbor-card">
+                <div class="neighbor-header">
+                    <span class="neighbor-address">2761 Rosedale Pl</span>
+                    <span class="status-has-dadu">Has DADU</span>
+                </div>
+                <div class="neighbor-details">
+                    <div class="neighbor-detail"><div class="label">Owner</div><div>S. Williams</div></div>
+                    <div class="neighbor-detail"><div class="label">Lot Size</div><div>11,500 SF</div></div>
+                    <div class="neighbor-detail"><div class="label">Zoning</div><div>R6-A</div></div>
+                    <div class="neighbor-detail"><div class="label">DADU</div><div>650 SF (2024)</div></div>
+                </div>
+            </div>
+
+            <div class="neighbor-card">
+                <div class="neighbor-header">
+                    <span class="neighbor-address">2767 Rosedale Pl</span>
+                    <span class="status-eligible">Eligible</span>
+                </div>
+                <div class="neighbor-details">
+                    <div class="neighbor-detail"><div class="label">Owner</div><div>R. Johnson</div></div>
+                    <div class="neighbor-detail"><div class="label">Lot Size</div><div>8,500 SF</div></div>
+                    <div class="neighbor-detail"><div class="label">Zoning</div><div>R6-A</div></div>
+                    <div class="neighbor-detail"><div class="label">Year Built</div><div>1948</div></div>
+                </div>
+            </div>
+
+            <div class="neighbor-card">
+                <div class="neighbor-header">
+                    <span class="neighbor-address">1105 Holly St</span>
+                    <span class="status-conditional">Conditional</span>
+                </div>
+                <div class="neighbor-details">
+                    <div class="neighbor-detail"><div class="label">Owner</div><div>A. Martinez</div></div>
+                    <div class="neighbor-detail"><div class="label">Lot Size</div><div>7,200 SF</div></div>
+                    <div class="neighbor-detail"><div class="label">Zoning</div><div>RS5</div></div>
+                    <div class="neighbor-detail"><div class="label">Note</div><div>GSD - Needs Overlay</div></div>
+                </div>
+            </div>
+
+            <div class="neighbor-card">
+                <div class="neighbor-header">
+                    <span class="neighbor-address">1107 Holly St</span>
+                    <span class="status-has-dadu">Has DADU</span>
+                </div>
+                <div class="neighbor-details">
+                    <div class="neighbor-detail"><div class="label">Owner</div><div>K. Chen</div></div>
+                    <div class="neighbor-detail"><div class="label">Lot Size</div><div>9,800 SF</div></div>
+                    <div class="neighbor-detail"><div class="label">Zoning</div><div>RS5</div></div>
+                    <div class="neighbor-detail"><div class="label">DADU</div><div>720 SF (2023)</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>All Neighboring Properties</h3>
+            <table>
+                <tr>
+                    <th>Address</th>
+                    <th>Owner</th>
+                    <th>Lot Size</th>
+                    <th>Zoning</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>2765 Rosedale Pl</td>
+                    <td>M. Thompson</td>
+                    <td>10,200 SF</td>
+                    <td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/dadu_zoning_standards.html" target="_blank" style="color: #C58B2A; text-decoration: none;">R6-A</a></td>
+                    <td><span class="status-eligible">Eligible</span></td>
+                </tr>
+                <tr>
+                    <td>2761 Rosedale Pl</td>
+                    <td>S. Williams</td>
+                    <td>11,500 SF</td>
+                    <td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/dadu_zoning_standards.html" target="_blank" style="color: #C58B2A; text-decoration: none;">R6-A</a></td>
+                    <td><span class="status-has-dadu">Has DADU</span></td>
+                </tr>
+                <tr>
+                    <td>2767 Rosedale Pl</td>
+                    <td>R. Johnson</td>
+                    <td>8,500 SF</td>
+                    <td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/dadu_zoning_standards.html" target="_blank" style="color: #C58B2A; text-decoration: none;">R6-A</a></td>
+                    <td><span class="status-eligible">Eligible</span></td>
+                </tr>
+                <tr>
+                    <td>1105 Holly St</td>
+                    <td>A. Martinez</td>
+                    <td>7,200 SF</td>
+                    <td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/dadu_zoning_standards.html" target="_blank" style="color: #C58B2A; text-decoration: none;">RS5</a></td>
+                    <td><span class="status-conditional">Conditional</span></td>
+                </tr>
+                <tr>
+                    <td>1107 Holly St</td>
+                    <td>K. Chen</td>
+                    <td>9,800 SF</td>
+                    <td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/dadu_zoning_standards.html" target="_blank" style="color: #C58B2A; text-decoration: none;">RS5</a></td>
+                    <td><span class="status-has-dadu">Has DADU</span></td>
+                </tr>
+                <tr>
+                    <td>1109 Holly St</td>
+                    <td>J. Davis</td>
+                    <td>8,900 SF</td>
+                    <td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/dadu_zoning_standards.html" target="_blank" style="color: #C58B2A; text-decoration: none;">RS5</a></td>
+                    <td><span class="status-eligible">Eligible</span></td>
+                </tr>
+                <tr>
+                    <td>2760 Forrest Ave</td>
+                    <td>L. Brown</td>
+                    <td>12,100 SF</td>
+                    <td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/dadu_zoning_standards.html" target="_blank" style="color: #C58B2A; text-decoration: none;">R6-A</a></td>
+                    <td><span class="status-eligible">Eligible</span></td>
+                </tr>
+                <tr>
+                    <td>2762 Forrest Ave</td>
+                    <td>P. Wilson</td>
+                    <td>10,800 SF</td>
+                    <td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/dadu_zoning_standards.html" target="_blank" style="color: #C58B2A; text-decoration: none;">R6-A</a></td>
+                    <td><span class="status-eligible">Eligible</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>Generated by <a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/">Castlehold</a></p>
+            <p style="margin-top: 5px; opacity: 0.8;">Sample report. Owner names shown are illustrative only.</p>
         </div>
     </div>
 </body>

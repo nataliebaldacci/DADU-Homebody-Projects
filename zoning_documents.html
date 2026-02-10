@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoning Documents - Castlehold</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="homebody_shared.css">
+    <style>
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background-color: #F2F0ED;
+            color: #333;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .page-container { max-width: 960px; margin: 0 auto; padding: 40px 30px; }
+        .hero { text-align: center; margin-bottom: 40px; }
+        .hero h1 { font-size: 32px; font-weight: 800; color: #3A5566; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+        .hero .subtitle { font-size: 14px; color: #7B746D; font-weight: 600; letter-spacing: 1px; }
+        .divider { width: 80px; height: 3px; background: #7B746D; margin: 20px auto; }
+        .intro-text { text-align: center; max-width: 700px; margin: 0 auto 30px; color: #555; font-size: 15px; }
+        .doc-section { margin-top: 30px; }
+        .doc-section h2 { color: #3A5566; font-size: 20px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #e0ddd8; }
+        .doc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 40px; }
+        .doc-card {
+            background: #fff; border-radius: 8px; padding: 20px; border: 1px solid #e0ddd8;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .doc-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .doc-card h3 { color: #3A5566; font-size: 15px; margin-bottom: 6px; }
+        .doc-card p { color: #666; font-size: 13px; margin-bottom: 12px; }
+        .doc-card a {
+            color: #C58B2A; font-weight: 600; font-size: 13px; text-decoration: none;
+        }
+        .doc-card a:hover { text-decoration: underline; }
+        .doc-card .tag {
+            display: inline-block; background: #3A5566; color: #fff; padding: 2px 8px;
+            border-radius: 10px; font-size: 10px; font-weight: 600; margin-bottom: 8px;
+        }
+        .search-section {
+            background: #f5f5f0; border-radius: 8px; padding: 24px; margin-bottom: 30px;
+        }
+        .search-row { display: flex; gap: 12px; max-width: 500px; margin: 0 auto; }
+        .search-row input {
+            flex: 1; padding: 10px 14px; border: 2px solid #ddd; border-radius: 6px;
+            font-size: 14px; font-family: inherit;
+        }
+        .search-row input:focus { border-color: #C58B2A; outline: none; }
+        .search-row button {
+            background: #C58B2A; color: #fff; border: none; padding: 10px 20px;
+            border-radius: 6px; font-weight: 700; font-size: 14px; cursor: pointer;
+        }
+        .footer { text-align: center; margin-top: 60px; padding: 20px; color: #7B746D; font-size: 12px; }
+        .footer .brand { font-weight: 700; color: #3A5566; }
+    </style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="page-container">
+    <div class="hero">
+        <h1>Zoning Documents</h1>
+        <p class="subtitle">Nashville-Davidson County Zoning &amp; Land Use References</p>
+        <div class="divider"></div>
+    </div>
+
+    <p class="intro-text">
+        Key zoning documents, ordinances, and regulatory references relevant to DADU development in Nashville-Davidson County.
+    </p>
+
+    <div class="search-section">
+        <div class="search-row">
+            <input type="text" id="doc-search" placeholder="Search documents..." oninput="filterDocs()">
+            <button onclick="filterDocs()">Search</button>
+        </div>
+    </div>
+
+    <div class="doc-section" id="docs-container">
+        <h2>Legislation &amp; Ordinances</h2>
+        <div class="doc-grid">
+            <div class="doc-card" data-keywords="bl2025-1007 dadu ordinance legislation">
+                <span class="tag">Legislation</span>
+                <h3>BL2025-1007</h3>
+                <p>The primary DADU enabling ordinance for Nashville-Davidson County. Effective December 12, 2025.</p>
+                <a href="dadu_code_legislation_v3.html">View Full Text &rarr;</a>
+            </div>
+            <div class="doc-card" data-keywords="zoning code title 17 nashville">
+                <span class="tag">Zoning Code</span>
+                <h3>Title 17 &mdash; Zoning Regulations</h3>
+                <p>Metro Nashville zoning code governing land use, density, setbacks, and building standards.</p>
+                <a href="dadu_zoning_standards.html">View Standards &rarr;</a>
+            </div>
+            <div class="doc-card" data-keywords="building code requirements irc residential">
+                <span class="tag">Building Code</span>
+                <h3>Building Requirements</h3>
+                <p>IRC-based construction standards, energy code, accessibility, and fire safety requirements for DADUs.</p>
+                <a href="dadu_building_requirements.html">View Requirements &rarr;</a>
+            </div>
+        </div>
+
+        <h2>Overlay &amp; Special Districts</h2>
+        <div class="doc-grid">
+            <div class="doc-card" data-keywords="overlay district sp specific plan">
+                <span class="tag">Overlay</span>
+                <h3>Overlay Districts</h3>
+                <p>Map and details of overlay districts in Davidson County that may affect DADU eligibility in the GSD.</p>
+                <a href="overlay-districts.html">View Overlay Map &rarr;</a>
+            </div>
+            <div class="doc-card" data-keywords="sp specific plan zoning check conditional">
+                <span class="tag">SP Zoning</span>
+                <h3>SP Zoning &amp; DADUs</h3>
+                <p>How Specific Plan (SP) zoning districts interact with DADU eligibility in USD and GSD areas.</p>
+                <a href="dadu_zoning_standards.html">Learn More &rarr;</a>
+            </div>
+            <div class="doc-card" data-keywords="design standards architectural guidelines">
+                <span class="tag">Standards</span>
+                <h3>Design Standards</h3>
+                <p>Architectural and design guidelines for DADU construction including materials, height, and compatibility.</p>
+                <a href="dadu_design_standards.html">View Standards &rarr;</a>
+            </div>
+        </div>
+
+        <h2>Permits &amp; Process</h2>
+        <div class="doc-grid">
+            <div class="doc-card" data-keywords="permit process timeline application filing">
+                <span class="tag">Process</span>
+                <h3>Permit Process Timeline</h3>
+                <p>Step-by-step guide to the DADU permit application process from pre-submission through CO.</p>
+                <a href="permit_process_timeline.html">View Timeline &rarr;</a>
+            </div>
+            <div class="doc-card" data-keywords="forms application determine required filing">
+                <span class="tag">Forms</span>
+                <h3>Required Forms</h3>
+                <p>Determine which Metro Nashville permit applications and supporting documents you need to file.</p>
+                <a href="determine_forms_required.html">Determine Forms &rarr;</a>
+            </div>
+            <div class="doc-card" data-keywords="covenant restrictive recorded legal">
+                <span class="tag">Legal</span>
+                <h3>Restrictive Covenants</h3>
+                <p>Search for recorded restrictive covenants that may limit or prohibit DADU construction on a parcel.</p>
+                <a href="restrictive_covenants_v2.html">Search Covenants &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><span class="brand">CASTLEHOLD</span> &middot; Nashville-Davidson County &middot; 2026</p>
+    </div>
+</div>
+
+<script src="homebody_header.js"></script>
+<script>
+function filterDocs() {
+    var query = document.getElementById('doc-search').value.toLowerCase().trim();
+    var cards = document.querySelectorAll('.doc-card');
+    cards.forEach(function(card) {
+        var keywords = (card.getAttribute('data-keywords') || '') + ' ' + card.textContent.toLowerCase();
+        card.style.display = (!query || keywords.indexOf(query) !== -1) ? '' : 'none';
+    });
+}
+</script>
+</body>
+</html>

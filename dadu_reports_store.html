@@ -3,33 +3,754 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report Generator | Castlehold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>DADU Property Reports Store | Castlehold</title>
+    <style>
+        :root {
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --terracotta: #C58B2A;
+            --terracotta-light: #8fb36a;
+            --teal: #7B746D;
+            --teal-light: #8bb3c9;
+            --tan: #7B746D;
+            --cream: #f5f5f0;
+            --warm-gray: #F2F0ED;
+            --text: #333333;
+            --text-light: #666666;
+            --text-muted: #999999;
+            --border: #d0d0d0;
+            --border-light: #e5e5e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--warm-gray);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--terracotta);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-link {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .header-link:hover {
+            color: white;
+        }
+
+        .header-btn {
+            background: var(--terracotta);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, #4A6B7D 100%);
+            padding: 60px 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--terracotta);
+            color: var(--terracotta);
+        }
+
+        .filter-btn.active {
+            background: var(--terracotta);
+            border-color: var(--terracotta);
+            color: white;
+        }
+
+        /* Report Catalog */
+        .report-catalog {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--border-light);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .report-item {
+            background: white;
+            padding: 28px 32px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 24px;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .report-item:hover {
+            background: #fafaf8;
+        }
+
+        .report-badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .report-badge.popular {
+            background: var(--terracotta);
+            color: white;
+        }
+
+        .report-badge.new {
+            background: var(--teal);
+            color: white;
+        }
+
+        .report-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .report-desc {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .report-tags {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .report-tags span {
+            color: var(--terracotta);
+        }
+
+        .report-sample {
+            display: inline-block;
+            font-size: 13px;
+            color: var(--teal);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .report-sample:hover {
+            text-decoration: underline;
+        }
+
+        .report-price-col {
+            text-align: right;
+            min-width: 120px;
+        }
+
+        .report-price {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .report-price.highlight {
+            color: var(--terracotta);
+        }
+
+        .report-order-btn {
+            margin-top: 12px;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .report-order-btn.primary {
+            background: var(--terracotta);
+            color: white;
+        }
+
+        .report-order-btn.primary:hover {
+            background: var(--terracotta-light);
+        }
+
+        .report-order-btn.secondary {
+            background: var(--cream);
+            color: var(--navy);
+            border: 1px solid var(--border);
+        }
+
+        .report-order-btn.secondary:hover {
+            background: var(--warm-gray);
+        }
+
+        /* Subscription Promo */
+        .subscription-promo {
+            background: linear-gradient(135deg, var(--navy) 0%, #1a2530 100%);
+            border-radius: 16px;
+            padding: 40px;
+            color: white;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .promo-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .promo-desc {
+            font-size: 15px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .promo-cards {
+            display: flex;
+            gap: 16px;
+        }
+
+        .promo-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px 24px;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .promo-card.featured {
+            background: rgba(255,255,255,0.15);
+            border: 2px solid var(--terracotta);
+        }
+
+        .promo-card-name {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .promo-card-price {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .promo-card-period {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        /* Quick Price Grid */
+        .price-grid {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .price-grid h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .price-items {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+        }
+
+        .price-item {
+            text-align: center;
+            padding: 16px;
+            background: var(--cream);
+            border-radius: 10px;
+        }
+
+        .price-item-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .price-item-amount {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--terracotta);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--navy-dark);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        .footer a {
+            color: var(--teal-light);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .subscription-promo {
+                grid-template-columns: 1fr;
+            }
+            .promo-cards {
+                justify-content: center;
+            }
+            .price-items {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .report-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .report-price-col {
+                text-align: center;
+            }
+            .price-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-    <div id="header-container"></div>
-    <script>
-        fetch('homebody_header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-    </script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
 
-    <div style="max-width: 900px; margin: 80px auto; padding: 40px; background: var(--background); font-family: Inter, sans-serif;">
-        <h1 style="color: var(--navy); margin-bottom: 20px;">Report Generator</h1>
-        <p style="color: var(--text); line-height: 1.6;">
-            This page is currently under development. Generate custom reports for your DADU project.
-        </p>
-        <div style="margin-top: 24px;">
-            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 16px;">
-                Available reports:
-            </p>
-            <a href="eligibility_report.html" style="display: inline-block; padding: 12px 24px; background: var(--navy); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-right: 12px; margin-bottom: 12px;">Eligibility Report</a>
-            <a href="project_report.html" style="display: inline-block; padding: 12px 24px; background: var(--navy); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-bottom: 12px;">Project Report</a>
-            <br>
-            <a href="index.html" style="display: inline-block; padding: 12px 24px; background: var(--terracotta); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 12px;">← Back to Home</a>
-        </div>
+<!-- End Shared Header -->
+
+
+    <!-- Header -->
+    
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>DADU Property Reports</h1>
+        <p>Purchase real estate data reports on an à la carte basis. Download only the specific reports and documents you need.</p>
     </div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Quick Price Reference -->
+        <div class="price-grid">
+            <h3>Quick Price Reference</h3>
+            <div class="price-items">
+                <div class="price-item">
+                    <div class="price-item-name">Property Detail</div>
+                    <div class="price-item-amount">$4</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-item-name">Eligibility Check</div>
+                    <div class="price-item-amount">$9</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-item-name">Permit History</div>
+                    <div class="price-item-amount">$9</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-item-name">Contractor Report</div>
+                    <div class="price-item-amount">$14</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-item-name">Comparables</div>
+                    <div class="price-item-amount">$19</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-item-name">DADU TotalView</div>
+                    <div class="price-item-amount">$49</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <span class="filter-label">Sort By:</span>
+            <button class="filter-btn active" onclick="filterReports('all')">All Reports</button>
+            <button class="filter-btn" onclick="filterReports('homeowner')">Homeowners</button>
+            <button class="filter-btn" onclick="filterReports('investor')">Investors</button>
+            <button class="filter-btn" onclick="filterReports('contractor')">Contractors</button>
+            <button class="filter-btn" onclick="filterReports('govt')">Government</button>
+        </div>
+
+        <!-- Report Catalog -->
+        <div class="report-catalog">
+            <!-- DADU TotalView Report -->
+            <div class="report-item" data-tags="homeowner investor contractor">
+                <div>
+                    <span class="report-badge popular">Most Popular</span>
+                    <div class="report-title">DADU TotalView Report</div>
+                    <p class="report-desc">Comprehensive DADU analysis including: eligibility assessment, zoning details, max building size, setback requirements, parking, owner occupancy rules, nearby completed DADUs, contractor recommendations, cost estimates, permit checklist, and market trends.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors, Contractors</span></div>
+                    <a href="sample_reports/sample_property_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price highlight">$49</div>
+                    <button class="report-order-btn primary">Order Report</button>
+                </div>
+            </div>
+
+            <!-- Property Detail Report -->
+            <div class="report-item" data-tags="homeowner investor govt">
+                <div>
+                    <div class="report-title">Property Detail Report</div>
+                    <p class="report-desc">Get a comprehensive view of a property, including property characteristics, location information, zoning, flood zone, owner vesting, last and prior market sales, mortgage recordings, assessor tax data, and building footprint.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors, Government, Real Estate</span></div>
+                    <a href="sample_reports/sample_property_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$4</div>
+                    <button class="report-order-btn secondary">Order Report</button>
+                </div>
+            </div>
+
+            <!-- DADU Eligibility Report -->
+            <div class="report-item" data-tags="homeowner investor">
+                <div>
+                    <div class="report-title">DADU Eligibility Report</div>
+                    <p class="report-desc">Quick eligibility assessment determining if your property qualifies for a DADU. Includes: zoning verification, Urban/General Services District check, lot size analysis, overlay district status, and basic requirements summary.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors</span></div>
+                    <a href="sample_reports/sample_eligibility_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$9</div>
+                    <button class="report-order-btn secondary">Order Report</button>
+                </div>
+            </div>
+
+            <!-- Permit History Report -->
+            <div class="report-item" data-tags="homeowner investor contractor govt">
+                <div>
+                    <div class="report-title">Permit History Report</div>
+                    <p class="report-desc">Complete permit history for any property including: all building permits, DADU permits, renovations, inspection records, permit status, contractor names, project values, approval dates, and inspection results.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors, Contractors, Government</span></div>
+                    <a href="sample_reports/sample_permit_history_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$9</div>
+                    <button class="report-order-btn secondary">Order Report</button>
+                </div>
+            </div>
+
+            <!-- DADU Comparables Report -->
+            <div class="report-item" data-tags="homeowner investor contractor">
+                <div>
+                    <div class="report-title">DADU Comparables Report</div>
+                    <p class="report-desc">View completed DADUs within 1 mile of your property. Compare up to 20 similar projects including: build costs, cost per square foot, contractor information, permit details, size specifications, build dates, and interactive map.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors, Contractors</span></div>
+                    <a href="sample_reports/sample_comparables_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$19</div>
+                    <button class="report-order-btn secondary">Order Report</button>
+                </div>
+            </div>
+
+            <!-- Contractor Report -->
+            <div class="report-item" data-tags="homeowner investor">
+                <div>
+                    <div class="report-title">DADU Contractor Report</div>
+                    <p class="report-desc">Find experienced DADU contractors in your area. Includes: top builders ranked by permit volume, project history, average costs, license verification status, contact information, and nearby projects completed.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors</span></div>
+                    <a href="sample_reports/sample_contractor_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$14</div>
+                    <button class="report-order-btn secondary">Order Report</button>
+                </div>
+            </div>
+
+            <!-- Restrictive Covenant Report -->
+            <div class="report-item" data-tags="homeowner investor govt">
+                <div>
+                    <div class="report-title">Restrictive Covenant Report</div>
+                    <p class="report-desc">Search for recorded DADU restrictive covenants on any Davidson County property. Includes: covenant status, instrument number, recording date, owner occupancy requirements, and link to recorded document image.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors, Government</span></div>
+                    <a href="sample_reports/sample_covenant_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$9</div>
+                    <button class="report-order-btn secondary">Order Report</button>
+                </div>
+            </div>
+
+            <!-- Cost Estimate Report -->
+            <div class="report-item" data-tags="homeowner investor">
+                <div>
+                    <span class="report-badge new">New</span>
+                    <div class="report-title">DADU Cost Estimate Report</div>
+                    <p class="report-desc">Get a detailed cost estimate for building a DADU on your property. Includes: construction cost range based on size, permit fees, utility connection costs, site preparation estimates, and total project budget breakdown.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors</span></div>
+                    <a href="sample_reports/sample_cost_estimate_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$29</div>
+                    <button class="report-order-btn secondary">Order Report</button>
+                </div>
+            </div>
+
+            <!-- Site Plan Document -->
+            <div class="report-item" data-tags="homeowner contractor">
+                <div>
+                    <div class="report-title">Approved Site Plan Document</div>
+                    <p class="report-desc">Download the approved site plan for an existing DADU permit. Includes: building footprint layout, setback measurements, lot coverage calculations, driveway location, utility connections, and parking layout.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Contractors</span></div>
+                    <a href="#" class="report-sample">Download Sample →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$8</div>
+                    <button class="report-order-btn secondary">Order</button>
+                </div>
+            </div>
+
+            <!-- Assessor Parcel Map -->
+            <div class="report-item" data-tags="homeowner investor contractor">
+                <div>
+                    <div class="report-title">Assessor Parcel Map</div>
+                    <p class="report-desc">View the official Davidson County assessor parcel map. Includes: parcel number, parcel and lot boundaries, recorded property dimensions, acreage, street widths, easements, and adjoining parcel information.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors, Contractors</span></div>
+                    <a href="#" class="report-sample">Download Sample →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$4</div>
+                    <button class="report-order-btn secondary">Order</button>
+                </div>
+            </div>
+
+            <!-- Market Statistics Report -->
+            <div class="report-item" data-tags="investor contractor govt">
+                <div>
+                    <div class="report-title">DADU Market Statistics Report</div>
+                    <p class="report-desc">Gain insights on DADU activity trends in any Nashville zip code or council district. Includes: permits by year, average costs, popular sizes, top contractors, growth trends, and graphical analysis.</p>
+                    <div class="report-tags">Popular with: <span>Investors, Contractors, Government</span></div>
+                    <a href="sample_reports/sample_market_stats_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$19</div>
+                    <button class="report-order-btn secondary">Order Report</button>
+                </div>
+            </div>
+
+            <!-- Neighbors Report -->
+            <div class="report-item" data-tags="homeowner investor contractor">
+                <div>
+                    <div class="report-title">Neighbors Report</div>
+                    <p class="report-desc">Explore neighboring properties including: owner names, property details, DADU eligibility status, lot sizes, existing structures, and interactive map. Useful for understanding neighborhood DADU potential.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors, Contractors</span></div>
+                    <a href="sample_reports/sample_neighbors_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$9</div>
+                    <button class="report-order-btn secondary">Order Report</button>
+                </div>
+            </div>
+
+            <!-- Recorded Document -->
+            <div class="report-item" data-tags="homeowner investor govt">
+                <div>
+                    <div class="report-title">Recorded Document Image</div>
+                    <p class="report-desc">Access recorded document images from Davidson County Register of Deeds. Available documents include: deeds, mortgages, restrictive covenants, liens, and other recorded instruments.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Investors, Government</span></div>
+                    <a href="#" class="report-sample">Learn More →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$8</div>
+                    <button class="report-order-btn secondary">Order</button>
+                </div>
+            </div>
+
+            <!-- Zoning Verification Letter -->
+            <div class="report-item" data-tags="homeowner contractor govt">
+                <div>
+                    <div class="report-title">Zoning Verification Report</div>
+                    <p class="report-desc">Detailed zoning information for any property including: current zoning designation, permitted uses, overlay districts, setback requirements, height limits, lot coverage limits, and applicable design standards.</p>
+                    <div class="report-tags">Popular with: <span>Homeowners, Contractors, Government</span></div>
+                    <a href="sample_reports/sample_zoning_report.html" class="report-sample" target="_blank">Download Sample Report →</a>
+                </div>
+                <div class="report-price-col">
+                    <div class="report-price">$9</div>
+                    <button class="report-order-btn secondary">Order Report</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscription Promo -->
+        <div class="subscription-promo">
+            <div>
+                <div class="promo-title">Save with a Subscription Plan</div>
+                <p class="promo-desc">Sign up for a monthly prepaid subscription and get discounted rates on all property data reports and recorded document images. Access via pay-as-you-go downloads or prepaid monthly subscription plans.</p>
+            </div>
+            <div class="promo-cards">
+                <div class="promo-card">
+                    <div class="promo-card-name">Basic</div>
+                    <div class="promo-card-price">$25</div>
+                    <div class="promo-card-period">/month</div>
+                </div>
+                <div class="promo-card featured">
+                    <div class="promo-card-name">Premier</div>
+                    <div class="promo-card-price">$50</div>
+                    <div class="promo-card-period">/month</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 Castlehold. All rights reserved. | <a href="DADU_MASTER_WEBSITE.html">Back to Platform</a> | <a href="#">Support</a> | <a href="#">Terms of Service</a></p>
+        <p style="margin-top: 12px;">Data sourced from Davidson County public records.</p>
+    </footer>
+
+    <script>
+        function filterReports(tag) {
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Filter report items
+            document.querySelectorAll('.report-item').forEach(item => {
+                if (tag === 'all') {
+                    item.style.display = 'grid';
+                } else {
+                    const tags = item.getAttribute('data-tags');
+                    if (tags && tags.includes(tag)) {
+                        item.style.display = 'grid';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

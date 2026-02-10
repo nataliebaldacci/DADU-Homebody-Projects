@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Overlay Districts & Special Plans | Nashville DADU Library</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #2c3e50;
-            --navy-dark: #1a252f;
-            --teal: #6b8fa3;
-            --green: #6b8e4e;
-            --green-dark: #5a7a42;
-            --tan: #c9a86c;
-            --background: #e8e4df;
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-hover: #A8761F;
+            --tan: #7B746D;
+            --background: #F2F0ED;
             --card-bg: #f5f5f0;
             --white: #ffffff;
             --text: #333333;
@@ -60,7 +59,7 @@
         .logo-icon {
             width: 44px;
             height: 44px;
-            background: var(--green);
+            background: var(--terracotta);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -140,7 +139,7 @@
         }
 
         .pathway-card.primary {
-            border: 3px solid var(--green);
+            border: 3px solid var(--terracotta);
         }
 
         .pathway-card.conditional {
@@ -191,7 +190,7 @@
 
         .pathway-status.by-right {
             background: #e8f5e9;
-            color: var(--green);
+            color: var(--terracotta);
         }
 
         .pathway-status.conditional {
@@ -370,7 +369,7 @@
         }
 
         .doc-card-header.ddu {
-            background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+            background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-hover) 100%);
         }
 
         .doc-card-header.udo {
@@ -489,7 +488,7 @@
         }
 
         .resource-card:hover {
-            background: #e8e4df;
+            background: #F2F0ED;
         }
 
         .resource-icon {
@@ -550,20 +549,16 @@
             }
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<!-- Header -->
+    <!-- Header -->
     
 
     <!-- Hero -->
@@ -634,7 +629,9 @@
 
         <!-- DADU Design Districts -->
         <section class="doc-category" data-type="ddu">
-            
+            <div class="category-header">
+                <div class="category-title">
+                    <div class="category-icon">📍</div>
                     <div>
                         <h2>DADU Design Districts (DDU)</h2>
                         <span>Overlay districts specifically allowing DADUs in GSD</span>
@@ -645,7 +642,8 @@
 
             <div class="doc-grid">
                 <div class="doc-card" data-type="ddu">
-                    
+                    <div class="doc-card-header ddu">
+                        <div class="doc-card-id">DADU Design District</div>
                         <div class="doc-card-title">2021DDU-001-001</div>
                     </div>
                     <div class="doc-card-body">
@@ -664,7 +662,8 @@
                 </div>
 
                 <div class="doc-card" data-type="ddu">
-                    
+                    <div class="doc-card-header ddu">
+                        <div class="doc-card-id">DADU Design District</div>
                         <div class="doc-card-title">2022DDU-001-001</div>
                     </div>
                     <div class="doc-card-body">
@@ -683,7 +682,8 @@
                 </div>
 
                 <div class="doc-card" data-type="ddu">
-                    
+                    <div class="doc-card-header ddu">
+                        <div class="doc-card-id">DADU Design District</div>
                         <div class="doc-card-title">2023DDU-001-001</div>
                     </div>
                     <div class="doc-card-body">
@@ -702,7 +702,8 @@
                 </div>
 
                 <div class="doc-card" data-type="ddu">
-                    
+                    <div class="doc-card-header ddu">
+                        <div class="doc-card-id">DADU Design District</div>
                         <div class="doc-card-title">2023DDU-002-001</div>
                     </div>
                     <div class="doc-card-body">
@@ -721,7 +722,8 @@
                 </div>
 
                 <div class="doc-card" data-type="ddu">
-                    
+                    <div class="doc-card-header ddu">
+                        <div class="doc-card-id">DADU Design District</div>
                         <div class="doc-card-title">2024DDU-001-001</div>
                     </div>
                     <div class="doc-card-body">
@@ -743,7 +745,9 @@
 
         <!-- Urban Design Overlays -->
         <section class="doc-category" data-type="udo">
-            
+            <div class="category-header">
+                <div class="category-title">
+                    <div class="category-icon" style="background: var(--teal);">🎨</div>
                     <div>
                         <h2>Urban Design Overlays (UDO)</h2>
                         <span>UDOs that may include DADU development standards</span>
@@ -754,7 +758,8 @@
 
             <div class="doc-grid" id="udoGrid">
                 <div class="doc-card" data-type="udo">
-                    
+                    <div class="doc-card-header udo">
+                        <div class="doc-card-id">Urban Design Overlay</div>
                         <div class="doc-card-title">2001UD-002-012</div>
                     </div>
                     <div class="doc-card-body">
@@ -777,7 +782,8 @@
                 </div>
 
                 <div class="doc-card" data-type="udo">
-                    
+                    <div class="doc-card-header udo">
+                        <div class="doc-card-id">Urban Design Overlay</div>
                         <div class="doc-card-title">2002UD-001U-10</div>
                     </div>
                     <div class="doc-card-body">
@@ -796,7 +802,8 @@
                 </div>
 
                 <div class="doc-card" data-type="udo">
-                    
+                    <div class="doc-card-header udo">
+                        <div class="doc-card-id">Urban Design Overlay</div>
                         <div class="doc-card-title">2005UD-001U-10</div>
                     </div>
                     <div class="doc-card-body">
@@ -815,7 +822,8 @@
                 </div>
 
                 <div class="doc-card" data-type="udo">
-                    
+                    <div class="doc-card-header udo">
+                        <div class="doc-card-id">Urban Design Overlay</div>
                         <div class="doc-card-title">2008UD-001U-05</div>
                     </div>
                     <div class="doc-card-body">
@@ -834,7 +842,8 @@
                 </div>
 
                 <div class="doc-card" data-type="udo">
-                    
+                    <div class="doc-card-header udo">
+                        <div class="doc-card-id">Urban Design Overlay</div>
                         <div class="doc-card-title">2009UD-001-011</div>
                     </div>
                     <div class="doc-card-body">
@@ -853,7 +862,8 @@
                 </div>
 
                 <div class="doc-card" data-type="udo">
-                    
+                    <div class="doc-card-header udo">
+                        <div class="doc-card-id">Urban Design Overlay</div>
                         <div class="doc-card-title">2025UD-002-001</div>
                     </div>
                     <div class="doc-card-body">
@@ -879,7 +889,9 @@
 
         <!-- Specific Plans -->
         <section class="doc-category" data-type="sp">
-            
+            <div class="category-header">
+                <div class="category-title">
+                    <div class="category-icon" style="background: var(--tan);">📐</div>
                     <div>
                         <h2>Specific Plans (SP)</h2>
                         <span>Specific Plans that may include DADU provisions</span>
@@ -890,7 +902,8 @@
 
             <div class="doc-grid">
                 <div class="doc-card" data-type="sp">
-                    
+                    <div class="doc-card-header sp">
+                        <div class="doc-card-id">Specific Plan</div>
                         <div class="doc-card-title">2017SP-034</div>
                     </div>
                     <div class="doc-card-body">
@@ -909,7 +922,8 @@
                 </div>
 
                 <div class="doc-card" data-type="sp">
-                    
+                    <div class="doc-card-header sp">
+                        <div class="doc-card-id">Specific Plan</div>
                         <div class="doc-card-title">2015SP-013</div>
                     </div>
                     <div class="doc-card-body">
@@ -928,7 +942,8 @@
                 </div>
 
                 <div class="doc-card" data-type="sp">
-                    
+                    <div class="doc-card-header sp">
+                        <div class="doc-card-id">Specific Plan</div>
                         <div class="doc-card-title">2022SP-030</div>
                     </div>
                     <div class="doc-card-body">
@@ -947,7 +962,8 @@
                 </div>
 
                 <div class="doc-card" data-type="sp">
-                    
+                    <div class="doc-card-header sp">
+                        <div class="doc-card-id">Specific Plan</div>
                         <div class="doc-card-title">2006SP-081</div>
                     </div>
                     <div class="doc-card-body">
@@ -969,7 +985,9 @@
 
         <!-- Related Legislation -->
         <section class="doc-category" data-type="legislation">
-            
+            <div class="category-header">
+                <div class="category-title">
+                    <div class="category-icon" style="background: #8e44ad;">⚖️</div>
                     <div>
                         <h2>Related Legislation</h2>
                         <span>Bills establishing or amending overlay districts</span>
@@ -980,7 +998,8 @@
 
             <div class="doc-grid">
                 <div class="doc-card" data-type="legislation">
-                    
+                    <div class="doc-card-header" style="background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%);">
+                        <div class="doc-card-id">Legislation</div>
                         <div class="doc-card-title">BL2021-635 / BL2020-316</div>
                     </div>
                     <div class="doc-card-body">
@@ -999,7 +1018,8 @@
                 </div>
 
                 <div class="doc-card" data-type="legislation">
-                    
+                    <div class="doc-card-header" style="background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%);">
+                        <div class="doc-card-id">Legislation</div>
                         <div class="doc-card-title">BL2022-1322</div>
                     </div>
                     <div class="doc-card-body">
@@ -1018,7 +1038,8 @@
                 </div>
 
                 <div class="doc-card" data-type="legislation">
-                    
+                    <div class="doc-card-header" style="background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%);">
+                        <div class="doc-card-id">Legislation</div>
                         <div class="doc-card-title">BL2024-559</div>
                     </div>
                     <div class="doc-card-body">
@@ -1090,7 +1111,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>© 2026 Homebody Projects | Nashville DADU Resource Platform</p>
+        <p>© 2026 Castlehold | Nashville DADU Resource Platform</p>
         <p style="margin-top: 10px;">Data sourced from Nashville-Davidson County public records. Always verify with Metro Planning.</p>
     </footer>
 
@@ -1127,5 +1148,6 @@
             });
         });
     </script>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

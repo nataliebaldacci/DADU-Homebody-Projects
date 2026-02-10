@@ -9,7 +9,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Montserrat', Arial, sans-serif;
-            background-color: #e8e4df;
+            background-color: #F2F0ED;
             color: #333;
             line-height: 1.6;
             padding: 20px;
@@ -23,34 +23,34 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #2c3e50;
+            color: #3A5566;
             text-align: center;
             margin-bottom: 10px;
             font-size: 26px;
         }
         .subtitle {
             text-align: center;
-            color: #6b8fa3;
+            color: #7B746D;
             margin-bottom: 30px;
             font-size: 14px;
         }
         h2 {
             color: #fff;
-            background: #2c3e50;
+            background: #3A5566;
             padding: 12px 20px;
             margin: 25px 0 15px 0;
             border-radius: 4px;
             font-size: 15px;
         }
         h3 {
-            color: #B55A3C;
+            color: #C58B2A;
             margin: 20px 0 10px 0;
             font-size: 14px;
-            border-bottom: 2px solid #B55A3C;
+            border-bottom: 2px solid #C58B2A;
             padding-bottom: 5px;
         }
         .stats-box {
-            background: #2c3e50;
+            background: #3A5566;
             color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -62,7 +62,7 @@
         }
         .stat-item h4 {
             font-size: 28px;
-            color: #6b8fa3;
+            color: #7B746D;
         }
         .stat-item p {
             font-size: 12px;
@@ -75,7 +75,7 @@
             font-size: 12px;
         }
         th {
-            background: #2c3e50;
+            background: #3A5566;
             color: #fff;
             padding: 10px 8px;
             text-align: left;
@@ -99,8 +99,8 @@
         .status-pending { background: #fff3cd; color: #856404; }
         .status-withdrawn { background: #e2e3e5; color: #383d41; }
         .status-deferred { background: #cce5ff; color: #004085; }
-        a { color: #6b8fa3; text-decoration: none; }
-        a:hover { text-decoration: underline; color: #2c3e50; }
+        a { color: #7B746D; text-decoration: none; }
+        a:hover { text-decoration: underline; color: #3A5566; }
         .url-cell { 
             font-size: 11px; 
             word-break: break-all;
@@ -112,7 +112,7 @@
             border-radius: 4px;
             margin-bottom: 25px;
         }
-        .toc h3 { color: #2c3e50; border: none; margin-top: 0; }
+        .toc h3 { color: #3A5566; border: none; margin-top: 0; }
         .toc ul { list-style: none; columns: 2; }
         .toc li { margin: 5px 0; font-size: 13px; }
         .section-grid {
@@ -126,9 +126,9 @@
             padding: 12px;
             border-radius: 4px;
             border: 1px solid #ddd;
-            border-left: 4px solid #6b8fa3;
+            border-left: 4px solid #7B746D;
         }
-        .grid-card h4 { color: #2c3e50; font-size: 12px; margin-bottom: 5px; }
+        .grid-card h4 { color: #3A5566; font-size: 12px; margin-bottom: 5px; }
         .grid-card p { font-size: 11px; color: #666; }
         .warning-box {
             background: #fff3cd;
@@ -155,203 +155,9 @@
     <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<!-- Shared Header - Homebody Projects -->
-<!-- Top Bar -->
-<div class="top-bar">
-    <div class="top-bar-left">
-        Nashville-Davidson County <span>BL2025-1007</span> effective December 12, 2025
-    </div>
-    <div class="top-bar-right">
-        <a href="homebody_pricing.html">Pricing</a>
-        <a href="dadu_resources.html">Resources</a>
-        <a href="mailto:contact@homebodyprojects.com">Contact</a>
-    </div>
-</div>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
 
-<!-- Main Navigation -->
-<nav class="main-nav" role="navigation" aria-label="Main navigation">
-    <div class="nav-container">
-        <!-- Logo -->
-        <a href="index.html" class="nav-logo">
-            <div class="nav-logo-icon">
-                <img src="assets/icons/ADU.png" alt="Homebody ADU Icon">
-            </div>
-            <div class="nav-logo-text">
-                <span class="nav-logo-title">Homebody Projects</span>
-                <span class="nav-logo-subtitle">Nashville DADU Platform</span>
-            </div>
-        </a>
-
-        <!-- Navigation Links -->
-        <div class="nav-links">
-            <!-- Features Dropdown -->
-            <div class="nav-item">
-                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="features">
-                    Features <span class="chevron">▼</span>
-                </button>
-                <div class="dropdown-menu" id="features-dropdown" role="menu">
-                    <div class="dropdown-section">
-                        <div class="dropdown-section-title">Explore</div>
-                        <a href="dadu_eligibility_map.html" class="dropdown-item" role="menuitem">
-                            <div class="dropdown-item-icon">
-                                <img src="assets/icons/Zoning.png" alt="">
-                            </div>
-                            <div class="dropdown-item-content">
-                                <div class="dropdown-item-title">DADU Eligibility Map</div>
-                                <div class="dropdown-item-desc">Color-coded eligibility across Nashville parcels</div>
-                            </div>
-                        </a>
-                        <a href="property_search.html" class="dropdown-item" role="menuitem">
-                            <div class="dropdown-item-icon">
-                                <img src="assets/icons/Parcel Search.png" alt="">
-                            </div>
-                            <div class="dropdown-item-content">
-                                <div class="dropdown-item-title">Property Search</div>
-                                <div class="dropdown-item-desc">Search by address or APN</div>
-                            </div>
-                        </a>
-                        <a href="dadu_explorer_v3.html" class="dropdown-item" role="menuitem">
-                            <div class="dropdown-item-icon">
-                                <img src="assets/icons/Area Maps and Visual layers.png" alt="">
-                            </div>
-                            <div class="dropdown-item-content">
-                                <div class="dropdown-item-title">DADU Explorer</div>
-                                <div class="dropdown-item-desc">Filter parcels by ZIP, cost, year, sqft</div>
-                            </div>
-                        </a>
-                        <a href="dadu_near_me_v2.html" class="dropdown-item" role="menuitem">
-                            <div class="dropdown-item-icon">
-                                <img src="assets/icons/Neighbors.png" alt="">
-                            </div>
-                            <div class="dropdown-item-content">
-                                <div class="dropdown-item-title">Near Me Locator</div>
-                                <div class="dropdown-item-desc">Find permitted DADUs near any address</div>
-                            </div>
-                            <span class="dropdown-item-badge">Free</span>
-                        </a>
-                    </div>
-                    <div class="dropdown-section">
-                        <div class="dropdown-section-title">Documents & Data</div>
-                        <a href="dadu_documents_portal.html" class="dropdown-item" role="menuitem">
-                            <div class="dropdown-item-icon">
-                                <img src="assets/icons/Recorded Docs.png" alt="">
-                            </div>
-                            <div class="dropdown-item-content">
-                                <div class="dropdown-item-title">Recorded Documents</div>
-                                <div class="dropdown-item-desc">Permits, covenants, site plans</div>
-                            </div>
-                        </a>
-                        <a href="dadu_reports_store.html" class="dropdown-item" role="menuitem">
-                            <div class="dropdown-item-icon">
-                                <img src="assets/icons/Exports & Reports.png" alt="">
-                            </div>
-                            <div class="dropdown-item-content">
-                                <div class="dropdown-item-title">Reports Store</div>
-                                <div class="dropdown-item-desc">Property reports and data exports</div>
-                            </div>
-                        </a>
-                        <a href="parcel_footprint_map.html" class="dropdown-item" role="menuitem">
-                            <div class="dropdown-item-icon">
-                                <img src="assets/icons/GIS.png" alt="">
-                            </div>
-                            <div class="dropdown-item-content">
-                                <div class="dropdown-item-title">GIS / Layers</div>
-                                <div class="dropdown-item-desc">Interactive parcel and footprint maps</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="dropdown-section">
-                        <div class="dropdown-section-title">Tools</div>
-                        <a href="roi_calculator.html" class="dropdown-item" role="menuitem">
-                            <div class="dropdown-item-icon">
-                                <img src="assets/icons/Appraisers.png" alt="">
-                            </div>
-                            <div class="dropdown-item-content">
-                                <div class="dropdown-item-title">Calculators</div>
-                                <div class="dropdown-item-desc">ROI, costs, tax, timeline tools</div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- User Types Dropdown -->
-            <div class="nav-item">
-                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="users">
-                    Who We Serve <span class="chevron">▼</span>
-                </button>
-                <div class="dropdown-menu" id="users-dropdown" role="menu">
-                    <a href="user-homeowners.html" class="dropdown-item" role="menuitem">
-                        <div class="dropdown-item-icon">
-                            <img src="assets/icons/Property Owners.png" alt="">
-                        </div>
-                        <div class="dropdown-item-content">
-                            <div class="dropdown-item-title">Homeowners</div>
-                            <div class="dropdown-item-desc">Eligibility, constraints, timeline, ROI</div>
-                        </div>
-                    </a>
-                    <a href="contractor_marketplace.html" class="dropdown-item" role="menuitem">
-                        <div class="dropdown-item-icon">
-                            <img src="assets/icons/Building and Construction.png" alt="">
-                        </div>
-                        <div class="dropdown-item-content">
-                            <div class="dropdown-item-title">Contractors</div>
-                            <div class="dropdown-item-desc">Leads, permit history, benchmarks</div>
-                        </div>
-                    </a>
-                    <a href="designer_resources.html" class="dropdown-item" role="menuitem">
-                        <div class="dropdown-item-icon">
-                            <img src="assets/icons/Surveyers adn Engineers.png" alt="">
-                        </div>
-                        <div class="dropdown-item-content">
-                            <div class="dropdown-item-title">Designers / Architects</div>
-                            <div class="dropdown-item-desc">Setbacks, envelopes, precedents</div>
-                        </div>
-                    </a>
-                    <a href="market_trends.html" class="dropdown-item" role="menuitem">
-                        <div class="dropdown-item-icon">
-                            <img src="assets/icons/Investors.png" alt="">
-                        </div>
-                        <div class="dropdown-item-content">
-                            <div class="dropdown-item-title">Developers / Investors</div>
-                            <div class="dropdown-item-desc">Opportunity maps, exports, trends</div>
-                        </div>
-                    </a>
-                    <a href="municipal_dashboard.html" class="dropdown-item" role="menuitem">
-                        <div class="dropdown-item-icon">
-                            <img src="assets/icons/Municipal.png" alt="">
-                        </div>
-                        <div class="dropdown-item-content">
-                            <div class="dropdown-item-title">Municipal / Agencies</div>
-                            <div class="dropdown-item-desc">Permit tracking and policy impacts</div>
-                        </div>
-                    </a>
-                    <a href="legal_resources.html" class="dropdown-item" role="menuitem">
-                        <div class="dropdown-item-icon">
-                            <img src="assets/icons/Legal.png" alt="">
-                        </div>
-                        <div class="dropdown-item-content">
-                            <div class="dropdown-item-title">Legal / Appraisers</div>
-                            <div class="dropdown-item-desc">Covenants, recorded docs, compliance</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Resources Link -->
-            <a href="dadu_resources.html" class="nav-link">Resources</a>
-
-            <!-- Pricing Link -->
-            <a href="homebody_pricing.html" class="nav-link">Pricing</a>
-        </div>
-
-        <!-- Search CTA -->
-        <a href="am_i_eligible.html" class="nav-search-btn">
-            <span>🔍</span>
-            <span>Check My Property</span>
-        </a>
-    </div>
-</nav>
 <!-- End Shared Header -->
 
 
@@ -907,7 +713,7 @@
         <p style="font-size: 12px;"><a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=4980017&GUID=50BFCF32-F766-44B5-8909-FA5D772339F9">Full legislation detail with text</a></p>
 
         <footer>
-            <p>Homebody Projects | Nashville DADU Legal Citations - Complete Database</p>
+            <p>Castlehold | Nashville DADU Legal Citations - Complete Database</p>
             <p>100+ Ordinances | Bluebook 21st Edition Format</p>
             <p>Last Updated: January 2026</p>
         </footer>

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Permit Process Timeline - Homebody Projects</title>
+    <title>Permit Process Timeline - Castlehold</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +13,7 @@
 
         body {
             font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
-            background-color: #e8e4df;
+            background-color: #F2F0ED;
             color: #333333;
             line-height: 1.6;
         }
@@ -34,7 +33,7 @@
         .page-title h1 {
             font-size: 28px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
@@ -50,13 +49,13 @@
         .divider {
             width: 80px;
             height: 3px;
-            background-color: #6b8fa3;
+            background-color: #7B746D;
             margin: 15px auto 25px;
         }
 
         /* Intro Box */
         .intro-box {
-            background-color: #2c3e50;
+            background-color: #3A5566;
             border-radius: 8px;
             padding: 20px 25px;
             margin-bottom: 30px;
@@ -70,7 +69,7 @@
         }
 
         .intro-box .highlight {
-            color: #6b8fa3;
+            color: #7B746D;
             font-weight: 600;
         }
 
@@ -109,11 +108,11 @@
             height: 100%;
         }
 
-        .progress-segment.prep { width: 12%; background-color: #B55A3C; }
-        .progress-segment.zoning { width: 20%; background-color: #6b8fa3; }
-        .progress-segment.building { width: 25%; background-color: #c9a86c; }
-        .progress-segment.issued { width: 13%; background-color: #2c3e50; }
-        .progress-segment.construction { width: 30%; background-color: #B55A3C; }
+        .progress-segment.prep { width: 12%; background-color: #C58B2A; }
+        .progress-segment.zoning { width: 20%; background-color: #7B746D; }
+        .progress-segment.building { width: 25%; background-color: #7B746D; }
+        .progress-segment.issued { width: 13%; background-color: #3A5566; }
+        .progress-segment.construction { width: 30%; background-color: #C58B2A; }
 
         /* Steps */
         .steps-container {
@@ -131,11 +130,11 @@
             border-top: 4px solid;
         }
 
-        .step:nth-child(1) { border-top-color: #B55A3C; }
-        .step:nth-child(2) { border-top-color: #6b8fa3; }
-        .step:nth-child(3) { border-top-color: #c9a86c; }
-        .step:nth-child(4) { border-top-color: #2c3e50; }
-        .step:nth-child(5) { border-top-color: #B55A3C; }
+        .step:nth-child(1) { border-top-color: #C58B2A; }
+        .step:nth-child(2) { border-top-color: #7B746D; }
+        .step:nth-child(3) { border-top-color: #7B746D; }
+        .step:nth-child(4) { border-top-color: #3A5566; }
+        .step:nth-child(5) { border-top-color: #C58B2A; }
 
         .step-weeks {
             display: inline-block;
@@ -147,11 +146,11 @@
             margin-bottom: 12px;
         }
 
-        .step:nth-child(1) .step-weeks { background-color: #B55A3C; }
-        .step:nth-child(2) .step-weeks { background-color: #6b8fa3; }
-        .step:nth-child(3) .step-weeks { background-color: #c9a86c; }
-        .step:nth-child(4) .step-weeks { background-color: #2c3e50; }
-        .step:nth-child(5) .step-weeks { background-color: #B55A3C; }
+        .step:nth-child(1) .step-weeks { background-color: #C58B2A; }
+        .step:nth-child(2) .step-weeks { background-color: #7B746D; }
+        .step:nth-child(3) .step-weeks { background-color: #7B746D; }
+        .step:nth-child(4) .step-weeks { background-color: #3A5566; }
+        .step:nth-child(5) .step-weeks { background-color: #C58B2A; }
 
         .step-icon {
             width: 40px;
@@ -170,16 +169,16 @@
             height: 20px;
         }
 
-        .step:nth-child(1) .step-icon svg { fill: #B55A3C; }
-        .step:nth-child(2) .step-icon svg { fill: #6b8fa3; }
-        .step:nth-child(3) .step-icon svg { fill: #c9a86c; }
-        .step:nth-child(4) .step-icon svg { fill: #2c3e50; }
-        .step:nth-child(5) .step-icon svg { fill: #B55A3C; }
+        .step:nth-child(1) .step-icon svg { fill: #C58B2A; }
+        .step:nth-child(2) .step-icon svg { fill: #7B746D; }
+        .step:nth-child(3) .step-icon svg { fill: #7B746D; }
+        .step:nth-child(4) .step-icon svg { fill: #3A5566; }
+        .step:nth-child(5) .step-icon svg { fill: #C58B2A; }
 
         .step-title {
             font-size: 12px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 8px;
@@ -199,7 +198,7 @@
         .checklist-section h2 {
             font-size: 16px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
             text-transform: uppercase;
             letter-spacing: 1px;
             text-align: center;
@@ -221,7 +220,7 @@
         .checklist-card h3 {
             font-size: 13px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -231,7 +230,7 @@
         .checklist-card h3 .num {
             width: 22px;
             height: 22px;
-            background-color: #6b8fa3;
+            background-color: #7B746D;
             color: white;
             border-radius: 50%;
             display: flex;
@@ -256,12 +255,12 @@
             content: "☐";
             position: absolute;
             left: 0;
-            color: #6b8fa3;
+            color: #7B746D;
         }
 
         /* Tips Section */
         .tips-section {
-            background-color: #B55A3C;
+            background-color: #C58B2A;
             border-radius: 8px;
             padding: 20px 25px;
             margin-top: 25px;
@@ -322,7 +321,7 @@
         .contact-section h3 {
             font-size: 13px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 10px;
         }
 
@@ -338,7 +337,7 @@
 
         .contact-item a {
             font-size: 12px;
-            color: #6b8fa3;
+            color: #7B746D;
             text-decoration: none;
             font-weight: 600;
         }
@@ -365,24 +364,21 @@
 
         .brand {
             font-weight: 700;
-            color: #6b8fa3;
+            color: #7B746D;
             letter-spacing: 1px;
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<div id="homebody-nav" style="background:#1e2a38;padding:0 20px;font-family:Montserrat,sans-serif;position:sticky;top:0;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.3);"><div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;"><a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:white;"><div style="width:32px;height:32px;background:#4a9;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏠</div><span style="font-weight:700;font-size:16px;">Homebody Projects</span></a><div style="display:flex;gap:6px;"><a href="am_i_eligible.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Eligibility</a><a href="dadu_opportunity_explorer_v2.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Explorer</a><a href="nashville_permit_explorer_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Permits</a><a href="dadu_code_legislation_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Code</a></div></div></div>
+<!-- Homebody Navigation -->
+<div id="homebody-nav" style="background:#1e2a38;padding:0 20px;font-family:Montserrat,sans-serif;position:sticky;top:0;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.3);"><div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;"><a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:white;"><div style="width:32px;height:32px;background:#4a9;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;">🏠</div><span style="font-weight:700;font-size:16px;">Castlehold</span></a><div style="display:flex;gap:6px;"><a href="am_i_eligible.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Eligibility</a><a href="dadu_opportunity_explorer_v2.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Explorer</a><a href="nashville_permit_explorer_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Permits</a><a href="dadu_code_legislation_v3.html" style="color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;font-size:12px;font-weight:500;">Code</a></div></div></div>
 
     <div class="container">
         <!-- Page Title -->

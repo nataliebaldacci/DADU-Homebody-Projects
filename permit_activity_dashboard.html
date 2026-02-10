@@ -4,30 +4,580 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Permit Activity Dashboard | Castlehold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-hover: #A8761F;
+            --tan: #7B746D;
+            --cream: #f5f5f0;
+            --background: #F2F0ED;
+            --white: #ffffff;
+            --border: #e0e0e0;
+            --text: #333333;
+            --text-light: #666666;
+            --terracotta: #27ae60;
+            --yellow: #f39c12;
+            --red: #c0392b;
+            --blue: #3498db;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--terracotta);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+            padding: 48px 24px;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            max-width: 1200px;
+            margin: -40px auto 0;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .stat-card-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .stat-card-value.green { color: var(--terracotta); }
+        .stat-card-value.yellow { color: var(--yellow); }
+        .stat-card-value.blue { color: var(--blue); }
+
+        .stat-card-label {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .stat-card-change {
+            font-size: 12px;
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .stat-card-change.up {
+            background: #e8f5e9;
+            color: var(--terracotta);
+        }
+
+        .stat-card-change.down {
+            background: #ffebee;
+            color: var(--red);
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title img {
+            width: 28px;
+            height: 28px;
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-pill {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-pill:hover,
+        .filter-pill.active {
+            background: var(--terracotta);
+            color: white;
+            border-color: var(--terracotta);
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .activity-item {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item:hover {
+            background: var(--cream);
+        }
+
+        .activity-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.new { background: #e8f5e9; }
+        .activity-icon.approved { background: #e3f2fd; }
+        .activity-icon.issued { background: #fff3e0; }
+        .activity-icon.completed { background: #f3e5f5; }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .activity-address {
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .activity-meta {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .activity-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .activity-status.new { background: #e8f5e9; color: var(--terracotta); }
+        .activity-status.approved { background: #e3f2fd; color: var(--blue); }
+        .activity-status.issued { background: #fff3e0; color: var(--yellow); }
+        .activity-status.completed { background: #f3e5f5; color: #8e44ad; }
+
+        /* Chart Placeholder */
+        .chart-container {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--background) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Zip Code Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--cream);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .data-table tr:hover td {
+            background: var(--cream);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--terracotta);
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--navy-dark);
+            color: rgba(255,255,255,0.7);
+            padding: 40px 24px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 992px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-pills {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-    <div id="header-container"></div>
-    <script>
-        fetch('homebody_header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-    </script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
 
-    <div style="max-width: 900px; margin: 80px auto; padding: 40px; background: var(--background); font-family: Inter, sans-serif;">
-        <h1 style="color: var(--navy); margin-bottom: 20px;">Permit Activity Dashboard</h1>
-        <p style="color: var(--text); line-height: 1.6;">
-            This page is currently under development. Real-time permit activity analytics will be available soon.
-        </p>
-        <div style="margin-top: 24px;">
-            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 16px;">
-                For now, explore permit data here:
-            </p>
-            <a href="nashville_permit_explorer_v3.html" style="display: inline-block; padding: 12px 24px; background: var(--navy); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-right: 12px;">Permit Explorer</a>
-            <a href="index.html" style="display: inline-block; padding: 12px 24px; background: var(--terracotta); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">← Back to Home</a>
+<!-- End Shared Header -->
+
+
+    
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Permit Activity Dashboard</h1>
+            <p>Real-time DADU permit tracking for Nashville-Davidson County</p>
+        </div>
+    </section>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-card-value">827</div>
+            <div class="stat-card-label">Total DADU Permits</div>
+            <span class="stat-card-change up">↑ 23% from 2024</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-value green">156</div>
+            <div class="stat-card-label">Permits This Year</div>
+            <span class="stat-card-change up">↑ 45% YoY</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-value yellow">34</div>
+            <div class="stat-card-label">In Review</div>
+            <span class="stat-card-change">Avg 21 days</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-value blue">$153K</div>
+            <div class="stat-card-label">Avg Project Cost</div>
+            <span class="stat-card-change down">↓ 5% from 2024</span>
         </div>
     </div>
+
+    <main class="main">
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <img src="assets/icons/Municipal.png" alt="">
+                    Recent Permit Activity
+                </h2>
+                <div class="filter-pills">
+                    <span class="filter-pill active">All</span>
+                    <span class="filter-pill">New</span>
+                    <span class="filter-pill">Approved</span>
+                    <span class="filter-pill">Issued</span>
+                    <span class="filter-pill">Completed</span>
+                </div>
+            </div>
+
+            <div class="activity-feed">
+                <div class="activity-item">
+                    <div class="activity-icon new">📋</div>
+                    <div class="activity-content">
+                        <div class="activity-title">New DADU Application Submitted</div>
+                        <div class="activity-address">1847 Fatherland St, Nashville TN 37206</div>
+                        <div class="activity-meta">Permit #2026-DADU-0156 • Submitted 2 hours ago • 700 SF</div>
+                    </div>
+                    <span class="activity-status new">New</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon approved">✓</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Plan Review Approved</div>
+                        <div class="activity-address">2234 Porter Rd, Nashville TN 37206</div>
+                        <div class="activity-meta">Permit #2026-DADU-0148 • Approved today • 680 SF</div>
+                    </div>
+                    <span class="activity-status approved">Approved</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon issued">🏗️</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Building Permit Issued</div>
+                        <div class="activity-address">908 Boscobel St, Nashville TN 37206</div>
+                        <div class="activity-meta">Permit #2026-DADU-0132 • Issued yesterday • 750 SF • $142,000</div>
+                    </div>
+                    <span class="activity-status issued">Issued</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon completed">🏠</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Certificate of Occupancy Issued</div>
+                        <div class="activity-address">1523 Woodland St, Nashville TN 37206</div>
+                        <div class="activity-meta">Permit #2025-DADU-0847 • Completed 3 days ago • 700 SF • $155,000</div>
+                    </div>
+                    <span class="activity-status completed">Completed</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon new">📋</div>
+                    <div class="activity-content">
+                        <div class="activity-title">New DADU Application Submitted</div>
+                        <div class="activity-address">3401 Belmont Blvd, Nashville TN 37212</div>
+                        <div class="activity-meta">Permit #2026-DADU-0155 • Submitted 5 hours ago • 850 SF</div>
+                    </div>
+                    <span class="activity-status new">New</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon approved">✓</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Zoning Approval Granted</div>
+                        <div class="activity-address">4521 Charlotte Ave, Nashville TN 37209</div>
+                        <div class="activity-meta">Permit #2026-DADU-0141 • Approved 2 days ago • 700 SF</div>
+                    </div>
+                    <span class="activity-status approved">Approved</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid-2">
+            <section class="section">
+                <h2 class="section-title">
+                    <img src="assets/icons/Market Statistics Report .png" alt="">
+                    Permits by Month (2025-2026)
+                </h2>
+                <div class="chart-container">
+                    <div class="chart-placeholder" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;">
+                        <div style="font-size: 48px;">📊</div>
+                        <div style="font-weight: 600;">Monthly Permit Trends</div>
+                        <div style="font-size: 14px; color: #666;">View detailed analytics in the <a href="nashville_permit_analytics.html" style="color: var(--terracotta);">Permit Analytics</a> page</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">
+                    <img src="assets/icons/Area Maps and Visual layers.png" alt="">
+                    Top Zip Codes
+                </h2>
+                <div class="chart-container" style="padding: 0; overflow: hidden;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Zip Code</th>
+                                <th>Permits</th>
+                                <th>Share</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>37206</strong> - East Nashville</td>
+                                <td>142</td>
+                                <td>
+                                    <div class="progress-bar"><div class="progress-bar-fill" style="width: 85%"></div></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>37212</strong> - Belmont/12 South</td>
+                                <td>98</td>
+                                <td>
+                                    <div class="progress-bar"><div class="progress-bar-fill" style="width: 60%"></div></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>37209</strong> - Sylvan Park/Nations</td>
+                                <td>87</td>
+                                <td>
+                                    <div class="progress-bar"><div class="progress-bar-fill" style="width: 52%"></div></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>37208</strong> - Germantown</td>
+                                <td>76</td>
+                                <td>
+                                    <div class="progress-bar"><div class="progress-bar-fill" style="width: 45%"></div></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>37204</strong> - Berry Hill/Woodbine</td>
+                                <td>64</td>
+                                <td>
+                                    <div class="progress-bar"><div class="progress-bar-fill" style="width: 38%"></div></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Castlehold. A Vanderbilt Law School Project.</p>
+    </footer>
+    <script src="homebody_header.js"></script>
 </body>
 </html>

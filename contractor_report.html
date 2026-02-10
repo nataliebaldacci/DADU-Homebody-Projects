@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contractor Report - Castlehold</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="homebody_shared.css">
+    <style>
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background-color: #F2F0ED;
+            color: #333;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .page-container { max-width: 960px; margin: 0 auto; padding: 40px 30px; }
+        .hero { text-align: center; margin-bottom: 40px; }
+        .hero h1 { font-size: 32px; font-weight: 800; color: #3A5566; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+        .hero .subtitle { font-size: 14px; color: #7B746D; font-weight: 600; letter-spacing: 1px; }
+        .divider { width: 80px; height: 3px; background: #7B746D; margin: 20px auto; }
+        .search-section {
+            background: #f5f5f0; border-radius: 8px; padding: 30px; text-align: center; margin-bottom: 40px;
+        }
+        .search-section h2 { color: #3A5566; font-size: 20px; margin-bottom: 16px; }
+        .search-row { display: flex; gap: 12px; max-width: 500px; margin: 0 auto; }
+        .search-row input {
+            flex: 1; padding: 12px 16px; border: 2px solid #ddd; border-radius: 6px;
+            font-size: 14px; font-family: inherit;
+        }
+        .search-row input:focus { border-color: #C58B2A; outline: none; }
+        .search-row button {
+            background: #C58B2A; color: #fff; border: none; padding: 12px 24px;
+            border-radius: 6px; font-weight: 700; font-size: 14px; cursor: pointer;
+        }
+        .search-row button:hover { background: #a87623; }
+        .features { margin-top: 40px; }
+        .features h2 { color: #3A5566; font-size: 22px; margin-bottom: 20px; }
+        .feature-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .feature-item {
+            background: #fff; border-radius: 8px; padding: 24px; border: 1px solid #e0ddd8;
+            display: flex; gap: 16px; align-items: flex-start;
+        }
+        .feature-icon {
+            width: 44px; height: 44px; background: #3A5566; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            color: #fff; font-size: 20px;
+        }
+        .feature-item h3 { color: #3A5566; font-size: 15px; margin-bottom: 4px; }
+        .feature-item p { color: #666; font-size: 13px; }
+        .price-banner {
+            text-align: center; margin-top: 40px; padding: 30px;
+            background: #3A5566; border-radius: 8px; color: #fff;
+        }
+        .price-banner .price { font-size: 36px; font-weight: 800; color: #C58B2A; }
+        .price-banner p { margin-top: 8px; font-size: 14px; opacity: 0.85; }
+        .price-banner a {
+            display: inline-block; margin-top: 16px; background: #C58B2A; color: #fff;
+            padding: 12px 32px; border-radius: 6px; text-decoration: none; font-weight: 700;
+        }
+        .sample-link {
+            text-align: center; margin-top: 20px;
+        }
+        .sample-link a { color: #C58B2A; font-weight: 600; font-size: 14px; }
+        .footer { text-align: center; margin-top: 60px; padding: 20px; color: #7B746D; font-size: 12px; }
+        .footer .brand { font-weight: 700; color: #3A5566; }
+    </style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="page-container">
+    <div class="hero">
+        <h1>Contractor Report</h1>
+        <p class="subtitle">Parcel-Level Build Intelligence for Professionals</p>
+        <div class="divider"></div>
+    </div>
+
+    <div class="search-section">
+        <h2>Generate Contractor Report</h2>
+        <div class="search-row">
+            <input type="text" id="address-input" placeholder="Enter address or APN...">
+            <button onclick="generateReport()">Generate</button>
+        </div>
+    </div>
+
+    <div class="features">
+        <h2>Report Contents</h2>
+        <div class="feature-list">
+            <div class="feature-item">
+                <div class="feature-icon">&#9881;</div>
+                <div>
+                    <h3>Building Specifications</h3>
+                    <p>Max DADU size, footprint, height, setbacks, and impervious surface limits for the specific parcel.</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">&#128736;</div>
+                <div>
+                    <h3>Permit Requirements</h3>
+                    <p>Required Metro Nashville permits, application forms, and filing sequence for DADU construction.</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">&#128200;</div>
+                <div>
+                    <h3>Cost Benchmarks</h3>
+                    <p>Local construction cost ranges, permit fees, and utility connection estimates for Davidson County.</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">&#128506;</div>
+                <div>
+                    <h3>Site Constraints</h3>
+                    <p>Overlay districts, restrictive covenants, floodplain status, and utility easement information.</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">&#128101;</div>
+                <div>
+                    <h3>Competitor Activity</h3>
+                    <p>Active DADU permits in the area, contractor names on record, and neighborhood build activity.</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">&#128196;</div>
+                <div>
+                    <h3>Linked Documents</h3>
+                    <p>Direct links to property card, ePermits, permit documents, and recorded covenants.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="price-banner">
+        <div class="price">$9.99</div>
+        <p>One-time purchase &middot; Instant PDF &middot; Parcel-specific build data</p>
+        <a href="dadu_reports_store.html">View All Reports &rarr;</a>
+    </div>
+
+    <div class="sample-link">
+        <a href="sample_reports/sample_contractor_report.html">View Sample Report &rarr;</a>
+    </div>
+
+    <div class="footer">
+        <p><span class="brand">CASTLEHOLD</span> &middot; Nashville-Davidson County &middot; 2026</p>
+    </div>
+</div>
+
+<script src="homebody_header.js"></script>
+<script>
+function generateReport() {
+    var input = document.getElementById('address-input').value.trim();
+    if (!input) { alert('Please enter an address or APN.'); return; }
+    alert('Report generation coming soon. Search: ' + input);
+}
+</script>
+</body>
+</html>

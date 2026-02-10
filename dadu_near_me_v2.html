@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find DADUs Near Me | Homebody Projects</title>
+    <title>Find DADUs Near Me | Castlehold</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         :root {
-            --navy: #2c3e50;
-            --navy-dark: #1a252f;
-            --teal: #6b8fa3;
-            --terracotta: #B55A3C;
-            --terracotta-hover: #9A4A30;
-            --tan: #c9a86c;
+            --navy: #3A5566;
+            --navy-dark: #2E4553;
+            --teal: #7B746D;
+            --terracotta: #C58B2A;
+            --terracotta-hover: #A8761F;
+            --tan: #7B746D;
             --cream: #f5f5f0;
         }
         
@@ -566,20 +565,16 @@
             }
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<!-- Header -->
+    <!-- Header -->
     
     
     <!-- Main Content -->
@@ -613,7 +608,10 @@
             
             <!-- Results -->
             <div class="results-section">
-                
+                <div class="results-header" id="resultsHeader" style="display: none;">
+                    <div>
+                        <span id="resultsCount">0</span> DADU Permits Found
+                    </div>
                     <div class="contractor-summary" id="contractorSummary">0 contractors</div>
                 </div>
                 
@@ -776,8 +774,8 @@
             // Add search radius circle
             searchCircle = L.circle([searchLocation.lat, searchLocation.lon], {
                 radius: radiusMeters,
-                color: '#B55A3C',
-                fillColor: '#B55A3C',
+                color: '#C58B2A',
+                fillColor: '#C58B2A',
                 fillOpacity: 0.1,
                 weight: 2
             }).addTo(map);
@@ -876,7 +874,10 @@
                         });
                         
                         marker.bindPopup(`
-                            
+                            <div class="popup-header">
+                                <h4>${permit.address}</h4>
+                                <div class="distance">${permit.distance.toFixed(2)} miles away</div>
+                            </div>
                             <div class="popup-body">
                                 <div class="popup-row">
                                     <span class="popup-label">Permit #</span>

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DADU Forms & Applications | Homebody DADU</title>
@@ -15,13 +14,13 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #e8e4df;
-            color: #2c3e50;
+            background: #F2F0ED;
+            color: #3A5566;
             min-height: 100vh;
         }
 
         .header {
-            background: #2c3e50;
+            background: #3A5566;
             color: white;
             padding: 1rem 2rem;
             display: flex;
@@ -46,7 +45,7 @@
         }
 
         .hero {
-            background: linear-gradient(135deg, #2c3e50 0%, #3d5166 100%);
+            background: linear-gradient(135deg, #3A5566 0%, #3d5166 100%);
             color: white;
             padding: 3rem 2rem;
             text-align: center;
@@ -66,7 +65,7 @@
         }
 
         .cta-banner {
-            background: #B55A3C;
+            background: #C58B2A;
             color: white;
             padding: 1rem 2rem;
             text-align: center;
@@ -101,7 +100,7 @@
         .search-box input {
             flex: 1;
             padding: 0.75rem 1rem;
-            border: 2px solid #e8e4df;
+            border: 2px solid #F2F0ED;
             border-radius: 8px;
             font-size: 1rem;
             font-family: inherit;
@@ -109,7 +108,7 @@
 
         .search-box input:focus {
             outline: none;
-            border-color: #6b8fa3;
+            border-color: #7B746D;
         }
 
         .filter-tabs {
@@ -122,7 +121,7 @@
         .filter-tab {
             padding: 0.5rem 1rem;
             border: none;
-            background: #e8e4df;
+            background: #F2F0ED;
             border-radius: 20px;
             cursor: pointer;
             font-family: inherit;
@@ -136,7 +135,7 @@
         }
 
         .filter-tab.active {
-            background: #2c3e50;
+            background: #3A5566;
             color: white;
         }
 
@@ -165,9 +164,9 @@
             background: #f5f5f0;
         }
 
-        .category-header.building { border-left: 4px solid #B55A3C; }
-        .category-header.covenant { border-left: 4px solid #c9a86c; }
-        .category-header.historic { border-left: 4px solid #6b8fa3; }
+        .category-header.building { border-left: 4px solid #C58B2A; }
+        .category-header.covenant { border-left: 4px solid #7B746D; }
+        .category-header.historic { border-left: 4px solid #7B746D; }
         .category-header.trade { border-left: 4px solid #e74c3c; }
         .category-header.str { border-left: 4px solid #9b59b6; }
         .category-header.site { border-left: 4px solid #3498db; }
@@ -183,7 +182,7 @@
 
         .category-info h2 {
             font-size: 1.25rem;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 0.25rem;
         }
 
@@ -193,17 +192,17 @@
         }
 
         .category-count {
-            background: #e8e4df;
+            background: #F2F0ED;
             padding: 0.25rem 0.75rem;
             border-radius: 12px;
             font-size: 0.85rem;
             font-weight: 600;
-            color: #2c3e50;
+            color: #3A5566;
         }
 
         .category-toggle {
             font-size: 1.5rem;
-            color: #6b8fa3;
+            color: #7B746D;
             transition: transform 0.3s;
         }
 
@@ -257,7 +256,7 @@
 
         .form-details h3 {
             font-size: 1rem;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 0.25rem;
         }
 
@@ -302,7 +301,7 @@
 
         .btn-download {
             padding: 0.5rem 1rem;
-            background: #2c3e50;
+            background: #3A5566;
             color: white;
             border: none;
             border-radius: 6px;
@@ -322,7 +321,7 @@
 
         .btn-info {
             padding: 0.5rem;
-            background: #e8e4df;
+            background: #F2F0ED;
             border: none;
             border-radius: 6px;
             cursor: pointer;
@@ -343,7 +342,7 @@
 
         .quick-links h3 {
             font-size: 1.1rem;
-            color: #2c3e50;
+            color: #3A5566;
             margin-bottom: 1rem;
         }
 
@@ -361,7 +360,7 @@
             background: #f5f5f0;
             border-radius: 8px;
             text-decoration: none;
-            color: #2c3e50;
+            color: #3A5566;
             transition: all 0.3s;
         }
 
@@ -380,7 +379,7 @@
         }
 
         .helpful-resources {
-            background: #2c3e50;
+            background: #3A5566;
             color: white;
             border-radius: 16px;
             padding: 2rem;
@@ -416,7 +415,7 @@
         }
 
         .resource-card a {
-            color: #B55A3C;
+            color: #C58B2A;
             font-weight: 600;
             text-decoration: none;
             font-size: 0.85rem;
@@ -453,20 +452,18 @@
             }
         }
     </style>
-
+    <link rel="stylesheet" href="homebody_shared.css">
 </head>
 <body>
-<div id="homebody-header-container"></div>
-<script>
-    fetch('homebody_header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('homebody-header-container').innerHTML = data;
-        });
-</script>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
 
 
-<section class="hero">
+    
+
+    <section class="hero">
         <h1>📋 DADU Forms & Applications</h1>
         <p>All the official Nashville Metro forms you need for your DADU project, organized and ready to download</p>
     </section>
@@ -516,7 +513,12 @@
         <div class="forms-grid" id="formsContainer">
             <!-- Building Permits -->
             <div class="form-category" data-category="building">
-                
+                <div class="category-header building" onclick="toggleCategory(this)">
+                    <span class="category-icon">🏗️</span>
+                    <div class="category-info">
+                        <h2>Building Permit Applications</h2>
+                        <p>Core permits for DADU construction</p>
+                    </div>
                     <span class="category-count">4 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
@@ -579,7 +581,12 @@
 
             <!-- Restrictive Covenants -->
             <div class="form-category" data-category="covenant">
-                
+                <div class="category-header covenant" onclick="toggleCategory(this)">
+                    <span class="category-icon">📜</span>
+                    <div class="category-info">
+                        <h2>Restrictive Covenants</h2>
+                        <p>Required owner-occupancy covenant forms</p>
+                    </div>
                     <span class="category-count">4 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
@@ -642,7 +649,12 @@
 
             <!-- Historic Permits -->
             <div class="form-category" data-category="historic">
-                
+                <div class="category-header historic" onclick="toggleCategory(this)">
+                    <span class="category-icon">🏛️</span>
+                    <div class="category-info">
+                        <h2>Historic Zoning Applications</h2>
+                        <p>For properties in Historic Overlay Districts</p>
+                    </div>
                     <span class="category-count">4 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
@@ -705,7 +717,12 @@
 
             <!-- Trade Permits -->
             <div class="form-category" data-category="trade">
-                
+                <div class="category-header trade" onclick="toggleCategory(this)">
+                    <span class="category-icon">🔧</span>
+                    <div class="category-info">
+                        <h2>Trade Permit Applications</h2>
+                        <p>Electrical, plumbing, gas & mechanical permits</p>
+                    </div>
                     <span class="category-count">4 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
@@ -770,7 +787,12 @@
 
             <!-- Short-Term Rental -->
             <div class="form-category" data-category="str">
-                
+                <div class="category-header str" onclick="toggleCategory(this)">
+                    <span class="category-icon">🏨</span>
+                    <div class="category-info">
+                        <h2>Short-Term Rental Permits</h2>
+                        <p>STR permit applications and affidavits</p>
+                    </div>
                     <span class="category-count">6 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
@@ -861,7 +883,12 @@
 
             <!-- Site Plans & UDO -->
             <div class="form-category" data-category="site">
-                
+                <div class="category-header site" onclick="toggleCategory(this)">
+                    <span class="category-icon">📐</span>
+                    <div class="category-info">
+                        <h2>Site Plans & Development</h2>
+                        <p>Site plan applications and development guides</p>
+                    </div>
                     <span class="category-count">4 forms</span>
                     <span class="category-toggle">▼</span>
                 </div>
