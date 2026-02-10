@@ -849,7 +849,25 @@
         }
 
         .legend-dot.building {
-            background: #3A5566;
+            background: #555555;
+        }
+
+        .legend-dot.accessory {
+            background: #C58B2A;
+        }
+
+        /* Building tooltip style */
+        .building-tooltip {
+            background: rgba(51,51,51,0.9);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+        }
+        .building-tooltip::before {
+            border-top-color: rgba(51,51,51,0.9);
         }
 
         /* Zoom Controls */
@@ -1440,6 +1458,22 @@
                     </div>
                 </div>
 
+                <!-- Structures on Parcel -->
+                <div class="property-section" id="buildingInfoSection" style="display:none;">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                            Structures on Parcel
+                        </h2>
+                    </div>
+                    <div id="buildingInfoList" style="display:flex;flex-direction:column;gap:8px;">
+                        <div style="color:#888;font-size:12px;">Search an address to see building data</div>
+                    </div>
+                </div>
+
                 <!-- DADU Design Standards Section -->
                 <div class="property-section">
                     <div class="section-header">
@@ -1983,7 +2017,11 @@
                 </div>
                 <div class="legend-item">
                     <div class="legend-dot building"></div>
-                    <span>Buildings</span>
+                    <span>Primary Structure</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot accessory"></div>
+                    <span>Accessory / DADU</span>
                 </div>
             </div>
 
@@ -2199,6 +2237,8 @@
         };
 
         let map, parcelLayer, buildingLayers = [], permitMarkers = [];
+        let footprintLayers = [];
+        let FOOTPRINTS_INDEX = {}; // APN -> [features]
         let currentProperty = { appraisedValue: 0, lotArea: 0 };
         let nearbyPermits = [];
         let isSatellite = false, showPermitsOnMap = true;
@@ -2207,6 +2247,24 @@
         // ============================================================
         // MAP INITIALIZATION
         // ============================================================
+        // Load building footprints GeoJSON and index by APN
+        async function loadFootprints() {
+            try {
+                const resp = await fetch('dadu_footprints.geojson');
+                if (!resp.ok) return;
+                const geojson = await resp.json();
+                geojson.features.forEach(f => {
+                    const apn = f.properties.APN;
+                    if (!apn) return;
+                    if (!FOOTPRINTS_INDEX[apn]) FOOTPRINTS_INDEX[apn] = [];
+                    FOOTPRINTS_INDEX[apn].push(f);
+                });
+                console.log(`Indexed ${Object.keys(FOOTPRINTS_INDEX).length} parcels with building footprints`);
+            } catch (e) {
+                console.log('Could not load dadu_footprints.geojson:', e.message);
+            }
+        }
+
         async function initMap() {
             map = L.map('map', { zoomControl: false }).setView(CONFIG.defaultCenter, CONFIG.defaultZoom);
 
@@ -2219,8 +2277,8 @@
                 maxZoom: 19
             });
 
-            // Load real data from JSON files
-            await loadRealData();
+            // Load real data and footprints in parallel
+            await Promise.all([loadRealData(), loadFootprints()]);
 
             // Show all permits on map initially
             addAllPermitsToMap();
@@ -2346,35 +2404,129 @@
         async function queryBuildings(geometry) {
             buildingLayers.forEach(l => map.removeLayer(l));
             buildingLayers = [];
+            footprintLayers.forEach(l => map.removeLayer(l));
+            footprintLayers = [];
 
-            try {
-                const coords = geometry.coordinates[0];
-                let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
-                coords.forEach(c => { minX = Math.min(minX, c[0]); minY = Math.min(minY, c[1]); maxX = Math.max(maxX, c[0]); maxY = Math.max(maxY, c[1]); });
+            const apn = currentProperty.APN || currentProperty.STANPAR || currentProperty.apn;
 
-                const url = `${CONFIG.apis.buildings}/query?` + new URLSearchParams({
-                    f: 'geojson',
-                    geometry: JSON.stringify({ xmin: minX, ymin: minY, xmax: maxX, ymax: maxY, spatialReference: { wkid: 4326 } }),
-                    geometryType: 'esriGeometryEnvelope',
-                    spatialRel: 'esriSpatialRelIntersects',
-                    outFields: '*',
-                    returnGeometry: true,
-                    outSR: 4326
-                });
+            // Try local footprints first (has richer data: type, area, year, height)
+            const localFootprints = apn ? (FOOTPRINTS_INDEX[apn] || []) : [];
 
-                const response = await fetch(url);
-                const data = await response.json();
+            if (localFootprints.length > 0) {
+                // Use local footprints with Symbium-style display
+                localFootprints.forEach(f => {
+                    const props = f.properties;
+                    const isAccessory = (props.Nash_BldgType || '').toLowerCase() === 'accessory';
+                    const fillColor = isAccessory ? '#C58B2A' : '#555555';
 
-                data.features?.forEach(b => {
-                    const layer = L.geoJSON(b, {
-                        style: { color: '#3A5566', weight: 2, fillColor: '#3A5566', fillOpacity: 0.4 }
+                    const layer = L.geoJSON(f, {
+                        style: {
+                            color: '#333333',
+                            weight: 2,
+                            fillColor: fillColor,
+                            fillOpacity: 0.65
+                        }
                     }).addTo(map);
-                    buildingLayers.push(layer);
+
+                    // Building info tooltip
+                    const area = props.Nash_Area ? Math.round(props.Nash_Area) + ' SF' : (props.FinishedArea ? props.FinishedArea + ' SF' : 'N/A');
+                    const bldgType = props.Nash_BldgType || 'Building';
+                    const height = props.Nash_Height ? props.Nash_Height + ' ft' : '';
+                    const year = props.YearBuilt ? Math.round(props.YearBuilt) : '';
+                    const exterior = props.Exterior || '';
+                    const roof = props.Nash_RoofType || '';
+                    const permitInfo = props.dadu_permit ? `<br><span style="color:#C58B2A;font-weight:600;">DADU Permit: ${props.dadu_permit}</span><br><span style="font-size:11px;">${props.dadu_status || ''}</span>` : '';
+
+                    layer.bindPopup(`
+                        <div style="font-family:Inter,sans-serif;min-width:180px;">
+                            <strong style="font-size:13px;color:#3A5566;">${bldgType}</strong>
+                            <div style="font-size:12px;color:#333;margin-top:4px;">
+                                <div>Footprint: <strong>${area}</strong>${height ? ' · Height: <strong>' + height + '</strong>' : ''}</div>
+                                ${year ? '<div>Year Built: <strong>' + year + '</strong></div>' : ''}
+                                ${exterior ? '<div>Exterior: ' + exterior + '</div>' : ''}
+                                ${roof ? '<div>Roof: ' + roof + '</div>' : ''}
+                            </div>
+                            ${permitInfo}
+                        </div>
+                    `);
+
+                    layer.bindTooltip(bldgType + (area !== 'N/A' ? ' · ' + area : ''), {
+                        permanent: false, direction: 'top', className: 'building-tooltip'
+                    });
+
+                    footprintLayers.push(layer);
                 });
 
-            } catch (err) {
-                console.error(err);
+                // Update building info in sidebar
+                updateBuildingInfo(localFootprints);
+            } else {
+                // Fallback: query Nashville ArcGIS Buildings layer
+                try {
+                    const coords = geometry.coordinates[0];
+                    let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
+                    coords.forEach(c => { minX = Math.min(minX, c[0]); minY = Math.min(minY, c[1]); maxX = Math.max(maxX, c[0]); maxY = Math.max(maxY, c[1]); });
+
+                    const url = `${CONFIG.apis.buildings}/query?` + new URLSearchParams({
+                        f: 'geojson',
+                        geometry: JSON.stringify({ xmin: minX, ymin: minY, xmax: maxX, ymax: maxY, spatialReference: { wkid: 4326 } }),
+                        geometryType: 'esriGeometryEnvelope',
+                        spatialRel: 'esriSpatialRelIntersects',
+                        outFields: '*',
+                        returnGeometry: true,
+                        outSR: 4326
+                    });
+
+                    const response = await fetch(url);
+                    const data = await response.json();
+
+                    data.features?.forEach(b => {
+                        const layer = L.geoJSON(b, {
+                            style: { color: '#333333', weight: 2, fillColor: '#555555', fillOpacity: 0.65 }
+                        }).addTo(map);
+                        buildingLayers.push(layer);
+                    });
+                } catch (err) {
+                    console.error(err);
+                }
             }
+        }
+
+        // Update sidebar with building structure details
+        function updateBuildingInfo(footprints) {
+            const container = document.getElementById('buildingInfoList');
+            if (!container) return;
+
+            if (footprints.length === 0) {
+                container.innerHTML = '<div style="color:#888;font-size:12px;">No building data available</div>';
+                return;
+            }
+
+            container.innerHTML = footprints.map(f => {
+                const p = f.properties;
+                const type = p.Nash_BldgType || 'Building';
+                const isAccessory = type.toLowerCase() === 'accessory';
+                const area = p.Nash_Area ? Math.round(p.Nash_Area) : (p.FinishedArea || '—');
+                const height = p.Nash_Height || '—';
+                const year = p.YearBuilt ? Math.round(p.YearBuilt) : '—';
+                const tagColor = isAccessory ? '#C58B2A' : '#3A5566';
+                const permitBadge = p.dadu_permit
+                    ? `<span style="background:#C58B2A20;color:#C58B2A;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;">DADU ${p.dadu_status || ''}</span>`
+                    : '';
+
+                return `
+                    <div style="background:#f9f9f9;border-radius:8px;padding:10px 12px;border-left:3px solid ${tagColor};">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                            <strong style="font-size:12px;color:${tagColor};">${type}</strong>
+                            ${permitBadge}
+                        </div>
+                        <div style="display:flex;gap:16px;font-size:11px;color:#666;">
+                            <span>Area: <strong style="color:#333;">${area} SF</strong></span>
+                            <span>Height: <strong style="color:#333;">${height} ft</strong></span>
+                            <span>Built: <strong style="color:#333;">${year}</strong></span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         async function queryZoning(lon, lat) {
@@ -2589,6 +2741,10 @@
             const apnForReport = currentProperty.APN || currentProperty.STANPAR || currentProperty.apn || '';
             const addressForReport = currentProperty.address || '';
             reportBtn.href = `property-report-card.html?apn=${encodeURIComponent(apnForReport)}&address=${encodeURIComponent(addressForReport)}`;
+
+            // Show building info section
+            const buildingSection = document.getElementById('buildingInfoSection');
+            if (buildingSection) buildingSection.style.display = 'block';
 
             // Update DADU Design Standards based on lot size
             updateDesignStandards(maxDADU);
