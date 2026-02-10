@@ -36,6 +36,15 @@
         .cost-row:last-child { border-bottom: none; font-weight: bold; font-size: 18px; color: #155724; }
         .footer { background: #2c3e50; color: white; padding: 20px 30px; text-align: center; font-size: 12px; }
         .footer a { color: #B55A3C; }
+    
+        .property-visuals { padding: 0; border-bottom: 1px solid #eee; }
+        .visuals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+        .visuals-grid iframe { width: 100%; height: 220px; border: none; display: block; }
+        .visual-label { font-size: 10px; text-transform: uppercase; color: #666; padding: 6px 12px; background: #f8f9fa; letter-spacing: 0.5px; font-weight: 600; }
+        .visual-links { display: flex; gap: 10px; padding: 12px 20px; background: #f8f9fa; flex-wrap: wrap; }
+        .visual-links a { font-size: 12px; color: #B55A3C; text-decoration: none; font-weight: 600; padding: 4px 12px; border: 1px solid #B55A3C; border-radius: 4px; }
+        .visual-links a:hover { background: #B55A3C; color: white; }
+        @media (max-width: 600px) { .visuals-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -43,6 +52,28 @@
         <div class="header">
             <h1>Full Property Report</h1>
             <div class="subtitle">Comprehensive DADU Analysis | Homebody Projects</div>
+
+        <div class="property-visuals">
+            <div class="visuals-grid">
+                <div>
+                    <div class="visual-label">Aerial / Satellite View</div>
+                    <iframe src="https://maps.google.com/maps?q=36.18375,-86.74628&t=k&z=19&output=embed" loading="lazy" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <div class="visual-label">Street View</div>
+                    <iframe src="https://maps.google.com/maps?q=36.18375,-86.74628&layer=c&cbll=36.18375,-86.74628&cbp=12,0,0,0,0&output=embed" loading="lazy" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="visual-links">
+                <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=08305027100" target="_blank">ParcelViewer</a>
+                <a href="https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=08305027100" target="_blank">Permit Docs</a>
+                <a href="https://www.google.com/maps/@36.18375,-86.74628,3a,75y,90t/data=!3m6!1e1!3m4!1s!2e0!7i16384!8i8192" target="_blank">Google Street View</a>
+                <a href="https://www.google.com/maps/@36.18375,-86.74628,100m/data=!3m1!1e3" target="_blank">Google Aerial</a>
+                <a href="https://drive.google.com/file/d/1LOTXfhsxPk-wGsccojl8s5hNAjkNrozQ/view" target="_blank">Property Card PDF</a>
+                <a href="https://drive.google.com/file/d/1h1zJh8U7DYSzjwb619anCDfJ4ZcZuTh5/view" target="_blank">Recorded Covenant</a>
+            </div>
+        </div>
+
             <span class="sample-badge">SAMPLE REPORT - $19</span>
         </div>
 
@@ -64,10 +95,10 @@
             <h3>1. Property Details</h3>
             <div class="info-grid">
                 <div class="info-item"><label>Address</label><value>2763 Rosedale Pl, Nashville, TN 37206</value></div>
-                <div class="info-item"><label>APN</label><value>08305027100</value></div>
+                <div class="info-item"><label>APN</label><value><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/property-report-card.html?apn=08305027100" target="_blank" style="color: #B55A3C; text-decoration: none;">08305027100</a></value></div>
                 <div class="info-item"><label>Owner</label><value>Smith Family Trust</value></div>
                 <div class="info-item"><label>Lot Size</label><value>12,450 SF (0.29 acres)</value></div>
-                <div class="info-item"><label>Zoning</label><value>R6-A</value></div>
+                <div class="info-item"><label>Zoning</label><value><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/dadu_zoning_standards.html" target="_blank" style="color: #B55A3C; text-decoration: none;">R6-A</a></value></div>
                 <div class="info-item"><label>Service District</label><value>USD</value></div>
                 <div class="info-item"><label>Year Built</label><value>1948</value></div>
                 <div class="info-item"><label>Assessed Value</label><value>$425,000</value></div>
@@ -79,7 +110,7 @@
             <div style="margin-bottom: 15px;">
                 <span class="status-badge status-eligible">✓ ELIGIBLE BY RIGHT</span>
             </div>
-            <p>Property qualifies for DADU construction under Nashville Metro Code § 17.16.030 as amended by BL2025-1007. Located in Urban Services District with R6-A zoning.</p>
+            <p>Property qualifies for DADU construction under Nashville Metro Code <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17_ZONING_CH17.16_ACDEST_S17.16.030_DEDIACDUUN" target="_blank" style="color: #B55A3C; text-decoration: none;">§ 17.16.030</a> as amended by <a href="https://documents.nashville.gov/Request/Form/Legislation?legislationnumber=BL2025-1007" target="_blank" style="color: #B55A3C; text-decoration: none; font-weight: 600;">BL2025-1007</a>. Located in Urban Services District with R6-A zoning.</p>
             <div class="highlight-box">
                 <strong>Key Finding:</strong> Lot exceeds 10,000 SF threshold, qualifying for larger DADU (850 SF living / 1,000 SF footprint).
             </div>
@@ -89,11 +120,11 @@
             <h3>3. Maximum Building Specifications</h3>
             <table>
                 <tr><th>Parameter</th><th>Maximum</th><th>Code Reference</th></tr>
-                <tr><td>Living Area</td><td><strong>850 SF</strong></td><td>§ 17.16.030(A)(2)</td></tr>
-                <tr><td>Total Footprint</td><td><strong>1,000 SF</strong></td><td>§ 17.16.030(A)(2)</td></tr>
-                <tr><td>Height</td><td><strong>24 ft / 2 stories</strong></td><td>§ 17.16.030(B)</td></tr>
-                <tr><td>Rear Setback</td><td><strong>5 ft</strong></td><td>§ 17.12.040(E)</td></tr>
-                <tr><td>Side Setback</td><td><strong>5 ft</strong></td><td>§ 17.12.040(E)</td></tr>
+                <tr><td>Living Area</td><td><strong>850 SF</strong></td><td><a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17_ZONING_CH17.16_ACDEST_S17.16.030_DEDIACDUUN" target="_blank" style="color: #B55A3C; text-decoration: none;">§ 17.16.030(A)(2)</a></td></tr>
+                <tr><td>Total Footprint</td><td><strong>1,000 SF</strong></td><td><a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17_ZONING_CH17.16_ACDEST_S17.16.030_DEDIACDUUN" target="_blank" style="color: #B55A3C; text-decoration: none;">§ 17.16.030(A)(2)</a></td></tr>
+                <tr><td>Height</td><td><strong>24 ft / 2 stories</strong></td><td><a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17_ZONING_CH17.16_ACDEST_S17.16.030_DEDIACDUUN" target="_blank" style="color: #B55A3C; text-decoration: none;">§ 17.16.030(B)</a></td></tr>
+                <tr><td>Rear Setback</td><td><strong>5 ft</strong></td><td><a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17_ZONING_CH17.12_ZOLOST_S17.12.040_ACBUST" target="_blank" style="color: #B55A3C; text-decoration: none;">§ 17.12.040(E)</a></td></tr>
+                <tr><td>Side Setback</td><td><strong>5 ft</strong></td><td><a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17_ZONING_CH17.12_ZOLOST_S17.12.040_ACBUST" target="_blank" style="color: #B55A3C; text-decoration: none;">§ 17.12.040(E)</a></td></tr>
             </table>
         </div>
 
@@ -114,9 +145,9 @@
             <h3>5. Permit History</h3>
             <table>
                 <tr><th>Permit #</th><th>Type</th><th>Date</th><th>Status</th><th>Value</th></tr>
-                <tr><td>2023BL45678</td><td>Renovation</td><td>2023-05-12</td><td>Complete</td><td>$45,000</td></tr>
-                <tr><td>2019EL12345</td><td>Electrical</td><td>2019-08-22</td><td>Complete</td><td>$3,500</td></tr>
-                <tr><td>2015BL78901</td><td>Addition</td><td>2015-03-10</td><td>Complete</td><td>$85,000</td></tr>
+                <tr><td><a href="https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=2023BL45678" target="_blank" style="color: #B55A3C; text-decoration: none;">2023BL45678</a></td><td>Renovation</td><td>2023-05-12</td><td>Complete</td><td>$45,000</td></tr>
+                <tr><td><a href="https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=2019EL12345" target="_blank" style="color: #B55A3C; text-decoration: none;">2019EL12345</a></td><td>Electrical</td><td>2019-08-22</td><td>Complete</td><td>$3,500</td></tr>
+                <tr><td><a href="https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=2015BL78901" target="_blank" style="color: #B55A3C; text-decoration: none;">2015BL78901</a></td><td>Addition</td><td>2015-03-10</td><td>Complete</td><td>$85,000</td></tr>
             </table>
         </div>
 

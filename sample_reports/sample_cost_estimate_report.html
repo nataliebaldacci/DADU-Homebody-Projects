@@ -37,6 +37,15 @@
         .note-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; font-size: 14px; }
         .footer { background: #2c3e50; color: white; padding: 20px 30px; text-align: center; font-size: 12px; }
         .footer a { color: #B55A3C; }
+    
+        .property-visuals { padding: 0; border-bottom: 1px solid #eee; }
+        .visuals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+        .visuals-grid iframe { width: 100%; height: 220px; border: none; display: block; }
+        .visual-label { font-size: 10px; text-transform: uppercase; color: #666; padding: 6px 12px; background: #f8f9fa; letter-spacing: 0.5px; font-weight: 600; }
+        .visual-links { display: flex; gap: 10px; padding: 12px 20px; background: #f8f9fa; flex-wrap: wrap; }
+        .visual-links a { font-size: 12px; color: #B55A3C; text-decoration: none; font-weight: 600; padding: 4px 12px; border: 1px solid #B55A3C; border-radius: 4px; }
+        .visual-links a:hover { background: #B55A3C; color: white; }
+        @media (max-width: 600px) { .visuals-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -44,6 +53,27 @@
         <div class="header">
             <h1>DADU Cost Estimate Report</h1>
             <div class="subtitle">Detailed Budget Analysis | Homebody Projects</div>
+
+        <div class="property-visuals">
+            <div class="visuals-grid">
+                <div>
+                    <div class="visual-label">Aerial / Satellite View</div>
+                    <iframe src="https://maps.google.com/maps?q=36.18375,-86.74628&t=k&z=19&output=embed" loading="lazy" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <div class="visual-label">Street View</div>
+                    <iframe src="https://maps.google.com/maps?q=36.18375,-86.74628&layer=c&cbll=36.18375,-86.74628&cbp=12,0,0,0,0&output=embed" loading="lazy" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="visual-links">
+                <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=08305027100" target="_blank">ParcelViewer</a>
+                <a href="https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=08305027100" target="_blank">Permit Docs</a>
+                <a href="https://www.google.com/maps/@36.18375,-86.74628,3a,75y,90t/data=!3m6!1e1!3m4!1s!2e0!7i16384!8i8192" target="_blank">Google Street View</a>
+                <a href="https://www.google.com/maps/@36.18375,-86.74628,100m/data=!3m1!1e3" target="_blank">Google Aerial</a>
+                <a href="https://drive.google.com/file/d/1LOTXfhsxPk-wGsccojl8s5hNAjkNrozQ/view" target="_blank">Property Card PDF</a>
+            </div>
+        </div>
+
             <span class="sample-badge">SAMPLE REPORT - $29</span>
         </div>
 
@@ -51,7 +81,7 @@
             <h3>Property Information</h3>
             <table>
                 <tr><td><strong>Address</strong></td><td>2763 Rosedale Pl, Nashville, TN 37206</td></tr>
-                <tr><td><strong>APN</strong></td><td>08305027100</td></tr>
+                <tr><td><strong>APN</strong></td><td><a href="https://nataliebaldacci.github.io/DADU-Homebody-Projects/property-report-card.html?apn=08305027100" target="_blank" style="color: #B55A3C; text-decoration: none;">08305027100</a></td></tr>
                 <tr><td><strong>Lot Size</strong></td><td>12,450 SF (0.29 acres)</td></tr>
                 <tr><td><strong>Maximum DADU Size</strong></td><td>850 SF living / 1,000 SF footprint</td></tr>
             </table>
