@@ -65,23 +65,13 @@
     .homebody-header .logo {
         display: flex;
         align-items: center;
-        gap: 10px;
         text-decoration: none;
-        color: var(--navy);
     }
 
-    .homebody-header .logo-icon {
-        width: 42px;
-        height: 42px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .homebody-header .logo-text {
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--navy);
+    .homebody-header .logo img {
+        height: 50px;
+        width: auto;
+        display: block;
     }
 
     .homebody-header .main-nav {
@@ -257,29 +247,7 @@
 <header class="homebody-header">
     <div class="header-left">
         <a href="index.html" class="logo">
-            <div class="logo-icon">
-                <svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Left castle (smaller/DADU) - Tan -->
-                    <rect x="4" y="20" width="6" height="14" fill="#D4C5A9"/>
-                    <rect x="5" y="23" width="1.5" height="2" fill="#F2F0ED"/>
-                    <rect x="8" y="23" width="1.5" height="2" fill="#F2F0ED"/>
-                    <rect x="6" y="30" width="2" height="4" fill="#F2F0ED"/>
-                    <rect x="4" y="19" width="2" height="2" fill="#D4C5A9"/>
-                    <rect x="8" y="19" width="2" height="2" fill="#D4C5A9"/>
-
-                    <!-- Right castle (larger/main) - Slate blue -->
-                    <rect x="16" y="14" width="10" height="20" fill="#3A5566"/>
-                    <rect x="17" y="17" width="2" height="3" fill="#F2F0ED"/>
-                    <rect x="23" y="17" width="2" height="3" fill="#F2F0ED"/>
-                    <rect x="19" y="26" width="3" height="8" fill="#F2F0ED"/>
-                    <rect x="16" y="13" width="2.5" height="2" fill="#3A5566"/>
-                    <rect x="23.5" y="13" width="2.5" height="2" fill="#3A5566"/>
-
-                    <!-- Ground line - Warm stone -->
-                    <line x1="0" y1="35" x2="42" y2="35" stroke="#7B746D" stroke-width="2"/>
-                </svg>
-            </div>
-            <span class="logo-text">Castlehold</span>
+            <img src="assets/castlehold_logo.png" alt="Castlehold" style="height: 50px; width: auto;">
         </a>
 
         <nav class="main-nav">
