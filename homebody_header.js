@@ -41,10 +41,7 @@
     <div class="nav-container">
         <!-- Logo -->
         <a href="${basePath}index.html" class="nav-logo">
-            <div class="nav-logo-icon castle-icon">
-                <img src="${basePath}assets/castlehold-logo.png" alt="Castlehold" width="44" height="37" style="object-fit:contain;">
-            </div>
-            <span class="nav-logo-title">CASTLEHOLD</span>
+            <img src="${basePath}assets/castlehold-logo.png" alt="Castlehold - DADU Zoning &amp; Buildability Intelligence" class="nav-logo-img">
         </a>
 
         <!-- Navigation Links -->
