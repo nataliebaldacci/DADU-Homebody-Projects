@@ -1080,6 +1080,9 @@
                 <a href="#" id="link-documents" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
                     <span>📄</span> Permit Documents
                 </a>
+                <a href="#" id="link-parcel-report" target="_blank" style="padding: 10px 16px; background: var(--card-bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <span>📊</span> Parcel Report
+                </a>
                 <a href="#" id="link-property-card" target="_blank" style="padding: 10px 16px; background: var(--terracotta); border-radius: 8px; font-size: 13px; font-weight: 600; color: white; display: flex; align-items: center; gap: 8px;">
                     <span>🏠</span> View Property Card
                 </a>
@@ -1889,6 +1892,8 @@
                 document.getElementById('link-assessor').href = `https://davidson-tn-citizen.comper.info/template.aspx?propertyID=${apn}`;
                 // Permit Documents by parcel number
                 document.getElementById('link-documents').href = `https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${apn}`;
+                // Parcel Report (PrintRecord)
+                document.getElementById('link-parcel-report').href = `https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin=${apn}`;
                 // Property Card in Google Drive
                 document.getElementById('link-property-card').href = `${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(apn)}`;
             }
@@ -1899,8 +1904,8 @@
                 const lng = coords[0];
                 // Google Street View
                 document.getElementById('link-streetview').href = `https://www.google.com/maps/@${lat},${lng},3a,75y,90t/data=!3m6!1e1!3m4!1s!2e0!7i16384!8i8192`;
-                // Aerial view (Google Maps satellite)
-                document.getElementById('link-aerial').href = `https://www.google.com/maps/@${lat},${lng},100m/data=!3m1!1e3`;
+                // Aerial view (Patriot Properties)
+                document.getElementById('link-aerial').href = `https://portal.patriotproperties.com/?APIKEY=5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F&LAT=${lat}&LONG=${lng}`;
                 document.getElementById('property-image-links').style.display = 'flex';
             }
 
