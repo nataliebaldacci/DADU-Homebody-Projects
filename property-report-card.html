@@ -2010,7 +2010,7 @@
         async function queryParcelBoundary(apn, lat, lng) {
             try {
                 const url = `${MAP_APIS.parcels}/query?` + new URLSearchParams({
-                    f: 'geojson', where: `APN='${apn}'`, outFields: 'APN', returnGeometry: true, outSR: 4326
+                    f: 'geojson', where: `STANPAR='${apn}'`, outFields: 'STANPAR', returnGeometry: true, outSR: 4326
                 });
                 const resp = await fetch(url);
                 const data = await resp.json();
