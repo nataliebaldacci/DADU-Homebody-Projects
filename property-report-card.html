@@ -1030,7 +1030,7 @@
  <p>© 2026 Castlehold. A Vanderbilt Law School Project.</p></footer>
 
  <script>
- // Eligibility code mapping
+ // Eligibility code mapping (for legacy GeoJSON e field)
  const ELIG_LABELS = {
  'E': { text: 'Eligible - By Right', class: 'eligible', icon: '' },
  'ES': { text: 'Eligible - Has Secondary', class: 'eligible', icon: '' },
@@ -1040,6 +1040,116 @@
  'US': { text: 'Check District', class: 'conditional', icon: '?' },
  'N': { text: 'Not Eligible', class: 'not-eligible', icon: '' }
  };
+
+ // ArcGIS Eligibility_Status → display mapping (matches eligibility map logic)
+ const STATUS_MAP = {
+ 'ELIGIBLE_USD': { text: 'Eligible - By Right (USD)', class: 'eligible', code: 'E', district: 'USD' },
+ 'CHECK_SP_USD': { text: 'Eligible - SP in USD', class: 'eligible', code: 'E', district: 'USD' },
+ 'GSD_NEEDS_OVERLAY': { text: 'Conditional - GSD Overlay Required', class: 'conditional', code: 'C', district: 'GSD' },
+ 'CHECK_SP_GSD': { text: 'Conditional - SP in GSD', class: 'conditional', code: 'C', district: 'GSD' },
+ 'NOT_ELIGIBLE': { text: 'Not Eligible', class: 'not-eligible', code: 'N', district: '' },
+ 'REVIEW_REQUIRED': { text: 'Review Required', class: 'conditional', code: 'U', district: '' }
+ };
+
+ const ARCGIS_ELIGIBILITY_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0/query';
+
+ // Query live eligibility from ArcGIS and update the UI
+ async function queryEligibilityFromArcGIS(stanpar) {
+ try {
+ const params = new URLSearchParams({
+ where: `STANPAR='${stanpar}'`,
+ outFields: 'STANPAR,Address,Zoning,Eligibility_Status,Final_Eligibility,Lot_SqFt,Max_DADU_Living_SF,Service_District,In_USD,In_GSD,Is_R_Zone,Is_RS_Zone,Num_Structures',
+ returnGeometry: false,
+ f: 'json'
+ });
+ const resp = await fetch(`${ARCGIS_ELIGIBILITY_URL}?${params}`);
+ const data = await resp.json();
+ if (!data.features || data.features.length === 0) return null;
+
+ const attrs = data.features[0].attributes;
+ const status = attrs.Eligibility_Status || attrs.Final_Eligibility || '';
+ const mapped = STATUS_MAP[status] || STATUS_MAP['NOT_ELIGIBLE'];
+
+ // Update eligibility badge
+ const badge = document.getElementById('eligibility-badge');
+ if (badge) {
+ badge.textContent = mapped.text;
+ badge.className = `eligibility-badge ${mapped.class}`;
+ }
+
+ // Update quick stats
+ const zoning = attrs.Zoning || '';
+ const lotSqft = attrs.Lot_SqFt || 0;
+ const maxLiving = attrs.Max_DADU_Living_SF || (lotSqft >= 10000 ? 850 : 700);
+ const maxFootprint = maxLiving <= 700 ? 750 : 1000;
+ const estCost = maxLiving * 175;
+
+ document.getElementById('stat-zoning').textContent = zoning || 'N/A';
+ document.getElementById('stat-lot-size').textContent = lotSqft ? `${lotSqft.toLocaleString()} SF` : 'N/A';
+ document.getElementById('stat-max-dadu').textContent = `${maxLiving} SF`;
+ document.getElementById('stat-est-cost').textContent = `$${Math.round(estCost / 1000)}K`;
+
+ // Update property details
+ document.getElementById('detail-zoning').textContent = zoning || 'N/A';
+ document.getElementById('detail-lot-size').textContent = lotSqft ? `${lotSqft.toLocaleString()} SF` : 'N/A';
+ document.getElementById('detail-max-living').textContent = `${maxLiving} SF`;
+ document.getElementById('detail-max-footprint').textContent = `${maxFootprint} SF`;
+
+ // Update service district
+ const districtEl = document.getElementById('detail-district');
+ if (districtEl && mapped.district) {
+ districtEl.textContent = mapped.district;
+ districtEl.className = mapped.district === 'USD' ? 'data-item-value success' : 'data-item-value warning';
+ }
+
+ // Update address if we have a better one from ArcGIS
+ if (attrs.Address) {
+ document.getElementById('report-address-text').textContent = attrs.Address;
+ }
+
+ // Update eligibility checklist
+ const isResidential = attrs.Is_R_Zone === 1 || attrs.Is_RS_Zone === 1 || /^(RS|R\d|R$|RM|AR)/.test(zoning);
+ const checklistItems = document.querySelectorAll('.report-section:nth-of-type(2) .data-item');
+ checklistItems.forEach(item => {
+ const label = item.querySelector('.data-item-label')?.textContent;
+ const valueEl = item.querySelector('.data-item-value');
+ if (!valueEl) return;
+ switch(label) {
+ case 'Residential Zoning':
+ valueEl.textContent = isResidential ? 'Pass' : 'Fail';
+ valueEl.className = isResidential ? 'data-item-value success' : 'data-item-value error';
+ break;
+ case 'Urban Services District':
+ if (mapped.class === 'eligible') {
+ valueEl.textContent = 'Pass';
+ valueEl.className = 'data-item-value success';
+ } else if (mapped.class === 'conditional') {
+ valueEl.textContent = 'GSD - Overlay Needed';
+ valueEl.className = 'data-item-value warning';
+ } else {
+ valueEl.textContent = 'Check Required';
+ valueEl.className = 'data-item-value error';
+ }
+ break;
+ case 'Single Family Property':
+ if (attrs.Num_Structures && attrs.Num_Structures > 1) {
+ valueEl.textContent = 'Has Secondary Structure';
+ valueEl.className = 'data-item-value warning';
+ } else {
+ valueEl.textContent = 'Pass';
+ valueEl.className = 'data-item-value success';
+ }
+ break;
+ }
+ });
+
+ // Return data for caller use
+ return { attrs, mapped, zoning, lotSqft, maxLiving };
+ } catch (e) {
+ console.error('ArcGIS eligibility query failed:', e);
+ return null;
+ }
+ }
 
  // Google Drive folder IDs - linked to DADU_PDFs folders
  const GDRIVE_FOLDERS = {
@@ -1718,9 +1828,15 @@
  displayAduPermits(apnParam);
  displayStructures(apnParam);
  displayTradePermits(apnParam);
- displayLegislation(apnParam, property.properties.e, property.properties.z);
+ // Always query live ArcGIS for correct eligibility (GeoJSON may be stale)
+ const arcResult = await queryEligibilityFromArcGIS(apnParam);
+ const eligCode = arcResult ? arcResult.mapped.code : property.properties.e;
+ const zoning = arcResult ? arcResult.zoning : property.properties.z;
+ displayLegislation(apnParam, eligCode, zoning);
+ // Query covenants
+ updateEligibilityChecklist(property.properties, apnParam);
  } else {
- // APN not in eligibility GeoJSON — use master data for what we can
+ // APN not in eligibility GeoJSON — use ArcGIS + master data
  const masterP = masterParcelData[apnParam];
  const addr = (masterP && masterP.address) ? masterP.address : (addressParam || apnParam);
  showReport(addr);
@@ -1728,11 +1844,15 @@
  displayAduPermits(apnParam);
  displayStructures(apnParam);
  displayTradePermits(apnParam);
- displayLegislation(apnParam, null, null);
+ // Query live ArcGIS for eligibility
+ const arcResult = await queryEligibilityFromArcGIS(apnParam);
+ const eligCode = arcResult ? arcResult.mapped.code : null;
+ const zoning = arcResult ? arcResult.zoning : null;
+ displayLegislation(apnParam, eligCode, zoning);
  // Set external links and images from master data
  fetchAccountNumber(apnParam);
  loadPropertyMap(apnParam);
- // Query covenants even without eligibility data
+ // Query covenants
  queryCovenantsAndUpdateUI(apnParam);
  // Update APN in subheader
  const headerP = document.getElementById('report-subheader');
@@ -1747,7 +1867,12 @@
  displayAduPermits(a);
  displayStructures(a);
  displayTradePermits(a);
- displayLegislation(a, property.properties.e, property.properties.z);
+ // Always query live ArcGIS for correct eligibility
+ const arcResult = await queryEligibilityFromArcGIS(a);
+ const eligCode = arcResult ? arcResult.mapped.code : property.properties.e;
+ const zoning = arcResult ? arcResult.zoning : property.properties.z;
+ displayLegislation(a, eligCode, zoning);
+ updateEligibilityChecklist(property.properties, a);
  }
  }
  }
@@ -1761,15 +1886,18 @@
  showReport(address, property);
  // Update URL and display documents/legislation/permits
  const apn = property?.properties?.a;
- const eligCode = property?.properties?.e;
- const zoning = property?.properties?.z;
  if (apn) {
  const apnStr = apn.toString();
  displayDocuments(apnStr);
  displayAduPermits(apnStr);
  displayStructures(apnStr);
  displayTradePermits(apnStr);
+ // Query live ArcGIS for correct eligibility
+ const arcResult = await queryEligibilityFromArcGIS(apnStr);
+ const eligCode = arcResult ? arcResult.mapped.code : property?.properties?.e;
+ const zoning = arcResult ? arcResult.zoning : property?.properties?.z;
  displayLegislation(apnStr, eligCode, zoning);
+ updateEligibilityChecklist(property?.properties || {}, apnStr);
  }
  const params = new URLSearchParams();
  if (apn) params.set('apn', apn);
@@ -1818,14 +1946,21 @@
 
  function updateReportData(property) {
  const props = property.properties;
- const eligInfo = ELIG_LABELS[props.e] || ELIG_LABELS['N'];
  const apn = props.a;
  const coords = property.geometry?.coordinates;
 
- // Update eligibility badge
+ // Update eligibility badge — only if e field exists (skip if missing, ArcGIS will fill in)
+ if (props.e) {
+ const eligInfo = ELIG_LABELS[props.e] || ELIG_LABELS['N'];
  const badge = document.getElementById('eligibility-badge');
  badge.textContent = `${eligInfo.icon} ${eligInfo.text}`;
  badge.className = `eligibility-badge ${eligInfo.class}`;
+ } else {
+ // Show loading state while ArcGIS query runs
+ const badge = document.getElementById('eligibility-badge');
+ badge.textContent = 'Checking...';
+ badge.className = 'eligibility-badge conditional';
+ }
 
  // Update APN in header
  const headerP = document.getElementById('report-subheader');
@@ -1850,16 +1985,18 @@
  document.getElementById('detail-max-living').textContent = `${maxLiving} SF`;
  document.getElementById('detail-max-footprint').textContent = `${maxFootprint} SF`;
 
- // Update service district
+ // Update service district — only if e field exists (ArcGIS will override)
  const districtEl = document.getElementById('detail-district');
- if (props.e && (props.e.startsWith('E') || props.e === 'U' || props.e === 'US')) {
+ if (props.e) {
+ if (props.e.startsWith('E') || props.e === 'U' || props.e === 'US') {
  districtEl.textContent = 'USD';
  districtEl.className = 'data-item-value success';
- } else if (props.e && props.e.startsWith('C')) {
+ } else if (props.e.startsWith('C')) {
  districtEl.textContent = 'GSD';
  districtEl.className = 'data-item-value warning';
+ }
  } else {
- districtEl.textContent = 'Check';
+ districtEl.textContent = 'Checking...';
  districtEl.className = 'data-item-value';
  }
 
