@@ -37,91 +37,11 @@
             overflow: hidden;
         }
 
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
-            padding: 0 24px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: white;
-        }
-
-        .logo-text {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .logo-text span {
-            color: var(--terracotta);
-        }
-
-        /* Search bar */
-        .search-container {
-            display: flex;
-            align-items: center;
-            background: white;
-            border-radius: 8px;
-            padding: 8px 16px;
-            width: 400px;
-        }
-
-        .search-container input {
-            border: none;
-            outline: none;
-            width: 100%;
-            font-size: 14px;
-            font-family: inherit;
-        }
-
-        .search-icon {
-            color: #999;
-            margin-right: 10px;
-        }
-
-        /* Nav tabs */
-        .nav-tabs {
-            display: flex;
-            gap: 8px;
-        }
-
-        .nav-tab {
-            color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .nav-tab:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .nav-tab.active {
-            background: var(--terracotta);
-        }
-
         /* Main layout */
         .main-container {
             display: flex;
-            height: calc(100vh - 60px);
-            margin-top: 60px;
+            height: calc(100vh - 75px);
+            margin-top: 75px;
         }
 
         /* Property panel */

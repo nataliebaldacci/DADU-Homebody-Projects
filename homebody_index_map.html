@@ -16,7 +16,7 @@
         /* Make top-bar + main-nav stack, then sidebar+map fill remainder */
         .homepage-body {
             display: flex;
-            height: calc(100vh - 105px); /* 35px top-bar + 70px nav */
+            height: calc(100vh - 75px); /* shared header height */
             margin-top: 0;
         }
 
@@ -610,10 +610,10 @@
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
-                top: 105px;
+                top: 75px;
                 left: -380px;
                 width: 320px;
-                height: calc(100vh - 105px);
+                height: calc(100vh - 75px);
                 transition: left 0.3s ease;
                 z-index: 900;
                 box-shadow: 4px 0 20px rgba(0,0,0,0.15);
@@ -623,7 +623,7 @@
 
             .sidebar-toggle { display: block; }
 
-            .homepage-body { height: calc(100vh - 105px); }
+            .homepage-body { height: calc(100vh - 75px); }
 
             .bf-tools-grid { grid-template-columns: repeat(2, 1fr); }
             .ql-grid { grid-template-columns: repeat(2, 1fr); }

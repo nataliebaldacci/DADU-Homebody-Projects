@@ -35,73 +35,10 @@
             color: var(--text);
         }
 
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
-            padding: 0 24px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: white;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--terracotta);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-icon img {
-            width: 28px;
-            height: 28px;
-        }
-
-        .logo-text {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 8px;
-        }
-
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .nav-link:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        /* Page Title Bar */
+        /* Page Title Bar — positioned below shared header (75px) */
         .title-bar {
             position: fixed;
-            top: 64px;
+            top: 75px;
             left: 0;
             right: 0;
             background: white;
@@ -170,11 +107,11 @@
             background: var(--terracotta-hover);
         }
 
-        /* Main Layout */
+        /* Main Layout — 75px shared header + ~66px title bar = 141px */
         .main-container {
-            margin-top: 130px;
+            margin-top: 141px;
             display: flex;
-            height: calc(100vh - 130px);
+            height: calc(100vh - 141px);
         }
 
         /* Map */
@@ -286,7 +223,7 @@
         /* Stats Panel */
         .stats-panel {
             position: fixed;
-            top: 150px;
+            top: 161px;
             right: 30px;
             background: white;
             border-radius: 12px;
@@ -343,7 +280,7 @@
         /* Filter Panel */
         .filter-panel {
             position: fixed;
-            top: 150px;
+            top: 161px;
             left: 30px;
             background: white;
             border-radius: 12px;
@@ -511,7 +448,7 @@
         /* Loading overlay */
         .loading-overlay {
             position: fixed;
-            top: 130px;
+            top: 141px;
             left: 0;
             right: 0;
             bottom: 0;
@@ -622,10 +559,6 @@
 <div id="site-header"></div>
 
 <!-- End Shared Header -->
-
-
-    <!-- Header -->
-    
 
     <!-- Title Bar -->
     <div class="title-bar">
@@ -1646,7 +1579,16 @@
                     searchAddress();
                 }
             });
-            initMap();
+            // Wait for shared header to inject before initializing map
+            // so layout is stable and map container has correct height
+            function waitForHeader(cb) {
+                var nav = document.querySelector('.main-nav');
+                if (nav) { cb(); }
+                else { requestAnimationFrame(function() { waitForHeader(cb); }); }
+            }
+            waitForHeader(function() {
+                setTimeout(initMap, 50); // small delay for layout reflow
+            });
         });
     </script>
     <script src="homebody_header.js"></script>

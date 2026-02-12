@@ -40,76 +40,10 @@
             overflow: hidden;
         }
 
-        /* Header - ATTOM style orange */
-        .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            height: 56px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 20px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: white;
-            font-size: 20px;
-            font-weight: 800;
-        }
-
-        .logo span { color: var(--accent); }
-
-        .header-dropdowns {
-            display: flex;
-            gap: 10px;
-        }
-
-        .header-select {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            font-size: 13px;
-            font-family: inherit;
-            background: white;
-            min-width: 140px;
-        }
-
-        /* Tabs */
-        .tabs-bar {
-            background: white;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 4px;
-        }
-
-        .tab {
-            padding: 14px 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--gray-600);
-            text-decoration: none;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .tab:hover {
-            color: var(--primary);
-        }
-
-        .tab.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
         /* Main layout */
         .main-container {
             display: flex;
-            height: calc(100vh - 56px - 48px);
+            height: calc(100vh - 75px);
         }
 
         /* Map section */

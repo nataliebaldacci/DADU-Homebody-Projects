@@ -45,79 +45,10 @@
             overflow: hidden;
         }
 
-        /* Header - Homebody Style */
-        .header {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
-            padding: 0 24px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: white;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--terracotta);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-icon img {
-            width: 24px;
-            height: 24px;
-            filter: brightness(0) invert(1);
-        }
-
-        .logo-text {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        .header-nav {
-            display: flex;
-            gap: 4px;
-        }
-
-        .nav-tab {
-            padding: 8px 16px;
-            color: white;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-
-        .nav-tab:hover {
-            background: rgba(255,255,255,0.15);
-        }
-
-        .nav-tab.active {
-            background: rgba(255,255,255,0.25);
-        }
-
         /* Location Bar */
         .location-bar {
             position: fixed;
-            top: 64px;
+            top: 75px;
             left: 0;
             right: 0;
             background: white;
@@ -184,9 +115,9 @@
 
         /* Main Layout */
         .main-container {
-            margin-top: 116px;
+            margin-top: 75px;
             display: flex;
-            height: calc(100vh - 116px);
+            height: calc(100vh - 75px);
         }
 
         /* Map Panel */
@@ -611,7 +542,7 @@
         /* Loading */
         .loading-overlay {
             position: fixed;
-            top: 116px;
+            top: 75px;
             left: 0;
             right: 0;
             bottom: 0;
@@ -685,7 +616,7 @@
             .right-panel {
                 width: 100%;
                 position: fixed;
-                top: 116px;
+                top: 75px;
                 right: 0;
                 bottom: 0;
                 transform: translateX(100%);

@@ -11,57 +11,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif; }
 
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #3A5566 0%, #2E4553 100%);
-            color: white;
-            padding: 15px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: #C58B2A;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
-        .logo-text { font-size: 20px; font-weight: 600; }
-        .logo-sub { font-size: 12px; opacity: 0.85; }
-
-        .header-nav {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        .header-nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            opacity: 0.9;
-            transition: opacity 0.2s;
-        }
-        .header-nav a:hover { opacity: 1; }
-
         /* Stats Bar */
         .stats-bar {
             position: fixed;
-            top: 70px;
+            top: 75px;
             left: 0;
             right: 0;
             background: white;
@@ -134,7 +87,7 @@
         /* Map */
         #map {
             position: fixed;
-            top: 120px;
+            top: 75px;
             left: 0;
             right: 400px;
             bottom: 0;
@@ -143,7 +96,7 @@
         /* Sidebar */
         .sidebar {
             position: fixed;
-            top: 120px;
+            top: 75px;
             right: 0;
             width: 400px;
             bottom: 0;
