@@ -68,9 +68,9 @@
                         item('dadu_opportunity_explorer_v2.html', 'Area Maps and Visual layers.png', 'Opportunity Explorer')
                     )}
                     ${col('Property Owners.png', 'By Role',
-                        item('user-homeowners.html', 'Property Owners.png', 'Homeowner') +
+                        item('homeowner_portal.html', 'Property Owners.png', 'Homeowner') +
                         item('contractor_marketplace.html', 'Building and Construction.png', 'Contractor') +
-                        item('designer_resources.html', 'Surveyers adn Engineers.png', 'Designer / Architect') +
+                        item('designer_portal.html', 'Surveyers adn Engineers.png', 'Designer / Architect') +
                         item('municipal_dashboard.html', 'Municipal.png', 'Municipal / Agency') +
                         item('legal_resources.html', 'Legal.png', 'Legal / Appraiser')
                     )}

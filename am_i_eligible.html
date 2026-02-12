@@ -3,528 +3,478 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Am I Eligible for a DADU? - Castlehold</title>
+ <title>Am I Eligible for a DADU? | Castlehold</title>
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
  <style>
- * {
- margin: 0;
- padding: 0;
- box-sizing: border-box;
+ :root {
+  --navy: #3A5566;
+  --navy-dark: #2E4553;
+  --stone: #7B746D;
+  --ochre: #CBB279;
+  --ochre-hover: #a87623;
+  --bg: #F2F0ED;
+  --card-bg: #F0EBE1;
+  --eligible-green: #2E6F4E;
+  --not-eligible-gray: #888888;
+  --conditional-amber: #B8860B;
  }
+ * { margin: 0; padding: 0; box-sizing: border-box; }
+ body { font-family: 'Montserrat', Arial, sans-serif; background: var(--bg); color: #333; line-height: 1.6; }
 
- body {
- font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
- background-color: #F2F0ED;
- color: #333333;
- line-height: 1.6;
- }
+ /* Hero */
+ .hero { background: var(--navy); padding: 60px 24px 50px; text-align: center; }
+ .hero h1 { font-size: 32px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+ .hero p { color: rgba(255,255,255,0.8); font-size: 16px; max-width: 600px; margin: 0 auto 30px; }
 
- .container {
- max-width: 900px;
- margin: 0 auto;
- padding: 30px 25px;
+ /* Search Box */
+ .search-box { max-width: 560px; margin: 0 auto; position: relative; }
+ .search-box input {
+  width: 100%; padding: 16px 140px 16px 20px; border: none; border-radius: 8px;
+  font-size: 16px; font-family: inherit; background: #fff; color: #333;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
  }
+ .search-box input::placeholder { color: #999; }
+ .search-box button {
+  position: absolute; right: 6px; top: 6px; bottom: 6px; padding: 0 24px;
+  background: var(--ochre); color: #fff; border: none; border-radius: 6px;
+  font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 1px;
+ }
+ .search-box button:hover { background: var(--ochre-hover); }
+ .search-hint { color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 10px; }
 
- /* Page Title */
- .page-title {
- text-align: center;
- margin-bottom: 8px;
- }
+ /* Loading */
+ .loading { display: none; text-align: center; padding: 40px 24px; }
+ .loading.active { display: block; }
+ .spinner { width: 40px; height: 40px; border: 4px solid #e0e0e0; border-top-color: var(--navy); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+ @keyframes spin { to { transform: rotate(360deg); } }
 
- .page-title h1 {
- font-size: 28px;
- font-weight: 700;
- color: #3A5566;
- text-transform: uppercase;
- letter-spacing: 2px;
- }
+ /* Error */
+ .error-msg { display: none; max-width: 600px; margin: 20px auto; padding: 16px 20px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; color: #721c24; text-align: center; font-size: 14px; }
+ .error-msg.active { display: block; }
 
- .page-subtitle {
- text-align: center;
- font-size: 14px;
- color: #666666;
- margin-bottom: 25px;
- }
+ /* Result Card */
+ .result-section { display: none; max-width: 700px; margin: 0 auto; padding: 40px 24px; }
+ .result-section.active { display: block; }
 
- .divider {
- width: 80px;
- height: 3px;
- background-color: #7B746D;
- margin: 15px auto 25px;
- }
+ .result-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+ .result-header { padding: 24px 28px; color: #fff; }
+ .result-header.eligible { background: var(--eligible-green); }
+ .result-header.not-eligible { background: var(--not-eligible-gray); }
+ .result-header.conditional { background: var(--conditional-amber); }
+ .result-header .badge { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; margin-bottom: 4px; }
+ .result-header h2 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+ .result-header .address-text { font-size: 14px; opacity: 0.9; }
 
- /* Flowchart Container */
- .flowchart {
- background-color: #F0EBE1;
- border-radius: 12px;
- padding: 30px;
- margin-bottom: 25px;
- }
+ .result-body { padding: 28px; }
+ .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 24px; }
+ .result-item label { display: block; font-size: 11px; font-weight: 700; color: var(--stone); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+ .result-item .value { font-size: 18px; font-weight: 700; color: var(--navy); }
+ .result-item .value.small { font-size: 14px; font-weight: 600; }
 
- /* Start Node */
- .start-node {
- background-color: #3A5566;
- color: white;
- padding: 12px 35px;
- border-radius: 25px;
- font-size: 13px;
- font-weight: 700;
- text-transform: uppercase;
- letter-spacing: 1px;
- display: inline-block;
- margin: 0 auto 20px;
- text-align: center;
- }
+ .eligibility-explanation { background: var(--card-bg); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
+ .eligibility-explanation p { font-size: 14px; color: #555; }
 
- .flow-center {
- display: flex;
- flex-direction: column;
- align-items: center;
- }
+ .covenant-status { padding: 12px 16px; border-radius: 8px; margin-bottom: 24px; font-size: 14px; font-weight: 600; }
+ .covenant-status.clear { background: #e8f5e9; color: #2E6F4E; }
+ .covenant-status.has-covenants { background: #fff3e0; color: #B8860B; }
 
- /* Connector */
- .connector-down {
- width: 3px;
- height: 20px;
- background-color: #3A5566;
+ .result-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+ .btn-primary {
+  display: inline-block; padding: 12px 24px; background: var(--navy); color: #fff;
+  border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 700;
+  font-family: inherit; border: none; cursor: pointer;
  }
+ .btn-primary:hover { background: var(--navy-dark); }
+ .btn-secondary {
+  display: inline-block; padding: 12px 24px; background: #fff; color: var(--navy);
+  border: 2px solid var(--navy); border-radius: 6px; text-decoration: none;
+  font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer;
+ }
+ .btn-secondary:hover { background: var(--bg); }
+ .btn-new-search {
+  display: inline-block; padding: 10px 20px; background: var(--ochre); color: #fff;
+  border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 700;
+  font-family: inherit; border: none; cursor: pointer; margin-top: 16px;
+ }
+ .btn-new-search:hover { background: var(--ochre-hover); }
 
- .arrow-down {
- width: 0;
- height: 0;
- border-left: 8px solid transparent;
- border-right: 8px solid transparent;
- border-top: 10px solid #3A5566;
- margin-bottom: 15px;
- }
+ /* How It Works Section */
+ .section { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+ .section-header { text-align: center; margin-bottom: 40px; }
+ .section-header h2 { font-size: 24px; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+ .section-header p { font-size: 14px; color: #666; }
+ .divider { width: 60px; height: 3px; background: var(--stone); margin: 12px auto 0; }
 
- /* Question Box */
- .question-box {
- background-color: white;
- border: 3px solid #3A5566;
- border-radius: 10px;
- padding: 18px 25px;
- max-width: 400px;
- text-align: center;
- position: relative;
- margin-bottom: 15px;
- }
-
- .question-num {
- position: absolute;
- top: -12px;
- left: 50%;
- transform: translateX(-50%);
- background-color: #7B746D;
- color: white;
- width: 24px;
- height: 24px;
- border-radius: 50%;
- font-size: 12px;
- font-weight: 700;
- display: flex;
- align-items: center;
- justify-content: center;
- }
-
- .question-text {
- font-size: 14px;
- font-weight: 600;
- color: #3A5566;
- margin-bottom: 5px;
- }
-
- .question-link {
- font-size: 11px;
- color: #7B746D;
- text-decoration: none;
- }
-
- /* Answer Buttons Row */
- .answer-row {
- display: flex;
- justify-content: center;
- gap: 40px;
- margin-bottom: 15px;
- }
-
- .answer-path {
- display: flex;
- flex-direction: column;
- align-items: center;
- }
-
- .answer-btn {
- padding: 8px 25px;
- border-radius: 20px;
- font-size: 12px;
- font-weight: 700;
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 10px;
- }
-
- .answer-btn.yes {
- background-color: #CBB279;
- color: white;
- }
-
- .answer-btn.no {
- background-color: #c0392b;
- color: white;
- }
-
- /* Result Box */
- .result-box {
- padding: 18px 22px;
- border-radius: 10px;
- text-align: center;
- max-width: 220px;
- }
-
- .result-box.eligible {
- background-color: #CBB279;
- }
-
- .result-box.not-eligible {
- background-color: #888888;
- }
-
- .result-box.conditional {
- background-color: #7B746D;
- }
-
- .result-icon {
- width: 36px;
- height: 36px;
- background-color: rgba(255,255,255,0.2);
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- margin: 0 auto 8px;
- }
-
- .result-icon svg {
- width: 20px;
- height: 20px;
- fill: white;
- }
-
- .result-title {
- font-size: 13px;
- font-weight: 700;
- color: white;
- text-transform: uppercase;
- margin-bottom: 5px;
- }
-
- .result-desc {
- font-size: 11px;
- color: rgba(255,255,255,0.9);
- line-height: 1.4;
- }
-
- /* Two Column Layout */
- .two-paths {
- display: flex;
- justify-content: center;
- gap: 60px;
- }
-
- .path-column {
- display: flex;
- flex-direction: column;
- align-items: center;
- }
-
- .path-label {
- font-size: 11px;
- font-weight: 700;
- color: #666666;
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 10px;
- padding: 4px 12px;
- background-color: #F2F0ED;
- border-radius: 10px;
- }
-
- /* Nested answers */
- .nested-answers {
- display: flex;
- gap: 20px;
- margin-top: 10px;
- }
-
- .small-connector {
- width: 2px;
- height: 15px;
- background-color: #3A5566;
- }
-
- .small-arrow {
- width: 0;
- height: 0;
- border-left: 6px solid transparent;
- border-right: 6px solid transparent;
- border-top: 8px solid #3A5566;
- margin-bottom: 10px;
- }
-
- /* Quick Check Section */
- .quick-check {
- background-color: #3A5566;
- border-radius: 8px;
- padding: 25px;
- text-align: center;
- margin-bottom: 20px;
- }
-
- .quick-check h3 {
- font-size: 14px;
- font-weight: 700;
- color: white;
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 12px;
- }
-
- .quick-check p {
- font-size: 13px;
- color: rgba(255,255,255,0.9);
- margin-bottom: 15px;
- }
-
- .check-btn {
- display: inline-block;
- background-color: #CBB279;
- color: white;
- padding: 12px 30px;
- border-radius: 6px;
- text-decoration: none;
- font-size: 13px;
- font-weight: 700;
- text-transform: uppercase;
- letter-spacing: 1px;
- }
+ /* Rules Grid */
+ .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+ .rule-card { background: #fff; border-radius: 10px; padding: 24px; border-left: 4px solid var(--ochre); }
+ .rule-card h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+ .rule-card p { font-size: 13px; color: #555; }
+ .rule-card .highlight { font-weight: 700; color: var(--navy); }
 
  /* Definitions */
- .definitions {
- background-color: #F0EBE1;
- border-radius: 8px;
- padding: 20px 25px;
- }
+ .def-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
+ .def-item { display: flex; gap: 12px; background: #fff; border-radius: 8px; padding: 16px; }
+ .def-icon { width: 32px; height: 32px; background: var(--stone); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+ .def-icon svg { width: 16px; height: 16px; fill: #fff; }
+ .def-text strong { font-size: 13px; color: var(--navy); display: block; margin-bottom: 2px; }
+ .def-text span { font-size: 12px; color: #666; }
 
- .definitions h3 {
- font-size: 13px;
- font-weight: 700;
- color: #3A5566;
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 15px;
- text-align: center;
- }
+ .footer { text-align: center; padding: 30px 24px; color: var(--stone); font-size: 12px; }
+ .footer .brand { font-weight: 700; color: var(--navy); letter-spacing: 1px; }
 
- .def-grid {
- display: grid;
- grid-template-columns: repeat(2, 1fr);
- gap: 15px;
+ @media (max-width: 600px) {
+  .hero h1 { font-size: 24px; }
+  .search-box input { padding: 14px 120px 14px 16px; font-size: 14px; }
+  .search-box button { padding: 0 16px; font-size: 12px; }
+  .result-grid { grid-template-columns: 1fr; }
+  .result-actions { flex-direction: column; }
  }
-
- .def-item {
- display: flex;
- gap: 10px;
- }
-
- .def-icon {
- width: 28px;
- height: 28px;
- background-color: #7B746D;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- flex-shrink: 0;
- }
-
- .def-icon svg {
- width: 14px;
- height: 14px;
- fill: white;
- }
-
- .def-text strong {
- font-size: 12px;
- color: #3A5566;
- display: block;
- margin-bottom: 2px;
- }
-
- .def-text span {
- font-size: 11px;
- color: #666666;
- }
-
- .def-text a {
- color: #7B746D;
- text-decoration: none;
- font-size: 10px;
- }
-
- /* Footer */
- .footer {
- text-align: center;
- margin-top: 25px;
- padding-top: 15px;
- border-top: 1px dashed #666666;
- }
-
- .footer p {
- font-size: 11px;
- color: #888888;
- }
-
- .brand {
- font-weight: 700;
- color: #7B746D;
- letter-spacing: 1px;
- }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
+ </style>
+</head>
 <body>
-<!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
-<div class="container">
- <!-- Page Title -->
- <div class="page-title">
- <h1>Am I Eligible for a DADU?</h1></div>
- <p class="page-subtitle">Follow this flowchart to determine your property's eligibility</p>
- <div class="divider"></div>
+<!-- Hero with Search -->
+<div class="hero">
+ <h1>Am I Eligible for a DADU?</h1>
+ <p>Enter your Nashville address to instantly check if you can build a Detached Accessory Dwelling Unit on your property.</p>
+ <div class="search-box">
+  <input type="text" id="address-input" placeholder="Enter your Nashville address..." autocomplete="off">
+  <button id="check-btn" onclick="checkEligibility()">Check</button>
+ </div>
+ <p class="search-hint">Example: 925 N 5th St, Nashville, TN</p>
+</div>
 
- <!-- Flowchart -->
- <div class="flowchart">
- <div class="flow-center">
- <!-- Start -->
- <div class="start-node">Start Here</div>
- <div class="connector-down"></div>
- <div class="arrow-down"></div>
+<!-- Loading State -->
+<div class="loading" id="loading-state">
+ <div class="spinner"></div>
+ <p style="color:#666;">Checking eligibility for your property...</p>
+</div>
 
- <!-- Question 1 -->
- <div class="question-box">
- <span class="question-num">1</span>
- <div class="question-text">Is your property in the Urban Services District (USD)?</div>
- <a href="https://maps.nashville.gov/webimages/MapGallery/PDFMaps/Urban%20Services%20District.pdf" target="_blank" class="question-link">View USD Map</a></div>
+<!-- Error State -->
+<div class="error-msg" id="error-state"></div>
 
- <!-- Two Paths from Q1 -->
- <div class="two-paths">
- <!-- YES Path -->
- <div class="path-column">
- <span class="path-label" style="background-color: #CBB279; color: white;">Yes - In USD</span>
- <div class="connector-down"></div>
- <div class="arrow-down"></div>
+<!-- Result Card -->
+<div class="result-section" id="result-section">
+ <div class="result-card">
+  <div class="result-header" id="result-header">
+   <div class="badge" id="result-badge"></div>
+   <h2 id="result-title"></h2>
+   <div class="address-text" id="result-address"></div>
+  </div>
+  <div class="result-body">
+   <div class="result-grid" id="result-grid"></div>
+   <div class="eligibility-explanation" id="result-explanation"></div>
+   <div class="covenant-status" id="covenant-status" style="display:none;"></div>
+   <div class="result-actions" id="result-actions"></div>
+  </div>
+ </div>
+ <div style="text-align:center;">
+  <button class="btn-new-search" onclick="resetSearch()">Search Another Address</button>
+ </div>
+</div>
 
- <!-- Question 2 -->
- <div class="question-box">
- <span class="question-num">2</span>
- <div class="question-text">Is your property zoned R or RS?</div>
- <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="question-link">Check your zoning</a></div>
+<!-- Eligibility Rules Reference -->
+<div class="section">
+ <div class="section-header">
+  <h2>Eligibility Rules</h2>
+  <p>Nashville BL2025-1007 (effective December 12, 2025)</p>
+  <div class="divider"></div>
+ </div>
+ <div class="rules-grid">
+  <div class="rule-card">
+   <h3>Zoning Requirement</h3>
+   <p>Property must be zoned <span class="highlight">R or RS</span> (Residential or Residential Single-Family).</p>
+  </div>
+  <div class="rule-card">
+   <h3>Urban Services District</h3>
+   <p>Properties in the <span class="highlight">USD</span> can build by right. GSD properties need a DADU overlay district.</p>
+  </div>
+  <div class="rule-card">
+   <h3>Lot Under 10,000 SF</h3>
+   <p>Maximum <span class="highlight">700 SF</span> living area and <span class="highlight">750 SF</span> footprint.</p>
+  </div>
+  <div class="rule-card">
+   <h3>Lot 10,000 SF or More</h3>
+   <p>Maximum <span class="highlight">850 SF</span> living area and <span class="highlight">1,000 SF</span> footprint.</p>
+  </div>
+  <div class="rule-card">
+   <h3>Height Limit</h3>
+   <p>DADU cannot exceed the height of the <span class="highlight">principal structure</span>.</p>
+  </div>
+  <div class="rule-card">
+   <h3>Owner Occupancy</h3>
+   <p><span class="highlight">Required</span>. Owner must live in the principal dwelling or the DADU.</p>
+  </div>
+ </div>
+</div>
 
- <!-- Nested answers -->
- <div class="nested-answers">
- <div class="answer-path">
- <span class="answer-btn yes">Yes</span>
- <div class="small-connector"></div>
- <div class="small-arrow"></div>
- <div class="result-box eligible">
- <div class="result-icon">
- <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
- <div class="result-title">Eligible!</div>
- <div class="result-desc">Build a DADU by-right. No overlay required.</div></div></div>
- <div class="answer-path">
- <span class="answer-btn no">No</span>
- <div class="small-connector"></div>
- <div class="small-arrow"></div>
- <div class="result-box not-eligible">
- <div class="result-icon">
- <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>
- <div class="result-title">Not Eligible</div>
- <div class="result-desc">Zoning does not permit DADUs.</div></div></div></div></div>
-
- <!-- NO Path -->
- <div class="path-column">
- <span class="path-label" style="background-color: #c0392b; color: white;">No - In GSD</span>
- <div class="connector-down"></div>
- <div class="arrow-down"></div>
-
- <!-- Question 3 -->
- <div class="question-box">
- <span class="question-num">3</span>
- <div class="question-text">Is your property in a DADU Overlay District?</div>
- <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="question-link">Check overlay status</a></div>
-
- <!-- Nested answers -->
- <div class="nested-answers">
- <div class="answer-path">
- <span class="answer-btn yes">Yes</span>
- <div class="small-connector"></div>
- <div class="small-arrow"></div>
- <div class="result-box eligible">
- <div class="result-icon">
- <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
- <div class="result-title">Eligible!</div>
- <div class="result-desc">Overlay district permits DADUs.</div></div></div>
- <div class="answer-path">
- <span class="answer-btn no">No</span>
- <div class="small-connector"></div>
- <div class="small-arrow"></div>
- <div class="result-box conditional">
- <div class="result-icon">
- <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
- <div class="result-title">Maybe</div>
- <div class="result-desc">Check if your SP zoning permits DADUs.</div></div></div></div></div></div></div></div>
-
- <!-- Quick Check -->
- <div class="quick-check">
- <h3>Check Your Address Instantly</h3>
- <p>Use our interactive map to see your property's eligibility status, zoning, and any restrictive covenants already on file.</p>
- <a href="https://experience.arcgis.com/experience/771496fdd9b54f3e970870760d876264" target="_blank" class="check-btn">Open Eligibility Map</a></div>
-
- <!-- Definitions -->
- <div class="definitions">
- <h3>Key Terms</h3>
+<!-- Key Terms -->
+<div class="section" style="padding-top:0;">
+ <div class="section-header">
+  <h2>Key Terms</h2>
+  <div class="divider"></div>
+ </div>
  <div class="def-grid">
- <div class="def-item">
- <div class="def-icon">
- <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
- <div class="def-text">
- <strong>Urban Services District (USD)</strong>
- <span>The urban core of Nashville with full city services.</span>
- <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/charter?nodeId=THCH_PTICHMEGONADACOTE_ART1GEPR_S1.03TWSEDITHAR" target="_blank">Charter Definition</a></div></div>
- <div class="def-item">
- <div class="def-icon">
- <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-4H6v-2h4V7h2v4h4v2h-4v4z"/></svg></div>
- <div class="def-text">
- <strong>R / RS Zoning</strong>
- <span>Residential and Residential Single-Family zoning districts.</span>
- <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO" target="_blank">Zoning Code</a></div></div>
- <div class="def-item">
- <div class="def-icon">
- <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div>
- <div class="def-text">
- <strong>DADU Overlay District</strong>
- <span>Special zoning overlay that permits DADUs in GSD areas.</span>
- <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=4766502&GUID=47267D2D-9439-4CA9-9735-981C6DD80AB0" target="_blank">BL2021-620</a></div></div>
- <div class="def-item">
- <div class="def-icon">
- <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div>
- <div class="def-text">
- <strong>SP Zoning</strong>
- <span>Specific Plan zoning with custom permitted uses.</span>
- <a href="https://www.nashville.gov/departments/planning" target="_blank">Metro Planning</a></div></div></div></div>
+  <div class="def-item">
+   <div class="def-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+   <div class="def-text"><strong>Urban Services District (USD)</strong><span>The urban core of Nashville with full city services. 67,707 parcels eligible by right.</span></div>
+  </div>
+  <div class="def-item">
+   <div class="def-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div>
+   <div class="def-text"><strong>General Services District (GSD)</strong><span>Suburban areas outside the USD. Requires a DADU overlay district or eligible UDO.</span></div>
+  </div>
+  <div class="def-item">
+   <div class="def-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-4H6v-2h4V7h2v4h4v2h-4v4z"/></svg></div>
+   <div class="def-text"><strong>DADU Overlay District</strong><span>Special zoning overlay that permits DADUs in GSD areas where base zoning would otherwise restrict them.</span></div>
+  </div>
+  <div class="def-item">
+   <div class="def-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div>
+   <div class="def-text"><strong>Restrictive Covenant</strong><span>A recorded document that may restrict what you can build. Does not override zoning but may add private restrictions.</span></div>
+  </div>
+ </div>
+</div>
 
- <!-- Footer -->
- <div class="footer">
- <p>Source: <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" style="color: #7B746D;">Metro Nashville BL2025-1007</a></p>
- <p style="margin-top: 8px;"><span class="brand">HOMEBODY PROJECTS</span>· Nashville, Tennessee · 2025</p></div></div>
- <script src="homebody_header.js"></script></body></html>
+<div class="footer">
+ <p>Source: <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" style="color:var(--stone);">Metro Nashville BL2025-1007</a></p>
+ <p style="margin-top:8px;"><span class="brand">CASTLEHOLD</span> &middot; Nashville-Davidson County &middot; 2026</p>
+</div>
+
+<script src="homebody_header.js"></script>
+<script>
+// ArcGIS Endpoints
+const ENDPOINTS = {
+ geocoder: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates',
+ parcels: 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_view/FeatureServer/0/query',
+ eligibility: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0/query',
+ covenants: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Parcels_with_Restrictive_Covenants_ohoMJQ/FeatureServer/0/query'
+};
+
+// Enter key triggers search
+document.getElementById('address-input').addEventListener('keydown', function(e) {
+ if (e.key === 'Enter') checkEligibility();
+});
+
+function setState(state) {
+ document.getElementById('loading-state').className = state === 'loading' ? 'loading active' : 'loading';
+ document.getElementById('error-state').className = state === 'error' ? 'error-msg active' : 'error-msg';
+ document.getElementById('result-section').className = state === 'result' ? 'result-section active' : 'result-section';
+}
+
+function showError(msg) {
+ document.getElementById('error-state').textContent = msg;
+ setState('error');
+}
+
+function resetSearch() {
+ setState('idle');
+ document.getElementById('address-input').value = '';
+ document.getElementById('address-input').focus();
+}
+
+async function checkEligibility() {
+ const input = document.getElementById('address-input').value.trim();
+ if (!input) { showError('Please enter a Nashville address.'); return; }
+
+ setState('loading');
+
+ try {
+  // Step 1: Geocode the address
+  const geoParams = new URLSearchParams({
+   f: 'json', singleLine: input, maxLocations: '1',
+   outFields: 'Match_addr,Addr_type',
+   searchExtent: '-87.1,35.9,-86.5,36.5' // Nashville bounding box
+  });
+  const geoResp = await fetch(ENDPOINTS.geocoder + '?' + geoParams);
+  const geoData = await geoResp.json();
+
+  if (!geoData.candidates || geoData.candidates.length === 0) {
+   showError('Address not found. Please enter a valid Nashville-Davidson County address.');
+   return;
+  }
+
+  const candidate = geoData.candidates[0];
+  if (candidate.score < 70) {
+   showError('Could not reliably match that address. Try including the full street address and Nashville, TN.');
+   return;
+  }
+
+  const lng = candidate.location.x;
+  const lat = candidate.location.y;
+  const matchAddr = candidate.attributes.Match_addr || input;
+
+  // Step 2: Spatial query to find parcel at that point
+  const parcelParams = new URLSearchParams({
+   f: 'json', geometry: lng + ',' + lat, geometryType: 'esriGeometryPoint',
+   inSR: '4326', spatialRel: 'esriSpatialRelIntersects',
+   outFields: 'STANPAR,ACRES,Shape__Area', returnGeometry: false
+  });
+  const parcelResp = await fetch(ENDPOINTS.parcels + '?' + parcelParams);
+  const parcelData = await parcelResp.json();
+
+  if (!parcelData.features || parcelData.features.length === 0) {
+   showError('No parcel found at that location. This address may be outside Nashville-Davidson County.');
+   return;
+  }
+
+  const parcel = parcelData.features[0].attributes;
+  const apn = parcel.STANPAR;
+
+  if (!apn) {
+   showError('Parcel found but no APN available. Try a nearby address.');
+   return;
+  }
+
+  // Step 3: Query eligibility by APN
+  const eligParams = new URLSearchParams({
+   f: 'json', where: "STANPAR='" + apn + "'",
+   outFields: 'STANPAR,Address,Zoning,Zone_Category,Is_R_Zone,Is_RS_Zone,Service_District,In_USD,In_GSD,Lot_SqFt,Acres,Max_DADU_Living_SF,Final_Eligibility,Eligibility_Status,Eligibility_Path,Eligibility_Notes,In_DADU_Overlay,DADU_Overlay_Case,In_Historic_Overlay,Historic_Overlay_Name,Num_Structures,Total_Finished_Area,Owner',
+   returnGeometry: false
+  });
+  const eligResp = await fetch(ENDPOINTS.eligibility + '?' + eligParams);
+  const eligData = await eligResp.json();
+
+  // Step 4: Query covenants (parallel-safe, non-blocking)
+  let covenantData = null;
+  try {
+   const normalizedApn = apn.replace(/[^0-9]/g, '').padStart(11, '0');
+   const covParams = new URLSearchParams({
+    f: 'json',
+    where: "FIELD_NAME_D='" + normalizedApn + "'",
+    outFields: 'FIELD_NAME_D,FIELD_NAME_E,FIELD_NAME_F,FIELD_NAME_L',
+    returnGeometry: false
+   });
+   const covResp = await fetch(ENDPOINTS.covenants + '?' + covParams);
+   covenantData = await covResp.json();
+  } catch(e) { /* covenant check is non-critical */ }
+
+  // Render results
+  if (eligData.features && eligData.features.length > 0) {
+   renderResult(eligData.features[0].attributes, matchAddr, apn, covenantData);
+  } else {
+   // Not in eligibility database - likely not eligible
+   renderNotFound(matchAddr, apn, parcel);
+  }
+
+ } catch(err) {
+  console.error('Eligibility check error:', err);
+  showError('Something went wrong. Please try again in a moment.');
+ }
+}
+
+function renderResult(elig, matchAddr, apn, covenantData) {
+ const status = elig.Final_Eligibility || elig.Eligibility_Status || 'UNKNOWN';
+ const address = elig.Address || matchAddr;
+ const zoning = elig.Zoning || 'Unknown';
+ const district = elig.Service_District || (elig.In_USD ? 'USD' : 'GSD');
+ const lotSqFt = elig.Lot_SqFt || 0;
+ const acres = elig.Acres || (lotSqFt / 43560).toFixed(2);
+ const maxLiving = elig.Max_DADU_Living_SF || (lotSqFt >= 10000 ? 850 : 700);
+ const maxFootprint = lotSqFt >= 10000 ? 1000 : 750;
+
+ // Determine eligibility category
+ let category, title, headerClass;
+ const statusUpper = status.toUpperCase();
+ if (statusUpper.includes('ELIGIBLE') && !statusUpper.includes('NOT') && !statusUpper.includes('POTENTIAL') && !statusUpper.includes('NEEDS')) {
+  category = 'ELIGIBLE';
+  title = 'Your Property is Eligible';
+  headerClass = 'eligible';
+ } else if (statusUpper.includes('NOT_ELIGIBLE') || statusUpper.includes('NOT ELIGIBLE')) {
+  category = 'NOT ELIGIBLE';
+  title = 'Not Eligible for a DADU';
+  headerClass = 'not-eligible';
+ } else {
+  category = 'CONDITIONAL';
+  title = 'Conditional Eligibility';
+  headerClass = 'conditional';
+ }
+
+ const header = document.getElementById('result-header');
+ header.className = 'result-header ' + headerClass;
+ document.getElementById('result-badge').textContent = 'DADU Eligibility';
+ document.getElementById('result-title').textContent = title;
+ document.getElementById('result-address').textContent = address + ' | APN: ' + apn;
+
+ // Grid items
+ const grid = document.getElementById('result-grid');
+ grid.innerHTML = gridItem('Zoning', zoning) +
+  gridItem('Service District', district) +
+  gridItem('Lot Size', lotSqFt ? Number(lotSqFt).toLocaleString() + ' SF (' + Number(acres).toFixed(2) + ' ac)' : acres + ' ac') +
+  gridItem('Max DADU Living Area', maxLiving + ' SF') +
+  gridItem('Max DADU Footprint', maxFootprint + ' SF') +
+  gridItem('Structures on Parcel', elig.Num_Structures || 'Unknown');
+
+ // Explanation
+ const explanation = document.getElementById('result-explanation');
+ const path = elig.Eligibility_Path || elig.Eligibility_Notes || '';
+ if (category === 'ELIGIBLE') {
+  explanation.innerHTML = '<p><strong>By-right construction.</strong> Your property is in the ' + district + ' with ' + zoning + ' zoning. You can build a DADU without a special overlay or rezoning.</p>';
+ } else if (category === 'NOT ELIGIBLE') {
+  explanation.innerHTML = '<p><strong>Why not eligible:</strong> ' + (path || 'Your zoning designation (' + zoning + ') does not permit DADUs under BL2025-1007. Only R and RS zones are eligible.') + '</p>';
+ } else {
+  explanation.innerHTML = '<p><strong>Conditional:</strong> ' + (path || 'Your property may be eligible depending on overlay district status. GSD properties require a DADU overlay or eligible UDO.') + '</p>';
+  if (elig.In_DADU_Overlay) {
+   explanation.innerHTML += '<p style="margin-top:8px;"><strong>DADU Overlay:</strong> Yes' + (elig.DADU_Overlay_Case ? ' (' + elig.DADU_Overlay_Case + ')' : '') + '</p>';
+  }
+ }
+
+ if (elig.In_Historic_Overlay) {
+  explanation.innerHTML += '<p style="margin-top:8px;color:#B8860B;"><strong>Note:</strong> Property is in a Historic Overlay' + (elig.Historic_Overlay_Name ? ' (' + elig.Historic_Overlay_Name + ')' : '') + '. Historic review may be required.</p>';
+ }
+
+ // Covenant status
+ const covEl = document.getElementById('covenant-status');
+ if (covenantData && covenantData.features && covenantData.features.length > 0) {
+  const count = covenantData.features.length;
+  covEl.className = 'covenant-status has-covenants';
+  covEl.textContent = 'Restrictive Covenant Found: ' + count + ' recorded covenant' + (count > 1 ? 's' : '') + ' on this parcel. Review before building.';
+  covEl.style.display = 'block';
+ } else {
+  covEl.className = 'covenant-status clear';
+  covEl.textContent = 'No restrictive covenants found on record for this parcel.';
+  covEl.style.display = 'block';
+ }
+
+ // Action buttons
+ const actions = document.getElementById('result-actions');
+ actions.innerHTML =
+  '<a href="property-report-card.html?apn=' + encodeURIComponent(apn) + '" class="btn-primary">View Full Property Report</a>' +
+  '<a href="dadu_eligibility_map.html" class="btn-secondary">View Eligibility Map</a>' +
+  '<a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=' + encodeURIComponent(apn) + '" target="_blank" class="btn-secondary">Open Parcel Viewer</a>';
+
+ setState('result');
+}
+
+function renderNotFound(matchAddr, apn, parcel) {
+ const header = document.getElementById('result-header');
+ header.className = 'result-header not-eligible';
+ document.getElementById('result-badge').textContent = 'DADU Eligibility';
+ document.getElementById('result-title').textContent = 'Property Not in Eligibility Database';
+ document.getElementById('result-address').textContent = matchAddr + ' | APN: ' + apn;
+
+ const grid = document.getElementById('result-grid');
+ grid.innerHTML = gridItem('APN', apn) +
+  gridItem('Lot Size', parcel.ACRES ? parcel.ACRES + ' ac' : 'Unknown');
+
+ const explanation = document.getElementById('result-explanation');
+ explanation.innerHTML = '<p>This property was not found in the DADU Eligibility database (161,703 parcels). It may be zoned for commercial, industrial, or other non-residential use, or it may be outside the analysis area.</p><p style="margin-top:8px;">Check your zoning on the Nashville Parcel Viewer to confirm.</p>';
+
+ document.getElementById('covenant-status').style.display = 'none';
+
+ const actions = document.getElementById('result-actions');
+ actions.innerHTML =
+  '<a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=' + encodeURIComponent(apn) + '" target="_blank" class="btn-primary">Check on Parcel Viewer</a>' +
+  '<a href="dadu_eligibility_map.html" class="btn-secondary">View Eligibility Map</a>';
+
+ setState('result');
+}
+
+function gridItem(label, value) {
+ return '<div class="result-item"><label>' + label + '</label><div class="value">' + value + '</div></div>';
+}
+</script>
+</body>
+</html>
