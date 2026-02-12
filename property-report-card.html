@@ -1491,22 +1491,48 @@
  if (docs[key] && docs[key].length >0) {
  docs[key].forEach(doc =>{
  totalDocs++;
+
+ // Special handling for assessor_cards (Card2 images)
+ if (key === 'assessor_cards') {
+ const structType = doc.structure_type || 'Secondary Structure';
+ const area = doc.finished_area ? doc.finished_area + ' SF' : '';
+ let buttons = '';
+ if (doc.card2_photo_url) {
+ buttons += `<a href="${doc.card2_photo_url}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Photo</a>`;
+ }
+ if (doc.card2_sketch_url) {
+ buttons += `<a href="${doc.card2_sketch_url}" target="_blank" style="padding: 5px 10px; background: var(--terracotta); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Sketch</a>`;
+ }
+ if (doc.card2_summary_url || doc.property_card_url) {
+ buttons += `<a href="${doc.card2_summary_url || doc.property_card_url}" target="_blank" style="padding: 5px 10px; background: var(--navy); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Summary</a>`;
+ }
+ html += `
+ <li class="document-item">
+ <div class="document-icon">${icon}</div>
+ <div class="document-info">
+ <div class="document-title">Card 2: ${structType}</div>
+ <div class="document-meta" style="font-size: 11px;">${area}</div></div>
+ <div style="display: flex; gap: 4px; margin-left: auto;">
+ ${buttons}</div></li>`;
+ return;
+ }
+
  // Handle both object format (new) and string format (legacy)
- const filename = typeof doc === 'object' ? doc.filename : doc;
- const viewUrl = typeof doc === 'object' ? doc.gdrive_url : null;
- const downloadUrl = typeof doc === 'object' ? doc.download_url : null;
+ const filename = typeof doc === 'object' ? (doc.filename || doc.permit_number || doc.instrument) : doc;
+ const viewUrl = typeof doc === 'object' ? (doc.gdrive_url || doc.docs_url || doc.epermits_url) : null;
+ const downloadUrl = typeof doc === 'object' ? (doc.download_url || doc.docs_url) : null;
+ const extraInfo = doc.date || doc.rec_date || (doc.status ? doc.status.toUpperCase() : '') || '';
 
  let buttons = '';
  if (viewUrl) {
  buttons += `<a href="${viewUrl}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">View</a>`;
  }
- if (downloadUrl) {
+ if (downloadUrl && downloadUrl !== viewUrl) {
  buttons += `<a href="${downloadUrl}" target="_blank" style="padding: 5px 10px; background: var(--terracotta); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Download</a>`;
  }
  if (!viewUrl && !downloadUrl) {
- // Fallback to folder search
  const folderId = GDRIVE_FOLDERS[key] || GDRIVE_FOLDERS.property_cards;
- const searchUrl = `https://drive.google.com/drive/folders/${folderId}?q=${encodeURIComponent(filename)}`;
+ const searchUrl = `https://drive.google.com/drive/folders/${folderId}?q=${encodeURIComponent(filename || '')}`;
  buttons = `<a href="${searchUrl}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none;">Find in Drive</a>`;
  }
 
@@ -1515,7 +1541,7 @@
  <div class="document-icon">${icon}</div>
  <div class="document-info">
  <div class="document-title">${label}</div>
- <div class="document-meta" style="font-size: 11px; word-break: break-all;">${filename}</div></div>
+ <div class="document-meta" style="font-size: 11px; word-break: break-all;">${filename || label}${extraInfo ? ' | ' + extraInfo : ''}</div></div>
  <div style="display: flex; gap: 4px; margin-left: auto;">
  ${buttons}</div></li>`;
  });

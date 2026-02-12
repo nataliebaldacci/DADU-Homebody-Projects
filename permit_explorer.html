@@ -1287,9 +1287,27 @@ function openDetailModal(objectId) {
     ['property_cards', 'assessor_cards', 'covenants', 'permits', 'site_plans', 'other'].forEach(cat => {
       if (docs[cat] && docs[cat].length > 0) {
         docs[cat].forEach(d => {
-          const url = d.gdrive_url || d.download_url || '#';
-          const name = d.filename || d.instrument || docLabels[cat];
-          const detail = d.rec_date || d.grantor || '';
+          // For assessor_cards, show photo/sketch links
+          if (cat === 'assessor_cards') {
+            const photoUrl = d.card2_photo_url || '';
+            const sketchUrl = d.card2_sketch_url || '';
+            const summaryUrl = d.card2_summary_url || d.property_card_url || '';
+            const structType = d.structure_type || 'Secondary Structure';
+            const area = d.finished_area ? d.finished_area + ' SF' : '';
+            body += `<div class="modal-link-card" style="cursor:default;">
+              <div class="doc-badge" style="background:${docColors[cat]}">${docIcons[cat]}</div>
+              <div class="modal-link-info"><h4>Assessor Card 2: ${structType}</h4><p style="font-size:10px;">${area}</p>
+              <div style="display:flex;gap:4px;margin-top:4px;">
+                ${photoUrl ? `<a href="${photoUrl}" target="_blank" style="padding:2px 8px;background:#537188;color:white;border-radius:3px;font-size:9px;text-decoration:none;">Photo</a>` : ''}
+                ${sketchUrl ? `<a href="${sketchUrl}" target="_blank" style="padding:2px 8px;background:#C58B2A;color:white;border-radius:3px;font-size:9px;text-decoration:none;">Sketch</a>` : ''}
+                ${summaryUrl ? `<a href="${summaryUrl}" target="_blank" style="padding:2px 8px;background:#3A5566;color:white;border-radius:3px;font-size:9px;text-decoration:none;">Summary</a>` : ''}
+              </div></div>
+            </div>`;
+            return;
+          }
+          const url = d.gdrive_url || d.download_url || d.docs_url || d.epermits_url || '#';
+          const name = d.filename || d.instrument || d.permit_number || docLabels[cat];
+          const detail = d.rec_date || d.grantor || d.date || (d.status ? d.status.toUpperCase() : '') || '';
           body += `<a href="${url}" target="_blank" class="modal-link-card">
             <div class="doc-badge" style="background:${docColors[cat]}">${docIcons[cat]}</div>
             <div class="modal-link-info"><h4>${docLabels[cat]}</h4><p style="font-size:10px;">${name}${detail ? ' | ' + detail : ''}</p></div>

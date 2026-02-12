@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DADU Eligible Parcels - Sample Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <style>
-        body { margin: 0; font-family: Montserrat, sans-serif; }
-        #map { height: calc(100vh - 75px); width: 100%; }
-        .info { padding: 10px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .legend { background: white; padding: 10px; border-radius: 8px; }
-        .legend h4 { margin: 0 0 8px 0; }
-        .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 12px; }
-        .legend-color { width: 16px; height: 16px; border-radius: 50%; margin-right: 8px; }
-    </style>
-    <link rel="stylesheet" href="homebody_shared.css">
-</head>
+ <title>DADU Eligible Parcels - Sample Map</title>
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+ <style>
+ body { margin: 0; font-family: Montserrat, sans-serif; }
+ #map { height: calc(100vh - 75px); width: 100%; }
+ .info { padding: 10px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+ .legend { background: white; padding: 10px; border-radius: 8px; }
+ .legend h4 { margin: 0 0 8px 0; }
+ .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 12px; }
+ .legend-color { width: 16px; height: 16px; border-radius: 50%; margin-right: 8px; }</style>
+ <link rel="stylesheet" href="homebody_shared.css"></head>
 <body>
 <!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
@@ -28,51 +26,47 @@ const parcels = [{"lat": 36.06343294200008, "lon": -86.71288231699998, "apn": "1
 
 const map = L.map('map').setView([36.16, -86.78], 11);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap © CARTO'
+ attribution: '© OpenStreetMap © CARTO'
 }).addTo(map);
 
 function getColor(elig) {
-    if (elig.includes('USD')) return '#2ecc71';
-    if (elig.includes('GSD')) return '#3498db';
-    return '#9b59b6';
+ if (elig.includes('USD')) return '#2ecc71';
+ if (elig.includes('GSD')) return '#3498db';
+ return '#9b59b6';
 }
 
-parcels.forEach(p => {
-    const color = getColor(p.elig);
-    const hasSecondary = p.elig.includes('Secondary');
-    
-    L.circleMarker([p.lat, p.lon], {
-        radius: 5,
-        fillColor: color,
-        color: hasSecondary ? '#e74c3c' : color,
-        weight: hasSecondary ? 2 : 1,
-        fillOpacity: 0.7
-    }).addTo(map).bindPopup(`
-        <div class="info">
-            <strong>${p.addr}</strong><br>
-            APN: ${p.apn}<br>
-            ${p.elig}<br>
-            Lot: ${p.lot}<br>
-            Max DADU: ${p.max_living} SF<br>
-            Principal Height: ${Math.round(p.height)} ft
-        </div>
-    `);
+parcels.forEach(p =>{
+ const color = getColor(p.elig);
+ const hasSecondary = p.elig.includes('Secondary');
+ 
+ L.circleMarker([p.lat, p.lon], {
+ radius: 5,
+ fillColor: color,
+ color: hasSecondary ? '#e74c3c' : color,
+ weight: hasSecondary ? 2 : 1,
+ fillOpacity: 0.7
+ }).addTo(map).bindPopup(`
+ <div class="info">
+ <strong>${p.addr}</strong><br>
+ APN: ${p.apn}<br>
+ ${p.elig}<br>
+ Lot: ${p.lot}<br>
+ Max DADU: ${p.max_living} SF<br>
+ Principal Height: ${Math.round(p.height)} ft</div>
+ `);
 });
 
 const legend = L.control({position: 'bottomright'});
 legend.onAdd = function() {
-    const div = L.DomUtil.create('div', 'legend');
-    div.innerHTML = `
-        <h4>DADU Eligibility</h4>
-        <div class="legend-item"><div class="legend-color" style="background:#2ecc71"></div>USD (By Right)</div>
-        <div class="legend-item"><div class="legend-color" style="background:#3498db"></div>GSD (Overlay Required)</div>
-        <div class="legend-item"><div class="legend-color" style="background:#e74c3c;border:2px solid #e74c3c"></div>Has Existing Secondary</div>
-        <p style="font-size:11px;color:#666;margin-top:8px">Showing ${parcels.length.toLocaleString()} sample parcels</p>
-    `;
-    return div;
+ const div = L.DomUtil.create('div', 'legend');
+ div.innerHTML = `
+ <h4>DADU Eligibility</h4>
+ <div class="legend-item"><div class="legend-color" style="background:#2ecc71"></div>USD (By Right)</div>
+ <div class="legend-item"><div class="legend-color" style="background:#3498db"></div>GSD (Overlay Required)</div>
+ <div class="legend-item"><div class="legend-color" style="background:#e74c3c;border:2px solid #e74c3c"></div>Has Existing Secondary</div>
+ <p style="font-size:11px;color:#666;margin-top:8px">Showing ${parcels.length.toLocaleString()} sample parcels</p>
+ `;
+ return div;
 };
-legend.addTo(map);
-</script>
-    <script src="homebody_header.js"></script>
-</body>
-</html>
+legend.addTo(map);</script>
+ <script src="homebody_header.js"></script></body></html>

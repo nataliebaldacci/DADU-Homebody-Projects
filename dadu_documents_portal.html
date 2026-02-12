@@ -1027,6 +1027,7 @@
  let docCount = 0;
  if (currentDocs) {
  docCount = (currentDocs.property_cards?.length || 0) +
+ (currentDocs.assessor_cards?.length || 0) +
  (currentDocs.covenants?.length || 0) +
  (currentDocs.permits?.length || 0);
  }
@@ -1099,15 +1100,52 @@
  if (docs.permits && docs.permits.length >0) {
  hasContent = true;
  docs.permits.forEach((doc, idx) =>{
+ const permitNum = doc.permit_number || 'Unknown';
+ const permitDate = doc.date || '';
+ const contractor = doc.contractor || '';
+ const status = doc.status ? doc.status.toUpperCase() : '';
+ const desc = [
+   `Permit #${permitNum}`,
+   permitDate ? `Issued: ${permitDate}` : '',
+   contractor ? `Contractor: ${contractor}` : '',
+   status ? `Status: ${status}` : ''
+ ].filter(Boolean).join('. ');
+ const permitUrl = doc.gdrive_url || doc.docs_url || doc.epermits_url || '#';
  grid.innerHTML += createDocCard({
  icon: '',
  type: 'Permit Document',
- title: `Building Permit`,
- description: `Permit document from Metro Nashville Codes.`,
- features: ['Permit application', 'Approval details', 'Project specs'],
- url: doc.gdrive_url,
- downloadUrl: doc.download_url,
+ title: `DADU Building Permit`,
+ description: desc,
+ features: ['Permit application', 'Approval details', 'Project specs', doc.trade_count ? `${doc.trade_count} trade permits` : ''].filter(Boolean),
+ url: permitUrl,
+ downloadUrl: doc.download_url || doc.docs_url,
  isFree: false
+ });
+ });
+ }
+
+ // Assessor Cards (Card 2 - secondary structures)
+ if (docs.assessor_cards && docs.assessor_cards.length >0) {
+ hasContent = true;
+ docs.assessor_cards.forEach((doc, idx) =>{
+ const structType = doc.structure_type || 'Secondary Structure';
+ const area = doc.finished_area ? doc.finished_area + ' SF' : '';
+ const photoUrl = doc.card2_photo_url || '';
+ const sketchUrl = doc.card2_sketch_url || '';
+ grid.innerHTML += createDocCard({
+ icon: '',
+ type: 'Assessor Card 2',
+ title: `Secondary Structure: ${structType}`,
+ description: area ? `Finished area: ${area}` : 'Secondary structure on parcel',
+ features: [
+   photoUrl ? 'Photo available' : '',
+   sketchUrl ? 'Floor plan sketch available' : '',
+   'Building details',
+   'Structure assessment'
+ ].filter(Boolean),
+ url: photoUrl || sketchUrl || doc.card2_summary_url || doc.property_card_url || '#',
+ downloadUrl: doc.card2_sketch_url || doc.card2_photo_url,
+ isFree: true
  });
  });
  }
