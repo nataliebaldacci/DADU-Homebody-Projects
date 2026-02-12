@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Castlehold | DADU Zoning & Buildability Intelligence</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="homebody_shared.css">
     <style>
         /* ========== PAGE-SPECIFIC: Homepage ========== */
@@ -29,16 +26,12 @@
             --text-light: #666666;
             --text-muted: #999999;
             --border: #e0e0e0;
-            --border-light: #f0f0f0;
-            --error: #7A2A1D;
-            --success: #27ae60;
-            --warning: #f39c12;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--background);
             color: var(--text);
             line-height: 1.6;
@@ -46,35 +39,66 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ========== SEARCH HERO ========== */
-        .search-hero {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
-            padding: 48px 24px 40px;
+        /* ========== HERO WITH AERIAL MAP BACKDROP ========== */
+        .hero {
+            position: relative;
+            background: url('assets/nashville-aerial-hero.png') center center / cover no-repeat;
+            padding: 100px 24px 80px;
             text-align: center;
             color: white;
+            overflow: hidden;
         }
 
-        .search-hero h1 {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 8px;
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(46, 69, 83, 0.82) 0%,
+                rgba(58, 85, 102, 0.75) 50%,
+                rgba(46, 69, 83, 0.88) 100%
+            );
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 48px;
+            line-height: 1.15;
+            margin-bottom: 20px;
             letter-spacing: -0.5px;
         }
 
-        .search-hero .subtitle {
-            font-size: 16px;
+        .hero .subtitle {
+            font-size: 17px;
+            font-weight: 400;
             opacity: 0.85;
-            margin-bottom: 28px;
+            margin-bottom: 36px;
+            line-height: 1.6;
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
+        /* Search bar */
         .search-bar {
-            max-width: 600px;
-            margin: 0 auto 24px;
+            max-width: 540px;
+            margin: 0 auto 48px;
             display: flex;
             background: white;
-            border-radius: 10px;
-            padding: 5px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 4px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
         }
 
         .search-bar input {
@@ -92,11 +116,11 @@
 
         .search-bar button {
             padding: 14px 28px;
-            background: var(--terracotta);
+            background: var(--navy);
             color: white;
             border: none;
-            border-radius: 7px;
-            font-size: 15px;
+            border-radius: 6px;
+            font-size: 14px;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
@@ -104,311 +128,222 @@
             white-space: nowrap;
         }
 
-        .search-bar button:hover { background: var(--terracotta-hover); }
+        .search-bar button:hover { background: var(--navy-dark); }
 
-        .hero-ctas {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .hero-cta-primary {
-            padding: 12px 28px;
-            background: var(--terracotta);
-            color: white;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            transition: all 0.2s;
-        }
-
-        .hero-cta-primary:hover {
-            background: var(--terracotta-hover);
-            transform: translateY(-1px);
-        }
-
-        .hero-cta-secondary {
-            padding: 12px 28px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            border: 1px solid rgba(255,255,255,0.3);
-            transition: all 0.2s;
-        }
-
-        .hero-cta-secondary:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
+        /* Stats row */
         .hero-stats {
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 60px;
             flex-wrap: wrap;
         }
 
         .hero-stat { text-align: center; }
 
         .hero-stat-value {
-            font-size: 24px;
+            font-size: 36px;
             font-weight: 800;
+            color: var(--terracotta-light);
+            letter-spacing: -0.5px;
         }
 
         .hero-stat-label {
             font-size: 11px;
-            opacity: 0.75;
+            font-weight: 600;
+            opacity: 0.7;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1.5px;
+            margin-top: 4px;
         }
 
-        /* ========== MAP SECTION ========== */
-        .map-section {
-            position: relative;
-            height: 60vh;
-            min-height: 400px;
-        }
-
-        #map {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Cluster icons */
-        .marker-cluster-eligible { background-color: rgba(197, 139, 42, 0.6); }
-        .marker-cluster-eligible div { background-color: rgba(197, 139, 42, 0.9); }
-        .marker-cluster-conditional { background-color: rgba(243, 156, 18, 0.6); }
-        .marker-cluster-conditional div { background-color: rgba(243, 156, 18, 0.9); }
-        .marker-cluster-not-eligible { background-color: rgba(122, 42, 29, 0.6); }
-        .marker-cluster-not-eligible div { background-color: rgba(122, 42, 29, 0.9); }
-
-        .marker-cluster { border-radius: 50%; }
-        .marker-cluster div {
-            width: 30px; height: 30px;
-            margin-left: 5px; margin-top: 5px;
-            text-align: center; border-radius: 50%;
-            font-size: 12px; font-weight: bold;
-            color: white; line-height: 30px;
-        }
-
-        /* Popup styles */
-        .leaflet-popup-content-wrapper { border-radius: 12px; padding: 0; }
-        .leaflet-popup-content { margin: 0; min-width: 280px; }
-        .popup-header { padding: 14px 16px; border-radius: 12px 12px 0 0; }
-        .popup-header.eligible { background: var(--terracotta); color: white; }
-        .popup-header.not-eligible { background: var(--error); color: white; }
-        .popup-header.conditional { background: #f39c12; color: white; }
-        .popup-status { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
-        .popup-address { font-size: 15px; font-weight: 700; }
-        .popup-content { padding: 14px 16px; }
-        .popup-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; }
-        .popup-row:last-child { border-bottom: none; }
-        .popup-label { font-size: 12px; color: #666; }
-        .popup-value { font-size: 12px; font-weight: 600; color: var(--navy); }
-        .popup-actions { padding: 10px 16px; background: var(--card-bg); border-radius: 0 0 12px 12px; display: flex; gap: 8px; }
-        .popup-btn { flex: 1; padding: 8px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; font-family: inherit; }
-        .popup-btn-primary { background: var(--terracotta); color: white; }
-        .popup-btn-secondary { background: white; color: var(--navy); border: 1px solid var(--border); }
-
-        /* Map legend */
-        .map-legend {
-            position: absolute;
-            bottom: 30px;
-            left: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-            padding: 14px 16px;
-            z-index: 800;
-            font-size: 12px;
-        }
-
-        .map-legend h4 {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-light);
-            margin-bottom: 8px;
-        }
-
-        .legend-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 5px;
-        }
-
-        .legend-row:last-child { margin-bottom: 0; }
-
-        .legend-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 4px;
-            flex-shrink: 0;
-        }
-
-        /* Zoom message */
-        .zoom-message {
-            position: absolute;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--navy);
-            color: white;
-            padding: 10px 22px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 500;
-            z-index: 800;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: none;
-            white-space: nowrap;
-        }
-
-        .zoom-message.visible { display: block; }
-
-        /* Loading overlay */
-        .loading-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,0.92);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 900;
-        }
-
-        .loading-overlay.hidden { display: none; }
-
-        .spinner {
-            width: 44px; height: 44px;
-            border: 4px solid var(--border);
-            border-top-color: var(--terracotta);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 16px;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .loading-text { font-size: 15px; font-weight: 600; color: var(--navy); }
-        .loading-subtext { font-size: 12px; color: var(--text-light); margin-top: 6px; }
-
-        .loading-progress {
-            width: 180px; height: 5px;
-            background: var(--border);
-            border-radius: 3px;
-            margin-top: 12px;
-            overflow: hidden;
-        }
-
-        .loading-progress-bar {
-            height: 100%;
-            background: var(--terracotta);
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        /* ========== USER CARDS ========== */
-        .user-cards-section {
-            padding: 60px 24px;
+        /* ========== FEATURE CARDS ========== */
+        .features-section {
+            padding: 72px 24px;
             max-width: 1100px;
             margin: 0 auto;
         }
 
-        .user-cards-section h2 {
+        .features-section h2 {
             text-align: center;
-            font-size: 28px;
-            font-weight: 800;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 32px;
             color: var(--navy);
-            margin-bottom: 12px;
+            margin-bottom: 48px;
         }
 
-        .user-cards-section .section-desc {
-            text-align: center;
-            font-size: 16px;
-            color: var(--text-light);
-            margin-bottom: 40px;
-        }
-
-        .user-cards-grid {
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 24px;
         }
 
-        .user-card {
+        .feature-card {
             background: var(--white);
-            border-radius: 16px;
-            padding: 32px 28px;
-            text-align: center;
+            border-radius: 12px;
+            padding: 28px 24px;
+            border: 1px solid var(--border);
             transition: all 0.3s;
-            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
         }
 
-        .user-card:hover {
+        .feature-card:hover {
             border-color: var(--terracotta);
             transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
         }
 
-        .user-card-icon {
-            width: 64px;
-            height: 64px;
+        .feature-card-icon {
+            width: 48px;
+            height: 48px;
             background: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
+            margin-bottom: 20px;
         }
 
-        .user-card-icon img {
-            width: 36px;
-            height: 36px;
+        .feature-card-icon img {
+            width: 28px;
+            height: 28px;
         }
 
-        .user-card:hover .user-card-icon {
-            background: var(--terracotta);
-        }
-
-        .user-card:hover .user-card-icon img {
-            filter: brightness(0) invert(1);
-        }
-
-        .user-card h3 {
-            font-size: 20px;
+        .feature-card h3 {
+            font-size: 17px;
             font-weight: 700;
             color: var(--navy);
             margin-bottom: 10px;
         }
 
-        .user-card p {
+        .feature-card p {
             font-size: 14px;
             color: var(--text-light);
-            margin-bottom: 20px;
             line-height: 1.6;
+            margin-bottom: 20px;
+            flex: 1;
         }
 
-        .user-card-link {
+        .feature-card-link {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            color: var(--terracotta);
+            color: var(--navy);
             font-size: 14px;
             font-weight: 600;
+            transition: gap 0.2s;
         }
 
-        .user-card:hover .user-card-link { gap: 10px; }
+        .feature-card:hover .feature-card-link {
+            color: var(--terracotta);
+            gap: 10px;
+        }
+
+        /* ========== CTA SECTION ========== */
+        .cta-section {
+            position: relative;
+            background: url('assets/nashville-aerial-hero.png') center bottom / cover no-repeat;
+            padding: 80px 24px;
+            color: white;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(46, 69, 83, 0.92) 0%,
+                rgba(58, 85, 102, 0.85) 100%
+            );
+            z-index: 1;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .cta-text { flex: 1; }
+
+        .cta-text h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 30px;
+            line-height: 1.3;
+            margin-bottom: 28px;
+        }
+
+        .cta-checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cta-checklist li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            margin-bottom: 16px;
+            opacity: 0.9;
+        }
+
+        .cta-check {
+            width: 24px;
+            height: 24px;
+            background: rgba(197, 139, 42, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cta-check svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--terracotta-light);
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .cta-action {
+            flex-shrink: 0;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: var(--terracotta);
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .cta-btn:hover {
+            background: var(--terracotta-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(197, 139, 42, 0.3);
+        }
 
         /* ========== FOOTER ========== */
         .page-footer {
             background: var(--navy-dark);
             color: white;
-            padding: 40px 24px 24px;
+            padding: 48px 24px 24px;
         }
 
         .footer-inner {
@@ -418,83 +353,87 @@
             justify-content: space-between;
             align-items: flex-start;
             flex-wrap: wrap;
-            gap: 24px;
-        }
-
-        .footer-brand h3 {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-
-        .footer-brand p {
-            font-size: 13px;
-            opacity: 0.7;
-            max-width: 300px;
-            line-height: 1.5;
+            gap: 32px;
         }
 
         .footer-links {
             display: flex;
-            gap: 40px;
+            gap: 60px;
         }
 
         .footer-col h4 {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--tan);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .footer-col a {
             display: block;
-            color: rgba(255,255,255,0.7);
-            font-size: 13px;
-            margin-bottom: 8px;
+            color: rgba(255,255,255,0.65);
+            font-size: 14px;
+            margin-bottom: 10px;
             transition: color 0.2s;
         }
 
         .footer-col a:hover { color: white; }
 
+        .footer-social {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .footer-social a {
+            color: rgba(255,255,255,0.6);
+            transition: color 0.2s;
+        }
+
+        .footer-social a:hover { color: white; }
+
+        .footer-social svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
         .footer-bottom {
             max-width: 1100px;
-            margin: 20px auto 0;
-            padding-top: 16px;
+            margin: 24px auto 0;
+            padding-top: 20px;
             border-top: 1px solid rgba(255,255,255,0.1);
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            opacity: 0.6;
+            align-items: center;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
         }
 
+        .footer-bottom a {
+            color: rgba(255,255,255,0.5);
+            transition: color 0.2s;
+        }
+
+        .footer-bottom a:hover { color: rgba(255,255,255,0.8); }
+
         /* ========== RESPONSIVE ========== */
-        @media (max-width: 768px) {
-            .search-hero h1 { font-size: 22px; }
-            .search-hero .subtitle { font-size: 14px; }
-            .hero-stats { gap: 24px; }
-            .hero-stat-value { font-size: 20px; }
-            .hero-ctas { flex-direction: column; align-items: center; }
-            .map-section { height: 50vh; min-height: 300px; }
-            .user-cards-grid { grid-template-columns: 1fr; }
-            .user-cards-section { padding: 40px 16px; }
+        @media (max-width: 900px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .cta-content { flex-direction: column; text-align: center; gap: 32px; }
+        }
+
+        @media (max-width: 600px) {
+            .hero { padding: 60px 20px 50px; }
+            .hero h1 { font-size: 32px; }
+            .hero .subtitle { font-size: 15px; }
+            .hero-stats { gap: 32px; }
+            .hero-stat-value { font-size: 28px; }
+            .search-bar { flex-direction: column; }
+            .search-bar button { border-radius: 6px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .features-section { padding: 48px 16px; }
             .footer-inner { flex-direction: column; }
             .footer-links { flex-direction: column; gap: 24px; }
             .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-        }
-
-        /* Mobile menu */
-        .mobile-menu-btn {
-            display: none;
-            padding: 10px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            .mobile-menu-btn { display: block; }
         }
 
         /* Accessibility */
@@ -525,486 +464,150 @@
 <!-- Main Content -->
 <main id="main-content">
 
-    <!-- Search Hero -->
-    <section class="search-hero">
-        <h1>DADU Zoning &amp; Buildability Intelligence</h1>
-        <p class="subtitle">Check eligibility for any Nashville property</p>
+    <!-- Hero with Nashville Aerial Backdrop -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Build Your Nashville DADU with Confidence</h1>
+            <p class="subtitle">The complete platform for DADU eligibility, permits, contractors, and market data. 67,707 eligible parcels. One powerful tool.</p>
 
-        <form class="search-bar" id="hero-search-form" action="property-report-card.html" method="GET">
-            <input type="text" name="address" placeholder="Enter a Nashville address to check eligibility..." aria-label="Property address">
-            <button type="submit">Check Eligibility</button>
-        </form>
+            <form class="search-bar" id="hero-search-form" action="property-report-card.html" method="GET">
+                <input type="text" name="address" placeholder="Enter your Nashville address..." aria-label="Property address">
+                <button type="submit">Check Eligibility</button>
+            </form>
 
-        <div class="hero-ctas">
-            <a href="am_i_eligible.html" class="hero-cta-primary">Get Started</a>
-            <a href="#map-section" class="hero-cta-secondary" id="explore-map-btn">Explore Map</a>
-        </div>
-
-        <div class="hero-stats">
-            <div class="hero-stat">
-                <div class="hero-stat-value">67,707</div>
-                <div class="hero-stat-label">Eligible Parcels</div>
-            </div>
-            <div class="hero-stat">
-                <div class="hero-stat-value">827+</div>
-                <div class="hero-stat-label">Permitted</div>
-            </div>
-            <div class="hero-stat">
-                <div class="hero-stat-value">3,200+</div>
-                <div class="hero-stat-label">Documents</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Map -->
-    <section class="map-section" id="map-section">
-        <div id="map">
-            <!-- Legend overlay -->
-            <div class="map-legend">
-                <h4>Eligibility</h4>
-                <div class="legend-row">
-                    <div class="legend-dot" style="background:#C58B2A"></div>
-                    <span>Eligible (SP in USD)</span>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">67,707</div>
+                    <div class="hero-stat-label">Eligible Parcels</div>
                 </div>
-                <div class="legend-row">
-                    <div class="legend-dot" style="background:#f39c12"></div>
-                    <span>Conditional</span>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">827+</div>
+                    <div class="hero-stat-label">DADUs Permitted</div>
                 </div>
-                <div class="legend-row">
-                    <div class="legend-dot" style="background:#7A2A1D"></div>
-                    <span>Not Eligible</span>
-                </div>
-            </div>
-
-            <!-- Zoom message -->
-            <div class="zoom-message" id="zoom-message">Zoom in to see parcels</div>
-
-            <!-- Loading overlay -->
-            <div class="loading-overlay" id="loading">
-                <div class="spinner"></div>
-                <div class="loading-text" id="loading-status">Connecting to Nashville GIS...</div>
-                <div class="loading-subtext">Loading parcel eligibility data</div>
-                <div class="loading-progress">
-                    <div class="loading-progress-bar" id="progress-bar"></div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">393</div>
+                    <div class="hero-stat-label">Active Contractors</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Three User Cards -->
-    <section class="user-cards-section">
-        <h2>Built for Every Stage of Your DADU Journey</h2>
-        <p class="section-desc">Specialized tools and data for homeowners, contractors, and professionals</p>
+    <!-- Feature Cards -->
+    <section class="features-section">
+        <h2>Everything You Need for Your DADU Project</h2>
 
-        <div class="user-cards-grid">
-            <a href="user-homeowners.html" class="user-card">
-                <div class="user-card-icon">
-                    <img src="assets/icons/Property Owners.png" alt="">
+        <div class="features-grid">
+            <a href="am_i_eligible.html" class="feature-card">
+                <div class="feature-card-icon">
+                    <img src="assets/icons/ADU.png" alt="">
                 </div>
-                <h3>Homeowner</h3>
-                <p>Check your eligibility, understand requirements, estimate costs, and find qualified contractors for your DADU project.</p>
-                <span class="user-card-link">Get started &rarr;</span>
+                <h3>Am I Eligible?</h3>
+                <p>Instant eligibility check based on Nashville's BL2025-1007 zoning requirements.</p>
+                <span class="feature-card-link">Learn More &rarr;</span>
             </a>
 
-            <a href="contractor_marketplace.html" class="user-card">
-                <div class="user-card-icon">
+            <a href="size_calculator.html" class="feature-card">
+                <div class="feature-card-icon">
+                    <img src="assets/icons/Appraisers.png" alt="">
+                </div>
+                <h3>Size Calculator</h3>
+                <p>Calculate your maximum DADU size based on lot dimensions and zoning.</p>
+                <span class="feature-card-link">Learn More &rarr;</span>
+            </a>
+
+            <a href="project_cost_estimator.html" class="feature-card">
+                <div class="feature-card-icon">
+                    <img src="assets/icons/Valuations.png" alt="">
+                </div>
+                <h3>Cost Estimator</h3>
+                <p>Estimate build costs by size, finish level, and site conditions.</p>
+                <span class="feature-card-link">Learn More &rarr;</span>
+            </a>
+
+            <a href="contractor_marketplace.html" class="feature-card">
+                <div class="feature-card-icon">
                     <img src="assets/icons/Building and Construction.png" alt="">
                 </div>
-                <h3>Contractor</h3>
-                <p>Access market intelligence, find leads, analyze competitor pricing, and showcase your DADU projects to homeowners.</p>
-                <span class="user-card-link">View marketplace &rarr;</span>
-            </a>
-
-            <a href="designer_resources.html" class="user-card">
-                <div class="user-card-icon">
-                    <img src="assets/icons/Surveyers adn Engineers.png" alt="">
-                </div>
-                <h3>Professional</h3>
-                <p>Building requirements, precedent projects, setback calculators, legal citations, and design tools for architects and consultants.</p>
-                <span class="user-card-link">Access resources &rarr;</span>
+                <h3>Contractor Directory</h3>
+                <p>Connect to vetted builders specializing in ADUs on your sized lot.</p>
+                <span class="feature-card-link">Learn More &rarr;</span>
             </a>
         </div>
     </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <div class="cta-text">
+                <h2>Power your building process from search to construction</h2>
+                <ul class="cta-checklist">
+                    <li>
+                        <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                        Faster and easier than ever
+                    </li>
+                    <li>
+                        <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                        Trusted local partners you can rely on
+                    </li>
+                    <li>
+                        <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                        Automatic updates from the Nashville Open Data portal
+                    </li>
+                </ul>
+            </div>
+            <div class="cta-action">
+                <a href="am_i_eligible.html" class="cta-btn">Get Started</a>
+            </div>
+        </div>
+    </section>
+
 </main>
 
 <!-- Footer -->
 <footer class="page-footer">
     <div class="footer-inner">
-        <div class="footer-brand">
-            <h3>CASTLEHOLD</h3>
-            <p>Nashville's authority for DADU zoning and buildability intelligence. Built for homeowners, contractors, and professionals.</p>
-        </div>
         <div class="footer-links">
             <div class="footer-col">
-                <h4>Explore</h4>
-                <a href="what_is_dadu.html">What is a DADU?</a>
-                <a href="dadu_eligibility_map.html">Eligibility Map</a>
-                <a href="property_search.html">Property Search</a>
-                <a href="dadu_near_me_v2.html">DADUs Near Me</a>
-            </div>
-            <div class="footer-col">
-                <h4>Build</h4>
-                <a href="project_planner.html">Project Planner</a>
+                <h4>Learn</h4>
+                <a href="am_i_eligible.html">Am I Eligible?</a>
+                <a href="size_calculator.html">Size Calculator</a>
                 <a href="project_cost_estimator.html">Cost Estimator</a>
-                <a href="contractor_marketplace.html">Contractors</a>
-                <a href="roi_calculator.html">ROI Calculator</a>
             </div>
             <div class="footer-col">
-                <h4>Data</h4>
-                <a href="permit_activity_dashboard.html">Permit Activity</a>
-                <a href="dadu_reports_store.html">Reports</a>
-                <a href="dadu_documents_portal.html">Documents</a>
+                <h4>Features</h4>
+                <a href="contractor_marketplace.html">Contractor Directory</a>
+                <a href="dadu_building_requirements.html">Planning Resources</a>
                 <a href="homebody_pricing.html">Pricing</a>
             </div>
+            <div class="footer-col">
+                <h4>Get in Touch</h4>
+                <a href="mailto:hello@castlehold.com">hello@castlehold.com</a>
+                <a href="mailto:hello@castlehold.com">Contact</a>
+                <a href="#">Sign in</a>
+            </div>
+        </div>
+        <div class="footer-social">
+            <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+            <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
         </div>
     </div>
     <div class="footer-bottom">
         <span>&copy; 2026 Castlehold. All rights reserved.</span>
-        <span>Data: Nashville Open Data, Metro Codes, Property Assessor. Not legal advice.</span>
+        <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span>
     </div>
 </footer>
 
-<!-- Scripts -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script>
-    // ========== CONFIGURATION ==========
-    const COLORS = {
-        eligible: '#C58B2A',
-        conditional: '#f39c12',
-        notEligible: '#7A2A1D'
-    };
-
-    const ELIG_LABELS = {
-        'eligible': 'Eligible (SP-USD)',
-        'conditional': 'Conditional (Overlay Required)',
-        'not-eligible': 'Not Eligible'
-    };
-
-    const ARCGIS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0';
-    const CADASTRAL_SERVICE = 'https://maps.nashville.gov/arcgis/rest/services/Cadastral/Cadastral_Layers/MapServer/4';
-
-    let map;
-    let parcelLayer;
-    let eligibleLayer, conditionalLayer, notEligibleLayer;
-    let loadedBounds = null;
-    let isLoading = false;
-
-    // ========== ArcGIS QUERIES ==========
-    async function queryArcGIS(options = {}) {
-        const defaults = {
-            where: '1=1',
-            outFields: 'STANPAR,Address,Zoning,Acres,Lot_SqFt,In_USD,Service_District,Eligibility_Status,Max_DADU_Living_SF,Lat,Lon',
-            returnGeometry: false,
-            f: 'json',
-            resultRecordCount: 2000
-        };
-        const params = { ...defaults, ...options };
-        const queryString = new URLSearchParams(params).toString();
-        const url = `${ARCGIS_SERVICE}/query?${queryString}`;
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return await response.json();
-        } catch (err) {
-            console.error('ArcGIS query error:', err);
-            throw err;
-        }
-    }
-
-    async function queryByBounds(bounds, options = {}) {
-        const south = bounds.getSouth(), north = bounds.getNorth();
-        const west = bounds.getWest(), east = bounds.getEast();
-        const boundsWhere = `Lat >= ${south} AND Lat <= ${north} AND Lon >= ${west} AND Lon <= ${east}`;
-        let whereClause = boundsWhere;
-        if (options.where && options.where !== '1=1') {
-            whereClause = `(${boundsWhere}) AND (${options.where})`;
-        }
-        return queryArcGIS({ ...options, where: whereClause });
-    }
-
-    async function queryCadastralByBounds(bounds) {
-        const geometry = JSON.stringify({
-            xmin: bounds.getWest(), ymin: bounds.getSouth(),
-            xmax: bounds.getEast(), ymax: bounds.getNorth(),
-            spatialReference: { wkid: 4326 }
-        });
-        const params = new URLSearchParams({
-            where: '1=1', geometry: geometry,
-            geometryType: 'esriGeometryEnvelope',
-            spatialRel: 'esriSpatialRelIntersects',
-            outFields: 'STANPAR,PropAddr,Acres',
-            returnGeometry: true, outSR: 4326, f: 'geojson',
-            resultRecordCount: 500
-        });
-        try {
-            const response = await fetch(`${CADASTRAL_SERVICE}/query?${params.toString()}`);
-            if (!response.ok) throw new Error(`Cadastral query failed: ${response.status}`);
-            return await response.json();
-        } catch (err) {
-            console.error('Cadastral bounds query error:', err);
-            return null;
-        }
-    }
-
-    // ========== MAP INIT ==========
-    function initMap() {
-        map = L.map('map', { preferCanvas: true }).setView([36.1627, -86.7816], 11);
-
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap &copy; CARTO | Data: Nashville Metro GIS',
-            maxZoom: 19
-        }).addTo(map);
-
-        function clusterIcon(className) {
-            return function(cluster) {
-                const count = cluster.getChildCount();
-                return L.divIcon({
-                    html: '<div>' + (count > 999 ? Math.round(count/1000) + 'k' : count) + '</div>',
-                    className: 'marker-cluster ' + className,
-                    iconSize: [40, 40]
-                });
-            };
-        }
-
-        eligibleLayer = L.markerClusterGroup({ maxClusterRadius: 50, disableClusteringAtZoom: 17, iconCreateFunction: clusterIcon('marker-cluster-eligible') });
-        conditionalLayer = L.markerClusterGroup({ maxClusterRadius: 50, disableClusteringAtZoom: 17, iconCreateFunction: clusterIcon('marker-cluster-conditional') });
-        notEligibleLayer = L.markerClusterGroup({ maxClusterRadius: 50, disableClusteringAtZoom: 17, iconCreateFunction: clusterIcon('marker-cluster-not-eligible') });
-
-        parcelLayer = L.geoJSON(null, {
-            style: function(feature) {
-                return { color: '#fff', weight: 1, fillColor: feature.properties.fillColor || '#999', fillOpacity: 0.7 };
-            },
-            onEachFeature: function(feature, layer) {
-                if (feature.properties && feature.properties.popupContent) {
-                    layer.bindPopup(feature.properties.popupContent, { maxWidth: 320 });
-                }
-            }
-        });
-
-        map.addLayer(parcelLayer);
-        map.addLayer(eligibleLayer);
-        map.addLayer(conditionalLayer);
-        map.addLayer(notEligibleLayer);
-
-        // Zoom handler
-        map.on('zoomend', function() {
-            const zoom = map.getZoom();
-            const msg = document.getElementById('zoom-message');
-            if (zoom < 13) {
-                msg.textContent = 'Zoom in to see parcel markers';
-                msg.classList.add('visible');
-            } else if (zoom < 15) {
-                msg.textContent = 'Zoom in more to see parcel boundaries';
-                msg.classList.add('visible');
-            } else {
-                msg.classList.remove('visible');
-            }
-        });
-
-        // Load data on move (debounced)
-        let moveTimeout;
-        map.on('moveend', function() {
-            clearTimeout(moveTimeout);
-            moveTimeout = setTimeout(() => {
-                if (map.getZoom() >= 13) loadViewportData();
-            }, 300);
-        });
-
-        loadInitialData();
-    }
-
-    // ========== DATA LOADING ==========
-    async function loadInitialData() {
-        const statusEl = document.getElementById('loading-status');
-        const progressBar = document.getElementById('progress-bar');
-
-        try {
-            statusEl.textContent = 'Connecting to Nashville GIS...';
-            progressBar.style.width = '10%';
-            progressBar.style.width = '50%';
-
-            await loadViewportData();
-            progressBar.style.width = '100%';
-
-            setTimeout(() => { document.getElementById('loading').classList.add('hidden'); }, 500);
-        } catch (error) {
-            console.error('Error loading data:', error);
-            statusEl.textContent = 'Map loading. Zoom in to explore parcels.';
-            setTimeout(() => { document.getElementById('loading').classList.add('hidden'); }, 2000);
-        }
-    }
-
-    async function loadViewportData() {
-        if (isLoading) return;
-        const zoom = map.getZoom();
-
-        if (zoom < 15) {
-            if (zoom >= 13) await loadViewportMarkers();
-            return;
-        }
-
-        const bounds = map.getBounds();
-        if (loadedBounds && loadedBounds.contains(bounds)) return;
-        isLoading = true;
-
-        try {
-            const cadastralData = await queryCadastralByBounds(bounds);
-            if (!cadastralData || !cadastralData.features || cadastralData.features.length === 0) {
-                await loadViewportMarkers();
-                return;
-            }
-
-            const stanpars = cadastralData.features.map(f => f.properties.STANPAR).filter(s => s);
-            if (stanpars.length === 0) return;
-
-            const eligibilityMap = {};
-            const batchSize = 50;
-            for (let i = 0; i < stanpars.length; i += batchSize) {
-                const batch = stanpars.slice(i, i + batchSize);
-                const whereClause = batch.map(s => `STANPAR = '${s}'`).join(' OR ');
-                const eligData = await queryArcGIS({
-                    where: whereClause,
-                    outFields: 'STANPAR,Address,Zoning,Eligibility_Status,Max_DADU_Living_SF,Lot_SqFt,Acres,Service_District',
-                    resultRecordCount: batchSize
-                });
-                if (eligData.features) {
-                    eligData.features.forEach(f => {
-                        const attrs = f.attributes || f;
-                        eligibilityMap[attrs.STANPAR] = attrs;
-                    });
-                }
-            }
-
-            parcelLayer.clearLayers();
-
-            cadastralData.features.forEach(feature => {
-                const stanpar = feature.properties.STANPAR;
-                const eligData = eligibilityMap[stanpar];
-                if (!eligData) return;
-
-                const status = eligData.Eligibility_Status || '';
-                let eligClass = 'not-eligible', fillColor = COLORS.notEligible;
-
-                if (status === 'CHECK_SP_USD') { eligClass = 'eligible'; fillColor = COLORS.eligible; }
-                else if (status === 'GSD_NEEDS_OVERLAY' || status === 'CHECK_SP_GSD') { eligClass = 'conditional'; fillColor = COLORS.conditional; }
-
-                const lotSf = eligData.Lot_SqFt || (eligData.Acres ? Math.round(eligData.Acres * 43560) : 0);
-                const maxDadu = eligData.Max_DADU_Living_SF || (lotSf >= 10000 ? 850 : 700);
-                const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
-
-                const popupContent = `
-                    <div class="popup-header ${eligClass}">
-                        <div class="popup-status">${eligLabel}</div>
-                        <div class="popup-address">${eligData.Address || feature.properties.PropAddr || 'No Address'}</div>
-                    </div>
-                    <div class="popup-content">
-                        <div class="popup-row"><span class="popup-label">APN</span><span class="popup-value">${stanpar}</span></div>
-                        <div class="popup-row"><span class="popup-label">Zoning</span><span class="popup-value">${eligData.Zoning || 'N/A'}</span></div>
-                        <div class="popup-row"><span class="popup-label">Lot Size</span><span class="popup-value">${lotSf ? lotSf.toLocaleString() : 'N/A'} SF</span></div>
-                        <div class="popup-row"><span class="popup-label">Max DADU</span><span class="popup-value">${maxDadu} SF</span></div>
-                    </div>
-                    <div class="popup-actions">
-                        <a href="property-report-card.html?apn=${stanpar}&address=${encodeURIComponent(eligData.Address || '')}" class="popup-btn popup-btn-primary">Full Report</a>
-                        <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${stanpar}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
-                    </div>`;
-
-                feature.properties.fillColor = fillColor;
-                feature.properties.popupContent = popupContent;
-                parcelLayer.addData(feature);
-            });
-
-            loadedBounds = bounds;
-        } catch (error) {
-            console.error('Viewport load error:', error);
-            await loadViewportMarkers();
-        } finally {
-            isLoading = false;
-        }
-    }
-
-    async function loadViewportMarkers() {
-        const bounds = map.getBounds();
-        try {
-            const data = await queryByBounds(bounds, {
-                outFields: 'STANPAR,Address,Zoning,Acres,Lot_SqFt,In_USD,Service_District,Eligibility_Status,Max_DADU_Living_SF,Lat,Lon',
-                resultRecordCount: 2000
-            });
-
-            if (data.features && data.features.length > 0) {
-                processFeatures(data.features);
-            }
-            loadedBounds = bounds;
-        } catch (error) {
-            console.error('Marker load error:', error);
-        } finally {
-            isLoading = false;
-        }
-    }
-
-    function processFeatures(features) {
-        features.forEach(feature => {
-            const props = feature.attributes || feature;
-            const lat = props.Lat, lon = props.Lon;
-            if (!lat || !lon || isNaN(lat) || isNaN(lon)) return;
-
-            let eligClass = 'not-eligible', color = COLORS.notEligible, targetLayer = notEligibleLayer;
-            const status = props.Eligibility_Status || '';
-
-            if (status === 'CHECK_SP_USD') { eligClass = 'eligible'; color = COLORS.eligible; targetLayer = eligibleLayer; }
-            else if (status === 'GSD_NEEDS_OVERLAY' || status === 'CHECK_SP_GSD') { eligClass = 'conditional'; color = COLORS.conditional; targetLayer = conditionalLayer; }
-
-            const marker = L.circleMarker([lat, lon], {
-                radius: 8, fillColor: color, color: '#fff', weight: 1, opacity: 1, fillOpacity: 0.85
-            });
-
-            const lotSf = props.Lot_SqFt || (props.Acres ? Math.round(props.Acres * 43560) : 0);
-            const maxDadu = props.Max_DADU_Living_SF || (lotSf >= 10000 ? 850 : 700);
-            const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
-
-            const popupContent = `
-                <div class="popup-header ${eligClass}">
-                    <div class="popup-status">${eligLabel}</div>
-                    <div class="popup-address">${props.Address || 'No Address'}</div>
-                </div>
-                <div class="popup-content">
-                    <div class="popup-row"><span class="popup-label">APN</span><span class="popup-value">${props.STANPAR || 'N/A'}</span></div>
-                    <div class="popup-row"><span class="popup-label">Zoning</span><span class="popup-value">${props.Zoning || 'N/A'}</span></div>
-                    <div class="popup-row"><span class="popup-label">Lot Size</span><span class="popup-value">${lotSf ? lotSf.toLocaleString() : 'N/A'} SF</span></div>
-                    <div class="popup-row"><span class="popup-label">Max DADU</span><span class="popup-value">${maxDadu} SF</span></div>
-                </div>
-                <div class="popup-actions">
-                    <a href="property-report-card.html?apn=${props.STANPAR}&address=${encodeURIComponent(props.Address || '')}" class="popup-btn popup-btn-primary">Full Report</a>
-                    <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${props.STANPAR}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a>
-                </div>`;
-
-            marker.bindPopup(popupContent, { maxWidth: 320 });
-            targetLayer.addLayer(marker);
-        });
-    }
-
-    // ========== INIT ==========
+    // Hero search form
     document.addEventListener('DOMContentLoaded', function() {
-        initMap();
-
-        // Hero search form
-        const heroSearch = document.getElementById('hero-search-form');
+        var heroSearch = document.getElementById('hero-search-form');
         if (heroSearch) {
             heroSearch.addEventListener('submit', function(e) {
-                const input = heroSearch.querySelector('input');
+                var input = heroSearch.querySelector('input');
                 if (!input.value.trim()) {
                     e.preventDefault();
                     input.focus();
                 }
-            });
-        }
-
-        // Explore map button — smooth scroll
-        const exploreBtn = document.getElementById('explore-map-btn');
-        if (exploreBtn) {
-            exploreBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('map-section').scrollIntoView({ behavior: 'smooth' });
             });
         }
     });
