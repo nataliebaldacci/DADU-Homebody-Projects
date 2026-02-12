@@ -2422,12 +2422,35 @@
             footprintLayers = [];
 
             const apn = currentProperty.APN || currentProperty.STANPAR || currentProperty.apn;
+            let footprints = [];
 
-            // Try local footprints first (indexed by APN, has richest data)
-            let footprints = apn ? (FOOTPRINTS_INDEX[apn] || []) : [];
+            // Strategy 1: Query Vanderbilt FeatureServer by APN (most reliable, 444K features)
+            if (apn) {
+                try {
+                    const url = `${CONFIG.apis.buildings}/query?` + new URLSearchParams({
+                        f: 'geojson',
+                        where: `APN='${apn}'`,
+                        outFields: '*',
+                        returnGeometry: true,
+                        outSR: 4326
+                    });
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    if (data.features?.length) {
+                        footprints = data.features;
+                    }
+                } catch (err) {
+                    console.log('APN footprint query failed, trying fallbacks:', err.message);
+                }
+            }
 
-            // Fallback: query Vanderbilt FeatureServer (CORS-friendly)
-            if (footprints.length === 0) {
+            // Strategy 2: Try local GeoJSON cache (indexed by APN)
+            if (footprints.length === 0 && apn) {
+                footprints = FOOTPRINTS_INDEX[apn] || [];
+            }
+
+            // Strategy 3: Spatial query as last resort
+            if (footprints.length === 0 && geometry) {
                 try {
                     const coords = geometry.coordinates[0];
                     let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
@@ -2449,7 +2472,7 @@
                         footprints = data.features;
                     }
                 } catch (err) {
-                    console.error('Footprint query failed:', err);
+                    console.error('Spatial footprint query failed:', err);
                 }
             }
 
