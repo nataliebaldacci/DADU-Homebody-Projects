@@ -532,7 +532,20 @@
         let allProperties = [];
         let markers = L.layerGroup().addTo(map);
         let selectedProperty = null;
-        
+        let masterParcelData = {};
+
+        // Load master parcel data in parallel
+        async function loadMasterData() {
+            try {
+                const resp = await fetch('data/master_parcel_data.json');
+                const data = await resp.json();
+                masterParcelData = data.parcels || {};
+                console.log(`Loaded master parcel data: ${Object.keys(masterParcelData).length} parcels`);
+            } catch (e) {
+                console.warn('Master parcel data not available:', e.message);
+            }
+        }
+
         // Load data from GitHub
         async function loadData() {
             const loadingProgress = document.getElementById('loadingProgress');
@@ -630,8 +643,23 @@
             updateSidebar(filtered);
         }
         
-        // Show popup for property
+        // Show popup for property — enhanced with master data
         function showPopup(property, marker) {
+            const master = masterParcelData[property.apn];
+            let structureHtml = '';
+            if (master && master.structures) {
+                const s = master.structures;
+                if (s.card1) structureHtml += `<div style="font-size:11px;color:#555;">Primary: ${s.card1.type || '?'} ${s.card1.area ? '(' + s.card1.area + ' SF)' : ''}</div>`;
+                if (s.card2) structureHtml += `<div style="font-size:11px;color:#C58B2A;font-weight:600;">Secondary: ${s.card2.type || '?'} ${s.card2.area ? '(' + s.card2.area + ' SF)' : ''}</div>`;
+            }
+            let daduPermitHtml = '';
+            if (master && master.permits) {
+                const daduPermits = master.permits.filter(p => p.source === 'confirmed_dadu');
+                if (daduPermits.length > 0) {
+                    daduPermitHtml = `<div style="font-size:11px;color:#27ae60;font-weight:600;margin-top:4px;">DADU Permit: #${daduPermits[0].number} (${daduPermits[0].status || '?'})</div>`;
+                }
+            }
+
             const content = `
                 <div class="popup-address">${property.address}</div>
                 <div class="popup-apn">APN: ${property.apn} | PID: ${property.pid}</div>
@@ -645,16 +673,22 @@
                         <div class="popup-stat-label">Total Value</div>
                     </div>
                 </div>
-                <div style="font-size:12px;color:#666;margin-bottom:8px;">
-                    <strong>Zoning:</strong> ${property.zoning || 'N/A'} &nbsp;|&nbsp; 
+                ${structureHtml}
+                ${daduPermitHtml}
+                <div style="font-size:12px;color:#666;margin:8px 0;">
+                    <strong>Zoning:</strong> ${property.zoning || 'N/A'} &nbsp;|&nbsp;
                     <strong>District:</strong> ${property.district || 'N/A'}
                 </div>
                 <div class="popup-link" onclick="openLinksModal('${property.apn}', ${property.pid}, '${property.address.replace(/'/g, "\\'")}', ${property.lat}, ${property.lon})">
                     See All Nashville Links →
                 </div>
+                <a href="property-report-card.html?apn=${property.apn}&address=${encodeURIComponent(property.address)}"
+                   style="display:block;text-align:center;padding:6px;background:#3A5566;color:white;text-decoration:none;border-radius:5px;font-size:12px;margin-top:6px;">
+                    Full Property Report →
+                </a>
             `;
-            
-            marker.bindPopup(content).openPopup();
+
+            marker.bindPopup(content, {maxWidth: 320}).openPopup();
             selectedProperty = property;
         }
         
@@ -692,6 +726,7 @@
                     <div class="property-actions">
                         <button class="action-btn" title="Zoom to" onclick="event.stopPropagation(); map.flyTo([${p.lat}, ${p.lon}], 18)">🔍</button>
                         <button class="action-btn" title="Links" onclick="event.stopPropagation(); openLinksModal('${p.apn}', ${p.pid}, '${p.address.replace(/'/g, "\\'")}', ${p.lat}, ${p.lon})">🔗</button>
+                        <button class="action-btn" title="Property Report" onclick="event.stopPropagation(); window.open('property-report-card.html?apn=${p.apn}', '_blank')">📄</button>
                     </div>
                 </div>
             `).join('');
@@ -797,18 +832,112 @@
             `).join('');
         }
         
-        // Open links modal with REAL Nashville links
+        // Open links modal with REAL Nashville links + master data
         function openLinksModal(apn, pid, address, lat, lon) {
             const modal = document.getElementById('linksModal');
             document.getElementById('modalTitle').textContent = address;
             document.getElementById('modalSubtitle').textContent = `APN: ${apn}  |  PID: ${pid}`;
-            
+
             const links = buildLinks(apn, pid, lat, lon);
-            
+            const master = masterParcelData[apn];
+
+            // Add Property Report Card link to property links
+            links.property.unshift({
+                icon: '📊',
+                iconClass: 'orange',
+                title: 'Property Report Card',
+                desc: 'Full Castlehold report',
+                url: `property-report-card.html?apn=${apn}&address=${encodeURIComponent(address)}`
+            });
+
+            // If master data has account number, add direct property card link
+            if (master && master.accountNumber) {
+                links.property.push({
+                    icon: '🏠',
+                    iconClass: 'purple',
+                    title: 'Property Card PDF',
+                    desc: `Account #${master.accountNumber}`,
+                    url: `https://portal.padctn.org/OFS/WP/Print/${master.accountNumber}`
+                });
+            }
+
             document.getElementById('permitLinks').innerHTML = renderLinks(links.permit);
             document.getElementById('propertyLinks').innerHTML = renderLinks(links.property);
             document.getElementById('historyLinks').innerHTML = renderLinks(links.history);
-            
+
+            // Add master data section if available
+            const masterSection = document.getElementById('masterDataSection');
+            if (masterSection) masterSection.remove();
+
+            if (master) {
+                let masterHtml = '<div id="masterDataSection">';
+
+                // Structures
+                if (master.structures) {
+                    masterHtml += '<div class="links-section"><div class="links-section-title">🏗️ Building Structures</div><div style="padding:0 4px;">';
+                    const s = master.structures;
+                    if (s.card1) masterHtml += `<div style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;"><strong>Primary:</strong> ${s.card1.type || '?'} | ${s.card1.area ? s.card1.area.toLocaleString() + ' SF' : '?'} | ${s.card1.yearBuilt ? 'Built ' + s.card1.yearBuilt : ''}</div>`;
+                    if (s.card2) {
+                        masterHtml += `<div style="padding:8px 0;font-size:13px;"><strong style="color:#C58B2A;">Secondary:</strong> ${s.card2.type || '?'} | ${s.card2.area ? s.card2.area.toLocaleString() + ' SF' : '?'} | ${s.card2.yearBuilt ? 'Built ' + s.card2.yearBuilt : ''}`;
+                        if (master.card2_images) {
+                            if (master.card2_images.photo) masterHtml += ` <a href="${master.card2_images.photo}" target="_blank" style="color:#C58B2A;font-weight:600;font-size:11px;">[Photo]</a>`;
+                            if (master.card2_images.sketch) masterHtml += ` <a href="${master.card2_images.sketch}" target="_blank" style="color:#3A5566;font-weight:600;font-size:11px;">[Sketch]</a>`;
+                        }
+                        masterHtml += '</div>';
+                    }
+                    masterHtml += '</div></div>';
+                }
+
+                // DADU Permits
+                if (master.permits && master.permits.length > 0) {
+                    const daduPermits = master.permits.filter(p => p.source === 'confirmed_dadu');
+                    if (daduPermits.length > 0) {
+                        masterHtml += '<div class="links-section"><div class="links-section-title">🔨 DADU Permits</div><div style="padding:0 4px;">';
+                        daduPermits.forEach(p => {
+                            masterHtml += `<div style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;">
+                                <strong>#${p.number}</strong> | ${p.status || '?'} | ${p.sqft ? p.sqft + ' SF' : ''} ${p.value ? '| $' + Number(p.value).toLocaleString() : ''}
+                                ${p.contact ? '<div style="font-size:11px;color:#666;">Contractor: ' + p.contact + '</div>' : ''}
+                                <a href="${p.epermitsUrl || '#'}" target="_blank" style="color:#C58B2A;font-size:11px;font-weight:600;">View Docs ↗</a>
+                            </div>`;
+                        });
+                        masterHtml += '</div></div>';
+                    }
+                }
+
+                // Trade Permits
+                if (master.tradePermits && master.tradePermits.length > 0) {
+                    masterHtml += '<div class="links-section"><div class="links-section-title">⚡ Trade Permits</div><div style="padding:0 4px;">';
+                    master.tradePermits.slice(0, 10).forEach(t => {
+                        masterHtml += `<div style="padding:6px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">${t.type || 'Trade'} | #${t.number || '?'} | ${t.status || '?'} ${t.issuedDate ? '| ' + t.issuedDate : ''}</div>`;
+                    });
+                    if (master.tradePermits.length > 10) masterHtml += `<div style="font-size:11px;color:#888;padding:6px 0;">+ ${master.tradePermits.length - 10} more</div>`;
+                    masterHtml += '</div></div>';
+                }
+
+                // Documents
+                if (master.documents) {
+                    const docTypes = ['property_cards', 'covenants', 'permits'];
+                    const docLabels = { property_cards: 'Property Card', covenants: 'Covenant', permits: 'Permit PDF' };
+                    let docHtml = '';
+                    docTypes.forEach(dt => {
+                        if (master.documents[dt]) {
+                            master.documents[dt].forEach(d => {
+                                docHtml += `<a href="${d.gdrive_url || '#'}" target="_blank" class="link-card" style="padding:10px;">
+                                    <div class="link-icon" style="width:32px;height:32px;font-size:16px;">${dt === 'covenants' ? '📜' : dt === 'permits' ? '📋' : '🏠'}</div>
+                                    <div class="link-info"><h4 style="font-size:12px;">${docLabels[dt]}</h4><p style="font-size:10px;">${d.filename || ''}</p></div>
+                                </a>`;
+                            });
+                        }
+                    });
+                    if (docHtml) {
+                        masterHtml += `<div class="links-section"><div class="links-section-title">📄 Documents on Google Drive</div><div class="links-grid">${docHtml}</div></div>`;
+                    }
+                }
+
+                masterHtml += '</div>';
+                document.querySelector('.modal-body').insertAdjacentHTML('beforeend', masterHtml);
+            }
+
             modal.classList.add('active');
         }
         
@@ -863,6 +992,7 @@
         
         // Load data on page load
         loadData();
+        loadMasterData();
     </script>
     <script src="homebody_header.js"></script>
 </body>

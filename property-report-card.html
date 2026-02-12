@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Report Card | Homebody - Nashville DADU Platform</title>
+    <title>Property Report Card | Castlehold</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -984,6 +984,45 @@
                         </div>
                     </section>
 
+                    <!-- Building Structures (from Assessor Card 2) -->
+                    <section class="report-section" id="structures-section">
+                        <div class="report-section-header">
+                            <img src="assets/icons/Building and Construction.png" alt="">
+                            <h3>Building Structures</h3>
+                        </div>
+                        <div class="report-section-body">
+                            <ul class="documents-list" id="structures-list">
+                                <li class="document-item">
+                                    <div class="document-icon">🏗️</div>
+                                    <div class="document-info">
+                                        <div class="document-title">Search for a property to see structures</div>
+                                        <div class="document-meta">Primary and secondary structures from assessor records</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Trade Permits (Electrical, Mechanical, Plumbing) -->
+                    <section class="report-section" id="trade-permits-section">
+                        <div class="report-section-header">
+                            <img src="assets/icons/Building and Construction.png" alt="">
+                            <h3>Trade Permits</h3>
+                            <span id="trade-permit-count" style="margin-left: auto; font-size: 12px; color: var(--text-light);"></span>
+                        </div>
+                        <div class="report-section-body">
+                            <ul class="documents-list" id="trade-permits-list">
+                                <li class="document-item">
+                                    <div class="document-icon">⚡</div>
+                                    <div class="document-info">
+                                        <div class="document-title">Search for a property to see trade permits</div>
+                                        <div class="document-meta">Electrical, mechanical, and plumbing permits</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+
                     <!-- Governing Legislation -->
                     <section class="report-section" id="legislation-section">
                         <div class="report-section-header">
@@ -1147,11 +1186,13 @@
         let ordinanceIndex = {};
         let udoDaduIndex = {};
         let aduPermitsIndex = {};
+        let masterParcelData = {};
         let dataLoaded = false;
         let docsLoaded = false;
         let ordinancesLoaded = false;
         let udoIndexLoaded = false;
         let aduPermitsLoaded = false;
+        let masterLoaded = false;
 
         // Search form handling
         const searchForm = document.getElementById('search-form');
@@ -1220,13 +1261,131 @@
             }
         }
 
-        // Display ADU permits for an APN
+        // Load master parcel data (structures, permits, trade permits, Card2 images)
+        async function loadMasterParcelData() {
+            if (masterLoaded) return;
+            try {
+                const response = await fetch('data/master_parcel_data.json');
+                const data = await response.json();
+                masterParcelData = data.parcels || {};
+                masterLoaded = true;
+                console.log(`Loaded master parcel data: ${Object.keys(masterParcelData).length} parcels`);
+            } catch (error) {
+                console.error('Error loading master parcel data:', error);
+            }
+        }
+
+        // Display structures from master data
+        function displayStructures(apn) {
+            const section = document.getElementById('structures-section');
+            const list = document.getElementById('structures-list');
+            if (!section || !list) return;
+
+            const parcel = masterParcelData[apn];
+            if (!parcel || !parcel.structures) {
+                list.innerHTML = '<li class="document-item"><div class="document-icon">🏗️</div><div class="document-info"><div class="document-title">No structure data available</div><div class="document-meta">Structure details not found in assessor records</div></div></li>';
+                return;
+            }
+
+            let html = '';
+            const s = parcel.structures;
+
+            if (s.card1) {
+                html += `
+                    <li class="document-item">
+                        <div class="document-icon">🏠</div>
+                        <div class="document-info">
+                            <div class="document-title">Primary: ${s.card1.type || 'Unknown'}</div>
+                            <div class="document-meta">${s.card1.area ? s.card1.area.toLocaleString() + ' SF' : ''} ${s.card1.exterior ? '| ' + s.card1.exterior : ''} ${s.card1.yearBuilt ? '| Built ' + s.card1.yearBuilt : ''}</div>
+                        </div>
+                    </li>`;
+            }
+
+            if (s.card2) {
+                const card2Images = parcel.card2_images || {};
+                let buttons = '';
+                if (card2Images.photo) {
+                    buttons += `<a href="${card2Images.photo}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Photo ↗</a>`;
+                }
+                if (card2Images.sketch) {
+                    buttons += `<a href="${card2Images.sketch}" target="_blank" style="padding: 5px 10px; background: var(--terracotta); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Sketch ↗</a>`;
+                }
+
+                html += `
+                    <li class="document-item">
+                        <div class="document-icon" style="background: #fef5e8;">🏚️</div>
+                        <div class="document-info">
+                            <div class="document-title">Secondary: ${s.card2.type || 'Unknown'}</div>
+                            <div class="document-meta">${s.card2.area ? s.card2.area.toLocaleString() + ' SF' : ''} ${s.card2.exterior ? '| ' + s.card2.exterior : ''} ${s.card2.yearBuilt ? '| Built ' + s.card2.yearBuilt : ''}</div>
+                        </div>
+                        ${buttons ? '<div style="display: flex; gap: 4px; margin-left: auto;">' + buttons + '</div>' : ''}
+                    </li>`;
+            }
+
+            if (!html) {
+                html = '<li class="document-item"><div class="document-icon">🏗️</div><div class="document-info"><div class="document-title">No structure data</div></div></li>';
+            }
+
+            list.innerHTML = html;
+        }
+
+        // Display trade permits from master data
+        function displayTradePermits(apn) {
+            const list = document.getElementById('trade-permits-list');
+            const countEl = document.getElementById('trade-permit-count');
+            if (!list) return;
+
+            const parcel = masterParcelData[apn];
+            if (!parcel || !parcel.tradePermits || parcel.tradePermits.length === 0) {
+                list.innerHTML = '<li class="document-item"><div class="document-icon">⚡</div><div class="document-info"><div class="document-title">No trade permits found</div><div class="document-meta">No electrical, mechanical, or plumbing permits on file</div></div></li>';
+                if (countEl) countEl.textContent = '0 trades';
+                return;
+            }
+
+            const trades = parcel.tradePermits;
+            if (countEl) countEl.textContent = `${trades.length} trade${trades.length !== 1 ? 's' : ''}`;
+
+            list.innerHTML = trades.map(t => {
+                const statusColor = t.status === 'Done' ? 'var(--eligible)' : t.status === 'Expired' ? 'var(--not-eligible)' : 'var(--conditional)';
+                return `
+                    <li class="document-item">
+                        <div class="document-icon">⚡</div>
+                        <div class="document-info">
+                            <div class="document-title">${t.type || 'Trade Permit'}</div>
+                            <div class="document-meta">#${t.number || '?'} | ${t.issuedDate || ''} | <span style="color: ${statusColor}; font-weight: 600;">${t.status || 'Unknown'}</span></div>
+                        </div>
+                    </li>`;
+            }).join('');
+        }
+
+        // Display ADU permits for an APN — enhanced with master data
         function displayAduPermits(apn) {
             const permitsList = document.getElementById('adu-permits-list');
             const permitCount = document.getElementById('adu-permit-count');
             if (!permitsList) return;
 
-            const permits = aduPermitsIndex[apn];
+            // Try slim index first, then fall back to master data
+            let permits = aduPermitsIndex[apn];
+            let useMaster = false;
+
+            if ((!permits || permits.length === 0) && masterParcelData[apn]) {
+                // Use master parcel data permits
+                const masterPermits = masterParcelData[apn].permits || [];
+                if (masterPermits.length > 0) {
+                    permits = masterPermits.map(p => ({
+                        permit: p.number,
+                        date: p.dateIssued || p.dateAccepted || '',
+                        sqft: p.sqft,
+                        status: (p.status || '').toLowerCase(),
+                        value: p.value,
+                        scope: p.scope || p.purpose || '',
+                        contractor: p.contact || p.contractor || '',
+                        docs_url: p.epermitsUrl || `https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=${p.number}`
+                    }));
+                    useMaster = true;
+                }
+            }
+
             if (!permits || permits.length === 0) {
                 permitsList.innerHTML = `
                     <li class="document-item">
@@ -1236,22 +1395,26 @@
                             <div class="document-meta">No known ADU building permits on file for this parcel</div>
                         </div>
                     </li>`;
-                permitCount.textContent = '0 permits';
+                if (permitCount) permitCount.textContent = '0 permits';
                 return;
             }
 
             let html = '';
             permits.forEach(p => {
-                const statusColor = p.status === 'done' ? 'var(--olive)' : p.status === 'issued' ? 'var(--teal)' : p.status === 'expired' ? 'var(--terracotta)' : 'var(--text-light)';
+                const status = (p.status || '').toLowerCase();
+                const statusColor = status === 'done' ? 'var(--eligible)' : status === 'issued' ? 'var(--teal)' : status === 'expired' ? 'var(--not-eligible)' : 'var(--text-light)';
                 const statusLabel = p.status ? p.status.charAt(0).toUpperCase() + p.status.slice(1) : 'Unknown';
                 const sqftText = p.sqft ? ` | ${p.sqft} SF` : '';
+                const valueText = p.value ? ` | $${Number(p.value).toLocaleString()}` : '';
+                const contractorText = p.contractor ? `<div style="font-size: 11px; color: var(--text-light); margin-top: 2px;">Contractor: ${p.contractor}</div>` : '';
 
                 html += `
                     <li class="document-item">
                         <div class="document-icon">🔨</div>
                         <div class="document-info">
                             <div class="document-title">Permit #${p.permit}</div>
-                            <div class="document-meta">${p.date || 'Date unknown'}${sqftText} | <span style="color: ${statusColor}; font-weight: 600;">${statusLabel}</span></div>
+                            <div class="document-meta">${p.date || 'Date unknown'}${sqftText}${valueText} | <span style="color: ${statusColor}; font-weight: 600;">${statusLabel}</span></div>
+                            ${contractorText}
                         </div>
                         <div style="display: flex; gap: 4px; margin-left: auto;">
                             <a href="${p.docs_url}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none;">View Docs ↗</a>
@@ -1260,7 +1423,7 @@
             });
 
             permitsList.innerHTML = html;
-            permitCount.textContent = `${permits.length} permit${permits.length !== 1 ? 's' : ''}`;
+            if (permitCount) permitCount.textContent = `${permits.length} permit${permits.length !== 1 ? 's' : ''}`;
         }
 
         // Fetch parcel overlays from Nashville API
@@ -1408,10 +1571,15 @@
             }
         }
 
-        // Display documents for an APN (using Google Drive direct links)
+        // Display documents for an APN (using Google Drive direct links + master data)
         function displayDocuments(apn) {
             const docsList = document.getElementById('documents-list');
             const docCount = document.getElementById('doc-count');
+
+            // Merge: prefer documentsIndex, fall back to master data documents
+            if (!documentsIndex[apn] && masterParcelData[apn] && masterParcelData[apn].documents) {
+                documentsIndex[apn] = masterParcelData[apn].documents;
+            }
 
             if (!apn || !documentsIndex[apn]) {
                 docsList.innerHTML = `
@@ -1546,13 +1714,14 @@
 
         // Initialize page
         async function initPage() {
-            // Load eligibility data, documents index, ordinance index, and UDO DADU index in parallel
+            // Load all data indexes in parallel
             await Promise.all([
                 loadEligibilityData(),
                 loadDocumentsIndex(),
                 loadOrdinanceIndex(),
                 loadUdoDaduIndex(),
-                loadAduPermitsIndex()
+                loadAduPermitsIndex(),
+                loadMasterParcelData()
             ]);
 
             if (apnParam) {
@@ -1561,20 +1730,27 @@
                     showReport(property.properties.d || apnParam, property);
                     displayDocuments(apnParam);
                     displayAduPermits(apnParam);
+                    displayStructures(apnParam);
+                    displayTradePermits(apnParam);
                     displayLegislation(apnParam, property.properties.e, property.properties.z);
                 } else {
                     showReport(addressParam || apnParam);
                     displayDocuments(apnParam);
                     displayAduPermits(apnParam);
+                    displayStructures(apnParam);
+                    displayTradePermits(apnParam);
                     displayLegislation(apnParam, null, null);
                 }
             } else if (addressParam) {
                 const property = findProperty(addressParam, 'address');
                 showReport(addressParam, property);
                 if (property && property.properties.a) {
-                    displayDocuments(property.properties.a.toString());
-                    displayAduPermits(property.properties.a.toString());
-                    displayLegislation(property.properties.a.toString(), property.properties.e, property.properties.z);
+                    const a = property.properties.a.toString();
+                    displayDocuments(a);
+                    displayAduPermits(a);
+                    displayStructures(a);
+                    displayTradePermits(a);
+                    displayLegislation(a, property.properties.e, property.properties.z);
                 }
             }
         }
@@ -1583,7 +1759,7 @@
             e.preventDefault();
             const address = addressInput.value.trim();
             if (address) {
-                await Promise.all([loadEligibilityData(), loadDocumentsIndex(), loadOrdinanceIndex(), loadUdoDaduIndex(), loadAduPermitsIndex()]);
+                await Promise.all([loadEligibilityData(), loadDocumentsIndex(), loadOrdinanceIndex(), loadUdoDaduIndex(), loadAduPermitsIndex(), loadMasterParcelData()]);
                 const property = findProperty(address, 'address');
                 showReport(address, property);
                 // Update URL and display documents/legislation/permits
@@ -1591,9 +1767,12 @@
                 const eligCode = property?.properties?.e;
                 const zoning = property?.properties?.z;
                 if (apn) {
-                    displayDocuments(apn.toString());
-                    displayAduPermits(apn.toString());
-                    displayLegislation(apn.toString(), eligCode, zoning);
+                    const apnStr = apn.toString();
+                    displayDocuments(apnStr);
+                    displayAduPermits(apnStr);
+                    displayStructures(apnStr);
+                    displayTradePermits(apnStr);
+                    displayLegislation(apnStr, eligCode, zoning);
                 }
                 const params = new URLSearchParams();
                 if (apn) params.set('apn', apn);
@@ -1621,22 +1800,36 @@
             document.getElementById('property-image-placeholder').innerHTML = '<span>🏠</span>No property card image available';
         }
 
-        // Fetch ACCOUNTNUMBER from Nashville SOAP API for Property Card URL
+        // Get ACCOUNTNUMBER — uses master data first, falls back to SOAP API
         async function fetchAccountNumber(apn) {
             const cardLink = document.getElementById('link-property-card');
+
+            // Try master parcel data first (no CORS issues)
+            const parcel = masterParcelData[apn];
+            if (parcel && parcel.accountNumber) {
+                cardLink.href = `https://portal.padctn.org/OFS/WP/Print/${parcel.accountNumber}`;
+                return;
+            }
+
+            // Try master data URLs
+            if (parcel && parcel.urls && parcel.urls.propertyCardPdf) {
+                cardLink.href = parcel.urls.propertyCardPdf;
+                return;
+            }
+
+            // Fallback: Nashville SOAP API (CORS blocked from GitHub Pages)
             try {
                 const resp = await fetch(`https://maps.nashville.gov/ParcelService/Search.asmx/GetAssesorAccount?apn=${apn}`);
                 const xml = await resp.text();
                 const match = xml.match(/<accountnumber>(\d+)<\/accountnumber>/);
                 if (match) {
                     cardLink.href = `https://portal.padctn.org/OFS/WP/Print/${match[1]}`;
-                } else {
-                    // Fallback: search Google Drive property cards by APN
-                    cardLink.href = `${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(apn)}`;
+                    return;
                 }
-            } catch (e) {
-                cardLink.href = `${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(apn)}`;
-            }
+            } catch (e) { /* CORS blocked, expected on GitHub Pages */ }
+
+            // Final fallback: search Google Drive
+            cardLink.href = `${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(apn)}`;
         }
 
         function updateReportData(property) {
@@ -1686,20 +1879,27 @@
                 districtEl.className = 'data-item-value';
             }
 
-            // Update external links — parcel-based (using APN/STANPAR)
+            // Update external links — use master data for correct IDs
             if (apn) {
-                // ParcelViewer: ?parcelID={STANPAR}
-                document.getElementById('link-parcelviewer').href = `https://maps.nashville.gov/ParcelViewer/?parcelID=${apn}`;
-                // ePermits: search by APN for all permits on this parcel
+                const parcel = masterParcelData[apn];
+                const parcelId = (parcel && parcel.parcelId) ? parcel.parcelId : apn;
+
+                // ParcelViewer uses ParcelID (e.g., 166752), not APN
+                document.getElementById('link-parcelviewer').href = (parcel && parcel.urls && parcel.urls.parcelViewer) || `https://maps.nashville.gov/ParcelViewer/?parcelID=${parcelId}`;
+                // ePermits: search by APN
                 document.getElementById('link-epermits').href = `https://epermits.nashville.gov/#/search?searchCode=APN&page=1&searchText=${apn}&searchType=permit`;
-                // Comparable Map / Property Assessor: ?propertyID={ParcelID}
-                document.getElementById('link-assessor').href = `https://davidson-tn-citizen.comper.info/template.aspx?propertyID=${apn}`;
-                // Permit Documents: search by parcel number (shows all permits for parcel)
-                document.getElementById('link-documents').href = `https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${apn}`;
+                // Property Assessor
+                document.getElementById('link-assessor').href = (parcel && parcel.urls && parcel.urls.assessor) || `https://davidson-tn-citizen.comper.info/template.aspx?propertyID=${apn}`;
+                // Permit Documents
+                document.getElementById('link-documents').href = (parcel && parcel.urls && parcel.urls.parcelDocs) || `https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${apn}`;
                 // Parcel Report
-                document.getElementById('link-parcel-report').href = `https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin=${apn}`;
-                // Property Card: fetch ACCOUNTNUMBER from Nashville SOAP API, then build portal URL
+                document.getElementById('link-parcel-report').href = `https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin=${parcelId}`;
+                // Property Card: uses ACCOUNTNUMBER from master data
                 fetchAccountNumber(apn);
+
+                // Display structures and trade permits from master data
+                displayStructures(apn);
+                displayTradePermits(apn);
             }
 
             // Update map links if coordinates available
