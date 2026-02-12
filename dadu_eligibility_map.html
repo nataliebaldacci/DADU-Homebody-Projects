@@ -198,15 +198,15 @@
  }
 
  .legend-color.eligible {
- background: var(--eligible-green);
+ background: #2E6F4E;
  }
 
  .legend-color.not-eligible {
- background: var(--not-eligible-red);
+ background: #8B8B8B;
  }
 
  .legend-color.conditional {
- background: var(--conditional-yellow);
+ background: #D4A017;
  }
 
  .legend-label {
@@ -267,15 +267,15 @@
  }
 
  .stat-value.eligible {
- color: var(--eligible-green);
+ color: #2E6F4E;
  }
 
  .stat-value.not-eligible {
- color: var(--not-eligible-red);
+ color: #8B8B8B;
  }
 
  .stat-value.conditional {
- color: var(--conditional-yellow);
+ color: #D4A017;
  }
 
  /* Filter Panel */
@@ -361,17 +361,17 @@
  }
 
  .popup-header.eligible {
- background: var(--eligible-green);
+ background: #2E6F4E;
  color: white;
  }
 
  .popup-header.not-eligible {
- background: var(--not-eligible-red);
+ background: #8B8B8B;
  color: white;
  }
 
  .popup-header.conditional {
- background: var(--conditional-yellow);
+ background: #D4A017;
  color: white;
  }
 
@@ -581,13 +581,13 @@
  <label class="filter-label">Show Parcels</label>
  <label class="filter-checkbox">
  <input type="checkbox" id="show-eligible" checked onchange="updateFilters()">
- <span style="color: var(--eligible-green); font-weight: 600;">Eligible (By Right)</span></label>
+ <span style="color: #2E6F4E; font-weight: 600;">Eligible (By Right)</span></label>
  <label class="filter-checkbox">
  <input type="checkbox" id="show-conditional" checked onchange="updateFilters()">
- <span style="color: var(--conditional-yellow); font-weight: 600;">Conditional (Overlay Req.)</span></label>
+ <span style="color: #D4A017; font-weight: 600;">Conditional (Overlay Req.)</span></label>
  <label class="filter-checkbox">
  <input type="checkbox" id="show-not-eligible" checked onchange="updateFilters()">
- <span style="color: var(--not-eligible-red); font-weight: 600;">Not Eligible</span></label></div>
+ <span style="color: #8B8B8B; font-weight: 600;">Not Eligible</span></label></div>
  <div class="filter-group">
  <label class="filter-label">Zoning District</label>
  <select class="filter-select" id="filter-zoning" onchange="updateFilters()">
@@ -697,6 +697,7 @@
 
  // ArcGIS Feature Service URLs - LIVE DATA
  const ARCGIS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0';
+ const PARCELS_SERVICE = 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_view/FeatureServer/0';
  const PERMITS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_Final/FeatureServer/0';
  const COVENANTS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Restrictive_Covenant_Links/FeatureServer/0';
 
@@ -928,6 +929,9 @@
  if (zoom < 13) {
  msg.textContent = 'Zoom in to see parcel markers';
  msg.classList.add('visible');
+ } else if (zoom >= 13 && zoom < 15) {
+ msg.textContent = 'Zoom in more to see parcel boundaries';
+ msg.classList.add('visible');
  } else {
  msg.classList.remove('visible');
  }
@@ -991,14 +995,133 @@
  }
  }
 
- // Load data for current viewport using circle markers
+ // Load data for current viewport — polygons at high zoom, markers at lower zoom
  async function loadViewportData() {
  if (isLoading) return;
 
  const zoom = map.getZoom();
  if (zoom < 13) return;
 
+ if (zoom >= 15) {
+ await loadParcelPolygons();
+ } else {
+ parcelLayer.clearLayers();
  await loadViewportMarkers();
+ }
+ }
+
+ // Load parcel polygons from Vanderbilt Parcels_view (CORS-friendly)
+ async function loadParcelPolygons() {
+ const bounds = map.getBounds();
+ if (loadedBounds && loadedBounds.contains(bounds)) return;
+
+ isLoading = true;
+
+ try {
+ // Query parcel polygons by viewport envelope
+ const geometry = JSON.stringify({
+ xmin: bounds.getWest(), ymin: bounds.getSouth(),
+ xmax: bounds.getEast(), ymax: bounds.getNorth(),
+ spatialReference: { wkid: 4326 }
+ });
+
+ const params = new URLSearchParams({
+ where: '1=1',
+ geometry: geometry,
+ geometryType: 'esriGeometryEnvelope',
+ spatialRel: 'esriSpatialRelIntersects',
+ inSR: 4326,
+ outFields: 'STANPAR',
+ returnGeometry: true,
+ outSR: 4326,
+ f: 'geojson',
+ resultRecordCount: 500
+ });
+
+ const url = `${PARCELS_SERVICE}/query?${params.toString()}`;
+ const response = await fetch(url);
+ if (!response.ok) throw new Error('Parcels query failed');
+ const parcelsData = await response.json();
+
+ if (!parcelsData.features || parcelsData.features.length === 0) {
+ await loadViewportMarkers();
+ return;
+ }
+
+ // Get STANPARs and query eligibility status
+ const stanpars = parcelsData.features.map(f => f.properties.STANPAR).filter(s => s);
+ const eligMap = {};
+
+ // Query in batches of 50
+ for (let i = 0; i < stanpars.length; i += 50) {
+ const batch = stanpars.slice(i, i + 50);
+ const where = batch.map(s => `STANPAR = '${s}'`).join(' OR ');
+ const eligData = await queryArcGIS({
+ where: where,
+ outFields: 'STANPAR,Address,Zoning,Eligibility_Status,Max_DADU_Living_SF,Lot_SqFt,Acres',
+ resultRecordCount: 50
+ });
+ if (eligData.features) {
+ eligData.features.forEach(f => {
+ const a = f.attributes || f;
+ eligMap[a.STANPAR] = a;
+ });
+ }
+ }
+
+ // Clear and render colored polygons
+ parcelLayer.clearLayers();
+
+ parcelsData.features.forEach(feature => {
+ const stanpar = feature.properties.STANPAR;
+ const elig = eligMap[stanpar];
+ if (!elig) return;
+
+ const status = elig.Eligibility_Status || '';
+ let eligClass = 'not-eligible';
+ let fillColor = COLORS.notEligible;
+
+ if (status === 'CHECK_SP_USD') {
+ eligClass = 'eligible';
+ fillColor = COLORS.eligible;
+ } else if (status === 'GSD_NEEDS_OVERLAY' || status === 'CHECK_SP_GSD') {
+ eligClass = 'conditional';
+ fillColor = COLORS.conditional;
+ }
+
+ if (eligClass === 'eligible' && !currentFilters.showEligible) return;
+ if (eligClass === 'conditional' && !currentFilters.showConditional) return;
+ if (eligClass === 'not-eligible' && !currentFilters.showNotEligible) return;
+
+ const lotSf = elig.Lot_SqFt || (elig.Acres ? Math.round(elig.Acres * 43560) : 0);
+ const maxDadu = elig.Max_DADU_Living_SF || (lotSf >= 10000 ? 850 : 700);
+ const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
+
+ feature.properties.fillColor = fillColor;
+ feature.properties.popupContent = `
+ <div class="popup-header ${eligClass}">
+ <div class="popup-status">${eligLabel}</div>
+ <div class="popup-address">${elig.Address || 'No Address'}</div></div>
+ <div class="popup-content">
+ <div class="popup-row"><span class="popup-label">APN</span><span class="popup-value">${stanpar}</span></div>
+ <div class="popup-row"><span class="popup-label">Zoning</span><span class="popup-value">${elig.Zoning || 'N/A'}</span></div>
+ <div class="popup-row"><span class="popup-label">Lot Size</span><span class="popup-value">${lotSf ? lotSf.toLocaleString() : 'N/A'} SF</span></div>
+ <div class="popup-row"><span class="popup-label">Max DADU</span><span class="popup-value">${maxDadu} SF Living</span></div></div>
+ <div class="popup-actions">
+ <a href="property-report-card.html?apn=${stanpar}&address=${encodeURIComponent(elig.Address || '')}" class="popup-btn popup-btn-primary">Full Report</a>
+ <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${stanpar}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a></div>`;
+
+ parcelLayer.addData(feature);
+ });
+
+ loadedBounds = bounds;
+
+ } catch (error) {
+ console.error('Parcel polygon load error:', error);
+ await loadViewportMarkers();
+ } finally {
+ isLoading = false;
+ }
  }
 
  // Fallback: Load circle markers (for lower zoom or when polygons fail)
