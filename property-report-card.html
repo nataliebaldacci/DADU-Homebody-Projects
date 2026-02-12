@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Report Card | Castlehold</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         :root {
             --navy: #3A5566;
@@ -262,13 +264,13 @@
             padding: 24px;
             margin-bottom: 24px;
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 380px 1fr;
             gap: 24px;
         }
 
         .property-image-container {
-            width: 280px;
-            height: 210px;
+            width: 380px;
+            height: 280px;
             border-radius: 12px;
             overflow: hidden;
             background: var(--card-bg);
@@ -278,11 +280,25 @@
             position: relative;
         }
 
-        .property-image-container img {
+        #report-map {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            border-radius: 12px;
+            z-index: 1;
         }
+
+        .building-label {
+            background: rgba(0,0,0,0.7) !important;
+            border: none !important;
+            color: white !important;
+            font-size: 10px !important;
+            font-weight: 600 !important;
+            padding: 2px 6px !important;
+            border-radius: 4px !important;
+            white-space: nowrap;
+            box-shadow: none !important;
+        }
+        .building-label::before { display: none !important; }
 
         .property-image-container .no-image {
             text-align: center;
@@ -301,6 +317,7 @@
             bottom: 10px;
             left: 10px;
             right: 10px;
+            z-index: 2;
             display: flex;
             gap: 8px;
         }
@@ -793,11 +810,11 @@
             <!-- Property Image Header - ATTOM Style -->
             <div class="property-image-header">
                 <div class="property-image-container" id="property-image-container">
+                    <div id="report-map"></div>
                     <div class="no-image" id="property-image-placeholder">
                         <span>🏠</span>
-                        Loading property image...
+                        Loading map...
                     </div>
-                    <img id="property-card-image" src="" alt="Property Photo" style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
                     <div class="property-image-links" id="property-image-links" style="display: none;">
                         <a href="#" class="property-image-link" id="link-streetview" target="_blank">Street View</a>
                         <a href="#" class="property-image-link" id="link-aerial" target="_blank">Aerial</a>
@@ -1745,7 +1762,7 @@
                     displayLegislation(apnParam, null, null);
                     // Set external links and images from master data
                     fetchAccountNumber(apnParam);
-                    loadPropertyImage(apnParam);
+                    loadPropertyMap(apnParam);
                     // Set map links from master data coordinates if available
                     if (masterP && masterP.cx && masterP.cy) {
                         // cx/cy are State Plane (EPSG:2274) — need WGS84 for Google Maps
@@ -1806,13 +1823,6 @@
             if (property) {
                 updateReportData(property);
             }
-        }
-
-        // Show image placeholder when image fails to load
-        function showImagePlaceholder() {
-            document.getElementById('property-card-image').style.display = 'none';
-            document.getElementById('property-image-placeholder').style.display = 'block';
-            document.getElementById('property-image-placeholder').innerHTML = '<span>🏠</span>No property card image available';
         }
 
         // Get ACCOUNTNUMBER — uses master data first, falls back to SOAP API
@@ -1917,138 +1927,142 @@
                 displayTradePermits(apn);
             }
 
-            // Update map links if coordinates available
-            if (coords) {
-                const lat = coords[1];
-                const lng = coords[0];
-                // Google Street View: ?cbll={lat},{lon}
-                document.getElementById('link-streetview').href = `https://www.google.com/maps?q&layer=c&cbll=${lat},${lng}`;
-                // Aerial view (Patriot Properties)
-                document.getElementById('link-aerial').href = `https://portal.patriotproperties.com/?APIKEY=5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F&LAT=${lat}&LONG=${lng}`;
-                document.getElementById('property-image-links').style.display = 'flex';
-            }
-
-            // Try to load property image (pass coords for Google Maps embed)
-            loadPropertyImage(apn, coords);
+            // Initialize map with parcel boundary + building footprints
+            loadPropertyMap(apn, coords);
 
             // Update eligibility checklist
             updateEligibilityChecklist(props);
         }
 
-        // Load property image — Google Maps satellite embed + assessor photo fallback
-        function loadPropertyImage(apn, coords) {
+        // ════════════════════════════════════════
+        // REPORT MAP — parcel boundary + building footprints
+        // ════════════════════════════════════════
+        let reportMap = null;
+
+        const MAP_APIS = {
+            parcels: 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_view/FeatureServer/0',
+            buildings: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Footprints_With_ParcelData_20260118_011423/FeatureServer/0'
+        };
+
+        function isAccessoryStructure(props) {
+            const rank = props.Footprint_Rank;
+            if (rank && rank > 1) return true;
+            const type = (props.Nash_BldgType || '').toLowerCase();
+            return type.includes('minor') || type.includes('accessory') || type.includes('shed') || type.includes('garage');
+        }
+
+        async function loadPropertyMap(apn, coords) {
             if (!apn) return;
 
-            const container = document.getElementById('property-image-container');
-            const imageEl = document.getElementById('property-card-image');
-            const placeholderEl = document.getElementById('property-image-placeholder');
-            const parcel = masterParcelData[apn];
-            const address = (parcel && parcel.address) || '';
-
-            // Get coordinates: from eligibility GeoJSON coords, or geocode from address
+            const placeholder = document.getElementById('property-image-placeholder');
             let lat, lng;
-            if (coords) {
-                lng = coords[0];
-                lat = coords[1];
+            if (coords) { lng = coords[0]; lat = coords[1]; }
+
+            // If no coords from eligibility data, try geocoding address
+            if (!lat || !lng) {
+                const parcel = masterParcelData[apn];
+                const address = parcel && parcel.address;
+                if (address) {
+                    try {
+                        const geoUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?` + new URLSearchParams({
+                            f: 'json', singleLine: address, maxLocations: 1, outFields: 'Match_addr'
+                        });
+                        const resp = await fetch(geoUrl);
+                        const data = await resp.json();
+                        if (data.candidates && data.candidates.length > 0) {
+                            lng = data.candidates[0].location.x;
+                            lat = data.candidates[0].location.y;
+                        }
+                    } catch (e) { console.log('Geocode failed:', e); }
+                }
             }
 
-            if (lat && lng) {
-                showMapEmbed(container, placeholderEl, imageEl, lat, lng);
+            if (!lat || !lng) {
+                placeholder.innerHTML = '<span>🏠</span>Map unavailable';
                 return;
             }
 
-            // No coords available — try address-based embed
-            if (address) {
-                showMapEmbed(container, placeholderEl, imageEl, null, null, address);
-                return;
-            }
+            // Hide placeholder, init Leaflet map
+            placeholder.style.display = 'none';
 
-            // No coords or address — try assessor photo
-            const acct = parcel && parcel.accountNumber;
-            if (acct) {
-                const photoUrl = `https://portal.padctn.org/OFS/WP/Image/GetPropertyImage?propertyID=${acct}&card=1`;
-                imageEl.onload = function() {
-                    if (imageEl.naturalWidth > 100) {
-                        placeholderEl.style.display = 'none';
-                        imageEl.style.display = 'block';
-                    } else {
-                        imageEl.style.display = 'none';
-                        showPropertyCardFallback(apn, placeholderEl);
-                    }
-                };
-                imageEl.onerror = function() {
-                    imageEl.style.display = 'none';
-                    showPropertyCardFallback(apn, placeholderEl);
-                };
-                imageEl.src = photoUrl;
-                return;
-            }
+            if (reportMap) { reportMap.remove(); reportMap = null; }
+            reportMap = L.map('report-map', { zoomControl: false, attributionControl: false }).setView([lat, lng], 18);
 
-            showPropertyCardFallback(apn, placeholderEl);
+            // Satellite base layer
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 20
+            }).addTo(reportMap);
+
+            // Small zoom control
+            L.control.zoom({ position: 'topright' }).addTo(reportMap);
+
+            // Query parcel boundary
+            queryParcelBoundary(apn, lat, lng);
+            // Query building footprints
+            queryBuildingFootprints(apn);
+
+            // Show Street View / Aerial links
+            document.getElementById('link-streetview').href = `https://www.google.com/maps?q&layer=c&cbll=${lat},${lng}`;
+            document.getElementById('link-aerial').href = `https://portal.patriotproperties.com/?APIKEY=5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F&LAT=${lat}&LONG=${lng}`;
+            document.getElementById('property-image-links').style.display = 'flex';
         }
 
-        function showMapEmbed(container, placeholderEl, imageEl, lat, lng, address) {
-            placeholderEl.style.display = 'none';
-            imageEl.style.display = 'none';
-            // Remove any existing iframe
-            const existing = container.querySelector('iframe');
-            if (existing) existing.remove();
-            const iframe = document.createElement('iframe');
-            iframe.style.cssText = 'width:100%;height:100%;border:none;border-radius:12px;position:absolute;top:0;left:0;';
-            if (lat && lng) {
-                // Google Maps Street View embed (same approach as sample_property_report.html)
-                iframe.src = `https://maps.google.com/maps?q=${lat},${lng}&layer=c&cbll=${lat},${lng}&cbp=12,0,0,0,0&output=embed`;
-            } else {
-                iframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(address + ', Nashville, TN')}&layer=c&output=embed`;
-            }
-            iframe.loading = 'lazy';
-            iframe.referrerPolicy = 'no-referrer-when-downgrade';
-            iframe.allowFullscreen = true;
-            container.insertBefore(iframe, container.firstChild);
+        async function queryParcelBoundary(apn, lat, lng) {
+            try {
+                const url = `${MAP_APIS.parcels}/query?` + new URLSearchParams({
+                    f: 'geojson', where: `APN='${apn}'`, outFields: 'APN', returnGeometry: true, outSR: 4326
+                });
+                const resp = await fetch(url);
+                const data = await resp.json();
+                if (data.features && data.features.length > 0) {
+                    L.geoJSON(data.features[0], {
+                        style: { color: '#ffffff', weight: 3, fillColor: '#3A5566', fillOpacity: 0.12, dashArray: '8,6' }
+                    }).addTo(reportMap);
+                }
+            } catch (e) { console.log('Parcel boundary query failed:', e); }
         }
 
-        function showPropertyCardFallback(apn, placeholderEl) {
-            const docs = documentsIndex[apn];
-            if (docs && docs.property_cards && docs.property_cards.length > 0) {
-                const doc = docs.property_cards[0];
-                const filename = typeof doc === 'object' ? doc.filename : doc;
-                const viewUrl = typeof doc === 'object' ? doc.gdrive_url : null;
-                const downloadUrl = typeof doc === 'object' ? doc.download_url : null;
+        async function queryBuildingFootprints(apn) {
+            try {
+                const url = `${MAP_APIS.buildings}/query?` + new URLSearchParams({
+                    f: 'geojson', where: `APN='${apn}'`,
+                    outFields: 'APN,Nash_BldgType,Nash_Area,StructureType,FinishedArea,YearBuilt,Footprint_Rank,FEMA_SqFt',
+                    returnGeometry: true, outSR: 4326
+                });
+                const resp = await fetch(url);
+                const data = await resp.json();
+                if (!data.features || data.features.length === 0) return;
 
-                let buttonHtml = '';
-                if (viewUrl) {
-                    buttonHtml = `
-                        <a href="${viewUrl}" target="_blank"
-                           style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--teal); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; margin-right: 8px;">
-                            View PDF
-                        </a>`;
-                }
-                if (downloadUrl) {
-                    buttonHtml += `
-                        <a href="${downloadUrl}" target="_blank"
-                           style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--terracotta); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none;">
-                            Download
-                        </a>`;
-                }
-                if (!viewUrl && !downloadUrl) {
-                    buttonHtml = `
-                        <a href="${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(filename)}" target="_blank"
-                           style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--terracotta); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none;">
-                            Find in Google Drive
-                        </a>`;
-                }
+                // Deduplicate by Footprint_Rank
+                const seen = new Set();
+                const footprints = data.features.filter(f => {
+                    const rank = f.properties.Footprint_Rank;
+                    if (seen.has(rank)) return false;
+                    seen.add(rank);
+                    return true;
+                });
 
-                placeholderEl.innerHTML = `
-                    <span>🏠</span>
-                    <div style="font-size: 12px; margin-top: 8px;">Property Card Available</div>
-                    <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${filename}</div>
-                    ${buttonHtml}
-                `;
-                placeholderEl.style.display = 'block';
-            } else {
-                placeholderEl.innerHTML = '<span>🏠</span>No property image on file';
-                placeholderEl.style.display = 'block';
-            }
+                footprints.forEach(f => {
+                    const props = f.properties;
+                    const isAcc = isAccessoryStructure(props);
+                    const fillColor = isAcc ? '#C58B2A' : '#f5f5f0';
+                    const label = isAcc ? 'ADU / Accessory' : 'Primary Structure';
+                    const area = props.Nash_Area ? Math.round(props.Nash_Area) + ' SF' : (props.FinishedArea ? Math.round(props.FinishedArea) + ' SF' : '');
+
+                    const layer = L.geoJSON(f, {
+                        style: { color: '#ffffff', weight: 2, fillColor: fillColor, fillOpacity: 0.75 }
+                    }).addTo(reportMap);
+
+                    layer.bindTooltip(`${label}${area ? ' · ' + area : ''}`, {
+                        permanent: true, direction: 'center',
+                        className: 'building-label'
+                    });
+                });
+
+                // Fit map to footprints
+                const allLayers = L.geoJSON(footprints);
+                reportMap.fitBounds(allLayers.getBounds().pad(0.3));
+            } catch (e) { console.log('Footprint query failed:', e); }
         }
 
         function updateEligibilityChecklist(props) {
