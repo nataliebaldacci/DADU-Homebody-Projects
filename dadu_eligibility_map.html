@@ -604,7 +604,10 @@
  <span style="color: #537188; font-weight: 600;">DADU Permits (3,854)</span></label>
  <label class="filter-checkbox">
  <input type="checkbox" id="show-covenants" onchange="toggleOverlay('covenants')">
- <span style="color: #CBB279; font-weight: 600;">Restrictive Covenants</span></label></div></div>
+ <span style="color: #CBB279; font-weight: 600;">Restrictive Covenants</span></label>
+ <label class="filter-checkbox">
+ <input type="checkbox" id="show-footprints" onchange="toggleOverlay('footprints')">
+ <span style="color: #3E4A4F; font-weight: 600;">Building Footprints (18K)</span></label></div></div>
 
  <!-- Stats Panel -->
  <div class="stats-panel">
@@ -649,7 +652,11 @@
  <div class="legend-item" id="legend-covenants" style="display:none;">
  <div class="legend-color" style="background: #CBB279; border: 2px dashed #003039; border-radius: 50%;"></div>
  <span class="legend-label">Covenants</span>
- <span class="legend-count" id="count-covenants">0</span></div></div>
+ <span class="legend-count" id="count-covenants">0</span></div>
+ <div class="legend-item" id="legend-footprints" style="display:none;">
+ <div class="legend-color" style="background: #3E4A4F;"></div>
+ <span class="legend-label">Building Footprints</span>
+ <span class="legend-count" id="count-footprints">0</span></div></div>
 
  <!-- Zoom Message -->
  <div class="zoom-message" id="zoom-message">
@@ -696,19 +703,21 @@
  let map;
  let parcelLayer;
  let eligibleLayer, conditionalLayer, notEligibleLayer;
- let permitLayer, covenantLayer;
+ let permitLayer, covenantLayer, footprintLayer;
  let allData = { eligible: [], conditional: [], notEligible: [] };
  let loadedBounds = null;
  let isLoading = false;
  let permitsLoaded = false;
  let covenantsLoaded = false;
+ let footprintsLoaded = false;
  let currentFilters = {
  showEligible: true,
  showConditional: true,
  showNotEligible: true,
  zoning: '',
  showPermits: false,
- showCovenants: false
+ showCovenants: false,
+ showFootprints: false
  };
 
  // Query ArcGIS service (Table - no geometry, uses Lat/Lon fields)
@@ -884,9 +893,10 @@
  }
  });
 
- // Create overlay layer groups for permits and covenants
+ // Create overlay layer groups
  permitLayer = L.layerGroup();
  covenantLayer = L.layerGroup();
+ footprintLayer = L.layerGroup();
 
  // Create parcel polygon layer (GeoJSON)
  parcelLayer = L.geoJSON(null, {
@@ -1131,6 +1141,18 @@
  } else {
  map.removeLayer(covenantLayer);
  }
+ } else if (type === 'footprints') {
+ const checked = document.getElementById('show-footprints').checked;
+ currentFilters.showFootprints = checked;
+ document.getElementById('legend-footprints').style.display = checked ? 'flex' : 'none';
+ if (checked) {
+ if (!footprintsLoaded) {
+ await loadFootprints();
+ }
+ map.addLayer(footprintLayer);
+ } else {
+ map.removeLayer(footprintLayer);
+ }
  }
  }
 
@@ -1298,6 +1320,76 @@
  } catch (err) {
  console.error('Error loading covenants:', err);
  document.getElementById('count-covenants').textContent = 'Error';
+ }
+ }
+
+ // Load building footprints from local GeoJSON
+ async function loadFootprints() {
+ try {
+ console.log('Loading building footprints...');
+ const resp = await fetch('dadu_footprints.geojson');
+ const data = await resp.json();
+
+ if (!data.features || data.features.length === 0) {
+ console.warn('No footprint features found');
+ return;
+ }
+
+ console.log(`Loaded ${data.features.length} footprints`);
+
+ data.features.forEach(feature => {
+ const props = feature.properties || {};
+ const isAccessory = (props.Nash_BldgType || '').toLowerCase() === 'accessory';
+
+ const layer = L.geoJSON(feature, {
+ style: {
+ fillColor: isAccessory ? '#CBB279' : '#3E4A4F',
+ color: '#003039',
+ weight: 1.5,
+ fillOpacity: 0.6,
+ opacity: 0.8
+ }
+ });
+
+ const area = props.Nash_Area ? props.Nash_Area.toLocaleString() + ' SF' : 'N/A';
+ const finished = props.FinishedArea ? props.FinishedArea.toLocaleString() + ' SF' : '';
+ const year = props.YearBuilt || 'N/A';
+
+ layer.bindPopup(`
+ <div class="popup-header" style="background: ${isAccessory ? '#CBB279' : '#3E4A4F'};">
+ <div class="popup-status">${props.Nash_BldgType || 'Building'}</div>
+ <div class="popup-address">${props.APN || ''}</div></div>
+ <div class="popup-content">
+ <div class="popup-row">
+ <span class="popup-label">Footprint</span>
+ <span class="popup-value">${area}</span></div>
+ ${finished ? `<div class="popup-row">
+ <span class="popup-label">Finished Area</span>
+ <span class="popup-value">${finished}</span></div>` : ''}
+ <div class="popup-row">
+ <span class="popup-label">Year Built</span>
+ <span class="popup-value">${year}</span></div>
+ <div class="popup-row">
+ <span class="popup-label">Exterior</span>
+ <span class="popup-value">${props.Exterior || 'N/A'}</span></div>
+ <div class="popup-row">
+ <span class="popup-label">Roof</span>
+ <span class="popup-value">${props.Nash_RoofType || 'N/A'}</span></div></div>
+ <div class="popup-actions">
+ <a href="property-report-card.html?apn=${props.APN}" class="popup-btn popup-btn-primary">Property Report</a>
+ <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${props.APN}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a></div>
+ `, { maxWidth: 320 });
+
+ footprintLayer.addLayer(layer);
+ });
+
+ footprintsLoaded = true;
+ document.getElementById('count-footprints').textContent = data.features.length.toLocaleString();
+ console.log('Building footprints added to map');
+
+ } catch (err) {
+ console.error('Error loading footprints:', err);
+ document.getElementById('count-footprints').textContent = 'Error';
  }
  }
 
