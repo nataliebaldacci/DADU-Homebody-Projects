@@ -760,9 +760,9 @@
 
                 console.log(`Loaded ${parcelsData.features.length} DADU parcels`);
 
-                // Load DADU footprints
-                const footprintsResponse = await fetch('dadu_footprints.geojson');
-                if (!footprintsResponse.ok) throw new Error(`Footprints: HTTP ${footprintsResponse.status}`);
+                // Load DADU footprints (optional - may not be available)
+                const footprintsResponse = await fetch('dadu_footprints.geojson').catch(() => null);
+                if (!footprintsResponse || !footprintsResponse.ok) { console.log('Footprints GeoJSON not available - footprints will load on parcel select'); return; }
                 const footprintsData = await footprintsResponse.json();
 
                 daduFootprintsLayer = L.geoJSON(footprintsData, {
