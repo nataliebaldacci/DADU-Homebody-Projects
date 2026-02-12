@@ -10,21 +10,22 @@
  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
  <style>
  :root {
- --navy: #3A5566;
- --navy-dark: #2E4553;
- --teal: #7B746D;
+ --navy: #003039;
+ --navy-dark: #002630;
+ --navy-light: #537188;
+ --teal: #3E4A4F;
  --terracotta: #CBB279;
  --terracotta-hover: #B8A068;
- --tan: #7B746D;
- --cream: #F0EBE1;
- --background: #F2F0ED;
+ --tan: #537188;
+ --cream: #E1D4BB;
+ --background: #F0EBE1;
  --white: #ffffff;
  --border: #e0e0e0;
  --text: #333333;
  --text-light: #666666;
- --eligible-green: #CBB279;
- --not-eligible-red: #c0392b;
- --conditional-yellow: #f39c12;
+ --eligible-green: #2E6F4E;
+ --not-eligible-red: #8B8B8B;
+ --conditional-yellow: #D4A017;
  }
 
  * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -121,22 +122,22 @@
 
  /* Custom cluster icons */
  .marker-cluster-eligible {
- background-color: rgba(181, 90, 60, 0.6);
+ background-color: rgba(46, 111, 78, 0.6);
  }
  .marker-cluster-eligible div {
- background-color: rgba(181, 90, 60, 0.9);
+ background-color: rgba(46, 111, 78, 0.9);
  }
  .marker-cluster-conditional {
- background-color: rgba(243, 156, 18, 0.6);
+ background-color: rgba(212, 160, 23, 0.6);
  }
  .marker-cluster-conditional div {
- background-color: rgba(243, 156, 18, 0.9);
+ background-color: rgba(212, 160, 23, 0.9);
  }
  .marker-cluster-not-eligible {
- background-color: rgba(192, 57, 43, 0.6);
+ background-color: rgba(139, 139, 139, 0.6);
  }
  .marker-cluster-not-eligible div {
- background-color: rgba(192, 57, 43, 0.9);
+ background-color: rgba(139, 139, 139, 0.9);
  }
 
  .marker-cluster {
@@ -595,11 +596,19 @@
  <option value="R">R - Residential</option>
  <option value="RM">RM - Multi-Family</option>
  <option value="AR">AR - Agricultural Res.</option>
- <option value="SP">SP - Specific Plan</option></select></div></div>
+ <option value="SP">SP - Specific Plan</option></select></div>
+ <div class="filter-group">
+ <label class="filter-label">Overlay Layers</label>
+ <label class="filter-checkbox">
+ <input type="checkbox" id="show-permits" onchange="toggleOverlay('permits')">
+ <span style="color: #537188; font-weight: 600;">DADU Permits (3,854)</span></label>
+ <label class="filter-checkbox">
+ <input type="checkbox" id="show-covenants" onchange="toggleOverlay('covenants')">
+ <span style="color: #CBB279; font-weight: 600;">Restrictive Covenants</span></label></div></div>
 
  <!-- Stats Panel -->
  <div class="stats-panel">
- <h3 class="stats-title">Eligibility Statistics <span style="background: #27ae60; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-left: 8px;">LIVE</span></h3>
+ <h3 class="stats-title">Eligibility Statistics <span style="background: #537188; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-left: 8px;">LIVE</span></h3>
  <div class="stat-row">
  <span class="stat-label">Total Parcels</span>
  <span class="stat-value" id="stat-total">123,574</span></div>
@@ -632,7 +641,15 @@
  <div class="legend-item">
  <div class="legend-color not-eligible"></div>
  <span class="legend-label">Not Eligible</span>
- <span class="legend-count" id="count-not">48,069</span></div></div>
+ <span class="legend-count" id="count-not">48,069</span></div>
+ <div class="legend-item" id="legend-permits" style="display:none;">
+ <div class="legend-color" style="background: #537188; border-radius: 50%;"></div>
+ <span class="legend-label">DADU Permits</span>
+ <span class="legend-count" id="count-permits">0</span></div>
+ <div class="legend-item" id="legend-covenants" style="display:none;">
+ <div class="legend-color" style="background: #CBB279; border: 2px dashed #003039; border-radius: 50%;"></div>
+ <span class="legend-label">Covenants</span>
+ <span class="legend-count" id="count-covenants">0</span></div></div>
 
  <!-- Zoom Message -->
  <div class="zoom-message" id="zoom-message">
@@ -651,9 +668,17 @@
  <script>
  // Configuration
  const COLORS = {
- eligible: '#CBB279',
- conditional: '#f39c12',
- notEligible: '#c0392b'
+ eligible: '#2E6F4E',
+ conditional: '#D4A017',
+ notEligible: '#8B8B8B'
+ };
+
+ // Permit marker colors
+ const PERMIT_COLORS = {
+ completed: '#2E6F4E',
+ active: '#537188',
+ expired: '#CBB279',
+ revoked: '#7A2A1D'
  };
 
  // Eligibility labels by class
@@ -665,19 +690,25 @@
 
  // ArcGIS Feature Service URLs - LIVE DATA
  const ARCGIS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0';
- const CADASTRAL_SERVICE = 'https://maps.nashville.gov/arcgis/rest/services/Cadastral/Cadastral_Layers/MapServer/4';
+ const PERMITS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_Final/FeatureServer/0';
+ const COVENANTS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Restrictive_Covenant_Links/FeatureServer/0';
 
  let map;
- let parcelLayer; // Single layer for all parcel polygons
+ let parcelLayer;
  let eligibleLayer, conditionalLayer, notEligibleLayer;
+ let permitLayer, covenantLayer;
  let allData = { eligible: [], conditional: [], notEligible: [] };
  let loadedBounds = null;
  let isLoading = false;
+ let permitsLoaded = false;
+ let covenantsLoaded = false;
  let currentFilters = {
  showEligible: true,
  showConditional: true,
  showNotEligible: true,
- zoning: ''
+ zoning: '',
+ showPermits: false,
+ showCovenants: false
  };
 
  // Query ArcGIS service (Table - no geometry, uses Lat/Lon fields)
@@ -725,65 +756,42 @@
  });
  }
 
- // Query Nashville Cadastral service for parcel polygons
- async function queryCadastral(stanpars) {
- if (!stanpars || stanpars.length === 0) return null;
-
- // Build WHERE clause for multiple STANPARs
- const whereClause = stanpars.map(s =>`STANPAR = '${s}'`).join(' OR ');
-
- const params = new URLSearchParams({
- where: whereClause,
- outFields: 'STANPAR,PropAddr,Acres',
- returnGeometry: true,
- outSR: 4326,
- f: 'geojson'
- });
-
- const url = `${CADASTRAL_SERVICE}/query?${params.toString()}`;
-
- try {
- const response = await fetch(url);
- if (!response.ok) throw new Error(`Cadastral query failed: ${response.status}`);
- return await response.json();
- } catch (err) {
- console.error('Cadastral query error:', err);
- return null;
- }
- }
-
- // Query cadastral by geometry envelope (for viewport)
- async function queryCadastralByBounds(bounds) {
- const geometry = JSON.stringify({
- xmin: bounds.getWest(),
- ymin: bounds.getSouth(),
- xmax: bounds.getEast(),
- ymax: bounds.getNorth(),
- spatialReference: { wkid: 4326 }
- });
-
- const params = new URLSearchParams({
+ // Query permit service
+ async function queryPermits(options = {}) {
+ const defaults = {
  where: '1=1',
- geometry: geometry,
- geometryType: 'esriGeometryEnvelope',
- spatialRel: 'esriSpatialRelIntersects',
- outFields: 'STANPAR,PropAddr,Acres',
+ outFields: 'Parcel_ID,Permit_Number,Address,Contractor,Construction_Cost,Building_SqFt,Status,Date_Issued,Cost_Per_SqFt',
  returnGeometry: true,
  outSR: 4326,
- f: 'geojson',
- resultRecordCount: 500
- });
+ f: 'json',
+ resultRecordCount: 2000
+ };
+ const params = { ...defaults, ...options };
+ const queryString = new URLSearchParams(params).toString();
+ const url = `${PERMITS_SERVICE}/query?${queryString}`;
 
- const url = `${CADASTRAL_SERVICE}/query?${params.toString()}`;
-
- try {
  const response = await fetch(url);
- if (!response.ok) throw new Error(`Cadastral query failed: ${response.status}`);
+ if (!response.ok) throw new Error(`Permit query failed: ${response.status}`);
  return await response.json();
- } catch (err) {
- console.error('Cadastral bounds query error:', err);
- return null;
  }
+
+ // Query covenant service
+ async function queryCovenants(options = {}) {
+ const defaults = {
+ where: '1=1',
+ outFields: 'FIELD_NAME_A,FIELD_NAME_B,FIELD_NAME_K,FIELD_NAME_O,FIELD_NAME_P',
+ returnGeometry: true,
+ outSR: 4326,
+ f: 'json',
+ resultRecordCount: 2000
+ };
+ const params = { ...defaults, ...options };
+ const queryString = new URLSearchParams(params).toString();
+ const url = `${COVENANTS_SERVICE}/query?${queryString}`;
+
+ const response = await fetch(url);
+ if (!response.ok) throw new Error(`Covenant query failed: ${response.status}`);
+ return await response.json();
  }
 
  // Get total counts for stats
@@ -876,6 +884,10 @@
  }
  });
 
+ // Create overlay layer groups for permits and covenants
+ permitLayer = L.layerGroup();
+ covenantLayer = L.layerGroup();
+
  // Create parcel polygon layer (GeoJSON)
  parcelLayer = L.geoJSON(null, {
  style: function(feature) {
@@ -899,15 +911,12 @@
  map.addLayer(conditionalLayer);
  map.addLayer(notEligibleLayer);
 
- // Zoom handler - show different messages based on zoom level
+ // Zoom handler
  map.on('zoomend', function() {
  const zoom = map.getZoom();
  const msg = document.getElementById('zoom-message');
  if (zoom < 13) {
  msg.textContent = 'Zoom in to see parcel markers';
- msg.classList.add('visible');
- } else if (zoom < 15) {
- msg.textContent = 'Zoom in more to see parcel boundaries';
  msg.classList.add('visible');
  } else {
  msg.classList.remove('visible');
@@ -972,147 +981,14 @@
  }
  }
 
- // Load data for current viewport - with parcel polygons
+ // Load data for current viewport using circle markers
  async function loadViewportData() {
  if (isLoading) return;
 
  const zoom = map.getZoom();
- if (zoom < 15) {
- // At lower zoom, show circle markers for performance
- if (zoom >= 13) {
+ if (zoom < 13) return;
+
  await loadViewportMarkers();
- }
- return;
- }
-
- const bounds = map.getBounds();
-
- // Check if we already loaded this area
- if (loadedBounds && loadedBounds.contains(bounds)) return;
-
- isLoading = true;
-
- try {
- console.log('Loading parcel polygons from Nashville Cadastral...');
-
- // Step 1: Get parcel polygons from Nashville Cadastral
- const cadastralData = await queryCadastralByBounds(bounds);
-
- if (!cadastralData || !cadastralData.features || cadastralData.features.length === 0) {
- console.log('No cadastral features, falling back to markers');
- await loadViewportMarkers();
- return;
- }
-
- console.log(`Got ${cadastralData.features.length} parcel polygons`);
-
- // Step 2: Get STANPARs from cadastral data
- const stanpars = cadastralData.features
- .map(f =>f.properties.STANPAR)
- .filter(s =>s);
-
- if (stanpars.length === 0) {
- console.log('No STANPARs found');
- return;
- }
-
- // Step 3: Query eligibility status for these parcels
- const eligibilityMap = {};
-
- // Query in batches of 50 to avoid URL length limits
- const batchSize = 50;
- for (let i = 0; i < stanpars.length; i += batchSize) {
- const batch = stanpars.slice(i, i + batchSize);
- const whereClause = batch.map(s =>`STANPAR = '${s}'`).join(' OR ');
-
- const eligData = await queryArcGIS({
- where: whereClause,
- outFields: 'STANPAR,Address,Zoning,Eligibility_Status,Max_DADU_Living_SF,Lot_SqFt,Acres',
- resultRecordCount: batchSize
- });
-
- if (eligData.features) {
- eligData.features.forEach(f =>{
- const attrs = f.attributes || f;
- eligibilityMap[attrs.STANPAR] = attrs;
- });
- }
- }
-
- console.log(`Got eligibility data for ${Object.keys(eligibilityMap).length} parcels`);
-
- // Step 4: Clear existing and add colored polygons
- parcelLayer.clearLayers();
-
- cadastralData.features.forEach(feature =>{
- const stanpar = feature.properties.STANPAR;
- const eligData = eligibilityMap[stanpar];
-
- if (!eligData) return; // Skip if no eligibility data
-
- // Determine eligibility and color
- const status = eligData.Eligibility_Status || '';
- let eligClass = 'not-eligible';
- let fillColor = COLORS.notEligible;
-
- if (status === 'CHECK_SP_USD') {
- eligClass = 'eligible';
- fillColor = COLORS.eligible;
- } else if (status === 'GSD_NEEDS_OVERLAY' || status === 'CHECK_SP_GSD') {
- eligClass = 'conditional';
- fillColor = COLORS.conditional;
- }
-
- // Apply filters
- if (eligClass === 'eligible' && !currentFilters.showEligible) return;
- if (eligClass === 'conditional' && !currentFilters.showConditional) return;
- if (eligClass === 'not-eligible' && !currentFilters.showNotEligible) return;
-
- // Build popup content
- const lotSf = eligData.Lot_SqFt || (eligData.Acres ? Math.round(eligData.Acres * 43560) : 0);
- const maxDadu = eligData.Max_DADU_Living_SF || (lotSf >= 43560 ? 1200 : (lotSf >= 20000 ? 900 : (lotSf >= 10000 ? 700 : 600)));
- const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
-
- const popupContent = `
- <div class="popup-header ${eligClass}">
- <div class="popup-status">${eligLabel}</div>
- <div class="popup-address">${eligData.Address || feature.properties.PropAddr || 'No Address'}</div></div>
- <div class="popup-content">
- <div class="popup-row">
- <span class="popup-label">APN</span>
- <span class="popup-value">${stanpar}</span></div>
- <div class="popup-row">
- <span class="popup-label">Zoning</span>
- <span class="popup-value">${eligData.Zoning || 'N/A'}</span></div>
- <div class="popup-row">
- <span class="popup-label">Lot Size</span>
- <span class="popup-value">${lotSf ? lotSf.toLocaleString() : 'N/A'} SF</span></div>
- <div class="popup-row">
- <span class="popup-label">Max DADU</span>
- <span class="popup-value">${maxDadu} SF Living</span></div></div>
- <div class="popup-actions">
- <a href="property-report-card.html?apn=${stanpar}&address=${encodeURIComponent(eligData.Address || '')}" class="popup-btn popup-btn-primary">Full Report</a>
- <a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=${stanpar}" target="_blank" class="popup-btn popup-btn-secondary">ParcelViewer</a></div>
- `;
-
- // Add properties for styling
- feature.properties.fillColor = fillColor;
- feature.properties.eligClass = eligClass;
- feature.properties.popupContent = popupContent;
-
- parcelLayer.addData(feature);
- });
-
- loadedBounds = bounds;
- console.log('Parcel polygons loaded successfully');
-
- } catch (error) {
- console.error('Viewport load error:', error);
- // Fallback to markers
- await loadViewportMarkers();
- } finally {
- isLoading = false;
- }
  }
 
  // Fallback: Load circle markers (for lower zoom or when polygons fail)
@@ -1227,6 +1103,202 @@
  marker.bindPopup(popupContent, { maxWidth: 320 });
  targetLayer.addLayer(marker);
  });
+ }
+
+ // Toggle overlay layers (permits, covenants)
+ async function toggleOverlay(type) {
+ if (type === 'permits') {
+ const checked = document.getElementById('show-permits').checked;
+ currentFilters.showPermits = checked;
+ document.getElementById('legend-permits').style.display = checked ? 'flex' : 'none';
+ if (checked) {
+ if (!permitsLoaded) {
+ await loadPermitMarkers();
+ }
+ map.addLayer(permitLayer);
+ } else {
+ map.removeLayer(permitLayer);
+ }
+ } else if (type === 'covenants') {
+ const checked = document.getElementById('show-covenants').checked;
+ currentFilters.showCovenants = checked;
+ document.getElementById('legend-covenants').style.display = checked ? 'flex' : 'none';
+ if (checked) {
+ if (!covenantsLoaded) {
+ await loadCovenantMarkers();
+ }
+ map.addLayer(covenantLayer);
+ } else {
+ map.removeLayer(covenantLayer);
+ }
+ }
+ }
+
+ // Load all DADU permit markers from ArcGIS
+ async function loadPermitMarkers() {
+ try {
+ console.log('Loading DADU permit markers...');
+ let allPermits = [];
+ let offset = 0;
+
+ // Paginate (max 2000 per page)
+ while (true) {
+ const data = await queryPermits({
+ resultOffset: offset,
+ resultRecordCount: 2000
+ });
+ if (!data.features || data.features.length === 0) break;
+ allPermits = allPermits.concat(data.features);
+ if (data.features.length < 2000) break;
+ offset += 2000;
+ }
+
+ console.log(`Loaded ${allPermits.length} permits`);
+
+ allPermits.forEach(feature => {
+ const props = feature.attributes || feature;
+ const geom = feature.geometry;
+ if (!geom || !geom.y || !geom.x) return;
+
+ // Determine color by status
+ const status = (props.Status || '').toUpperCase();
+ let color = PERMIT_COLORS.active;
+ if (status === 'DONE' || status === 'COMPLETED' || status === 'FINALED') {
+ color = PERMIT_COLORS.completed;
+ } else if (status === 'EXPIRED') {
+ color = PERMIT_COLORS.expired;
+ } else if (status === 'REVOKED' || status === 'CANCELLED') {
+ color = PERMIT_COLORS.revoked;
+ }
+
+ const marker = L.circleMarker([geom.y, geom.x], {
+ radius: 7,
+ fillColor: color,
+ color: '#003039',
+ weight: 2,
+ opacity: 1,
+ fillOpacity: 0.9
+ });
+
+ // Format date
+ const dateStr = props.Date_Issued ? new Date(props.Date_Issued).toLocaleDateString() : 'N/A';
+ const cost = props.Construction_Cost ? '$' + Number(props.Construction_Cost).toLocaleString() : 'N/A';
+ const sqft = props.Building_SqFt ? props.Building_SqFt.toLocaleString() + ' SF' : 'N/A';
+
+ const popup = `
+ <div class="popup-header" style="background: ${color};">
+ <div class="popup-status">DADU Permit - ${props.Status || 'Unknown'}</div>
+ <div class="popup-address">${props.Address || 'No Address'}</div></div>
+ <div class="popup-content">
+ <div class="popup-row">
+ <span class="popup-label">Permit #</span>
+ <span class="popup-value">${props.Permit_Number || 'N/A'}</span></div>
+ <div class="popup-row">
+ <span class="popup-label">Contractor</span>
+ <span class="popup-value">${props.Contractor || 'N/A'}</span></div>
+ <div class="popup-row">
+ <span class="popup-label">Cost</span>
+ <span class="popup-value">${cost}</span></div>
+ <div class="popup-row">
+ <span class="popup-label">Size</span>
+ <span class="popup-value">${sqft}</span></div>
+ <div class="popup-row">
+ <span class="popup-label">Date Issued</span>
+ <span class="popup-value">${dateStr}</span></div></div>
+ <div class="popup-actions">
+ <a href="permit_explorer.html?permit=${props.Permit_Number}" class="popup-btn popup-btn-primary">Permit Details</a>
+ <a href="property-report-card.html?apn=${props.Parcel_ID}" class="popup-btn popup-btn-secondary">Property Report</a></div>
+ `;
+
+ marker.bindPopup(popup, { maxWidth: 320 });
+ permitLayer.addLayer(marker);
+ });
+
+ permitsLoaded = true;
+ document.getElementById('count-permits').textContent = allPermits.length.toLocaleString();
+ console.log('Permit markers added to map');
+
+ } catch (err) {
+ console.error('Error loading permits:', err);
+ document.getElementById('count-permits').textContent = 'Error';
+ }
+ }
+
+ // Load covenant markers from ArcGIS
+ async function loadCovenantMarkers() {
+ try {
+ console.log('Loading covenant markers...');
+ let allCovenants = [];
+ let offset = 0;
+
+ while (true) {
+ const data = await queryCovenants({
+ resultOffset: offset,
+ resultRecordCount: 2000
+ });
+ if (!data.features || data.features.length === 0) break;
+ allCovenants = allCovenants.concat(data.features);
+ if (data.features.length < 2000) break;
+ offset += 2000;
+ }
+
+ console.log(`Loaded ${allCovenants.length} covenants`);
+
+ allCovenants.forEach(feature => {
+ const props = feature.attributes || feature;
+ const geom = feature.geometry;
+ if (!geom || !geom.y || !geom.x) return;
+
+ const marker = L.circleMarker([geom.y, geom.x], {
+ radius: 7,
+ fillColor: '#CBB279',
+ color: '#003039',
+ weight: 2,
+ opacity: 1,
+ fillOpacity: 0.8,
+ dashArray: '4 3'
+ });
+
+ const apn = props.FIELD_NAME_K || 'N/A';
+ const address = props.FIELD_NAME_A || props.FIELD_NAME_B || 'No Address';
+ const covenantNum = props.FIELD_NAME_O || 'N/A';
+ const covenantUrl = props.FIELD_NAME_P || '';
+
+ let docLink = '';
+ if (covenantUrl) {
+ docLink = `<div class="popup-row">
+ <a href="${covenantUrl}" target="_blank" style="color: #537188; font-weight: 600; text-decoration: underline;">View Covenant Document</a></div>`;
+ }
+
+ const popup = `
+ <div class="popup-header" style="background: #CBB279;">
+ <div class="popup-status">Restrictive Covenant on File</div>
+ <div class="popup-address">${address}</div></div>
+ <div class="popup-content">
+ <div class="popup-row">
+ <span class="popup-label">APN</span>
+ <span class="popup-value">${apn}</span></div>
+ <div class="popup-row">
+ <span class="popup-label">Instrument #</span>
+ <span class="popup-value">${covenantNum}</span></div>
+ ${docLink}</div>
+ <div class="popup-actions">
+ <a href="property-report-card.html?apn=${apn}" class="popup-btn popup-btn-primary">Property Report</a>
+ <a href="restrictive_covenants_v2.html" class="popup-btn popup-btn-secondary">Learn More</a></div>
+ `;
+
+ marker.bindPopup(popup, { maxWidth: 320 });
+ covenantLayer.addLayer(marker);
+ });
+
+ covenantsLoaded = true;
+ document.getElementById('count-covenants').textContent = allCovenants.length.toLocaleString();
+ console.log('Covenant markers added to map');
+
+ } catch (err) {
+ console.error('Error loading covenants:', err);
+ document.getElementById('count-covenants').textContent = 'Error';
+ }
  }
 
  // Fallback to static GeoJSON files
@@ -1372,14 +1444,12 @@
 
  // Update filters
  function updateFilters() {
- currentFilters = {
- showEligible: document.getElementById('show-eligible').checked,
- showConditional: document.getElementById('show-conditional').checked,
- showNotEligible: document.getElementById('show-not-eligible').checked,
- zoning: document.getElementById('filter-zoning').value
- };
+ currentFilters.showEligible = document.getElementById('show-eligible').checked;
+ currentFilters.showConditional = document.getElementById('show-conditional').checked;
+ currentFilters.showNotEligible = document.getElementById('show-not-eligible').checked;
+ currentFilters.zoning = document.getElementById('filter-zoning').value;
 
- // Clear layers and reload
+ // Clear eligibility layers and reload
  parcelLayer.clearLayers();
  eligibleLayer.clearLayers();
  conditionalLayer.clearLayers();
