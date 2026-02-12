@@ -1,91 +1,157 @@
 {
   "metadata": {
     "description": "Nashville DADU GIS Data Sources - Live ArcGIS Feature Services",
-    "updated": "2026-02-05",
-    "owner": "Homebody Projects"
+    "updated": "2026-02-12",
+    "owner": "Castlehold / Vanderbilt Law"
   },
   "featureServices": {
     "eligibility": {
       "name": "DADU Eligibility Enhanced",
       "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0",
       "recordCount": 161703,
-      "description": "Parcel eligibility for DADU construction",
-      "usedIn": ["dadu_eligibility_map.html", "am_i_eligible.html"]
+      "type": "TABLE",
+      "note": "No geometry - uses Lat/Lon fields. Query with f=json.",
+      "description": "Parcel eligibility for DADU construction under BL2025-1007",
+      "usedIn": ["dadu_eligibility_map.html", "am_i_eligible.html", "property-report-card.html"]
     },
     "permits": {
       "newPermits": {
         "name": "NEW ADU Permits 2026",
         "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/NEW_ADU_Permits_20260114/FeatureServer/0",
         "recordCount": 4117,
-        "description": "Latest ADU permit applications"
+        "type": "points",
+        "description": "Latest ADU permit applications with point geometry"
       },
-      "allPermits": {
+      "allPermitsFinal": {
         "name": "DADU All Permits Final",
         "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/DADU_All_Permits_Final/FeatureServer/0",
-        "description": "Complete historical permit data"
+        "type": "points",
+        "description": "Complete historical permit data (consolidated)"
+      },
+      "allPermits": {
+        "name": "DADU All Permits",
+        "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/DADU_All_Permits/FeatureServer/0",
+        "type": "points",
+        "description": "All permits (older version)"
       }
     },
     "buildingSpecs": {
       "name": "DADU Building Specs",
-      "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Building_Specs_20260119_042856/FeatureServer",
+      "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Building_Specs_20260119_042856/FeatureServer/0",
       "description": "Building specifications for permitted DADUs"
+    },
+    "buildingFootprints": {
+      "name": "Footprints With Parcel Data",
+      "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Footprints_With_ParcelData_20260118_011423/FeatureServer/0",
+      "type": "polygons",
+      "description": "Building footprint polygons with APN field for direct filtering. Has Nash_BldgType, Nash_Area, Nash_Height, StructureType, YearBuilt, Exterior, Nash_RoofType, Footprint_Rank, FinishedArea, FEMA_SqFt.",
+      "note": "CORS-friendly. Query by APN, not spatial. Deduplicate by Footprint_Rank (Card 1 & Card 2 share geometry).",
+      "usedIn": ["property_search.html", "dadu_property_viewer_v3.html", "property-report-card.html"]
     },
     "existingDADUs": {
       "name": "Existing DADUs (Secondary Structures Merged)",
       "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Secondary_SFH_Merged_SHP_20251231_0015/FeatureServer/0",
       "description": "Merged secondary structures on single-family parcels"
     },
+    "secondaryStructures": {
+      "name": "Secondary Structures on SF Parcels",
+      "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Secondary_On_SF_Parcels_SHP_20251230_2352/FeatureServer/0",
+      "description": "Identified secondary structures"
+    },
     "sfhParcels": {
       "name": "Single Family Home Parcels",
       "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/SFH_parcels/FeatureServer/0",
-      "description": "All single family homes with property info URLs",
+      "description": "All single family homes as points with property info URLs",
       "webMapItem": "https://vanderbilt.maps.arcgis.com/home/item.html?id=741d5a8b91244ef0ad8fdbad9a118079"
     },
     "restrictiveCovenants": {
       "parcelsWithCR": {
-        "name": "Parcels with Restrictive Covenants",
+        "name": "Parcels with Restrictive Covenants (v1)",
+        "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/_Parcels_with_CR__A1_AP43711_wk1ztG/FeatureServer/0",
+        "description": "43,711 parcels flagged with restrictive covenants"
+      },
+      "parcelsWithCR_v2": {
+        "name": "Parcels with Restrictive Covenants (v2)",
         "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Parcels_with_Restrictive_Covenants_ohoMJQ/FeatureServer/0",
         "description": "Parcels flagged with restrictive covenants"
       },
       "covenantLinks": {
         "name": "Restrictive Covenant PDF Links",
         "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/_Restrictive_Covenant_Links__A1_R2978_QuLdfD/FeatureServer/0",
-        "description": "Links to actual covenant PDF documents"
+        "recordCount": 2978,
+        "description": "Links to actual covenant PDF documents on Google Drive"
       }
-    },
-    "secondaryStructures": {
-      "name": "Secondary Structures on SF Parcels",
-      "url": "https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Secondary_On_SF_Parcels_SHP_20251230_2352/FeatureServer/0",
-      "description": "Identified secondary structures"
     }
   },
   "nashvilleOfficialServices": {
+    "cadastral": {
+      "name": "Cadastral Layers (Parcel Boundaries)",
+      "url": "https://maps.nashville.gov/arcgis/rest/services/Cadastral/Cadastral_Layers/MapServer/4",
+      "type": "polygons",
+      "description": "Official parcel boundary polygons",
+      "note": "CORS blocked from GitHub Pages - use for server-side or ArcGIS Online only"
+    },
+    "parcelsView": {
+      "name": "Parcels View (ArcGIS Online mirror)",
+      "url": "https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_view/FeatureServer/0",
+      "type": "polygons",
+      "description": "Nashville parcels mirrored to ArcGIS Online (CORS-friendly)",
+      "usedIn": ["property_search.html", "dadu_property_viewer_v3.html"]
+    },
+    "parcelsWithBuildingChars": {
+      "name": "Parcels with Building Characteristics",
+      "url": "https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_with_Building_Characteristics_view/FeatureServer/0",
+      "recordCount": 285512,
+      "description": "Parcels with structure info (# buildings, year built, footprints)"
+    },
+    "baseZoning": {
+      "name": "Base Zoning",
+      "url": "https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/BaseZoning/MapServer/0",
+      "description": "Official base zoning designations"
+    },
     "zoningOverlays": {
-      "name": "Zoning Overlay Districts",
+      "name": "Zoning Overlay Districts (Metro Nashville)",
       "url": "https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Zoning_Overlay_Districts/MapServer/0",
       "description": "Official Metro Nashville zoning overlays",
-      "queryExample": "ZONE_DESC = 'Detached Accessory Dwelling Unit Overlay District'"
+      "queryExamples": {
+        "daduOverlay": "ZONE_DESC = 'Detached Accessory Dwelling Unit Overlay District'",
+        "allOverlays": "1=1 (with returnDistinctValues on ZONE_DESC)"
+      }
     },
     "zoningOverlaysView": {
       "name": "Zoning Overlay Districts View (ArcGIS Online)",
       "url": "https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Zoning_Overlay_Districts_Vw/FeatureServer/0",
-      "description": "Urban Design Overlays and other zoning districts"
+      "description": "Zoning overlays mirrored to ArcGIS Online (CORS-friendly)",
+      "queryExamples": {
+        "urbanDesignOverlays": "zone_desc like '%Urban Design Overlay%'",
+        "fields": "OBJECTID,ZONE_DESC,CASE_NO,ORDINANCE,ORD_DATE,NAME,IMPACT_ZONE,SUBDISTRICT"
+      }
+    },
+    "usdGsdBoundary": {
+      "name": "USD/GSD Boundary",
+      "url": "https://maps.nashville.gov/arcgis/rest/services/Boundaries/USD_GSD/MapServer/0",
+      "description": "Urban Services District / General Services District boundary"
     },
     "addressPoints": {
       "name": "Nashville Address Points",
       "url": "https://maps.nashville.gov/arcgis/rest/services/Addressing/AddressPoints/MapServer/0",
-      "description": "Official address points with descriptions",
-      "daduQuery": "Description like '%DADU%' OR DESCRIPTION LIKE '%ACCESSORY DWELL%' OR DESCRIPTION LIKE '%Carriage%'"
+      "description": "Official address points with descriptions and link types",
+      "queryExamples": {
+        "daduAddresses": "Description like '%DADU%' OR DESCRIPTION LIKE '%ACCESSORY DWELL%' OR DESCRIPTION LIKE '%Carriage%'",
+        "guestHouses": "Description like '%dadu%' or description like '%guest%'",
+        "nonPrimaryAddresses": "LinkTypeCode <> 'P'",
+        "secondaryAddresses": "Fraction LIKE '%B%' AND LinkTypeCode = 'E'"
+      },
+      "note": "LinkTypeCode E = secondary/accessory address. Description 'GARAGE / DADU' or 'DETACHED HOUSE IN REAR' indicates ADU."
     },
     "parcelHistory": {
-      "name": "Parcel History",
+      "name": "Parcel Zoning History",
       "url": "https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5",
-      "description": "Historical parcel zoning changes"
-    },
-    "cadastral": {
-      "name": "Cadastral Layers",
-      "url": "https://maps.nashville.gov/arcgis/rest/services/Cadastral/Cadastral_Layers/MapServer/4",
-      "description": "Parcel boundaries and cadastral data"
+      "description": "Historical parcel zoning changes",
+      "queryExamples": {
+        "udoOverlays": "ZoneCode = 'OV-UDO'",
+        "fields": "Zonecode,OrdinanceNumber,DateEffective,Casenumber,Status,url,sortdate"
+      }
     }
   },
   "webMaps": {
@@ -119,6 +185,33 @@
     "restrictiveCovenants": {
       "name": "Restrictive Covenants for DADUs",
       "url": "https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=168e16cf3b08411296759cf39f22dc6d"
+    },
+    "parcelsItem1": {
+      "name": "Parcels Layer (item 1af84d08)",
+      "itemUrl": "https://vanderbilt.maps.arcgis.com/home/item.html?id=1af84d0884e845a8b3d24a7dd8ebcdc9&sublayer=0"
+    },
+    "parcelsItem2": {
+      "name": "Parcels Layer (item fe61067a)",
+      "itemUrl": "https://vanderbilt.maps.arcgis.com/home/item.html?id=fe61067acfeb4c078d10c45e4b96e6bc&sublayer=0"
     }
+  },
+  "geocoding": {
+    "esriWorldGeocoder": {
+      "name": "Esri World Geocoding Service",
+      "url": "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates",
+      "description": "Free geocoding for address search (append ', Nashville, TN' to queries)"
+    }
+  },
+  "corsNotes": {
+    "blocked": [
+      "maps.nashville.gov - ALL endpoints blocked from GitHub Pages",
+      "maps.nashville.gov/arcgis2 - Also blocked"
+    ],
+    "allowed": [
+      "services3.arcgis.com/58WV6GqBWodG9Kll - Vanderbilt hosted (Access-Control-Allow-Origin: *)",
+      "services2.arcgis.com/HdTo6HJqh92wn4D8 - Nashville ArcGIS Online mirror (CORS OK)",
+      "geocode.arcgis.com - Esri geocoder (CORS OK)"
+    ],
+    "rule": "For client-side JS on GitHub Pages, ONLY use services3.arcgis.com or services2.arcgis.com endpoints. Never fetch from maps.nashville.gov."
   }
 }
