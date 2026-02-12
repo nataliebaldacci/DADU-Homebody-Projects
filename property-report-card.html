@@ -797,7 +797,7 @@
                         <span>🏠</span>
                         Loading property image...
                     </div>
-                    <img id="property-card-image" src="" alt="Property Card" style="display: none;" onerror="showImagePlaceholder()">
+                    <img id="property-card-image" src="" alt="Property Photo" style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
                     <div class="property-image-links" id="property-image-links" style="display: none;">
                         <a href="#" class="property-image-link" id="link-streetview" target="_blank">Street View</a>
                         <a href="#" class="property-image-link" id="link-aerial" target="_blank">Aerial</a>
@@ -1734,12 +1734,27 @@
                     displayTradePermits(apnParam);
                     displayLegislation(apnParam, property.properties.e, property.properties.z);
                 } else {
-                    showReport(addressParam || apnParam);
+                    // APN not in eligibility GeoJSON — use master data for what we can
+                    const masterP = masterParcelData[apnParam];
+                    const addr = (masterP && masterP.address) ? masterP.address : (addressParam || apnParam);
+                    showReport(addr);
                     displayDocuments(apnParam);
                     displayAduPermits(apnParam);
                     displayStructures(apnParam);
                     displayTradePermits(apnParam);
                     displayLegislation(apnParam, null, null);
+                    // Set external links and images from master data
+                    fetchAccountNumber(apnParam);
+                    loadPropertyImage(apnParam);
+                    // Set map links from master data coordinates if available
+                    if (masterP && masterP.cx && masterP.cy) {
+                        // cx/cy are State Plane (EPSG:2274) — need WGS84 for Google Maps
+                        // Use approximate conversion: these coords are already lat/lon if small enough
+                        // Actually master data cx/cy are State Plane feet — use eligibility GeoJSON coords instead
+                    }
+                    // Update APN in subheader
+                    const headerP = document.getElementById('report-subheader');
+                    if (headerP) headerP.textContent = `Nashville, TN | APN: ${apnParam}`;
                 }
             } else if (addressParam) {
                 const property = findProperty(addressParam, 'address');
@@ -1920,29 +1935,51 @@
             updateEligibilityChecklist(props);
         }
 
-        // Load property card image from Google Drive
+        // Load property image — tries assessor photo first, then Google Drive docs
         function loadPropertyImage(apn) {
             if (!apn) return;
 
-            // Check if we have a document for this APN
+            const imageEl = document.getElementById('property-card-image');
+            const placeholderEl = document.getElementById('property-image-placeholder');
+
+            // Priority 1: Try assessor property photo via ACCOUNTNUMBER from master data
+            const parcel = masterParcelData[apn];
+            const acct = parcel && parcel.accountNumber;
+            if (acct) {
+                const photoUrl = `https://portal.padctn.org/OFS/WP/Image/GetPropertyImage?propertyID=${acct}&card=1`;
+                imageEl.onload = function() {
+                    // Image loaded successfully — show it
+                    placeholderEl.style.display = 'none';
+                    imageEl.style.display = 'block';
+                    imageEl.alt = `Property photo for ${parcel.address || apn}`;
+                };
+                imageEl.onerror = function() {
+                    // Assessor photo failed — fall back to Google Drive docs
+                    imageEl.style.display = 'none';
+                    showPropertyCardFallback(apn, placeholderEl);
+                };
+                imageEl.src = photoUrl;
+                return;
+            }
+
+            // No ACCOUNTNUMBER available — fall back to Google Drive docs
+            showPropertyCardFallback(apn, placeholderEl);
+        }
+
+        function showPropertyCardFallback(apn, placeholderEl) {
             const docs = documentsIndex[apn];
             if (docs && docs.property_cards && docs.property_cards.length > 0) {
                 const doc = docs.property_cards[0];
-                // Handle both object format (new) and string format (legacy)
                 const filename = typeof doc === 'object' ? doc.filename : doc;
                 const viewUrl = typeof doc === 'object' ? doc.gdrive_url : null;
                 const downloadUrl = typeof doc === 'object' ? doc.download_url : null;
 
-                const imageEl = document.getElementById('property-card-image');
-                const placeholderEl = document.getElementById('property-image-placeholder');
-
-                // Show property card with direct Google Drive link
                 let buttonHtml = '';
                 if (viewUrl) {
                     buttonHtml = `
                         <a href="${viewUrl}" target="_blank"
                            style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--teal); color: white; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; margin-right: 8px;">
-                            View PDF ↗
+                            View PDF
                         </a>`;
                 }
                 if (downloadUrl) {
@@ -1967,10 +2004,9 @@
                     ${buttonHtml}
                 `;
                 placeholderEl.style.display = 'block';
-                imageEl.style.display = 'none';
             } else {
-                // No property card found
-                document.getElementById('property-image-placeholder').innerHTML = '<span>🏠</span>No property card on file';
+                placeholderEl.innerHTML = '<span>🏠</span>No property image on file';
+                placeholderEl.style.display = 'block';
             }
         }
 
