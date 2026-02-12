@@ -977,12 +977,12 @@
  <a href="roi_calculator.html" class="quick-action-btn">
  <img src="assets/icons/Market Statistics Report .png" alt="">
  Calculate ROI</a>
- <a href="cost_estimator.html" class="quick-action-btn">
+ <a href="project_cost_estimator.html" class="quick-action-btn">
  <img src="assets/icons/Appraisers.png" alt="">
  Estimate Costs</a>
- <a href="contractors.html" class="quick-action-btn">
+ <a href="contractor_marketplace.html" class="quick-action-btn">
  <img src="assets/icons/Building and Construction.png" alt="">
- Find Contractors</a>
+ Contractor Marketplace</a>
  <a href="#" class="quick-action-btn">
  <img src="assets/icons/Exports & Reports.png" alt="">
  Download Report</a></div></div></section>
@@ -992,7 +992,7 @@
  <div class="near-me-preview">
  <div class="near-me-header">
  <h4>DADUs Nearby</h4>
- <a href="dadu_near_me_locator.html" class="near-me-link">View all</a></div>
+ <a href="dadu_near_me_v2.html" class="near-me-link">View all</a></div>
  <div class="near-me-list">
  <a href="#" class="near-me-item">
  <span class="near-me-item-dist">0.2 mi</span>
@@ -1082,12 +1082,14 @@
  let udoDaduIndex = {};
  let aduPermitsIndex = {};
  let masterParcelData = {};
+ let apnToAccount = {};
  let dataLoaded = false;
  let docsLoaded = false;
  let ordinancesLoaded = false;
  let udoIndexLoaded = false;
  let aduPermitsLoaded = false;
  let masterLoaded = false;
+ let apnAccountLoaded = false;
 
  // Search form handling
  const searchForm = document.getElementById('search-form');
@@ -1167,6 +1169,80 @@
  console.log(`Loaded master parcel data: ${Object.keys(masterParcelData).length} parcels`);
  } catch (error) {
  console.error('Error loading master parcel data:', error);
+ }
+ }
+
+ // Load APN to Account Number mapping (lazy — 6.6MB)
+ async function loadApnToAccount() {
+ if (apnAccountLoaded) return;
+ try {
+ const response = await fetch('data/apn_to_account.json');
+ apnToAccount = await response.json();
+ apnAccountLoaded = true;
+ console.log(`Loaded APN-to-account mapping: ${apnToAccount._total || Object.keys(apnToAccount).length} entries`);
+ } catch (error) {
+ console.error('Error loading apn_to_account.json:', error);
+ }
+ }
+
+ // Query covenants layer from ArcGIS
+ async function queryCovenantsForAPN(apn) {
+ const COVENANTS_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Parcels_with_Restrictive_Covenants_ohoMJQ/FeatureServer/0/query';
+ try {
+ const params = new URLSearchParams({
+ where: `FIELD_NAME_D='${apn}'`,
+ outFields: 'FIELD_NAME_D,FIELD_NAME_E,FIELD_NAME_F,FIELD_NAME_G,FIELD_NAME_L',
+ returnGeometry: false,
+ f: 'json'
+ });
+ const resp = await fetch(`${COVENANTS_URL}?${params}`);
+ const data = await resp.json();
+ if (data.features && data.features.length > 0) {
+ return data.features.map(f => ({
+ apn: f.attributes.FIELD_NAME_D,
+ date: f.attributes.FIELD_NAME_E,
+ url: f.attributes.FIELD_NAME_F,
+ address: f.attributes.FIELD_NAME_G,
+ instrument: f.attributes.FIELD_NAME_L
+ }));
+ }
+ return [];
+ } catch (e) {
+ console.error('Covenant query failed:', e);
+ return [];
+ }
+ }
+
+ // Standalone covenant query + UI update (for when no eligibility data available)
+ async function queryCovenantsAndUpdateUI(apn) {
+ const covenants = await queryCovenantsForAPN(apn);
+ const covenantEl = document.getElementById('detail-covenants');
+ if (covenants.length > 0) {
+ if (covenantEl) {
+ covenantEl.textContent = `${covenants.length} Covenant${covenants.length > 1 ? 's' : ''} Found`;
+ covenantEl.className = 'data-item-value warning';
+ }
+ // Append covenant documents to documents list
+ const docsList = document.getElementById('documents-list');
+ if (docsList) {
+ covenants.forEach(cov => {
+ const li = document.createElement('li');
+ li.className = 'document-item';
+ let buttons = cov.url ? `<a href="${cov.url}" target="_blank" style="padding: 5px 10px; background: var(--navy); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none;">View Covenant</a>` : '';
+ li.innerHTML = `
+ <div class="document-icon" style="background: #fef0e0;"></div>
+ <div class="document-info">
+ <div class="document-title">Restrictive Covenant</div>
+ <div class="document-meta" style="font-size: 11px;">${cov.instrument ? 'Instrument: ' + cov.instrument : ''}${cov.date ? ' | ' + cov.date : ''}</div></div>
+ <div style="display: flex; gap: 4px; margin-left: auto;">${buttons}</div>`;
+ docsList.appendChild(li);
+ });
+ }
+ } else {
+ if (covenantEl) {
+ covenantEl.textContent = 'None Found';
+ covenantEl.className = 'data-item-value success';
+ }
  }
  }
 
@@ -1531,9 +1607,20 @@
  buttons += `<a href="${downloadUrl}" target="_blank" style="padding: 5px 10px; background: var(--terracotta); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none; margin-left: 4px;">Download</a>`;
  }
  if (!viewUrl && !downloadUrl) {
+ // Nashville portal fallback URLs by document type
+ let fallbackUrl = '';
+ if (key === 'permits' && (doc.permit_number || doc.permit)) {
+ fallbackUrl = `https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=${doc.permit_number || doc.permit}`;
+ } else if (key === 'property_cards' || key === 'covenants') {
+ fallbackUrl = `https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${apn}`;
+ }
+ if (fallbackUrl) {
+ buttons = `<a href="${fallbackUrl}" target="_blank" style="padding: 5px 10px; background: var(--navy); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none;">Nashville Portal</a>`;
+ } else {
  const folderId = GDRIVE_FOLDERS[key] || GDRIVE_FOLDERS.property_cards;
  const searchUrl = `https://drive.google.com/drive/folders/${folderId}?q=${encodeURIComponent(filename || '')}`;
  buttons = `<a href="${searchUrl}" target="_blank" style="padding: 5px 10px; background: var(--teal); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none;">Find in Drive</a>`;
+ }
  }
 
  html += `
@@ -1645,12 +1732,8 @@
  // Set external links and images from master data
  fetchAccountNumber(apnParam);
  loadPropertyMap(apnParam);
- // Set map links from master data coordinates if available
- if (masterP && masterP.cx && masterP.cy) {
- // cx/cy are State Plane (EPSG:2274) — need WGS84 for Google Maps
- // Use approximate conversion: these coords are already lat/lon if small enough
- // Actually master data cx/cy are State Plane feet — use eligibility GeoJSON coords instead
- }
+ // Query covenants even without eligibility data
+ queryCovenantsAndUpdateUI(apnParam);
  // Update APN in subheader
  const headerP = document.getElementById('report-subheader');
  if (headerP) headerP.textContent = `Nashville, TN | APN: ${apnParam}`;
@@ -1707,36 +1790,30 @@
  }
  }
 
- // Get ACCOUNTNUMBER — uses master data first, falls back to SOAP API
+ // Get ACCOUNTNUMBER — uses apn_to_account.json (277K mappings), then master data
  async function fetchAccountNumber(apn) {
  const cardLink = document.getElementById('link-property-card');
 
- // Try master parcel data first (no CORS issues)
+ // Primary: apn_to_account.json (277,412 entries, most complete)
+ await loadApnToAccount();
+ if (apnToAccount[apn]) {
+ cardLink.href = `https://portal.padctn.org/OFS/WP/Print/${apnToAccount[apn]}`;
+ return;
+ }
+
+ // Fallback 1: master parcel data
  const parcel = masterParcelData[apn];
  if (parcel && parcel.accountNumber) {
  cardLink.href = `https://portal.padctn.org/OFS/WP/Print/${parcel.accountNumber}`;
  return;
  }
-
- // Try master data URLs
  if (parcel && parcel.urls && parcel.urls.propertyCardPdf) {
  cardLink.href = parcel.urls.propertyCardPdf;
  return;
  }
 
- // Fallback: Nashville SOAP API (CORS blocked from GitHub Pages)
- try {
- const resp = await fetch(`https://maps.nashville.gov/ParcelService/Search.asmx/GetAssesorAccount?apn=${apn}`);
- const xml = await resp.text();
- const match = xml.match(/<accountnumber>(\d+)<\/accountnumber>/);
- if (match) {
- cardLink.href = `https://portal.padctn.org/OFS/WP/Print/${match[1]}`;
- return;
- }
- } catch (e) { /* CORS blocked, expected on GitHub Pages */ }
-
- // Final fallback: search Google Drive
- cardLink.href = `${GDRIVE_URLS.property_cards}?q=${encodeURIComponent(apn)}`;
+ // Fallback 2: Nashville assessor search (works in browser, not always CORS-friendly)
+ cardLink.href = `https://davidson-tn-citizen.comper.info/template.aspx?propertyID=${apn}`;
  }
 
  function updateReportData(property) {
@@ -1812,8 +1889,8 @@
  // Initialize map with parcel boundary + building footprints
  loadPropertyMap(apn, coords);
 
- // Update eligibility checklist
- updateEligibilityChecklist(props);
+ // Update eligibility checklist (async — queries covenants layer)
+ updateEligibilityChecklist(props, apn);
  }
 
  // ════════════════════════════════════════
@@ -1947,7 +2024,7 @@
  } catch (e) { console.log('Footprint query failed:', e); }
  }
 
- function updateEligibilityChecklist(props) {
+ async function updateEligibilityChecklist(props, apn) {
  const eligCode = props.e || 'N';
  const isEligible = eligCode.startsWith('E');
  const isConditional = eligCode.startsWith('C') || eligCode.startsWith('U');
@@ -1966,36 +2043,94 @@
  switch(label) {
  case 'Residential Zoning':
  if (isResidential) {
- valueEl.textContent = ' Pass';
+ valueEl.textContent = 'Pass';
  valueEl.className = 'data-item-value success';
  } else {
- valueEl.textContent = ' Fail';
+ valueEl.textContent = 'Fail';
  valueEl.className = 'data-item-value error';
  }
  break;
  case 'Urban Services District':
  if (isEligible) {
- valueEl.textContent = ' Pass';
+ valueEl.textContent = 'Pass';
  valueEl.className = 'data-item-value success';
  } else if (isConditional) {
- valueEl.textContent = ' GSD - Overlay Needed';
+ valueEl.textContent = 'GSD - Overlay Needed';
  valueEl.className = 'data-item-value warning';
  } else {
- valueEl.textContent = ' Check Required';
+ valueEl.textContent = 'Check Required';
  valueEl.className = 'data-item-value error';
  }
  break;
  case 'Single Family Property':
  if (eligCode.includes('S')) {
- valueEl.textContent = ' Has Secondary Structure';
+ valueEl.textContent = 'Has Secondary Structure';
  valueEl.className = 'data-item-value warning';
  } else {
- valueEl.textContent = ' Pass';
+ valueEl.textContent = 'Pass';
  valueEl.className = 'data-item-value success';
  }
  break;
+ case 'No Covenant Restrictions':
+ // Set loading state, then query ArcGIS
+ valueEl.textContent = 'Checking...';
+ valueEl.className = 'data-item-value';
+ break;
  }
  });
+
+ // Query covenants from ArcGIS layer
+ if (apn) {
+ const covenants = await queryCovenantsForAPN(apn);
+ const covenantEl = document.getElementById('detail-covenants');
+ const checklistCovItem = Array.from(checklistItems).find(item =>
+ item.querySelector('.data-item-label')?.textContent === 'No Covenant Restrictions'
+ );
+ const covValueEl = checklistCovItem?.querySelector('.data-item-value');
+
+ if (covenants.length > 0) {
+ // Covenants found
+ if (covenantEl) {
+ covenantEl.textContent = `${covenants.length} Covenant${covenants.length > 1 ? 's' : ''} Found`;
+ covenantEl.className = 'data-item-value warning';
+ }
+ if (covValueEl) {
+ covValueEl.textContent = `${covenants.length} Found - Review Required`;
+ covValueEl.className = 'data-item-value warning';
+ }
+
+ // Add covenant details to documents section
+ const docsList = document.getElementById('documents-list');
+ if (docsList) {
+ covenants.forEach(cov => {
+ const li = document.createElement('li');
+ li.className = 'document-item';
+ const dateStr = cov.date || '';
+ const instrStr = cov.instrument || '';
+ let buttons = '';
+ if (cov.url) {
+ buttons = `<a href="${cov.url}" target="_blank" style="padding: 5px 10px; background: var(--navy); color: white; border-radius: 4px; font-size: 11px; font-weight: 600; text-decoration: none;">View Covenant</a>`;
+ }
+ li.innerHTML = `
+ <div class="document-icon" style="background: #fef0e0;"></div>
+ <div class="document-info">
+ <div class="document-title">Restrictive Covenant</div>
+ <div class="document-meta" style="font-size: 11px;">${instrStr ? 'Instrument: ' + instrStr : ''}${dateStr ? ' | ' + dateStr : ''}</div></div>
+ <div style="display: flex; gap: 4px; margin-left: auto;">${buttons}</div>`;
+ docsList.appendChild(li);
+ });
+ }
+ } else {
+ if (covenantEl) {
+ covenantEl.textContent = 'None Found';
+ covenantEl.className = 'data-item-value success';
+ }
+ if (covValueEl) {
+ covValueEl.textContent = 'Pass';
+ covValueEl.className = 'data-item-value success';
+ }
+ }
+ }
  }
 
  // Tab switching

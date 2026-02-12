@@ -679,12 +679,22 @@
  <h1 style="color: white; font-size: 28px; margin-bottom: 10px;">Property Document Search</h1>
  <p style="color: rgba(255,255,255,0.9); margin-bottom: 20px;">Enter an address to find available documents</p>
  <div style="max-width: 600px; margin: 0 auto; display: flex; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
- <input type="text" id="addressInput" placeholder="Enter Nashville address (e.g., 1234 Main St)"
+ <input type="text" id="addressInput" placeholder="Enter address, APN (e.g., 08203055700), or permit # (e.g., T2017031241)"
  style="flex: 1; padding: 16px 20px; border: none; font-family: inherit; font-size: 15px;">
  <button onclick="searchProperty()" style="padding: 16px 30px; background: var(--terracotta); color: white; border: none; font-family: inherit; font-weight: 600; font-size: 15px; cursor: pointer;">
  Search</button></div>
- <p style="color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 15px;">
- <strong>7,178 documents</strong>indexed across <strong>5,389 parcels</strong></p></div>
+ <p style="color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 15px;" id="heroStats">
+ <strong>18,782 documents</strong> indexed across <strong>8,804 parcels</strong></p></div>
+
+ <!-- Document Type Filters -->
+ <div id="filterBar" style="display: none; background: white; padding: 12px 30px; border-bottom: 1px solid #e0e0e0;">
+ <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+ <span style="font-size: 13px; font-weight: 600; color: var(--navy); margin-right: 8px;">Filter:</span>
+ <button class="filter-btn active" data-filter="all" onclick="setDocFilter('all', this)" style="padding: 6px 16px; border-radius: 20px; border: 1px solid var(--terracotta); background: var(--terracotta); color: white; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">All</button>
+ <button class="filter-btn" data-filter="property_cards" onclick="setDocFilter('property_cards', this)" style="padding: 6px 16px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">Property Cards</button>
+ <button class="filter-btn" data-filter="permits" onclick="setDocFilter('permits', this)" style="padding: 6px 16px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">Permits</button>
+ <button class="filter-btn" data-filter="covenants" onclick="setDocFilter('covenants', this)" style="padding: 6px 16px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">Covenants</button>
+ <button class="filter-btn" data-filter="assessor_cards" onclick="setDocFilter('assessor_cards', this)" style="padding: 6px 16px; border-radius: 20px; border: 1px solid #ddd; background: white; color: #666; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">Assessor Cards</button></div></div>
 
  <!-- Property Header -->
  <div class="property-header" id="propertyHeader">
@@ -960,6 +970,9 @@
  let currentProperty = null;
  let currentAPN = null;
  let currentDocs = null;
+ let apnToAccount = {};
+ let apnAccountLoaded = false;
+ let activeDocFilter = 'all';
 
  // Load document index on page load
  async function loadDocsIndex() {
@@ -969,191 +982,321 @@
  docsIndex = await response.json();
  docsIndexLoaded = true;
  console.log(`Loaded document index: ${docsIndex._total_parcels} parcels, ${docsIndex._total_documents} documents`);
+ // Update hero stats from real metadata
+ const statsEl = document.getElementById('heroStats');
+ if (statsEl && docsIndex._total_documents && docsIndex._total_parcels) {
+ statsEl.innerHTML = `<strong>${docsIndex._total_documents.toLocaleString()} documents</strong> indexed across <strong>${docsIndex._total_parcels.toLocaleString()} parcels</strong>`;
+ }
  }
  } catch (error) {
  console.warn('Could not load document index:', error);
  }
  }
 
+ // Load APN to account mapping (lazy)
+ async function loadApnToAccount() {
+ if (apnAccountLoaded) return;
+ try {
+ const resp = await fetch('data/apn_to_account.json');
+ apnToAccount = await resp.json();
+ apnAccountLoaded = true;
+ } catch (e) { console.warn('Could not load apn_to_account.json'); }
+ }
+
  // Load index on startup
  loadDocsIndex();
 
- // Search property
+ // Detect search type: APN (10-11 digits), permit number (T+digits), or address
+ function detectSearchType(input) {
+ const cleaned = input.trim();
+ // APN: 10-11 digit number (possibly with dashes/spaces)
+ const digits = cleaned.replace(/[\s\-]/g, '');
+ if (/^\d{10,11}$/.test(digits)) return { type: 'apn', value: digits.padStart(11, '0') };
+ // Permit number: starts with T followed by digits, or date_numeric pattern
+ if (/^T\d{7,12}$/i.test(cleaned)) return { type: 'permit', value: cleaned.toUpperCase() };
+ // Default: address
+ return { type: 'address', value: cleaned };
+ }
+
+ // Document filter toggle
+ function setDocFilter(filter, btn) {
+ activeDocFilter = filter;
+ // Update button styles
+ document.querySelectorAll('.filter-btn').forEach(b => {
+ b.style.background = 'white';
+ b.style.color = '#666';
+ b.style.borderColor = '#ddd';
+ });
+ btn.style.background = 'var(--terracotta)';
+ btn.style.color = 'white';
+ btn.style.borderColor = 'var(--terracotta)';
+ // Re-render found docs with filter
+ if (currentDocs && currentAPN) {
+ displayFoundDocs(currentDocs, currentAPN);
+ }
+ }
+
+ // Search property — multi-type (address, APN, permit number)
  async function searchProperty() {
- const address = document.getElementById('addressInput').value.trim();
- if (!address) return;
+ const rawInput = document.getElementById('addressInput').value.trim();
+ if (!rawInput) return;
+
+ const search = detectSearchType(rawInput);
 
  // Update header
- document.getElementById('propertyAddress').textContent = address;
+ document.getElementById('propertyAddress').textContent = rawInput;
  document.getElementById('propertyMeta').innerHTML = `
  <span>Nashville-Davidson County, TN</span>
- <span>Searching...</span>
- `;
+ <span>Searching (${search.type})...</span>`;
 
- // Hide found docs section while searching
+ // Hide found docs while searching
  document.getElementById('foundDocsSection').style.display = 'none';
+ document.getElementById('filterBar').style.display = 'none';
 
  try {
- // Geocode address
+ if (search.type === 'apn') {
+ // Direct APN lookup in documents index
+ await searchByAPN(search.value);
+ } else if (search.type === 'permit') {
+ // Scan index for permit number
+ await searchByPermitNumber(search.value);
+ } else {
+ // Address geocode flow
+ await searchByAddress(search.value);
+ }
+ } catch (error) {
+ console.error('Search error:', error);
+ document.getElementById('propertyMeta').innerHTML = `
+ <span>Nashville-Davidson County, TN</span>
+ <span style="color: #c0392b;">Search failed. Try a different query.</span>`;
+ }
+ }
+
+ // Search by APN directly
+ async function searchByAPN(apn) {
+ currentAPN = apn;
+
+ // Look up docs
+ currentDocs = null;
+ if (docsIndexLoaded && docsIndex && docsIndex.parcels) {
+ currentDocs = docsIndex.parcels[apn];
+ }
+
+ const docCount = countDocs(currentDocs);
+
+ document.getElementById('propertyAddress').textContent = `APN: ${apn}`;
+ document.getElementById('propertyMeta').innerHTML = `
+ <span>Nashville-Davidson County, TN</span>
+ <span>APN: ${apn}</span>
+ ${docCount > 0 ? `<span style="color: #537188; font-weight: 600;">${docCount} docs found</span>` : '<span>No documents found</span>'}
+ <a href="property-report-card.html?apn=${apn}" style="color: var(--terracotta); font-weight: 600; text-decoration: none;">View Property Report</a>`;
+
+ if (currentDocs && docCount > 0) {
+ document.getElementById('filterBar').style.display = 'block';
+ displayFoundDocs(currentDocs, apn);
+ }
+ }
+
+ // Search by permit number (scan all parcels)
+ async function searchByPermitNumber(permitNum) {
+ if (!docsIndexLoaded || !docsIndex || !docsIndex.parcels) {
+ document.getElementById('propertyMeta').innerHTML = '<span>Document index not loaded</span>';
+ return;
+ }
+
+ // Scan parcels for matching permit number
+ let foundApn = null;
+ let foundDocs = null;
+ for (const [apn, docs] of Object.entries(docsIndex.parcels)) {
+ if (docs.permits) {
+ for (const p of docs.permits) {
+ if ((p.permit_number || '').toUpperCase() === permitNum) {
+ foundApn = apn;
+ foundDocs = docs;
+ break;
+ }
+ }
+ }
+ if (foundApn) break;
+ }
+
+ if (foundApn) {
+ currentAPN = foundApn;
+ currentDocs = foundDocs;
+ const docCount = countDocs(currentDocs);
+
+ document.getElementById('propertyAddress').textContent = `Permit: ${permitNum}`;
+ document.getElementById('propertyMeta').innerHTML = `
+ <span>Nashville-Davidson County, TN</span>
+ <span>APN: ${foundApn}</span>
+ <span style="color: #537188; font-weight: 600;">${docCount} docs found</span>
+ <a href="property-report-card.html?apn=${foundApn}" style="color: var(--terracotta); font-weight: 600; text-decoration: none;">View Property Report</a>`;
+
+ document.getElementById('filterBar').style.display = 'block';
+ displayFoundDocs(currentDocs, foundApn);
+ } else {
+ document.getElementById('propertyAddress').textContent = `Permit: ${permitNum}`;
+ document.getElementById('propertyMeta').innerHTML = `
+ <span>Nashville-Davidson County, TN</span>
+ <span>No documents found for this permit number</span>`;
+ }
+ }
+
+ // Search by address (geocode)
+ async function searchByAddress(address) {
  const geocodeUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${encodeURIComponent(address + ', Nashville, TN')}&f=json&outFields=*`;
  const geoRes = await fetch(geocodeUrl);
  const geoData = await geoRes.json();
 
- if (geoData.candidates && geoData.candidates.length >0) {
+ if (!geoData.candidates || geoData.candidates.length === 0) {
+ document.getElementById('propertyMeta').innerHTML = `
+ <span>Nashville-Davidson County, TN</span>
+ <span style="color: #c0392b;">Address not found</span>`;
+ return;
+ }
+
  const loc = geoData.candidates[0].location;
 
- // Query parcel
- const parcelUrl = `https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels/FeatureServer/0/query?where=1=1&geometry=${loc.x},${loc.y}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=*&f=json`;
+ // Query parcel via Parcels_view (CORS-friendly)
+ const parcelUrl = `https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_view/FeatureServer/0/query?` + new URLSearchParams({
+ where: '1=1', geometry: `${loc.x},${loc.y}`, geometryType: 'esriGeometryPoint',
+ inSR: 4326, spatialRel: 'esriSpatialRelIntersects',
+ outFields: 'STANPAR,ACRES,ZONING', f: 'json'
+ });
  const parcelRes = await fetch(parcelUrl);
  const parcelData = await parcelRes.json();
 
- if (parcelData.features && parcelData.features.length >0) {
+ if (parcelData.features && parcelData.features.length > 0) {
  currentProperty = parcelData.features[0].attributes;
- currentAPN = currentProperty.APN || currentProperty.STANPAR || currentProperty.PIN;
+ currentAPN = currentProperty.STANPAR;
 
- // Normalize APN (remove dashes, ensure 11 digits)
+ // Normalize APN
  let normalizedAPN = (currentAPN || '').toString().replace(/[^0-9]/g, '');
- if (normalizedAPN.length < 11) {
- normalizedAPN = normalizedAPN.padStart(11, '0');
- }
+ if (normalizedAPN.length < 11) normalizedAPN = normalizedAPN.padStart(11, '0');
+ currentAPN = normalizedAPN;
 
- // Check for documents
+ // Look up docs
  currentDocs = null;
  if (docsIndexLoaded && docsIndex && docsIndex.parcels) {
  currentDocs = docsIndex.parcels[normalizedAPN] || docsIndex.parcels[currentAPN];
  }
 
- // Count available docs
- let docCount = 0;
- if (currentDocs) {
- docCount = (currentDocs.property_cards?.length || 0) +
- (currentDocs.assessor_cards?.length || 0) +
- (currentDocs.covenants?.length || 0) +
- (currentDocs.permits?.length || 0);
- }
+ const docCount = countDocs(currentDocs);
 
- // Update meta
+ document.getElementById('propertyAddress').textContent = geoData.candidates[0].attributes?.Match_addr || address;
  document.getElementById('propertyMeta').innerHTML = `
  <span>Nashville-Davidson County, TN</span>
  <span>APN: ${currentAPN}</span>
- <span>${(currentProperty.ACRES || currentProperty.Shape__Area / 43560 || 0).toFixed(2)} acres</span>
- <span>${currentProperty.ZONING || currentProperty.Zone || 'N/A'}</span>
- ${docCount >0 ? `<span style="color: #537188; font-weight: 600;">${docCount} docs found</span>` : ''}
- `;
+ <span>${(currentProperty.ACRES || 0).toFixed(2)} acres</span>
+ <span>${currentProperty.ZONING || 'N/A'}</span>
+ ${docCount > 0 ? `<span style="color: #537188; font-weight: 600;">${docCount} docs found</span>` : ''}
+ <a href="property-report-card.html?apn=${currentAPN}" style="color: var(--terracotta); font-weight: 600; text-decoration: none;">View Property Report</a>`;
 
- // Display found documents
- if (currentDocs && docCount >0) {
+ if (currentDocs && docCount > 0) {
+ document.getElementById('filterBar').style.display = 'block';
  displayFoundDocs(currentDocs, normalizedAPN);
  }
  }
  }
- } catch (error) {
- console.error('Search error:', error);
- }
+
+ // Count total documents
+ function countDocs(docs) {
+ if (!docs) return 0;
+ return (docs.property_cards?.length || 0) +
+ (docs.assessor_cards?.length || 0) +
+ (docs.covenants?.length || 0) +
+ (docs.permits?.length || 0) +
+ (docs.aerials?.length || 0) +
+ (docs.site_plans?.length || 0) +
+ (docs.other?.length || 0);
  }
 
- // Display found documents
+ // Display found documents (respects activeDocFilter)
  function displayFoundDocs(docs, apn) {
  const section = document.getElementById('foundDocsSection');
  const grid = document.getElementById('foundDocsGrid');
  grid.innerHTML = '';
 
  let hasContent = false;
+ const f = activeDocFilter;
 
  // Property Cards
- if (docs.property_cards && docs.property_cards.length >0) {
+ if ((f === 'all' || f === 'property_cards') && docs.property_cards && docs.property_cards.length > 0) {
  hasContent = true;
- docs.property_cards.forEach((doc, idx) =>{
+ docs.property_cards.forEach(doc => {
+ const viewUrl = doc.gdrive_url || `https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${apn}`;
  grid.innerHTML += createDocCard({
- icon: '',
- type: 'Property Card',
- title: `Property Assessment Card`,
- description: `Official property assessment from Davidson County Assessor's office.`,
+ icon: '', type: 'Property Card', title: 'Property Assessment Card',
+ description: 'Official property assessment from Davidson County Assessor\'s office.',
  features: ['Property details', 'Assessed value', 'Building info', 'Tax data'],
- url: doc.gdrive_url,
- downloadUrl: doc.download_url,
- isFree: true
+ url: viewUrl, downloadUrl: doc.download_url, isFree: true, apn: apn
  });
  });
  }
 
  // Covenants
- if (docs.covenants && docs.covenants.length >0) {
+ if ((f === 'all' || f === 'covenants') && docs.covenants && docs.covenants.length > 0) {
  hasContent = true;
- docs.covenants.forEach((doc, idx) =>{
+ docs.covenants.forEach(doc => {
  const recDate = doc.rec_date ? new Date(doc.rec_date).toLocaleDateString() : 'N/A';
+ const viewUrl = doc.gdrive_url || `https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=${apn}`;
  grid.innerHTML += createDocCard({
- icon: '',
- type: 'Restrictive Covenant',
- title: `Covenant Document`,
+ icon: '', type: 'Restrictive Covenant', title: 'Covenant Document',
  description: `Recorded ${recDate}. Instrument #${doc.instrument}`,
  features: ['Original recorded document', 'Owner occupancy terms', 'ADU restrictions', 'Legal requirements'],
- url: doc.gdrive_url,
- downloadUrl: doc.download_url,
- isFree: false,
- grantor: doc.grantor
+ url: viewUrl, downloadUrl: doc.download_url, isFree: false, apn: apn
  });
  });
  }
 
  // Permits
- if (docs.permits && docs.permits.length >0) {
+ if ((f === 'all' || f === 'permits') && docs.permits && docs.permits.length > 0) {
  hasContent = true;
- docs.permits.forEach((doc, idx) =>{
+ docs.permits.forEach(doc => {
  const permitNum = doc.permit_number || 'Unknown';
  const permitDate = doc.date || '';
  const contractor = doc.contractor || '';
  const status = doc.status ? doc.status.toUpperCase() : '';
  const desc = [
-   `Permit #${permitNum}`,
-   permitDate ? `Issued: ${permitDate}` : '',
-   contractor ? `Contractor: ${contractor}` : '',
-   status ? `Status: ${status}` : ''
+ `Permit #${permitNum}`,
+ permitDate ? `Issued: ${permitDate}` : '',
+ contractor ? `Contractor: ${contractor}` : '',
+ status ? `Status: ${status}` : ''
  ].filter(Boolean).join('. ');
- const permitUrl = doc.gdrive_url || doc.docs_url || doc.epermits_url || '#';
+ const permitUrl = doc.gdrive_url || doc.docs_url || doc.epermits_url || `https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=${permitNum}`;
  grid.innerHTML += createDocCard({
- icon: '',
- type: 'Permit Document',
- title: `DADU Building Permit`,
+ icon: '', type: 'Permit Document', title: 'DADU Building Permit',
  description: desc,
  features: ['Permit application', 'Approval details', 'Project specs', doc.trade_count ? `${doc.trade_count} trade permits` : ''].filter(Boolean),
- url: permitUrl,
- downloadUrl: doc.download_url || doc.docs_url,
- isFree: false
+ url: permitUrl, downloadUrl: doc.download_url || doc.docs_url, isFree: false, apn: apn
  });
  });
  }
 
- // Assessor Cards (Card 2 - secondary structures)
- if (docs.assessor_cards && docs.assessor_cards.length >0) {
+ // Assessor Cards (Card 2)
+ if ((f === 'all' || f === 'assessor_cards') && docs.assessor_cards && docs.assessor_cards.length > 0) {
  hasContent = true;
- docs.assessor_cards.forEach((doc, idx) =>{
+ docs.assessor_cards.forEach(doc => {
  const structType = doc.structure_type || 'Secondary Structure';
  const area = doc.finished_area ? doc.finished_area + ' SF' : '';
  const photoUrl = doc.card2_photo_url || '';
  const sketchUrl = doc.card2_sketch_url || '';
  grid.innerHTML += createDocCard({
- icon: '',
- type: 'Assessor Card 2',
- title: `Secondary Structure: ${structType}`,
+ icon: '', type: 'Assessor Card 2', title: `Secondary Structure: ${structType}`,
  description: area ? `Finished area: ${area}` : 'Secondary structure on parcel',
- features: [
-   photoUrl ? 'Photo available' : '',
-   sketchUrl ? 'Floor plan sketch available' : '',
-   'Building details',
-   'Structure assessment'
- ].filter(Boolean),
+ features: [photoUrl ? 'Photo available' : '', sketchUrl ? 'Floor plan sketch available' : '', 'Building details', 'Structure assessment'].filter(Boolean),
  url: photoUrl || sketchUrl || doc.card2_summary_url || doc.property_card_url || '#',
- downloadUrl: doc.card2_sketch_url || doc.card2_photo_url,
- isFree: true
+ downloadUrl: doc.card2_sketch_url || doc.card2_photo_url, isFree: true, apn: apn
  });
  });
  }
 
  if (hasContent) {
  section.style.display = 'block';
- // Scroll to found docs
  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+ } else {
+ section.style.display = 'block';
+ grid.innerHTML = '<p style="color: #666; font-size: 14px; padding: 20px;">No documents match the selected filter.</p>';
  }
  }
 
@@ -1162,6 +1305,7 @@
  const bgColor = config.isFree ? 'var(--teal)' : 'var(--gold)';
  const priceLabel = config.isFree ? 'FREE' : 'View';
  const btnClass = config.isFree ? 'primary' : 'premium';
+ const reportLink = config.apn ? `<a href="property-report-card.html?apn=${config.apn}" style="font-size: 12px; color: var(--terracotta); font-weight: 600; text-decoration: none;">View Property Report</a>` : '';
 
  return `
  <div class="doc-card ${config.isFree ? '' : 'premium'}">
@@ -1176,28 +1320,25 @@
  <ul class="doc-features">
  ${config.features.map(f =>`<li>${f}</li>`).join('')}</ul></div>
  <div class="doc-footer">
+ <div style="display: flex; flex-direction: column; gap: 4px;">
  <div class="doc-price ${config.isFree ? 'free' : ''}">${priceLabel}</div>
+ ${reportLink}</div>
  <a href="${config.url}" target="_blank" class="doc-btn ${btnClass}">
  Open Document</a></div></div>
  `;
  }
 
- // Open Property Card — fetches ACCOUNTNUMBER from Nashville SOAP API
+ // Open Property Card — uses apn_to_account.json (277K entries)
  async function openPropertyCard() {
- if (currentDocs && currentDocs.property_cards && currentDocs.property_cards.length >0) {
+ if (currentDocs && currentDocs.property_cards && currentDocs.property_cards.length > 0 && currentDocs.property_cards[0].gdrive_url) {
  window.open(currentDocs.property_cards[0].gdrive_url, '_blank');
  } else if (currentAPN) {
- try {
- const resp = await fetch(`https://maps.nashville.gov/ParcelService/Search.asmx/GetAssesorAccount?apn=${currentAPN}`);
- const xml = await resp.text();
- const match = xml.match(/<accountnumber>(\d+)<\/accountnumber>/);
- if (match) {
- window.open(`https://portal.padctn.org/OFS/WP/Print/${match[1]}`, '_blank');
+ await loadApnToAccount();
+ if (apnToAccount[currentAPN]) {
+ window.open(`https://portal.padctn.org/OFS/WP/Print/${apnToAccount[currentAPN]}`, '_blank');
  } else {
- window.open(`${GDRIVE_FOLDERS.property_cards}?q=${encodeURIComponent(currentAPN)}`, '_blank');
- }
- } catch (e) {
- window.open(`${GDRIVE_FOLDERS.property_cards}?q=${encodeURIComponent(currentAPN)}`, '_blank');
+ // Fallback to Nashville assessor portal
+ window.open(`https://davidson-tn-citizen.comper.info/template.aspx?propertyID=${currentAPN}`, '_blank');
  }
  } else {
  alert('Please search for a property first');
