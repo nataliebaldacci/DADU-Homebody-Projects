@@ -1,492 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DADU Explorer | Castlehold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        :root {
-            --navy: #3A5566;
-            --navy-dark: #2E4553;
-            --teal: #7B746D;
-            --terracotta: #C58B2A;
-            --terracotta-hover: #A8761F;
-            --tan: #7B746D;
-            --cream: #f5f5f0;
-            --accent: #c0392b;
-            --accent-dark: #a93226;
-            --white: #ffffff;
-            --border: #e0e0e0;
-            --text: #333333;
-            --text-light: #666666;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Montserrat', -apple-system, sans-serif;
-            background: #f0f0f0;
-            color: var(--text);
-        }
-
-        /* Navigation Tabs - ATTOM Style */
-        .nav-tabs {
-            background: white;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            padding: 0 20px;
-        }
-
-        .nav-tab {
-            padding: 14px 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-light);
-            text-decoration: none;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .nav-tab:hover {
-            color: var(--navy);
-        }
-
-        .nav-tab.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        /* Main Layout */
-        .main-container {
-            display: flex;
-            height: calc(100vh - 75px);
-        }
-
-        /* Map Section */
-        .map-section {
-            flex: 1;
-            position: relative;
-        }
-
-        #map {
-            width: 100%;
-            height: 100%;
-        }
-
-        .map-controls {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
-        }
-
-        .map-btn {
-            background: white;
-            border: 1px solid var(--terracotta);
-            color: var(--terracotta);
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-
-        .map-btn:hover {
-            background: var(--terracotta);
-            color: white;
-        }
-
-        .map-btn.clear {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .map-btn.clear:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        .map-btn.active {
-            background: var(--terracotta);
-            color: white;
-            border-color: var(--terracotta);
-        }
-
-        /* Search Criteria Panel - ATTOM Style */
-        .search-panel {
-            width: 380px;
-            background: white;
-            border-left: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .search-header {
-            background: var(--accent);
-            color: white;
-            padding: 14px 20px;
-            font-size: 14px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .search-header::before {
-            content: "▼";
-            font-size: 10px;
-        }
-
-        .search-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .search-row {
-            margin-bottom: 16px;
-        }
-
-        .search-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-light);
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 13px;
-            font-family: inherit;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--terracotta);
-        }
-
-        .search-row-inline {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .search-select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 13px;
-            font-family: inherit;
-            background: white;
-        }
-
-        .search-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .search-checkbox input {
-            width: 16px;
-            height: 16px;
-        }
-
-        .search-checkbox label {
-            font-size: 13px;
-            color: var(--text);
-        }
-
-        .search-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-        }
-
-        .search-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 700;
-            font-family: inherit;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .search-btn.primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .search-btn.primary:hover {
-            background: var(--accent-dark);
-        }
-
-        .search-btn.secondary {
-            background: var(--cream);
-            color: var(--text);
-        }
-
-        .search-btn.secondary:hover {
-            background: var(--border);
-        }
-
-        /* Results Panel */
-        .results-panel {
-            width: 420px;
-            background: var(--cream);
-            border-left: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .results-header {
-            background: white;
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .results-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .results-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-        }
-
-        .results-btn {
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            border: 1px solid var(--border);
-            background: white;
-        }
-
-        .results-btn.csv {
-            background: var(--terracotta);
-            color: white;
-            border-color: var(--terracotta);
-        }
-
-        .results-search {
-            padding: 6px 10px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 12px;
-            width: 120px;
-        }
-
-        .results-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-        }
-
-        /* Property Card - ATTOM Style */
-        .property-card {
-            background: white;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            transition: box-shadow 0.2s;
-        }
-
-        .property-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .property-checkbox {
-            padding: 12px;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .property-checkbox input {
-            width: 16px;
-            height: 16px;
-        }
-
-        .property-image {
-            width: 120px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-        }
-
-        .property-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .property-content {
-            flex: 1;
-            padding: 12px;
-        }
-
-        .property-address {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 2px;
-        }
-
-        .property-city {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-bottom: 6px;
-        }
-
-        .property-type {
-            font-size: 12px;
-            color: var(--text);
-            margin-bottom: 4px;
-        }
-
-        .property-owner {
-            font-size: 11px;
-            color: var(--text-light);
-            margin-bottom: 6px;
-        }
-
-        .property-details {
-            font-size: 11px;
-            color: var(--text);
-            margin-bottom: 4px;
-        }
-
-        .property-sold {
-            font-size: 11px;
-            color: var(--terracotta);
-            margin-bottom: 8px;
-        }
-
-        .property-link {
-            color: var(--accent);
-            font-size: 12px;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .property-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Help Button */
-        .help-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 20px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 1000;
-        }
-
-        .help-btn:hover {
-            background: var(--accent-dark);
-        }
-
-        /* Popup Styles */
-        .leaflet-popup-content-wrapper {
-            border-radius: 8px;
-        }
-
-        .leaflet-popup-content {
-            margin: 0;
-            min-width: 200px;
-        }
-
-        .popup-content {
-            padding: 12px;
-        }
-
-        .popup-address {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 4px;
-        }
-
-        .popup-details {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-bottom: 10px;
-        }
-
-        .popup-link {
-            display: block;
-            background: var(--terracotta);
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .results-panel { width: 350px; }
-            .search-panel { width: 320px; }
-        }
-
-        @media (max-width: 992px) {
-            .main-container { flex-direction: column; }
-            .map-section { height: 40vh; }
-            .search-panel { width: 100%; height: auto; max-height: 30vh; }
-            .results-panel { width: 100%; height: 30vh; }
-        }
-    </style>
-    <link rel="stylesheet" href="homebody_shared.css">
-</head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>DADU Explorer | Castlehold</title>
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+ <style>
+ :root {
+ --navy: #3A5566;
+ --navy-dark: #2E4553;
+ --teal: #7B746D;
+ --terracotta: #CBB279;
+ --terracotta-hover: #B8A068;
+ --tan: #7B746D;
+ --cream: #F0EBE1;
+ --accent: #c0392b;
+ --accent-dark: #a93226;
+ --white: #ffffff;
+ --border: #e0e0e0;
+ --text: #333333;
+ --text-light: #666666;
+ }
+
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+
+ body {
+ font-family: 'Montserrat', -apple-system, sans-serif;
+ background: #f0f0f0;
+ color: var(--text);
+ }
+
+ /* Navigation Tabs - ATTOM Style */
+ .nav-tabs {
+ background: white;
+ border-bottom: 1px solid var(--border);
+ display: flex;
+ padding: 0 20px;
+ }
+
+ .nav-tab {
+ padding: 14px 20px;
+ font-size: 13px;
+ font-weight: 600;
+ color: var(--text-light);
+ text-decoration: none;
+ border-bottom: 3px solid transparent;
+ transition: all 0.2s;
+ }
+
+ .nav-tab:hover {
+ color: var(--navy);
+ }
+
+ .nav-tab.active {
+ color: var(--accent);
+ border-bottom-color: var(--accent);
+ }
+
+ /* Main Layout */
+ .main-container {
+ display: flex;
+ height: calc(100vh - 75px);
+ }
+
+ /* Map Section */
+ .map-section {
+ flex: 1;
+ position: relative;
+ }
+
+ #map {
+ width: 100%;
+ height: 100%;
+ }
+
+ .map-controls {
+ position: absolute;
+ top: 15px;
+ left: 15px;
+ z-index: 1000;
+ display: flex;
+ gap: 10px;
+ }
+
+ .map-btn {
+ background: white;
+ border: 1px solid var(--terracotta);
+ color: var(--terracotta);
+ padding: 8px 16px;
+ border-radius: 6px;
+ font-size: 12px;
+ font-weight: 600;
+ font-family: inherit;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ transition: all 0.2s;
+ }
+
+ .map-btn:hover {
+ background: var(--terracotta);
+ color: white;
+ }
+
+ .map-btn.clear {
+ border-color: var(--accent);
+ color: var(--accent);
+ }
+
+ .map-btn.clear:hover {
+ background: var(--accent);
+ color: white;
+ }
+
+ .map-btn.active {
+ background: var(--terracotta);
+ color: white;
+ border-color: var(--terracotta);
+ }
+
+ /* Search Criteria Panel - ATTOM Style */
+ .search-panel {
+ width: 380px;
+ background: white;
+ border-left: 1px solid var(--border);
+ display: flex;
+ flex-direction: column;
+ }
+
+ .search-header {
+ background: var(--accent);
+ color: white;
+ padding: 14px 20px;
+ font-size: 14px;
+ font-weight: 700;
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ }
+
+ .search-header::before {
+ content: "";
+ font-size: 10px;
+ }
+
+ .search-body {
+ flex: 1;
+ overflow-y: auto;
+ padding: 20px;
+ }
+
+ .search-row {
+ margin-bottom: 16px;
+ }
+
+ .search-label {
+ font-size: 12px;
+ font-weight: 600;
+ color: var(--text-light);
+ margin-bottom: 6px;
+ display: block;
+ }
+
+ .search-input {
+ width: 100%;
+ padding: 10px 12px;
+ border: 1px solid var(--border);
+ border-radius: 6px;
+ font-size: 13px;
+ font-family: inherit;
+ }
+
+ .search-input:focus {
+ outline: none;
+ border-color: var(--terracotta);
+ }
+
+ .search-row-inline {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 10px;
+ }
+
+ .search-select {
+ width: 100%;
+ padding: 10px 12px;
+ border: 1px solid var(--border);
+ border-radius: 6px;
+ font-size: 13px;
+ font-family: inherit;
+ background: white;
+ }
+
+ .search-checkbox {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ margin-top: 12px;
+ }
+
+ .search-checkbox input {
+ width: 16px;
+ height: 16px;
+ }
+
+ .search-checkbox label {
+ font-size: 13px;
+ color: var(--text);
+ }
+
+ .search-actions {
+ display: flex;
+ gap: 10px;
+ margin-top: 20px;
+ padding-top: 16px;
+ border-top: 1px solid var(--border);
+ }
+
+ .search-btn {
+ flex: 1;
+ padding: 12px;
+ border: none;
+ border-radius: 6px;
+ font-size: 13px;
+ font-weight: 700;
+ font-family: inherit;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 6px;
+ }
+
+ .search-btn.primary {
+ background: var(--accent);
+ color: white;
+ }
+
+ .search-btn.primary:hover {
+ background: var(--accent-dark);
+ }
+
+ .search-btn.secondary {
+ background: var(--cream);
+ color: var(--text);
+ }
+
+ .search-btn.secondary:hover {
+ background: var(--border);
+ }
+
+ /* Results Panel */
+ .results-panel {
+ width: 420px;
+ background: var(--cream);
+ border-left: 1px solid var(--border);
+ display: flex;
+ flex-direction: column;
+ }
+
+ .results-header {
+ background: white;
+ padding: 12px 16px;
+ border-bottom: 1px solid var(--border);
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ }
+
+ .results-actions {
+ display: flex;
+ align-items: center;
+ gap: 10px;
+ }
+
+ .results-checkbox {
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ font-size: 12px;
+ }
+
+ .results-btn {
+ padding: 6px 12px;
+ border-radius: 4px;
+ font-size: 11px;
+ font-weight: 600;
+ font-family: inherit;
+ cursor: pointer;
+ border: 1px solid var(--border);
+ background: white;
+ }
+
+ .results-btn.csv {
+ background: var(--terracotta);
+ color: white;
+ border-color: var(--terracotta);
+ }
+
+ .results-search {
+ padding: 6px 10px;
+ border: 1px solid var(--border);
+ border-radius: 4px;
+ font-size: 12px;
+ width: 120px;
+ }
+
+ .results-body {
+ flex: 1;
+ overflow-y: auto;
+ padding: 12px;
+ }
+
+ /* Property Card - ATTOM Style */
+ .property-card {
+ background: white;
+ border-radius: 8px;
+ margin-bottom: 12px;
+ overflow: hidden;
+ box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+ display: flex;
+ transition: box-shadow 0.2s;
+ }
+
+ .property-card:hover {
+ box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+ }
+
+ .property-checkbox {
+ padding: 12px;
+ display: flex;
+ align-items: flex-start;
+ }
+
+ .property-checkbox input {
+ width: 16px;
+ height: 16px;
+ }
+
+ .property-image {
+ width: 120px;
+ height: 100px;
+ background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
+ flex-shrink: 0;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ color: white;
+ font-size: 24px;
+ }
+
+ .property-image img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ }
+
+ .property-content {
+ flex: 1;
+ padding: 12px;
+ }
+
+ .property-address {
+ font-size: 14px;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 2px;
+ }
+
+ .property-city {
+ font-size: 12px;
+ color: var(--text-light);
+ margin-bottom: 6px;
+ }
+
+ .property-type {
+ font-size: 12px;
+ color: var(--text);
+ margin-bottom: 4px;
+ }
+
+ .property-owner {
+ font-size: 11px;
+ color: var(--text-light);
+ margin-bottom: 6px;
+ }
+
+ .property-details {
+ font-size: 11px;
+ color: var(--text);
+ margin-bottom: 4px;
+ }
+
+ .property-sold {
+ font-size: 11px;
+ color: var(--terracotta);
+ margin-bottom: 8px;
+ }
+
+ .property-link {
+ color: var(--accent);
+ font-size: 12px;
+ font-weight: 600;
+ text-decoration: none;
+ }
+
+ .property-link:hover {
+ text-decoration: underline;
+ }
+
+ /* Help Button */
+ .help-btn {
+ position: fixed;
+ bottom: 20px;
+ right: 20px;
+ width: 50px;
+ height: 50px;
+ background: var(--accent);
+ color: white;
+ border: none;
+ border-radius: 50%;
+ font-size: 20px;
+ font-weight: 700;
+ cursor: pointer;
+ box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+ z-index: 1000;
+ }
+
+ .help-btn:hover {
+ background: var(--accent-dark);
+ }
+
+ /* Popup Styles */
+ .leaflet-popup-content-wrapper {
+ border-radius: 8px;
+ }
+
+ .leaflet-popup-content {
+ margin: 0;
+ min-width: 200px;
+ }
+
+ .popup-content {
+ padding: 12px;
+ }
+
+ .popup-address {
+ font-size: 14px;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 4px;
+ }
+
+ .popup-details {
+ font-size: 12px;
+ color: var(--text-light);
+ margin-bottom: 10px;
+ }
+
+ .popup-link {
+ display: block;
+ background: var(--terracotta);
+ color: white;
+ text-decoration: none;
+ text-align: center;
+ padding: 8px;
+ border-radius: 6px;
+ font-size: 12px;
+ font-weight: 600;
+ }
+
+ /* Responsive */
+ @media (max-width: 1200px) {
+ .results-panel { width: 350px; }
+ .search-panel { width: 320px; }
+ }
+
+ @media (max-width: 992px) {
+ .main-container { flex-direction: column; }
+ .map-section { height: 40vh; }
+ .search-panel { width: 100%; height: auto; max-height: 30vh; }
+ .results-panel { width: 100%; height: 30vh; }
+ }</style>
+ <link rel="stylesheet" href="homebody_shared.css"></head>
 <body>
 <!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
@@ -494,557 +492,507 @@
 <!-- End Shared Header -->
 
 
-    <!-- Header -->
-    
+ <!-- Header -->
+ 
 
-    <!-- Navigation Tabs -->
-    <nav class="nav-tabs">
-        <a href="property_search.html" class="nav-tab">Property Search</a>
-        <a href="dadu_explorer_v3.html" class="nav-tab active">Map Search</a>
-        <a href="nashville_permit_explorer_v3.html" class="nav-tab">Permit Search</a>
-        <a href="dadu_near_me_locator.html" class="nav-tab">Near Me</a>
-        <a href="restrictive_covenants_v2.html" class="nav-tab">Covenant Search</a>
-        <a href="contractors.html" class="nav-tab">Contractor Search</a>
-    </nav>
+ <!-- Navigation Tabs -->
+ <nav class="nav-tabs">
+ <a href="property_search.html" class="nav-tab">Property Search</a>
+ <a href="dadu_explorer_v3.html" class="nav-tab active">Map Search</a>
+ <a href="nashville_permit_explorer_v3.html" class="nav-tab">Permit Search</a>
+ <a href="dadu_near_me_locator.html" class="nav-tab">Near Me</a>
+ <a href="restrictive_covenants_v2.html" class="nav-tab">Covenant Search</a>
+ <a href="contractors.html" class="nav-tab">Contractor Search</a></nav>
 
-    <!-- Main Container -->
-    <div class="main-container">
-        <!-- Map Section -->
-        <div class="map-section">
-            <div id="map"></div>
-            <div class="map-controls">
-                <button class="map-btn" onclick="drawShape()">
-                    <span>☐</span> Create a Shape
-                </button>
-                <button class="map-btn active" id="footprints-btn" onclick="toggleFootprints()">
-                    <span>&#9632;</span> Footprints
-                </button>
-                <button class="map-btn clear" onclick="clearMap()">
-                    <span>✕</span> Clear
-                </button>
-            </div>
-            <!-- Layer Legend -->
-            <div style="position:absolute;bottom:15px;left:15px;background:white;padding:12px 16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);z-index:1000;font-size:11px;">
-                <div style="font-weight:600;margin-bottom:8px;">Map Layers</div>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                    <div style="width:16px;height:16px;background:#4a4a4a;border-radius:2px;"></div>
-                    <span>Building Footprints</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                    <div style="width:16px;height:16px;background:#C58B2A;border-radius:50%;"></div>
-                    <span>Eligible (By Right)</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                    <div style="width:16px;height:16px;background:#f39c12;border-radius:50%;"></div>
-                    <span>Conditional (Overlay)</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;">
-                    <div style="width:16px;height:16px;background:#c0392b;border-radius:50%;"></div>
-                    <span>Not Eligible</span>
-                </div>
-            </div>
-        </div>
+ <!-- Main Container -->
+ <div class="main-container">
+ <!-- Map Section -->
+ <div class="map-section">
+ <div id="map"></div>
+ <div class="map-controls">
+ <button class="map-btn" onclick="drawShape()">
+ <span></span>Create a Shape</button>
+ <button class="map-btn active" id="footprints-btn" onclick="toggleFootprints()">
+ <span>&#9632;</span>Footprints</button>
+ <button class="map-btn clear" onclick="clearMap()">
+ <span></span>Clear</button></div>
+ <!-- Layer Legend -->
+ <div style="position:absolute;bottom:15px;left:15px;background:white;padding:12px 16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);z-index:1000;font-size:11px;">
+ <div style="font-weight:600;margin-bottom:8px;">Map Layers</div>
+ <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+ <div style="width:16px;height:16px;background:#4a4a4a;border-radius:2px;"></div>
+ <span>Building Footprints</span></div>
+ <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+ <div style="width:16px;height:16px;background:#CBB279;border-radius:50%;"></div>
+ <span>Eligible (By Right)</span></div>
+ <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+ <div style="width:16px;height:16px;background:#f39c12;border-radius:50%;"></div>
+ <span>Conditional (Overlay)</span></div>
+ <div style="display:flex;align-items:center;gap:8px;">
+ <div style="width:16px;height:16px;background:#c0392b;border-radius:50%;"></div>
+ <span>Not Eligible</span></div></div></div>
 
-        <!-- Search Criteria Panel -->
-        <div class="search-panel">
-            <div class="search-header">Search Criteria</div>
-            <div class="search-body">
-                <div class="search-row search-row-inline">
-                    <div>
-                        <label class="search-label">Zip Code(s)</label>
-                        <input type="text" class="search-input" id="zipcode" placeholder="37211">
-                    </div>
-                    <div>
-                        <label class="search-label">City</label>
-                        <select class="search-select" id="city">
-                            <option value="">All Nashville</option>
-                            <option value="37206">East Nashville</option>
-                            <option value="37209">The Nations</option>
-                            <option value="37211">South Nashville</option>
-                            <option value="37212">12 South</option>
-                        </select>
-                    </div>
-                </div>
+ <!-- Search Criteria Panel -->
+ <div class="search-panel">
+ <div class="search-header">Search Criteria</div>
+ <div class="search-body">
+ <div class="search-row search-row-inline">
+ <div>
+ <label class="search-label">Zip Code(s)</label>
+ <input type="text" class="search-input" id="zipcode" placeholder="37211"></div>
+ <div>
+ <label class="search-label">City</label>
+ <select class="search-select" id="city">
+ <option value="">All Nashville</option>
+ <option value="37206">East Nashville</option>
+ <option value="37209">The Nations</option>
+ <option value="37211">South Nashville</option>
+ <option value="37212">12 South</option></select></div></div>
 
-                <div class="search-row">
-                    <label class="search-label">Classification</label>
-                    <select class="search-select" id="classification">
-                        <option value="">All Single-Family</option>
-                        <option value="sfr">Single Family Residence</option>
-                        <option value="dadu">Has DADU</option>
-                    </select>
-                </div>
+ <div class="search-row">
+ <label class="search-label">Classification</label>
+ <select class="search-select" id="classification">
+ <option value="">All Single-Family</option>
+ <option value="sfr">Single Family Residence</option>
+ <option value="dadu">Has DADU</option></select></div>
 
-                <div class="search-row search-row-inline">
-                    <div>
-                        <label class="search-label">Square Footage</label>
-                        <input type="text" class="search-input" id="sqft-from" placeholder="From">
-                    </div>
-                    <div>
-                        <label class="search-label">&nbsp;</label>
-                        <input type="text" class="search-input" id="sqft-to" placeholder="To">
-                    </div>
-                </div>
+ <div class="search-row search-row-inline">
+ <div>
+ <label class="search-label">Square Footage</label>
+ <input type="text" class="search-input" id="sqft-from" placeholder="From"></div>
+ <div>
+ <label class="search-label">&nbsp;</label>
+ <input type="text" class="search-input" id="sqft-to" placeholder="To"></div></div>
 
-                <div class="search-row search-row-inline">
-                    <div>
-                        <label class="search-label">Lot Area</label>
-                        <input type="text" class="search-input" id="lot-from" placeholder="From">
-                    </div>
-                    <div>
-                        <label class="search-label">&nbsp;</label>
-                        <input type="text" class="search-input" id="lot-to" placeholder="To">
-                    </div>
-                </div>
+ <div class="search-row search-row-inline">
+ <div>
+ <label class="search-label">Lot Area</label>
+ <input type="text" class="search-input" id="lot-from" placeholder="From"></div>
+ <div>
+ <label class="search-label">&nbsp;</label>
+ <input type="text" class="search-input" id="lot-to" placeholder="To"></div></div>
 
-                <div class="search-row search-row-inline">
-                    <div>
-                        <label class="search-label">Year Built</label>
-                        <input type="text" class="search-input" id="year-from" placeholder="From">
-                    </div>
-                    <div>
-                        <label class="search-label">&nbsp;</label>
-                        <input type="text" class="search-input" id="year-to" placeholder="To">
-                    </div>
-                </div>
+ <div class="search-row search-row-inline">
+ <div>
+ <label class="search-label">Year Built</label>
+ <input type="text" class="search-input" id="year-from" placeholder="From"></div>
+ <div>
+ <label class="search-label">&nbsp;</label>
+ <input type="text" class="search-input" id="year-to" placeholder="To"></div></div>
 
-                <div class="search-row">
-                    <label class="search-label">Occupancy</label>
-                    <select class="search-select" id="occupancy">
-                        <option value="">Owner Occupied</option>
-                        <option value="owner">Owner Occupied</option>
-                        <option value="rental">Rental</option>
-                        <option value="vacant">Vacant</option>
-                    </select>
-                </div>
+ <div class="search-row">
+ <label class="search-label">Occupancy</label>
+ <select class="search-select" id="occupancy">
+ <option value="">Owner Occupied</option>
+ <option value="owner">Owner Occupied</option>
+ <option value="rental">Rental</option>
+ <option value="vacant">Vacant</option></select></div>
 
-                <div class="search-row search-row-inline">
-                    <div>
-                        <label class="search-label">DADU Cost</label>
-                        <input type="text" class="search-input" id="cost-from" placeholder="From">
-                    </div>
-                    <div>
-                        <label class="search-label">&nbsp;</label>
-                        <input type="text" class="search-input" id="cost-to" placeholder="To">
-                    </div>
-                </div>
+ <div class="search-row search-row-inline">
+ <div>
+ <label class="search-label">DADU Cost</label>
+ <input type="text" class="search-input" id="cost-from" placeholder="From"></div>
+ <div>
+ <label class="search-label">&nbsp;</label>
+ <input type="text" class="search-input" id="cost-to" placeholder="To"></div></div>
 
-                <div class="search-checkbox">
-                    <input type="checkbox" id="has-dadu">
-                    <label for="has-dadu">Has existing DADU</label>
-                </div>
+ <div class="search-checkbox">
+ <input type="checkbox" id="has-dadu">
+ <label for="has-dadu">Has existing DADU</label></div>
 
-                <div class="search-checkbox">
-                    <input type="checkbox" id="eligible-only" checked>
-                    <label for="eligible-only">DADU eligible parcels only</label>
-                </div>
+ <div class="search-checkbox">
+ <input type="checkbox" id="eligible-only" checked>
+ <label for="eligible-only">DADU eligible parcels only</label></div>
 
-                <div class="search-actions">
-                    <button class="search-btn secondary" onclick="clearFilters()">Clear</button>
-                    <button class="search-btn primary" onclick="runSearch()">
-                        <span>🔍</span> New Search
-                    </button>
-                </div>
-            </div>
-        </div>
+ <div class="search-actions">
+ <button class="search-btn secondary" onclick="clearFilters()">Clear</button>
+ <button class="search-btn primary" onclick="runSearch()">
+ <span></span>New Search</button></div></div></div>
 
-        <!-- Results Panel -->
-        <div class="results-panel">
-            <div class="results-header">
-                <div class="results-actions">
-                    <label class="results-checkbox">
-                        <input type="checkbox" id="select-all">
-                        Select All
-                    </label>
-                    <button class="results-btn csv">📊 CSV</button>
-                    <button class="results-btn">New Search</button>
-                </div>
-                <input type="text" class="results-search" placeholder="Search:">
-            </div>
-            <div class="results-body" id="results-list">
-                <!-- Property cards will be inserted here -->
-            </div>
-        </div>
-    </div>
+ <!-- Results Panel -->
+ <div class="results-panel">
+ <div class="results-header">
+ <div class="results-actions">
+ <label class="results-checkbox">
+ <input type="checkbox" id="select-all">
+ Select All</label>
+ <button class="results-btn csv">CSV</button>
+ <button class="results-btn">New Search</button></div>
+ <input type="text" class="results-search" placeholder="Search:"></div>
+ <div class="results-body" id="results-list">
+ <!-- Property cards will be inserted here --></div></div></div>
 
-    <!-- Help Button -->
-    <button class="help-btn" title="Help">?</button>
+ <!-- Help Button -->
+ <button class="help-btn" title="Help">?</button>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        // ArcGIS Feature Service URLs - LIVE DATA
-        const ARCGIS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0';
-        const FOOTPRINTS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Secondary_SFH_Merged_SHP_20251231_0015/FeatureServer/0';
-        const SECONDARY_STRUCTURES_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Secondary_On_SF_Parcels_SHP_20251230_2352/FeatureServer/0';
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+ <script>
+ // ArcGIS Feature Service URLs - LIVE DATA
+ const ARCGIS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0';
+ const FOOTPRINTS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Secondary_SFH_Merged_SHP_20251231_0015/FeatureServer/0';
+ const SECONDARY_STRUCTURES_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Secondary_On_SF_Parcels_SHP_20251230_2352/FeatureServer/0';
 
-        const COLORS = {
-            eligible: '#C58B2A',
-            conditional: '#f39c12',
-            notEligible: '#c0392b',
-            footprint: '#4a4a4a',
-            footprintSecondary: '#2d2d2d'
-        };
+ const COLORS = {
+ eligible: '#CBB279',
+ conditional: '#f39c12',
+ notEligible: '#c0392b',
+ footprint: '#4a4a4a',
+ footprintSecondary: '#2d2d2d'
+ };
 
-        let map;
-        let markersLayer;
-        let footprintsLayer;
-        let parcelBoundariesLayer;
-        let selectedParcel = null;
-        let visibleResults = [];
-        let isLoading = false;
-        let showFootprints = true;
+ let map;
+ let markersLayer;
+ let footprintsLayer;
+ let parcelBoundariesLayer;
+ let selectedParcel = null;
+ let visibleResults = [];
+ let isLoading = false;
+ let showFootprints = true;
 
-        // Query any ArcGIS service
-        async function queryService(serviceUrl, options = {}) {
-            const defaults = {
-                where: '1=1',
-                outFields: '*',
-                returnGeometry: true,
-                outSR: 4326,
-                f: 'geojson',
-                resultRecordCount: 500
-            };
-            const params = { ...defaults, ...options };
-            const queryString = new URLSearchParams(params).toString();
-            const response = await fetch(`${serviceUrl}/query?${queryString}`);
-            return await response.json();
-        }
+ // Query any ArcGIS service
+ async function queryService(serviceUrl, options = {}) {
+ const defaults = {
+ where: '1=1',
+ outFields: '*',
+ returnGeometry: true,
+ outSR: 4326,
+ f: 'geojson',
+ resultRecordCount: 500
+ };
+ const params = { ...defaults, ...options };
+ const queryString = new URLSearchParams(params).toString();
+ const response = await fetch(`${serviceUrl}/query?${queryString}`);
+ return await response.json();
+ }
 
-        // Query ArcGIS service (eligibility)
-        async function queryArcGIS(options = {}) {
-            const defaults = {
-                where: '1=1',
-                outFields: 'STANPAR,Address,Zoning,Acres,In_USD,Service_District,Eligibility_Status',
-                returnGeometry: true,
-                outSR: 4326,
-                f: 'geojson',
-                resultRecordCount: 200
-            };
-            const params = { ...defaults, ...options };
-            const queryString = new URLSearchParams(params).toString();
-            const response = await fetch(`${ARCGIS_SERVICE}/query?${queryString}`);
-            return await response.json();
-        }
+ // Query ArcGIS service (eligibility)
+ async function queryArcGIS(options = {}) {
+ const defaults = {
+ where: '1=1',
+ outFields: 'STANPAR,Address,Zoning,Acres,In_USD,Service_District,Eligibility_Status',
+ returnGeometry: true,
+ outSR: 4326,
+ f: 'geojson',
+ resultRecordCount: 200
+ };
+ const params = { ...defaults, ...options };
+ const queryString = new URLSearchParams(params).toString();
+ const response = await fetch(`${ARCGIS_SERVICE}/query?${queryString}`);
+ return await response.json();
+ }
 
-        // Initialize map
-        function initMap() {
-            map = L.map('map').setView([36.1627, -86.7816], 12);
+ // Initialize map
+ function initMap() {
+ map = L.map('map').setView([36.1627, -86.7816], 12);
 
-            // Light base map (Symbium-style pale purple/gray)
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap &copy; CARTO | Data: Nashville Metro',
-                maxZoom: 19
-            }).addTo(map);
+ // Light base map (Symbium-style pale purple/gray)
+ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+ attribution: '&copy; OpenStreetMap &copy; CARTO | Data: Nashville Metro',
+ maxZoom: 19
+ }).addTo(map);
 
-            // Layer for parcel boundaries (light purple like Symbium)
-            parcelBoundariesLayer = L.layerGroup().addTo(map);
+ // Layer for parcel boundaries (light purple like Symbium)
+ parcelBoundariesLayer = L.layerGroup().addTo(map);
 
-            // Layer for building footprints (dark gray like Symbium)
-            footprintsLayer = L.layerGroup().addTo(map);
+ // Layer for building footprints (dark gray like Symbium)
+ footprintsLayer = L.layerGroup().addTo(map);
 
-            // Layer for markers (on top)
-            markersLayer = L.layerGroup().addTo(map);
+ // Layer for markers (on top)
+ markersLayer = L.layerGroup().addTo(map);
 
-            // Load data on map move
-            let moveTimeout;
-            map.on('moveend', () => {
-                clearTimeout(moveTimeout);
-                moveTimeout = setTimeout(() => {
-                    if (map.getZoom() >= 15) {
-                        loadViewportData();
-                        if (showFootprints) loadBuildingFootprints();
-                    } else if (map.getZoom() >= 14) {
-                        loadViewportData();
-                        footprintsLayer.clearLayers();
-                        parcelBoundariesLayer.clearLayers();
-                    } else {
-                        footprintsLayer.clearLayers();
-                        parcelBoundariesLayer.clearLayers();
-                    }
-                }, 300);
-            });
+ // Load data on map move
+ let moveTimeout;
+ map.on('moveend', () =>{
+ clearTimeout(moveTimeout);
+ moveTimeout = setTimeout(() =>{
+ if (map.getZoom() >= 15) {
+ loadViewportData();
+ if (showFootprints) loadBuildingFootprints();
+ } else if (map.getZoom() >= 14) {
+ loadViewportData();
+ footprintsLayer.clearLayers();
+ parcelBoundariesLayer.clearLayers();
+ } else {
+ footprintsLayer.clearLayers();
+ parcelBoundariesLayer.clearLayers();
+ }
+ }, 300);
+ });
 
-            // Initial load
-            loadViewportData();
-        }
+ // Initial load
+ loadViewportData();
+ }
 
-        // Load building footprints (Symbium-style dark gray)
-        async function loadBuildingFootprints() {
-            if (map.getZoom() < 15) return;
+ // Load building footprints (Symbium-style dark gray)
+ async function loadBuildingFootprints() {
+ if (map.getZoom() < 15) return;
 
-            const bounds = map.getBounds();
-            const geometry = JSON.stringify({
-                xmin: bounds.getWest(),
-                ymin: bounds.getSouth(),
-                xmax: bounds.getEast(),
-                ymax: bounds.getNorth(),
-                spatialReference: { wkid: 4326 }
-            });
+ const bounds = map.getBounds();
+ const geometry = JSON.stringify({
+ xmin: bounds.getWest(),
+ ymin: bounds.getSouth(),
+ xmax: bounds.getEast(),
+ ymax: bounds.getNorth(),
+ spatialReference: { wkid: 4326 }
+ });
 
-            try {
-                // Load secondary structures (existing DADUs/buildings)
-                const data = await queryService(FOOTPRINTS_SERVICE, {
-                    geometry: geometry,
-                    geometryType: 'esriGeometryEnvelope',
-                    spatialRel: 'esriSpatialRelIntersects',
-                    resultRecordCount: 500
-                });
+ try {
+ // Load secondary structures (existing DADUs/buildings)
+ const data = await queryService(FOOTPRINTS_SERVICE, {
+ geometry: geometry,
+ geometryType: 'esriGeometryEnvelope',
+ spatialRel: 'esriSpatialRelIntersects',
+ resultRecordCount: 500
+ });
 
-                footprintsLayer.clearLayers();
+ footprintsLayer.clearLayers();
 
-                if (data.features) {
-                    data.features.forEach(feature => {
-                        const geom = feature.geometry;
-                        if (!geom) return;
+ if (data.features) {
+ data.features.forEach(feature =>{
+ const geom = feature.geometry;
+ if (!geom) return;
 
-                        // Handle different geometry types
-                        if (geom.type === 'Polygon') {
-                            const coords = geom.coordinates[0].map(c => [c[1], c[0]]);
-                            const polygon = L.polygon(coords, {
-                                fillColor: COLORS.footprint,
-                                fillOpacity: 0.85,
-                                color: COLORS.footprint,
-                                weight: 1
-                            });
-                            footprintsLayer.addLayer(polygon);
-                        } else if (geom.type === 'MultiPolygon') {
-                            geom.coordinates.forEach(poly => {
-                                const coords = poly[0].map(c => [c[1], c[0]]);
-                                const polygon = L.polygon(coords, {
-                                    fillColor: COLORS.footprint,
-                                    fillOpacity: 0.85,
-                                    color: COLORS.footprint,
-                                    weight: 1
-                                });
-                                footprintsLayer.addLayer(polygon);
-                            });
-                        } else if (geom.type === 'Point') {
-                            // For point data, create a small rectangle to represent building
-                            const lat = geom.coordinates[1];
-                            const lng = geom.coordinates[0];
-                            const size = 0.00008; // ~8 meters
-                            const rect = L.rectangle([
-                                [lat - size, lng - size * 1.2],
-                                [lat + size, lng + size * 1.2]
-                            ], {
-                                fillColor: COLORS.footprintSecondary,
-                                fillOpacity: 0.9,
-                                color: COLORS.footprintSecondary,
-                                weight: 1
-                            });
-                            footprintsLayer.addLayer(rect);
-                        }
-                    });
-                }
-            } catch (err) {
-                console.log('Footprints load error:', err);
-            }
-        }
+ // Handle different geometry types
+ if (geom.type === 'Polygon') {
+ const coords = geom.coordinates[0].map(c =>[c[1], c[0]]);
+ const polygon = L.polygon(coords, {
+ fillColor: COLORS.footprint,
+ fillOpacity: 0.85,
+ color: COLORS.footprint,
+ weight: 1
+ });
+ footprintsLayer.addLayer(polygon);
+ } else if (geom.type === 'MultiPolygon') {
+ geom.coordinates.forEach(poly =>{
+ const coords = poly[0].map(c =>[c[1], c[0]]);
+ const polygon = L.polygon(coords, {
+ fillColor: COLORS.footprint,
+ fillOpacity: 0.85,
+ color: COLORS.footprint,
+ weight: 1
+ });
+ footprintsLayer.addLayer(polygon);
+ });
+ } else if (geom.type === 'Point') {
+ // For point data, create a small rectangle to represent building
+ const lat = geom.coordinates[1];
+ const lng = geom.coordinates[0];
+ const size = 0.00008; // ~8 meters
+ const rect = L.rectangle([
+ [lat - size, lng - size * 1.2],
+ [lat + size, lng + size * 1.2]
+ ], {
+ fillColor: COLORS.footprintSecondary,
+ fillOpacity: 0.9,
+ color: COLORS.footprintSecondary,
+ weight: 1
+ });
+ footprintsLayer.addLayer(rect);
+ }
+ });
+ }
+ } catch (err) {
+ console.log('Footprints load error:', err);
+ }
+ }
 
-        // Toggle footprints visibility
-        function toggleFootprints() {
-            showFootprints = !showFootprints;
-            if (showFootprints) {
-                loadBuildingFootprints();
-                document.getElementById('footprints-btn').classList.add('active');
-            } else {
-                footprintsLayer.clearLayers();
-                document.getElementById('footprints-btn').classList.remove('active');
-            }
-        }
+ // Toggle footprints visibility
+ function toggleFootprints() {
+ showFootprints = !showFootprints;
+ if (showFootprints) {
+ loadBuildingFootprints();
+ document.getElementById('footprints-btn').classList.add('active');
+ } else {
+ footprintsLayer.clearLayers();
+ document.getElementById('footprints-btn').classList.remove('active');
+ }
+ }
 
-        // Load viewport data from live ArcGIS service
-        async function loadViewportData() {
-            if (isLoading || map.getZoom() < 14) {
-                if (map.getZoom() < 14) {
-                    document.getElementById('results-list').innerHTML = '<div style="padding:20px;text-align:center;color:#666;">Zoom in to see properties</div>';
-                }
-                return;
-            }
+ // Load viewport data from live ArcGIS service
+ async function loadViewportData() {
+ if (isLoading || map.getZoom() < 14) {
+ if (map.getZoom() < 14) {
+ document.getElementById('results-list').innerHTML = '<div style="padding:20px;text-align:center;color:#666;">Zoom in to see properties</div>';
+ }
+ return;
+ }
 
-            isLoading = true;
-            const bounds = map.getBounds();
+ isLoading = true;
+ const bounds = map.getBounds();
 
-            const geometry = JSON.stringify({
-                xmin: bounds.getWest(),
-                ymin: bounds.getSouth(),
-                xmax: bounds.getEast(),
-                ymax: bounds.getNorth(),
-                spatialReference: { wkid: 4326 }
-            });
+ const geometry = JSON.stringify({
+ xmin: bounds.getWest(),
+ ymin: bounds.getSouth(),
+ xmax: bounds.getEast(),
+ ymax: bounds.getNorth(),
+ spatialReference: { wkid: 4326 }
+ });
 
-            try {
-                // Build where clause from filters
-                let whereClause = '1=1';
-                const eligibleOnly = document.getElementById('eligible-only').checked;
-                if (eligibleOnly) {
-                    whereClause = "(In_USD = 1 OR Eligibility_Status LIKE '%ELIGIBLE_BY_RIGHT%' OR Eligibility_Status LIKE '%GSD_NEEDS_OVERLAY%')";
-                }
+ try {
+ // Build where clause from filters
+ let whereClause = '1=1';
+ const eligibleOnly = document.getElementById('eligible-only').checked;
+ if (eligibleOnly) {
+ whereClause = "(In_USD = 1 OR Eligibility_Status LIKE '%ELIGIBLE_BY_RIGHT%' OR Eligibility_Status LIKE '%GSD_NEEDS_OVERLAY%')";
+ }
 
-                const data = await queryArcGIS({
-                    where: whereClause,
-                    geometry: geometry,
-                    geometryType: 'esriGeometryEnvelope',
-                    spatialRel: 'esriSpatialRelIntersects'
-                });
+ const data = await queryArcGIS({
+ where: whereClause,
+ geometry: geometry,
+ geometryType: 'esriGeometryEnvelope',
+ spatialRel: 'esriSpatialRelIntersects'
+ });
 
-                if (data.features) {
-                    visibleResults = data.features;
-                    displayResults(data.features);
-                }
-            } catch (err) {
-                console.error('Load error:', err);
-                document.getElementById('results-list').innerHTML = '<div style="padding:20px;text-align:center;color:#c00;">Error loading data</div>';
-            } finally {
-                isLoading = false;
-            }
-        }
+ if (data.features) {
+ visibleResults = data.features;
+ displayResults(data.features);
+ }
+ } catch (err) {
+ console.error('Load error:', err);
+ document.getElementById('results-list').innerHTML = '<div style="padding:20px;text-align:center;color:#c00;">Error loading data</div>';
+ } finally {
+ isLoading = false;
+ }
+ }
 
-        // Display results on map and in list
-        function displayResults(features) {
-            markersLayer.clearLayers();
+ // Display results on map and in list
+ function displayResults(features) {
+ markersLayer.clearLayers();
 
-            const container = document.getElementById('results-list');
-            const lotMin = parseInt(document.getElementById('lot-from').value) || 0;
-            const lotMax = parseInt(document.getElementById('lot-to').value) || Infinity;
+ const container = document.getElementById('results-list');
+ const lotMin = parseInt(document.getElementById('lot-from').value) || 0;
+ const lotMax = parseInt(document.getElementById('lot-to').value) || Infinity;
 
-            // Filter results
-            const filtered = features.filter(f => {
-                const lotSf = f.properties.Acres ? Math.round(f.properties.Acres * 43560) : 0;
-                return lotSf >= lotMin && lotSf <= lotMax;
-            });
+ // Filter results
+ const filtered = features.filter(f =>{
+ const lotSf = f.properties.Acres ? Math.round(f.properties.Acres * 43560) : 0;
+ return lotSf >= lotMin && lotSf <= lotMax;
+ });
 
-            // Build cards and markers
-            const cards = filtered.map((feature, idx) => {
-                const props = feature.properties;
-                const coords = feature.geometry.coordinates;
+ // Build cards and markers
+ const cards = filtered.map((feature, idx) =>{
+ const props = feature.properties;
+ const coords = feature.geometry.coordinates;
 
-                // Determine eligibility class and color
-                let eligClass = 'not-eligible';
-                let color = COLORS.notEligible;
-                let eligLabel = 'Not Eligible';
+ // Determine eligibility class and color
+ let eligClass = 'not-eligible';
+ let color = COLORS.notEligible;
+ let eligLabel = 'Not Eligible';
 
-                if (props.In_USD === 1 || (props.Eligibility_Status && props.Eligibility_Status.includes('ELIGIBLE_BY_RIGHT'))) {
-                    eligClass = 'eligible';
-                    color = COLORS.eligible;
-                    eligLabel = 'Eligible';
-                } else if (props.Eligibility_Status && props.Eligibility_Status.includes('GSD_NEEDS_OVERLAY')) {
-                    eligClass = 'conditional';
-                    color = COLORS.conditional;
-                    eligLabel = 'Conditional';
-                }
+ if (props.In_USD === 1 || (props.Eligibility_Status && props.Eligibility_Status.includes('ELIGIBLE_BY_RIGHT'))) {
+ eligClass = 'eligible';
+ color = COLORS.eligible;
+ eligLabel = 'Eligible';
+ } else if (props.Eligibility_Status && props.Eligibility_Status.includes('GSD_NEEDS_OVERLAY')) {
+ eligClass = 'conditional';
+ color = COLORS.conditional;
+ eligLabel = 'Conditional';
+ }
 
-                // Add marker
-                const marker = L.circleMarker([coords[1], coords[0]], {
-                    radius: 8,
-                    fillColor: color,
-                    color: '#fff',
-                    weight: 2,
-                    fillOpacity: 0.9
-                });
+ // Add marker
+ const marker = L.circleMarker([coords[1], coords[0]], {
+ radius: 8,
+ fillColor: color,
+ color: '#fff',
+ weight: 2,
+ fillOpacity: 0.9
+ });
 
-                marker.featureIdx = idx;
-                marker.on('click', () => selectProperty(idx));
-                markersLayer.addLayer(marker);
+ marker.featureIdx = idx;
+ marker.on('click', () =>selectProperty(idx));
+ markersLayer.addLayer(marker);
 
-                // Calculate stats
-                const lotSf = props.Acres ? Math.round(props.Acres * 43560) : 0;
-                const maxDadu = lotSf >= 43560 ? 1200 : (lotSf >= 20000 ? 900 : (lotSf >= 10000 ? 700 : 600));
-                const estCost = maxDadu * 175;
+ // Calculate stats
+ const lotSf = props.Acres ? Math.round(props.Acres * 43560) : 0;
+ const maxDadu = lotSf >= 43560 ? 1200 : (lotSf >= 20000 ? 900 : (lotSf >= 10000 ? 700 : 600));
+ const estCost = maxDadu * 175;
 
-                return `
-                    <div class="property-card" data-idx="${idx}" onclick="selectProperty(${idx})">
-                        <div class="property-checkbox">
-                            <input type="checkbox" onclick="event.stopPropagation()">
-                        </div>
-                        <div class="property-image" style="background:${color};">
-                            <span style="color:white;font-size:10px;text-align:center;">${eligLabel}</span>
-                        </div>
-                        <div class="property-content">
-                            <div class="property-address">${props.Address || 'No Address'}</div>
-                            <div class="property-city">NASHVILLE, TN</div>
-                            <div class="property-type">Single Family | ${props.Zoning || 'N/A'}</div>
-                            <div class="property-details">${lotSf.toLocaleString()} SF lot | Max DADU: ${maxDadu} SF</div>
-                            <div class="property-sold">Est. DADU Cost: $${estCost.toLocaleString()}</div>
-                            <a href="property-report-card.html?apn=${props.STANPAR}&address=${encodeURIComponent(props.Address || '')}" class="property-link" onclick="event.stopPropagation()">View Property Report</a>
-                        </div>
-                    </div>
-                `;
-            });
+ return `
+ <div class="property-card" data-idx="${idx}" onclick="selectProperty(${idx})">
+ <div class="property-checkbox">
+ <input type="checkbox" onclick="event.stopPropagation()"></div>
+ <div class="property-image" style="background:${color};">
+ <span style="color:white;font-size:10px;text-align:center;">${eligLabel}</span></div>
+ <div class="property-content">
+ <div class="property-address">${props.Address || 'No Address'}</div>
+ <div class="property-city">NASHVILLE, TN</div>
+ <div class="property-type">Single Family | ${props.Zoning || 'N/A'}</div>
+ <div class="property-details">${lotSf.toLocaleString()} SF lot | Max DADU: ${maxDadu} SF</div>
+ <div class="property-sold">Est. DADU Cost: $${estCost.toLocaleString()}</div>
+ <a href="property-report-card.html?apn=${props.STANPAR}&address=${encodeURIComponent(props.Address || '')}" class="property-link" onclick="event.stopPropagation()">View Property Report</a></div></div>
+ `;
+ });
 
-            container.innerHTML = cards.length > 0 ? cards.join('') : '<div style="padding:20px;text-align:center;color:#666;">No properties found. Adjust filters or pan map.</div>';
-        }
+ container.innerHTML = cards.length >0 ? cards.join('') : '<div style="padding:20px;text-align:center;color:#666;">No properties found. Adjust filters or pan map.</div>';
+ }
 
-        // Select a property
-        function selectProperty(idx) {
-            const feature = visibleResults[idx];
-            if (!feature) return;
+ // Select a property
+ function selectProperty(idx) {
+ const feature = visibleResults[idx];
+ if (!feature) return;
 
-            // Highlight card
-            document.querySelectorAll('.property-card').forEach(c => c.classList.remove('selected'));
-            const card = document.querySelector(`.property-card[data-idx="${idx}"]`);
-            if (card) {
-                card.classList.add('selected');
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+ // Highlight card
+ document.querySelectorAll('.property-card').forEach(c =>c.classList.remove('selected'));
+ const card = document.querySelector(`.property-card[data-idx="${idx}"]`);
+ if (card) {
+ card.classList.add('selected');
+ card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ }
 
-            // Pan to property
-            const coords = feature.geometry.coordinates;
-            map.setView([coords[1], coords[0]], 17);
+ // Pan to property
+ const coords = feature.geometry.coordinates;
+ map.setView([coords[1], coords[0]], 17);
 
-            // Draw Symbium-style parcel highlight (dashed border)
-            if (selectedParcel) map.removeLayer(selectedParcel);
+ // Draw Symbium-style parcel highlight (dashed border)
+ if (selectedParcel) map.removeLayer(selectedParcel);
 
-            const lat = coords[1];
-            const lng = coords[0];
-            const offset = 0.0003; // Approximate parcel size
-            selectedParcel = L.rectangle([
-                [lat - offset, lng - offset],
-                [lat + offset, lng + offset]
-            ], {
-                color: '#C58B2A',
-                weight: 3,
-                dashArray: '8, 4',
-                fillColor: '#C58B2A',
-                fillOpacity: 0.1
-            }).addTo(map);
-        }
+ const lat = coords[1];
+ const lng = coords[0];
+ const offset = 0.0003; // Approximate parcel size
+ selectedParcel = L.rectangle([
+ [lat - offset, lng - offset],
+ [lat + offset, lng + offset]
+ ], {
+ color: '#CBB279',
+ weight: 3,
+ dashArray: '8, 4',
+ fillColor: '#CBB279',
+ fillOpacity: 0.1
+ }).addTo(map);
+ }
 
-        // Focus on property from map click
-        function focusProperty(lat, lng) {
-            map.setView([lat, lng], 17);
-        }
+ // Focus on property from map click
+ function focusProperty(lat, lng) {
+ map.setView([lat, lng], 17);
+ }
 
-        // Run search with filters
-        function runSearch() {
-            loadViewportData();
-        }
+ // Run search with filters
+ function runSearch() {
+ loadViewportData();
+ }
 
-        // Clear all filters
-        function clearFilters() {
-            document.querySelectorAll('.search-input').forEach(input => input.value = '');
-            document.querySelectorAll('.search-select').forEach(select => select.selectedIndex = 0);
-            document.getElementById('eligible-only').checked = true;
-            loadViewportData();
-        }
+ // Clear all filters
+ function clearFilters() {
+ document.querySelectorAll('.search-input').forEach(input =>input.value = '');
+ document.querySelectorAll('.search-select').forEach(select =>select.selectedIndex = 0);
+ document.getElementById('eligible-only').checked = true;
+ loadViewportData();
+ }
 
-        function drawShape() {
-            alert('Draw mode: Click on map to define a custom search area.');
-        }
+ function drawShape() {
+ alert('Draw mode: Click on map to define a custom search area.');
+ }
 
-        function clearMap() {
-            if (selectedParcel) map.removeLayer(selectedParcel);
-            map.setView([36.1627, -86.7816], 12);
-        }
+ function clearMap() {
+ if (selectedParcel) map.removeLayer(selectedParcel);
+ map.setView([36.1627, -86.7816], 12);
+ }
 
-        // Add selected card styling
-        const style = document.createElement('style');
-        style.textContent = '.property-card.selected { border: 2px solid #C58B2A; background: #f5fff5; }';
-        document.head.appendChild(style);
+ // Add selected card styling
+ const style = document.createElement('style');
+ style.textContent = '.property-card.selected { border: 2px solid #CBB279; background: #f5fff5; }';
+ document.head.appendChild(style);
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', initMap);
-    </script>
-    <script src="homebody_header.js"></script>
-</body>
-</html>
+ // Initialize
+ document.addEventListener('DOMContentLoaded', initMap);</script>
+ <script src="homebody_header.js"></script></body></html>

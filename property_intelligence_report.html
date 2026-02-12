@@ -1,137 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Intelligence Report - Castlehold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="homebody_shared.css">
-    <style>
-        body {
-            font-family: 'Montserrat', Arial, sans-serif;
-            background-color: #F2F0ED;
-            color: #333;
-            margin: 0;
-            line-height: 1.6;
-        }
-        .page-container { max-width: 960px; margin: 0 auto; padding: 40px 30px; }
-        .hero { text-align: center; margin-bottom: 40px; }
-        .hero h1 { font-size: 32px; font-weight: 800; color: #3A5566; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
-        .hero .subtitle { font-size: 14px; color: #7B746D; font-weight: 600; letter-spacing: 1px; }
-        .divider { width: 80px; height: 3px; background: #7B746D; margin: 20px auto; }
-        .search-section {
-            background: #f5f5f0; border-radius: 8px; padding: 30px; text-align: center; margin-bottom: 40px;
-        }
-        .search-section h2 { color: #3A5566; font-size: 20px; margin-bottom: 16px; }
-        .search-row { display: flex; gap: 12px; max-width: 500px; margin: 0 auto; }
-        .search-row input {
-            flex: 1; padding: 12px 16px; border: 2px solid #ddd; border-radius: 6px;
-            font-size: 14px; font-family: inherit;
-        }
-        .search-row input:focus { border-color: #C58B2A; outline: none; }
-        .search-row button {
-            background: #C58B2A; color: #fff; border: none; padding: 12px 24px;
-            border-radius: 6px; font-weight: 700; font-size: 14px; cursor: pointer;
-        }
-        .search-row button:hover { background: #a87623; }
-        .report-preview { margin-top: 40px; }
-        .report-preview h2 { color: #3A5566; font-size: 22px; margin-bottom: 20px; }
-        .section-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .section-card {
-            background: #fff; border-radius: 8px; padding: 24px; border: 1px solid #e0ddd8;
-        }
-        .section-card h3 { color: #3A5566; font-size: 16px; margin-bottom: 8px; }
-        .section-card p { color: #666; font-size: 13px; }
-        .section-card .tag {
-            display: inline-block; background: #3A5566; color: #fff; padding: 3px 10px;
-            border-radius: 12px; font-size: 11px; font-weight: 600; margin-top: 10px;
-        }
-        .price-banner {
-            text-align: center; margin-top: 40px; padding: 30px;
-            background: #3A5566; border-radius: 8px; color: #fff;
-        }
-        .price-banner .price { font-size: 36px; font-weight: 800; color: #C58B2A; }
-        .price-banner p { margin-top: 8px; font-size: 14px; opacity: 0.85; }
-        .price-banner a {
-            display: inline-block; margin-top: 16px; background: #C58B2A; color: #fff;
-            padding: 12px 32px; border-radius: 6px; text-decoration: none; font-weight: 700;
-        }
-        .footer { text-align: center; margin-top: 60px; padding: 20px; color: #7B746D; font-size: 12px; }
-        .footer .brand { font-weight: 700; color: #3A5566; }
-    </style>
-</head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Property Intelligence Report - Castlehold</title>
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
+ <style>
+ body {
+ font-family: 'Montserrat', Arial, sans-serif;
+ background-color: #F2F0ED;
+ color: #333;
+ margin: 0;
+ line-height: 1.6;
+ }
+ .page-container { max-width: 960px; margin: 0 auto; padding: 40px 30px; }
+ .hero { text-align: center; margin-bottom: 40px; }
+ .hero h1 { font-size: 32px; font-weight: 800; color: #3A5566; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+ .hero .subtitle { font-size: 14px; color: #7B746D; font-weight: 600; letter-spacing: 1px; }
+ .divider { width: 80px; height: 3px; background: #7B746D; margin: 20px auto; }
+ .search-section {
+ background: #F0EBE1; border-radius: 8px; padding: 30px; text-align: center; margin-bottom: 40px;
+ }
+ .search-section h2 { color: #3A5566; font-size: 20px; margin-bottom: 16px; }
+ .search-row { display: flex; gap: 12px; max-width: 500px; margin: 0 auto; }
+ .search-row input {
+ flex: 1; padding: 12px 16px; border: 2px solid #ddd; border-radius: 6px;
+ font-size: 14px; font-family: inherit;
+ }
+ .search-row input:focus { border-color: #CBB279; outline: none; }
+ .search-row button {
+ background: #CBB279; color: #fff; border: none; padding: 12px 24px;
+ border-radius: 6px; font-weight: 700; font-size: 14px; cursor: pointer;
+ }
+ .search-row button:hover { background: #a87623; }
+ .report-preview { margin-top: 40px; }
+ .report-preview h2 { color: #3A5566; font-size: 22px; margin-bottom: 20px; }
+ .section-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+ .section-card {
+ background: #fff; border-radius: 8px; padding: 24px; border: 1px solid #e0ddd8;
+ }
+ .section-card h3 { color: #3A5566; font-size: 16px; margin-bottom: 8px; }
+ .section-card p { color: #666; font-size: 13px; }
+ .section-card .tag {
+ display: inline-block; background: #3A5566; color: #fff; padding: 3px 10px;
+ border-radius: 12px; font-size: 11px; font-weight: 600; margin-top: 10px;
+ }
+ .price-banner {
+ text-align: center; margin-top: 40px; padding: 30px;
+ background: #3A5566; border-radius: 8px; color: #fff;
+ }
+ .price-banner .price { font-size: 36px; font-weight: 800; color: #CBB279; }
+ .price-banner p { margin-top: 8px; font-size: 14px; opacity: 0.85; }
+ .price-banner a {
+ display: inline-block; margin-top: 16px; background: #CBB279; color: #fff;
+ padding: 12px 32px; border-radius: 6px; text-decoration: none; font-weight: 700;
+ }
+ .footer { text-align: center; margin-top: 60px; padding: 20px; color: #7B746D; font-size: 12px; }
+ .footer .brand { font-weight: 700; color: #3A5566; }</style></head>
 <body>
 <div id="site-header"></div>
 
 <div class="page-container">
-    <div class="hero">
-        <h1>Property Intelligence Report</h1>
-        <p class="subtitle">Comprehensive DADU Buildability Analysis</p>
-        <div class="divider"></div>
-    </div>
+ <div class="hero">
+ <h1>Property Intelligence Report</h1>
+ <p class="subtitle">Comprehensive DADU Buildability Analysis</p>
+ <div class="divider"></div></div>
 
-    <div class="search-section">
-        <h2>Generate Your Report</h2>
-        <div class="search-row">
-            <input type="text" id="address-input" placeholder="Enter address or APN...">
-            <button onclick="generateReport()">Generate</button>
-        </div>
-    </div>
+ <div class="search-section">
+ <h2>Generate Your Report</h2>
+ <div class="search-row">
+ <input type="text" id="address-input" placeholder="Enter address or APN...">
+ <button onclick="generateReport()">Generate</button></div></div>
 
-    <div class="report-preview">
-        <h2>What's Included</h2>
-        <div class="section-grid">
-            <div class="section-card">
-                <h3>Eligibility Analysis</h3>
-                <p>Zoning classification, USD/GSD status, overlay district check, and eligibility determination under BL2025-1007.</p>
-                <span class="tag">Eligibility</span>
-            </div>
-            <div class="section-card">
-                <h3>Building Specifications</h3>
-                <p>Maximum DADU size, footprint allowance, height limits, setback requirements, and impervious surface calculations.</p>
-                <span class="tag">Specs</span>
-            </div>
-            <div class="section-card">
-                <h3>Parcel Details</h3>
-                <p>Lot dimensions, acreage, land use code, existing structures, and secondary building detection.</p>
-                <span class="tag">Parcel</span>
-            </div>
-            <div class="section-card">
-                <h3>Permit History</h3>
-                <p>All building permits on record, including ADU-related permits, status, and contractor information.</p>
-                <span class="tag">Permits</span>
-            </div>
-            <div class="section-card">
-                <h3>Ownership &amp; Covenants</h3>
-                <p>Current owner, deed history, and any recorded restrictive covenants that may affect DADU construction.</p>
-                <span class="tag">Legal</span>
-            </div>
-            <div class="section-card">
-                <h3>Neighborhood Context</h3>
-                <p>Nearby DADUs, ADU activity indicators, comparable properties, and neighborhood statistics.</p>
-                <span class="tag">Context</span>
-            </div>
-        </div>
-    </div>
+ <div class="report-preview">
+ <h2>What's Included</h2>
+ <div class="section-grid">
+ <div class="section-card">
+ <h3>Eligibility Analysis</h3>
+ <p>Zoning classification, USD/GSD status, overlay district check, and eligibility determination under BL2025-1007.</p>
+ <span class="tag">Eligibility</span></div>
+ <div class="section-card">
+ <h3>Building Specifications</h3>
+ <p>Maximum DADU size, footprint allowance, height limits, setback requirements, and impervious surface calculations.</p>
+ <span class="tag">Specs</span></div>
+ <div class="section-card">
+ <h3>Parcel Details</h3>
+ <p>Lot dimensions, acreage, land use code, existing structures, and secondary building detection.</p>
+ <span class="tag">Parcel</span></div>
+ <div class="section-card">
+ <h3>Permit History</h3>
+ <p>All building permits on record, including ADU-related permits, status, and contractor information.</p>
+ <span class="tag">Permits</span></div>
+ <div class="section-card">
+ <h3>Ownership &amp; Covenants</h3>
+ <p>Current owner, deed history, and any recorded restrictive covenants that may affect DADU construction.</p>
+ <span class="tag">Legal</span></div>
+ <div class="section-card">
+ <h3>Neighborhood Context</h3>
+ <p>Nearby DADUs, ADU activity indicators, comparable properties, and neighborhood statistics.</p>
+ <span class="tag">Context</span></div></div></div>
 
-    <div class="price-banner">
-        <div class="price">$4.99</div>
-        <p>One-time purchase &middot; Instant PDF download &middot; Full parcel analysis</p>
-        <a href="dadu_reports_store.html">View All Reports &rarr;</a>
-    </div>
+ <div class="price-banner">
+ <div class="price">$4.99</div>
+ <p>One-time purchase &middot; Instant PDF download &middot; Full parcel analysis</p>
+ <a href="dadu_reports_store.html">View All Reports</a></div>
 
-    <div class="footer">
-        <p><span class="brand">CASTLEHOLD</span> &middot; Nashville-Davidson County &middot; 2026</p>
-    </div>
-</div>
+ <div class="footer">
+ <p><span class="brand">CASTLEHOLD</span>&middot; Nashville-Davidson County &middot; 2026</p></div></div>
 
 <script src="homebody_header.js"></script>
 <script>
 function generateReport() {
-    var input = document.getElementById('address-input').value.trim();
-    if (!input) { alert('Please enter an address or APN.'); return; }
-    alert('Report generation coming soon. Search: ' + input);
-}
-</script>
-</body>
-</html>
+ var input = document.getElementById('address-input').value.trim();
+ if (!input) { alert('Please enter an address or APN.'); return; }
+ alert('Report generation coming soon. Search: ' + input);
+}</script></body></html>

@@ -1,444 +1,442 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pricing | Castlehold</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif; 
-            background: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #3A5566 0%, #4A6B7D 100%);
-            color: white;
-            padding: 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        }
-        .header-top {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: white;
-        }
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: #C58B2A;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
-        .logo-text {
-            font-size: 22px;
-            font-weight: 600;
-        }
-        .nav {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-        .nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            opacity: 0.9;
-            transition: opacity 0.2s;
-        }
-        .nav a:hover { opacity: 1; }
-        .nav a.active { 
-            font-weight: 600;
-            opacity: 1;
-        }
-        .nav-btn {
-            padding: 8px 20px;
-            background: #C58B2A;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-        .nav-btn:hover { background: #5a7d3f; }
-        
-        /* Breadcrumb */
-        .breadcrumb {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px 30px;
-            font-size: 13px;
-            color: #888;
-        }
-        .breadcrumb a {
-            color: #C58B2A;
-            text-decoration: none;
-        }
-        .breadcrumb a:hover { text-decoration: underline; }
-        
-        /* Page Title */
-        .page-title {
-            text-align: center;
-            padding: 40px 20px 30px;
-        }
-        .page-title h1 {
-            font-size: 36px;
-            font-weight: 700;
-            color: #3A5566;
-            margin-bottom: 10px;
-        }
-        .page-title p {
-            font-size: 16px;
-            color: #666;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        /* Pricing Grid */
-        .pricing-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 30px 60px;
-        }
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-        }
-        
-        /* Pricing Card */
-        .pricing-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-        }
-        .pricing-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-        }
-        .pricing-card.featured {
-            border: 2px solid #C58B2A;
-        }
-        .pricing-card.featured .card-header {
-            background: linear-gradient(135deg, #C58B2A 0%, #5a7d3f 100%);
-            color: white;
-        }
-        .card-header {
-            padding: 20px 25px;
-            background: #fafafa;
-            border-bottom: 1px solid #eee;
-        }
-        .card-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            background: #7B746D;
-            color: white;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #3A5566;
-            margin-bottom: 8px;
-        }
-        .pricing-card.featured .card-title {
-            color: white;
-        }
-        .card-body {
-            padding: 25px;
-            flex: 1;
-        }
-        .card-description {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-        .card-features {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-        .card-features li {
-            font-size: 13px;
-            color: #555;
-            padding: 6px 0;
-            padding-left: 24px;
-            position: relative;
-        }
-        .card-features li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #C58B2A;
-            font-weight: 600;
-        }
-        .card-footer {
-            padding: 20px 25px;
-            background: #fafafa;
-            border-top: 1px solid #eee;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .card-price {
-            font-size: 28px;
-            font-weight: 700;
-            color: #3A5566;
-        }
-        .card-price span {
-            font-size: 14px;
-            font-weight: 400;
-            color: #888;
-        }
-        .card-btn {
-            padding: 10px 24px;
-            background: #C58B2A;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-            text-decoration: none;
-        }
-        .card-btn:hover { background: #5a7d3f; }
-        .card-btn.outline {
-            background: white;
-            color: #C58B2A;
-            border: 1px solid #C58B2A;
-        }
-        .card-btn.outline:hover {
-            background: #f0f7f0;
-        }
-        
-        /* Subscription Section */
-        .subscription-section {
-            background: linear-gradient(135deg, #3A5566 0%, #4A6B7D 100%);
-            padding: 60px 30px;
-            margin-top: 40px;
-        }
-        .subscription-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .subscription-title {
-            text-align: center;
-            color: white;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .subscription-subtitle {
-            text-align: center;
-            color: rgba(255,255,255,0.8);
-            font-size: 16px;
-            margin-bottom: 40px;
-        }
-        .subscription-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .sub-card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-        }
-        .sub-card.featured {
-            background: #C58B2A;
-            color: white;
-            transform: scale(1.05);
-        }
-        .sub-card-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .sub-card-price {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .sub-card-period {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 20px;
-        }
-        .sub-card.featured .sub-card-period {
-            color: rgba(255,255,255,0.8);
-        }
-        .sub-card-features {
-            list-style: none;
-            text-align: left;
-            margin-bottom: 25px;
-        }
-        .sub-card-features li {
-            padding: 8px 0;
-            font-size: 14px;
-            padding-left: 28px;
-            position: relative;
-        }
-        .sub-card-features li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #C58B2A;
-            font-weight: 600;
-        }
-        .sub-card.featured .sub-card-features li::before {
-            color: white;
-        }
-        .sub-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .sub-btn.primary {
-            background: #C58B2A;
-            color: white;
-        }
-        .sub-btn.primary:hover { background: #5a7d3f; }
-        .sub-card.featured .sub-btn {
-            background: white;
-            color: #C58B2A;
-        }
-        .sub-card.featured .sub-btn:hover {
-            background: #f0f0f0;
-        }
-        
-        /* Free Tools Banner */
-        .free-tools {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 30px;
-        }
-        .free-tools-card {
-            background: linear-gradient(135deg, #7B746D 0%, #5a7d8f 100%);
-            border-radius: 12px;
-            padding: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: white;
-        }
-        .free-tools-content h3 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .free-tools-content p {
-            font-size: 14px;
-            opacity: 0.9;
-            max-width: 500px;
-        }
-        .free-tools-btn {
-            padding: 12px 30px;
-            background: white;
-            color: #7B746D;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .free-tools-btn:hover { background: #f0f0f0; }
-        
-        /* Footer */
-        .footer {
-            background: #3A5566;
-            color: white;
-            padding: 50px 30px 30px;
-            margin-top: 60px;
-        }
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-        }
-        .footer-section h4 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #C58B2A;
-        }
-        .footer-section a {
-            display: block;
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            font-size: 13px;
-            padding: 5px 0;
-        }
-        .footer-section a:hover { color: white; }
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 40px auto 0;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: rgba(255,255,255,0.6);
-        }
-        .footer-social {
-            display: flex;
-            gap: 15px;
-        }
-        .footer-social a {
-            color: rgba(255,255,255,0.6);
-            font-size: 18px;
-        }
-        .footer-social a:hover { color: white; }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-top { flex-direction: column; gap: 15px; }
-            .nav { flex-wrap: wrap; justify-content: center; }
-            .pricing-grid { grid-template-columns: 1fr; }
-            .free-tools-card { flex-direction: column; text-align: center; gap: 20px; }
-            .subscription-grid { grid-template-columns: 1fr; }
-            .sub-card.featured { transform: none; }
-        }
-    </style>
-    <link rel="stylesheet" href="homebody_shared.css">
-</head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Pricing | Castlehold</title>
+ <style>
+ * { margin: 0; padding: 0; box-sizing: border-box; }
+ body { 
+ font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif; 
+ background: #f8f9fa;
+ color: #333;
+ line-height: 1.6;
+ }
+ 
+ /* Header */
+ .header {
+ background: linear-gradient(135deg, #3A5566 0%, #4A6B7D 100%);
+ color: white;
+ padding: 0;
+ position: sticky;
+ top: 0;
+ z-index: 1000;
+ box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+ }
+ .header-top {
+ max-width: 1200px;
+ margin: 0 auto;
+ padding: 15px 30px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ }
+ .logo {
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ text-decoration: none;
+ color: white;
+ }
+ .logo-icon {
+ width: 40px;
+ height: 40px;
+ background: #CBB279;
+ border-radius: 10px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 22px;
+ }
+ .logo-text {
+ font-size: 22px;
+ font-weight: 600;
+ }
+ .nav {
+ display: flex;
+ align-items: center;
+ gap: 30px;
+ }
+ .nav a {
+ color: white;
+ text-decoration: none;
+ font-size: 14px;
+ opacity: 0.9;
+ transition: opacity 0.2s;
+ }
+ .nav a:hover { opacity: 1; }
+ .nav a.active { 
+ font-weight: 600;
+ opacity: 1;
+ }
+ .nav-btn {
+ padding: 8px 20px;
+ background: #CBB279;
+ border-radius: 6px;
+ font-weight: 500;
+ }
+ .nav-btn:hover { background: #5a7d3f; }
+ 
+ /* Breadcrumb */
+ .breadcrumb {
+ max-width: 1200px;
+ margin: 0 auto;
+ padding: 15px 30px;
+ font-size: 13px;
+ color: #888;
+ }
+ .breadcrumb a {
+ color: #CBB279;
+ text-decoration: none;
+ }
+ .breadcrumb a:hover { text-decoration: underline; }
+ 
+ /* Page Title */
+ .page-title {
+ text-align: center;
+ padding: 40px 20px 30px;
+ }
+ .page-title h1 {
+ font-size: 36px;
+ font-weight: 700;
+ color: #3A5566;
+ margin-bottom: 10px;
+ }
+ .page-title p {
+ font-size: 16px;
+ color: #666;
+ max-width: 600px;
+ margin: 0 auto;
+ }
+ 
+ /* Pricing Grid */
+ .pricing-section {
+ max-width: 1200px;
+ margin: 0 auto;
+ padding: 20px 30px 60px;
+ }
+ .pricing-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+ gap: 25px;
+ }
+ 
+ /* Pricing Card */
+ .pricing-card {
+ background: white;
+ border-radius: 12px;
+ box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+ overflow: hidden;
+ transition: transform 0.2s, box-shadow 0.2s;
+ display: flex;
+ flex-direction: column;
+ }
+ .pricing-card:hover {
+ transform: translateY(-4px);
+ box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+ }
+ .pricing-card.featured {
+ border: 2px solid #CBB279;
+ }
+ .pricing-card.featured .card-header {
+ background: linear-gradient(135deg, #CBB279 0%, #5a7d3f 100%);
+ color: white;
+ }
+ .card-header {
+ padding: 20px 25px;
+ background: #fafafa;
+ border-bottom: 1px solid #eee;
+ }
+ .card-badge {
+ display: inline-block;
+ padding: 4px 10px;
+ background: #7B746D;
+ color: white;
+ font-size: 10px;
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ border-radius: 4px;
+ margin-bottom: 10px;
+ }
+ .card-title {
+ font-size: 18px;
+ font-weight: 600;
+ color: #3A5566;
+ margin-bottom: 8px;
+ }
+ .pricing-card.featured .card-title {
+ color: white;
+ }
+ .card-body {
+ padding: 25px;
+ flex: 1;
+ }
+ .card-description {
+ font-size: 14px;
+ color: #666;
+ line-height: 1.7;
+ margin-bottom: 20px;
+ }
+ .card-features {
+ list-style: none;
+ margin-bottom: 20px;
+ }
+ .card-features li {
+ font-size: 13px;
+ color: #555;
+ padding: 6px 0;
+ padding-left: 24px;
+ position: relative;
+ }
+ .card-features li::before {
+ content: "";
+ position: absolute;
+ left: 0;
+ color: #CBB279;
+ font-weight: 600;
+ }
+ .card-footer {
+ padding: 20px 25px;
+ background: #fafafa;
+ border-top: 1px solid #eee;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ }
+ .card-price {
+ font-size: 28px;
+ font-weight: 700;
+ color: #3A5566;
+ }
+ .card-price span {
+ font-size: 14px;
+ font-weight: 400;
+ color: #888;
+ }
+ .card-btn {
+ padding: 10px 24px;
+ background: #CBB279;
+ color: white;
+ border: none;
+ border-radius: 6px;
+ font-size: 14px;
+ font-weight: 500;
+ cursor: pointer;
+ transition: background 0.2s;
+ text-decoration: none;
+ }
+ .card-btn:hover { background: #5a7d3f; }
+ .card-btn.outline {
+ background: white;
+ color: #CBB279;
+ border: 1px solid #CBB279;
+ }
+ .card-btn.outline:hover {
+ background: #f0f7f0;
+ }
+ 
+ /* Subscription Section */
+ .subscription-section {
+ background: linear-gradient(135deg, #3A5566 0%, #4A6B7D 100%);
+ padding: 60px 30px;
+ margin-top: 40px;
+ }
+ .subscription-content {
+ max-width: 1200px;
+ margin: 0 auto;
+ }
+ .subscription-title {
+ text-align: center;
+ color: white;
+ font-size: 28px;
+ font-weight: 600;
+ margin-bottom: 10px;
+ }
+ .subscription-subtitle {
+ text-align: center;
+ color: rgba(255,255,255,0.8);
+ font-size: 16px;
+ margin-bottom: 40px;
+ }
+ .subscription-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+ gap: 25px;
+ max-width: 800px;
+ margin: 0 auto;
+ }
+ .sub-card {
+ background: white;
+ border-radius: 12px;
+ padding: 30px;
+ text-align: center;
+ }
+ .sub-card.featured {
+ background: #CBB279;
+ color: white;
+ transform: scale(1.05);
+ }
+ .sub-card-title {
+ font-size: 20px;
+ font-weight: 600;
+ margin-bottom: 10px;
+ }
+ .sub-card-price {
+ font-size: 42px;
+ font-weight: 700;
+ margin-bottom: 5px;
+ }
+ .sub-card-period {
+ font-size: 14px;
+ color: #888;
+ margin-bottom: 20px;
+ }
+ .sub-card.featured .sub-card-period {
+ color: rgba(255,255,255,0.8);
+ }
+ .sub-card-features {
+ list-style: none;
+ text-align: left;
+ margin-bottom: 25px;
+ }
+ .sub-card-features li {
+ padding: 8px 0;
+ font-size: 14px;
+ padding-left: 28px;
+ position: relative;
+ }
+ .sub-card-features li::before {
+ content: "";
+ position: absolute;
+ left: 0;
+ color: #CBB279;
+ font-weight: 600;
+ }
+ .sub-card.featured .sub-card-features li::before {
+ color: white;
+ }
+ .sub-btn {
+ display: block;
+ width: 100%;
+ padding: 12px;
+ border: none;
+ border-radius: 6px;
+ font-size: 14px;
+ font-weight: 600;
+ cursor: pointer;
+ transition: all 0.2s;
+ }
+ .sub-btn.primary {
+ background: #CBB279;
+ color: white;
+ }
+ .sub-btn.primary:hover { background: #5a7d3f; }
+ .sub-card.featured .sub-btn {
+ background: white;
+ color: #CBB279;
+ }
+ .sub-card.featured .sub-btn:hover {
+ background: #f0f0f0;
+ }
+ 
+ /* Free Tools Banner */
+ .free-tools {
+ max-width: 1200px;
+ margin: 40px auto;
+ padding: 0 30px;
+ }
+ .free-tools-card {
+ background: linear-gradient(135deg, #7B746D 0%, #5a7d8f 100%);
+ border-radius: 12px;
+ padding: 40px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ color: white;
+ }
+ .free-tools-content h3 {
+ font-size: 24px;
+ font-weight: 600;
+ margin-bottom: 10px;
+ }
+ .free-tools-content p {
+ font-size: 14px;
+ opacity: 0.9;
+ max-width: 500px;
+ }
+ .free-tools-btn {
+ padding: 12px 30px;
+ background: white;
+ color: #7B746D;
+ border: none;
+ border-radius: 6px;
+ font-size: 14px;
+ font-weight: 600;
+ cursor: pointer;
+ text-decoration: none;
+ }
+ .free-tools-btn:hover { background: #f0f0f0; }
+ 
+ /* Footer */
+ .footer {
+ background: #3A5566;
+ color: white;
+ padding: 50px 30px 30px;
+ margin-top: 60px;
+ }
+ .footer-content {
+ max-width: 1200px;
+ margin: 0 auto;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+ gap: 40px;
+ }
+ .footer-section h4 {
+ font-size: 14px;
+ font-weight: 600;
+ margin-bottom: 15px;
+ color: #CBB279;
+ }
+ .footer-section a {
+ display: block;
+ color: rgba(255,255,255,0.8);
+ text-decoration: none;
+ font-size: 13px;
+ padding: 5px 0;
+ }
+ .footer-section a:hover { color: white; }
+ .footer-bottom {
+ max-width: 1200px;
+ margin: 40px auto 0;
+ padding-top: 20px;
+ border-top: 1px solid rgba(255,255,255,0.1);
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ font-size: 12px;
+ color: rgba(255,255,255,0.6);
+ }
+ .footer-social {
+ display: flex;
+ gap: 15px;
+ }
+ .footer-social a {
+ color: rgba(255,255,255,0.6);
+ font-size: 18px;
+ }
+ .footer-social a:hover { color: white; }
+ 
+ /* Responsive */
+ @media (max-width: 768px) {
+ .header-top { flex-direction: column; gap: 15px; }
+ .nav { flex-wrap: wrap; justify-content: center; }
+ .pricing-grid { grid-template-columns: 1fr; }
+ .free-tools-card { flex-direction: column; text-align: center; gap: 20px; }
+ .subscription-grid { grid-template-columns: 1fr; }
+ .sub-card.featured { transform: none; }
+ }</style>
+ <link rel="stylesheet" href="homebody_shared.css"></head>
 <body>
 <!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
@@ -446,290 +444,227 @@
 <!-- End Shared Header -->
 
 
-    <!-- Header -->
-    
-    
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-        <a href="index.html">Home</a> &nbsp;›&nbsp; Pricing
-    </div>
-    
-    <!-- Page Title -->
-    <div class="page-title">
-        <h1>Pricing</h1>
-        <p>Access comprehensive property data, permit histories, and ADU eligibility reports for Nashville-Davidson County.</p>
-    </div>
-    
-    <!-- Free Tools Banner -->
-    <div class="free-tools">
-        <div class="free-tools-card">
-            <div class="free-tools-content">
-                <h3>🎉 Free Tools Available</h3>
-                <p>Explore our ADU Opportunity Map, Permit Explorer, and Analytics Dashboard at no cost. Premium reports provide deeper insights.</p>
-            </div>
-            <a href="adu_opportunity_explorer.html" class="free-tools-btn">Explore Free Tools →</a>
-        </div>
-    </div>
-    
-    <!-- Pricing Grid -->
-    <section class="pricing-section">
-        <div class="pricing-grid">
-            <!-- ADU Eligibility Report -->
-            <div class="pricing-card featured">
-                <div class="card-header">
-                    <span class="card-badge">Most Popular</span>
-                    <h3 class="card-title">ADU Eligibility Report</h3>
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Comprehensive analysis of whether your property qualifies for a Detached Accessory Dwelling Unit under Nashville's BL2025-1007 regulations.</p>
-                    <ul class="card-features">
-                        <li>Zoning eligibility verification</li>
-                        <li>Lot size & setback analysis</li>
-                        <li>Building height allowances</li>
-                        <li>Parking requirements</li>
-                        <li>Historic overlay check</li>
-                        <li>Restrictive covenant review</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <div class="card-price">$15 <span>per report</span></div>
-                    <a href="#" class="card-btn">Get Report</a>
-                </div>
-            </div>
-            
-            <!-- Property Detail Report -->
-            <div class="pricing-card">
-                <div class="card-header">
-                    <h3 class="card-title">Property Detail Report</h3>
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Complete property overview including characteristics, location, zoning, owner information, tax data, and current assessments.</p>
-                    <ul class="card-features">
-                        <li>Property characteristics</li>
-                        <li>Current owner & mailing address</li>
-                        <li>Zoning classification</li>
-                        <li>Tax district & assessment</li>
-                        <li>Lot size & building footprint</li>
-                        <li>Year built & structure details</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <div class="card-price">$4 <span>per report</span></div>
-                    <a href="#" class="card-btn outline">Get Report</a>
-                </div>
-            </div>
-            
-            <!-- Permit History Report -->
-            <div class="pricing-card">
-                <div class="card-header">
-                    <h3 class="card-title">Permit History Report</h3>
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Complete permit history for a property including all building, electrical, plumbing, and mechanical permits from 1978 to present.</p>
-                    <ul class="card-features">
-                        <li>All permit types & subtypes</li>
-                        <li>Permit values & dates</li>
-                        <li>Contractor information</li>
-                        <li>Permit status & inspections</li>
-                        <li>Links to permit documents</li>
-                        <li>Comparison to neighborhood</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <div class="card-price">$9 <span>per report</span></div>
-                    <a href="#" class="card-btn outline">Get Report</a>
-                </div>
-            </div>
-            
-            <!-- Transaction History -->
-            <div class="pricing-card">
-                <div class="card-header">
-                    <h3 class="card-title">Transaction History Report</h3>
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Detailed ownership and financial history including all transfers, sales, and mortgage recordings for the property.</p>
-                    <ul class="card-features">
-                        <li>Complete ownership chain</li>
-                        <li>All sales & transfer dates</li>
-                        <li>Sale prices & deed types</li>
-                        <li>Mortgage recordings</li>
-                        <li>Deed document links</li>
-                        <li>Prior owner information</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <div class="card-price">$9 <span>per report</span></div>
-                    <a href="#" class="card-btn outline">Get Report</a>
-                </div>
-            </div>
-            
-            <!-- Contractor Report -->
-            <div class="pricing-card">
-                <div class="card-header">
-                    <h3 class="card-title">Contractor History Report</h3>
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Comprehensive analysis of a contractor's permit history including project types, values, locations, and performance metrics.</p>
-                    <ul class="card-features">
-                        <li>Total permits & value</li>
-                        <li>Project type breakdown</li>
-                        <li>Geographic coverage</li>
-                        <li>Average project value</li>
-                        <li>Active years & trends</li>
-                        <li>Sample project addresses</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <div class="card-price">$12 <span>per report</span></div>
-                    <a href="#" class="card-btn outline">Get Report</a>
-                </div>
-            </div>
-            
-            <!-- ADU Opportunity Score -->
-            <div class="pricing-card">
-                <div class="card-header">
-                    <h3 class="card-title">ADU Opportunity Analysis</h3>
-                </div>
-                <div class="card-body">
-                    <p class="card-description">In-depth analysis of ADU investment potential including market rent estimates, construction costs, and projected ROI.</p>
-                    <ul class="card-features">
-                        <li>ADU Opportunity Score (0-100)</li>
-                        <li>Estimated rental income</li>
-                        <li>Construction cost estimate</li>
-                        <li>ROI projection</li>
-                        <li>Neighborhood comparables</li>
-                        <li>Market demand indicators</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <div class="card-price">$22 <span>per report</span></div>
-                    <a href="#" class="card-btn outline">Get Report</a>
-                </div>
-            </div>
-            
-            <!-- Neighborhood Analysis -->
-            <div class="pricing-card">
-                <div class="card-header">
-                    <h3 class="card-title">Neighborhood Analysis</h3>
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Comprehensive area analysis including permit activity, property values, demographics, and development trends.</p>
-                    <ul class="card-features">
-                        <li>Permit activity heat map</li>
-                        <li>Top contractors in area</li>
-                        <li>Median home values</li>
-                        <li>Demographic insights</li>
-                        <li>Development trends</li>
-                        <li>Comparable ADU projects</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <div class="card-price">$15 <span>per report</span></div>
-                    <a href="#" class="card-btn outline">Get Report</a>
-                </div>
-            </div>
-            
-            <!-- EV Charging Report -->
-            <div class="pricing-card">
-                <div class="card-header">
-                    <span class="card-badge" style="background:#7B746D;">Coming Soon</span>
-                    <h3 class="card-title">EV Charging Permit Report</h3>
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Analysis of EV charging infrastructure permits including installation details, contractors, and market trends.</p>
-                    <ul class="card-features">
-                        <li>EV permit history</li>
-                        <li>Charger types & capacity</li>
-                        <li>Installation contractors</li>
-                        <li>Permit costs & timelines</li>
-                        <li>Neighborhood adoption rate</li>
-                        <li>Incentive eligibility</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <div class="card-price">$9 <span>per report</span></div>
-                    <a href="#" class="card-btn outline" style="opacity:0.5; pointer-events:none;">Coming Soon</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Subscription Plans -->
-    <section class="subscription-section">
-        <h2 class="subscription-title">Subscription Plans</h2>
-        <p class="subscription-subtitle">Save up to 40% with a monthly subscription</p>
-        <div class="subscription-grid">
-            <!-- Basic -->
-            <div class="sub-card">
-                <h3 class="sub-card-title">Basic</h3>
-                <div class="sub-card-price">$25</div>
-                <div class="sub-card-period">per month</div>
-                <ul class="sub-card-features">
-                    <li>20% off all reports</li>
-                    <li>5 free Property Detail reports</li>
-                    <li>Priority email support</li>
-                    <li>Saved property watchlist</li>
-                    <li>Monthly market updates</li>
-                </ul>
-                <button class="sub-btn primary">Subscribe</button>
-            </div>
-            
-            <!-- Premier -->
-            <div class="sub-card featured">
-                <h3 class="sub-card-title">Premier</h3>
-                <div class="sub-card-price">$50</div>
-                <div class="sub-card-period">per month</div>
-                <ul class="sub-card-features">
-                    <li>40% off all reports</li>
-                    <li>10 free Property Detail reports</li>
-                    <li>3 free ADU Eligibility reports</li>
-                    <li>Phone & email support</li>
-                    <li>Bulk export capabilities</li>
-                    <li>API access (coming soon)</li>
-                </ul>
-                <button class="sub-btn">Subscribe</button>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Products</h4>
-                <a href="adu_opportunity_explorer.html">ADU Explorer</a>
-                <a href="nashville_permit_explorer_v3.html">Permit Explorer</a>
-                <a href="nashville_permit_analytics.html">Analytics Dashboard</a>
-                <a href="pricing.html">Pricing</a>
-            </div>
-            <div class="footer-section">
-                <h4>Resources</h4>
-                <a href="#">DADU Regulations Guide</a>
-                <a href="#">Building Requirements</a>
-                <a href="#">Contractor Directory</a>
-                <a href="#">FAQ</a>
-            </div>
-            <div class="footer-section">
-                <h4>Support</h4>
-                <a href="#">Contact Us</a>
-                <a href="#">Tutorials</a>
-                <a href="#">API Documentation</a>
-            </div>
-            <div class="footer-section">
-                <h4>Legal</h4>
-                <a href="#">Terms of Service</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Data Sources</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <span>© 2025 Castlehold. Nashville, TN</span>
-            <div class="footer-social">
-                <a href="#">LinkedIn</a>
-                <a href="#">Twitter</a>
-            </div>
-        </div>
-    </footer>
-    <script src="homebody_header.js"></script>
-</body>
-</html>
+ <!-- Header -->
+ 
+ 
+ <!-- Breadcrumb -->
+ <div class="breadcrumb">
+ <a href="index.html">Home</a>&nbsp;›&nbsp; Pricing</div>
+ 
+ <!-- Page Title -->
+ <div class="page-title">
+ <h1>Pricing</h1>
+ <p>Access comprehensive property data, permit histories, and ADU eligibility reports for Nashville-Davidson County.</p></div>
+ 
+ <!-- Free Tools Banner -->
+ <div class="free-tools">
+ <div class="free-tools-card">
+ <div class="free-tools-content">
+ <h3>Free Tools Available</h3>
+ <p>Explore our ADU Opportunity Map, Permit Explorer, and Analytics Dashboard at no cost. Premium reports provide deeper insights.</p></div>
+ <a href="adu_opportunity_explorer.html" class="free-tools-btn">Explore Free Tools</a></div></div>
+ 
+ <!-- Pricing Grid -->
+ <section class="pricing-section">
+ <div class="pricing-grid">
+ <!-- ADU Eligibility Report -->
+ <div class="pricing-card featured">
+ <div class="card-header">
+ <span class="card-badge">Most Popular</span>
+ <h3 class="card-title">ADU Eligibility Report</h3></div>
+ <div class="card-body">
+ <p class="card-description">Comprehensive analysis of whether your property qualifies for a Detached Accessory Dwelling Unit under Nashville's BL2025-1007 regulations.</p>
+ <ul class="card-features">
+ <li>Zoning eligibility verification</li>
+ <li>Lot size & setback analysis</li>
+ <li>Building height allowances</li>
+ <li>Parking requirements</li>
+ <li>Historic overlay check</li>
+ <li>Restrictive covenant review</li></ul></div>
+ <div class="card-footer">
+ <div class="card-price">$15 <span>per report</span></div>
+ <a href="#" class="card-btn">Get Report</a></div></div>
+ 
+ <!-- Property Detail Report -->
+ <div class="pricing-card">
+ <div class="card-header">
+ <h3 class="card-title">Property Detail Report</h3></div>
+ <div class="card-body">
+ <p class="card-description">Complete property overview including characteristics, location, zoning, owner information, tax data, and current assessments.</p>
+ <ul class="card-features">
+ <li>Property characteristics</li>
+ <li>Current owner & mailing address</li>
+ <li>Zoning classification</li>
+ <li>Tax district & assessment</li>
+ <li>Lot size & building footprint</li>
+ <li>Year built & structure details</li></ul></div>
+ <div class="card-footer">
+ <div class="card-price">$4 <span>per report</span></div>
+ <a href="#" class="card-btn outline">Get Report</a></div></div>
+ 
+ <!-- Permit History Report -->
+ <div class="pricing-card">
+ <div class="card-header">
+ <h3 class="card-title">Permit History Report</h3></div>
+ <div class="card-body">
+ <p class="card-description">Complete permit history for a property including all building, electrical, plumbing, and mechanical permits from 1978 to present.</p>
+ <ul class="card-features">
+ <li>All permit types & subtypes</li>
+ <li>Permit values & dates</li>
+ <li>Contractor information</li>
+ <li>Permit status & inspections</li>
+ <li>Links to permit documents</li>
+ <li>Comparison to neighborhood</li></ul></div>
+ <div class="card-footer">
+ <div class="card-price">$9 <span>per report</span></div>
+ <a href="#" class="card-btn outline">Get Report</a></div></div>
+ 
+ <!-- Transaction History -->
+ <div class="pricing-card">
+ <div class="card-header">
+ <h3 class="card-title">Transaction History Report</h3></div>
+ <div class="card-body">
+ <p class="card-description">Detailed ownership and financial history including all transfers, sales, and mortgage recordings for the property.</p>
+ <ul class="card-features">
+ <li>Complete ownership chain</li>
+ <li>All sales & transfer dates</li>
+ <li>Sale prices & deed types</li>
+ <li>Mortgage recordings</li>
+ <li>Deed document links</li>
+ <li>Prior owner information</li></ul></div>
+ <div class="card-footer">
+ <div class="card-price">$9 <span>per report</span></div>
+ <a href="#" class="card-btn outline">Get Report</a></div></div>
+ 
+ <!-- Contractor Report -->
+ <div class="pricing-card">
+ <div class="card-header">
+ <h3 class="card-title">Contractor History Report</h3></div>
+ <div class="card-body">
+ <p class="card-description">Comprehensive analysis of a contractor's permit history including project types, values, locations, and performance metrics.</p>
+ <ul class="card-features">
+ <li>Total permits & value</li>
+ <li>Project type breakdown</li>
+ <li>Geographic coverage</li>
+ <li>Average project value</li>
+ <li>Active years & trends</li>
+ <li>Sample project addresses</li></ul></div>
+ <div class="card-footer">
+ <div class="card-price">$12 <span>per report</span></div>
+ <a href="#" class="card-btn outline">Get Report</a></div></div>
+ 
+ <!-- ADU Opportunity Score -->
+ <div class="pricing-card">
+ <div class="card-header">
+ <h3 class="card-title">ADU Opportunity Analysis</h3></div>
+ <div class="card-body">
+ <p class="card-description">In-depth analysis of ADU investment potential including market rent estimates, construction costs, and projected ROI.</p>
+ <ul class="card-features">
+ <li>ADU Opportunity Score (0-100)</li>
+ <li>Estimated rental income</li>
+ <li>Construction cost estimate</li>
+ <li>ROI projection</li>
+ <li>Neighborhood comparables</li>
+ <li>Market demand indicators</li></ul></div>
+ <div class="card-footer">
+ <div class="card-price">$22 <span>per report</span></div>
+ <a href="#" class="card-btn outline">Get Report</a></div></div>
+ 
+ <!-- Neighborhood Analysis -->
+ <div class="pricing-card">
+ <div class="card-header">
+ <h3 class="card-title">Neighborhood Analysis</h3></div>
+ <div class="card-body">
+ <p class="card-description">Comprehensive area analysis including permit activity, property values, demographics, and development trends.</p>
+ <ul class="card-features">
+ <li>Permit activity heat map</li>
+ <li>Top contractors in area</li>
+ <li>Median home values</li>
+ <li>Demographic insights</li>
+ <li>Development trends</li>
+ <li>Comparable ADU projects</li></ul></div>
+ <div class="card-footer">
+ <div class="card-price">$15 <span>per report</span></div>
+ <a href="#" class="card-btn outline">Get Report</a></div></div>
+ 
+ <!-- EV Charging Report -->
+ <div class="pricing-card">
+ <div class="card-header">
+ <span class="card-badge" style="background:#7B746D;">Coming Soon</span>
+ <h3 class="card-title">EV Charging Permit Report</h3></div>
+ <div class="card-body">
+ <p class="card-description">Analysis of EV charging infrastructure permits including installation details, contractors, and market trends.</p>
+ <ul class="card-features">
+ <li>EV permit history</li>
+ <li>Charger types & capacity</li>
+ <li>Installation contractors</li>
+ <li>Permit costs & timelines</li>
+ <li>Neighborhood adoption rate</li>
+ <li>Incentive eligibility</li></ul></div>
+ <div class="card-footer">
+ <div class="card-price">$9 <span>per report</span></div>
+ <a href="#" class="card-btn outline" style="opacity:0.5; pointer-events:none;">Coming Soon</a></div></div></div></section>
+ 
+ <!-- Subscription Plans -->
+ <section class="subscription-section">
+ <h2 class="subscription-title">Subscription Plans</h2>
+ <p class="subscription-subtitle">Save up to 40% with a monthly subscription</p>
+ <div class="subscription-grid">
+ <!-- Basic -->
+ <div class="sub-card">
+ <h3 class="sub-card-title">Basic</h3>
+ <div class="sub-card-price">$25</div>
+ <div class="sub-card-period">per month</div>
+ <ul class="sub-card-features">
+ <li>20% off all reports</li>
+ <li>5 free Property Detail reports</li>
+ <li>Priority email support</li>
+ <li>Saved property watchlist</li>
+ <li>Monthly market updates</li></ul>
+ <button class="sub-btn primary">Subscribe</button></div>
+ 
+ <!-- Premier -->
+ <div class="sub-card featured">
+ <h3 class="sub-card-title">Premier</h3>
+ <div class="sub-card-price">$50</div>
+ <div class="sub-card-period">per month</div>
+ <ul class="sub-card-features">
+ <li>40% off all reports</li>
+ <li>10 free Property Detail reports</li>
+ <li>3 free ADU Eligibility reports</li>
+ <li>Phone & email support</li>
+ <li>Bulk export capabilities</li>
+ <li>API access (coming soon)</li></ul>
+ <button class="sub-btn">Subscribe</button></div></div></section>
+ 
+ <!-- Footer -->
+ <footer class="footer">
+ <div class="footer-content">
+ <div class="footer-section">
+ <h4>Products</h4>
+ <a href="adu_opportunity_explorer.html">ADU Explorer</a>
+ <a href="nashville_permit_explorer_v3.html">Permit Explorer</a>
+ <a href="nashville_permit_analytics.html">Analytics Dashboard</a>
+ <a href="pricing.html">Pricing</a></div>
+ <div class="footer-section">
+ <h4>Resources</h4>
+ <a href="#">DADU Regulations Guide</a>
+ <a href="#">Building Requirements</a>
+ <a href="#">Contractor Directory</a>
+ <a href="#">FAQ</a></div>
+ <div class="footer-section">
+ <h4>Support</h4>
+ <a href="#">Contact Us</a>
+ <a href="#">Tutorials</a>
+ <a href="#">API Documentation</a></div>
+ <div class="footer-section">
+ <h4>Legal</h4>
+ <a href="#">Terms of Service</a>
+ <a href="#">Privacy Policy</a>
+ <a href="#">Data Sources</a></div></div>
+ <div class="footer-bottom">
+ <span>© 2025 Castlehold. Nashville, TN</span>
+ <div class="footer-social">
+ <a href="#">LinkedIn</a>
+ <a href="#">Twitter</a></div></div></footer>
+ <script src="homebody_header.js"></script></body></html>

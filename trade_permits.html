@@ -1,379 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trade Permits | Castlehold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --navy: #3A5566;
-            --navy-dark: #2E4553;
-            --teal: #7B746D;
-            --terracotta: #C58B2A;
-            --terracotta-hover: #A8761F;
-            --tan: #7B746D;
-            --cream: #f5f5f0;
-            --background: #F2F0ED;
-            --white: #ffffff;
-            --border: #e0e0e0;
-            --text: #333333;
-            --text-light: #666666;
-            --terracotta: #27ae60;
-            --yellow: #f39c12;
-            --blue: #3498db;
-        }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Trade Permits | Castlehold</title>
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <style>
+ :root {
+ --navy: #3A5566;
+ --navy-dark: #2E4553;
+ --teal: #7B746D;
+ --terracotta: #CBB279;
+ --terracotta-hover: #B8A068;
+ --tan: #7B746D;
+ --cream: #F0EBE1;
+ --background: #F2F0ED;
+ --white: #ffffff;
+ --border: #e0e0e0;
+ --text: #333333;
+ --text-light: #666666;
+ --terracotta: #27ae60;
+ --yellow: #f39c12;
+ --blue: #3498db;
+ }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+ * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-        }
+ body {
+ font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+ background: var(--background);
+ color: var(--text);
+ line-height: 1.6;
+ }
 
-        .header {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
-            padding: 0 24px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+ .header {
+ background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+ padding: 0 24px;
+ height: 64px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ position: sticky;
+ top: 0;
+ z-index: 1000;
+ }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: white;
-            font-weight: 700;
-            font-size: 20px;
-        }
+ .logo {
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ text-decoration: none;
+ color: white;
+ font-weight: 700;
+ font-size: 20px;
+ }
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--terracotta);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+ .logo-icon {
+ width: 40px;
+ height: 40px;
+ background: var(--terracotta);
+ border-radius: 10px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ }
 
-        .nav-links {
-            display: flex;
-            gap: 8px;
-        }
+ .nav-links {
+ display: flex;
+ gap: 8px;
+ }
 
-        .nav-link {
-            color: rgba(255,255,255,0.9);
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-        }
+ .nav-link {
+ color: rgba(255,255,255,0.9);
+ text-decoration: none;
+ padding: 8px 16px;
+ border-radius: 6px;
+ font-size: 14px;
+ font-weight: 500;
+ }
 
-        .nav-link:hover {
-            background: rgba(255,255,255,0.1);
-        }
+ .nav-link:hover {
+ background: rgba(255,255,255,0.1);
+ }
 
-        .hero {
-            background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-hover) 100%);
-            padding: 60px 24px;
-            color: white;
-            text-align: center;
-        }
+ .hero {
+ background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-hover) 100%);
+ padding: 60px 24px;
+ color: white;
+ text-align: center;
+ }
 
-        .hero h1 {
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
+ .hero h1 {
+ font-size: 36px;
+ font-weight: 800;
+ margin-bottom: 12px;
+ }
 
-        .hero p {
-            font-size: 18px;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+ .hero p {
+ font-size: 18px;
+ opacity: 0.9;
+ max-width: 600px;
+ margin: 0 auto;
+ }
 
-        .main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 24px;
-        }
+ .main {
+ max-width: 1200px;
+ margin: 0 auto;
+ padding: 40px 24px;
+ }
 
-        .section-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 24px;
-        }
+ .section-title {
+ font-size: 24px;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 24px;
+ }
 
-        .trades-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-bottom: 48px;
-        }
+ .trades-grid {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 24px;
+ margin-bottom: 48px;
+ }
 
-        .trade-card {
-            background: var(--white);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
+ .trade-card {
+ background: var(--white);
+ border-radius: 12px;
+ overflow: hidden;
+ border: 1px solid var(--border);
+ transition: all 0.3s ease;
+ }
 
-        .trade-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-        }
+ .trade-card:hover {
+ transform: translateY(-4px);
+ box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+ }
 
-        .trade-header {
-            padding: 24px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
+ .trade-header {
+ padding: 24px;
+ display: flex;
+ align-items: center;
+ gap: 16px;
+ }
 
-        .trade-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
+ .trade-icon {
+ width: 56px;
+ height: 56px;
+ border-radius: 12px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 28px;
+ }
 
-        .trade-icon.electrical { background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%); }
-        .trade-icon.plumbing { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
-        .trade-icon.mechanical { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
-        .trade-icon.gas { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
-        .trade-icon.fire { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); }
-        .trade-icon.general { background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-hover) 100%); }
+ .trade-icon.electrical { background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%); }
+ .trade-icon.plumbing { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+ .trade-icon.mechanical { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+ .trade-icon.gas { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+ .trade-icon.fire { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); }
+ .trade-icon.general { background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-hover) 100%); }
 
-        .trade-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--navy);
-        }
+ .trade-title {
+ font-size: 18px;
+ font-weight: 700;
+ color: var(--navy);
+ }
 
-        .trade-subtitle {
-            font-size: 13px;
-            color: var(--text-light);
-        }
+ .trade-subtitle {
+ font-size: 13px;
+ color: var(--text-light);
+ }
 
-        .trade-content {
-            padding: 0 24px 24px;
-        }
+ .trade-content {
+ padding: 0 24px 24px;
+ }
 
-        .permit-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+ .permit-list {
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+ }
 
-        .permit-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: var(--cream);
-            border-radius: 8px;
-            font-size: 14px;
-        }
+ .permit-item {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 12px 16px;
+ background: var(--cream);
+ border-radius: 8px;
+ font-size: 14px;
+ }
 
-        .permit-item span:first-child {
-            font-weight: 500;
-        }
+ .permit-item span:first-child {
+ font-weight: 500;
+ }
 
-        .permit-fee {
-            color: var(--terracotta);
-            font-weight: 700;
-        }
+ .permit-fee {
+ color: var(--terracotta);
+ font-weight: 700;
+ }
 
-        .info-section {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 32px;
-            margin-bottom: 48px;
-        }
+ .info-section {
+ background: var(--white);
+ border-radius: 12px;
+ padding: 32px;
+ margin-bottom: 48px;
+ }
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 32px;
-            margin-top: 24px;
-        }
+ .info-grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 32px;
+ margin-top: 24px;
+ }
 
-        .info-block h4 {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+ .info-block h4 {
+ font-size: 16px;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 12px;
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ }
 
-        .info-block ul {
-            list-style: none;
-            padding: 0;
-        }
+ .info-block ul {
+ list-style: none;
+ padding: 0;
+ }
 
-        .info-block li {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 14px;
-            color: var(--text-light);
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
+ .info-block li {
+ padding: 8px 0;
+ border-bottom: 1px solid var(--border);
+ font-size: 14px;
+ color: var(--text-light);
+ display: flex;
+ align-items: flex-start;
+ gap: 8px;
+ }
 
-        .info-block li:last-child {
-            border-bottom: none;
-        }
+ .info-block li:last-child {
+ border-bottom: none;
+ }
 
-        .check {
-            color: var(--terracotta);
-            font-weight: bold;
-        }
+ .check {
+ color: var(--terracotta);
+ font-weight: bold;
+ }
 
-        .timeline-section {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 32px;
-        }
+ .timeline-section {
+ background: var(--white);
+ border-radius: 12px;
+ padding: 32px;
+ }
 
-        .timeline {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 32px;
-            position: relative;
-        }
+ .timeline {
+ display: flex;
+ justify-content: space-between;
+ margin-top: 32px;
+ position: relative;
+ }
 
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 24px;
-            left: 60px;
-            right: 60px;
-            height: 4px;
-            background: var(--border);
-            z-index: 0;
-        }
+ .timeline::before {
+ content: '';
+ position: absolute;
+ top: 24px;
+ left: 60px;
+ right: 60px;
+ height: 4px;
+ background: var(--border);
+ z-index: 0;
+ }
 
-        .timeline-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
+ .timeline-step {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ text-align: center;
+ position: relative;
+ z-index: 1;
+ }
 
-        .step-number {
-            width: 48px;
-            height: 48px;
-            background: var(--terracotta);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            margin-bottom: 12px;
-        }
+ .step-number {
+ width: 48px;
+ height: 48px;
+ background: var(--terracotta);
+ color: white;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-weight: 700;
+ font-size: 18px;
+ margin-bottom: 12px;
+ }
 
-        .step-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--navy);
-            margin-bottom: 4px;
-        }
+ .step-title {
+ font-size: 14px;
+ font-weight: 600;
+ color: var(--navy);
+ margin-bottom: 4px;
+ }
 
-        .step-desc {
-            font-size: 12px;
-            color: var(--text-light);
-            max-width: 120px;
-        }
+ .step-desc {
+ font-size: 12px;
+ color: var(--text-light);
+ max-width: 120px;
+ }
 
-        .cta-bar {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
-            border-radius: 12px;
-            padding: 32px;
-            margin-top: 48px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
+ .cta-bar {
+ background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+ border-radius: 12px;
+ padding: 32px;
+ margin-top: 48px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ color: white;
+ }
 
-        .cta-content h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
+ .cta-content h3 {
+ font-size: 20px;
+ font-weight: 700;
+ margin-bottom: 8px;
+ }
 
-        .cta-content p {
-            opacity: 0.9;
-            font-size: 14px;
-        }
+ .cta-content p {
+ opacity: 0.9;
+ font-size: 14px;
+ }
 
-        .cta-btn {
-            padding: 14px 28px;
-            background: white;
-            color: var(--navy);
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            transition: transform 0.2s ease;
-        }
+ .cta-btn {
+ padding: 14px 28px;
+ background: white;
+ color: var(--navy);
+ border-radius: 8px;
+ text-decoration: none;
+ font-weight: 700;
+ font-size: 14px;
+ transition: transform 0.2s ease;
+ }
 
-        .cta-btn:hover {
-            transform: scale(1.05);
-        }
+ .cta-btn:hover {
+ transform: scale(1.05);
+ }
 
-        @media (max-width: 1024px) {
-            .trades-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            .timeline {
-                flex-direction: column;
-                gap: 24px;
-            }
-            .timeline::before {
-                display: none;
-            }
-        }
+ @media (max-width: 1024px) {
+ .trades-grid {
+ grid-template-columns: repeat(2, 1fr);
+ }
+ .info-grid {
+ grid-template-columns: 1fr;
+ }
+ .timeline {
+ flex-direction: column;
+ gap: 24px;
+ }
+ .timeline::before {
+ display: none;
+ }
+ }
 
-        @media (max-width: 640px) {
-            .trades-grid {
-                grid-template-columns: 1fr;
-            }
-            .cta-bar {
-                flex-direction: column;
-                text-align: center;
-                gap: 20px;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="homebody_shared.css">
-</head>
+ @media (max-width: 640px) {
+ .trades-grid {
+ grid-template-columns: 1fr;
+ }
+ .cta-bar {
+ flex-direction: column;
+ text-align: center;
+ gap: 20px;
+ }
+ }</style>
+ <link rel="stylesheet" href="homebody_shared.css"></head>
 <body>
 <!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
@@ -381,238 +379,170 @@
 <!-- End Shared Header -->
 
 
-    
+ 
 
-    <section class="hero">
-        <h1>Trade Permits</h1>
-        <p>Complete guide to electrical, plumbing, mechanical, and specialty permits for DADU projects</p>
-    </section>
+ <section class="hero">
+ <h1>Trade Permits</h1>
+ <p>Complete guide to electrical, plumbing, mechanical, and specialty permits for DADU projects</p></section>
 
-    <main class="main">
-        <h2 class="section-title">Permits by Trade</h2>
-        <div class="trades-grid">
-            <div class="trade-card">
-                <div class="trade-header">
-                    <div class="trade-icon electrical">⚡</div>
-                    <div>
-                        <div class="trade-title">Electrical</div>
-                        <div class="trade-subtitle">Required for all new circuits</div>
-                    </div>
-                </div>
-                <div class="trade-content">
-                    <div class="permit-list">
-                        <div class="permit-item">
-                            <span>New Service (100A)</span>
-                            <span class="permit-fee">$125</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>New Service (200A)</span>
-                            <span class="permit-fee">$175</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>Branch Circuits</span>
-                            <span class="permit-fee">$75</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+ <main class="main">
+ <h2 class="section-title">Permits by Trade</h2>
+ <div class="trades-grid">
+ <div class="trade-card">
+ <div class="trade-header">
+ <div class="trade-icon electrical"></div>
+ <div>
+ <div class="trade-title">Electrical</div>
+ <div class="trade-subtitle">Required for all new circuits</div></div></div>
+ <div class="trade-content">
+ <div class="permit-list">
+ <div class="permit-item">
+ <span>New Service (100A)</span>
+ <span class="permit-fee">$125</span></div>
+ <div class="permit-item">
+ <span>New Service (200A)</span>
+ <span class="permit-fee">$175</span></div>
+ <div class="permit-item">
+ <span>Branch Circuits</span>
+ <span class="permit-fee">$75</span></div></div></div></div>
 
-            <div class="trade-card">
-                <div class="trade-header">
-                    <div class="trade-icon plumbing">🔧</div>
-                    <div>
-                        <div class="trade-title">Plumbing</div>
-                        <div class="trade-subtitle">Water, sewer, fixtures</div>
-                    </div>
-                </div>
-                <div class="trade-content">
-                    <div class="permit-list">
-                        <div class="permit-item">
-                            <span>Water Service</span>
-                            <span class="permit-fee">$150</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>Sewer Connection</span>
-                            <span class="permit-fee">$150</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>Fixture Set (5+)</span>
-                            <span class="permit-fee">$100</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+ <div class="trade-card">
+ <div class="trade-header">
+ <div class="trade-icon plumbing"></div>
+ <div>
+ <div class="trade-title">Plumbing</div>
+ <div class="trade-subtitle">Water, sewer, fixtures</div></div></div>
+ <div class="trade-content">
+ <div class="permit-list">
+ <div class="permit-item">
+ <span>Water Service</span>
+ <span class="permit-fee">$150</span></div>
+ <div class="permit-item">
+ <span>Sewer Connection</span>
+ <span class="permit-fee">$150</span></div>
+ <div class="permit-item">
+ <span>Fixture Set (5+)</span>
+ <span class="permit-fee">$100</span></div></div></div></div>
 
-            <div class="trade-card">
-                <div class="trade-header">
-                    <div class="trade-icon mechanical">❄️</div>
-                    <div>
-                        <div class="trade-title">Mechanical</div>
-                        <div class="trade-subtitle">HVAC systems</div>
-                    </div>
-                </div>
-                <div class="trade-content">
-                    <div class="permit-list">
-                        <div class="permit-item">
-                            <span>HVAC System</span>
-                            <span class="permit-fee">$125</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>Ductwork</span>
-                            <span class="permit-fee">$75</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>Mini-Split</span>
-                            <span class="permit-fee">$100</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+ <div class="trade-card">
+ <div class="trade-header">
+ <div class="trade-icon mechanical"></div>
+ <div>
+ <div class="trade-title">Mechanical</div>
+ <div class="trade-subtitle">HVAC systems</div></div></div>
+ <div class="trade-content">
+ <div class="permit-list">
+ <div class="permit-item">
+ <span>HVAC System</span>
+ <span class="permit-fee">$125</span></div>
+ <div class="permit-item">
+ <span>Ductwork</span>
+ <span class="permit-fee">$75</span></div>
+ <div class="permit-item">
+ <span>Mini-Split</span>
+ <span class="permit-fee">$100</span></div></div></div></div>
 
-            <div class="trade-card">
-                <div class="trade-header">
-                    <div class="trade-icon gas">🔥</div>
-                    <div>
-                        <div class="trade-title">Gas</div>
-                        <div class="trade-subtitle">Natural gas lines</div>
-                    </div>
-                </div>
-                <div class="trade-content">
-                    <div class="permit-list">
-                        <div class="permit-item">
-                            <span>Gas Service Line</span>
-                            <span class="permit-fee">$100</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>Gas Appliance</span>
-                            <span class="permit-fee">$50</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>Gas Water Heater</span>
-                            <span class="permit-fee">$75</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+ <div class="trade-card">
+ <div class="trade-header">
+ <div class="trade-icon gas"></div>
+ <div>
+ <div class="trade-title">Gas</div>
+ <div class="trade-subtitle">Natural gas lines</div></div></div>
+ <div class="trade-content">
+ <div class="permit-list">
+ <div class="permit-item">
+ <span>Gas Service Line</span>
+ <span class="permit-fee">$100</span></div>
+ <div class="permit-item">
+ <span>Gas Appliance</span>
+ <span class="permit-fee">$50</span></div>
+ <div class="permit-item">
+ <span>Gas Water Heater</span>
+ <span class="permit-fee">$75</span></div></div></div></div>
 
-            <div class="trade-card">
-                <div class="trade-header">
-                    <div class="trade-icon fire">🧯</div>
-                    <div>
-                        <div class="trade-title">Fire Protection</div>
-                        <div class="trade-subtitle">Smoke/CO detectors</div>
-                    </div>
-                </div>
-                <div class="trade-content">
-                    <div class="permit-list">
-                        <div class="permit-item">
-                            <span>Fire Alarm System</span>
-                            <span class="permit-fee">$100</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>Smoke Detectors</span>
-                            <span class="permit-fee">$50</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>CO Detectors</span>
-                            <span class="permit-fee">$50</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+ <div class="trade-card">
+ <div class="trade-header">
+ <div class="trade-icon fire"></div>
+ <div>
+ <div class="trade-title">Fire Protection</div>
+ <div class="trade-subtitle">Smoke/CO detectors</div></div></div>
+ <div class="trade-content">
+ <div class="permit-list">
+ <div class="permit-item">
+ <span>Fire Alarm System</span>
+ <span class="permit-fee">$100</span></div>
+ <div class="permit-item">
+ <span>Smoke Detectors</span>
+ <span class="permit-fee">$50</span></div>
+ <div class="permit-item">
+ <span>CO Detectors</span>
+ <span class="permit-fee">$50</span></div></div></div></div>
 
-            <div class="trade-card">
-                <div class="trade-header">
-                    <div class="trade-icon general">🏗️</div>
-                    <div>
-                        <div class="trade-title">General/Building</div>
-                        <div class="trade-subtitle">Structure permits</div>
-                    </div>
-                </div>
-                <div class="trade-content">
-                    <div class="permit-list">
-                        <div class="permit-item">
-                            <span>DADU Building</span>
-                            <span class="permit-fee">$500+</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>Demo Permit</span>
-                            <span class="permit-fee">$150</span>
-                        </div>
-                        <div class="permit-item">
-                            <span>Grading</span>
-                            <span class="permit-fee">$200</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+ <div class="trade-card">
+ <div class="trade-header">
+ <div class="trade-icon general"></div>
+ <div>
+ <div class="trade-title">General/Building</div>
+ <div class="trade-subtitle">Structure permits</div></div></div>
+ <div class="trade-content">
+ <div class="permit-list">
+ <div class="permit-item">
+ <span>DADU Building</span>
+ <span class="permit-fee">$500+</span></div>
+ <div class="permit-item">
+ <span>Demo Permit</span>
+ <span class="permit-fee">$150</span></div>
+ <div class="permit-item">
+ <span>Grading</span>
+ <span class="permit-fee">$200</span></div></div></div></div></div>
 
-        <section class="info-section">
-            <h2 class="section-title">Trade Permit Requirements</h2>
-            <div class="info-grid">
-                <div class="info-block">
-                    <h4>📋 Required Documentation</h4>
-                    <ul>
-                        <li><span class="check">✓</span> Licensed contractor information</li>
-                        <li><span class="check">✓</span> Scope of work description</li>
-                        <li><span class="check">✓</span> Equipment specifications</li>
-                        <li><span class="check">✓</span> Load calculations (electrical/HVAC)</li>
-                        <li><span class="check">✓</span> Material list and specifications</li>
-                    </ul>
-                </div>
-                <div class="info-block">
-                    <h4>🔍 Inspection Requirements</h4>
-                    <ul>
-                        <li><span class="check">✓</span> Rough-in inspection (before drywall)</li>
-                        <li><span class="check">✓</span> Underground/concealed work inspection</li>
-                        <li><span class="check">✓</span> Final inspection and testing</li>
-                        <li><span class="check">✓</span> 24-hour notice required for inspections</li>
-                        <li><span class="check">✓</span> Approved permit card posted on site</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+ <section class="info-section">
+ <h2 class="section-title">Trade Permit Requirements</h2>
+ <div class="info-grid">
+ <div class="info-block">
+ <h4>Required Documentation</h4>
+ <ul>
+ <li><span class="check"></span>Licensed contractor information</li>
+ <li><span class="check"></span>Scope of work description</li>
+ <li><span class="check"></span>Equipment specifications</li>
+ <li><span class="check"></span>Load calculations (electrical/HVAC)</li>
+ <li><span class="check"></span>Material list and specifications</li></ul></div>
+ <div class="info-block">
+ <h4>Inspection Requirements</h4>
+ <ul>
+ <li><span class="check"></span>Rough-in inspection (before drywall)</li>
+ <li><span class="check"></span>Underground/concealed work inspection</li>
+ <li><span class="check"></span>Final inspection and testing</li>
+ <li><span class="check"></span>24-hour notice required for inspections</li>
+ <li><span class="check"></span>Approved permit card posted on site</li></ul></div></div></section>
 
-        <section class="timeline-section">
-            <h2 class="section-title">Trade Permit Process</h2>
-            <div class="timeline">
-                <div class="timeline-step">
-                    <div class="step-number">1</div>
-                    <div class="step-title">Apply Online</div>
-                    <div class="step-desc">Submit through Metro ePermits portal</div>
-                </div>
-                <div class="timeline-step">
-                    <div class="step-number">2</div>
-                    <div class="step-title">Pay Fees</div>
-                    <div class="step-desc">Permit fees vary by scope</div>
-                </div>
-                <div class="timeline-step">
-                    <div class="step-number">3</div>
-                    <div class="step-title">Permit Issued</div>
-                    <div class="step-desc">Post card on job site</div>
-                </div>
-                <div class="timeline-step">
-                    <div class="step-number">4</div>
-                    <div class="step-title">Schedule Inspections</div>
-                    <div class="step-desc">Request via online portal</div>
-                </div>
-                <div class="timeline-step">
-                    <div class="step-number">5</div>
-                    <div class="step-title">Final Approval</div>
-                    <div class="step-desc">Pass all required inspections</div>
-                </div>
-            </div>
-        </section>
+ <section class="timeline-section">
+ <h2 class="section-title">Trade Permit Process</h2>
+ <div class="timeline">
+ <div class="timeline-step">
+ <div class="step-number">1</div>
+ <div class="step-title">Apply Online</div>
+ <div class="step-desc">Submit through Metro ePermits portal</div></div>
+ <div class="timeline-step">
+ <div class="step-number">2</div>
+ <div class="step-title">Pay Fees</div>
+ <div class="step-desc">Permit fees vary by scope</div></div>
+ <div class="timeline-step">
+ <div class="step-number">3</div>
+ <div class="step-title">Permit Issued</div>
+ <div class="step-desc">Post card on job site</div></div>
+ <div class="timeline-step">
+ <div class="step-number">4</div>
+ <div class="step-title">Schedule Inspections</div>
+ <div class="step-desc">Request via online portal</div></div>
+ <div class="timeline-step">
+ <div class="step-number">5</div>
+ <div class="step-title">Final Approval</div>
+ <div class="step-desc">Pass all required inspections</div></div></div></section>
 
-        <div class="cta-bar">
-            <div class="cta-content">
-                <h3>Need help with trade permits?</h3>
-                <p>Find licensed contractors in our marketplace who handle all permit requirements.</p>
-            </div>
-            <a href="contractor_marketplace.html" class="cta-btn">Find Contractors</a>
-        </div>
-    </main>
-    <script src="homebody_header.js"></script>
-</body>
-</html>
+ <div class="cta-bar">
+ <div class="cta-content">
+ <h3>Need help with trade permits?</h3>
+ <p>Find licensed contractors in our marketplace who handle all permit requirements.</p></div>
+ <a href="contractor_marketplace.html" class="cta-btn">Find Contractors</a></div></main>
+ <script src="homebody_header.js"></script></body></html>

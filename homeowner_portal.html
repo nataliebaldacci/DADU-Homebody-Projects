@@ -1,104 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homeowner Portal - Castlehold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="homebody_shared.css">
-    <style>
-        body {
-            font-family: 'Montserrat', Arial, sans-serif;
-            background-color: #F2F0ED;
-            color: #333;
-            margin: 0;
-            line-height: 1.6;
-        }
-        .page-container { max-width: 960px; margin: 0 auto; padding: 40px 30px; }
-        .hero { text-align: center; margin-bottom: 40px; }
-        .hero h1 { font-size: 32px; font-weight: 800; color: #3A5566; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
-        .hero .subtitle { font-size: 14px; color: #7B746D; font-weight: 600; letter-spacing: 1px; }
-        .divider { width: 80px; height: 3px; background: #7B746D; margin: 20px auto; }
-        .portal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 30px; }
-        .portal-card {
-            background: #f5f5f0; border-radius: 8px; padding: 28px; border-left: 4px solid #C58B2A;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .portal-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .portal-card h3 { color: #3A5566; font-size: 18px; margin-bottom: 8px; }
-        .portal-card p { color: #666; font-size: 14px; margin-bottom: 16px; }
-        .portal-card a {
-            display: inline-block; background: #C58B2A; color: #fff; padding: 8px 20px;
-            border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 600;
-        }
-        .portal-card a:hover { background: #a87623; }
-        .intro-text { text-align: center; max-width: 700px; margin: 0 auto 30px; color: #555; font-size: 15px; }
-        .footer { text-align: center; margin-top: 60px; padding: 20px; color: #7B746D; font-size: 12px; }
-        .footer .brand { font-weight: 700; color: #3A5566; }
-    </style>
-</head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Homeowner Portal - Castlehold</title>
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
+ <style>
+ body {
+ font-family: 'Montserrat', Arial, sans-serif;
+ background-color: #F2F0ED;
+ color: #333;
+ margin: 0;
+ line-height: 1.6;
+ }
+ .page-container { max-width: 960px; margin: 0 auto; padding: 40px 30px; }
+ .hero { text-align: center; margin-bottom: 40px; }
+ .hero h1 { font-size: 32px; font-weight: 800; color: #3A5566; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+ .hero .subtitle { font-size: 14px; color: #7B746D; font-weight: 600; letter-spacing: 1px; }
+ .divider { width: 80px; height: 3px; background: #7B746D; margin: 20px auto; }
+ .portal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 30px; }
+ .portal-card {
+ background: #F0EBE1; border-radius: 8px; padding: 28px; border-left: 4px solid #CBB279;
+ transition: transform 0.2s, box-shadow 0.2s;
+ }
+ .portal-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+ .portal-card h3 { color: #3A5566; font-size: 18px; margin-bottom: 8px; }
+ .portal-card p { color: #666; font-size: 14px; margin-bottom: 16px; }
+ .portal-card a {
+ display: inline-block; background: #CBB279; color: #fff; padding: 8px 20px;
+ border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 600;
+ }
+ .portal-card a:hover { background: #a87623; }
+ .intro-text { text-align: center; max-width: 700px; margin: 0 auto 30px; color: #555; font-size: 15px; }
+ .footer { text-align: center; margin-top: 60px; padding: 20px; color: #7B746D; font-size: 12px; }
+ .footer .brand { font-weight: 700; color: #3A5566; }</style></head>
 <body>
 <div id="site-header"></div>
 
 <div class="page-container">
-    <div class="hero">
-        <h1>Homeowner Portal</h1>
-        <p class="subtitle">Your DADU Journey Starts Here</p>
-        <div class="divider"></div>
-    </div>
+ <div class="hero">
+ <h1>Homeowner Portal</h1>
+ <p class="subtitle">Your DADU Journey Starts Here</p>
+ <div class="divider"></div></div>
 
-    <p class="intro-text">
-        Everything Nashville homeowners need to explore, plan, and build a Detached Accessory Dwelling Unit on their property &mdash; from eligibility checks to permit filing.
-    </p>
+ <p class="intro-text">
+ Everything Nashville homeowners need to explore, plan, and build a Detached Accessory Dwelling Unit on their property &mdash; from eligibility checks to permit filing.</p>
 
-    <div class="portal-grid">
-        <div class="portal-card">
-            <h3>Am I Eligible?</h3>
-            <p>Answer a few questions about your property to find out if you can build a DADU under BL2025-1007.</p>
-            <a href="am_i_eligible.html">Check Eligibility &rarr;</a>
-        </div>
-        <div class="portal-card">
-            <h3>Property Search</h3>
-            <p>Look up your parcel by address or APN to see zoning, lot size, and existing structures.</p>
-            <a href="property_search.html">Search Properties &rarr;</a>
-        </div>
-        <div class="portal-card">
-            <h3>Size Calculator</h3>
-            <p>Calculate the maximum DADU size allowed on your lot based on BL2025-1007 dimensional standards.</p>
-            <a href="size_calculator.html">Calculate Size &rarr;</a>
-        </div>
-        <div class="portal-card">
-            <h3>Cost Estimator</h3>
-            <p>Get a preliminary cost estimate for your DADU project including materials, labor, and permits.</p>
-            <a href="project_cost_estimator.html">Estimate Costs &rarr;</a>
-        </div>
-        <div class="portal-card">
-            <h3>Project Planner</h3>
-            <p>Build a step-by-step timeline for your DADU project from design through certificate of occupancy.</p>
-            <a href="project_planner.html">Plan Project &rarr;</a>
-        </div>
-        <div class="portal-card">
-            <h3>ROI Calculator</h3>
-            <p>Estimate your return on investment for a DADU as a rental, family housing, or home office.</p>
-            <a href="roi_calculator.html">Calculate ROI &rarr;</a>
-        </div>
-        <div class="portal-card">
-            <h3>DADUs Near Me</h3>
-            <p>See existing and permitted DADUs in your neighborhood to understand local activity.</p>
-            <a href="dadu_near_me_v2.html">Explore Nearby &rarr;</a>
-        </div>
-        <div class="portal-card">
-            <h3>Determine Forms</h3>
-            <p>Find out which Metro Nashville permit applications and forms you need to file.</p>
-            <a href="determine_forms_required.html">Find Forms &rarr;</a>
-        </div>
-    </div>
+ <div class="portal-grid">
+ <div class="portal-card">
+ <h3>Am I Eligible?</h3>
+ <p>Answer a few questions about your property to find out if you can build a DADU under BL2025-1007.</p>
+ <a href="am_i_eligible.html">Check Eligibility</a></div>
+ <div class="portal-card">
+ <h3>Property Search</h3>
+ <p>Look up your parcel by address or APN to see zoning, lot size, and existing structures.</p>
+ <a href="property_search.html">Search Properties</a></div>
+ <div class="portal-card">
+ <h3>Size Calculator</h3>
+ <p>Calculate the maximum DADU size allowed on your lot based on BL2025-1007 dimensional standards.</p>
+ <a href="size_calculator.html">Calculate Size</a></div>
+ <div class="portal-card">
+ <h3>Cost Estimator</h3>
+ <p>Get a preliminary cost estimate for your DADU project including materials, labor, and permits.</p>
+ <a href="project_cost_estimator.html">Estimate Costs</a></div>
+ <div class="portal-card">
+ <h3>Project Planner</h3>
+ <p>Build a step-by-step timeline for your DADU project from design through certificate of occupancy.</p>
+ <a href="project_planner.html">Plan Project</a></div>
+ <div class="portal-card">
+ <h3>ROI Calculator</h3>
+ <p>Estimate your return on investment for a DADU as a rental, family housing, or home office.</p>
+ <a href="roi_calculator.html">Calculate ROI</a></div>
+ <div class="portal-card">
+ <h3>DADUs Near Me</h3>
+ <p>See existing and permitted DADUs in your neighborhood to understand local activity.</p>
+ <a href="dadu_near_me_v2.html">Explore Nearby</a></div>
+ <div class="portal-card">
+ <h3>Determine Forms</h3>
+ <p>Find out which Metro Nashville permit applications and forms you need to file.</p>
+ <a href="determine_forms_required.html">Find Forms</a></div></div>
 
-    <div class="footer">
-        <p><span class="brand">CASTLEHOLD</span> &middot; Nashville-Davidson County &middot; 2026</p>
-    </div>
-</div>
+ <div class="footer">
+ <p><span class="brand">CASTLEHOLD</span>&middot; Nashville-Davidson County &middot; 2026</p></div></div>
 
-<script src="homebody_header.js"></script>
-</body>
-</html>
+<script src="homebody_header.js"></script></body></html>

@@ -1,231 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DADU Resources & Forms | Castlehold</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f5f5f0;
-            color: #3A5566;
-            line-height: 1.6;
-        }
-        
-        /* Header */
-        .header {
-            background: #3A5566;
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 20px;
-            font-weight: 700;
-        }
-        .logo span { color: #7B746D; }
-        .nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 25px;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        .nav a:hover { opacity: 1; }
-        
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, #3A5566, #3d566e);
-            color: white;
-            padding: 60px 40px;
-            text-align: center;
-        }
-        .hero h1 {
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
-        .hero p {
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        /* Main */
-        .main {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        /* Section */
-        .section {
-            margin-bottom: 50px;
-        }
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-        .section-icon {
-            width: 50px;
-            height: 50px;
-            background: #7B746D;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-        }
-        .section-header h2 {
-            font-size: 24px;
-            color: #3A5566;
-        }
-        
-        /* Resource Grid */
-        .resource-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        .resource-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-decoration: none;
-            color: inherit;
-        }
-        .resource-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-        .resource-icon {
-            width: 50px;
-            height: 50px;
-            background: #f5f5f0;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-        .resource-card.pdf .resource-icon { background: #ffebee; }
-        .resource-card.link .resource-icon { background: #e3f2fd; }
-        .resource-card.form .resource-icon { background: #e8f5e9; }
-        .resource-content h3 {
-            font-size: 16px;
-            color: #3A5566;
-            margin-bottom: 6px;
-        }
-        .resource-content p {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 10px;
-        }
-        .resource-tag {
-            display: inline-block;
-            font-size: 11px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-        .resource-tag.pdf { background: #ffebee; color: #c62828; }
-        .resource-tag.external { background: #e3f2fd; color: #1565c0; }
-        .resource-tag.form { background: #e8f5e9; color: #2e7d32; }
-        
-        /* Contact Cards */
-        .contacts-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-        .contact-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-        }
-        .contact-card h4 {
-            font-size: 16px;
-            color: #3A5566;
-            margin-bottom: 10px;
-        }
-        .contact-card .phone {
-            font-size: 20px;
-            font-weight: 700;
-            color: #C58B2A;
-            margin-bottom: 8px;
-        }
-        .contact-card a {
-            color: #7B746D;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .contact-card a:hover { text-decoration: underline; }
-        
-        /* Checklist Section */
-        .checklist-preview {
-            background: linear-gradient(135deg, #C58B2A, #7da35c);
-            border-radius: 16px;
-            padding: 40px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 40px;
-        }
-        .checklist-preview h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .checklist-preview p {
-            opacity: 0.9;
-            max-width: 500px;
-        }
-        .checklist-preview a {
-            background: white;
-            color: #C58B2A;
-            padding: 15px 30px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.2s;
-        }
-        .checklist-preview a:hover {
-            transform: scale(1.05);
-        }
-        
-        /* Footer */
-        .footer {
-            background: #3A5566;
-            color: white;
-            padding: 30px;
-            text-align: center;
-            margin-top: 60px;
-        }
-        .footer a { color: #7B746D; text-decoration: none; }
-        
-        @media (max-width: 768px) {
-            .resource-grid { grid-template-columns: 1fr; }
-            .contacts-grid { grid-template-columns: 1fr; }
-            .checklist-preview { flex-direction: column; text-align: center; gap: 20px; }
-        }
-    </style>
-    <link rel="stylesheet" href="homebody_shared.css">
-</head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>DADU Resources & Forms | Castlehold</title>
+ <style>
+ * { margin: 0; padding: 0; box-sizing: border-box; }
+ body {
+ font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif;
+ background: #F0EBE1;
+ color: #3A5566;
+ line-height: 1.6;
+ }
+ 
+ /* Header */
+ .header {
+ background: #3A5566;
+ color: white;
+ padding: 15px 30px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ }
+ .logo {
+ font-size: 20px;
+ font-weight: 700;
+ }
+ .logo span { color: #7B746D; }
+ .nav a {
+ color: white;
+ text-decoration: none;
+ margin-left: 25px;
+ font-size: 14px;
+ opacity: 0.9;
+ }
+ .nav a:hover { opacity: 1; }
+ 
+ /* Hero */
+ .hero {
+ background: linear-gradient(135deg, #3A5566, #3d566e);
+ color: white;
+ padding: 60px 40px;
+ text-align: center;
+ }
+ .hero h1 {
+ font-size: 36px;
+ margin-bottom: 15px;
+ }
+ .hero p {
+ opacity: 0.9;
+ max-width: 600px;
+ margin: 0 auto;
+ }
+ 
+ /* Main */
+ .main {
+ max-width: 1100px;
+ margin: 0 auto;
+ padding: 40px 20px;
+ }
+ 
+ /* Section */
+ .section {
+ margin-bottom: 50px;
+ }
+ .section-header {
+ display: flex;
+ align-items: center;
+ gap: 15px;
+ margin-bottom: 25px;
+ padding-bottom: 15px;
+ border-bottom: 2px solid #e0e0e0;
+ }
+ .section-icon {
+ width: 50px;
+ height: 50px;
+ background: #7B746D;
+ border-radius: 12px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 24px;
+ color: white;
+ }
+ .section-header h2 {
+ font-size: 24px;
+ color: #3A5566;
+ }
+ 
+ /* Resource Grid */
+ .resource-grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 20px;
+ }
+ .resource-card {
+ background: white;
+ border-radius: 12px;
+ padding: 25px;
+ box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+ display: flex;
+ gap: 20px;
+ align-items: flex-start;
+ transition: transform 0.2s, box-shadow 0.2s;
+ text-decoration: none;
+ color: inherit;
+ }
+ .resource-card:hover {
+ transform: translateY(-3px);
+ box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+ }
+ .resource-icon {
+ width: 50px;
+ height: 50px;
+ background: #F0EBE1;
+ border-radius: 10px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 24px;
+ flex-shrink: 0;
+ }
+ .resource-card.pdf .resource-icon { background: #ffebee; }
+ .resource-card.link .resource-icon { background: #e3f2fd; }
+ .resource-card.form .resource-icon { background: #e8f5e9; }
+ .resource-content h3 {
+ font-size: 16px;
+ color: #3A5566;
+ margin-bottom: 6px;
+ }
+ .resource-content p {
+ font-size: 13px;
+ color: #666;
+ margin-bottom: 10px;
+ }
+ .resource-tag {
+ display: inline-block;
+ font-size: 11px;
+ padding: 3px 10px;
+ border-radius: 20px;
+ font-weight: 600;
+ }
+ .resource-tag.pdf { background: #ffebee; color: #c62828; }
+ .resource-tag.external { background: #e3f2fd; color: #1565c0; }
+ .resource-tag.form { background: #e8f5e9; color: #2e7d32; }
+ 
+ /* Contact Cards */
+ .contacts-grid {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 20px;
+ }
+ .contact-card {
+ background: white;
+ border-radius: 12px;
+ padding: 25px;
+ text-align: center;
+ box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+ }
+ .contact-card h4 {
+ font-size: 16px;
+ color: #3A5566;
+ margin-bottom: 10px;
+ }
+ .contact-card .phone {
+ font-size: 20px;
+ font-weight: 700;
+ color: #CBB279;
+ margin-bottom: 8px;
+ }
+ .contact-card a {
+ color: #7B746D;
+ text-decoration: none;
+ font-size: 14px;
+ }
+ .contact-card a:hover { text-decoration: underline; }
+ 
+ /* Checklist Section */
+ .checklist-preview {
+ background: linear-gradient(135deg, #CBB279, #7da35c);
+ border-radius: 16px;
+ padding: 40px;
+ color: white;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ margin-top: 40px;
+ }
+ .checklist-preview h3 {
+ font-size: 24px;
+ margin-bottom: 10px;
+ }
+ .checklist-preview p {
+ opacity: 0.9;
+ max-width: 500px;
+ }
+ .checklist-preview a {
+ background: white;
+ color: #CBB279;
+ padding: 15px 30px;
+ border-radius: 10px;
+ text-decoration: none;
+ font-weight: 600;
+ transition: transform 0.2s;
+ }
+ .checklist-preview a:hover {
+ transform: scale(1.05);
+ }
+ 
+ /* Footer */
+ .footer {
+ background: #3A5566;
+ color: white;
+ padding: 30px;
+ text-align: center;
+ margin-top: 60px;
+ }
+ .footer a { color: #7B746D; text-decoration: none; }
+ 
+ @media (max-width: 768px) {
+ .resource-grid { grid-template-columns: 1fr; }
+ .contacts-grid { grid-template-columns: 1fr; }
+ .checklist-preview { flex-direction: column; text-align: center; gap: 20px; }
+ }</style>
+ <link rel="stylesheet" href="homebody_shared.css"></head>
 <body>
 <!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
@@ -233,675 +231,501 @@
 <!-- End Shared Header -->
 
 
-    
-    
-    <section class="hero">
-        <h1>📚 DADU Resources & Forms</h1>
-        <p>All the official Nashville documents, forms, and links you need to plan and permit your DADU project</p>
-    </section>
-    
-    <main class="main">
-        
-        <!-- Permit Applications -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">📝</div>
-                <h2>Permit Applications</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="https://www.nashville.gov/sites/default/files/2023-03/Residential-Permit-Application.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📄</div>
-                    <div class="resource-content">
-                        <h3>Residential Permit Application</h3>
-                        <p>Main building permit application for DADU construction</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2023-03/Commercial-Permit-Application.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📄</div>
-                    <div class="resource-content">
-                        <h3>Commercial Permit Application</h3>
-                        <p>For mixed-use or commercial DADU applications</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/departments/codes/construction-and-permits/apply-for-a-permit" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🌐</div>
-                    <div class="resource-content">
-                        <h3>Apply for a Permit Online</h3>
-                        <p>Metro Nashville ePermits portal</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2022-09/Building-Permits-Central-Example-Site-Plan.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">🗺️</div>
-                    <div class="resource-content">
-                        <h3>Example Site Plan</h3>
-                        <p>Sample site plan showing required elements</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-        
-        <!-- Required Covenants -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">⚖️</div>
-                <h2>Restrictive Covenants</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="https://www.nashville.gov/sites/default/files/2023-03/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf" target="_blank" class="resource-card form">
-                    <div class="resource-icon">📋</div>
-                    <div class="resource-content">
-                        <h3>Restrictive Covenant for DADU</h3>
-                        <p>REQUIRED: Must be recorded before permit issuance</p>
-                        <span class="resource-tag form">Required Form</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2025-10/Res-Covenant-for-Det-Structure.pdf" target="_blank" class="resource-card form">
-                    <div class="resource-icon">📋</div>
-                    <div class="resource-content">
-                        <h3>Covenant for Detached Structure</h3>
-                        <p>Alternative covenant form (updated 2025)</p>
-                        <span class="resource-tag form">Required Form</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/departments/codes/construction-and-permits/land-use-and-zoning-information/zoning-examinations/restrictive-covenants" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🌐</div>
-                    <div class="resource-content">
-                        <h3>Covenant Requirements Guide</h3>
-                        <p>Metro Nashville covenant information</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="restrictive_covenants_v2.html" class="resource-card link">
-                    <div class="resource-icon">📖</div>
-                    <div class="resource-content">
-                        <h3>Understanding Covenants</h3>
-                        <p>Our guide to restrictive covenants</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-        
-        <!-- Short-Term Rental -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">🏨</div>
-                <h2>Short-Term Rental Permits</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="https://www.nashville.gov/departments/codes/short-term-rentals/apply-short-term-rental-property-permit" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🌐</div>
-                    <div class="resource-content">
-                        <h3>STRP Application Guide</h3>
-                        <p>How to apply for a short-term rental permit</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2022-03/STRP-Affidavit-Owner-Occupied.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📄</div>
-                    <div class="resource-content">
-                        <h3>Owner-Occupied STRP Affidavit</h3>
-                        <p>Required affidavit for owner-occupied rentals</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2025-06/STRP_Owner_Occupied_Neighbor_Notification_Template.docx" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📄</div>
-                    <div class="resource-content">
-                        <h3>Neighbor Notification Template</h3>
-                        <p>Required neighbor notification form</p>
-                        <span class="resource-tag pdf">DOCX Download</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/departments/codes/short-term-rentals/apply-short-term-rental-property-permit/checklist" target="_blank" class="resource-card link">
-                    <div class="resource-icon">✅</div>
-                    <div class="resource-content">
-                        <h3>STRP Application Checklist</h3>
-                        <p>Complete checklist for STRP applications</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-            </div>
-            <div style="background: #fff3e0; padding: 15px 20px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #ff9800;">
-                <strong>⚠️ Note:</strong> Short-Term Rentals are NOT permitted in DADUs on R, RS, and RM zoned properties under current Metro Code.
-            </div>
-        </section>
-        
-        <!-- Historic Overlay -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">🏛️</div>
-                <h2>Historic Overlay Properties</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="https://www.nashville.gov/sites/default/files/2025-12/HistoricZoning_Pre-Application_Inquiry_Form_12312025.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📄</div>
-                    <div class="resource-content">
-                        <h3>Historic Pre-Application Inquiry</h3>
-                        <p>Submit before applying for historic overlay permits</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2025-12/HistoricZoning_Application_CoverSheet.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📄</div>
-                    <div class="resource-content">
-                        <h3>Historic Zoning Application Cover Sheet</h3>
-                        <p>Required cover sheet for historic applications</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/departments/planning/historic-zoning-information/districts-and-design-guidelines" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🌐</div>
-                    <div class="resource-content">
-                        <h3>Historic Districts & Design Guidelines</h3>
-                        <p>Guidelines by historic district</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2025-12/251110_Arch-Planning-HZ-Timelines_DRAFT01.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📅</div>
-                    <div class="resource-content">
-                        <h3>Historic Review Timeline</h3>
-                        <p>Expected timelines for historic review</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-        
-        <!-- Code & Legislation -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">📜</div>
-                <h2>Code & Legislation</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/detached-accessory-dwelling-unit" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🌐</div>
-                    <div class="resource-content">
-                        <h3>Nashville.gov DADU Guide</h3>
-                        <p>Official Metro Nashville DADU guidance</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="dadu_code_legislation_v3.html" class="resource-card link">
-                    <div class="resource-icon">📖</div>
-                    <div class="resource-content">
-                        <h3>Complete Code Database</h3>
-                        <p>Our comprehensive DADU code reference</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2025-04/UHS-Appendix-A.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📄</div>
-                    <div class="resource-content">
-                        <h3>UHS Appendix A - Definitions</h3>
-                        <p>Official definitions including ADU</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="dadu_history.html" class="resource-card link">
-                    <div class="resource-icon">📅</div>
-                    <div class="resource-content">
-                        <h3>Legislative Timeline</h3>
-                        <p>History of DADU legislation in Nashville</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-                <a href="dadu_citations_complete.html" class="resource-card link">
-                    <div class="resource-icon">📋</div>
-                    <div class="resource-content">
-                        <h3>Metro Code Sources</h3>
-                        <p>All DADU code references with links</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-                <a href="dadu_legal_citations.html" class="resource-card link">
-                    <div class="resource-icon">⚖️</div>
-                    <div class="resource-content">
-                        <h3>Legal Code Links</h3>
-                        <p>Searchable legal code references</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-            </div>
-        </section>
+ 
+ 
+ <section class="hero">
+ <h1>DADU Resources & Forms</h1>
+ <p>All the official Nashville documents, forms, and links you need to plan and permit your DADU project</p></section>
+ 
+ <main class="main">
+ 
+ <!-- Permit Applications -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Permit Applications</h2></div>
+ <div class="resource-grid">
+ <a href="https://www.nashville.gov/sites/default/files/2023-03/Residential-Permit-Application.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Residential Permit Application</h3>
+ <p>Main building permit application for DADU construction</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2023-03/Commercial-Permit-Application.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Commercial Permit Application</h3>
+ <p>For mixed-use or commercial DADU applications</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://www.nashville.gov/departments/codes/construction-and-permits/apply-for-a-permit" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Apply for a Permit Online</h3>
+ <p>Metro Nashville ePermits portal</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2022-09/Building-Permits-Central-Example-Site-Plan.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Example Site Plan</h3>
+ <p>Sample site plan showing required elements</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a></div></section>
+ 
+ <!-- Required Covenants -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Restrictive Covenants</h2></div>
+ <div class="resource-grid">
+ <a href="https://www.nashville.gov/sites/default/files/2023-03/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf" target="_blank" class="resource-card form">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Restrictive Covenant for DADU</h3>
+ <p>REQUIRED: Must be recorded before permit issuance</p>
+ <span class="resource-tag form">Required Form</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2025-10/Res-Covenant-for-Det-Structure.pdf" target="_blank" class="resource-card form">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Covenant for Detached Structure</h3>
+ <p>Alternative covenant form (updated 2025)</p>
+ <span class="resource-tag form">Required Form</span></div></a>
+ <a href="https://www.nashville.gov/departments/codes/construction-and-permits/land-use-and-zoning-information/zoning-examinations/restrictive-covenants" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Covenant Requirements Guide</h3>
+ <p>Metro Nashville covenant information</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="restrictive_covenants_v2.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Understanding Covenants</h3>
+ <p>Our guide to restrictive covenants</p>
+ <span class="resource-tag external">Platform Guide</span></div></a></div></section>
+ 
+ <!-- Short-Term Rental -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Short-Term Rental Permits</h2></div>
+ <div class="resource-grid">
+ <a href="https://www.nashville.gov/departments/codes/short-term-rentals/apply-short-term-rental-property-permit" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>STRP Application Guide</h3>
+ <p>How to apply for a short-term rental permit</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2022-03/STRP-Affidavit-Owner-Occupied.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Owner-Occupied STRP Affidavit</h3>
+ <p>Required affidavit for owner-occupied rentals</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2025-06/STRP_Owner_Occupied_Neighbor_Notification_Template.docx" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Neighbor Notification Template</h3>
+ <p>Required neighbor notification form</p>
+ <span class="resource-tag pdf">DOCX Download</span></div></a>
+ <a href="https://www.nashville.gov/departments/codes/short-term-rentals/apply-short-term-rental-property-permit/checklist" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>STRP Application Checklist</h3>
+ <p>Complete checklist for STRP applications</p>
+ <span class="resource-tag external">External Link</span></div></a></div>
+ <div style="background: #fff3e0; padding: 15px 20px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #ff9800;">
+ <strong>Note:</strong>Short-Term Rentals are NOT permitted in DADUs on R, RS, and RM zoned properties under current Metro Code.</div></section>
+ 
+ <!-- Historic Overlay -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Historic Overlay Properties</h2></div>
+ <div class="resource-grid">
+ <a href="https://www.nashville.gov/sites/default/files/2025-12/HistoricZoning_Pre-Application_Inquiry_Form_12312025.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Historic Pre-Application Inquiry</h3>
+ <p>Submit before applying for historic overlay permits</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2025-12/HistoricZoning_Application_CoverSheet.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Historic Zoning Application Cover Sheet</h3>
+ <p>Required cover sheet for historic applications</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://www.nashville.gov/departments/planning/historic-zoning-information/districts-and-design-guidelines" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Historic Districts & Design Guidelines</h3>
+ <p>Guidelines by historic district</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2025-12/251110_Arch-Planning-HZ-Timelines_DRAFT01.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Historic Review Timeline</h3>
+ <p>Expected timelines for historic review</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a></div></section>
+ 
+ <!-- Code & Legislation -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Code & Legislation</h2></div>
+ <div class="resource-grid">
+ <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/detached-accessory-dwelling-unit" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Nashville.gov DADU Guide</h3>
+ <p>Official Metro Nashville DADU guidance</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="dadu_code_legislation_v3.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Complete Code Database</h3>
+ <p>Our comprehensive DADU code reference</p>
+ <span class="resource-tag external">Platform Guide</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2025-04/UHS-Appendix-A.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>UHS Appendix A - Definitions</h3>
+ <p>Official definitions including ADU</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="dadu_history.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Legislative Timeline</h3>
+ <p>History of DADU legislation in Nashville</p>
+ <span class="resource-tag external">Platform Guide</span></div></a>
+ <a href="dadu_citations_complete.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Metro Code Sources</h3>
+ <p>All DADU code references with links</p>
+ <span class="resource-tag external">Platform Guide</span></div></a>
+ <a href="dadu_legal_citations.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Legal Code Links</h3>
+ <p>Searchable legal code references</p>
+ <span class="resource-tag external">Platform Guide</span></div></a></div></section>
 
-        <!-- Municode Zoning Code -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">📚</div>
-                <h2>Municode Zoning Code</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📖</div>
-                    <div class="resource-content">
-                        <h3>DADU Overlay District (Full Article)</h3>
-                        <p>Article XVII - Complete DADU overlay regulations</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.700DEGU" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📐</div>
-                    <div class="resource-content">
-                        <h3>17.36.700 - Design Guidelines</h3>
-                        <p>DADU design standards and requirements</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.710PELAUS" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🏘️</div>
-                    <div class="resource-content">
-                        <h3>17.36.710 - Permitted Land Uses</h3>
-                        <p>Allowed uses in DADU overlay</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.730DEACDWUNOVDI" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🏠</div>
-                    <div class="resource-content">
-                        <h3>17.36.730 - DADU Overlay District</h3>
-                        <p>Core DADU overlay district regulations</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.16LAUSDEST_ARTIIUSPECOPC_17.16.030REUS" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🏡</div>
-                    <div class="resource-content">
-                        <h3>17.16.030 - Residential Uses</h3>
-                        <p>Residential use classifications</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.16LAUSDEST_ARTIVUSPEACA_17.16.290COACUS" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🔧</div>
-                    <div class="resource-content">
-                        <h3>17.16.290 - Accessory Uses</h3>
-                        <p>Common accessory uses regulations</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12DIBURE_17.12.050ACBUFLARCO" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📏</div>
-                    <div class="resource-content">
-                        <h3>17.12.050 - Accessory Building Floor Area</h3>
-                        <p>Floor area limits for accessory buildings</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12DIBURE_17.12.060BUHECO" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📐</div>
-                    <div class="resource-content">
-                        <h3>17.12.060 - Building Height</h3>
-                        <p>Height calculation methods</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT16BUCO_CH16.24PRST_ARTVIDWSTUNHUHAOCUS_16.24.590ORREVADEREWH" target="_blank" class="resource-card link">
-                    <div class="resource-icon">⚖️</div>
-                    <div class="resource-content">
-                        <h3>16.24.590 - Owner Occupancy Requirements</h3>
-                        <p>Building code owner occupancy section</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.40ADPR_ARTXVIAPFE_17.40.740GE" target="_blank" class="resource-card link">
-                    <div class="resource-icon">💰</div>
-                    <div class="resource-content">
-                        <h3>17.40.740 - Application Fees</h3>
-                        <p>Fee schedules for zoning applications</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=THCH_APCH_APXONEDEBOURSEDI" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🗺️</div>
-                    <div class="resource-content">
-                        <h3>Urban Services District Boundaries</h3>
-                        <p>USD boundary definitions (Appendix)</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-                <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.04GEPRDE_17.04.060DEGETE" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📝</div>
-                    <div class="resource-content">
-                        <h3>17.04.060 - Definitions</h3>
-                        <p>General zoning terms definitions</p>
-                        <span class="resource-tag external">Municode ↗</span>
-                    </div>
-                </a>
-            </div>
-        </section>
+ <!-- Municode Zoning Code -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Municode Zoning Code</h2></div>
+ <div class="resource-grid">
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>DADU Overlay District (Full Article)</h3>
+ <p>Article XVII - Complete DADU overlay regulations</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.700DEGU" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>17.36.700 - Design Guidelines</h3>
+ <p>DADU design standards and requirements</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.710PELAUS" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>17.36.710 - Permitted Land Uses</h3>
+ <p>Allowed uses in DADU overlay</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.730DEACDWUNOVDI" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>17.36.730 - DADU Overlay District</h3>
+ <p>Core DADU overlay district regulations</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.16LAUSDEST_ARTIIUSPECOPC_17.16.030REUS" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>17.16.030 - Residential Uses</h3>
+ <p>Residential use classifications</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.16LAUSDEST_ARTIVUSPEACA_17.16.290COACUS" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>17.16.290 - Accessory Uses</h3>
+ <p>Common accessory uses regulations</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12DIBURE_17.12.050ACBUFLARCO" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>17.12.050 - Accessory Building Floor Area</h3>
+ <p>Floor area limits for accessory buildings</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12DIBURE_17.12.060BUHECO" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>17.12.060 - Building Height</h3>
+ <p>Height calculation methods</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT16BUCO_CH16.24PRST_ARTVIDWSTUNHUHAOCUS_16.24.590ORREVADEREWH" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>16.24.590 - Owner Occupancy Requirements</h3>
+ <p>Building code owner occupancy section</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.40ADPR_ARTXVIAPFE_17.40.740GE" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>17.40.740 - Application Fees</h3>
+ <p>Fee schedules for zoning applications</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=THCH_APCH_APXONEDEBOURSEDI" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Urban Services District Boundaries</h3>
+ <p>USD boundary definitions (Appendix)</p>
+ <span class="resource-tag external">Municode</span></div></a>
+ <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.04GEPRDE_17.04.060DEGETE" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>17.04.060 - Definitions</h3>
+ <p>General zoning terms definitions</p>
+ <span class="resource-tag external">Municode</span></div></a></div></section>
 
-        <!-- Nashville Documents Portal -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">🏛️</div>
-                <h2>Nashville Documents Portal</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="https://documents.nashville.gov" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🌐</div>
-                    <div class="resource-content">
-                        <h3>Nashville Documents Portal</h3>
-                        <p>Official Metro document repository</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://documents.nashville.gov/Request/Form/Legislation" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📋</div>
-                    <div class="resource-content">
-                        <h3>Legislation Request Form</h3>
-                        <p>Search for bills and ordinances</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://documents.nashville.gov/Request/Form/Legislation?legislationnumber=BL2025-1007" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📜</div>
-                    <div class="resource-content">
-                        <h3>BL2025-1007 (Current DADU Law)</h3>
-                        <p>2025 DADU expansion ordinance</p>
-                        <span class="resource-tag external">Legislation ↗</span>
-                    </div>
-                </a>
-                <a href="https://documents.nashville.gov/Request/Form/Legislation?legislationnumber=BL2021-791" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📜</div>
-                    <div class="resource-content">
-                        <h3>BL2021-791 (Original DADU Overlay)</h3>
-                        <p>2021 DADU overlay district ordinance</p>
-                        <span class="resource-tag external">Legislation ↗</span>
-                    </div>
-                </a>
-                <a href="https://documents.nashville.gov/Request/Open/361d684d-d1e1-40b2-93ef-030a86fb8b0c_MC-Legis20190722_95727_1" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📄</div>
-                    <div class="resource-content">
-                        <h3>2019 Legislative File</h3>
-                        <p>Early DADU legislative discussion</p>
-                        <span class="resource-tag external">Archive ↗</span>
-                    </div>
-                </a>
-            </div>
-        </section>
+ <!-- Nashville Documents Portal -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Nashville Documents Portal</h2></div>
+ <div class="resource-grid">
+ <a href="https://documents.nashville.gov" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Nashville Documents Portal</h3>
+ <p>Official Metro document repository</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://documents.nashville.gov/Request/Form/Legislation" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Legislation Request Form</h3>
+ <p>Search for bills and ordinances</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://documents.nashville.gov/Request/Form/Legislation?legislationnumber=BL2025-1007" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>BL2025-1007 (Current DADU Law)</h3>
+ <p>2025 DADU expansion ordinance</p>
+ <span class="resource-tag external">Legislation</span></div></a>
+ <a href="https://documents.nashville.gov/Request/Form/Legislation?legislationnumber=BL2021-791" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>BL2021-791 (Original DADU Overlay)</h3>
+ <p>2021 DADU overlay district ordinance</p>
+ <span class="resource-tag external">Legislation</span></div></a>
+ <a href="https://documents.nashville.gov/Request/Open/361d684d-d1e1-40b2-93ef-030a86fb8b0c_MC-Legis20190722_95727_1" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>2019 Legislative File</h3>
+ <p>Early DADU legislative discussion</p>
+ <span class="resource-tag external">Archive</span></div></a></div></section>
 
-        <!-- Metro Nashville PDFs -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">📄</div>
-                <h2>Metro Nashville PDFs</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="https://www.nashville.gov/sites/default/files/2025-04/UHS-Appendix-A.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📄</div>
-                    <div class="resource-content">
-                        <h3>Unified Housing Strategy - Appendix A</h3>
-                        <p>Housing strategy definitions and metrics</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2022-09/Building-Permits-Central-Example-Site-Plan.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">🗺️</div>
-                    <div class="resource-content">
-                        <h3>Example Site Plan</h3>
-                        <p>Sample site plan for permit applications</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2024-04/Codes-Residential-Building-Permit-Application.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📋</div>
-                    <div class="resource-content">
-                        <h3>Residential Building Permit Application</h3>
-                        <p>Main permit application form</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://maps.nashville.gov/sp/2022/2022SP-022/PC_Minutes_2022SP-022.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📝</div>
-                    <div class="resource-content">
-                        <h3>Planning Commission Minutes</h3>
-                        <p>2022SP-022 specific plan minutes</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2025-10/210524_WHCH-Adopted-Draft.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📐</div>
-                    <div class="resource-content">
-                        <h3>Wedgewood Houston UDO</h3>
-                        <p>Urban Design Overlay adopted draft</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/sites/default/files/2025-07/MPC-250724-The-Nations-UDO-Substitute.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">📐</div>
-                    <div class="resource-content">
-                        <h3>The Nations UDO</h3>
-                        <p>Urban Design Overlay substitute</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-                <a href="https://cdn.vanderbilt.edu/vu-sub/wp-content/uploads/sites/282/2023/06/20235808/Design_Day_Catalog_2020.pdf" target="_blank" class="resource-card pdf">
-                    <div class="resource-icon">🎓</div>
-                    <div class="resource-content">
-                        <h3>Vanderbilt Design Day Catalog 2020</h3>
-                        <p>ADU design concepts from Vanderbilt</p>
-                        <span class="resource-tag pdf">PDF Download</span>
-                    </div>
-                </a>
-            </div>
-        </section>
+ <!-- Metro Nashville PDFs -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Metro Nashville PDFs</h2></div>
+ <div class="resource-grid">
+ <a href="https://www.nashville.gov/sites/default/files/2025-04/UHS-Appendix-A.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Unified Housing Strategy - Appendix A</h3>
+ <p>Housing strategy definitions and metrics</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2022-09/Building-Permits-Central-Example-Site-Plan.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Example Site Plan</h3>
+ <p>Sample site plan for permit applications</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2024-04/Codes-Residential-Building-Permit-Application.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Residential Building Permit Application</h3>
+ <p>Main permit application form</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://maps.nashville.gov/sp/2022/2022SP-022/PC_Minutes_2022SP-022.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Planning Commission Minutes</h3>
+ <p>2022SP-022 specific plan minutes</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2025-10/210524_WHCH-Adopted-Draft.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Wedgewood Houston UDO</h3>
+ <p>Urban Design Overlay adopted draft</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://www.nashville.gov/sites/default/files/2025-07/MPC-250724-The-Nations-UDO-Substitute.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>The Nations UDO</h3>
+ <p>Urban Design Overlay substitute</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a>
+ <a href="https://cdn.vanderbilt.edu/vu-sub/wp-content/uploads/sites/282/2023/06/20235808/Design_Day_Catalog_2020.pdf" target="_blank" class="resource-card pdf">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Vanderbilt Design Day Catalog 2020</h3>
+ <p>ADU design concepts from Vanderbilt</p>
+ <span class="resource-tag pdf">PDF Download</span></div></a></div></section>
 
-        <!-- Metro Codes Department Pages -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">🏢</div>
-                <h2>Metro Codes Department</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/detached-accessory-dwelling-unit" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🏠</div>
-                    <div class="resource-content">
-                        <h3>DADU Permit Information</h3>
-                        <p>Official DADU permit guidance</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🏗️</div>
-                    <div class="resource-content">
-                        <h3>Building Permits Central</h3>
-                        <p>All building permit information</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/departments/codes/construction-and-permits/residential-building-permits" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🏡</div>
-                    <div class="resource-content">
-                        <h3>Residential Building Permits</h3>
-                        <p>Residential permit requirements</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/accessory-structure-permitting-instructions" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📋</div>
-                    <div class="resource-content">
-                        <h3>Accessory Structure Instructions</h3>
-                        <p>Permitting instructions for accessory structures</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/departments/codes/construction-and-permits/contact-list" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📞</div>
-                    <div class="resource-content">
-                        <h3>Codes Department Contact List</h3>
-                        <p>Department contacts by topic</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-            </div>
-        </section>
+ <!-- Metro Codes Department Pages -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Metro Codes Department</h2></div>
+ <div class="resource-grid">
+ <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/detached-accessory-dwelling-unit" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>DADU Permit Information</h3>
+ <p>Official DADU permit guidance</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Building Permits Central</h3>
+ <p>All building permit information</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://www.nashville.gov/departments/codes/construction-and-permits/residential-building-permits" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Residential Building Permits</h3>
+ <p>Residential permit requirements</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/accessory-structure-permitting-instructions" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Accessory Structure Instructions</h3>
+ <p>Permitting instructions for accessory structures</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://www.nashville.gov/departments/codes/construction-and-permits/contact-list" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Codes Department Contact List</h3>
+ <p>Department contacts by topic</p>
+ <span class="resource-tag external">External Link</span></div></a></div></section>
 
-        <!-- Property Research -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">🗺️</div>
-                <h2>Property Research Tools</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🗺️</div>
-                    <div class="resource-content">
-                        <h3>Nashville Parcel Viewer</h3>
-                        <p>Official parcel map and property data</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://www.padctn.org/" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🏠</div>
-                    <div class="resource-content">
-                        <h3>Property Assessor (PADCTN)</h3>
-                        <p>Property values and tax information</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://www.nashville.gov/departments/codes/services/epermits" target="_blank" class="resource-card link">
-                    <div class="resource-icon">🔍</div>
-                    <div class="resource-content">
-                        <h3>ePermits Portal</h3>
-                        <p>Search permit history and status</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-                <a href="https://www.registerofdeeds.nashville.gov/" target="_blank" class="resource-card link">
-                    <div class="resource-icon">📑</div>
-                    <div class="resource-content">
-                        <h3>Register of Deeds</h3>
-                        <p>Recorded documents and deed history</p>
-                        <span class="resource-tag external">External Link ↗</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-        
-        <!-- Platform Guides -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">📖</div>
-                <h2>Platform Guides</h2>
-            </div>
-            <div class="resource-grid">
-                <a href="what_is_dadu.html" class="resource-card link">
-                    <div class="resource-icon">❓</div>
-                    <div class="resource-content">
-                        <h3>What is a DADU?</h3>
-                        <p>Introduction to Detached ADUs</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-                <a href="dadu_building_requirements.html" class="resource-card link">
-                    <div class="resource-icon">📐</div>
-                    <div class="resource-content">
-                        <h3>Building Requirements</h3>
-                        <p>Size, height, setback rules</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-                <a href="dadu_zoning_standards.html" class="resource-card link">
-                    <div class="resource-icon">🏘️</div>
-                    <div class="resource-content">
-                        <h3>Zoning Standards</h3>
-                        <p>Eligible zones and requirements</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-                <a href="owner_occupancy.html" class="resource-card link">
-                    <div class="resource-icon">🏡</div>
-                    <div class="resource-content">
-                        <h3>Owner Occupancy</h3>
-                        <p>Residency requirements explained</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-                <a href="permit_process_timeline.html" class="resource-card link">
-                    <div class="resource-icon">⏱️</div>
-                    <div class="resource-content">
-                        <h3>Permit Process Timeline</h3>
-                        <p>Step-by-step permit guide</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-                <a href="am_i_eligible.html" class="resource-card link">
-                    <div class="resource-icon">✅</div>
-                    <div class="resource-content">
-                        <h3>Am I Eligible?</h3>
-                        <p>Interactive eligibility map</p>
-                        <span class="resource-tag external">Platform Guide</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-        
-        <!-- Contacts -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">📞</div>
-                <h2>Key Contacts</h2>
-            </div>
-            <div class="contacts-grid">
-                <div class="contact-card">
-                    <h4>Zoning Help Desk</h4>
-                    <div class="phone">615-862-6550</div>
-                    <a href="https://www.nashville.gov/departments/codes" target="_blank">Metro Codes Dept ↗</a>
-                </div>
-                <div class="contact-card">
-                    <h4>Planning Department</h4>
-                    <div class="phone">615-862-7190</div>
-                    <a href="https://www.nashville.gov/departments/planning" target="_blank">Planning Dept ↗</a>
-                </div>
-                <div class="contact-card">
-                    <h4>Historic Commission</h4>
-                    <div class="phone">615-862-7970</div>
-                    <a href="https://www.nashville.gov/departments/planning/historic-zoning-information" target="_blank">Historic Zoning ↗</a>
-                </div>
-                <div class="contact-card">
-                    <h4>Property Assessor</h4>
-                    <div class="phone">615-862-6080</div>
-                    <a href="https://www.padctn.org/" target="_blank">PADCTN ↗</a>
-                </div>
-                <div class="contact-card">
-                    <h4>Metro Stormwater</h4>
-                    <div class="phone">615-862-8766</div>
-                    <a href="https://www.nashville.gov/departments/water/stormwater" target="_blank">Stormwater Dept ↗</a>
-                </div>
-                <div class="contact-card">
-                    <h4>Tennessee 811</h4>
-                    <div class="phone">811</div>
-                    <p style="font-size: 12px; color: #666; margin-top: 5px;">Call 3 days before digging</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Checklist CTA -->
-        <div class="checklist-preview">
-            <div>
-                <h3>📋 Interactive Eligibility Checklist</h3>
-                <p>Walk through every DADU requirement step-by-step with our interactive checklist and flowchart</p>
-            </div>
-            <a href="dadu_eligibility_flowchart.html">Open Checklist →</a>
-        </div>
-        
-    </main>
-    
-    <footer class="footer">
-        <p>Castlehold | DADU Zoning & Buildability Intelligence</p>
-        <p style="margin-top: 10px;">
-            <a href="homebody_index.html">Home</a> · 
-            <a href="homebody_dadu_pricing.html">Pricing</a> · 
-            <a href="about_platform_infographic.html">About</a>
-        </p>
-    </footer>
-    <script src="homebody_header.js"></script>
-</body>
-</html>
+ <!-- Property Research -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Property Research Tools</h2></div>
+ <div class="resource-grid">
+ <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Nashville Parcel Viewer</h3>
+ <p>Official parcel map and property data</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://www.padctn.org/" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Property Assessor (PADCTN)</h3>
+ <p>Property values and tax information</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://www.nashville.gov/departments/codes/services/epermits" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>ePermits Portal</h3>
+ <p>Search permit history and status</p>
+ <span class="resource-tag external">External Link</span></div></a>
+ <a href="https://www.registerofdeeds.nashville.gov/" target="_blank" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Register of Deeds</h3>
+ <p>Recorded documents and deed history</p>
+ <span class="resource-tag external">External Link</span></div></a></div></section>
+ 
+ <!-- Platform Guides -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Platform Guides</h2></div>
+ <div class="resource-grid">
+ <a href="what_is_dadu.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>What is a DADU?</h3>
+ <p>Introduction to Detached ADUs</p>
+ <span class="resource-tag external">Platform Guide</span></div></a>
+ <a href="dadu_building_requirements.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Building Requirements</h3>
+ <p>Size, height, setback rules</p>
+ <span class="resource-tag external">Platform Guide</span></div></a>
+ <a href="dadu_zoning_standards.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Zoning Standards</h3>
+ <p>Eligible zones and requirements</p>
+ <span class="resource-tag external">Platform Guide</span></div></a>
+ <a href="owner_occupancy.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Owner Occupancy</h3>
+ <p>Residency requirements explained</p>
+ <span class="resource-tag external">Platform Guide</span></div></a>
+ <a href="permit_process_timeline.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Permit Process Timeline</h3>
+ <p>Step-by-step permit guide</p>
+ <span class="resource-tag external">Platform Guide</span></div></a>
+ <a href="am_i_eligible.html" class="resource-card link">
+ <div class="resource-icon"></div>
+ <div class="resource-content">
+ <h3>Am I Eligible?</h3>
+ <p>Interactive eligibility map</p>
+ <span class="resource-tag external">Platform Guide</span></div></a></div></section>
+ 
+ <!-- Contacts -->
+ <section class="section">
+ <div class="section-header">
+ <div class="section-icon"></div>
+ <h2>Key Contacts</h2></div>
+ <div class="contacts-grid">
+ <div class="contact-card">
+ <h4>Zoning Help Desk</h4>
+ <div class="phone">615-862-6550</div>
+ <a href="https://www.nashville.gov/departments/codes" target="_blank">Metro Codes Dept</a></div>
+ <div class="contact-card">
+ <h4>Planning Department</h4>
+ <div class="phone">615-862-7190</div>
+ <a href="https://www.nashville.gov/departments/planning" target="_blank">Planning Dept</a></div>
+ <div class="contact-card">
+ <h4>Historic Commission</h4>
+ <div class="phone">615-862-7970</div>
+ <a href="https://www.nashville.gov/departments/planning/historic-zoning-information" target="_blank">Historic Zoning</a></div>
+ <div class="contact-card">
+ <h4>Property Assessor</h4>
+ <div class="phone">615-862-6080</div>
+ <a href="https://www.padctn.org/" target="_blank">PADCTN</a></div>
+ <div class="contact-card">
+ <h4>Metro Stormwater</h4>
+ <div class="phone">615-862-8766</div>
+ <a href="https://www.nashville.gov/departments/water/stormwater" target="_blank">Stormwater Dept</a></div>
+ <div class="contact-card">
+ <h4>Tennessee 811</h4>
+ <div class="phone">811</div>
+ <p style="font-size: 12px; color: #666; margin-top: 5px;">Call 3 days before digging</p></div></div></section>
+ 
+ <!-- Checklist CTA -->
+ <div class="checklist-preview">
+ <div>
+ <h3>Interactive Eligibility Checklist</h3>
+ <p>Walk through every DADU requirement step-by-step with our interactive checklist and flowchart</p></div>
+ <a href="dadu_eligibility_flowchart.html">Open Checklist</a></div></main>
+ 
+ <footer class="footer">
+ <p>Castlehold | DADU Zoning & Buildability Intelligence</p>
+ <p style="margin-top: 10px;">
+ <a href="homebody_index.html">Home</a>· 
+ <a href="homebody_dadu_pricing.html">Pricing</a>· 
+ <a href="about_platform_infographic.html">About</a></p></footer>
+ <script src="homebody_header.js"></script></body></html>

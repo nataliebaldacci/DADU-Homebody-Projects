@@ -1,359 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DADU Design Standards | Castlehold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --navy: #3A5566;
-            --navy-dark: #2E4553;
-            --teal: #7B746D;
-            --terracotta: #C58B2A;
-            --terracotta-hover: #A8761F;
-            --tan: #7B746D;
-            --cream: #f5f5f0;
-            --background: #F2F0ED;
-            --white: #ffffff;
-            --border: #e0e0e0;
-            --text: #333333;
-            --text-light: #666666;
-        }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>DADU Design Standards | Castlehold</title>
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <style>
+ :root {
+ --navy: #3A5566;
+ --navy-dark: #2E4553;
+ --teal: #7B746D;
+ --terracotta: #CBB279;
+ --terracotta-hover: #B8A068;
+ --tan: #7B746D;
+ --cream: #F0EBE1;
+ --background: #F2F0ED;
+ --white: #ffffff;
+ --border: #e0e0e0;
+ --text: #333333;
+ --text-light: #666666;
+ }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+ * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-        }
+ body {
+ font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+ background: var(--background);
+ color: var(--text);
+ line-height: 1.6;
+ }
 
-        .header {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
-            padding: 0 24px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+ .header {
+ background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+ padding: 0 24px;
+ height: 64px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ position: sticky;
+ top: 0;
+ z-index: 1000;
+ }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: white;
-            font-weight: 700;
-            font-size: 20px;
-        }
+ .logo {
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ text-decoration: none;
+ color: white;
+ font-weight: 700;
+ font-size: 20px;
+ }
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--terracotta);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+ .logo-icon {
+ width: 40px;
+ height: 40px;
+ background: var(--terracotta);
+ border-radius: 10px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ }
 
-        .nav-links {
-            display: flex;
-            gap: 8px;
-        }
+ .nav-links {
+ display: flex;
+ gap: 8px;
+ }
 
-        .nav-link {
-            color: rgba(255,255,255,0.9);
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-        }
+ .nav-link {
+ color: rgba(255,255,255,0.9);
+ text-decoration: none;
+ padding: 8px 16px;
+ border-radius: 6px;
+ font-size: 14px;
+ font-weight: 500;
+ }
 
-        .nav-link:hover {
-            background: rgba(255,255,255,0.1);
-        }
+ .nav-link:hover {
+ background: rgba(255,255,255,0.1);
+ }
 
-        .hero {
-            background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
-            padding: 60px 24px;
-            color: white;
-            text-align: center;
-        }
+ .hero {
+ background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
+ padding: 60px 24px;
+ color: white;
+ text-align: center;
+ }
 
-        .hero h1 {
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
+ .hero h1 {
+ font-size: 36px;
+ font-weight: 800;
+ margin-bottom: 12px;
+ }
 
-        .hero p {
-            font-size: 18px;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+ .hero p {
+ font-size: 18px;
+ opacity: 0.9;
+ max-width: 600px;
+ margin: 0 auto;
+ }
 
-        .main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 24px;
-        }
+ .main {
+ max-width: 1200px;
+ margin: 0 auto;
+ padding: 40px 24px;
+ }
 
-        .section-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 24px;
-        }
+ .section-title {
+ font-size: 24px;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 24px;
+ }
 
-        .standards-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-bottom: 48px;
-        }
+ .standards-grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 24px;
+ margin-bottom: 48px;
+ }
 
-        .standard-card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 28px;
-            border: 1px solid var(--border);
-        }
+ .standard-card {
+ background: var(--white);
+ border-radius: 12px;
+ padding: 28px;
+ border: 1px solid var(--border);
+ }
 
-        .standard-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
+ .standard-header {
+ display: flex;
+ align-items: center;
+ gap: 16px;
+ margin-bottom: 20px;
+ }
 
-        .standard-icon {
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(135deg, var(--terracotta) 0%, var(--teal) 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-        }
+ .standard-icon {
+ width: 52px;
+ height: 52px;
+ background: linear-gradient(135deg, var(--terracotta) 0%, var(--teal) 100%);
+ border-radius: 12px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 26px;
+ }
 
-        .standard-card h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--navy);
-        }
+ .standard-card h3 {
+ font-size: 18px;
+ font-weight: 700;
+ color: var(--navy);
+ }
 
-        .standard-card h4 {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-            margin: 16px 0 12px;
-        }
+ .standard-card h4 {
+ font-size: 14px;
+ font-weight: 600;
+ color: var(--text);
+ margin: 16px 0 12px;
+ }
 
-        .standard-list {
-            list-style: none;
-        }
+ .standard-list {
+ list-style: none;
+ }
 
-        .standard-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-        }
+ .standard-list li {
+ padding: 10px 0;
+ border-bottom: 1px solid var(--border);
+ display: flex;
+ justify-content: space-between;
+ font-size: 14px;
+ }
 
-        .standard-list li:last-child {
-            border-bottom: none;
-        }
+ .standard-list li:last-child {
+ border-bottom: none;
+ }
 
-        .standard-list .label {
-            color: var(--text-light);
-        }
+ .standard-list .label {
+ color: var(--text-light);
+ }
 
-        .standard-list .value {
-            font-weight: 600;
-            color: var(--navy);
-        }
+ .standard-list .value {
+ font-weight: 600;
+ color: var(--navy);
+ }
 
-        .highlight-box {
-            background: var(--cream);
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 16px;
-        }
+ .highlight-box {
+ background: var(--cream);
+ border-radius: 8px;
+ padding: 16px;
+ margin-top: 16px;
+ }
 
-        .highlight-box p {
-            font-size: 13px;
-            color: var(--text-light);
-        }
+ .highlight-box p {
+ font-size: 13px;
+ color: var(--text-light);
+ }
 
-        .highlight-box strong {
-            color: var(--terracotta);
-        }
+ .highlight-box strong {
+ color: var(--terracotta);
+ }
 
-        .visual-section {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 32px;
-            margin-bottom: 48px;
-        }
+ .visual-section {
+ background: var(--white);
+ border-radius: 12px;
+ padding: 32px;
+ margin-bottom: 48px;
+ }
 
-        .diagram-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-top: 24px;
-        }
+ .diagram-grid {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 24px;
+ margin-top: 24px;
+ }
 
-        .diagram-card {
-            background: var(--cream);
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-        }
+ .diagram-card {
+ background: var(--cream);
+ border-radius: 12px;
+ padding: 24px;
+ text-align: center;
+ }
 
-        .diagram-visual {
-            width: 100%;
-            height: 160px;
-            background: var(--white);
-            border-radius: 8px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            border: 2px dashed var(--border);
-        }
+ .diagram-visual {
+ width: 100%;
+ height: 160px;
+ background: var(--white);
+ border-radius: 8px;
+ margin-bottom: 16px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ position: relative;
+ border: 2px dashed var(--border);
+ }
 
-        .diagram-house {
-            width: 80px;
-            height: 60px;
-            background: var(--navy);
-            position: relative;
-        }
+ .diagram-house {
+ width: 80px;
+ height: 60px;
+ background: var(--navy);
+ position: relative;
+ }
 
-        .diagram-house::before {
-            content: '';
-            position: absolute;
-            top: -30px;
-            left: -10px;
-            right: -10px;
-            height: 30px;
-            background: var(--navy-dark);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
+ .diagram-house::before {
+ content: '';
+ position: absolute;
+ top: -30px;
+ left: -10px;
+ right: -10px;
+ height: 30px;
+ background: var(--navy-dark);
+ clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+ }
 
-        .diagram-dadu {
-            width: 40px;
-            height: 35px;
-            background: var(--terracotta);
-            position: absolute;
-            right: 20px;
-            bottom: 20px;
-        }
+ .diagram-dadu {
+ width: 40px;
+ height: 35px;
+ background: var(--terracotta);
+ position: absolute;
+ right: 20px;
+ bottom: 20px;
+ }
 
-        .diagram-dadu::before {
-            content: '';
-            position: absolute;
-            top: -15px;
-            left: -5px;
-            right: -5px;
-            height: 15px;
-            background: var(--terracotta-hover);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
+ .diagram-dadu::before {
+ content: '';
+ position: absolute;
+ top: -15px;
+ left: -5px;
+ right: -5px;
+ height: 15px;
+ background: var(--terracotta-hover);
+ clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+ }
 
-        .setback-line {
-            position: absolute;
-            border: 2px dashed var(--tan);
-        }
+ .setback-line {
+ position: absolute;
+ border: 2px dashed var(--tan);
+ }
 
-        .setback-line.side {
-            height: 100%;
-            width: 0;
-            left: 10px;
-        }
+ .setback-line.side {
+ height: 100%;
+ width: 0;
+ left: 10px;
+ }
 
-        .setback-line.rear {
-            width: 100%;
-            height: 0;
-            bottom: 10px;
-        }
+ .setback-line.rear {
+ width: 100%;
+ height: 0;
+ bottom: 10px;
+ }
 
-        .diagram-card h4 {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 8px;
-        }
+ .diagram-card h4 {
+ font-size: 15px;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 8px;
+ }
 
-        .diagram-card p {
-            font-size: 13px;
-            color: var(--text-light);
-        }
+ .diagram-card p {
+ font-size: 13px;
+ color: var(--text-light);
+ }
 
-        .requirements-table {
-            background: var(--white);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
+ .requirements-table {
+ background: var(--white);
+ border-radius: 12px;
+ overflow: hidden;
+ border: 1px solid var(--border);
+ }
 
-        .requirements-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+ .requirements-table table {
+ width: 100%;
+ border-collapse: collapse;
+ }
 
-        .requirements-table th,
-        .requirements-table td {
-            padding: 16px 20px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
+ .requirements-table th,
+ .requirements-table td {
+ padding: 16px 20px;
+ text-align: left;
+ border-bottom: 1px solid var(--border);
+ }
 
-        .requirements-table th {
-            background: var(--navy);
-            color: white;
-            font-weight: 600;
-            font-size: 13px;
-            text-transform: uppercase;
-        }
+ .requirements-table th {
+ background: var(--navy);
+ color: white;
+ font-weight: 600;
+ font-size: 13px;
+ text-transform: uppercase;
+ }
 
-        .requirements-table tr:last-child td {
-            border-bottom: none;
-        }
+ .requirements-table tr:last-child td {
+ border-bottom: none;
+ }
 
-        .requirements-table tr:hover td {
-            background: var(--cream);
-        }
+ .requirements-table tr:hover td {
+ background: var(--cream);
+ }
 
-        .code-ref {
-            display: inline-block;
-            padding: 4px 8px;
-            background: var(--cream);
-            border-radius: 4px;
-            font-size: 12px;
-            color: var(--text-light);
-            font-family: monospace;
-        }
+ .code-ref {
+ display: inline-block;
+ padding: 4px 8px;
+ background: var(--cream);
+ border-radius: 4px;
+ font-size: 12px;
+ color: var(--text-light);
+ font-family: monospace;
+ }
 
-        @media (max-width: 1024px) {
-            .standards-grid,
-            .diagram-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="homebody_shared.css">
-</head>
+ @media (max-width: 1024px) {
+ .standards-grid,
+ .diagram-grid {
+ grid-template-columns: 1fr;
+ }
+ }</style>
+ <link rel="stylesheet" href="homebody_shared.css"></head>
 <body>
 <!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
@@ -361,234 +359,178 @@
 <!-- End Shared Header -->
 
 
-    
+ 
 
-    <section class="hero">
-        <h1>DADU Design Standards</h1>
-        <p>Metro Nashville design requirements and standards for Detached Accessory Dwelling Units</p>
-    </section>
+ <section class="hero">
+ <h1>DADU Design Standards</h1>
+ <p>Metro Nashville design requirements and standards for Detached Accessory Dwelling Units</p></section>
 
-    <main class="main">
-        <div class="standards-grid">
-            <div class="standard-card">
-                <div class="standard-header">
-                    <div class="standard-icon">📏</div>
-                    <h3>Size & Scale Standards</h3>
-                </div>
-                <ul class="standard-list">
-                    <li>
-                        <span class="label">Maximum Floor Area</span>
-                        <span class="value">700 SF</span>
-                    </li>
-                    <li>
-                        <span class="label">Maximum Height</span>
-                        <span class="value">24 feet / 2 stories</span>
-                    </li>
-                    <li>
-                        <span class="label">Max Lot Coverage Addition</span>
-                        <span class="value">Varies by zone</span>
-                    </li>
-                    <li>
-                        <span class="label">Minimum Unit Size</span>
-                        <span class="value">150 SF (efficiency)</span>
-                    </li>
-                </ul>
-                <div class="highlight-box">
-                    <p><strong>Note:</strong> Floor area includes all habitable space. Covered porches, garages, and unfinished basements are excluded from the calculation.</p>
-                </div>
-            </div>
+ <main class="main">
+ <div class="standards-grid">
+ <div class="standard-card">
+ <div class="standard-header">
+ <div class="standard-icon"></div>
+ <h3>Size & Scale Standards</h3></div>
+ <ul class="standard-list">
+ <li>
+ <span class="label">Maximum Floor Area</span>
+ <span class="value">700 SF</span></li>
+ <li>
+ <span class="label">Maximum Height</span>
+ <span class="value">24 feet / 2 stories</span></li>
+ <li>
+ <span class="label">Max Lot Coverage Addition</span>
+ <span class="value">Varies by zone</span></li>
+ <li>
+ <span class="label">Minimum Unit Size</span>
+ <span class="value">150 SF (efficiency)</span></li></ul>
+ <div class="highlight-box">
+ <p><strong>Note:</strong>Floor area includes all habitable space. Covered porches, garages, and unfinished basements are excluded from the calculation.</p></div></div>
 
-            <div class="standard-card">
-                <div class="standard-header">
-                    <div class="standard-icon">↔️</div>
-                    <h3>Setback Requirements</h3>
-                </div>
-                <ul class="standard-list">
-                    <li>
-                        <span class="label">Side Setback (RS5)</span>
-                        <span class="value">3 feet</span>
-                    </li>
-                    <li>
-                        <span class="label">Side Setback (RS7.5+)</span>
-                        <span class="value">5 feet</span>
-                    </li>
-                    <li>
-                        <span class="label">Rear Setback</span>
-                        <span class="value">3 feet</span>
-                    </li>
-                    <li>
-                        <span class="label">From Primary Structure</span>
-                        <span class="value">6 feet minimum</span>
-                    </li>
-                </ul>
-                <div class="highlight-box">
-                    <p><strong>Exception:</strong> Setbacks may be reduced when DADU replaces an existing accessory structure in the same footprint.</p>
-                </div>
-            </div>
+ <div class="standard-card">
+ <div class="standard-header">
+ <div class="standard-icon"></div>
+ <h3>Setback Requirements</h3></div>
+ <ul class="standard-list">
+ <li>
+ <span class="label">Side Setback (RS5)</span>
+ <span class="value">3 feet</span></li>
+ <li>
+ <span class="label">Side Setback (RS7.5+)</span>
+ <span class="value">5 feet</span></li>
+ <li>
+ <span class="label">Rear Setback</span>
+ <span class="value">3 feet</span></li>
+ <li>
+ <span class="label">From Primary Structure</span>
+ <span class="value">6 feet minimum</span></li></ul>
+ <div class="highlight-box">
+ <p><strong>Exception:</strong>Setbacks may be reduced when DADU replaces an existing accessory structure in the same footprint.</p></div></div>
 
-            <div class="standard-card">
-                <div class="standard-header">
-                    <div class="standard-icon">🚗</div>
-                    <h3>Parking Standards</h3>
-                </div>
-                <ul class="standard-list">
-                    <li>
-                        <span class="label">Required Spaces (DADU)</span>
-                        <span class="value">0 additional</span>
-                    </li>
-                    <li>
-                        <span class="label">Primary Dwelling Spaces</span>
-                        <span class="value">2 spaces (existing)</span>
-                    </li>
-                    <li>
-                        <span class="label">Tandem Parking</span>
-                        <span class="value">Permitted</span>
-                    </li>
-                    <li>
-                        <span class="label">Driveway Width</span>
-                        <span class="value">10 ft minimum</span>
-                    </li>
-                </ul>
-                <div class="highlight-box">
-                    <p><strong>Key Benefit:</strong> DADUs do not require additional parking spaces beyond what's required for the primary dwelling.</p>
-                </div>
-            </div>
+ <div class="standard-card">
+ <div class="standard-header">
+ <div class="standard-icon"></div>
+ <h3>Parking Standards</h3></div>
+ <ul class="standard-list">
+ <li>
+ <span class="label">Required Spaces (DADU)</span>
+ <span class="value">0 additional</span></li>
+ <li>
+ <span class="label">Primary Dwelling Spaces</span>
+ <span class="value">2 spaces (existing)</span></li>
+ <li>
+ <span class="label">Tandem Parking</span>
+ <span class="value">Permitted</span></li>
+ <li>
+ <span class="label">Driveway Width</span>
+ <span class="value">10 ft minimum</span></li></ul>
+ <div class="highlight-box">
+ <p><strong>Key Benefit:</strong>DADUs do not require additional parking spaces beyond what's required for the primary dwelling.</p></div></div>
 
-            <div class="standard-card">
-                <div class="standard-header">
-                    <div class="standard-icon">🎨</div>
-                    <h3>Design Compatibility</h3>
-                </div>
-                <h4>Required Design Elements:</h4>
-                <ul class="standard-list">
-                    <li>
-                        <span class="label">Roof Pitch</span>
-                        <span class="value">Match primary or 4:12 min</span>
-                    </li>
-                    <li>
-                        <span class="label">Exterior Materials</span>
-                        <span class="value">Compatible with primary</span>
-                    </li>
-                    <li>
-                        <span class="label">Window Style</span>
-                        <span class="value">Similar proportions</span>
-                    </li>
-                    <li>
-                        <span class="label">Color Palette</span>
-                        <span class="value">Complementary</span>
-                    </li>
-                </ul>
-                <div class="highlight-box">
-                    <p><strong>Overlay Districts:</strong> Additional design standards may apply in Historic or Contextual overlays.</p>
-                </div>
-            </div>
-        </div>
+ <div class="standard-card">
+ <div class="standard-header">
+ <div class="standard-icon"></div>
+ <h3>Design Compatibility</h3></div>
+ <h4>Required Design Elements:</h4>
+ <ul class="standard-list">
+ <li>
+ <span class="label">Roof Pitch</span>
+ <span class="value">Match primary or 4:12 min</span></li>
+ <li>
+ <span class="label">Exterior Materials</span>
+ <span class="value">Compatible with primary</span></li>
+ <li>
+ <span class="label">Window Style</span>
+ <span class="value">Similar proportions</span></li>
+ <li>
+ <span class="label">Color Palette</span>
+ <span class="value">Complementary</span></li></ul>
+ <div class="highlight-box">
+ <p><strong>Overlay Districts:</strong>Additional design standards may apply in Historic or Contextual overlays.</p></div></div></div>
 
-        <section class="visual-section">
-            <h2 class="section-title">Visual Setback Guide</h2>
-            <div class="diagram-grid">
-                <div class="diagram-card">
-                    <div class="diagram-visual">
-                        <div class="setback-line side"></div>
-                        <div class="diagram-house"></div>
-                        <div class="diagram-dadu"></div>
-                    </div>
-                    <h4>Side Setback</h4>
-                    <p>3-5 feet from property line depending on zoning district</p>
-                </div>
-                <div class="diagram-card">
-                    <div class="diagram-visual">
-                        <div class="setback-line rear"></div>
-                        <div class="diagram-house"></div>
-                        <div class="diagram-dadu"></div>
-                    </div>
-                    <h4>Rear Setback</h4>
-                    <p>3 feet minimum from rear property line</p>
-                </div>
-                <div class="diagram-card">
-                    <div class="diagram-visual">
-                        <div class="diagram-house"></div>
-                        <div class="diagram-dadu" style="right: 60px;"></div>
-                    </div>
-                    <h4>Separation</h4>
-                    <p>6 feet minimum between DADU and primary structure</p>
-                </div>
-            </div>
-        </section>
+ <section class="visual-section">
+ <h2 class="section-title">Visual Setback Guide</h2>
+ <div class="diagram-grid">
+ <div class="diagram-card">
+ <div class="diagram-visual">
+ <div class="setback-line side"></div>
+ <div class="diagram-house"></div>
+ <div class="diagram-dadu"></div></div>
+ <h4>Side Setback</h4>
+ <p>3-5 feet from property line depending on zoning district</p></div>
+ <div class="diagram-card">
+ <div class="diagram-visual">
+ <div class="setback-line rear"></div>
+ <div class="diagram-house"></div>
+ <div class="diagram-dadu"></div></div>
+ <h4>Rear Setback</h4>
+ <p>3 feet minimum from rear property line</p></div>
+ <div class="diagram-card">
+ <div class="diagram-visual">
+ <div class="diagram-house"></div>
+ <div class="diagram-dadu" style="right: 60px;"></div></div>
+ <h4>Separation</h4>
+ <p>6 feet minimum between DADU and primary structure</p></div></div></section>
 
-        <h2 class="section-title">Zoning District Quick Reference</h2>
-        <div class="requirements-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Standard</th>
-                        <th>RS5</th>
-                        <th>RS7.5</th>
-                        <th>RS10</th>
-                        <th>RS15</th>
-                        <th>RS20</th>
-                        <th>Code Reference</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Max DADU Size</strong></td>
-                        <td>700 SF</td>
-                        <td>700 SF</td>
-                        <td>700 SF</td>
-                        <td>700 SF</td>
-                        <td>700 SF</td>
-                        <td><span class="code-ref">17.16.030</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Max Height</strong></td>
-                        <td>24 ft</td>
-                        <td>24 ft</td>
-                        <td>24 ft</td>
-                        <td>24 ft</td>
-                        <td>24 ft</td>
-                        <td><span class="code-ref">17.16.030</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Side Setback</strong></td>
-                        <td>3 ft</td>
-                        <td>5 ft</td>
-                        <td>5 ft</td>
-                        <td>5 ft</td>
-                        <td>5 ft</td>
-                        <td><span class="code-ref">17.12.030</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Rear Setback</strong></td>
-                        <td>3 ft</td>
-                        <td>3 ft</td>
-                        <td>3 ft</td>
-                        <td>3 ft</td>
-                        <td>3 ft</td>
-                        <td><span class="code-ref">17.12.030</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Max Lot Coverage</strong></td>
-                        <td>40%</td>
-                        <td>35%</td>
-                        <td>30%</td>
-                        <td>25%</td>
-                        <td>20%</td>
-                        <td><span class="code-ref">17.12.030</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Min Lot Size</strong></td>
-                        <td>5,000 SF</td>
-                        <td>7,500 SF</td>
-                        <td>10,000 SF</td>
-                        <td>15,000 SF</td>
-                        <td>20,000 SF</td>
-                        <td><span class="code-ref">17.12.020</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </main>
-    <script src="homebody_header.js"></script>
-</body>
-</html>
+ <h2 class="section-title">Zoning District Quick Reference</h2>
+ <div class="requirements-table">
+ <table>
+ <thead>
+ <tr>
+ <th>Standard</th>
+ <th>RS5</th>
+ <th>RS7.5</th>
+ <th>RS10</th>
+ <th>RS15</th>
+ <th>RS20</th>
+ <th>Code Reference</th></tr></thead>
+ <tbody>
+ <tr>
+ <td><strong>Max DADU Size</strong></td>
+ <td>700 SF</td>
+ <td>700 SF</td>
+ <td>700 SF</td>
+ <td>700 SF</td>
+ <td>700 SF</td>
+ <td><span class="code-ref">17.16.030</span></td></tr>
+ <tr>
+ <td><strong>Max Height</strong></td>
+ <td>24 ft</td>
+ <td>24 ft</td>
+ <td>24 ft</td>
+ <td>24 ft</td>
+ <td>24 ft</td>
+ <td><span class="code-ref">17.16.030</span></td></tr>
+ <tr>
+ <td><strong>Side Setback</strong></td>
+ <td>3 ft</td>
+ <td>5 ft</td>
+ <td>5 ft</td>
+ <td>5 ft</td>
+ <td>5 ft</td>
+ <td><span class="code-ref">17.12.030</span></td></tr>
+ <tr>
+ <td><strong>Rear Setback</strong></td>
+ <td>3 ft</td>
+ <td>3 ft</td>
+ <td>3 ft</td>
+ <td>3 ft</td>
+ <td>3 ft</td>
+ <td><span class="code-ref">17.12.030</span></td></tr>
+ <tr>
+ <td><strong>Max Lot Coverage</strong></td>
+ <td>40%</td>
+ <td>35%</td>
+ <td>30%</td>
+ <td>25%</td>
+ <td>20%</td>
+ <td><span class="code-ref">17.12.030</span></td></tr>
+ <tr>
+ <td><strong>Min Lot Size</strong></td>
+ <td>5,000 SF</td>
+ <td>7,500 SF</td>
+ <td>10,000 SF</td>
+ <td>15,000 SF</td>
+ <td>20,000 SF</td>
+ <td><span class="code-ref">17.12.020</span></td></tr></tbody></table></div></main>
+ <script src="homebody_header.js"></script></body></html>
