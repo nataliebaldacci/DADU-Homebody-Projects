@@ -4,15 +4,30 @@
  */
 
 const ARCGIS_SERVICES = {
-    // Vanderbilt hosted services
-    eligibility: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0',
-    newPermits: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/DADU_All_Permits_MERGED_v2_20260213/FeatureServer/0',
+    // ── Vanderbilt hosted services (Feb 2026 refresh) ──
+    // Permits (points)
     allPermits: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/DADU_All_Permits_MERGED_v2_20260213/FeatureServer/0',
-    buildingSpecs: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Building_Specs_20260119_042856/FeatureServer/0',
-    existingDADUs: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Secondary_SFH_Merged_SHP_20251231_0015/FeatureServer/0',
-    sfhParcels: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/SFH_parcels/FeatureServer/0',
+    newPermits: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/DADU_All_Permits_MERGED_v2_20260213/FeatureServer/0',
+
+    // Parcels (polygons) — use these for spatial queries
+    eligibilityPolygons: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Eligibility_Enhanced_Polygons_20260213_065606/FeatureServer/0',
+    parcelsBuilding: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Parcels_Building_Info_20260213_070754/FeatureServer/0',
+    buildingSpecs: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Building_Specs_Polygons_20260213_065606/FeatureServer/0',
+    eligibilityParcels: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/eligibility_parcels/FeatureServer/0',
+
+    // Building footprints (polygons)
+    footprints: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Footprints_Trimmed_20260213_060215/FeatureServer/0',
+
+    // Legacy aliases (backward compat)
+    eligibility: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Eligibility_Enhanced_Polygons_20260213_065606/FeatureServer/0',
+
+    // Covenants
     parcelsWithCovenants: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Parcels_with_Restrictive_Covenants_ohoMJQ/FeatureServer/0',
     covenantLinks: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/_Restrictive_Covenant_Links__A1_R2978_QuLdfD/FeatureServer/0',
+
+    // Other Vanderbilt layers
+    existingDADUs: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Secondary_SFH_Merged_SHP_20251231_0015/FeatureServer/0',
+    sfhParcels: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/SFH_parcels/FeatureServer/0',
     secondaryStructures: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Secondary_On_SF_Parcels_SHP_20251230_2352/FeatureServer/0',
 
     // Nashville official services
@@ -105,9 +120,9 @@ async function queryByPoint(serviceUrl, lat, lng, tolerance = 50, options = {}) 
  * @param {string} address - Address to search
  */
 async function queryByAddress(address, options = {}) {
-    return queryArcGISService(ARCGIS_SERVICES.eligibility, {
+    return queryArcGISService(ARCGIS_SERVICES.eligibilityPolygons, {
         ...options,
-        where: `Address LIKE '%${address.toUpperCase().replace(/'/g, "''")}%'`,
+        where: `Property_Address LIKE '%${address.toUpperCase().replace(/'/g, "''")}%'`,
         resultRecordCount: 10
     });
 }
