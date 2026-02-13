@@ -30,7 +30,8 @@ body {
   width: 100%;
   display: flex;
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
+  position: relative;
   background-color: #ffffff;
   box-shadow: 0 2px 12px rgba(0,0,0,0.1);
 }
@@ -58,6 +59,39 @@ body {
 }
 .search-container .search-btn:hover { background-color: #496778; }
 .search-container .search-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ===== AUTOCOMPLETE DROPDOWN ===== */
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 1100;
+  display: none;
+}
+.autocomplete-list.visible { display: block; }
+.autocomplete-item {
+  padding: 12px 20px;
+  font-size: 14px;
+  color: #3A5566;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.15s;
+}
+.autocomplete-item:hover { background: #F2F0ED; }
+.autocomplete-item:last-child { border-bottom: none; }
+.autocomplete-item .match-type {
+  font-size: 10px;
+  color: #7B746D;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+}
 
 .main {
   display: flex;
@@ -323,8 +357,8 @@ body {
 .action-btn.secondary:hover { background: #e0e0e0; }
 
 /* ===== MAP ===== */
-.map-container { flex: 1; position: relative; background: #1a1a2e; }
-#map { width: 100%; height: 100%; }
+.map-container { flex: 1; position: relative; background: #e8ebf4; }
+#map { width: 100%; height: 100%; background: #e8ebf4; }
 
 /* Map Overlay (DADU size card) */
 .map-overlay {
@@ -474,8 +508,9 @@ body {
 <!-- ===== SEARCH ROW (full-width, above layout) ===== -->
 <div class="search-row">
   <div class="search-container">
-    <input type="text" id="addressInput" placeholder="Enter a Nashville address to check eligibility and design your DADU">
+    <input type="text" id="addressInput" placeholder="Enter a Nashville address to check eligibility and design your DADU" autocomplete="off">
     <button class="search-btn" id="searchBtn" onclick="searchAddress()">Search</button>
+    <div class="autocomplete-list" id="autocompleteList"></div>
   </div>
 </div>
 
@@ -721,16 +756,20 @@ body {
     <button class="map-btn" id="dragBtn" onclick="toggleDragMode()" title="Move DADU"></button>
   </div>
 
-  <!-- Legend (matching draw_dadu_on_parcel / build_explorer style) -->
+  <!-- Legend (Symbium-style + DADU colors) -->
   <div class="map-legend">
     <div class="legend-title">Legend</div>
     <div class="legend-item">
-      <div class="legend-color" style="background: rgba(123,116,109,0.25); border: 2px solid #7B746D;"></div>
-      <span>Your Parcel</span>
+      <div class="legend-color" style="background: #e8ebf4; border: 2px solid #1f2937;"></div>
+      <span>Selected Parcel</span>
     </div>
     <div class="legend-item">
-      <div class="legend-color" style="background: rgba(58,85,102,0.7);"></div>
-      <span>Existing Building</span>
+      <div class="legend-color" style="background: #e8ebf4; border: 1px solid #c5cada;"></div>
+      <span>Nearby Parcels</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #374151;"></div>
+      <span>Building Footprint</span>
     </div>
     <div class="legend-item">
       <div class="legend-color" style="background: rgba(203,178,121,0.6); border: 2px solid #CBB279;"></div>
@@ -779,13 +818,32 @@ body {
 
 <script>
 // ========== CONFIG ==========
-const LAYERS = {
-  buildingSpecs: "https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Building_Specs_20260119_042856/FeatureServer/0"
+const ENDPOINTS = {
+  // Nashville's own geocoder (CORS-friendly from GitHub Pages!)
+  nashvilleGeocoder: 'https://maps.nashville.gov/arcgis/rest/services/Locators/LocNashComp/GeocodeServer/findAddressCandidates',
+  // ArcGIS World Geocoder (fallback)
+  worldGeocoder: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates',
+  // Nashville Cadastral parcels (CORS-friendly! polygon geometry for parcel outlines)
+  cadastralParcels: 'https://maps.nashville.gov/arcgis/rest/services/Cadastral/Parcels/MapServer/0/query',
+  // Vanderbilt-hosted layers
+  parcelsView: 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_view/FeatureServer/0/query',
+  buildingSpecs: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Building_Specs_20260119_042856/FeatureServer/0/query',
+  footprints: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Building_Footprints_SingleFamily/FeatureServer/0/query'
+};
+
+// Symbium-style colors (from dadu_symbium_map.html)
+const COLORS = {
+  parcelFill: '#e8ebf4',
+  parcelStroke: '#c5cada',
+  selectedParcelStroke: '#1f2937',
+  buildingFill: '#6b7280',
+  buildingSelected: '#374151',
+  dadu: '#CBB279'
 };
 
 let map;
 let currentProperty = null;
-let parcelLayer, buildingLayer, daduLayer, setbackLayer;
+let parcelLayer, parcelGeoJsonLayer, footprintLayer, selectedParcelLayer, selectedFootprintLayer, daduLayer, setbackLayer;
 let isSatellite = false;
 let baseLayers = {};
 let maxFootprintSF = 1000;
@@ -793,9 +851,11 @@ let maxLivingSF = 850;
 let daduWidth = 24, daduDepth = 25;
 let dragMode = false;
 let daduMarker = null;
+let autocompleteTimeout = null;
 
 // ========== INIT ==========
 function initMap() {
+  console.log('[BUILD TOOL] Initializing map...');
   map = L.map('map', {
     center: [36.1627, -86.7816],
     zoom: 11,
@@ -804,101 +864,385 @@ function initMap() {
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-  baseLayers.streets = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
-  baseLayers.satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+  // Light base map (Symbium style - not dark)
+  baseLayers.streets = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 20 }).addTo(map);
+  baseLayers.satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 20 });
 
+  // Layer groups (order matters: parcels under footprints under DADU)
+  parcelGeoJsonLayer = L.geoJSON(null, {
+    style: { fillColor: COLORS.parcelFill, fillOpacity: 0.6, color: COLORS.parcelStroke, weight: 1 }
+  }).addTo(map);
+  footprintLayer = L.geoJSON(null, {
+    style: { fillColor: COLORS.buildingFill, fillOpacity: 0.9, color: '#4b5563', weight: 0.5 }
+  }).addTo(map);
+  selectedParcelLayer = L.geoJSON(null, {
+    style: { fillColor: 'transparent', fillOpacity: 0, color: COLORS.selectedParcelStroke, weight: 3, dashArray: '8, 6' }
+  }).addTo(map);
+  selectedFootprintLayer = L.geoJSON(null, {
+    style: { fillColor: COLORS.buildingSelected, fillOpacity: 0.95, color: '#1f2937', weight: 1 }
+  }).addTo(map);
   parcelLayer = L.layerGroup().addTo(map);
   buildingLayer = L.layerGroup().addTo(map);
   setbackLayer = L.layerGroup().addTo(map);
   daduLayer = L.layerGroup().addTo(map);
 
   // Enter key triggers search
-  document.getElementById('addressInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') searchAddress();
-  });
+  var addrInput = document.getElementById('addressInput');
+  if (addrInput) {
+    addrInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') { hideAutocomplete(); searchAddress(); }
+    });
+    // Autocomplete as user types
+    addrInput.addEventListener('input', function() {
+      clearTimeout(autocompleteTimeout);
+      var val = addrInput.value.trim();
+      if (val.length < 3) { hideAutocomplete(); return; }
+      autocompleteTimeout = setTimeout(function() { fetchAutocomplete(val); }, 300);
+    });
+    // Hide autocomplete on blur (with delay so click registers)
+    addrInput.addEventListener('blur', function() {
+      setTimeout(hideAutocomplete, 200);
+    });
+    console.log('[BUILD TOOL] addressInput found, keypress + autocomplete listeners attached');
+  } else {
+    console.error('[BUILD TOOL] addressInput element NOT FOUND in DOM!');
+  }
 
   // Check URL params for pre-filled address
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('address')) {
-    document.getElementById('addressInput').value = params.get('address');
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('address')) {
+    document.getElementById('addressInput').value = urlParams.get('address');
     closeWelcome();
     searchAddress();
   }
+
+  console.log('[BUILD TOOL] Map initialized. Nashville geocoder + Symbium-style rendering ready.');
+}
+
+// ========== AUTOCOMPLETE (Nashville LocNashComp geocoder) ==========
+async function fetchAutocomplete(text) {
+  try {
+    var params = new URLSearchParams({
+      SingleLine: text,
+      outSR: '4326',
+      maxLocations: '5',
+      outFields: 'Match_addr,Addr_type',
+      f: 'json'
+    });
+    var url = ENDPOINTS.nashvilleGeocoder + '?' + params.toString();
+    var response = await fetch(url);
+    var data = await response.json();
+
+    var list = document.getElementById('autocompleteList');
+    list.innerHTML = '';
+
+    if (data.candidates && data.candidates.length > 0) {
+      data.candidates.forEach(function(c) {
+        if (c.score < 60) return;
+        var item = document.createElement('div');
+        item.className = 'autocomplete-item';
+        item.innerHTML = c.address + '<span class="match-type">Score: ' + c.score + '</span>';
+        item.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          document.getElementById('addressInput').value = c.address;
+          hideAutocomplete();
+          searchAddress();
+        });
+        list.appendChild(item);
+      });
+      if (list.children.length > 0) list.classList.add('visible');
+      else list.classList.remove('visible');
+    } else {
+      list.classList.remove('visible');
+    }
+  } catch (err) {
+    console.log('[BUILD TOOL] Autocomplete error (non-critical):', err.message);
+  }
+}
+
+function hideAutocomplete() {
+  var list = document.getElementById('autocompleteList');
+  if (list) { list.classList.remove('visible'); list.innerHTML = ''; }
 }
 
 // ========== SEARCH ==========
 async function searchAddress() {
-  const address = document.getElementById('addressInput').value.trim();
-  if (!address) return;
+  var addrInput = document.getElementById('addressInput');
+  var address = addrInput ? addrInput.value.trim() : '';
+  if (!address) { console.log('[BUILD TOOL] Empty address, aborting search'); return; }
 
+  console.log('[BUILD TOOL] === SEARCH START === Address:', address);
   showLoading(true);
   closeWelcome();
-  const searchBtn = document.getElementById('searchBtn');
+  hideAutocomplete();
+  var searchBtn = document.getElementById('searchBtn');
   if (searchBtn) searchBtn.disabled = true;
 
   try {
-    // Step 1: Search Building Specs layer by address text match
-    const cleanAddress = address.toUpperCase().replace(/'/g, "''").replace(/,.*$/, '').trim();
-    const searchUrl = `${LAYERS.buildingSpecs}/query?where=UPPER(Address) LIKE '%${cleanAddress}%'&outFields=*&returnGeometry=true&outSR=4326&f=json`;
-    console.log('[BUILD TOOL] Step 1 - ArcGIS address query:', searchUrl);
+    // ---- Step 1: Text search on Building Specs by address ----
+    var cleanAddress = address.toUpperCase().replace(/'/g, "''").replace(/,.*$/, '').trim();
+    var step1Params = new URLSearchParams({
+      f: 'json',
+      where: "UPPER(Address) LIKE '%" + cleanAddress + "%'",
+      outFields: '*',
+      returnGeometry: 'true',
+      outSR: '4326'
+    });
+    var step1Url = ENDPOINTS.buildingSpecs + '?' + step1Params.toString();
+    console.log('[BUILD TOOL] Step 1 - Text search on Building Specs:', step1Url);
 
-    const response = await fetch(searchUrl);
-    const data = await response.json();
-    console.log('[BUILD TOOL] Step 1 result:', data.features ? data.features.length + ' features' : 'no features array', data);
+    var response = await fetch(step1Url);
+    if (!response.ok) throw new Error('Building Specs HTTP ' + response.status);
+    var data = await response.json();
+    console.log('[BUILD TOOL] Step 1 result:', data.features ? data.features.length + ' features' : 'error', data.error || '');
 
     if (data.features && data.features.length > 0) {
       currentProperty = data.features[0].attributes;
-      console.log('[BUILD TOOL] SUCCESS via address match:', currentProperty.Address, '| APN:', currentProperty.STANPAR);
+      console.log('[BUILD TOOL] SUCCESS via text match:', currentProperty.Address);
       displayProperty(currentProperty);
+      showLoading(false);
+      if (searchBtn) searchBtn.disabled = false;
+      return;
+    }
+
+    // ---- Step 2: Nashville geocoder (LocNashComp) - local, precise ----
+    console.log('[BUILD TOOL] Step 2 - Nashville geocoder (LocNashComp)...');
+    var nashGeoParams = new URLSearchParams({
+      SingleLine: address,
+      outSR: '4326',
+      maxLocations: '1',
+      outFields: 'Match_addr,Addr_type',
+      f: 'json'
+    });
+    var nashGeoUrl = ENDPOINTS.nashvilleGeocoder + '?' + nashGeoParams.toString();
+    console.log('[BUILD TOOL] Step 2 - Nashville geocoder URL:', nashGeoUrl);
+
+    var nashGeoResponse = await fetch(nashGeoUrl);
+    var nashGeoData = await nashGeoResponse.json();
+    var nashCandidate = (nashGeoData.candidates && nashGeoData.candidates.length > 0) ? nashGeoData.candidates[0] : null;
+    console.log('[BUILD TOOL] Step 2 - Nashville geocoder:', nashCandidate ? 'score=' + nashCandidate.score + ' addr=' + nashCandidate.address : 'no candidates');
+
+    var geocodedLat = null, geocodedLng = null;
+
+    if (nashCandidate && nashCandidate.score >= 80) {
+      geocodedLng = nashCandidate.location.x;
+      geocodedLat = nashCandidate.location.y;
+      console.log('[BUILD TOOL] Step 2 - Using Nashville geocode: lat=' + geocodedLat + ' lng=' + geocodedLng);
     } else {
-      // Step 2: Geocode via ArcGIS World Geocoder (from am_i_eligible.html)
-      console.log('[BUILD TOOL] Step 2 - No address match, trying ArcGIS World Geocoder...');
-      const geoParams = new URLSearchParams({
+      // ---- Step 2b: ArcGIS World Geocoder fallback ----
+      console.log('[BUILD TOOL] Step 2b - Nashville score too low, trying World Geocoder...');
+      var worldGeoParams = new URLSearchParams({
         f: 'json',
         singleLine: address + ', Nashville, TN',
         maxLocations: '1',
         outFields: 'Match_addr,Addr_type',
         searchExtent: '-87.1,35.9,-86.5,36.5'
       });
-      const geoUrl = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?' + geoParams;
-      console.log('[BUILD TOOL] Step 2 - ArcGIS geocoder URL:', geoUrl);
+      var worldGeoUrl = ENDPOINTS.worldGeocoder + '?' + worldGeoParams.toString();
+      var worldGeoResponse = await fetch(worldGeoUrl);
+      var worldGeoData = await worldGeoResponse.json();
+      var worldCandidate = (worldGeoData.candidates && worldGeoData.candidates.length > 0) ? worldGeoData.candidates[0] : null;
+      console.log('[BUILD TOOL] Step 2b - World geocoder:', worldCandidate ? 'score=' + worldCandidate.score : 'no candidates');
 
-      const geoResponse = await fetch(geoUrl);
-      const geoData = await geoResponse.json();
-      console.log('[BUILD TOOL] Step 2 - Geocode result:', geoData.candidates ? geoData.candidates.length + ' candidates' : 'no candidates', geoData);
-
-      if (geoData.candidates && geoData.candidates.length > 0 && geoData.candidates[0].score >= 70) {
-        const candidate = geoData.candidates[0];
-        const lng = candidate.location.x;
-        const lat = candidate.location.y;
-        console.log('[BUILD TOOL] Step 2 - Geocoded to:', lat, lng, '| Match:', candidate.attributes.Match_addr, '| Score:', candidate.score);
-
-        // Step 3: Spatial query on Building Specs using geocoded point
-        const spatialUrl = `${LAYERS.buildingSpecs}/query?geometry=${lng},${lat}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=*&returnGeometry=true&outSR=4326&f=json`;
-        console.log('[BUILD TOOL] Step 3 - Spatial query:', spatialUrl);
-
-        const spatialResponse = await fetch(spatialUrl);
-        const spatialData = await spatialResponse.json();
-        console.log('[BUILD TOOL] Step 3 result:', spatialData.features ? spatialData.features.length + ' features' : 'no features', spatialData);
-
-        if (spatialData.features && spatialData.features.length > 0) {
-          currentProperty = spatialData.features[0].attributes;
-          console.log('[BUILD TOOL] SUCCESS via geocode+spatial:', currentProperty.Address, '| APN:', currentProperty.STANPAR);
-          displayProperty(currentProperty);
-        } else {
-          alert('Property not found in DADU database. It may not be a single-family parcel.');
-        }
-      } else {
-        alert('Address not found. Please enter a valid Nashville address.');
+      if (worldCandidate && worldCandidate.score >= 70) {
+        geocodedLng = worldCandidate.location.x;
+        geocodedLat = worldCandidate.location.y;
+        console.log('[BUILD TOOL] Step 2b - Using World geocode: lat=' + geocodedLat + ' lng=' + geocodedLng);
       }
     }
+
+    if (!geocodedLat) {
+      alert('Address not found. Please enter a valid Nashville address (e.g., "925 N 5th St").');
+      showLoading(false);
+      if (searchBtn) searchBtn.disabled = false;
+      return;
+    }
+
+    // ---- Step 3: Spatial query on Building Specs using geocoded point ----
+    var step3Params = new URLSearchParams({
+      f: 'json',
+      geometry: geocodedLng + ',' + geocodedLat,
+      geometryType: 'esriGeometryPoint',
+      inSR: '4326',
+      spatialRel: 'esriSpatialRelIntersects',
+      outFields: '*',
+      returnGeometry: 'true',
+      outSR: '4326'
+    });
+    var step3Url = ENDPOINTS.buildingSpecs + '?' + step3Params.toString();
+    console.log('[BUILD TOOL] Step 3 - Spatial query on Building Specs:', step3Url);
+
+    var spatialResponse = await fetch(step3Url);
+    var spatialData = await spatialResponse.json();
+    console.log('[BUILD TOOL] Step 3 result:', spatialData.features ? spatialData.features.length + ' features' : 'no features');
+
+    if (spatialData.features && spatialData.features.length > 0) {
+      currentProperty = spatialData.features[0].attributes;
+      console.log('[BUILD TOOL] SUCCESS via geocode + Building Specs spatial:', currentProperty.Address);
+      displayProperty(currentProperty);
+      showLoading(false);
+      if (searchBtn) searchBtn.disabled = false;
+      return;
+    }
+
+    // ---- Step 4: Parcels_view fallback (get APN, then query Building Specs by APN) ----
+    console.log('[BUILD TOOL] Step 4 - Parcels_view fallback...');
+    var parcelParams = new URLSearchParams({
+      f: 'json',
+      geometry: geocodedLng + ',' + geocodedLat,
+      geometryType: 'esriGeometryPoint',
+      inSR: '4326',
+      spatialRel: 'esriSpatialRelIntersects',
+      outFields: 'STANPAR,ACRES,Shape__Area',
+      returnGeometry: 'false'
+    });
+    var parcelUrl = ENDPOINTS.parcelsView + '?' + parcelParams.toString();
+    console.log('[BUILD TOOL] Step 4a - Parcels_view spatial:', parcelUrl);
+
+    var parcelResponse = await fetch(parcelUrl);
+    var parcelData = await parcelResponse.json();
+
+    if (parcelData.features && parcelData.features.length > 0) {
+      var apn = parcelData.features[0].attributes.STANPAR;
+      console.log('[BUILD TOOL] Step 4a - Found APN:', apn);
+
+      if (apn) {
+        var apnParams = new URLSearchParams({
+          f: 'json',
+          where: "STANPAR='" + apn + "'",
+          outFields: '*',
+          returnGeometry: 'true',
+          outSR: '4326'
+        });
+        var apnUrl = ENDPOINTS.buildingSpecs + '?' + apnParams.toString();
+        console.log('[BUILD TOOL] Step 4b - Building Specs by APN:', apnUrl);
+
+        var apnResponse = await fetch(apnUrl);
+        var apnData = await apnResponse.json();
+
+        if (apnData.features && apnData.features.length > 0) {
+          currentProperty = apnData.features[0].attributes;
+          console.log('[BUILD TOOL] SUCCESS via Parcels_view APN fallback:', currentProperty.Address);
+          displayProperty(currentProperty);
+          showLoading(false);
+          if (searchBtn) searchBtn.disabled = false;
+          return;
+        }
+      }
+    }
+
+    alert('Property not found in DADU database. It may not be a single-family residential parcel.');
+
   } catch (error) {
-    console.error('[BUILD TOOL] Search error:', error);
-    alert('Error searching. Check the console for details.');
+    console.error('[BUILD TOOL] Search error:', error.message, error);
+    alert('Error searching: ' + error.message + '. Check console (F12) for details.');
   }
 
   showLoading(false);
   if (searchBtn) searchBtn.disabled = false;
+}
+
+// ========== LOAD PARCEL POLYGON (Nashville Cadastral - Symbium style) ==========
+async function loadParcelPolygon(lat, lon) {
+  try {
+    // Query Nashville Cadastral parcels for the polygon around this point + nearby
+    var buffer = 0.002; // ~200m buffer for nearby parcels
+    var geometry = JSON.stringify({
+      xmin: lon - buffer, ymin: lat - buffer,
+      xmax: lon + buffer, ymax: lat + buffer,
+      spatialReference: { wkid: 4326 }
+    });
+    var params = new URLSearchParams({
+      where: '1=1',
+      geometry: geometry,
+      geometryType: 'esriGeometryEnvelope',
+      spatialRel: 'esriSpatialRelIntersects',
+      outFields: 'STANPAR,PropAddr,Acres',
+      returnGeometry: 'true',
+      outSR: '4326',
+      f: 'geojson',
+      resultRecordCount: '100'
+    });
+    var url = ENDPOINTS.cadastralParcels + '?' + params.toString();
+    console.log('[BUILD TOOL] Loading parcel polygons from Nashville Cadastral:', url);
+
+    var response = await fetch(url);
+    var data = await response.json();
+
+    // Clear and add nearby parcels
+    parcelGeoJsonLayer.clearLayers();
+    if (data.features && data.features.length > 0) {
+      parcelGeoJsonLayer.addData(data);
+      console.log('[BUILD TOOL] Loaded', data.features.length, 'parcel polygons');
+
+      // Find and highlight the selected parcel
+      var apn = currentProperty ? currentProperty.STANPAR : null;
+      selectedParcelLayer.clearLayers();
+      if (apn) {
+        data.features.forEach(function(f) {
+          if (f.properties && f.properties.STANPAR === apn) {
+            selectedParcelLayer.addData(f);
+            // Zoom to parcel bounds
+            var bounds = L.geoJSON(f).getBounds();
+            map.fitBounds(bounds, { padding: [80, 80], maxZoom: 19 });
+            console.log('[BUILD TOOL] Highlighted selected parcel:', apn);
+          }
+        });
+      }
+    }
+  } catch (err) {
+    console.log('[BUILD TOOL] Parcel polygon load error (non-critical):', err.message);
+  }
+}
+
+// ========== LOAD BUILDING FOOTPRINTS (Vanderbilt - Symbium style) ==========
+async function loadBuildingFootprints(lat, lon) {
+  try {
+    var buffer = 0.002;
+    var geometry = JSON.stringify({
+      xmin: lon - buffer, ymin: lat - buffer,
+      xmax: lon + buffer, ymax: lat + buffer,
+      spatialReference: { wkid: 4326 }
+    });
+    var params = new URLSearchParams({
+      where: '1=1',
+      geometry: geometry,
+      geometryType: 'esriGeometryEnvelope',
+      spatialRel: 'esriSpatialRelIntersects',
+      outFields: '*',
+      returnGeometry: 'true',
+      outSR: '4326',
+      f: 'geojson',
+      resultRecordCount: '200'
+    });
+    var url = ENDPOINTS.footprints + '?' + params.toString();
+    console.log('[BUILD TOOL] Loading building footprints:', url);
+
+    var response = await fetch(url);
+    var data = await response.json();
+
+    footprintLayer.clearLayers();
+    selectedFootprintLayer.clearLayers();
+
+    if (data.features && data.features.length > 0) {
+      // All footprints in standard gray
+      footprintLayer.addData(data);
+      console.log('[BUILD TOOL] Loaded', data.features.length, 'building footprints');
+
+      // Highlight footprints on the selected parcel (darker)
+      var apn = currentProperty ? currentProperty.STANPAR : null;
+      if (apn) {
+        data.features.forEach(function(f) {
+          var fApn = f.properties ? (f.properties.STANPAR || f.properties.APN || '') : '';
+          if (fApn === apn) {
+            selectedFootprintLayer.addData(f);
+          }
+        });
+      }
+    }
+  } catch (err) {
+    console.log('[BUILD TOOL] Footprint load error (non-critical):', err.message);
+  }
 }
 
 // ========== DISPLAY PROPERTY ==========
@@ -908,6 +1252,10 @@ function displayProperty(a) {
   buildingLayer.clearLayers();
   setbackLayer.clearLayers();
   daduLayer.clearLayers();
+  parcelGeoJsonLayer.clearLayers();
+  footprintLayer.clearLayers();
+  selectedParcelLayer.clearLayers();
+  selectedFootprintLayer.clearLayers();
 
   // ---- Header ----
   document.getElementById('propertyAddress').textContent = a.Address || 'Unknown';
@@ -915,10 +1263,10 @@ function displayProperty(a) {
   document.getElementById('propertyZone').textContent = 'Zone: ' + (a.Zoning || '--');
 
   // ---- Eligibility Badge ----
-  const elig = a.Final_Eligibility || '';
-  const badge = document.getElementById('eligibilityBadge');
-  const eligText = document.getElementById('eligibilityText');
-  const eligIcon = document.getElementById('eligibilityIcon');
+  var elig = a.Final_Eligibility || '';
+  var badge = document.getElementById('eligibilityBadge');
+  var eligText = document.getElementById('eligibilityText');
+  var eligIcon = document.getElementById('eligibilityIcon');
 
   if (elig === 'ELIGIBLE' || elig.includes('ELIGIBLE')) {
     badge.className = 'eligibility-badge eligible';
@@ -984,7 +1332,7 @@ function displayProperty(a) {
   document.getElementById('linkAerial').href = 'https://www.google.com/maps/@' + lat + ',' + lon + ',100m/data=!3m1!1e3';
   document.getElementById('linkStreetView').href = 'https://www.google.com/maps/@' + lat + ',' + lon + ',3a,75y,90t/data=!3m6!1e1!3m4!1s';
 
-  // ---- Report Tab: Links (duplicate set) ----
+  // ---- Report Tab: Links ----
   document.getElementById('linkParcelViewer2').href = 'https://maps.nashville.gov/ParcelViewer/?parcelid=' + apn;
   document.getElementById('linkPropertyCard2').href = 'https://www.padctn.org/prc/property/' + apn + '/card/1';
   document.getElementById('linkAerial2').href = 'https://www.google.com/maps/@' + lat + ',' + lon + ',100m/data=!3m1!1e3';
@@ -996,18 +1344,15 @@ function displayProperty(a) {
   document.getElementById('sizeSlider').max = maxFootprintSF;
   document.getElementById('maxLabel').textContent = maxFootprintSF + ' SF';
 
-  // ---- Map ----
+  // ---- Map: Load Symbium-style parcel polygons + building footprints ----
   if (lat && lon) {
     map.setView([lat, lon], 18);
 
-    // Parcel marker
-    L.circleMarker([lat, lon], {
-      radius: 40,
-      color: '#7B746D',
-      fillColor: '#7B746D',
-      fillOpacity: 0.2,
-      weight: 2
-    }).addTo(parcelLayer);
+    // Load real parcel polygons from Nashville Cadastral (async, non-blocking)
+    loadParcelPolygon(lat, lon);
+
+    // Load real building footprints from Vanderbilt (async, non-blocking)
+    loadBuildingFootprints(lat, lon);
 
     // Show map overlay and update instructions
     document.getElementById('mapOverlay').style.display = 'block';
