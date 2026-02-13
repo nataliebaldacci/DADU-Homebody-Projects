@@ -146,14 +146,23 @@ a {
 }
 
 .nav-logo-img {
-    width: 200px;
-    height: auto;
+    height: 42px;
+    width: auto;
     object-fit: contain;
     transition: transform 0.2s ease;
 }
 
 .nav-logo:hover .nav-logo-img {
     transform: scale(1.03);
+}
+
+.nav-logo-brand {
+    color: var(--navy);
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    margin-left: 10px;
+    white-space: nowrap;
 }
 
 /* Nav Links */

@@ -41,7 +41,8 @@
     <div class="nav-container">
         <!-- Logo -->
         <a href="${basePath}index.html" class="nav-logo">
-            <img src="${basePath}assets/homebody-logo.png" alt="Homebody Projects" class="nav-logo-img" style="height: 50px; width: auto;">
+            <img src="${basePath}assets/icons/ADU.png" alt="Homebody Projects" class="nav-logo-img" style="height: 42px; width: auto;">
+            <span class="nav-logo-brand">Homebody Projects</span>
         </a>
 
         <!-- Navigation Links -->

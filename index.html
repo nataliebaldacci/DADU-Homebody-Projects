@@ -8,68 +8,74 @@
  <link rel="stylesheet" href="homebody_shared.css">
  <style>
  /* ========== PAGE-SPECIFIC: Homepage ========== */
- /* Override nav colors for homepage dark nav */
+
+ /* Override nav for homepage dark slate nav */
  .main-nav {
   background: #3A5566 !important;
   border-bottom: 1px solid rgba(225, 212, 187, 0.15) !important;
  }
+ .nav-container { height: 64px !important; }
  .nav-link {
   color: #E1D4BB !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
  }
  .nav-link:hover,
  .nav-link:focus {
-  background: rgba(225, 212, 187, 0.1) !important;
-  color: #CBB279 !important;
+  background: #496778 !important;
+  color: #ffffff !important;
  }
  .nav-link[aria-expanded="true"] {
-  background: rgba(225, 212, 187, 0.1) !important;
-  color: #CBB279 !important;
+  background: #496778 !important;
+  color: #ffffff !important;
  }
  .nav-search-btn {
   background: #CBB279 !important;
   color: #3A5566 !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  padding: 10px 24px !important;
+  border-radius: 8px !important;
  }
  .nav-search-btn:hover {
-  background: #B8A068 !important;
+  background: #D4A54E !important;
   color: #3A5566 !important;
  }
- /* Logo area */
  .nav-logo-img {
   height: 42px !important;
   width: auto !important;
  }
  .nav-logo-brand {
-  color: #E1D4BB;
+  color: #ffffff;
   font-weight: 700;
   font-family: 'Inter', sans-serif;
   font-size: 20px;
   margin-left: 10px;
   white-space: nowrap;
  }
- /* Search icon in nav */
  .nav-container a[title="Search"] {
   color: #E1D4BB !important;
  }
  .nav-container a[title="Search"]:hover {
-  color: #CBB279 !important;
+  color: #ffffff !important;
  }
 
  * { box-sizing: border-box; margin: 0; padding: 0; }
 
  body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #F0EBE1;
-  color: #3E4A4F;
+  background: #F2F0ED;
+  color: #3A5566;
   line-height: 1.6;
  }
 
  a { text-decoration: none; color: inherit; }
 
- /* ========== HERO WITH AERIAL MAP BACKDROP ========== */
+ /* ========== HERO ========== */
  .hero {
   position: relative;
   background: url('ChatGPT%20Image%20Feb%2012%2C%202026%2C%2006_17_37%20AM.png') center center / cover no-repeat;
-  padding: 100px 24px 80px;
+  padding: 80px 24px 60px;
   text-align: center;
   color: white;
   overflow: hidden;
@@ -79,7 +85,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(rgba(58, 85, 102, 0.8), rgba(58, 85, 102, 0.9));
+  background: linear-gradient(rgba(58, 85, 102, 0.80), rgba(58, 85, 102, 0.90));
   z-index: 1;
  }
 
@@ -96,82 +102,80 @@
   font-style: italic;
   font-size: 48px;
   line-height: 1.15;
-  margin-bottom: 20px;
-  letter-spacing: -0.5px;
+  margin-bottom: 16px;
   color: #E1D4BB;
  }
 
  .hero .subtitle {
-  font-size: 17px;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
   font-weight: 400;
   color: #F0EBE1;
-  margin-bottom: 36px;
-  line-height: 1.6;
-  max-width: 580px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto 32px;
+  line-height: 1.5;
+  max-width: 640px;
  }
 
  /* Search bar */
- .search-bar {
-  max-width: 540px;
-  margin: 0 auto 48px;
+ .hero-search {
+  max-width: 600px;
+  margin: 0 auto;
   display: flex;
-  background: white;
-  border-radius: 8px;
-  padding: 4px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
  }
 
- .search-bar input {
+ .hero-search input {
   flex: 1;
-  padding: 14px 18px;
+  padding: 16px 24px;
   border: none;
-  font-size: 15px;
-  font-family: inherit;
-  background: transparent;
-  color: #3E4A4F;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: #3A5566;
+  background: #ffffff;
  }
 
- .search-bar input:focus { outline: none; }
- .search-bar input::placeholder { color: #999999; }
+ .hero-search input::placeholder { color: #7B746D; }
 
- .search-bar button {
-  padding: 14px 28px;
+ .hero-search button {
   background: #CBB279;
   color: #3A5566;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 16px 32px;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
-  font-family: inherit;
+  font-size: 15px;
   cursor: pointer;
   transition: background 0.2s;
   white-space: nowrap;
  }
 
- .search-bar button:hover { background: #B8A068; }
+ .hero-search button:hover { background: #D4A54E; }
 
- /* Stats row */
- .hero-stats {
+ /* ========== STATS ROW ========== */
+ .stats-row {
   display: flex;
   justify-content: center;
-  gap: 60px;
+  gap: 64px;
+  padding: 40px 24px;
+  background: #3A5566;
+  text-align: center;
   flex-wrap: wrap;
  }
 
- .hero-stat { text-align: center; }
-
- .hero-stat-value {
-  font-size: 36px;
+ .stat-item .number {
+  font-family: 'Inter', sans-serif;
   font-weight: 800;
+  font-size: 42px;
   color: #CBB279;
-  letter-spacing: -0.5px;
  }
 
- .hero-stat-label {
-  font-size: 11px;
+ .stat-item .label {
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
+  font-size: 12px;
   color: #E1D4BB;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -183,16 +187,17 @@
   padding: 72px 24px;
   max-width: 1100px;
   margin: 0 auto;
+  background: transparent;
  }
 
- .features-section h2 {
-  text-align: center;
+ .section-heading {
+  color: #3A5566;
   font-family: 'Source Serif 4', Georgia, serif;
   font-weight: 700;
   font-style: italic;
   font-size: 32px;
-  color: #3A5566;
-  margin-bottom: 48px;
+  text-align: center;
+  margin-bottom: 40px;
  }
 
  .features-grid {
@@ -203,65 +208,63 @@
 
  .feature-card {
   background: #ffffff;
-  border-radius: 16px;
-  padding: 32px 28px;
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  transition: all 0.3s;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 28px 24px;
+  transition: box-shadow 0.2s, transform 0.2s;
   display: flex;
   flex-direction: column;
  }
 
  .feature-card:hover {
-  border-color: #CBB279;
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
  }
 
- .feature-card-icon {
-  width: 56px;
-  height: 56px;
-  background: #F0EBE1;
+ .icon-circle {
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
+  background: #F0EBE1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
  }
 
- .feature-card-icon img {
-  width: 30px;
-  height: 30px;
+ .icon-circle img {
+  width: 28px;
+  height: 28px;
  }
 
  .feature-card h3 {
-  font-size: 18px;
-  font-weight: 700;
   color: #3A5566;
-  margin-bottom: 12px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 8px;
  }
 
  .feature-card p {
+  color: #706F6C;
+  font-family: 'Inter', sans-serif;
   font-size: 14px;
-  color: #3E4A4F;
-  line-height: 1.65;
-  margin-bottom: 24px;
+  line-height: 1.5;
+  margin-bottom: 16px;
   flex: 1;
  }
 
- .feature-card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+ .feature-card .learn-more {
   color: #496778;
-  font-size: 14px;
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
-  transition: gap 0.2s;
+  font-size: 14px;
+  transition: color 0.2s;
  }
 
- .feature-card:hover .feature-card-link {
-  color: #CBB279;
-  gap: 10px;
+ .feature-card:hover .learn-more {
+  color: #3A5566;
+  text-decoration: underline;
  }
 
  /* ========== CTA SECTION ========== */
@@ -277,11 +280,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-   135deg,
-   rgba(58, 85, 102, 0.92) 0%,
-   rgba(58, 85, 102, 0.85) 100%
-  );
+  background: linear-gradient(135deg, rgba(58, 85, 102, 0.92), rgba(58, 85, 102, 0.85));
   z-index: 1;
  }
 
@@ -342,9 +341,7 @@
   stroke-linejoin: round;
  }
 
- .cta-action {
-  flex-shrink: 0;
- }
+ .cta-action { flex-shrink: 0; }
 
  .cta-btn {
   display: inline-block;
@@ -354,11 +351,12 @@
   border-radius: 8px;
   font-size: 16px;
   font-weight: 700;
+  font-family: 'Inter', sans-serif;
   transition: all 0.2s;
  }
 
  .cta-btn:hover {
-  background: #B8A068;
+  background: #D4A54E;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(203, 178, 121, 0.3);
  }
@@ -444,16 +442,17 @@
  @media (max-width: 900px) {
   .features-grid { grid-template-columns: repeat(2, 1fr); }
   .cta-content { flex-direction: column; text-align: center; gap: 32px; }
+  .stats-row { gap: 40px; }
  }
 
  @media (max-width: 600px) {
   .hero { padding: 60px 20px 50px; }
   .hero h1 { font-size: 32px; }
   .hero .subtitle { font-size: 15px; }
-  .hero-stats { gap: 32px; }
-  .hero-stat-value { font-size: 28px; }
-  .search-bar { flex-direction: column; }
-  .search-bar button { border-radius: 6px; }
+  .stats-row { gap: 32px; padding: 32px 16px; }
+  .stat-item .number { font-size: 28px; }
+  .hero-search { flex-direction: column; border-radius: 8px; }
+  .hero-search button { border-radius: 0; }
   .features-grid { grid-template-columns: 1fr; }
   .features-section { padding: 48px 16px; }
   .footer-inner { flex-direction: column; }
@@ -479,7 +478,9 @@
   padding: 8px 16px; z-index: 9999; transition: top 0.3s;
  }
 
- .skip-link:focus { top: 0; }</style></head>
+ .skip-link:focus { top: 0; }
+ </style>
+</head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <div id="site-header"></div>
@@ -487,116 +488,153 @@
 <!-- Main Content -->
 <main id="main-content">
 
- <!-- Hero with Nashville Aerial Backdrop -->
+ <!-- Hero -->
  <section class="hero">
- <div class="hero-content">
- <h1>Build Your Nashville DADU with Confidence</h1>
- <p class="subtitle">The complete platform for DADU eligibility, permits, contractors, and market data. 67,707 eligible parcels. One powerful tool.</p>
+  <div class="hero-content">
+   <h1>Build Your Nashville DADU with Confidence</h1>
+   <p class="subtitle">The complete platform for DADU eligibility, permits, contractors, and market data. 67,707 eligible parcels. One powerful tool.</p>
+   <form class="hero-search" id="hero-search-form" action="property-report-card.html" method="GET">
+    <input type="text" name="address" placeholder="Enter your Nashville address..." aria-label="Property address">
+    <button type="submit">Check Eligibility</button>
+   </form>
+  </div>
+ </section>
 
- <form class="search-bar" id="hero-search-form" action="property-report-card.html" method="GET">
- <input type="text" name="address" placeholder="Enter your Nashville address..." aria-label="Property address">
- <button type="submit">Check Eligibility</button></form>
-
- <div class="hero-stats">
- <div class="hero-stat">
- <div class="hero-stat-value">67,707</div>
- <div class="hero-stat-label">Eligible Parcels</div></div>
- <div class="hero-stat">
- <div class="hero-stat-value">827+</div>
- <div class="hero-stat-label">DADUs Permitted</div></div>
- <div class="hero-stat">
- <div class="hero-stat-value">393</div>
- <div class="hero-stat-label">Active Contractors</div></div></div></div></section>
+ <!-- Stats Row -->
+ <section class="stats-row">
+  <div class="stat-item">
+   <div class="number">67,707</div>
+   <div class="label">Eligible Parcels</div>
+  </div>
+  <div class="stat-item">
+   <div class="number">827+</div>
+   <div class="label">DADUs Permitted</div>
+  </div>
+  <div class="stat-item">
+   <div class="number">393</div>
+   <div class="label">Active Contractors</div>
+  </div>
+ </section>
 
  <!-- Feature Cards -->
  <section class="features-section">
- <h2>Everything You Need for Your DADU Project</h2>
+  <h2 class="section-heading">Everything You Need for Your DADU Project</h2>
 
- <div class="features-grid">
- <a href="am_i_eligible.html" class="feature-card">
- <div class="feature-card-icon">
- <img src="assets/icons/ADU.png" alt=""></div>
- <h3>Am I Eligible?</h3>
- <p>Instant eligibility check based on Nashville's BL2025-1007 zoning requirements.</p>
- <span class="feature-card-link">Learn More</span></a>
+  <div class="features-grid">
+   <a href="am_i_eligible.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/ADU.png" alt="">
+    </div>
+    <h3>Am I Eligible?</h3>
+    <p>Instant eligibility check based on Nashville's BL2025-1007 zoning requirements.</p>
+    <span class="learn-more">Learn More &rarr;</span>
+   </a>
 
- <a href="size_calculator.html" class="feature-card">
- <div class="feature-card-icon">
- <img src="assets/icons/Appraisers.png" alt=""></div>
- <h3>Size Calculator</h3>
- <p>Calculate your maximum DADU size based on lot dimensions and zoning.</p>
- <span class="feature-card-link">Learn More</span></a>
+   <a href="size_calculator.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/Appraisers.png" alt="">
+    </div>
+    <h3>Size Calculator</h3>
+    <p>Calculate your maximum DADU size based on lot dimensions and zoning.</p>
+    <span class="learn-more">Learn More &rarr;</span>
+   </a>
 
- <a href="project_cost_estimator.html" class="feature-card">
- <div class="feature-card-icon">
- <img src="assets/icons/Valuations.png" alt=""></div>
- <h3>Cost Estimator</h3>
- <p>Estimate build costs by size, finish level, and site conditions.</p>
- <span class="feature-card-link">Learn More</span></a>
+   <a href="project_cost_estimator.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/Valuations.png" alt="">
+    </div>
+    <h3>Cost Estimator</h3>
+    <p>Estimate build costs by size, finish level, and site conditions.</p>
+    <span class="learn-more">Learn More &rarr;</span>
+   </a>
 
- <a href="contractor_marketplace.html" class="feature-card">
- <div class="feature-card-icon">
- <img src="assets/icons/Building and Construction.png" alt=""></div>
- <h3>Contractor Directory</h3>
- <p>Connect to vetted builders specializing in ADUs on your sized lot.</p>
- <span class="feature-card-link">Learn More</span></a></div></section>
+   <a href="contractor_marketplace.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/Building and Construction.png" alt="">
+    </div>
+    <h3>Contractor Directory</h3>
+    <p>Connect to vetted builders specializing in ADUs on your sized lot.</p>
+    <span class="learn-more">Learn More &rarr;</span>
+   </a>
+  </div>
+ </section>
 
  <!-- CTA Section -->
  <section class="cta-section">
- <div class="cta-content">
- <div class="cta-text">
- <h2>Power your building process from search to construction</h2>
- <ul class="cta-checklist">
- <li>
- <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
- Faster and easier than ever</li>
- <li>
- <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
- Trusted local partners you can rely on</li>
- <li>
- <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
- Automatic updates from the Nashville Open Data portal</li></ul></div>
- <div class="cta-action">
- <a href="am_i_eligible.html" class="cta-btn">Get Started</a></div></div></section></main>
+  <div class="cta-content">
+   <div class="cta-text">
+    <h2>Power your building process from search to construction</h2>
+    <ul class="cta-checklist">
+     <li>
+      <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Faster and easier than ever
+     </li>
+     <li>
+      <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Trusted local partners you can rely on
+     </li>
+     <li>
+      <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Automatic updates from the Nashville Open Data portal
+     </li>
+    </ul>
+   </div>
+   <div class="cta-action">
+    <a href="am_i_eligible.html" class="cta-btn">Get Started</a>
+   </div>
+  </div>
+ </section>
+
+</main>
 
 <!-- Footer -->
 <footer class="page-footer">
  <div class="footer-inner">
- <div class="footer-links">
- <div class="footer-col">
- <h4>Learn</h4>
- <a href="am_i_eligible.html">Am I Eligible?</a>
- <a href="size_calculator.html">Size Calculator</a>
- <a href="project_cost_estimator.html">Cost Estimator</a></div>
- <div class="footer-col">
- <h4>Features</h4>
- <a href="contractor_marketplace.html">Contractor Directory</a>
- <a href="dadu_building_requirements.html">Planning Resources</a>
- <a href="homebody_dadu_pricing.html">Pricing</a></div>
- <div class="footer-col">
- <h4>Get in Touch</h4>
- <a href="mailto:hello@castlehold.com">hello@castlehold.com</a>
- <a href="mailto:hello@castlehold.com">Contact</a>
- <a href="#">Sign in</a></div></div>
- <div class="footer-social">
- <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
- <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a></div></div>
+  <div class="footer-links">
+   <div class="footer-col">
+    <h4>Learn</h4>
+    <a href="am_i_eligible.html">Am I Eligible?</a>
+    <a href="size_calculator.html">Size Calculator</a>
+    <a href="project_cost_estimator.html">Cost Estimator</a>
+   </div>
+   <div class="footer-col">
+    <h4>Features</h4>
+    <a href="contractor_marketplace.html">Contractor Directory</a>
+    <a href="dadu_building_requirements.html">Planning Resources</a>
+    <a href="homebody_dadu_pricing.html">Pricing</a>
+   </div>
+   <div class="footer-col">
+    <h4>Get in Touch</h4>
+    <a href="mailto:hello@castlehold.com">hello@castlehold.com</a>
+    <a href="mailto:hello@castlehold.com">Contact</a>
+    <a href="#">Sign in</a>
+   </div>
+  </div>
+  <div class="footer-social">
+   <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+   <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+  </div>
+ </div>
  <div class="footer-bottom">
- <span>&copy; 2026 Homebody Projects. All rights reserved.</span>
- <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span></div></footer>
+  <span>&copy; 2026 Homebody Projects. All rights reserved.</span>
+  <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span>
+ </div>
+</footer>
 
 <script>
- // Hero search form
  document.addEventListener('DOMContentLoaded', function() {
- var heroSearch = document.getElementById('hero-search-form');
- if (heroSearch) {
- heroSearch.addEventListener('submit', function(e) {
- var input = heroSearch.querySelector('input');
- if (!input.value.trim()) {
- e.preventDefault();
- input.focus();
- }
+  var heroSearch = document.getElementById('hero-search-form');
+  if (heroSearch) {
+   heroSearch.addEventListener('submit', function(e) {
+    var input = heroSearch.querySelector('input');
+    if (!input.value.trim()) {
+     e.preventDefault();
+     input.focus();
+    }
+   });
+  }
  });
- }
- });</script>
-<script src="homebody_header.js"></script></body></html>
+</script>
+<script src="homebody_header.js"></script>
+</body>
+</html>
