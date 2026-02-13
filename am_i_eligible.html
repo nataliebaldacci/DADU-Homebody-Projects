@@ -445,6 +445,23 @@ function renderResult(elig, matchAddr, apn, covenantData) {
   '<a href="dadu_eligibility_map.html" class="btn-secondary">View Eligibility Map</a>' +
   '<a href="https://maps.nashville.gov/ParcelViewer/?quickSearch=' + encodeURIComponent(apn) + '" target="_blank" class="btn-secondary">Open Parcel Viewer</a>';
 
+ // External verification links
+ const linksDiv = document.createElement('div');
+ linksDiv.style.cssText = 'margin-top:20px; padding-top:16px; border-top:1px solid #ddd;';
+ linksDiv.innerHTML =
+  '<p style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:10px;">Verify with Official Sources</p>' +
+  '<div style="display:flex; flex-wrap:wrap; gap:8px;">' +
+  '<a href="https://maps.nashville.gov/webimages/MapGallery/PDFMaps/Urban%20Services%20District.pdf" target="_blank" style="padding:6px 14px; background:var(--card-bg); border-radius:6px; font-size:12px; font-weight:600; color:var(--navy); text-decoration:none;">USD District Map</a>' +
+  '<a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO" target="_blank" style="padding:6px 14px; background:var(--card-bg); border-radius:6px; font-size:12px; font-weight:600; color:var(--navy); text-decoration:none;">Zoning Code (Title 17)</a>' +
+  '<a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" style="padding:6px 14px; background:var(--card-bg); border-radius:6px; font-size:12px; font-weight:600; color:var(--navy); text-decoration:none;">BL2025-1007 Legislation</a>' +
+  '<a href="https://www.nashville.gov/departments/codes-administration" target="_blank" style="padding:6px 14px; background:var(--card-bg); border-radius:6px; font-size:12px; font-weight:600; color:var(--navy); text-decoration:none;">Metro Codes Admin</a>' +
+  '<a href="https://www.nashville.gov/departments/planning" target="_blank" style="padding:6px 14px; background:var(--card-bg); border-radius:6px; font-size:12px; font-weight:600; color:var(--navy); text-decoration:none;">Metro Planning</a>' +
+  '<a href="https://epermits.nashville.gov/" target="_blank" style="padding:6px 14px; background:var(--card-bg); border-radius:6px; font-size:12px; font-weight:600; color:var(--navy); text-decoration:none;">ePermits Portal</a>' +
+  '<a href="dadu_code_legislation_v3.html" style="padding:6px 14px; background:var(--card-bg); border-radius:6px; font-size:12px; font-weight:600; color:var(--navy); text-decoration:none;">Code & Legislation</a>' +
+  '<a href="dadu_zoning_standards.html" style="padding:6px 14px; background:var(--card-bg); border-radius:6px; font-size:12px; font-weight:600; color:var(--navy); text-decoration:none;">Zoning Standards</a>' +
+  '</div>';
+ actions.parentNode.appendChild(linksDiv);
+
  setState('result');
 }
 
