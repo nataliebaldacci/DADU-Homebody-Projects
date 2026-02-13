@@ -9,666 +9,609 @@
  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
  <style>
- :root {
- --navy: #003039;
- --navy-dark: #002630;
- --navy-light: #537188;
- --teal: #3E4A4F;
- --terracotta: #CBB279;
- --terracotta-hover: #B8A068;
- --tan: #537188;
- --cream: #E1D4BB;
- --background: #F0EBE1;
- --white: #ffffff;
- --border: #e0e0e0;
- --text: #333333;
- --text-light: #666666;
- --eligible-green: #2E6F4E;
- --not-eligible-red: #8B8B8B;
- --conditional-yellow: #D4A017;
- }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+ font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+ background: #F0EBE1;
+ color: #333333;
+}
 
- * { box-sizing: border-box; margin: 0; padding: 0; }
+/* ===== PAGE WRAPPER — flex column, nav is sticky, rest scrolls ===== */
+.page-wrapper {
+ display: flex;
+ flex-direction: column;
+ min-height: 100vh;
+ padding-top: 75px; /* space for sticky nav */
+}
 
- body {
- font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
- background: var(--background);
- color: var(--text);
- }
+/* ELEMENT 1: Hero Header */
+.hero-header {
+ background-color: #3a5566;
+ padding: 32px 24px 28px;
+ text-align: center;
+}
+.hero-header h1 {
+ color: #ffffff;
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-weight: 800;
+ font-size: 36px;
+ margin-bottom: 8px;
+}
+.hero-header .subtitle {
+ color: #e2e2e0;
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-weight: 400;
+ font-size: 16px;
+ margin-bottom: 0;
+}
 
- /* Page Title Bar — positioned below shared header (75px) */
- .title-bar {
- position: fixed;
- top: 75px;
- left: 0;
- right: 0;
- background: white;
+/* ELEMENT 2: Stats Bar */
+.stats-bar {
+ background-color: #f0ebe1;
  padding: 16px 24px;
  display: flex;
- justify-content: space-between;
  align-items: center;
- z-index: 999;
- border-bottom: 1px solid var(--border);
- box-shadow: 0 2px 5px rgba(0,0,0,0.05);
- }
-
- .title-content h1 {
- font-size: 20px;
- font-weight: 700;
- color: var(--navy);
- display: flex;
- align-items: center;
- gap: 12px;
- }
-
- .title-content h1 img {
- width: 28px;
- height: 28px;
- }
-
- .title-content p {
- font-size: 13px;
- color: var(--text-light);
- margin-top: 4px;
- }
-
- .search-box {
+ gap: 16px;
+}
+.stats-cards {
  display: flex;
  gap: 10px;
- }
-
- .search-input {
- width: 320px;
- padding: 10px 16px;
- border: 1px solid var(--border);
- border-radius: 8px;
- font-size: 14px;
- font-family: inherit;
- }
-
- .search-input:focus {
- outline: none;
- border-color: var(--terracotta);
- }
-
- .search-btn {
- padding: 10px 20px;
- background: var(--terracotta);
- color: white;
- border: none;
- border-radius: 8px;
- font-size: 14px;
- font-weight: 600;
- font-family: inherit;
- cursor: pointer;
- transition: background 0.2s;
- }
-
- .search-btn:hover {
- background: var(--terracotta-hover);
- }
-
- /* Main Layout — 75px shared header + ~66px title bar = 141px */
- .main-container {
- margin-top: 141px;
- display: flex;
- height: calc(100vh - 141px);
- }
-
- /* Map */
- #map {
  flex: 1;
- }
-
- /* Custom cluster icons */
- .marker-cluster-eligible {
- background-color: rgba(46, 111, 78, 0.6);
- }
- .marker-cluster-eligible div {
- background-color: rgba(46, 111, 78, 0.9);
- }
- .marker-cluster-conditional {
- background-color: rgba(212, 160, 23, 0.6);
- }
- .marker-cluster-conditional div {
- background-color: rgba(212, 160, 23, 0.9);
- }
- .marker-cluster-not-eligible {
- background-color: rgba(139, 139, 139, 0.6);
- }
- .marker-cluster-not-eligible div {
- background-color: rgba(139, 139, 139, 0.9);
- }
-
- .marker-cluster {
- border-radius: 50%;
- }
- .marker-cluster div {
- width: 30px;
- height: 30px;
- margin-left: 5px;
- margin-top: 5px;
+}
+.stat-card {
+ background-color: #ffffff;
+ border: 1px solid #e2e2e0;
+ border-radius: 10px;
+ padding: 12px 20px;
  text-align: center;
+ flex: 1;
+ min-width: 0;
+}
+.stat-card .stat-number {
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-weight: 800;
+ font-size: 26px;
+ line-height: 1.2;
+ color: #3a5566;
+}
+.stat-card .stat-number.eligible { color: #2E6F4E; }
+.stat-card .stat-number.conditional { color: #D4A017; }
+.stat-card .stat-number.not-eligible { color: #7b746d; }
+.stat-card .stat-label {
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-weight: 600;
+ font-size: 11px;
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+ color: #706f6c;
+ margin-top: 2px;
+}
+.stats-legend {
+ display: flex;
+ align-items: center;
+ gap: 16px;
+ font-size: 13px;
+ color: #706f6c;
+ white-space: nowrap;
+ flex-shrink: 0;
+}
+.stats-legend-item {
+ display: flex;
+ align-items: center;
+ gap: 4px;
+}
+.stats-legend-dot {
+ width: 12px;
+ height: 12px;
  border-radius: 50%;
- font-size: 12px;
- font-weight: bold;
- color: white;
- line-height: 30px;
- }
+ display: inline-block;
+ flex-shrink: 0;
+}
+.stats-legend-dot.eligible { background-color: #2E6F4E; }
+.stats-legend-dot.conditional { background-color: #D4A017; }
+.stats-legend-dot.not-eligible { background-color: #8B8B8B; }
+.stats-legend-label {
+ font-size: 13px;
+ color: #706f6c;
+}
 
- /* Legend Panel */
- .legend-panel {
- position: fixed;
- bottom: 30px;
- left: 30px;
- background: white;
- border-radius: 12px;
- box-shadow: 0 4px 20px rgba(0,0,0,0.15);
- padding: 20px;
- z-index: 1000;
- min-width: 260px;
- }
-
- .legend-title {
- font-size: 14px;
+/* ELEMENT 3: Announcement Banner */
+.announcement-bar {
+ background-color: #cbb279;
+ padding: 10px 24px;
+ display: flex;
+ align-items: center;
+ gap: 10px;
+}
+.announcement-bar .ann-icon {
+ background-color: #ffffff;
+ color: #3a5566;
+ width: 22px;
+ height: 22px;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
  font-weight: 700;
- color: var(--navy);
- margin-bottom: 15px;
+ font-size: 13px;
+ flex-shrink: 0;
+}
+.announcement-bar .ann-text {
+ color: #3a5566;
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-weight: 500;
+ font-size: 14px;
+}
+.announcement-bar .ann-text strong {
+ font-weight: 700;
+}
+
+/* ELEMENT 4: HOW TO USE bar */
+.how-to-use-bar {
+ background-color: #ffffff;
+ border-top: 1px solid #e2e2e0;
+ border-bottom: 1px solid #e2e2e0;
+ padding: 12px 24px;
+ display: flex;
+ align-items: center;
+ gap: 24px;
+}
+.how-to-use-bar .htu-label {
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-weight: 700;
+ font-size: 13px;
+ color: #3a5566;
+ text-transform: uppercase;
+ white-space: nowrap;
+}
+.htu-steps {
+ display: flex;
+ gap: 20px;
+ align-items: center;
+}
+.htu-step {
  display: flex;
  align-items: center;
  gap: 8px;
- }
-
- .legend-item {
- display: flex;
- align-items: center;
- gap: 12px;
- margin-bottom: 12px;
- }
-
- .legend-item:last-child {
- margin-bottom: 0;
- }
-
- .legend-color {
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-size: 13px;
+ color: #706f6c;
+}
+.htu-step-num {
+ background-color: #496778;
+ color: #ffffff;
  width: 24px;
  height: 24px;
- border-radius: 6px;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-weight: 700;
+ font-size: 12px;
  flex-shrink: 0;
- }
-
- .legend-color.eligible {
- background: #2E6F4E;
- }
-
- .legend-color.not-eligible {
- background: #8B8B8B;
- }
-
- .legend-color.conditional {
- background: #D4A017;
- }
-
- .legend-label {
- font-size: 13px;
- color: var(--text);
- }
-
- .legend-count {
- font-size: 12px;
- color: var(--text-light);
+}
+.quick-check {
  margin-left: auto;
- font-weight: 600;
- }
-
- /* Stats Panel */
- .stats-panel {
- position: fixed;
- top: 161px;
- right: 30px;
- background: white;
- border-radius: 12px;
- box-shadow: 0 4px 20px rgba(0,0,0,0.15);
- padding: 20px;
- z-index: 1000;
- min-width: 280px;
- }
-
- .stats-title {
- font-size: 14px;
- font-weight: 700;
- color: var(--navy);
- margin-bottom: 15px;
- padding-bottom: 10px;
- border-bottom: 1px solid var(--border);
- }
-
- .stat-row {
  display: flex;
- justify-content: space-between;
  align-items: center;
- padding: 10px 0;
- border-bottom: 1px solid var(--border);
- }
-
- .stat-row:last-child {
- border-bottom: none;
- }
-
- .stat-label {
+ gap: 8px;
+}
+.quick-check-label {
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-weight: 700;
  font-size: 13px;
- color: var(--text-light);
- }
-
- .stat-value {
- font-size: 16px;
- font-weight: 700;
- color: var(--navy);
- }
-
- .stat-value.eligible {
- color: #2E6F4E;
- }
-
- .stat-value.not-eligible {
- color: #8B8B8B;
- }
-
- .stat-value.conditional {
- color: #D4A017;
- }
-
- /* Filter Panel */
- .filter-panel {
- position: fixed;
- top: 161px;
- left: 30px;
- background: white;
- border-radius: 12px;
- box-shadow: 0 4px 20px rgba(0,0,0,0.15);
- padding: 20px;
- z-index: 1000;
- min-width: 260px;
- }
-
- .filter-title {
- font-size: 14px;
- font-weight: 700;
- color: var(--navy);
- margin-bottom: 15px;
- padding-bottom: 10px;
- border-bottom: 1px solid var(--border);
- }
-
- .filter-group {
- margin-bottom: 15px;
- }
-
- .filter-group:last-child {
- margin-bottom: 0;
- }
-
- .filter-label {
+ color: #3a5566;
+ text-transform: uppercase;
+ white-space: nowrap;
+}
+.qc-pill {
+ padding: 4px 12px;
+ border-radius: 20px;
  font-size: 12px;
  font-weight: 600;
- color: var(--text-light);
- margin-bottom: 8px;
- display: block;
- }
+ font-family: Inter, 'Montserrat', sans-serif;
+ white-space: nowrap;
+}
+.qc-pill.outline {
+ background-color: transparent;
+ border: 1px solid #7b746d;
+ color: #7b746d;
+}
+.qc-pill.filled {
+ background-color: #3a5566;
+ color: #ffffff;
+ border: none;
+}
+.qc-link {
+ font-size: 12px;
+ color: #496778;
+ text-decoration: underline;
+ font-weight: 500;
+ white-space: nowrap;
+}
 
- .filter-checkbox {
+/* ELEMENT 5: Search Row */
+.search-row {
+ background-color: #f0ebe1;
+ padding: 16px 24px;
+ display: flex;
+ justify-content: center;
+}
+.search-container {
+ max-width: 700px;
+ width: 100%;
+ display: flex;
+ border: 2px dashed #496778;
+ border-radius: 12px;
+ overflow: hidden;
+ background-color: #ffffff;
+}
+.search-container input {
+ flex: 1;
+ padding: 14px 20px;
+ border: none;
+ outline: none;
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-size: 15px;
+ color: #3a5566;
+ background: transparent;
+}
+.search-container input::placeholder {
+ color: #7b746d;
+}
+.search-container .search-btn {
+ background-color: #3a5566;
+ color: #ffffff;
+ border: none;
+ padding: 14px 28px;
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-weight: 700;
+ font-size: 14px;
+ cursor: pointer;
+}
+.search-container .search-btn:hover {
+ background-color: #496778;
+}
+
+/* ELEMENT 6: Map Container */
+.map-wrapper {
+ position: relative;
+ flex: 1;
+ min-height: 400px;
+}
+#map {
+ width: 100%;
+ height: calc(100vh - 80px);
+ min-height: 500px;
+}
+
+/* ELEMENT 7: Filter Panel — inside map */
+.filter-panel {
+ position: absolute;
+ top: 12px;
+ left: 12px;
+ z-index: 1000;
+ background-color: #ffffff;
+ border-radius: 12px;
+ box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+ padding: 16px;
+ width: 240px;
+ max-height: 80%;
+ overflow-y: auto;
+}
+.filter-panel.collapsed {
+ display: none;
+}
+.filter-toggle-btn {
+ position: absolute;
+ top: 12px;
+ left: 12px;
+ z-index: 1001;
+ background-color: #3a5566;
+ color: #ffffff;
+ border: none;
+ padding: 8px 16px;
+ border-radius: 8px;
+ font-family: Inter, 'Montserrat', sans-serif;
+ font-weight: 600;
+ font-size: 13px;
+ cursor: pointer;
+ display: none;
+}
+.filter-toggle-btn:hover {
+ background-color: #496778;
+}
+.filter-toggle-btn.visible {
  display: flex;
  align-items: center;
- gap: 10px;
- margin-bottom: 8px;
+ gap: 6px;
+}
+.filter-close {
+ float: right;
+ background: none;
+ border: none;
+ font-size: 18px;
+ color: #666666;
  cursor: pointer;
- }
-
- .filter-checkbox input {
- width: 18px;
- height: 18px;
+ padding: 0 0 0 8px;
+ line-height: 1;
+}
+.filter-title {
+ font-size: 14px;
+ font-weight: 700;
+ color: #3a5566;
+ margin-bottom: 12px;
+ padding-bottom: 8px;
+ border-bottom: 1px solid #e0e0e0;
+}
+.filter-group {
+ margin-bottom: 12px;
+}
+.filter-group:last-child {
+ margin-bottom: 0;
+}
+.filter-label {
+ font-size: 12px;
+ font-weight: 600;
+ color: #666666;
+ margin-bottom: 6px;
+ display: block;
+}
+.filter-checkbox {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ margin-bottom: 6px;
  cursor: pointer;
- accent-color: var(--terracotta);
- }
-
- .filter-checkbox span {
+}
+.filter-checkbox input {
+ width: 16px;
+ height: 16px;
+ cursor: pointer;
+ accent-color: #3a5566;
+}
+.filter-checkbox span {
  font-size: 13px;
- }
-
- .filter-select {
+}
+.filter-select {
  width: 100%;
- padding: 10px 12px;
- border: 1px solid var(--border);
+ padding: 8px 10px;
+ border: 1px solid #e0e0e0;
  border-radius: 8px;
  font-size: 13px;
  font-family: inherit;
- }
+}
 
- /* Info Popup */
- .leaflet-popup-content-wrapper {
- border-radius: 12px;
- padding: 0;
- }
+/* Custom cluster icons */
+.marker-cluster-eligible { background-color: rgba(46, 111, 78, 0.6); }
+.marker-cluster-eligible div { background-color: rgba(46, 111, 78, 0.9); }
+.marker-cluster-conditional { background-color: rgba(212, 160, 23, 0.6); }
+.marker-cluster-conditional div { background-color: rgba(212, 160, 23, 0.9); }
+.marker-cluster-not-eligible { background-color: rgba(139, 139, 139, 0.6); }
+.marker-cluster-not-eligible div { background-color: rgba(139, 139, 139, 0.9); }
+.marker-cluster { border-radius: 50%; }
+.marker-cluster div {
+ width: 30px; height: 30px; margin-left: 5px; margin-top: 5px;
+ text-align: center; border-radius: 50%; font-size: 12px;
+ font-weight: bold; color: white; line-height: 30px;
+}
 
- .leaflet-popup-content {
- margin: 0;
- min-width: 300px;
- }
+/* Legacy legend/stats panels — hidden, IDs still referenced by overlay JS */
+.legend-panel { display: none; }
+.stats-panel { display: none; }
 
- .popup-header {
- padding: 16px;
- border-radius: 12px 12px 0 0;
- }
+/* Info Popup */
+.leaflet-popup-content-wrapper { border-radius: 12px; padding: 0; }
+.leaflet-popup-content { margin: 0; min-width: 300px; }
+.popup-header { padding: 16px; border-radius: 12px 12px 0 0; }
+.popup-header.eligible { background: #2E6F4E; color: white; }
+.popup-header.not-eligible { background: #8B8B8B; color: white; }
+.popup-header.conditional { background: #D4A017; color: white; }
+.popup-status { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.popup-address { font-size: 16px; font-weight: 700; }
+.popup-content { padding: 16px; }
+.popup-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e0e0e0; }
+.popup-row:last-child { border-bottom: none; }
+.popup-label { font-size: 13px; color: #666666; }
+.popup-value { font-size: 13px; font-weight: 600; color: #003039; }
+.popup-actions { padding: 12px 16px; background: #E1D4BB; border-radius: 0 0 12px 12px; display: flex; gap: 10px; }
+.popup-btn { flex: 1; padding: 10px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; text-decoration: none; text-align: center; }
+.popup-btn-primary { background: #CBB279; color: white; }
+.popup-btn-secondary { background: white; color: #003039; border: 1px solid #e0e0e0; }
 
- .popup-header.eligible {
- background: #2E6F4E;
- color: white;
- }
-
- .popup-header.not-eligible {
- background: #8B8B8B;
- color: white;
- }
-
- .popup-header.conditional {
- background: #D4A017;
- color: white;
- }
-
- .popup-status {
- font-size: 12px;
- font-weight: 600;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- margin-bottom: 4px;
- }
-
- .popup-address {
- font-size: 16px;
- font-weight: 700;
- }
-
- .popup-content {
- padding: 16px;
- }
-
- .popup-row {
- display: flex;
- justify-content: space-between;
- padding: 8px 0;
- border-bottom: 1px solid var(--border);
- }
-
- .popup-row:last-child {
- border-bottom: none;
- }
-
- .popup-label {
- font-size: 13px;
- color: var(--text-light);
- }
-
- .popup-value {
- font-size: 13px;
- font-weight: 600;
- color: var(--navy);
- }
-
- .popup-actions {
- padding: 12px 16px;
- background: var(--cream);
- border-radius: 0 0 12px 12px;
- display: flex;
- gap: 10px;
- }
-
- .popup-btn {
- flex: 1;
- padding: 10px;
- border: none;
- border-radius: 6px;
- font-size: 13px;
- font-weight: 600;
- font-family: inherit;
- cursor: pointer;
- text-decoration: none;
- text-align: center;
- }
-
- .popup-btn-primary {
- background: var(--terracotta);
- color: white;
- }
-
- .popup-btn-secondary {
- background: white;
- color: var(--navy);
- border: 1px solid var(--border);
- }
-
- /* Loading overlay */
- .loading-overlay {
+/* Loading overlay */
+.loading-overlay {
  position: fixed;
- top: 141px;
- left: 0;
- right: 0;
- bottom: 0;
+ top: 0; left: 0; right: 0; bottom: 0;
  background: rgba(255,255,255,0.95);
- display: flex;
- flex-direction: column;
- align-items: center;
- justify-content: center;
+ display: flex; flex-direction: column;
+ align-items: center; justify-content: center;
  z-index: 2000;
- }
+}
+.loading-overlay.hidden { display: none; }
+.spinner {
+ width: 50px; height: 50px;
+ border: 4px solid #e0e0e0; border-top-color: #CBB279;
+ border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 16px; font-weight: 600; color: #003039; }
+.loading-subtext { font-size: 13px; color: #666666; margin-top: 8px; }
+.loading-progress { width: 200px; height: 6px; background: #e0e0e0; border-radius: 3px; margin-top: 15px; overflow: hidden; }
+.loading-progress-bar { height: 100%; background: #CBB279; width: 0%; transition: width 0.3s; }
 
- .loading-overlay.hidden {
- display: none;
- }
+/* Zoom message */
+.zoom-message {
+ position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+ background: #3a5566; color: white; padding: 12px 24px; border-radius: 30px;
+ font-size: 14px; font-weight: 500; z-index: 1000;
+ box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: none;
+}
+.zoom-message.visible { display: block; }
 
- .spinner {
- width: 50px;
- height: 50px;
- border: 4px solid var(--border);
- border-top-color: var(--terracotta);
- border-radius: 50%;
- animation: spin 1s linear infinite;
- margin-bottom: 20px;
- }
-
- @keyframes spin {
- to { transform: rotate(360deg); }
- }
-
- .loading-text {
- font-size: 16px;
- font-weight: 600;
- color: var(--navy);
- }
-
- .loading-subtext {
- font-size: 13px;
- color: var(--text-light);
- margin-top: 8px;
- }
-
- .loading-progress {
- width: 200px;
- height: 6px;
- background: var(--border);
- border-radius: 3px;
- margin-top: 15px;
- overflow: hidden;
- }
-
- .loading-progress-bar {
- height: 100%;
- background: var(--terracotta);
- width: 0%;
- transition: width 0.3s;
- }
-
- /* Zoom to see parcels message */
- .zoom-message {
- position: fixed;
- bottom: 100px;
- left: 50%;
- transform: translateX(-50%);
- background: var(--navy);
- color: white;
- padding: 12px 24px;
- border-radius: 30px;
- font-size: 14px;
- font-weight: 500;
- z-index: 1000;
- box-shadow: 0 4px 15px rgba(0,0,0,0.2);
- display: none;
- }
-
- .zoom-message.visible {
- display: block;
- }
-
- /* Responsive */
- @media (max-width: 768px) {
- .title-bar {
- flex-direction: column;
- gap: 15px;
- align-items: flex-start;
- }
- .search-box {
- width: 100%;
- }
- .search-input {
- flex: 1;
- }
- .filter-panel,
- .stats-panel {
- display: none;
- }
- .legend-panel {
- bottom: 20px;
- left: 20px;
- right: 20px;
- min-width: auto;
- }
- }</style>
+/* Responsive */
+@media (max-width: 768px) {
+ .hero-header { padding: 20px 16px 16px; }
+ .hero-header h1 { font-size: 22px; }
+ .hero-header .subtitle { font-size: 13px; }
+ .stats-bar { display: none; }
+ .announcement-bar { flex-wrap: wrap; }
+ .how-to-use-bar { flex-wrap: wrap; gap: 12px; }
+ .quick-check { display: none; }
+ .search-container { max-width: 100%; }
+ .filter-panel { display: none !important; }
+ .filter-toggle-btn { display: none !important; }
+}
+</style>
  <link rel="stylesheet" href="homebody_shared.css"></head>
 <body>
-<!-- Shared Header - Castlehold -->
+<!-- Shared Header - Castlehold (sticky nav) -->
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
+<!-- Page Wrapper — everything below nav scrolls normally -->
+<div class="page-wrapper">
 
- <!-- Title Bar -->
- <div class="title-bar">
- <div class="title-content">
- <h1>
- <img src="assets/icons/Zoning.png" alt="">
- DADU Eligibility Map</h1>
- <p>View parcel eligibility across Nashville-Davidson County under BL2025-1007</p></div>
- <div class="search-box">
- <input type="text" class="search-input" id="address-search" placeholder="Enter an address to check eligibility...">
- <button class="search-btn" onclick="searchAddress()">Search</button></div></div>
+ <!-- ELEMENT 1: Hero Header -->
+ <div class="hero-header">
+ <h1>DADU Eligibility Map</h1>
+ <p class="subtitle">Check your Nashville-Davidson County property</p>
+ </div>
 
- <!-- Main Container -->
- <div class="main-container">
- <div id="map"></div></div>
+ <!-- ELEMENT 2: Stats Bar -->
+ <div class="stats-bar">
+ <div class="stats-cards">
+ <div class="stat-card">
+  <div class="stat-number" id="stat-total">123,574</div>
+  <div class="stat-label">Total Parcels</div></div>
+ <div class="stat-card">
+  <div class="stat-number eligible" id="stat-eligible">10,072</div>
+  <div class="stat-label">Eligible (SP-USD)</div></div>
+ <div class="stat-card">
+  <div class="stat-number conditional" id="stat-conditional">65,433</div>
+  <div class="stat-label">Conditional (GSD)</div></div>
+ <div class="stat-card">
+  <div class="stat-number not-eligible" id="stat-not">48,069</div>
+  <div class="stat-label">Not Eligible</div></div>
+ <div class="stat-card">
+  <div class="stat-number" id="stat-rate">61.1%</div>
+  <div class="stat-label">Eligibility Rate</div></div>
+ </div>
+ <div class="stats-legend">
+ <div class="stats-legend-item">
+  <span class="stats-legend-dot eligible"></span>
+  <span class="stats-legend-label">Eligible</span></div>
+ <div class="stats-legend-item">
+  <span class="stats-legend-dot conditional"></span>
+  <span class="stats-legend-label">Conditional</span></div>
+ <div class="stats-legend-item">
+  <span class="stats-legend-dot not-eligible"></span>
+  <span class="stats-legend-label">Not Eligible</span></div>
+ </div>
+ </div>
 
- <!-- Filter Panel -->
- <div class="filter-panel">
- <h3 class="filter-title">Filter Parcels</h3>
- <div class="filter-group">
- <label class="filter-label">Show Parcels</label>
- <label class="filter-checkbox">
- <input type="checkbox" id="show-eligible" checked onchange="updateFilters()">
- <span style="color: #2E6F4E; font-weight: 600;">Eligible (By Right)</span></label>
- <label class="filter-checkbox">
- <input type="checkbox" id="show-conditional" checked onchange="updateFilters()">
- <span style="color: #D4A017; font-weight: 600;">Conditional (Overlay Req.)</span></label>
- <label class="filter-checkbox">
- <input type="checkbox" id="show-not-eligible" checked onchange="updateFilters()">
- <span style="color: #8B8B8B; font-weight: 600;">Not Eligible</span></label></div>
- <div class="filter-group">
- <label class="filter-label">Zoning District</label>
- <select class="filter-select" id="filter-zoning" onchange="updateFilters()">
- <option value="">All Zoning</option>
- <option value="RS">RS - Single Family</option>
- <option value="R">R - Residential</option>
- <option value="RM">RM - Multi-Family</option>
- <option value="AR">AR - Agricultural Res.</option>
- <option value="SP">SP - Specific Plan</option></select></div>
- <div class="filter-group">
- <label class="filter-label">Overlay Layers</label>
- <label class="filter-checkbox">
- <input type="checkbox" id="show-permits" onchange="toggleOverlay('permits')">
- <span style="color: #537188; font-weight: 600;">DADU Permits (3,854)</span></label>
- <label class="filter-checkbox">
- <input type="checkbox" id="show-covenants" onchange="toggleOverlay('covenants')">
- <span style="color: #CBB279; font-weight: 600;">Restrictive Covenants</span></label>
- <label class="filter-checkbox">
- <input type="checkbox" id="show-footprints" onchange="toggleOverlay('footprints')">
- <span style="color: #3E4A4F; font-weight: 600;">Building Footprints (18K)</span></label></div></div>
+ <!-- ELEMENT 3: Announcement Banner -->
+ <div class="announcement-bar">
+ <span class="ann-icon">i</span>
+ <span class="ann-text">New Dec 2025: Properties in Urban Services District with R/RS/SP zoning can build DADUs by-right. <strong>BL2025-1007</strong></span>
+ </div>
 
- <!-- Stats Panel -->
- <div class="stats-panel">
- <h3 class="stats-title">Eligibility Statistics <span style="background: #537188; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-left: 8px;">LIVE</span></h3>
- <div class="stat-row">
- <span class="stat-label">Total Parcels</span>
- <span class="stat-value" id="stat-total">123,574</span></div>
- <div class="stat-row">
- <span class="stat-label">Eligible (SP-USD)</span>
- <span class="stat-value eligible" id="stat-eligible">10,072</span></div>
- <div class="stat-row">
- <span class="stat-label">Conditional (GSD)</span>
- <span class="stat-value conditional" id="stat-conditional">65,433</span></div>
- <div class="stat-row">
- <span class="stat-label">Not Eligible</span>
- <span class="stat-value not-eligible" id="stat-not">48,069</span></div>
- <div class="stat-row">
- <span class="stat-label">Eligibility Rate</span>
- <span class="stat-value">61.1%</span></div></div>
+ <!-- ELEMENT 4: HOW TO USE Bar + QUICK CHECK -->
+ <div class="how-to-use-bar">
+ <span class="htu-label">How to Use</span>
+ <div class="htu-steps">
+  <div class="htu-step"><span class="htu-step-num">1</span> Search address</div>
+  <div class="htu-step"><span class="htu-step-num">2</span> Click parcel</div>
+  <div class="htu-step"><span class="htu-step-num">3</span> View details</div>
+ </div>
+ <div class="quick-check">
+  <span class="quick-check-label">Quick Check:</span>
+  <span class="qc-pill outline">In USD?</span>
+  <span class="qc-pill outline">R/RS Zone?</span>
+  <span class="qc-pill filled">Eligible</span>
+  <a href="dadu_zoning_standards.html" class="qc-link">Full chart</a>
+ </div>
+ </div>
 
- <!-- Legend -->
- <div class="legend-panel">
- <h3 class="legend-title">
- <img src="assets/icons/Zoning.png" alt="" style="width: 20px; height: 20px;">
- Eligibility Legend</h3>
- <div class="legend-item">
- <div class="legend-color eligible"></div>
- <span class="legend-label">Eligible (SP-USD)</span>
- <span class="legend-count" id="count-eligible">10,072</span></div>
- <div class="legend-item">
- <div class="legend-color conditional"></div>
- <span class="legend-label">Conditional (GSD/Overlay Req.)</span>
- <span class="legend-count" id="count-conditional">65,433</span></div>
- <div class="legend-item">
- <div class="legend-color not-eligible"></div>
- <span class="legend-label">Not Eligible</span>
- <span class="legend-count" id="count-not">48,069</span></div>
+ <!-- ELEMENT 5: Search Row -->
+ <div class="search-row">
+ <div class="search-container">
+  <input type="text" id="address-search" placeholder="Search the map below to check your property">
+  <button class="search-btn" onclick="searchAddress()">Search</button>
+ </div>
+ </div>
+
+ <!-- ELEMENT 6: Map Wrapper -->
+ <div class="map-wrapper">
+ <div id="map"></div>
+
+ <!-- ELEMENT 7: Filter Toggle Button -->
+ <button class="filter-toggle-btn" id="filter-toggle-btn" onclick="toggleFilterPanel()">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1 3h14M3 8h10M5 13h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  Filters</button>
+
+ <!-- ELEMENT 7: Filter Panel (inside map) -->
+ <div class="filter-panel" id="filter-panel">
+  <h3 class="filter-title">Filter Parcels <button class="filter-close" onclick="toggleFilterPanel()" title="Close">&times;</button></h3>
+  <div class="filter-group">
+  <label class="filter-label">Show Parcels</label>
+  <label class="filter-checkbox">
+   <input type="checkbox" id="show-eligible" checked onchange="updateFilters()">
+   <span style="color: #2E6F4E; font-weight: 600;">Eligible (By Right)</span></label>
+  <label class="filter-checkbox">
+   <input type="checkbox" id="show-conditional" checked onchange="updateFilters()">
+   <span style="color: #D4A017; font-weight: 600;">Conditional (Overlay Req.)</span></label>
+  <label class="filter-checkbox">
+   <input type="checkbox" id="show-not-eligible" checked onchange="updateFilters()">
+   <span style="color: #8B8B8B; font-weight: 600;">Not Eligible</span></label></div>
+  <div class="filter-group">
+  <label class="filter-label">Zoning District</label>
+  <select class="filter-select" id="filter-zoning" onchange="updateFilters()">
+   <option value="">All Zoning</option>
+   <option value="RS">RS - Single Family</option>
+   <option value="R">R - Residential</option>
+   <option value="RM">RM - Multi-Family</option>
+   <option value="AR">AR - Agricultural Res.</option>
+   <option value="SP">SP - Specific Plan</option></select></div>
+  <div class="filter-group">
+  <label class="filter-label">Overlay Layers</label>
+  <label class="filter-checkbox">
+   <input type="checkbox" id="show-permits" onchange="toggleOverlay('permits')">
+   <span style="color: #537188; font-weight: 600;">DADU Permits (3,854)</span></label>
+  <label class="filter-checkbox">
+   <input type="checkbox" id="show-covenants" onchange="toggleOverlay('covenants')">
+   <span style="color: #CBB279; font-weight: 600;">Restrictive Covenants</span></label>
+  <label class="filter-checkbox">
+   <input type="checkbox" id="show-footprints" onchange="toggleOverlay('footprints')">
+   <span style="color: #3E4A4F; font-weight: 600;">Building Footprints (18K)</span></label></div>
+ </div>
+ </div>
+
+</div><!-- end page-wrapper -->
+
+<!-- Hidden Legacy Legend (IDs referenced by overlay JS) -->
+<div class="legend-panel">
  <div class="legend-item" id="legend-permits" style="display:none;">
- <div class="legend-color" style="background: #537188; border-radius: 50%;"></div>
- <span class="legend-label">DADU Permits</span>
  <span class="legend-count" id="count-permits">0</span></div>
  <div class="legend-item" id="legend-covenants" style="display:none;">
- <div class="legend-color" style="background: #CBB279; border: 2px dashed #003039; border-radius: 50%;"></div>
- <span class="legend-label">Covenants</span>
  <span class="legend-count" id="count-covenants">0</span></div>
  <div class="legend-item" id="legend-footprints" style="display:none;">
- <div class="legend-color" style="background: #3E4A4F;"></div>
- <span class="legend-label">Building Footprints</span>
- <span class="legend-count" id="count-footprints">0</span></div></div>
+ <span class="legend-count" id="count-footprints">0</span></div>
+ <span class="legend-count" id="count-eligible" style="display:none;">10,072</span>
+ <span class="legend-count" id="count-conditional" style="display:none;">65,433</span>
+ <span class="legend-count" id="count-not" style="display:none;">48,069</span>
+</div>
 
- <!-- Zoom Message -->
- <div class="zoom-message" id="zoom-message">
- Zoom in to see individual parcels</div>
+<!-- Zoom Message -->
+<div class="zoom-message" id="zoom-message">Zoom in to see individual parcels</div>
 
- <!-- Loading Overlay -->
- <div class="loading-overlay" id="loading">
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loading">
  <div class="spinner"></div>
  <div class="loading-text">Loading Eligibility Data</div>
  <div class="loading-subtext" id="loading-status">Initializing map...</div>
  <div class="loading-progress">
- <div class="loading-progress-bar" id="progress-bar"></div></div></div>
+ <div class="loading-progress-bar" id="progress-bar"></div></div>
+</div>
 
  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
@@ -965,15 +908,19 @@
  const counts = await getServiceCounts();
  progressBar.style.width = '30%';
 
- // Update stats with live counts
+ // Update stats bar with live counts
+ const total = counts.eligible + counts.conditional + counts.notEligible;
+ const rate = total > 0 ? ((counts.eligible + counts.conditional) / total * 100).toFixed(1) : '0.0';
  document.getElementById('stat-eligible').textContent = counts.eligible.toLocaleString();
  document.getElementById('stat-conditional').textContent = counts.conditional.toLocaleString();
  document.getElementById('stat-not').textContent = counts.notEligible.toLocaleString();
- document.getElementById('stat-total').textContent = (counts.eligible + counts.conditional + counts.notEligible).toLocaleString();
+ document.getElementById('stat-total').textContent = total.toLocaleString();
+ document.getElementById('stat-rate').textContent = rate + '%';
 
- document.getElementById('count-eligible').textContent = counts.eligible.toLocaleString();
- document.getElementById('count-conditional').textContent = counts.conditional.toLocaleString();
- document.getElementById('count-not').textContent = counts.notEligible.toLocaleString();
+ // Also update hidden legend counts (used by overlay toggles)
+ const ce = document.getElementById('count-eligible'); if (ce) ce.textContent = counts.eligible.toLocaleString();
+ const cc = document.getElementById('count-conditional'); if (cc) cc.textContent = counts.conditional.toLocaleString();
+ const cn = document.getElementById('count-not'); if (cn) cn.textContent = counts.notEligible.toLocaleString();
 
  statusEl.textContent = 'Loading initial view...';
  progressBar.style.width = '50%';
@@ -1236,6 +1183,20 @@
  marker.bindPopup(popupContent, { maxWidth: 320 });
  targetLayer.addLayer(marker);
  });
+ }
+
+ // Toggle filter panel visibility
+ function toggleFilterPanel() {
+ const panel = document.getElementById('filter-panel');
+ const toggle = document.getElementById('filter-toggle-btn');
+ const isCollapsed = panel.classList.contains('collapsed');
+ if (isCollapsed) {
+ panel.classList.remove('collapsed');
+ toggle.classList.remove('visible');
+ } else {
+ panel.classList.add('collapsed');
+ toggle.classList.add('visible');
+ }
  }
 
  // Toggle overlay layers (permits, covenants)
@@ -1651,10 +1612,13 @@
  document.getElementById('stat-eligible').textContent = eligibleCount.toLocaleString();
  document.getElementById('stat-conditional').textContent = conditionalCount.toLocaleString();
  document.getElementById('stat-not').textContent = notEligibleCount.toLocaleString();
+ const rate = total > 0 ? ((eligibleCount + conditionalCount) / total * 100).toFixed(1) : '0.0';
+ document.getElementById('stat-rate').textContent = rate + '%';
 
- document.getElementById('count-eligible').textContent = eligibleCount.toLocaleString();
- document.getElementById('count-conditional').textContent = conditionalCount.toLocaleString();
- document.getElementById('count-not').textContent = notEligibleCount.toLocaleString();
+ // Update hidden legend counts (used by overlay toggle JS)
+ const ce = document.getElementById('count-eligible'); if (ce) ce.textContent = eligibleCount.toLocaleString();
+ const cc = document.getElementById('count-conditional'); if (cc) cc.textContent = conditionalCount.toLocaleString();
+ const cn = document.getElementById('count-not'); if (cn) cn.textContent = notEligibleCount.toLocaleString();
  }
 
  // Update filters

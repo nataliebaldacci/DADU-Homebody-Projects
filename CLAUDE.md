@@ -18,7 +18,7 @@ Brand architecture: Castlehold is the authority/data layer. Homebody Builder is 
 
 1. **Audit first.** Before making any changes, run the audit commands in Section 12 and show output.
 2. **Never invent data sources, endpoints, URLs, or field names.** Verify them first.
-3. **Never delete, rename, or move existing files.** Create new versions if needed (e.g., v4 suffix).
+3. **Never delete, rename, or move existing files unless directly asked.** Create new versions if needed (e.g., v4 suffix).
 4. **Never overwrite output files.** Every new output must have a unique name.
 5. **Do not modify anything in /samples/.** It is a read-only design reference library.
 6. **No sensitive keys in the repo.** Propose a serverless proxy if a key is required.
