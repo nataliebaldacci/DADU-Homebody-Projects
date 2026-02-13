@@ -691,6 +691,120 @@
     }
 
     /* ========================================
+       EMBEDDED IMAGE GALLERY
+       ======================================== */
+    .card2-gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .card2-img-card {
+      border: 1px solid rgba(62,74,79,0.12);
+      border-radius: 10px;
+      overflow: hidden;
+      background: white;
+      transition: all 0.15s;
+    }
+    .card2-img-card:hover {
+      border-color: var(--wheat);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .card2-img-card a {
+      display: block;
+      text-decoration: none;
+    }
+    .card2-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      background: var(--linen);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card2-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.2s;
+    }
+    .card2-img-card:hover .card2-img-wrap img {
+      transform: scale(1.03);
+    }
+    .card2-img-wrap .img-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 9px;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .card2-img-wrap .img-placeholder {
+      color: var(--steel);
+      font-size: 12px;
+      text-align: center;
+      padding: 20px;
+    }
+    .card2-img-caption {
+      padding: 8px 10px;
+      font-size: 11px;
+      color: var(--graphite);
+      border-top: 1px solid rgba(62,74,79,0.06);
+    }
+    .card2-img-caption strong {
+      display: block;
+      font-size: 12px;
+      color: var(--midnight);
+      margin-bottom: 1px;
+    }
+    .card2-img-caption span {
+      font-size: 10px;
+      color: var(--steel);
+    }
+    /* Popup embedded thumbnail */
+    .popup-thumb-row {
+      display: flex;
+      gap: 6px;
+      margin: 8px 0;
+    }
+    .popup-thumb {
+      width: 50%;
+      height: 80px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(62,74,79,0.1);
+      position: relative;
+    }
+    .popup-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .popup-thumb-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,48,57,0.7);
+      color: white;
+      font-size: 8px;
+      font-weight: 700;
+      text-align: center;
+      padding: 2px;
+      text-transform: uppercase;
+    }
+    @media (max-width: 768px) {
+      .card2-gallery { grid-template-columns: 1fr; }
+      .card2-img-wrap { height: 150px; }
+    }
+
+    /* ========================================
        NO RESULTS
        ======================================== */
     .no-results {
@@ -1243,11 +1357,36 @@ function showPopup(permit, marker) {
   const statusCls = statusTagClass(permit.statusClass);
   const statusLbl = statusLabel(permit.statusClass);
 
+  // Get Card2 images for this APN
+  const docs = getDocsForApn(permit.apn);
+  const ac = (docs.assessor_cards && docs.assessor_cards.length > 0) ? docs.assessor_cards[0] : null;
+  const photoUrl = ac ? (ac.card2_photo_url || '') : '';
+  const sketchUrl = ac ? (ac.card2_sketch_url || '') : '';
+
   let html = `<div class="popup-inner">
     <div class="popup-body">
       <div class="popup-address">${permit.address}</div>
-      <div class="popup-permit-num">#${permit.permitNumber} | APN: ${permit.apn}</div>
-      <div class="popup-grid">
+      <div class="popup-permit-num">#${permit.permitNumber} | APN: ${permit.apn}</div>`;
+
+  // Embedded thumbnail images
+  if (photoUrl || sketchUrl) {
+    html += `<div class="popup-thumb-row">`;
+    if (photoUrl) {
+      html += `<div class="popup-thumb">
+        <img src="${photoUrl}" alt="Photo" onerror="this.parentElement.style.display='none'">
+        <div class="popup-thumb-label">Photo</div>
+      </div>`;
+    }
+    if (sketchUrl) {
+      html += `<div class="popup-thumb">
+        <img src="${sketchUrl}" alt="Sketch" onerror="this.parentElement.style.display='none'">
+        <div class="popup-thumb-label">Sketch</div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  html += `<div class="popup-grid">
         <div class="popup-field">
           <span class="popup-field-label">Status</span>
           <span class="permit-tag ${statusCls}">${statusLbl}</span>
@@ -1425,16 +1564,48 @@ function openDetailModal(objectId) {
       <span class="doc-total-badge">📄 ${totalDocs} document${totalDocs !== 1 ? 's' : ''}</span>
     </div>`;
 
-  // --- Assessor Card 2 info bar (structure type + finished area) ---
+  // --- Assessor Card 2 images + info bar ---
   if (docs.assessor_cards && docs.assessor_cards.length > 0) {
     const ac = docs.assessor_cards[0];
     const structType = ac.structure_type || '';
     const area = ac.finished_area || '';
+    const photoUrl = ac.card2_photo_url || '';
+    const sketchUrl = ac.card2_sketch_url || '';
+
+    // Info bar
     if (structType || area) {
       body += `<div class="assessor-info-bar">
         ${structType ? `<div class="assessor-info-item"><span class="assessor-info-label">Structure Type</span><span class="assessor-info-value">${structType}</span></div>` : ''}
         ${area ? `<div class="assessor-info-item"><span class="assessor-info-label">Finished Area</span><span class="assessor-info-value">${area} SF</span></div>` : ''}
       </div>`;
+    }
+
+    // Embedded photo + sketch gallery
+    if (photoUrl || sketchUrl) {
+      body += `<div class="card2-gallery">`;
+      if (photoUrl) {
+        body += `<div class="card2-img-card">
+          <a href="${photoUrl}" target="_blank">
+            <div class="card2-img-wrap">
+              <img src="${photoUrl}" alt="DADU Photo" onerror="this.parentElement.innerHTML='<div class=img-placeholder>Photo unavailable</div>'">
+              <div class="img-badge" style="background:var(--steel)">Photo</div>
+            </div>
+            <div class="card2-img-caption"><strong>Building Photo</strong><span>${structType || 'Secondary Structure'}</span></div>
+          </a>
+        </div>`;
+      }
+      if (sketchUrl) {
+        body += `<div class="card2-img-card">
+          <a href="${sketchUrl}" target="_blank">
+            <div class="card2-img-wrap">
+              <img src="${sketchUrl}" alt="DADU Sketch" onerror="this.parentElement.innerHTML='<div class=img-placeholder>Sketch unavailable</div>'">
+              <div class="img-badge" style="background:var(--wheat);color:var(--midnight)">Sketch</div>
+            </div>
+            <div class="card2-img-caption"><strong>Floor Plan Sketch</strong><span>${area ? area + ' SF' : 'Click to enlarge'}</span></div>
+          </a>
+        </div>`;
+      }
+      body += `</div>`;
     }
   }
 
@@ -1492,7 +1663,7 @@ function openDetailModal(objectId) {
   }
   body += `</div></div>`;
 
-  // --- Assessor Card 2 ---
+  // --- Assessor Card 2 (buttons for summary + building print; images shown above) ---
   body += `<div class="doc-category"><div class="doc-category-label">Assessor Card 2 (Secondary Structure)</div><div class="doc-btn-grid">`;
   if (docs.assessor_cards && docs.assessor_cards.length > 0) {
     docs.assessor_cards.forEach(ac => {
@@ -1500,22 +1671,23 @@ function openDetailModal(objectId) {
       const sketchUrl = ac.card2_sketch_url || '';
       const summaryUrl = ac.card2_summary_url || ac.property_card_url || '';
       const buildingPrintUrl = ac.card2_buildingprint_url || '';
+      // Photo and sketch buttons (link to full-size versions)
       if (photoUrl) {
         body += `<a href="${photoUrl}" target="_blank" class="doc-btn">
           <div class="doc-btn-icon" style="background:#537188">📷</div>
-          <div><div class="doc-btn-label">Assessor Card 2 Photo</div><div class="doc-btn-sub">${ac.structure_type || 'Secondary structure'}</div></div>
+          <div><div class="doc-btn-label">Full Photo</div><div class="doc-btn-sub">${ac.structure_type || 'Secondary structure'}</div></div>
         </a>`;
       }
       if (sketchUrl) {
         body += `<a href="${sketchUrl}" target="_blank" class="doc-btn">
           <div class="doc-btn-icon" style="background:#CBB279">✏️</div>
-          <div><div class="doc-btn-label">Assessor Card 2 Sketch</div><div class="doc-btn-sub">Floor plan sketch</div></div>
+          <div><div class="doc-btn-label">Full Sketch</div><div class="doc-btn-sub">Floor plan sketch</div></div>
         </a>`;
       }
       if (summaryUrl) {
         body += `<a href="${summaryUrl}" target="_blank" class="doc-btn">
           <div class="doc-btn-icon" style="background:#3E4A4F">📋</div>
-          <div><div class="doc-btn-label">Assessor Card 2 Summary</div><div class="doc-btn-sub">Property details</div></div>
+          <div><div class="doc-btn-label">Assessor Summary</div><div class="doc-btn-sub">Property details</div></div>
         </a>`;
       }
       if (buildingPrintUrl) {
