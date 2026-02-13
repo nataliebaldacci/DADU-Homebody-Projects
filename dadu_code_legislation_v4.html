@@ -7,7 +7,6 @@
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
  <style>
-html { scroll-behavior: smooth; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif; background: #F2F0ED; color: #333; line-height: 1.6; }
 
@@ -31,48 +30,49 @@ body { font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sa
  font-size: 15px;
 }
 
-/* ===== SECTION LINKS NAV (sticky) ===== */
-.section-links {
- position: sticky;
- top: 0;
- z-index: 100;
- background-color: #f0ebe1;
- padding: 14px 24px;
+/* ===== TAB NAVIGATION ===== */
+.tab-nav {
  display: flex;
- align-items: center;
- justify-content: center;
- gap: 8px;
- flex-wrap: wrap;
- border-bottom: 1px solid #e2e2e0;
+ background-color: #3a5566;
+ border-radius: 0;
+ overflow-x: auto;
+ border-top: 1px solid #496778;
 }
-.section-links a {
- color: #3a5566;
+.tab-btn {
+ padding: 14px 24px;
+ background: transparent;
+ border: none;
+ color: #e2e2e0;
  font-family: Inter, sans-serif;
  font-weight: 600;
  font-size: 14px;
- text-decoration: none;
- padding: 4px 8px;
- transition: color 0.2s;
+ cursor: pointer;
+ white-space: nowrap;
+ border-bottom: 3px solid transparent;
+ transition: all 0.2s;
 }
-.section-links a:hover {
- color: #cbb279;
- text-decoration: underline;
+.tab-btn:hover {
+ background-color: #496778;
+ color: #ffffff;
 }
-.section-links .divider {
- color: #bbb5ad;
- font-size: 14px;
- user-select: none;
+.tab-btn.active {
+ color: #ffffff;
+ border-bottom-color: #cbb279;
+ background-color: #496778;
 }
 
-/* ===== PAGE SECTIONS ===== */
-.page-section {
+/* ===== TAB CONTENT ===== */
+.tab-content {
+ display: none;
  padding: 32px 24px;
  background-color: #ffffff;
  border: 1px solid #e2e2e0;
  border-top: none;
  max-width: 1200px;
  margin: 0 auto;
- scroll-margin-top: 60px;
+}
+.tab-content.active {
+ display: block;
 }
 
 /* ===== SECTION HEADERS WITH ICONS ===== */
@@ -432,9 +432,9 @@ body { font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sa
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
- .section-links { padding: 10px 16px; gap: 4px; }
- .section-links a { font-size: 12px; padding: 3px 4px; }
- .page-section { padding: 20px 16px; }
+ .tab-nav { flex-wrap: wrap; }
+ .tab-btn { padding: 10px 14px; font-size: 12px; }
+ .tab-content { padding: 20px 16px; }
  .subsection-grid { grid-template-columns: 1fr; }
  .attachment-grid { grid-template-columns: 1fr; }
  .legislation-table { font-size: 11px; }
@@ -454,23 +454,19 @@ body { font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sa
  <p class="subtitle">Comprehensive Reference Database | Updated January 2026</p>
 </div>
 
-<!-- SECTION LINKS NAV -->
-<nav class="section-links">
- <a href="#current-law">Current Law</a>
- <span class="divider">|</span>
- <a href="#metro-code">Metro Code</a>
- <span class="divider">|</span>
- <a href="#overlays-historic">Historic &amp; Overlays</a>
- <span class="divider">|</span>
- <a href="#legislative-history">Legislative History</a>
- <span class="divider">|</span>
- <a href="#resources">Resources</a>
-</nav>
+<!-- TAB NAVIGATION -->
+<div class="tab-nav">
+ <button class="tab-btn active" data-tab="tab-current">Current Law</button>
+ <button class="tab-btn" data-tab="tab-metro">Metro Code</button>
+ <button class="tab-btn" data-tab="tab-overlays">Overlays &amp; Historic</button>
+ <button class="tab-btn" data-tab="tab-history">Legislative History</button>
+ <button class="tab-btn" data-tab="tab-resources">Resources</button>
+</div>
 
 <!-- ══════════════════════════════════════════════════════════════ -->
-<!-- SECTION 1: CURRENT LAW & UPCOMING LEGISLATION -->
+<!-- TAB 1: CURRENT LAW & UPCOMING LEGISLATION -->
 <!-- ══════════════════════════════════════════════════════════════ -->
-<div class="page-section" id="current-law">
+<div class="tab-content active" id="tab-current">
 
  <div class="section-header">
   <div class="section-icon"><img src="assets/icons/Legal.png" alt=""></div>
@@ -688,9 +684,9 @@ body { font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sa
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════ -->
-<!-- SECTION 2: METRO CODE SECTIONS -->
+<!-- TAB 2: METRO CODE SECTIONS -->
 <!-- ══════════════════════════════════════════════════════════════ -->
-<div class="page-section" id="metro-code">
+<div class="tab-content" id="tab-metro">
 
  <div class="section-header">
   <div class="section-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
@@ -766,9 +762,9 @@ body { font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sa
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════ -->
-<!-- SECTION 3: HISTORIC & OVERLAYS / SPECIFIC PLANS -->
+<!-- TAB 3: HISTORIC & OVERLAYS / SPECIFIC PLANS -->
 <!-- ══════════════════════════════════════════════════════════════ -->
-<div class="page-section" id="overlays-historic">
+<div class="tab-content" id="tab-overlays">
 
  <div class="section-header">
   <div class="section-icon"><img src="assets/icons/Zoning.png" alt=""></div>
@@ -880,9 +876,9 @@ body { font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sa
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════ -->
-<!-- SECTION 4: LEGISLATIVE HISTORY -->
+<!-- TAB 4: LEGISLATIVE HISTORY -->
 <!-- ══════════════════════════════════════════════════════════════ -->
-<div class="page-section" id="legislative-history">
+<div class="tab-content" id="tab-history">
 
  <div class="section-header">
   <div class="section-icon"><img src="assets/icons/APN Maps.png" alt=""></div>
@@ -1048,9 +1044,9 @@ body { font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sa
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════ -->
-<!-- SECTION 5: GOVERNMENT & ADMINISTRATIVE RESOURCES -->
+<!-- TAB 5: GOVERNMENT & ADMINISTRATIVE RESOURCES -->
 <!-- ══════════════════════════════════════════════════════════════ -->
-<div class="page-section" id="resources">
+<div class="tab-content" id="tab-resources">
 
  <div class="section-header">
   <div class="section-icon"><img src="assets/icons/Municipal.png" alt=""></div>
@@ -1096,6 +1092,42 @@ body { font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sa
 
  <hr class="section-divider">
 
+ <!-- ArcGIS Data Services -->
+ <h3 style="color:#3a5566;font-size:16px;font-weight:700;margin-bottom:12px;">ArcGIS Data Services</h3>
+ <table class="legislation-table">
+  <tr><th>Service</th><th>Description</th><th>Query</th></tr>
+  <tr><td><a href="https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Development_Tracker_Cases_view/FeatureServer/3" target="_blank">Development Tracker Cases</a></td><td>FeatureServer/3</td><td><code>MPCNUM like '%DDU%'</code></td></tr>
+  <tr><td><a href="https://maps.nashville.gov/arcgis/rest/services/Planning/DevTracker_Cases/FeatureServer/0" target="_blank">Planning DevTracker Cases</a></td><td>FeatureServer/0</td><td><code>pertype = 'DADU Overlay (New)'</code></td></tr>
+  <tr><td><a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Zoning_Overlay_Districts/MapServer" target="_blank">Zoning Overlay Districts</a></td><td>MapServer</td><td>All overlay districts</td></tr>
+  <tr><td><a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/BaseZoning/MapServer" target="_blank">Base Zoning</a></td><td>MapServer</td><td>Base zoning districts</td></tr>
+  <tr><td><a href="https://maps.nashville.gov/arcgis2/rest/services/Parcels/ParcelHistory/MapServer/5/query" target="_blank">Urban Design Overlay Query</a></td><td>ParcelHistory/5</td><td><code>ZoneCode = 'OV-UDO'</code></td></tr>
+  <tr><td><a href="https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_with_Building_Characteristics_view/FeatureServer/0/query" target="_blank">Parcels with Building Characteristics</a></td><td>FeatureServer/0</td><td>Building footprint data</td></tr>
+ </table>
+
+ <h4 style="color:#3a5566;font-size:14px;font-weight:700;margin:20px 0 10px;">Nashville GIS Map Services</h4>
+ <div class="grid-cards">
+  <div class="grid-card"><h4>Base Zoning MapServer</h4><p>Zone districts and classifications</p><a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/BaseZoning/MapServer" target="_blank">REST Service</a></div>
+  <div class="grid-card"><h4>Zoning Overlay Districts</h4><p>All overlay districts including DADU</p><a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Zoning_Overlay_Districts/MapServer" target="_blank">REST Service</a></div>
+  <div class="grid-card"><h4>Historic Overlays</h4><p>HPZO and NCZO boundaries</p><a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Historic_Overlays/MapServer" target="_blank">REST Service</a></div>
+  <div class="grid-card"><h4>USD/GSD Boundaries</h4><p>Urban Services District boundary</p><a href="https://maps.nashville.gov/arcgis/rest/services/Boundaries/USD_GSD/MapServer" target="_blank">REST Service</a></div>
+  <div class="grid-card"><h4>Parcel Viewer Service</h4><p>Property assessment and ownership</p><a href="https://maps.nashville.gov/arcgis/rest/services/Parcels/ParcelViewer/MapServer" target="_blank">REST Service</a></div>
+  <div class="grid-card"><h4>Building Footprints</h4><p>Planimetric building outlines</p><a href="https://maps.nashville.gov/arcgis/rest/services/Planimetric/Buildings/MapServer" target="_blank">REST Service</a></div>
+  <div class="grid-card"><h4>Floodplain Zones</h4><p>FEMA flood zones and boundaries</p><a href="https://maps.nashville.gov/arcgis/rest/services/Stormwater/Floodplain/MapServer" target="_blank">REST Service</a></div>
+  <div class="grid-card"><h4>Council Districts</h4><p>Metro Council district boundaries</p><a href="https://maps.nashville.gov/arcgis/rest/services/Boundaries/Council_Districts/MapServer" target="_blank">REST Service</a></div>
+ </div>
+
+ <h4 style="color:#3a5566;font-size:14px;font-weight:700;margin:20px 0 10px;">Parcel Service API Endpoints</h4>
+ <table class="legislation-table">
+  <tr><th>Endpoint</th><th>Description</th><th>Parameters</th></tr>
+  <tr><td><a href="https://maps.nashville.gov/ParcelService/Search.asmx/GetPermitHistory" target="_blank">GetPermitHistory</a></td><td>XML permit records by APN</td><td><code>?apn={APN}</code></td></tr>
+  <tr><td><a href="https://maps.nashville.gov/ParcelService/Search.asmx/GetOwnerHistory" target="_blank">GetOwnerHistory</a></td><td>Deed &amp; ownership records</td><td><code>?onlyactive=false&amp;pin={PID}</code></td></tr>
+  <tr><td><a href="https://maps.nashville.gov/ParcelService/Search.asmx/GetPropertyHistory" target="_blank">GetPropertyHistory</a></td><td>Building changes over time</td><td><code>?onlyactive=false&amp;pin={PID}</code></td></tr>
+  <tr><td><a href="https://maps.nashville.gov/ParcelService/Search.asmx/GetZoningHistory" target="_blank">GetZoningHistory</a></td><td>Zone changes history</td><td><code>?onlyactive=false&amp;pin={PID}</code></td></tr>
+  <tr><td><a href="https://maps.nashville.gov/ParcelService/Search.asmx/GetAssessmentHistory" target="_blank">GetAssessmentHistory</a></td><td>Property value over time</td><td><code>?onlyactive=false&amp;pin={PID}</code></td></tr>
+ </table>
+
+ <hr class="section-divider">
+
  <!-- Errata -->
  <h3 style="color:#3a5566;font-size:16px;font-weight:700;margin-bottom:12px;">Errata &amp; Corrections</h3>
  <div class="error-box">
@@ -1137,6 +1169,18 @@ body { font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sa
  <p>150+ Citations | Last Updated: January 2026</p>
  <p style="margin-top:8px;font-size:11px;">Citations follow The Bluebook: A Uniform System of Citation (21st ed. 2020)</p>
 </div>
+
+<!-- TAB & ACCORDION JAVASCRIPT -->
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn => {
+ btn.addEventListener('click', () => {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+ });
+});
+</script>
 
 <script src="homebody_header.js"></script>
 </body>
