@@ -750,9 +750,11 @@ markers.addTo(map);
 function classifyStatus(raw) {
   if (!raw) return 'other';
   const s = raw.toLowerCase().trim();
-  if (s === 'done' || s === 'completed' || s === 'finaled' || s === 'closed') return 'done';
-  if (s === 'active' || s === 'issued' || s === 'in review' || s === 'pending') return 'active';
-  if (s === 'expired' || s === 'inactive' || s === 'void' || s === 'withdrawn') return 'expired';
+  // Merged v2 STATUS_NORMALIZED uses: "Active", "Inactive", "In Review", "Final"
+  if (s === 'inactive' || s === 'done' || s === 'completed' || s === 'finaled' || s === 'closed' || s === 'co') return 'done';
+  if (s === 'active' || s === 'issued' || s === 'in progress') return 'active';
+  if (s === 'in review' || s === 'pending' || s === 'expired' || s === 'void' || s === 'withdrawn') return 'expired';
+  if (s === 'final') return 'done';
   if (s === 'revoked' || s === 'denied' || s === 'cancelled') return 'revoked';
   return 'other';
 }
@@ -822,9 +824,9 @@ async function loadPermitsFromArcGIS() {
     progress.textContent = 'Loading permits...';
   }
 
-  // Paginated fetch
+  // Paginated fetch — field names match MERGED v2 schema (UPPERCASE)
   while (true) {
-    const url = `${PERMITS_URL}/query?where=1%3D1&outFields=Parcel_ID,Permit_Number,Address,Zip_Code,Contractor,Construction_Cost,Building_SqFt,Cost_Per_SqFt,Status,Date_Issued,Permit_Type,Permit_Subtype,Project_Scope,Permit_ID,ePermits_Link,Documents_Link,Street_View,Google_Maps,ObjectId&outSR=4326&resultOffset=${offset}&resultRecordCount=${PAGE_SIZE}&f=json`;
+    const url = `${PERMITS_URL}/query?where=1%3D1&outFields=APN,PERMIT_NUMBER,STREET,CITY,ZIPCODE,CONTRACTOR_BIZ_NAME_ORIGINAL,CONTRACTOR_LICENSE,CONSTRUCTION_COST,BUILDING_SQFT,COST_PER_SQFT,STATUS_NORMALIZED,PERMIT_DATE,PERMIT_TYPE,PERMIT_SUBTYPE,PROJECT_SCOPE,PERMIT_ID,EPERMITS_LINK,DOCUMENTS_LINK,STREET_VIEW,GOOGLE_MAPS,OWNER_NAME,TOTAL_FEES,PROPERTY_CARD_PORTAL_URL,HAS_COVENANTS,COVENANT_COUNT,TOTAL_DOCS,ObjectId&outSR=4326&resultOffset=${offset}&resultRecordCount=${PAGE_SIZE}&f=json`;
 
     progress.textContent = `Loaded ${total.length.toLocaleString()} permits...`;
 
@@ -839,32 +841,43 @@ async function loadPermitsFromArcGIS() {
       const g = f.geometry;
       if (!g || g.x == null || g.y == null) return;
 
-      // Convert date
-      const dateObj = parseDate(a.Date_Issued);
+      // PERMIT_DATE is ISO string (e.g. "2018-05-24") or epoch — handle both
+      let dateObj = null;
+      if (a.PERMIT_DATE) {
+        dateObj = new Date(a.PERMIT_DATE);
+        if (isNaN(dateObj.getTime())) dateObj = null;
+      }
       const year = dateObj ? dateObj.getFullYear() : null;
 
       total.push({
-        apn: a.Parcel_ID || '',
-        permitNumber: a.Permit_Number || '',
-        address: a.Address || '',
-        zip: a.Zip_Code || '',
-        contractor: a.Contractor || '',
-        cost: a.Construction_Cost,
-        sqft: a.Building_SqFt,
-        costPerSf: a.Cost_Per_SqFt,
-        status: a.Status || '',
-        statusClass: classifyStatus(a.Status),
+        apn: a.APN || '',
+        permitNumber: a.PERMIT_NUMBER || '',
+        address: a.STREET || '',
+        zip: a.ZIPCODE || '',
+        contractor: a.CONTRACTOR_BIZ_NAME_ORIGINAL || '',
+        contractorLicense: a.CONTRACTOR_LICENSE || '',
+        cost: a.CONSTRUCTION_COST,
+        sqft: a.BUILDING_SQFT,
+        costPerSf: a.COST_PER_SQFT,
+        status: a.STATUS_NORMALIZED || '',
+        statusClass: classifyStatus(a.STATUS_NORMALIZED),
         dateIssued: dateObj,
         year: year,
-        permitType: a.Permit_Type || '',
-        permitSubtype: a.Permit_Subtype || '',
-        scope: a.Project_Scope || '',
-        permitId: a.Permit_ID,
-        ePermitsLink: a.ePermits_Link || '',
-        documentsLink: a.Documents_Link || '',
-        streetView: a.Street_View || '',
-        googleMaps: a.Google_Maps || '',
-        objectId: a.ObjectId,
+        permitType: a.PERMIT_TYPE || '',
+        permitSubtype: a.PERMIT_SUBTYPE || '',
+        scope: a.PROJECT_SCOPE || '',
+        permitId: a.PERMIT_ID,
+        ePermitsLink: a.EPERMITS_LINK || '',
+        documentsLink: a.DOCUMENTS_LINK || '',
+        streetView: a.STREET_VIEW || '',
+        googleMaps: a.GOOGLE_MAPS || '',
+        owner: a.OWNER_NAME || '',
+        totalFees: a.TOTAL_FEES,
+        propertyCardPortal: a.PROPERTY_CARD_PORTAL_URL || '',
+        hasCovenants: a.HAS_COVENANTS,
+        covenantCount: a.COVENANT_COUNT,
+        totalDocs: a.TOTAL_DOCS,
+        objectId: a.ObjectId || a.OBJECTID || a.FID,
         lat: g.y,
         lon: g.x
       });
@@ -877,35 +890,43 @@ async function loadPermitsFromArcGIS() {
   return total;
 }
 
-// Fallback: load from local GeoJSON
+// Fallback: load from local merged GeoJSON
 async function loadPermitsFromGeoJSON() {
-  const resp = await fetch('permits_data.geojson');
+  const resp = await fetch('DADU_All_Permits_MERGED_v2.geojson');
   const data = await resp.json();
   return (data.features || []).map(f => {
     const p = f.properties;
     const coords = f.geometry.coordinates;
-    const dateObj = p.PERMIT_DATE ? new Date(p.PERMIT_DATE) : null;
+    let dateObj = p.PERMIT_DATE ? new Date(p.PERMIT_DATE) : null;
+    if (dateObj && isNaN(dateObj.getTime())) dateObj = null;
     return {
-      apn: '',
+      apn: p.APN || '',
       permitNumber: p.PERMIT_NUMBER || '',
       address: p.STREET || '',
-      zip: '',
+      zip: p.ZIPCODE || '',
       contractor: p.CONTRACTOR_BIZ_NAME_ORIGINAL || '',
-      cost: null,
-      sqft: null,
-      costPerSf: null,
+      contractorLicense: p.CONTRACTOR_LICENSE || '',
+      cost: p.CONSTRUCTION_COST,
+      sqft: p.BUILDING_SQFT,
+      costPerSf: p.COST_PER_SQFT,
       status: p.STATUS_NORMALIZED || '',
       statusClass: classifyStatus(p.STATUS_NORMALIZED),
       dateIssued: dateObj,
       year: dateObj ? dateObj.getFullYear() : null,
-      permitType: '',
-      permitSubtype: '',
-      scope: '',
-      permitId: null,
-      ePermitsLink: '',
-      documentsLink: '',
-      streetView: '',
-      googleMaps: '',
+      permitType: p.PERMIT_TYPE || '',
+      permitSubtype: p.PERMIT_SUBTYPE || '',
+      scope: p.PROJECT_SCOPE || '',
+      permitId: p.PERMIT_ID,
+      ePermitsLink: p.EPERMITS_LINK || '',
+      documentsLink: p.DOCUMENTS_LINK || '',
+      streetView: p.STREET_VIEW || '',
+      googleMaps: p.GOOGLE_MAPS || '',
+      owner: p.OWNER_NAME || '',
+      totalFees: p.TOTAL_FEES,
+      propertyCardPortal: p.PROPERTY_CARD_PORTAL_URL || '',
+      hasCovenants: p.HAS_COVENANTS,
+      covenantCount: p.COVENANT_COUNT,
+      totalDocs: p.TOTAL_DOCS,
       objectId: null,
       lat: coords[1],
       lon: coords[0]
