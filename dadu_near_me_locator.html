@@ -971,20 +971,20 @@
  
  // Create result card HTML
  function createResultCard(r, index) {
- const status = normalizeStatus(r.Status || r.status || '');
+ const status = normalizeStatus(r.STATUS_NORMALIZED || r.status || '');
  const statusClass = status.toLowerCase();
  const statusLabel = status === 'DONE' ? 'Completed' : status;
  
- const address = r.Address || r.address || 'Unknown Address';
- const contractor = r.Contractor || r.contractor || null;
- const permitNum = r.Permit_Number || r.permit_number || '';
- const parcelId = r.Parcel_ID || r.parcel_id || '';
- const dateIssued = formatDate(r.Date_Issued || r.date_issued);
- const value = r.Construction_Cost || r.cost || null;
- const sqft = r.Building_SqFt || r.sqft || null;
- const costPerSqft = r.Cost_Per_SqFt || null;
- const ePermitsLink = r.ePermits_Link || null;
- const docsLink = r.Documents_Link || null;
+ const address = r.STREET || r.address || 'Unknown Address';
+ const contractor = r.CONTRACTOR_BIZ_NAME_ORIGINAL || r.contractor || null;
+ const permitNum = r.PERMIT_NUMBER || r.permit_number || '';
+ const parcelId = r.APN || r.parcel_id || '';
+ const dateIssued = formatDate(r.PERMIT_DATE || r.date_issued);
+ const value = r.CONSTRUCTION_COST || r.cost || null;
+ const sqft = r.BUILDING_SQFT || r.sqft || null;
+ const costPerSqft = r.COST_PER_SQFT || null;
+ const ePermitsLink = r.EPERMITS_LINK || null;
+ const docsLink = r.DOCUMENTS_LINK || null;
  
  return `
  <div class="result-card ${statusClass}" data-index="${index}" onclick="focusResult(${index})">
@@ -1032,16 +1032,16 @@
  
  // Create popup content
  function createPopupContent(r) {
- const status = normalizeStatus(r.Status || r.status || '');
+ const status = normalizeStatus(r.STATUS_NORMALIZED || r.status || '');
  const statusClass = status.toLowerCase();
  const statusLabel = status === 'DONE' ? 'Completed' : status;
  
- const address = r.Address || r.address || 'Unknown Address';
- const contractor = r.Contractor || r.contractor || null;
- const permitNum = r.Permit_Number || r.permit_number || '';
- const dateIssued = formatDate(r.Date_Issued || r.date_issued);
- const sqft = r.Building_SqFt || null;
- const cost = r.Construction_Cost || null;
+ const address = r.STREET || r.address || 'Unknown Address';
+ const contractor = r.CONTRACTOR_BIZ_NAME_ORIGINAL || r.contractor || null;
+ const permitNum = r.PERMIT_NUMBER || r.permit_number || '';
+ const dateIssued = formatDate(r.PERMIT_DATE || r.date_issued);
+ const sqft = r.BUILDING_SQFT || null;
+ const cost = r.CONSTRUCTION_COST || null;
  
  return `
  <div class="popup-content">

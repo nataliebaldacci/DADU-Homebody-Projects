@@ -713,7 +713,7 @@ body {
  async function queryPermits(options = {}) {
  const defaults = {
  where: '1=1',
- outFields: 'Parcel_ID,Permit_Number,Address,Contractor,Construction_Cost,Building_SqFt,Status,Date_Issued,Cost_Per_SqFt',
+ outFields: 'APN,PERMIT_NUMBER,STREET,CONTRACTOR_BIZ_NAME_ORIGINAL,CONSTRUCTION_COST,BUILDING_SQFT,STATUS_NORMALIZED,PERMIT_DATE,COST_PER_SQFT',
  returnGeometry: true,
  outSR: 4326,
  f: 'json',
@@ -1266,12 +1266,12 @@ body {
  const geom = feature.geometry;
  if (!geom || !geom.y || !geom.x) return;
 
- // Determine color by status
- const status = (props.Status || '').toUpperCase();
+ // Determine color by status — merged v2 uses STATUS_NORMALIZED: Active, Inactive, In Review, Final
+ const status = (props.STATUS_NORMALIZED || '').toUpperCase();
  let color = PERMIT_COLORS.active;
- if (status === 'DONE' || status === 'COMPLETED' || status === 'FINALED') {
+ if (status === 'INACTIVE' || status === 'DONE' || status === 'COMPLETED' || status === 'FINALED' || status === 'FINAL') {
  color = PERMIT_COLORS.completed;
- } else if (status === 'EXPIRED') {
+ } else if (status === 'IN REVIEW' || status === 'EXPIRED') {
  color = PERMIT_COLORS.expired;
  } else if (status === 'REVOKED' || status === 'CANCELLED') {
  color = PERMIT_COLORS.revoked;
@@ -1286,22 +1286,22 @@ body {
  fillOpacity: 0.9
  });
 
- // Format date
- const dateStr = props.Date_Issued ? new Date(props.Date_Issued).toLocaleDateString() : 'N/A';
- const cost = props.Construction_Cost ? '$' + Number(props.Construction_Cost).toLocaleString() : 'N/A';
- const sqft = props.Building_SqFt ? props.Building_SqFt.toLocaleString() + ' SF' : 'N/A';
+ // Format date — PERMIT_DATE is ISO string or epoch
+ const dateStr = props.PERMIT_DATE ? new Date(props.PERMIT_DATE).toLocaleDateString() : 'N/A';
+ const cost = props.CONSTRUCTION_COST ? '$' + Number(props.CONSTRUCTION_COST).toLocaleString() : 'N/A';
+ const sqft = props.BUILDING_SQFT ? Number(props.BUILDING_SQFT).toLocaleString() + ' SF' : 'N/A';
 
  const popup = `
  <div class="popup-header" style="background: ${color};">
- <div class="popup-status">DADU Permit - ${props.Status || 'Unknown'}</div>
- <div class="popup-address">${props.Address || 'No Address'}</div></div>
+ <div class="popup-status">DADU Permit - ${props.STATUS_NORMALIZED || 'Unknown'}</div>
+ <div class="popup-address">${props.STREET || 'No Address'}</div></div>
  <div class="popup-content">
  <div class="popup-row">
  <span class="popup-label">Permit #</span>
- <span class="popup-value">${props.Permit_Number || 'N/A'}</span></div>
+ <span class="popup-value">${props.PERMIT_NUMBER || 'N/A'}</span></div>
  <div class="popup-row">
  <span class="popup-label">Contractor</span>
- <span class="popup-value">${props.Contractor || 'N/A'}</span></div>
+ <span class="popup-value">${props.CONTRACTOR_BIZ_NAME_ORIGINAL || 'N/A'}</span></div>
  <div class="popup-row">
  <span class="popup-label">Cost</span>
  <span class="popup-value">${cost}</span></div>
@@ -1312,8 +1312,8 @@ body {
  <span class="popup-label">Date Issued</span>
  <span class="popup-value">${dateStr}</span></div></div>
  <div class="popup-actions">
- <a href="permit_explorer.html?permit=${props.Permit_Number}" class="popup-btn popup-btn-primary">Permit Details</a>
- <a href="property-report-card.html?apn=${props.Parcel_ID}" class="popup-btn popup-btn-secondary">Property Report</a></div>
+ <a href="permit_explorer.html?permit=${props.PERMIT_NUMBER}" class="popup-btn popup-btn-primary">Permit Details</a>
+ <a href="property-report-card.html?apn=${props.APN}" class="popup-btn popup-btn-secondary">Property Report</a></div>
  `;
 
  marker.bindPopup(popup, { maxWidth: 320 });

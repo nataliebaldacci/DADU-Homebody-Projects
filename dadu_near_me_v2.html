@@ -772,18 +772,18 @@
  const dist = calculateDistance(searchLocation.lat, searchLocation.lon, lat, lon);
  
  return {
- id: props.OBJECTID || props.permit_number,
- address: props.address || props.Address || props.mapped_location || 'Unknown',
- permitNumber: props.permit_number || props.Permit_Number || props.PERMIT_NUM || '-',
- contractor: props.contractor || props.Contractor || props.contractor_name || 'Not listed',
- dateIssued: formatDate(props.date_issued || props.Date_Issued),
- status: props.status || props.Status || '-',
- purpose: props.purpose || props.Purpose || '',
- apn: props.APN || props.apn || props.STANPAR || props.stanpar || '',
+ id: props.OBJECTID || props.PERMIT_NUMBER,
+ address: props.STREET || props.Address || 'Unknown',
+ permitNumber: props.PERMIT_NUMBER || props.permit_number || '-',
+ contractor: props.CONTRACTOR_BIZ_NAME_ORIGINAL || props.contractor || 'Not listed',
+ dateIssued: formatDate(props.PERMIT_DATE || props.date_issued),
+ status: props.STATUS_NORMALIZED || props.status || '-',
+ purpose: props.PROJECT_SCOPE || props.purpose || '',
+ apn: props.APN || props.apn || '',
  lat: lat,
  lon: lon,
  distance: dist,
- url: props.url_epermits || props.URL || ''
+ url: props.EPERMITS_LINK || props.url_epermits || ''
  };
  }).filter(p =>p !== null);
  

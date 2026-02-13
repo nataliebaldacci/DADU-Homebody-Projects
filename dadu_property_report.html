@@ -674,9 +674,9 @@
  list.innerHTML += `
  <div class="permit-item">
  <div>
- <div class="permit-address">${p.Address || 'Unknown'}</div>
- <div class="permit-details">${p.Contractor || 'Unknown'} • ${p.Building_SqFt ? p.Building_SqFt + ' SF' : '--'}</div></div>
- <div class="permit-cost">${p.Construction_Cost ? '$' + Math.round(p.Construction_Cost).toLocaleString() : '--'}</div></div>
+ <div class="permit-address">${p.STREET || 'Unknown'}</div>
+ <div class="permit-details">${p.CONTRACTOR_BIZ_NAME_ORIGINAL || 'Unknown'} • ${p.BUILDING_SQFT ? p.BUILDING_SQFT + ' SF' : '--'}</div></div>
+ <div class="permit-cost">${p.CONSTRUCTION_COST ? '$' + Math.round(p.CONSTRUCTION_COST).toLocaleString() : '--'}</div></div>
  `;
  });
  }

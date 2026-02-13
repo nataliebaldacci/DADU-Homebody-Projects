@@ -627,10 +627,10 @@
  const p = f.attributes;
  if (f.geometry && f.geometry.x && f.geometry.y) {
  L.circleMarker([f.geometry.y, f.geometry.x], { radius: 7, color: '#7B746D', fillColor: '#7B746D', fillOpacity: 0.7, weight: 2 })
- .bindPopup(`<strong>${p.Address || ''}</strong><br>${p.Contractor || ''}<br>${p.Building_SqFt ? p.Building_SqFt + ' SF' : ''}<br>${p.Construction_Cost ? '$' + Math.round(p.Construction_Cost).toLocaleString() : ''}`)
+ .bindPopup(`<strong>${p.STREET || ''}</strong><br>${p.CONTRACTOR_BIZ_NAME_ORIGINAL || ''}<br>${p.BUILDING_SQFT ? p.BUILDING_SQFT + ' SF' : ''}<br>${p.CONSTRUCTION_COST ? '$' + Math.round(p.CONSTRUCTION_COST).toLocaleString() : ''}`)
  .addTo(nearbyLayer);
  }
- list.innerHTML += `<div class="nearby-item"><div class="nearby-item-address">${p.Address || 'Unknown'}</div><div class="nearby-item-details">${p.Contractor || ''} • ${p.Building_SqFt ? p.Building_SqFt + ' SF' : ''} • ${p.Construction_Cost ? '$' + Math.round(p.Construction_Cost).toLocaleString() : ''}</div></div>`;
+ list.innerHTML += `<div class="nearby-item"><div class="nearby-item-address">${p.STREET || 'Unknown'}</div><div class="nearby-item-details">${p.CONTRACTOR_BIZ_NAME_ORIGINAL || ''} • ${p.BUILDING_SQFT ? p.BUILDING_SQFT + ' SF' : ''} • ${p.CONSTRUCTION_COST ? '$' + Math.round(p.CONSTRUCTION_COST).toLocaleString() : ''}</div></div>`;
  });
  list.innerHTML += `<p style="color:#666;font-size:12px;margin-top:15px;">Found ${data.features.length} permits within 0.5 miles</p>`;
  } else {
