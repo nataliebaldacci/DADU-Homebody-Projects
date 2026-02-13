@@ -138,7 +138,7 @@
             </div>
 
             <!-- ═══ PRICING ═══ -->
-            <a href="${basePath}homebody_pricing.html" class="nav-link">PRICING</a>
+            <a href="${basePath}homebody_dadu_pricing.html" class="nav-link">PRICING</a>
         </div>
 
         <!-- Right-side: Search + CTA -->
