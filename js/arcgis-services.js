@@ -6,8 +6,8 @@
 const ARCGIS_SERVICES = {
     // Vanderbilt hosted services
     eligibility: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0',
-    newPermits: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/NEW_ADU_Permits_20260114/FeatureServer/0',
-    allPermits: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/DADU_All_Permits_Final/FeatureServer/0',
+    newPermits: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/DADU_All_Permits_MERGED_v2_20260213/FeatureServer/0',
+    allPermits: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/DADU_All_Permits_MERGED_v2_20260213/FeatureServer/0',
     buildingSpecs: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Building_Specs_20260119_042856/FeatureServer/0',
     existingDADUs: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Secondary_SFH_Merged_SHP_20251231_0015/FeatureServer/0',
     sfhParcels: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/SFH_parcels/FeatureServer/0',
