@@ -548,6 +548,149 @@
     }
 
     /* ========================================
+       DOCUMENT LIBRARY SECTION
+       ======================================== */
+    .doc-library-section {
+      margin-bottom: 20px;
+    }
+    .doc-library-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(62,74,79,0.08);
+    }
+    .doc-library-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--steel);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .doc-total-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      background: var(--midnight);
+      color: var(--wheat);
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .doc-category {
+      margin-bottom: 14px;
+    }
+    .doc-category-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--steel);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 8px;
+    }
+    .doc-btn-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .doc-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      text-decoration: none;
+      border: 1px solid rgba(62,74,79,0.12);
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--graphite);
+      background: white;
+    }
+    .doc-btn:hover {
+      border-color: var(--wheat);
+      background: var(--linen);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+    }
+    .doc-btn-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+    .doc-btn .doc-btn-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--midnight);
+    }
+    .doc-btn .doc-btn-sub {
+      font-size: 10px;
+      color: var(--steel);
+      font-weight: 400;
+    }
+    .doc-count-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 9px;
+      font-size: 10px;
+      font-weight: 700;
+      color: white;
+      margin-left: 2px;
+    }
+    .assessor-info-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 10px 14px;
+      background: var(--linen);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    .assessor-info-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .assessor-info-label {
+      font-size: 10px;
+      color: var(--steel);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .assessor-info-value {
+      font-weight: 700;
+      color: var(--midnight);
+      font-size: 14px;
+    }
+    .doc-unavailable {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--steel);
+      background: rgba(62,74,79,0.04);
+      border: 1px dashed rgba(62,74,79,0.12);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ========================================
        NO RESULTS
        ======================================== */
     .no-results {
@@ -1272,73 +1415,147 @@ function openDetailModal(objectId) {
     </div>
   </div>`;
 
-  // Document Library from Google Drive
+  // Document Library from Google Drive + Assessor Data
   const docs = getDocsForApn(permit.apn);
   const totalDocs = Object.values(docs).reduce((s, arr) => s + arr.length, 0);
-  if (totalDocs > 0) {
-    const docLabels = {
-      property_cards: 'Property Card',
-      assessor_cards: 'Assessor Card',
-      covenants: 'Restrictive Covenant',
-      permits: 'Permit Document',
-      site_plans: 'Site Plan',
-      other: 'Other Document'
-    };
-    const docColors = {
-      property_cards: '#003039',
-      assessor_cards: '#537188',
-      covenants: '#7A2A1D',
-      permits: '#CBB279',
-      site_plans: '#2E6F4E',
-      other: '#3E4A4F'
-    };
-    const docIcons = {
-      property_cards: 'PC',
-      assessor_cards: 'AC',
-      covenants: 'RC',
-      permits: 'PM',
-      site_plans: 'SP',
-      other: 'DC'
-    };
 
-    body += `<div class="modal-section">
-      <div class="modal-section-title">Castlehold Document Library (${totalDocs} documents)</div>
-      <div class="modal-links-grid">`;
+  body += `<div class="doc-library-section">
+    <div class="doc-library-header">
+      <span class="doc-library-title">Castlehold Document Library</span>
+      <span class="doc-total-badge">📄 ${totalDocs} document${totalDocs !== 1 ? 's' : ''}</span>
+    </div>`;
 
-    ['property_cards', 'assessor_cards', 'covenants', 'permits', 'site_plans', 'other'].forEach(cat => {
-      if (docs[cat] && docs[cat].length > 0) {
-        docs[cat].forEach(d => {
-          // For assessor_cards, show photo/sketch links
-          if (cat === 'assessor_cards') {
-            const photoUrl = d.card2_photo_url || '';
-            const sketchUrl = d.card2_sketch_url || '';
-            const summaryUrl = d.card2_summary_url || d.property_card_url || '';
-            const structType = d.structure_type || 'Secondary Structure';
-            const area = d.finished_area ? d.finished_area + ' SF' : '';
-            body += `<div class="modal-link-card" style="cursor:default;">
-              <div class="doc-badge" style="background:${docColors[cat]}">${docIcons[cat]}</div>
-              <div class="modal-link-info"><h4>Assessor Card 2: ${structType}</h4><p style="font-size:10px;">${area}</p>
-              <div style="display:flex;gap:4px;margin-top:4px;">
-                ${photoUrl ? `<a href="${photoUrl}" target="_blank" style="padding:2px 8px;background:#537188;color:white;border-radius:3px;font-size:9px;text-decoration:none;">Photo</a>` : ''}
-                ${sketchUrl ? `<a href="${sketchUrl}" target="_blank" style="padding:2px 8px;background:#C58B2A;color:white;border-radius:3px;font-size:9px;text-decoration:none;">Sketch</a>` : ''}
-                ${summaryUrl ? `<a href="${summaryUrl}" target="_blank" style="padding:2px 8px;background:#3A5566;color:white;border-radius:3px;font-size:9px;text-decoration:none;">Summary</a>` : ''}
-              </div></div>
-            </div>`;
-            return;
-          }
-          const url = d.gdrive_url || d.download_url || d.docs_url || d.epermits_url || '#';
-          const name = d.filename || d.instrument || d.permit_number || docLabels[cat];
-          const detail = d.rec_date || d.grantor || d.date || (d.status ? d.status.toUpperCase() : '') || '';
-          body += `<a href="${url}" target="_blank" class="modal-link-card">
-            <div class="doc-badge" style="background:${docColors[cat]}">${docIcons[cat]}</div>
-            <div class="modal-link-info"><h4>${docLabels[cat]}</h4><p style="font-size:10px;">${name}${detail ? ' | ' + detail : ''}</p></div>
-          </a>`;
-        });
+  // --- Assessor Card 2 info bar (structure type + finished area) ---
+  if (docs.assessor_cards && docs.assessor_cards.length > 0) {
+    const ac = docs.assessor_cards[0];
+    const structType = ac.structure_type || '';
+    const area = ac.finished_area || '';
+    if (structType || area) {
+      body += `<div class="assessor-info-bar">
+        ${structType ? `<div class="assessor-info-item"><span class="assessor-info-label">Structure Type</span><span class="assessor-info-value">${structType}</span></div>` : ''}
+        ${area ? `<div class="assessor-info-item"><span class="assessor-info-label">Finished Area</span><span class="assessor-info-value">${area} SF</span></div>` : ''}
+      </div>`;
+    }
+  }
+
+  // --- Permit Documents ---
+  body += `<div class="doc-category"><div class="doc-category-label">Permit Documents</div><div class="doc-btn-grid">`;
+  // Site Plan PDF (from permits or site_plans)
+  const sitePlanDocs = (docs.site_plans || []).filter(d => d.gdrive_url);
+  const permitPDFs = (docs.permits || []).filter(d => d.gdrive_url);
+  if (sitePlanDocs.length > 0) {
+    sitePlanDocs.forEach(d => {
+      body += `<a href="${d.gdrive_url}" target="_blank" class="doc-btn">
+        <div class="doc-btn-icon" style="background:#2E6F4E">SP</div>
+        <div><div class="doc-btn-label">Site Plan PDF</div><div class="doc-btn-sub">${d.filename || 'View on Drive'}</div></div>
+      </a>`;
+    });
+  } else {
+    body += `<span class="doc-unavailable">📐 Site Plan: not on file</span>`;
+  }
+  // Permit PDFs from gdrive
+  if (permitPDFs.length > 0) {
+    permitPDFs.forEach(d => {
+      body += `<a href="${d.gdrive_url}" target="_blank" class="doc-btn">
+        <div class="doc-btn-icon" style="background:#CBB279">PM</div>
+        <div><div class="doc-btn-label">Permit PDF</div><div class="doc-btn-sub">${d.permit_number || d.filename || 'View on Drive'}</div></div>
+      </a>`;
+    });
+  }
+  // Always show Nashville docs link
+  body += `<a href="${permit.documentsLink || `https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=${permit.permitNumber}`}" target="_blank" class="doc-btn">
+    <div class="doc-btn-icon" style="background:#537188">DC</div>
+    <div><div class="doc-btn-label">Nashville Permit Docs</div><div class="doc-btn-sub">Official scanned documents</div></div>
+  </a>`;
+  body += `</div></div>`;
+
+  // --- Property Cards ---
+  body += `<div class="doc-category"><div class="doc-category-label">Property Cards</div><div class="doc-btn-grid">`;
+  // Property Card from Google Drive
+  if (docs.property_cards && docs.property_cards.length > 0) {
+    docs.property_cards.forEach(d => {
+      const url = d.gdrive_url || d.download_url || '#';
+      body += `<a href="${url}" target="_blank" class="doc-btn">
+        <div class="doc-btn-icon" style="background:#003039">PC</div>
+        <div><div class="doc-btn-label">Property Card (GDrive)</div><div class="doc-btn-sub">${d.filename || 'View PDF'}</div></div>
+      </a>`;
+    });
+  } else {
+    body += `<span class="doc-unavailable">🏠 Property Card (GDrive): not on file</span>`;
+  }
+  // Property Card from PADCTN Portal
+  if (accountNum) {
+    body += `<a href="https://portal.padctn.org/OFS/WP/Print/${accountNum}" target="_blank" class="doc-btn">
+      <div class="doc-btn-icon" style="background:#003039">PT</div>
+      <div><div class="doc-btn-label">Property Card (Portal)</div><div class="doc-btn-sub">Account #${accountNum}</div></div>
+    </a>`;
+  }
+  body += `</div></div>`;
+
+  // --- Assessor Card 2 ---
+  body += `<div class="doc-category"><div class="doc-category-label">Assessor Card 2 (Secondary Structure)</div><div class="doc-btn-grid">`;
+  if (docs.assessor_cards && docs.assessor_cards.length > 0) {
+    docs.assessor_cards.forEach(ac => {
+      const photoUrl = ac.card2_photo_url || '';
+      const sketchUrl = ac.card2_sketch_url || '';
+      const summaryUrl = ac.card2_summary_url || ac.property_card_url || '';
+      const buildingPrintUrl = ac.card2_buildingprint_url || '';
+      if (photoUrl) {
+        body += `<a href="${photoUrl}" target="_blank" class="doc-btn">
+          <div class="doc-btn-icon" style="background:#537188">📷</div>
+          <div><div class="doc-btn-label">Assessor Card 2 Photo</div><div class="doc-btn-sub">${ac.structure_type || 'Secondary structure'}</div></div>
+        </a>`;
+      }
+      if (sketchUrl) {
+        body += `<a href="${sketchUrl}" target="_blank" class="doc-btn">
+          <div class="doc-btn-icon" style="background:#CBB279">✏️</div>
+          <div><div class="doc-btn-label">Assessor Card 2 Sketch</div><div class="doc-btn-sub">Floor plan sketch</div></div>
+        </a>`;
+      }
+      if (summaryUrl) {
+        body += `<a href="${summaryUrl}" target="_blank" class="doc-btn">
+          <div class="doc-btn-icon" style="background:#3E4A4F">📋</div>
+          <div><div class="doc-btn-label">Assessor Card 2 Summary</div><div class="doc-btn-sub">Property details</div></div>
+        </a>`;
+      }
+      if (buildingPrintUrl) {
+        body += `<a href="${buildingPrintUrl}" target="_blank" class="doc-btn">
+          <div class="doc-btn-icon" style="background:#003039">🏗️</div>
+          <div><div class="doc-btn-label">Building Print</div><div class="doc-btn-sub">Building detail page</div></div>
+        </a>`;
       }
     });
-
-    body += '</div></div>';
+  } else {
+    body += `<span class="doc-unavailable">📋 Assessor Card 2: not on file</span>`;
   }
+  body += `</div></div>`;
+
+  // --- Covenants ---
+  body += `<div class="doc-category"><div class="doc-category-label">Restrictive Covenants</div><div class="doc-btn-grid">`;
+  if (docs.covenants && docs.covenants.length > 0) {
+    docs.covenants.forEach(cov => {
+      const url = cov.gdrive_url || cov.download_url || '#';
+      const instrument = cov.instrument || '';
+      const recDate = cov.rec_date || '';
+      body += `<a href="${url}" target="_blank" class="doc-btn">
+        <div class="doc-btn-icon" style="background:#7A2A1D">⚖️</div>
+        <div>
+          <div class="doc-btn-label">Covenant${instrument ? ': ' + instrument : ''}</div>
+          <div class="doc-btn-sub">${cov.grantor || ''}${recDate ? ' | Recorded ' + recDate : ''}</div>
+        </div>
+      </a>`;
+    });
+    if (docs.covenants.length > 1) {
+      body += `<span class="doc-count-badge" style="background:#7A2A1D">${docs.covenants.length}</span>`;
+    }
+  } else if (permit.hasCovenants) {
+    body += `<span class="doc-unavailable">⚖️ Covenants on file (${permit.covenantCount || '?'}) - PDFs not indexed</span>`;
+  } else {
+    body += `<span class="doc-unavailable">⚖️ No covenants on file</span>`;
+  }
+  body += `</div></div>`;
+
+  body += `</div>`; // close doc-library-section
 
   document.getElementById('modalBody').innerHTML = body;
   modal.classList.add('active');
