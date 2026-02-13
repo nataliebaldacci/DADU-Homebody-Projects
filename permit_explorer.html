@@ -11,7 +11,7 @@
        CASTLEHOLD PALETTE (LOCKED)
        ======================================== */
     :root {
-      --midnight: #003039;
+      --midnight: #3A5566;
       --graphite: #3E4A4F;
       --steel: #537188;
       --wheat: #CBB279;
@@ -1647,7 +1647,7 @@ function openDetailModal(objectId) {
     docs.property_cards.forEach(d => {
       const url = d.gdrive_url || d.download_url || '#';
       body += `<a href="${url}" target="_blank" class="doc-btn">
-        <div class="doc-btn-icon" style="background:#003039">PC</div>
+        <div class="doc-btn-icon" style="background:#3A5566">PC</div>
         <div><div class="doc-btn-label">Property Card (GDrive)</div><div class="doc-btn-sub">${d.filename || 'View PDF'}</div></div>
       </a>`;
     });
@@ -1657,7 +1657,7 @@ function openDetailModal(objectId) {
   // Property Card from PADCTN Portal
   if (accountNum) {
     body += `<a href="https://portal.padctn.org/OFS/WP/Print/${accountNum}" target="_blank" class="doc-btn">
-      <div class="doc-btn-icon" style="background:#003039">PT</div>
+      <div class="doc-btn-icon" style="background:#3A5566">PT</div>
       <div><div class="doc-btn-label">Property Card (Portal)</div><div class="doc-btn-sub">Account #${accountNum}</div></div>
     </a>`;
   }
@@ -1692,7 +1692,7 @@ function openDetailModal(objectId) {
       }
       if (buildingPrintUrl) {
         body += `<a href="${buildingPrintUrl}" target="_blank" class="doc-btn">
-          <div class="doc-btn-icon" style="background:#003039">🏗️</div>
+          <div class="doc-btn-icon" style="background:#3A5566">🏗️</div>
           <div><div class="doc-btn-label">Building Print</div><div class="doc-btn-sub">Building detail page</div></div>
         </a>`;
       }
