@@ -41,7 +41,8 @@
     <div class="nav-container">
         <!-- Logo -->
         <a href="${basePath}index.html" class="nav-logo">
-            <img src="${basePath}assets/castlehold-logo.png" alt="Castlehold - DADU Zoning &amp; Buildability Intelligence" class="nav-logo-img">
+            <img src="${basePath}assets/icons/ADU.png" alt="Homebody Projects" class="nav-logo-img" style="height: 42px; width: auto;">
+            <span class="nav-logo-brand" style="color: #003039; font-weight: 700; font-family: Inter, sans-serif; font-size: 20px; margin-left: 10px;">Homebody Projects</span>
         </a>
 
         <!-- Navigation Links -->
