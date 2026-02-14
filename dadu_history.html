@@ -4,7 +4,7 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Nashville DADU History | Homebody Projects</title>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
  <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,7 +21,7 @@
   /* ========== HERO ========== */
   .history-hero {
    background: #3A5566;
-   padding: 48px 24px 48px;
+   padding: 56px 24px 52px;
    text-align: center;
   }
 
@@ -29,227 +29,386 @@
    font-family: 'Source Serif 4', Georgia, serif;
    font-weight: 700;
    font-style: normal;
-   font-size: 36px;
+   font-size: 40px;
    color: #E1D4BB;
-   margin-bottom: 12px;
+   margin-bottom: 14px;
   }
 
   .history-hero .subtitle {
-   color: #F0EBE1;
-   font-size: 16px;
-   max-width: 680px;
-   margin: 0 auto 24px;
-  }
-
-  .history-hero .hero-badges {
-   display: flex;
-   justify-content: center;
-   gap: 12px;
-   flex-wrap: wrap;
-  }
-
-  .history-hero .badge {
-   display: inline-flex;
-   align-items: center;
-   gap: 6px;
-   background: rgba(255,255,255,0.12);
-   border: 1px solid rgba(225,212,187,0.3);
-   border-radius: 20px;
-   padding: 6px 16px;
-   font-size: 13px;
    color: #E1D4BB;
-   font-weight: 600;
-  }
-
-  .history-hero .badge img {
-   width: 18px;
-   height: 18px;
-  }
-
-  /* ========== INTRO ========== */
-  .intro-section {
-   max-width: 800px;
+   font-size: 17px;
+   max-width: 480px;
    margin: 0 auto;
-   padding: 48px 24px 0;
-  }
-
-  .intro-box {
-   background: #fff;
-   border: 1px solid #E2E2E0;
-   border-radius: 12px;
-   padding: 28px 32px;
-   text-align: center;
-  }
-
-  .intro-box p {
-   font-size: 15px;
-   color: #706F6C;
-   line-height: 1.7;
-  }
-
-  .intro-box .highlight {
-   color: #3A5566;
-   font-weight: 700;
+   opacity: 0.85;
   }
 
   /* ========== TIMELINE ========== */
   .timeline-section {
-   max-width: 860px;
+   max-width: 900px;
    margin: 0 auto;
-   padding: 48px 24px 64px;
+   padding: 64px 24px 48px;
   }
 
-  .timeline-section h2 {
+  .timeline-section-heading {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 30px;
+   color: #3A5566;
+   text-align: center;
+   margin-bottom: 12px;
+  }
+
+  .timeline-section-sub {
+   text-align: center;
+   font-size: 15px;
+   color: #706F6C;
+   max-width: 540px;
+   margin: 0 auto 56px;
+  }
+
+  .timeline {
+   position: relative;
+   padding-left: 80px;
+  }
+
+  /* Gradient timeline line */
+  .timeline::before {
+   content: '';
+   position: absolute;
+   left: 27px;
+   top: 0;
+   bottom: 0;
+   width: 4px;
+   border-radius: 2px;
+   background: linear-gradient(
+    to bottom,
+    #918A83 0%,
+    #918A83 15%,
+    #537188 25%,
+    #496778 45%,
+    #CBB279 65%,
+    #2E6F4E 85%,
+    #2E6F4E 100%
+   );
+  }
+
+  /* Entry */
+  .tl-entry {
+   position: relative;
+   margin-bottom: 0;
+   padding-bottom: 48px;
+  }
+
+  .tl-entry:last-child {
+   padding-bottom: 0;
+  }
+
+  /* Circle on line */
+  .tl-dot {
+   position: absolute;
+   left: -80px;
+   top: 4px;
+   width: 54px;
+   height: 54px;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 2;
+   border: 4px solid #F2F0ED;
+   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .tl-dot svg {
+   width: 22px;
+   height: 22px;
+   fill: #fff;
+  }
+
+  .tl-dot.era-1 { background: #918A83; }
+  .tl-dot.era-2 { background: #537188; }
+  .tl-dot.era-3 { background: #496778; }
+  .tl-dot.era-4 { background: #CBB279; }
+  .tl-dot.era-4 svg { fill: #3A5566; }
+  .tl-dot.era-5 { background: #2E6F4E; width: 62px; height: 62px; top: 0; left: -84px; }
+
+  /* Progress connectors between entries */
+  .tl-progress {
+   position: absolute;
+   left: -55px;
+   bottom: 10px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 5px;
+   z-index: 1;
+  }
+
+  .tl-progress-dot {
+   width: 5px;
+   height: 5px;
+   border-radius: 50%;
+   opacity: 0.5;
+  }
+
+  .tl-progress-dot.grow-1 { width: 4px; height: 4px; }
+  .tl-progress-dot.grow-2 { width: 5px; height: 5px; }
+  .tl-progress-dot.grow-3 { width: 7px; height: 7px; opacity: 0.7; }
+
+  /* Card */
+  .tl-card {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 14px;
+   padding: 28px 30px;
+   border-left: 4px solid #918A83;
+   transition: box-shadow 0.25s, transform 0.25s;
+  }
+
+  .tl-card:hover {
+   box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+   transform: translateY(-3px);
+  }
+
+  .tl-card.border-1 { border-left-color: #918A83; }
+  .tl-card.border-2 { border-left-color: #537188; }
+  .tl-card.border-3 { border-left-color: #496778; }
+  .tl-card.border-4 { border-left-color: #CBB279; }
+
+  .tl-year {
+   font-size: 34px;
+   font-weight: 800;
+   margin-bottom: 4px;
+   line-height: 1;
+  }
+
+  .tl-year.clr-1 { color: #918A83; }
+  .tl-year.clr-2 { color: #537188; }
+  .tl-year.clr-3 { color: #496778; }
+  .tl-year.clr-4 { color: #CBB279; }
+
+  .tl-bill {
+   display: inline-block;
+   font-size: 12px;
+   font-weight: 700;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   margin-bottom: 8px;
+   transition: all 0.2s;
+  }
+
+  .tl-bill.clr-1 { color: #918A83; }
+  .tl-bill.clr-2 { color: #537188; }
+  .tl-bill.clr-3 { color: #496778; }
+  .tl-bill.clr-4 { color: #CBB279; }
+
+  .tl-bill:hover {
+   color: #3A5566;
+   text-decoration: underline;
+  }
+
+  .tl-card h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 18px;
+   color: #3A5566;
+   margin-bottom: 8px;
+  }
+
+  .tl-card .tl-desc {
+   font-size: 14px;
+   color: #706F6C;
+   line-height: 1.65;
+   margin-bottom: 14px;
+  }
+
+  .tl-impact {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   padding: 8px 16px;
+   border-radius: 8px;
+   font-size: 12px;
+   font-weight: 700;
+  }
+
+  .tl-impact.bg-1 { background: rgba(145,138,131,0.1); color: #7B746D; }
+  .tl-impact.bg-2 { background: rgba(83,113,136,0.1); color: #537188; }
+  .tl-impact.bg-3 { background: rgba(73,103,120,0.1); color: #496778; }
+  .tl-impact.bg-4 { background: rgba(203,178,121,0.12); color: #CBB279; }
+
+  .tl-impact svg {
+   width: 14px;
+   height: 14px;
+   flex-shrink: 0;
+  }
+
+  .tl-impact.bg-1 svg { fill: #7B746D; }
+  .tl-impact.bg-2 svg { fill: #537188; }
+  .tl-impact.bg-3 svg { fill: #496778; }
+  .tl-impact.bg-4 svg { fill: #CBB279; }
+
+  /* ===== 2025 HIGHLIGHT ===== */
+  .tl-entry.highlight {
+   padding-bottom: 0;
+  }
+
+  .tl-card.highlight-card {
+   border-left: 5px solid #CBB279;
+   background: #fff;
+   padding: 36px 34px;
+   border-radius: 16px;
+   box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .current-law-badge {
+   display: inline-block;
+   background: rgba(46,111,78,0.12);
+   color: #2E6F4E;
+   font-size: 11px;
+   font-weight: 800;
+   text-transform: uppercase;
+   letter-spacing: 1.5px;
+   padding: 5px 14px;
+   border-radius: 4px;
+   margin-bottom: 12px;
+  }
+
+  .tl-year.clr-5 { color: #2E6F4E; }
+  .tl-bill.clr-5 { color: #2E6F4E; }
+
+  .highlight-stats {
+   display: flex;
+   gap: 16px;
+   margin-top: 20px;
+   flex-wrap: wrap;
+  }
+
+  .highlight-stat {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   padding: 10px 18px;
+   background: #F0EBE1;
+   border-radius: 10px;
+   font-size: 13px;
+   font-weight: 600;
+   color: #3A5566;
+  }
+
+  .highlight-stat .stat-num {
+   font-weight: 800;
+   color: #2E6F4E;
+  }
+
+  .highlight-links {
+   display: flex;
+   gap: 12px;
+   margin-top: 20px;
+   flex-wrap: wrap;
+  }
+
+  .highlight-link {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 10px 20px;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 700;
+   transition: all 0.2s;
+  }
+
+  .highlight-link.primary {
+   background: #CBB279;
+   color: #3A5566;
+  }
+
+  .highlight-link.primary:hover {
+   background: #D4A54E;
+   transform: translateY(-2px);
+  }
+
+  .highlight-link.secondary {
+   background: rgba(46,111,78,0.1);
+   color: #2E6F4E;
+  }
+
+  .highlight-link.secondary:hover {
+   background: rgba(46,111,78,0.18);
+  }
+
+  /* ========== IMPACT STATS ========== */
+  .impact-section {
+   padding: 64px 24px;
+   background: #fff;
+  }
+
+  .impact-heading {
    font-family: 'Source Serif 4', Georgia, serif;
    font-weight: 700;
    font-style: normal;
    font-size: 28px;
    color: #3A5566;
    text-align: center;
-   margin-bottom: 48px;
-  }
-
-  .timeline {
-   position: relative;
-   padding-left: 100px;
-  }
-
-  /* Vertical connecting line */
-  .timeline::before {
-   content: '';
-   position: absolute;
-   left: 40px;
-   top: 20px;
-   bottom: 20px;
-   width: 2px;
-   background: #E2E2E0;
-  }
-
-  .timeline-entry {
-   position: relative;
    margin-bottom: 40px;
   }
 
-  .timeline-entry:last-child {
-   margin-bottom: 0;
+  .impact-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 24px;
+   max-width: 900px;
+   margin: 0 auto;
   }
 
-  /* Year circle on the line */
-  .timeline-year {
-   position: absolute;
-   left: -100px;
-   top: 0;
-   width: 80px;
+  .impact-card {
+   padding: 40px 28px;
+   border-radius: 16px;
    text-align: center;
   }
 
-  .timeline-year-circle {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   width: 40px;
-   height: 40px;
-   border-radius: 50%;
+  .impact-card.card-slate {
    background: #3A5566;
-   color: #fff;
-   font-size: 13px;
+  }
+
+  .impact-card.card-wheat {
+   background: #CBB279;
+  }
+
+  .impact-card.card-green {
+   background: #2E6F4E;
+  }
+
+  .impact-num {
+   font-size: 44px;
    font-weight: 800;
-   margin: 0 auto;
-   position: relative;
-   z-index: 2;
-  }
-
-  .timeline-year-label {
-   display: block;
-   margin-top: 4px;
-   font-size: 20px;
-   font-weight: 800;
-   color: #3A5566;
-  }
-
-  /* Timeline card */
-  .timeline-card {
-   background: #fff;
-   border: 1px solid #E2E2E0;
-   border-radius: 12px;
-   padding: 24px 28px;
-   border-left: 4px solid #496778;
-   transition: box-shadow 0.2s, transform 0.2s;
-  }
-
-  .timeline-card:hover {
-   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-   transform: translateY(-2px);
-  }
-
-  .timeline-card .bill-link {
-   display: inline-block;
-   font-size: 12px;
-   font-weight: 700;
-   color: #496778;
-   text-transform: uppercase;
-   letter-spacing: 1px;
-   margin-bottom: 6px;
-   transition: color 0.2s;
-  }
-
-  .timeline-card .bill-link:hover {
-   color: #3A5566;
-   text-decoration: underline;
-  }
-
-  .timeline-card h3 {
-   font-family: 'Inter', sans-serif;
-   font-weight: 700;
-   font-size: 18px;
-   color: #3A5566;
+   line-height: 1.1;
    margin-bottom: 8px;
   }
 
-  .timeline-card p {
+  .impact-card.card-slate .impact-num { color: #CBB279; }
+  .impact-card.card-wheat .impact-num { color: #3A5566; }
+  .impact-card.card-green .impact-num { color: #fff; }
+
+  .impact-label {
    font-size: 14px;
-   color: #706F6C;
-   line-height: 1.6;
-  }
-
-  /* ===== 2025 HIGHLIGHT CARD ===== */
-  .timeline-entry.highlight .timeline-year-circle {
-   background: #CBB279;
-   color: #3A5566;
-  }
-
-  .timeline-entry.highlight .timeline-card {
-   border-left: 4px solid #CBB279;
-   padding: 32px 32px;
-  }
-
-  .current-law-badge {
-   display: inline-block;
-   background: rgba(203,178,121,0.15);
-   color: #CBB279;
-   font-size: 11px;
-   font-weight: 800;
+   font-weight: 600;
    text-transform: uppercase;
    letter-spacing: 1.5px;
-   padding: 4px 12px;
-   border-radius: 4px;
-   margin-bottom: 10px;
   }
 
-  .timeline-entry.highlight .bill-link {
-   color: #CBB279;
-  }
-
-  .timeline-entry.highlight .bill-link:hover {
-   color: #3A5566;
-  }
+  .impact-card.card-slate .impact-label { color: #E1D4BB; }
+  .impact-card.card-wheat .impact-label { color: #3A5566; }
+  .impact-card.card-green .impact-label { color: rgba(255,255,255,0.85); }
 
   /* ========== CTA ========== */
   .cta-section {
    background: #3A5566;
    padding: 64px 24px;
    text-align: center;
-   margin-top: 0;
   }
 
   .cta-section h2 {
@@ -268,9 +427,16 @@
    margin: 0 auto 28px;
   }
 
+  .cta-buttons {
+   display: flex;
+   justify-content: center;
+   gap: 16px;
+   flex-wrap: wrap;
+  }
+
   .cta-btn {
    display: inline-block;
-   padding: 16px 44px;
+   padding: 16px 40px;
    background: #CBB279;
    color: #3A5566;
    border-radius: 8px;
@@ -283,6 +449,23 @@
   .cta-btn:hover {
    background: #D4A54E;
    transform: translateY(-2px);
+  }
+
+  .cta-btn-secondary {
+   display: inline-block;
+   padding: 16px 40px;
+   background: rgba(255,255,255,0.12);
+   border: 1px solid rgba(225,212,187,0.3);
+   color: #E1D4BB;
+   border-radius: 8px;
+   font-size: 16px;
+   font-weight: 600;
+   font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+  }
+
+  .cta-btn-secondary:hover {
+   background: rgba(255,255,255,0.2);
   }
 
   /* ========== FOOTER ========== */
@@ -302,10 +485,7 @@
    gap: 40px;
   }
 
-  .footer-links {
-   display: flex;
-   gap: 60px;
-  }
+  .footer-links { display: flex; gap: 60px; }
 
   .footer-col {
    display: flex;
@@ -329,10 +509,7 @@
 
   .footer-col a:hover { color: #E1D4BB; }
 
-  .footer-social {
-   display: flex;
-   gap: 12px;
-  }
+  .footer-social { display: flex; gap: 12px; }
 
   .footer-social a {
    display: flex;
@@ -346,12 +523,7 @@
   }
 
   .footer-social a:hover { background: rgba(255,255,255,0.2); }
-
-  .footer-social svg {
-   width: 16px;
-   height: 16px;
-   fill: #E1D4BB;
-  }
+  .footer-social svg { width: 16px; height: 16px; fill: #E1D4BB; }
 
   .footer-bottom {
    max-width: 1100px;
@@ -364,63 +536,53 @@
    color: #918A83;
   }
 
-  .footer-bottom a {
-   color: #918A83;
-   transition: color 0.2s;
-  }
-
-  .footer-bottom a:hover { color: rgba(225, 212, 187, 0.8); }
+  .footer-bottom a { color: #918A83; transition: color 0.2s; }
+  .footer-bottom a:hover { color: rgba(225,212,187,0.8); }
 
   /* ========== RESPONSIVE ========== */
   @media (max-width: 768px) {
-   .history-hero h1 { font-size: 28px; }
-   .history-hero .hero-badges { gap: 8px; }
-   .history-hero .badge { font-size: 12px; padding: 5px 12px; }
+   .history-hero h1 { font-size: 30px; }
+   .history-hero { padding: 40px 20px; }
 
-   .timeline { padding-left: 0; }
+   .timeline { padding-left: 60px; }
    .timeline::before { left: 19px; }
 
-   .timeline-year {
-    position: relative;
-    left: 0;
-    top: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: auto;
-    margin-bottom: 12px;
-    padding-left: 0;
+   .tl-dot {
+    left: -60px;
+    width: 42px;
+    height: 42px;
    }
+   .tl-dot.era-5 { width: 50px; height: 50px; left: -64px; }
+   .tl-dot svg { width: 18px; height: 18px; }
 
-   .timeline-year-circle {
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-   }
+   .tl-progress { left: -41px; }
 
-   .timeline-year-label {
-    display: inline;
-    margin-top: 0;
-   }
+   .tl-year { font-size: 28px; }
+   .tl-card { padding: 22px; }
+   .tl-card.highlight-card { padding: 26px; }
 
-   .timeline-card {
-    margin-left: 52px;
-   }
+   .highlight-stats { flex-direction: column; }
+   .highlight-stat { justify-content: center; }
 
-   .timeline-entry { margin-bottom: 32px; }
+   .impact-grid { grid-template-columns: 1fr; max-width: 400px; }
+   .impact-num { font-size: 36px; }
 
-   .timeline-section h2 { font-size: 24px; }
+   .timeline-section-heading { font-size: 24px; }
+   .impact-heading { font-size: 24px; }
 
    .footer-inner { flex-direction: column; }
    .footer-links { flex-direction: column; gap: 24px; }
    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+
+   .cta-buttons { flex-direction: column; align-items: center; }
   }
 
   @media (max-width: 480px) {
-   .history-hero { padding: 36px 16px; }
-   .history-hero h1 { font-size: 24px; }
-   .intro-box { padding: 20px; }
-   .timeline-card { padding: 20px; margin-left: 48px; }
+   .history-hero h1 { font-size: 26px; }
+   .timeline { padding-left: 50px; }
+   .tl-dot { left: -50px; width: 38px; height: 38px; }
+   .tl-dot.era-5 { width: 44px; height: 44px; left: -53px; }
+   .tl-progress { left: -33px; }
    .cta-section h2 { font-size: 26px; }
   }
  </style>
@@ -432,103 +594,149 @@
 
 <!-- Hero -->
 <section class="history-hero">
- <h1>Nashville DADU History</h1>
- <p class="subtitle">Two decades of legislative progress toward accessible housing. From modest accessory building increases to full by-right construction in the Urban Services District.</p>
- <div class="hero-badges">
-  <span class="badge">
-   <img src="assets/icons/Property Owners.png" alt="">
-   67,000+ Newly Eligible Parcels
-  </span>
-  <span class="badge">
-   <img src="assets/icons/Zoning.png" alt="">
-   177,000+ Total Eligible Parcels
-  </span>
-  <span class="badge">
-   <img src="assets/icons/Recorded Docs.png" alt="">
-   Effective Dec 12, 2025
-  </span>
- </div>
+ <h1>Nashville's DADU Journey</h1>
+ <p class="subtitle">Two decades of expanding housing access</p>
 </section>
-
-<!-- Intro -->
-<div class="intro-section">
- <div class="intro-box">
-  <p>Nashville has gradually expanded accessory dwelling unit permissions over two decades. The <span class="highlight">December 2025 reform</span> represents the most significant change, allowing DADUs by-right in the Urban Services District for the first time.</p>
- </div>
-</div>
 
 <!-- Timeline -->
 <section class="timeline-section">
- <h2>Legislative Timeline</h2>
+ <h2 class="timeline-section-heading">The Path to By-Right Construction</h2>
+ <p class="timeline-section-sub">From a modest size increase in 2005 to full by-right construction in 2025, Nashville has steadily expanded DADU access across five landmark bills.</p>
 
  <div class="timeline">
 
   <!-- 2005 -->
-  <div class="timeline-entry">
-   <div class="timeline-year">
-    <span class="timeline-year-circle">05</span>
-    <span class="timeline-year-label">2005</span>
+  <div class="tl-entry">
+   <div class="tl-dot era-1">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg>
    </div>
-   <div class="timeline-card">
-    <a href="https://legisarchive.nashville.gov/mc/ordinances/term_2003_2007/bl2005_650.htm" target="_blank" class="bill-link">BL2005-650</a>
+   <div class="tl-card border-1">
+    <div class="tl-year clr-1">2005</div>
+    <a href="https://legisarchive.nashville.gov/mc/ordinances/term_2003_2007/bl2005_650.htm" target="_blank" class="tl-bill clr-1">BL2005-650</a>
     <h3>Accessory Building Size Increase</h3>
-    <p>Increased maximum accessory building size from 600 SF to 700 SF, providing slightly more flexibility for detached structures.</p>
+    <p class="tl-desc">Increased maximum accessory building size from 600 SF to 700 SF, providing slightly more flexibility for detached structures.</p>
+    <span class="tl-impact bg-1">
+     <svg viewBox="0 0 24 24"><path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4z"/></svg>
+     Max size: 600 SF to 700 SF
+    </span>
+   </div>
+   <div class="tl-progress">
+    <span class="tl-progress-dot grow-1" style="background:#918A83;"></span>
+    <span class="tl-progress-dot grow-2" style="background:#7B8C96;"></span>
+    <span class="tl-progress-dot grow-3" style="background:#537188;"></span>
    </div>
   </div>
 
   <!-- 2011 -->
-  <div class="timeline-entry">
-   <div class="timeline-year">
-    <span class="timeline-year-circle">11</span>
-    <span class="timeline-year-label">2011</span>
+  <div class="tl-entry">
+   <div class="tl-dot era-2">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-7-2h2v-4h4v-2h-4V7h-2v4H8v2h4z"/></svg>
    </div>
-   <div class="timeline-card">
-    <a href="https://legisarchive.nashville.gov/mc/ordinances/term_2007_2011/bl2011_900.htm" target="_blank" class="bill-link">BL2011-900</a>
+   <div class="tl-card border-2">
+    <div class="tl-year clr-2">2011</div>
+    <a href="https://legisarchive.nashville.gov/mc/ordinances/term_2007_2011/bl2011_900.htm" target="_blank" class="tl-bill clr-2">BL2011-900</a>
     <h3>DADU Definition Created</h3>
-    <p>Added "Detached Accessory Dwelling Unit" as a formal land use category in the zoning code, distinguishing it from other accessory structures.</p>
+    <p class="tl-desc">Added "Detached Accessory Dwelling Unit" as a formal land use category in the zoning code, distinguishing it from other accessory structures.</p>
+    <span class="tl-impact bg-2">
+     <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
+     DADU becomes a formal zoning category
+    </span>
+   </div>
+   <div class="tl-progress">
+    <span class="tl-progress-dot grow-1" style="background:#537188;"></span>
+    <span class="tl-progress-dot grow-2" style="background:#4C6E80;"></span>
+    <span class="tl-progress-dot grow-3" style="background:#496778;"></span>
    </div>
   </div>
 
   <!-- 2017 -->
-  <div class="timeline-entry">
-   <div class="timeline-year">
-    <span class="timeline-year-circle">17</span>
-    <span class="timeline-year-label">2017</span>
+  <div class="tl-entry">
+   <div class="tl-dot era-3">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
    </div>
-   <div class="timeline-card">
-    <a href="https://legisarchive.nashville.gov/mc/ordinances/term_2015_2019/bl2017_608.htm" target="_blank" class="bill-link">BL2017-608</a>
+   <div class="tl-card border-3">
+    <div class="tl-year clr-3">2017</div>
+    <a href="https://legisarchive.nashville.gov/mc/ordinances/term_2015_2019/bl2017_608.htm" target="_blank" class="tl-bill clr-3">BL2017-608</a>
     <h3>Expanded Zoning Districts</h3>
-    <p>Permitted DADUs in additional zoning districts, expanding eligibility beyond the original limited areas.</p>
+    <p class="tl-desc">Permitted DADUs in additional zoning districts, expanding eligibility beyond the original limited areas.</p>
+    <span class="tl-impact bg-3">
+     <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+     Eligibility expanded to new zones
+    </span>
+   </div>
+   <div class="tl-progress">
+    <span class="tl-progress-dot grow-1" style="background:#496778;"></span>
+    <span class="tl-progress-dot grow-2" style="background:#8A9070;"></span>
+    <span class="tl-progress-dot grow-3" style="background:#CBB279;"></span>
    </div>
   </div>
 
   <!-- 2021 -->
-  <div class="timeline-entry">
-   <div class="timeline-year">
-    <span class="timeline-year-circle">21</span>
-    <span class="timeline-year-label">2021</span>
+  <div class="tl-entry">
+   <div class="tl-dot era-4">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
    </div>
-   <div class="timeline-card">
-    <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=4766502&GUID=47267D2D-9439-4CA9-9735-981C6DD80AB0" target="_blank" class="bill-link">BL2021-620</a>
+   <div class="tl-card border-4">
+    <div class="tl-year clr-4">2021</div>
+    <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=4766502&GUID=47267D2D-9439-4CA9-9735-981C6DD80AB0" target="_blank" class="tl-bill clr-4">BL2021-620</a>
     <h3>DADU Overlay District Created</h3>
-    <p>Established the DADU Overlay District, allowing neighborhoods to petition for DADU eligibility through a formal rezoning process.</p>
+    <p class="tl-desc">Established the DADU Overlay District, allowing neighborhoods to petition for DADU eligibility through a formal rezoning process.</p>
+    <span class="tl-impact bg-4">
+     <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+     Neighborhoods can petition for DADU access
+    </span>
+   </div>
+   <div class="tl-progress">
+    <span class="tl-progress-dot grow-1" style="background:#CBB279;"></span>
+    <span class="tl-progress-dot grow-2" style="background:#7DA05C;"></span>
+    <span class="tl-progress-dot grow-3" style="background:#2E6F4E;"></span>
    </div>
   </div>
 
   <!-- 2025 — HIGHLIGHT -->
-  <div class="timeline-entry highlight">
-   <div class="timeline-year">
-    <span class="timeline-year-circle">25</span>
-    <span class="timeline-year-label">2025</span>
+  <div class="tl-entry highlight">
+   <div class="tl-dot era-5">
+    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
    </div>
-   <div class="timeline-card">
+   <div class="tl-card highlight-card">
     <span class="current-law-badge">CURRENT LAW</span>
-    <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" class="bill-link">BL2025-1007</a>
+    <div class="tl-year clr-5">2025</div>
+    <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" class="tl-bill clr-5">BL2025-1007</a>
     <h3>By-Right in Urban Services District</h3>
-    <p>DADUs now permitted by-right in R and RS zones within the Urban Services District. No overlay or special permit required. Effective December 12, 2025.</p>
+    <p class="tl-desc">DADUs now permitted by-right in R and RS zones within the Urban Services District. No overlay or special permit required. Effective December 12, 2025.</p>
+
+    <div class="highlight-stats">
+     <span class="highlight-stat"><span class="stat-num">67,707</span> Newly Eligible Parcels</span>
+     <span class="highlight-stat"><span class="stat-num">R &amp; RS</span> Zones Eligible</span>
+     <span class="highlight-stat"><span class="stat-num">Dec 12, 2025</span> Effective Date</span>
+    </div>
+
+    <div class="highlight-links">
+     <a href="am_i_eligible.html" class="highlight-link primary">Check Your Eligibility</a>
+     <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" class="highlight-link secondary">View Full Legislation</a>
+    </div>
    </div>
   </div>
 
+ </div>
+</section>
+
+<!-- Impact Stats -->
+<section class="impact-section">
+ <h2 class="impact-heading">The Impact of Two Decades</h2>
+ <div class="impact-grid">
+  <div class="impact-card card-slate">
+   <div class="impact-num">67,707</div>
+   <div class="impact-label">Newly Eligible Parcels</div>
+  </div>
+  <div class="impact-card card-wheat">
+   <div class="impact-num">5 Bills</div>
+   <div class="impact-label">Two Decades of Progress</div>
+  </div>
+  <div class="impact-card card-green">
+   <div class="impact-num">Dec 12, 2025</div>
+   <div class="impact-label">By-Right Construction Begins</div>
+  </div>
  </div>
 </section>
 
@@ -536,7 +744,10 @@
 <section class="cta-section">
  <h2>Ready to Check Your Property?</h2>
  <p>Find out if your parcel qualifies under BL2025-1007. Check eligibility in seconds.</p>
- <a href="am_i_eligible.html" class="cta-btn">Check Eligibility Now</a>
+ <div class="cta-buttons">
+  <a href="am_i_eligible.html" class="cta-btn">Check Eligibility Now</a>
+  <a href="dadu_requirements_overview.html" class="cta-btn-secondary">View DADU Requirements</a>
+ </div>
 </section>
 
 <!-- Footer -->
