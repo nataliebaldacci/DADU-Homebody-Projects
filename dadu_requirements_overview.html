@@ -18,17 +18,47 @@
 
   a { text-decoration: none; }
 
+  /* ========== NAV OVERRIDE — seamless dark header ========== */
+  .main-nav {
+   background: #3A5566 !important;
+   border-bottom: none !important;
+  }
+
+  .nav-logo-brand {
+   color: #E1D4BB !important;
+  }
+
+  .nav-link {
+   color: #E1D4BB !important;
+  }
+
+  .nav-link:hover,
+  .nav-link:focus {
+   background: #496778 !important;
+   color: #fff !important;
+  }
+
+  .nav-link[aria-expanded="true"] {
+   background: #496778 !important;
+   color: #CBB279 !important;
+  }
+
+  .nav-search-btn {
+   background: #CBB279 !important;
+   color: #3A5566 !important;
+  }
+
   /* ========== HERO ========== */
   .req-hero {
    background: #3A5566;
-   padding: 56px 24px 48px;
+   padding: 48px 24px 48px;
    text-align: center;
   }
 
   .req-hero h1 {
    font-family: 'Source Serif 4', Georgia, serif;
    font-weight: 700;
-   font-style: italic;
+   font-style: normal;
    font-size: 36px;
    color: #E1D4BB;
    margin-bottom: 12px;
@@ -554,7 +584,7 @@
   .req-cta h2 {
    font-family: 'Source Serif 4', Georgia, serif;
    font-weight: 700;
-   font-style: italic;
+   font-style: normal;
    font-size: 32px;
    color: #E1D4BB;
    margin-bottom: 12px;
