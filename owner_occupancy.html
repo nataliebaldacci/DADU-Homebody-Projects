@@ -3,732 +3,1112 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Owner Occupancy Explained - Castlehold</title>
+ <title>Owner Occupancy Requirements | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
  <style>
- * {
- margin: 0;
- padding: 0;
- box-sizing: border-box;
- }
-
- body {
- font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
- background-color: #F2F0ED;
- color: #333333;
- line-height: 1.6;
- }
-
- .container {
- max-width: 900px;
- margin: 0 auto;
- padding: 30px 25px;
- }
-
- /* Page Title */
- .page-title {
- text-align: center;
- margin-bottom: 8px;
- }
-
- .page-title h1 {
- font-size: 28px;
- font-weight: 700;
- color: #3A5566;
- text-transform: uppercase;
- letter-spacing: 2px;
- }
-
- .page-subtitle {
- text-align: center;
- font-size: 14px;
- color: #7B746D;
- font-weight: 600;
- margin-bottom: 25px;
- }
-
- .divider {
- width: 80px;
- height: 3px;
- background-color: #7B746D;
- margin: 15px auto 25px;
- }
-
- /* Key Rule Box */
- .key-rule {
- background-color: #3A5566;
- border-radius: 8px;
- padding: 25px;
- margin-bottom: 30px;
- text-align: center;
- }
-
- .key-rule-icon {
- width: 50px;
- height: 50px;
- background-color: #7B746D;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- margin: 0 auto 15px;
- }
-
- .key-rule-icon svg {
- width: 26px;
- height: 26px;
- fill: white;
- }
-
- .key-rule h2 {
- font-size: 18px;
- font-weight: 700;
- color: white;
- margin-bottom: 10px;
- }
-
- .key-rule p {
- font-size: 14px;
- color: rgba(255,255,255,0.9);
- max-width: 600px;
- margin: 0 auto;
- }
-
- .key-rule .highlight {
- color: #7B746D;
- font-weight: 600;
- }
-
- /* Scenarios Section */
- .scenarios-title {
- font-size: 14px;
- font-weight: 700;
- color: #3A5566;
- text-transform: uppercase;
- letter-spacing: 1px;
- text-align: center;
- margin-bottom: 20px;
- }
-
- .scenarios {
- display: flex;
- flex-direction: column;
- gap: 15px;
- margin-bottom: 30px;
- }
-
- .scenario {
- background-color: #F0EBE1;
- border-radius: 8px;
- padding: 20px;
- display: flex;
- align-items: center;
- gap: 20px;
- border-left: 5px solid;
- }
-
- .scenario.allowed {
- border-left-color: #CBB279;
- }
-
- .scenario.not-allowed {
- border-left-color: #c0392b;
- background-color: #fdf5f5;
- }
-
- .scenario-status {
- flex-shrink: 0;
- text-align: center;
- }
-
- .status-icon {
- width: 50px;
- height: 50px;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- margin-bottom: 5px;
- }
-
- .scenario.allowed .status-icon {
- background-color: #CBB279;
- }
-
- .scenario.not-allowed .status-icon {
- background-color: #c0392b;
- }
-
- .status-icon svg {
- width: 28px;
- height: 28px;
- fill: white;
- }
-
- .status-label {
- font-size: 10px;
- font-weight: 700;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- }
-
- .scenario.allowed .status-label {
- color: #CBB279;
- }
-
- .scenario.not-allowed .status-label {
- color: #c0392b;
- }
-
- .scenario-visual {
- display: flex;
- align-items: flex-end;
- gap: 15px;
- flex-shrink: 0;
- }
-
- /* House illustrations */
- .house {
- text-align: center;
- }
-
- .house-structure {
- position: relative;
- margin-bottom: 8px;
- }
-
- .house-body {
- background-color: #e6dfd3;
- border: 2px solid #c9c0b3;
- border-radius: 3px;
- }
-
- .house-body.main {
- width: 70px;
- height: 50px;
- }
-
- .house-body.dadu {
- width: 50px;
- height: 35px;
- }
-
- .house-roof {
- position: absolute;
- top: -15px;
- left: 50%;
- transform: translateX(-50%);
- width: 0;
- height: 0;
- border-left: 40px solid transparent;
- border-right: 40px solid transparent;
- border-bottom: 15px solid #a67c52;
- }
-
- .house-body.dadu + .house-roof,
- .house-roof.small {
- border-left: 30px solid transparent;
- border-right: 30px solid transparent;
- border-bottom: 12px solid #a67c52;
- top: -12px;
- }
-
- .house-door {
- position: absolute;
- bottom: 0;
- left: 50%;
- transform: translateX(-50%);
- width: 12px;
- height: 18px;
- background-color: #3d6b6e;
- border-radius: 2px 2px 0 0;
- }
-
- .house-door.small {
- width: 10px;
- height: 14px;
- }
-
- .house-label {
- font-size: 9px;
- font-weight: 700;
- color: #666666;
- text-transform: uppercase;
- }
-
- .occupant {
- position: absolute;
- bottom: 5px;
- right: 5px;
- width: 20px;
- height: 20px;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- }
-
- .occupant.owner {
- background-color: #CBB279;
- }
-
- .occupant.tenant {
- background-color: #7B746D;
- }
-
- .occupant.offsite {
- background-color: #c0392b;
- }
-
- .occupant svg {
- width: 12px;
- height: 12px;
- fill: white;
- }
-
- .scenario-info {
- flex: 1;
- }
-
- .scenario-title {
- font-size: 14px;
- font-weight: 700;
- color: #3A5566;
- margin-bottom: 5px;
- }
-
- .scenario-desc {
- font-size: 12px;
- color: #666666;
- line-height: 1.5;
- }
-
- /* Legend */
- .legend {
- display: flex;
- justify-content: center;
- gap: 25px;
- margin-bottom: 25px;
- }
-
- .legend-item {
- display: flex;
- align-items: center;
- gap: 8px;
- }
-
- .legend-dot {
- width: 16px;
- height: 16px;
- border-radius: 50%;
- }
-
- .legend-dot.owner { background-color: #CBB279; }
- .legend-dot.tenant { background-color: #7B746D; }
-
- .legend-label {
- font-size: 11px;
- color: #666666;
- font-weight: 600;
- }
-
- /* Why Section */
- .why-section {
- background-color: #F0EBE1;
- border-radius: 8px;
- padding: 25px;
- margin-bottom: 25px;
- }
-
- .why-section h3 {
- font-size: 14px;
- font-weight: 700;
- color: #3A5566;
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 15px;
- text-align: center;
- }
-
- .why-grid {
- display: grid;
- grid-template-columns: repeat(3, 1fr);
- gap: 15px;
- }
-
- .why-item {
- text-align: center;
- padding: 15px;
- background-color: white;
- border-radius: 6px;
- }
-
- .why-icon {
- width: 40px;
- height: 40px;
- background-color: #7B746D;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- margin: 0 auto 10px;
- }
-
- .why-icon svg {
- width: 20px;
- height: 20px;
- fill: white;
- }
-
- .why-item h4 {
- font-size: 12px;
- font-weight: 700;
- color: #3A5566;
- margin-bottom: 5px;
- }
-
- .why-item p {
- font-size: 11px;
- color: #666666;
- line-height: 1.4;
- }
-
- /* Covenant Note */
- .covenant-note {
- background-color: #CBB279;
- border-radius: 8px;
- padding: 20px 25px;
- display: flex;
- align-items: center;
- gap: 15px;
- }
-
- /* Short-Term Rental Section */
- .str-section {
- background-color: #F0EBE1;
- border-radius: 8px;
- margin-bottom: 20px;
- overflow: hidden;
- }
-
- .str-header {
- background-color: #7B746D;
- padding: 15px 20px;
- display: flex;
- align-items: center;
- gap: 12px;
- }
-
- .str-header h3 {
- font-size: 14px;
- font-weight: 700;
- color: white;
- text-transform: uppercase;
- letter-spacing: 1px;
- }
-
- .str-icon {
- width: 30px;
- height: 30px;
- background-color: rgba(255,255,255,0.2);
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- }
-
- .str-icon svg {
- width: 16px;
- height: 16px;
- fill: white;
- }
-
- .str-content {
- padding: 20px;
- }
-
- .str-warning {
- background-color: #fdf5f5;
- border-left: 4px solid #c0392b;
- padding: 12px 15px;
- margin-bottom: 15px;
- font-size: 13px;
- color: #333333;
- }
-
- .str-warning .not-allowed-text {
- color: #c0392b;
- font-weight: 700;
- }
-
- .str-grid {
- display: grid;
- grid-template-columns: repeat(2, 1fr);
- gap: 15px;
- margin-bottom: 15px;
- }
-
- .str-card {
- background-color: white;
- border-radius: 6px;
- padding: 15px;
- }
-
- .str-card h4 {
- font-size: 12px;
- font-weight: 700;
- color: #3A5566;
- margin-bottom: 8px;
- }
-
- .str-card p {
- font-size: 11px;
- color: #666666;
- line-height: 1.5;
- margin-bottom: 10px;
- }
-
- .str-card a {
- font-size: 11px;
- color: #7B746D;
- text-decoration: none;
- font-weight: 600;
- }
-
- .str-footer {
- text-align: center;
- padding-top: 10px;
- border-top: 1px dashed #d0ccc7;
- }
-
- .str-footer a {
- font-size: 12px;
- color: #7B746D;
- text-decoration: none;
- font-weight: 600;
- }
-
- .covenant-icon {
- width: 45px;
- height: 45px;
- background-color: rgba(255,255,255,0.2);
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- flex-shrink: 0;
- }
-
- .covenant-icon svg {
- width: 22px;
- height: 22px;
- fill: white;
- }
-
- .covenant-text h4 {
- font-size: 13px;
- font-weight: 700;
- color: white;
- margin-bottom: 5px;
- }
-
- .covenant-text p {
- font-size: 12px;
- color: rgba(255,255,255,0.9);
- line-height: 1.5;
- }
-
- .covenant-text a {
- color: white;
- font-weight: 600;
- }
-
- /* Footer */
- .footer {
- text-align: center;
- margin-top: 25px;
- padding-top: 15px;
- border-top: 1px dashed #666666;
- }
-
- .footer p {
- font-size: 11px;
- color: #888888;
- }
-
- .footer a {
- color: #7B746D;
- text-decoration: none;
- }
-
- .brand {
- font-weight: 700;
- color: #7B746D;
- letter-spacing: 1px;
- }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
-<body>
-<!-- Shared Header - Castlehold -->
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+   font-family: 'Inter', sans-serif;
+   background: #F2F0ED;
+   color: #333;
+   line-height: 1.6;
+  }
+
+  a { text-decoration: none; color: #3A5566; }
+
+  /* ========== HERO ========== */
+  .oo-hero {
+   background: #3A5566;
+   padding: 48px 24px;
+   text-align: center;
+  }
+
+  .oo-hero h1 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 36px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
+
+  .oo-hero .subtitle {
+   color: #F0EBE1;
+   font-size: 16px;
+   max-width: 640px;
+   margin: 0 auto 24px;
+  }
+
+  .oo-hero .hero-badges {
+   display: flex;
+   justify-content: center;
+   gap: 12px;
+   flex-wrap: wrap;
+  }
+
+  .oo-hero .badge {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   background: rgba(255,255,255,0.12);
+   border: 1px solid rgba(225,212,187,0.3);
+   border-radius: 20px;
+   padding: 6px 16px;
+   font-size: 13px;
+   color: #E1D4BB;
+   font-weight: 600;
+  }
+
+  .oo-hero .badge img {
+   width: 18px;
+   height: 18px;
+  }
+
+  /* ========== KEY RULE BOX ========== */
+  .core-rule {
+   max-width: 860px;
+   margin: 0 auto;
+   padding: 48px 24px 0;
+  }
+
+  .core-rule-box {
+   background: #3A5566;
+   border-radius: 12px;
+   padding: 28px 32px;
+   text-align: center;
+  }
+
+  .core-rule-box h2 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 18px;
+   color: #E1D4BB;
+   margin-bottom: 10px;
+  }
+
+  .core-rule-box p {
+   font-size: 15px;
+   color: #F0EBE1;
+   line-height: 1.7;
+   max-width: 620px;
+   margin: 0 auto;
+  }
+
+  .core-rule-box .hl {
+   color: #CBB279;
+   font-weight: 700;
+  }
+
+  /* ========== SECTION CONTAINER ========== */
+  .section-container {
+   max-width: 860px;
+   margin: 0 auto;
+   padding: 48px 24px 0;
+  }
+
+  .section-heading {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 28px;
+   color: #3A5566;
+   text-align: center;
+   margin-bottom: 32px;
+  }
+
+  /* ========== LEGEND ========== */
+  .legend {
+   display: flex;
+   justify-content: center;
+   gap: 25px;
+   margin-bottom: 24px;
+  }
+
+  .legend-item {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+  }
+
+  .legend-dot {
+   width: 16px;
+   height: 16px;
+   border-radius: 50%;
+  }
+
+  .legend-dot.owner { background: #CBB279; }
+  .legend-dot.tenant { background: #7B746D; }
+
+  .legend-label {
+   font-size: 12px;
+   color: #706F6C;
+   font-weight: 600;
+  }
+
+  /* ========== SCENARIOS ========== */
+  .scenarios {
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+  }
+
+  .scenario {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   padding: 24px;
+   display: flex;
+   align-items: center;
+   gap: 20px;
+   border-left: 5px solid;
+  }
+
+  .scenario.allowed {
+   border-left-color: #2E6F4E;
+  }
+
+  .scenario.not-allowed {
+   border-left-color: #7A2A1D;
+   background: #fff;
+  }
+
+  .scenario-status {
+   flex-shrink: 0;
+   text-align: center;
+  }
+
+  .status-icon {
+   width: 48px;
+   height: 48px;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin-bottom: 6px;
+  }
+
+  .scenario.allowed .status-icon {
+   background: #2E6F4E;
+  }
+
+  .scenario.not-allowed .status-icon {
+   background: #7A2A1D;
+  }
+
+  .status-icon svg {
+   width: 24px;
+   height: 24px;
+   fill: white;
+  }
+
+  .status-label {
+   font-size: 11px;
+   font-weight: 700;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+  }
+
+  .scenario.allowed .status-label {
+   color: #2E6F4E;
+  }
+
+  .scenario.not-allowed .status-label {
+   color: #7A2A1D;
+  }
+
+  .scenario-visual {
+   display: flex;
+   align-items: flex-end;
+   gap: 14px;
+   flex-shrink: 0;
+  }
+
+  .house {
+   text-align: center;
+  }
+
+  .house-structure {
+   position: relative;
+   margin-bottom: 8px;
+  }
+
+  .house-body {
+   background: #F0EBE1;
+   border: 2px solid #E2E2E0;
+   border-radius: 3px;
+  }
+
+  .house-body.main {
+   width: 70px;
+   height: 50px;
+  }
+
+  .house-body.dadu {
+   width: 50px;
+   height: 35px;
+  }
+
+  .house-roof {
+   position: absolute;
+   top: -15px;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 0;
+   height: 0;
+   border-left: 40px solid transparent;
+   border-right: 40px solid transparent;
+   border-bottom: 15px solid #918A83;
+  }
+
+  .house-roof.small {
+   border-left: 30px solid transparent;
+   border-right: 30px solid transparent;
+   border-bottom: 12px solid #918A83;
+   top: -12px;
+  }
+
+  .house-door {
+   position: absolute;
+   bottom: 0;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 12px;
+   height: 18px;
+   background: #3A5566;
+   border-radius: 2px 2px 0 0;
+  }
+
+  .house-door.small {
+   width: 10px;
+   height: 14px;
+  }
+
+  .house-label {
+   font-size: 10px;
+   font-weight: 700;
+   color: #706F6C;
+   text-transform: uppercase;
+  }
+
+  .occupant {
+   position: absolute;
+   bottom: 5px;
+   right: 5px;
+   width: 20px;
+   height: 20px;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+  }
+
+  .occupant.owner { background: #CBB279; }
+  .occupant.tenant { background: #7B746D; }
+
+  .occupant svg {
+   width: 12px;
+   height: 12px;
+   fill: white;
+  }
+
+  .scenario-info {
+   flex: 1;
+  }
+
+  .scenario-title {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 15px;
+   color: #3A5566;
+   margin-bottom: 6px;
+  }
+
+  .scenario-desc {
+   font-size: 13px;
+   color: #706F6C;
+   line-height: 1.6;
+  }
+
+  /* ========== WHY SECTION ========== */
+  .why-section {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   padding: 32px;
+  }
+
+  .why-section h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 18px;
+   color: #3A5566;
+   text-align: center;
+   margin-bottom: 24px;
+  }
+
+  .why-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 20px;
+  }
+
+  .why-item {
+   text-align: center;
+   padding: 20px;
+   background: #F0EBE1;
+   border-radius: 8px;
+  }
+
+  .why-icon {
+   width: 44px;
+   height: 44px;
+   background: #3A5566;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 0 auto 12px;
+  }
+
+  .why-icon svg {
+   width: 22px;
+   height: 22px;
+   fill: white;
+  }
+
+  .why-item h4 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 14px;
+   color: #3A5566;
+   margin-bottom: 6px;
+  }
+
+  .why-item p {
+   font-size: 13px;
+   color: #706F6C;
+   line-height: 1.5;
+  }
+
+  /* ========== COVENANT BOX ========== */
+  .covenant-box {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-left: 4px solid #D4A017;
+   border-radius: 12px;
+   padding: 24px 28px;
+   display: flex;
+   align-items: flex-start;
+   gap: 16px;
+  }
+
+  .covenant-icon-circle {
+   width: 48px;
+   height: 48px;
+   background: #F0EBE1;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+  }
+
+  .covenant-icon-circle img {
+   width: 24px;
+   height: 24px;
+  }
+
+  .covenant-text h4 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 16px;
+   color: #3A5566;
+   margin-bottom: 6px;
+  }
+
+  .covenant-text p {
+   font-size: 14px;
+   color: #706F6C;
+   line-height: 1.6;
+  }
+
+  .covenant-text a {
+   color: #3A5566;
+   font-weight: 700;
+  }
+
+  /* ========== STR SECTION ========== */
+  .str-box {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   overflow: hidden;
+  }
+
+  .str-box-header {
+   background: #496778;
+   padding: 20px 28px;
+   display: flex;
+   align-items: center;
+   gap: 14px;
+  }
+
+  .str-box-header-icon {
+   width: 36px;
+   height: 36px;
+   background: rgba(255,255,255,0.15);
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+  }
+
+  .str-box-header-icon img {
+   width: 20px;
+   height: 20px;
+  }
+
+  .str-box-header h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 16px;
+   color: #fff;
+  }
+
+  .str-box-body {
+   padding: 28px;
+  }
+
+  .str-warning-box {
+   background: rgba(122,42,29,0.06);
+   border-left: 4px solid #7A2A1D;
+   padding: 14px 18px;
+   margin-bottom: 20px;
+   font-size: 14px;
+   color: #333;
+   border-radius: 0 8px 8px 0;
+  }
+
+  .str-warning-box .not-allowed-text {
+   color: #7A2A1D;
+   font-weight: 700;
+  }
+
+  .str-cards {
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+   gap: 16px;
+   margin-bottom: 20px;
+  }
+
+  .str-info-card {
+   background: #F0EBE1;
+   border-radius: 8px;
+   padding: 18px;
+  }
+
+  .str-info-card h4 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 14px;
+   color: #3A5566;
+   margin-bottom: 8px;
+  }
+
+  .str-info-card p {
+   font-size: 13px;
+   color: #706F6C;
+   line-height: 1.6;
+   margin-bottom: 10px;
+  }
+
+  .str-info-card a {
+   font-size: 13px;
+   color: #3A5566;
+   font-weight: 700;
+  }
+
+  .str-box-footer {
+   text-align: center;
+   padding-top: 12px;
+   border-top: 1px solid #E2E2E0;
+  }
+
+  .str-box-footer a {
+   font-size: 14px;
+   color: #3A5566;
+   font-weight: 700;
+  }
+
+  /* ========== LEGAL CITATION ========== */
+  .legal-box {
+   background: #3A5566;
+   border-radius: 12px;
+   padding: 28px 32px;
+  }
+
+  .legal-box h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 13px;
+   color: #CBB279;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   margin-bottom: 12px;
+  }
+
+  .legal-box blockquote {
+   font-size: 14px;
+   color: rgba(255,255,255,0.85);
+   font-style: italic;
+   line-height: 1.7;
+   margin-bottom: 8px;
+   padding-left: 16px;
+   border-left: 3px solid rgba(255,255,255,0.3);
+  }
+
+  .legal-box .cite {
+   font-size: 13px;
+   color: #CBB279;
+   font-style: normal;
+   font-weight: 600;
+  }
+
+  /* ========== LINKS ========== */
+  .links-section {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 12px;
+   justify-content: center;
+  }
+
+  .link-pill {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 10px 20px;
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 600;
+   color: #3A5566;
+   transition: all 0.2s;
+  }
+
+  .link-pill:hover {
+   background: #F0EBE1;
+   border-color: #CBB279;
+  }
+
+  .link-pill img {
+   width: 20px;
+   height: 20px;
+  }
+
+  /* ========== CTA ========== */
+  .cta-section {
+   background: #3A5566;
+   padding: 64px 24px;
+   text-align: center;
+  }
+
+  .cta-section h2 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 32px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
+
+  .cta-section p {
+   color: #F0EBE1;
+   font-size: 15px;
+   max-width: 520px;
+   margin: 0 auto 28px;
+  }
+
+  .cta-btns {
+   display: flex;
+   justify-content: center;
+   gap: 16px;
+   flex-wrap: wrap;
+  }
+
+  .cta-btn {
+   display: inline-block;
+   padding: 16px 44px;
+   background: #CBB279;
+   color: #3A5566;
+   border-radius: 8px;
+   font-size: 16px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+  }
+
+  .cta-btn:hover {
+   background: #D4A54E;
+   transform: translateY(-2px);
+  }
+
+  .cta-btn-outline {
+   display: inline-block;
+   padding: 16px 44px;
+   background: transparent;
+   color: #E1D4BB;
+   border: 2px solid rgba(225,212,187,0.4);
+   border-radius: 8px;
+   font-size: 16px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+  }
+
+  .cta-btn-outline:hover {
+   border-color: #E1D4BB;
+   background: rgba(255,255,255,0.05);
+  }
+
+  /* ========== FOOTER ========== */
+  .page-footer {
+   background: #3A5566;
+   border-top: 1px solid #496778;
+   padding: 48px 24px 24px;
+   color: #E1D4BB;
+  }
+
+  .footer-inner {
+   max-width: 1100px;
+   margin: 0 auto;
+   display: flex;
+   justify-content: space-between;
+   align-items: flex-start;
+   gap: 40px;
+  }
+
+  .footer-links {
+   display: flex;
+   gap: 60px;
+  }
+
+  .footer-col {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+  }
+
+  .footer-col h4 {
+   font-size: 14px;
+   font-weight: 700;
+   color: #E1D4BB;
+   margin-bottom: 4px;
+   font-family: 'Inter', sans-serif;
+  }
+
+  .footer-col a {
+   font-size: 13px;
+   color: #918A83;
+   transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: #E1D4BB; }
+
+  .footer-social {
+   display: flex;
+   gap: 12px;
+  }
+
+  .footer-social a {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 36px;
+   height: 36px;
+   border-radius: 50%;
+   background: rgba(255,255,255,0.1);
+   transition: background 0.2s;
+  }
+
+  .footer-social a:hover { background: rgba(255,255,255,0.2); }
+
+  .footer-social svg {
+   width: 16px;
+   height: 16px;
+   fill: #E1D4BB;
+  }
+
+  .footer-bottom {
+   max-width: 1100px;
+   margin: 32px auto 0;
+   padding-top: 20px;
+   border-top: 1px solid rgba(255,255,255,0.1);
+   display: flex;
+   justify-content: space-between;
+   font-size: 12px;
+   color: #918A83;
+  }
+
+  .footer-bottom a {
+   color: #918A83;
+   transition: color 0.2s;
+  }
+
+  .footer-bottom a:hover { color: rgba(225, 212, 187, 0.8); }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+   .oo-hero h1 { font-size: 28px; }
+   .oo-hero .hero-badges { gap: 8px; }
+   .oo-hero .badge { font-size: 12px; padding: 5px 12px; }
+   .section-heading { font-size: 24px; }
+   .why-grid { grid-template-columns: 1fr; }
+   .str-cards { grid-template-columns: 1fr; }
+   .scenario { flex-direction: column; text-align: center; }
+   .scenario-visual { justify-content: center; }
+   .links-section { flex-direction: column; align-items: center; }
+   .footer-inner { flex-direction: column; }
+   .footer-links { flex-direction: column; gap: 24px; }
+   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+   .covenant-box { flex-direction: column; }
+   .cta-btns { flex-direction: column; align-items: center; }
+  }
+
+  @media (max-width: 480px) {
+   .oo-hero { padding: 36px 16px; }
+   .oo-hero h1 { font-size: 24px; }
+   .core-rule-box { padding: 20px; }
+   .cta-section h2 { font-size: 26px; }
+  }
+ </style>
+</head>
+<body class="dark-nav">
+
+<!-- Shared Header -->
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
-<div class="container">
- <!-- Page Title -->
- <div class="page-title">
- <h1>Owner Occupancy Explained</h1></div>
- <p class="page-subtitle">Understanding the Residency Requirement</p>
- <div class="divider"></div>
+<!-- Hero -->
+<section class="oo-hero">
+ <h1>Owner Occupancy Requirements</h1>
+ <p class="subtitle">Understanding the residency requirement for Nashville DADUs</p>
+ <div class="hero-badges">
+  <span class="badge">
+   <img src="assets/icons/Owner_Occupancy.png" alt="">
+   Owner Must Live On-Site
+  </span>
+  <span class="badge">
+   <img src="assets/icons/Legal.png" alt="">
+   BL2025-1007
+  </span>
+  <span class="badge">
+   <img src="assets/icons/Restrictive_Covenants.png" alt="">
+   Restrictive Covenant Required
+  </span>
+ </div>
+</section>
 
- <!-- Key Rule -->
- <div class="key-rule">
- <div class="key-rule-icon">
- <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></div>
- <h2>The Owner Must Live On-Site</h2>
- <p>Nashville requires the property owner to reside in <span class="highlight">either the main house OR the DADU</span>. You cannot rent out both units while living elsewhere.</p></div>
+<!-- Key Rule -->
+<div class="core-rule">
+ <div class="core-rule-box">
+  <h2>The Owner Must Live On-Site</h2>
+  <p>Nashville requires the property owner to reside in <span class="hl">either the main house OR the DADU</span>. You cannot rent out both units while living elsewhere.</p>
+ </div>
+</div>
 
- <!-- Legend -->
+<!-- Scenarios -->
+<div class="section-container">
+ <h2 class="section-heading">Allowed vs. Not Allowed Scenarios</h2>
+
  <div class="legend">
- <div class="legend-item">
- <div class="legend-dot owner"></div>
- <span class="legend-label">Owner</span></div>
- <div class="legend-item">
- <div class="legend-dot tenant"></div>
- <span class="legend-label">Tenant</span></div></div>
+  <div class="legend-item">
+   <div class="legend-dot owner"></div>
+   <span class="legend-label">Owner</span>
+  </div>
+  <div class="legend-item">
+   <div class="legend-dot tenant"></div>
+   <span class="legend-label">Tenant</span>
+  </div>
+ </div>
 
- <!-- Scenarios -->
- <p class="scenarios-title">Allowed vs. Not Allowed Scenarios</p>
  <div class="scenarios">
- <!-- Scenario 1: Owner in Main, Tenant in DADU -->
- <div class="scenario allowed">
- <div class="scenario-status">
- <div class="status-icon">
- <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
- <span class="status-label">Allowed</span></div>
- <div class="scenario-visual">
- <div class="house">
- <div class="house-structure">
- <div class="house-body main">
- <div class="house-door"></div>
- <div class="occupant owner">
- <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div></div>
- <div class="house-roof"></div></div>
- <span class="house-label">Main House</span></div>
- <div class="house">
- <div class="house-structure">
- <div class="house-body dadu">
- <div class="house-door small"></div>
- <div class="occupant tenant">
- <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div></div>
- <div class="house-roof small"></div></div>
- <span class="house-label">DADU</span></div></div>
- <div class="scenario-info">
- <div class="scenario-title">Owner in Main House, Rent Out DADU</div>
- <div class="scenario-desc">The most common arrangement. Live in your primary residence and generate rental income from your DADU.</div></div></div>
+  <!-- Scenario 1: Owner in Main, Tenant in DADU -->
+  <div class="scenario allowed">
+   <div class="scenario-status">
+    <div class="status-icon">
+     <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+    </div>
+    <span class="status-label">Allowed</span>
+   </div>
+   <div class="scenario-visual">
+    <div class="house">
+     <div class="house-structure">
+      <div class="house-body main">
+       <div class="house-door"></div>
+       <div class="occupant owner"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+      </div>
+      <div class="house-roof"></div>
+     </div>
+     <span class="house-label">Main House</span>
+    </div>
+    <div class="house">
+     <div class="house-structure">
+      <div class="house-body dadu">
+       <div class="house-door small"></div>
+       <div class="occupant tenant"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+      </div>
+      <div class="house-roof small"></div>
+     </div>
+     <span class="house-label">DADU</span>
+    </div>
+   </div>
+   <div class="scenario-info">
+    <div class="scenario-title">Owner in Main House, Rent Out DADU</div>
+    <div class="scenario-desc">The most common arrangement. Live in your primary residence and generate rental income from your DADU.</div>
+   </div>
+  </div>
 
- <!-- Scenario 2: Owner in DADU, Tenant in Main -->
- <div class="scenario allowed">
- <div class="scenario-status">
- <div class="status-icon">
- <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
- <span class="status-label">Allowed</span></div>
- <div class="scenario-visual">
- <div class="house">
- <div class="house-structure">
- <div class="house-body main">
- <div class="house-door"></div>
- <div class="occupant tenant">
- <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div></div>
- <div class="house-roof"></div></div>
- <span class="house-label">Main House</span></div>
- <div class="house">
- <div class="house-structure">
- <div class="house-body dadu">
- <div class="house-door small"></div>
- <div class="occupant owner">
- <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div></div>
- <div class="house-roof small"></div></div>
- <span class="house-label">DADU</span></div></div>
- <div class="scenario-info">
- <div class="scenario-title">Owner in DADU, Rent Out Main House</div>
- <div class="scenario-desc">Downsize to the DADU and rent out your larger main house for higher rental income. Great for empty nesters.</div></div></div>
+  <!-- Scenario 2: Owner in DADU, Tenant in Main -->
+  <div class="scenario allowed">
+   <div class="scenario-status">
+    <div class="status-icon">
+     <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+    </div>
+    <span class="status-label">Allowed</span>
+   </div>
+   <div class="scenario-visual">
+    <div class="house">
+     <div class="house-structure">
+      <div class="house-body main">
+       <div class="house-door"></div>
+       <div class="occupant tenant"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+      </div>
+      <div class="house-roof"></div>
+     </div>
+     <span class="house-label">Main House</span>
+    </div>
+    <div class="house">
+     <div class="house-structure">
+      <div class="house-body dadu">
+       <div class="house-door small"></div>
+       <div class="occupant owner"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+      </div>
+      <div class="house-roof small"></div>
+     </div>
+     <span class="house-label">DADU</span>
+    </div>
+   </div>
+   <div class="scenario-info">
+    <div class="scenario-title">Owner in DADU, Rent Out Main House</div>
+    <div class="scenario-desc">Downsize to the DADU and rent out your larger main house for higher rental income. Great for empty nesters.</div>
+   </div>
+  </div>
 
- <!-- Scenario 3: Not Allowed -->
- <div class="scenario not-allowed">
- <div class="scenario-status">
- <div class="status-icon">
- <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>
- <span class="status-label">Not Allowed</span></div>
- <div class="scenario-visual">
- <div class="house">
- <div class="house-structure">
- <div class="house-body main">
- <div class="house-door"></div>
- <div class="occupant tenant">
- <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div></div>
- <div class="house-roof"></div></div>
- <span class="house-label">Main House</span></div>
- <div class="house">
- <div class="house-structure">
- <div class="house-body dadu">
- <div class="house-door small"></div>
- <div class="occupant tenant">
- <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div></div>
- <div class="house-roof small"></div></div>
- <span class="house-label">DADU</span></div></div>
- <div class="scenario-info">
- <div class="scenario-title">Owner Lives Off-Site, Rents Both Units</div>
- <div class="scenario-desc">You cannot use a DADU to create a duplex investment property. The owner must reside on the property.</div></div></div></div>
+  <!-- Scenario 3: Not Allowed -->
+  <div class="scenario not-allowed">
+   <div class="scenario-status">
+    <div class="status-icon">
+     <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </div>
+    <span class="status-label">Not Allowed</span>
+   </div>
+   <div class="scenario-visual">
+    <div class="house">
+     <div class="house-structure">
+      <div class="house-body main">
+       <div class="house-door"></div>
+       <div class="occupant tenant"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+      </div>
+      <div class="house-roof"></div>
+     </div>
+     <span class="house-label">Main House</span>
+    </div>
+    <div class="house">
+     <div class="house-structure">
+      <div class="house-body dadu">
+       <div class="house-door small"></div>
+       <div class="occupant tenant"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+      </div>
+      <div class="house-roof small"></div>
+     </div>
+     <span class="house-label">DADU</span>
+    </div>
+   </div>
+   <div class="scenario-info">
+    <div class="scenario-title">Owner Lives Off-Site, Rents Both Units</div>
+    <div class="scenario-desc">You cannot use a DADU to create a duplex investment property. The owner must reside on the property.</div>
+   </div>
+  </div>
+ </div>
+</div>
 
- <!-- Why Section -->
+<!-- Why Does This Rule Exist -->
+<div class="section-container">
  <div class="why-section">
- <h3>Why Does This Rule Exist?</h3>
- <div class="why-grid">
- <div class="why-item">
- <div class="why-icon">
- <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
- <h4>Neighborhood Character</h4>
- <p>Keeps properties owner-occupied to maintain residential feel</p></div>
- <div class="why-item">
- <div class="why-icon">
- <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg></div>
- <h4>Property Standards</h4>
- <p>Owner presence encourages better maintenance and upkeep</p></div>
- <div class="why-item">
- <div class="why-icon">
- <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
- <h4>Community Investment</h4>
- <p>Owners living on-site are more invested in the community</p></div></div></div>
+  <h3>Why Does This Rule Exist?</h3>
+  <div class="why-grid">
+   <div class="why-item">
+    <div class="why-icon">
+     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+    </div>
+    <h4>Neighborhood Character</h4>
+    <p>Keeps properties owner-occupied to maintain residential feel</p>
+   </div>
+   <div class="why-item">
+    <div class="why-icon">
+     <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+    </div>
+    <h4>Property Standards</h4>
+    <p>Owner presence encourages better maintenance and upkeep</p>
+   </div>
+   <div class="why-item">
+    <div class="why-icon">
+     <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+    </div>
+    <h4>Community Investment</h4>
+    <p>Owners living on-site are more invested in the community</p>
+   </div>
+  </div>
+ </div>
+</div>
 
- <!-- Short-Term Rental Section -->
- <div class="str-section">
- <div class="str-header">
- <div class="str-icon">
- <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
- <h3>What About Short-Term Rentals?</h3></div>
- <div class="str-content">
- <div class="str-warning">
- <strong>Important:</strong>Short-term rentals (Airbnb, VRBO, etc.) are <span class="not-allowed-text">NOT permitted</span>in DADUs located in RS, RN, or RL zones.</div>
- <div class="str-grid">
- <div class="str-card">
- <h4>Owner-Occupied STRP</h4>
- <p>If your property qualifies (not in RS/RN/RL), you may apply for an owner-occupied short-term rental permit. You must live on-site and provide proof of residence.</p>
- <a href="https://www.nashville.gov/departments/codes/short-term-rentals/permit-types" target="_blank">View Permit Types</a></div>
- <div class="str-card">
- <h4>Proof of Residence Required</h4>
- <p>Nashville requires documentation proving you live at the property, such as a driver's license, voter registration, or utility bills in your name.</p>
- <a href="https://www.nashville.gov/departments/codes/short-term-rentals/apply-short-term-rental-property-permit#proof-of-residence" target="_blank">Proof Requirements</a></div></div>
- <div class="str-footer">
- <a href="https://www.nashville.gov/departments/codes/short-term-rentals" target="_blank">Learn more about Nashville Short-Term Rental regulations</a></div></div></div>
+<!-- Covenant Note -->
+<div class="section-container">
+ <div class="covenant-box">
+  <div class="covenant-icon-circle">
+   <img src="assets/icons/Restrictive_Covenants.png" alt="">
+  </div>
+  <div class="covenant-text">
+   <h4>Enforced Through Restrictive Covenant</h4>
+   <p>The owner occupancy requirement is recorded in a restrictive covenant that stays with the property deed. This ensures compliance even if the property is sold. <a href="https://www.nashville.gov/departments/codes/construction-and-permits/land-use-and-zoning-information/zoning-examinations/restrictive-covenants" target="_blank">Learn more about covenants</a></p>
+  </div>
+ </div>
+</div>
 
- <!-- Covenant Note -->
- <div class="covenant-note">
- <div class="covenant-icon">
- <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div>
- <div class="covenant-text">
- <h4>Enforced Through Restrictive Covenant</h4>
- <p>The owner occupancy requirement is recorded in a restrictive covenant that stays with the property deed. This ensures compliance even if the property is sold. <a href="https://www.nashville.gov/departments/codes/construction-and-permits/land-use-and-zoning-information/zoning-examinations/restrictive-covenants" target="_blank">Learn more about covenants</a></p></div></div>
+<!-- Short-Term Rentals -->
+<div class="section-container">
+ <h2 class="section-heading">What About Short-Term Rentals?</h2>
+ <div class="str-box">
+  <div class="str-box-header">
+   <div class="str-box-header-icon">
+    <img src="assets/icons/STR_Permit.png" alt="">
+   </div>
+   <h3>STR Rules for DADUs</h3>
+  </div>
+  <div class="str-box-body">
+   <div class="str-warning-box">
+    <strong>Important:</strong> Short-term rentals (Airbnb, VRBO, etc.) are <span class="not-allowed-text">NOT permitted</span> in DADUs located in RS, RN, or RL zones.
+   </div>
+   <div class="str-cards">
+    <div class="str-info-card">
+     <h4>Owner-Occupied STRP</h4>
+     <p>If your property qualifies (not in RS/RN/RL), you may apply for an owner-occupied short-term rental permit. You must live on-site and provide proof of residence.</p>
+     <a href="https://www.nashville.gov/departments/codes/short-term-rentals/permit-types" target="_blank">View Permit Types</a>
+    </div>
+    <div class="str-info-card">
+     <h4>Proof of Residence Required</h4>
+     <p>Nashville requires documentation proving you live at the property, such as a driver's license, voter registration, or utility bills in your name.</p>
+     <a href="https://www.nashville.gov/departments/codes/short-term-rentals/apply-short-term-rental-property-permit#proof-of-residence" target="_blank">Proof Requirements</a>
+    </div>
+   </div>
+   <div class="str-box-footer">
+    <a href="str_permit.html">Learn more about Nashville Short-Term Rental regulations</a>
+   </div>
+  </div>
+ </div>
+</div>
 
- <!-- Footer -->
- <div class="footer">
- <p>Source: <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank">Metro Nashville BL2025-1007</a></p>
- <p style="margin-top: 8px;"><span class="brand">HOMEBODY PROJECTS</span>· Nashville, Tennessee · 2025</p></div></div>
- <script src="homebody_header.js"></script></body></html>
+<!-- Legal Citation -->
+<div class="section-container">
+ <div class="legal-box">
+  <h3>Legal Reference</h3>
+  <blockquote>"The owner of the lot on which the accessory dwelling unit is located shall occupy either the principal building or the accessory dwelling unit as the owner's primary residence."</blockquote>
+  <span class="cite">Metro Nashville BL2025-1007, Section 17.16.035</span>
+ </div>
+</div>
+
+<!-- Related Resources -->
+<div class="section-container" style="padding-bottom: 48px;">
+ <h2 class="section-heading">Related Resources</h2>
+ <div class="links-section">
+  <a href="str_permit.html" class="link-pill">
+   <img src="assets/icons/STR_Permit.png" alt="">
+   STR Permits
+  </a>
+  <a href="dadu_requirements_overview.html" class="link-pill">
+   <img src="assets/icons/Building and Construction.png" alt="">
+   DADU Requirements
+  </a>
+  <a href="restrictive_covenants_v2.html" class="link-pill">
+   <img src="assets/icons/Restrictive_Covenants.png" alt="">
+   Restrictive Covenants
+  </a>
+  <a href="https://www.nashville.gov/departments/codes" target="_blank" class="link-pill">
+   <img src="assets/icons/Municipal.png" alt="">
+   Metro Nashville Codes
+  </a>
+  <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" class="link-pill">
+   <img src="assets/icons/Legislation.png" alt="">
+   BL2025-1007 Full Text
+  </a>
+ </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+ <h2>Ready to Check Your Property?</h2>
+ <p>Find out if your parcel qualifies for a DADU under BL2025-1007 and review the full building requirements.</p>
+ <div class="cta-btns">
+  <a href="am_i_eligible.html" class="cta-btn">Check Eligibility Now</a>
+  <a href="dadu_requirements_overview.html" class="cta-btn-outline">View Requirements</a>
+ </div>
+</section>
+
+<!-- Footer -->
+<footer class="page-footer">
+ <div class="footer-inner">
+  <div class="footer-links">
+   <div class="footer-col">
+    <h4>Learn</h4>
+    <a href="am_i_eligible.html">Am I Eligible?</a>
+    <a href="size_calculator.html">Size Calculator</a>
+    <a href="dadu_calculators.html">Cost Estimator</a>
+   </div>
+   <div class="footer-col">
+    <h4>Features</h4>
+    <a href="contractor_marketplace.html">Contractor Directory</a>
+    <a href="dadu_requirements_overview.html">Planning Resources</a>
+    <a href="homebody_dadu_pricing.html">Pricing</a>
+   </div>
+   <div class="footer-col">
+    <h4>Get in Touch</h4>
+    <a href="mailto:hello@homebodyprojects.com">hello@homebodyprojects.com</a>
+    <a href="mailto:hello@homebodyprojects.com">Contact</a>
+    <a href="#">Sign in</a>
+   </div>
+  </div>
+  <div class="footer-social">
+   <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+   <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+  </div>
+ </div>
+ <div class="footer-bottom">
+  <span>&copy; 2026 Homebody Projects. Powered by Castlehold. All rights reserved.</span>
+  <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span>
+ </div>
+</footer>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>
