@@ -98,8 +98,7 @@
                         item('contractor_marketplace.html', 'Building and Construction.png', 'Contractor Marketplace')
                     )}
                     ${col('Claims.png', 'File',
-                        item('determine_forms_required.html', 'Claims.png', 'Determine Forms') +
-                        item('legal_form_filler.html', 'Recordable Legal Report.png', 'Form Filler') +
+                        item('form_wizard.html', 'Claims.png', 'Form Wizard') +
                         item('owner_occupancy.html', 'Property Owners.png', 'Owner Occupancy') +
                         item('str_permit.html', 'Renewals.png', 'STR Permit')
                     )}

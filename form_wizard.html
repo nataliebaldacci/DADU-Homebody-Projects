@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Wizard | Homebody Projects</title>
+    <link rel="stylesheet" href="homebody_shared.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* ── Base ── */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F2F0ED;
+            color: #333;
+            margin: 0;
+        }
+
+        /* ── Hero ── */
+        .fw-hero {
+            background: #3A5566;
+            padding: 56px 24px 48px;
+            text-align: center;
+        }
+        .fw-hero h1 {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 2.6rem;
+            color: #E1D4BB;
+            margin-bottom: 12px;
+        }
+        .fw-hero .subtitle {
+            color: #E1D4BB;
+            font-size: 1.1rem;
+            max-width: 560px;
+            margin: 0 auto 20px;
+            opacity: 0.92;
+        }
+        .fw-hero .pill-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .fw-hero .pill {
+            background: rgba(255,255,255,0.12);
+            color: #E1D4BB;
+            border: 1px solid rgba(225,212,187,0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        /* ── Tab Bar ── */
+        .tab-bar {
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            position: sticky;
+            top: 75px;
+            z-index: 50;
+        }
+        .tab-btn {
+            padding: 16px 32px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #7B746D;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab-btn:hover {
+            color: #3A5566;
+            background: #F0EBE1;
+        }
+        .tab-btn.active {
+            color: #3A5566;
+            border-bottom-color: #CBB279;
+        }
+
+        /* ── Tab Panels ── */
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── Container ── */
+        .fw-container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        /* ══════════════════════════════════════
+           TAB 1: FORM FINDER WIZARD
+           ══════════════════════════════════════ */
+        .wizard-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            position: relative;
+        }
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #F0EBE1;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        .progress-step {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #F0EBE1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #7B746D;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s;
+        }
+        .progress-step.active {
+            background: #CBB279;
+            color: #fff;
+        }
+        .progress-step.completed {
+            background: #3A5566;
+            color: #fff;
+        }
+
+        .question-section { display: none; }
+        .question-section.active { display: block; }
+
+        .question-section h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-style: normal;
+            color: #3A5566;
+            margin-bottom: 8px;
+        }
+        .question-section > p {
+            color: #7B746D;
+            margin-bottom: 24px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .option-card {
+            border: 2px solid #F0EBE1;
+            border-radius: 10px;
+            padding: 20px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .option-card:hover {
+            border-color: #918A83;
+            background: #F0EBE1;
+        }
+        .option-card.selected {
+            border-color: #CBB279;
+            background: rgba(203,178,121,0.1);
+        }
+        .option-card .opt-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 10px;
+        }
+        .option-card h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #3A5566;
+            margin-bottom: 4px;
+        }
+        .option-card p {
+            font-size: 0.82rem;
+            color: #7B746D;
+            margin: 0;
+        }
+
+        .checkbox-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border: 2px solid #F0EBE1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .checkbox-option:hover { border-color: #918A83; }
+        .checkbox-option.checked {
+            border-color: #CBB279;
+            background: rgba(203,178,121,0.1);
+        }
+        .checkbox-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #CBB279;
+        }
+        .checkbox-option span {
+            font-size: 0.95rem;
+            color: #3A5566;
+            font-weight: 500;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #F0EBE1;
+        }
+        .wiz-btn {
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        .wiz-btn-back {
+            background: #F0EBE1;
+            color: #3A5566;
+        }
+        .wiz-btn-back:hover { background: #e0d9cf; }
+        .wiz-btn-next {
+            background: #CBB279;
+            color: #fff;
+        }
+        .wiz-btn-next:hover { background: #B8A068; }
+        .wiz-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ── Results ── */
+        .results-section { display: none; }
+        .results-section.active { display: block; }
+        .results-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .results-header h2 {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 1.8rem;
+            color: #3A5566;
+            margin-bottom: 8px;
+        }
+        .results-header p {
+            color: #7B746D;
+        }
+
+        .summary-box {
+            background: #F0EBE1;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 28px;
+        }
+        .summary-box h3 {
+            color: #3A5566;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(58,85,102,0.1);
+            font-size: 0.9rem;
+        }
+        .summary-item:last-child { border-bottom: none; }
+        .summary-item .label { color: #3A5566; font-weight: 500; }
+        .summary-item .value { color: #CBB279; font-weight: 600; }
+
+        .forms-category { margin-bottom: 24px; }
+        .forms-category h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #3A5566;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #F0EBE1;
+        }
+        .result-form-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: #f5f5f0;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            gap: 12px;
+        }
+        .result-form-info { flex: 1; }
+        .result-form-info h4 {
+            font-size: 0.95rem;
+            color: #3A5566;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .result-form-info p {
+            font-size: 0.82rem;
+            color: #7B746D;
+            margin: 0;
+        }
+        .result-badge {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-left: 8px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .badge-required { background: #fce4e4; color: #c0392b; }
+        .badge-optional { background: #F0EBE1; color: #7B746D; }
+
+        .result-form-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            align-items: center;
+        }
+        .result-dl-btn {
+            padding: 8px 16px;
+            background: #3A5566;
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .result-dl-btn:hover { background: #496778; }
+        .result-db-link {
+            color: #CBB279;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .result-db-link:hover { text-decoration: underline; }
+
+        .download-all-row {
+            text-align: center;
+            margin: 24px 0 16px;
+        }
+        .download-all-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: #CBB279;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .download-all-btn:hover { background: #B8A068; }
+
+        .restart-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #7B746D;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .restart-link:hover { color: #3A5566; }
+
+        /* ══════════════════════════════════════
+           TAB 2: ALL FORMS DATABASE
+           ══════════════════════════════════════ */
+        .db-banner {
+            background: #F0EBE1;
+            border-radius: 10px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .db-banner p {
+            color: #3A5566;
+            font-weight: 600;
+            margin: 0;
+        }
+        .db-banner-btn {
+            padding: 8px 20px;
+            background: #CBB279;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .db-banner-btn:hover { background: #B8A068; }
+
+        .db-search-section {
+            background: #fff;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .db-search-box {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .db-search-box input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 2px solid #F0EBE1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        .db-search-box input:focus {
+            outline: none;
+            border-color: #918A83;
+        }
+        .db-filter-tabs {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .db-filter-tab {
+            padding: 6px 14px;
+            border: none;
+            background: #F0EBE1;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.82rem;
+            transition: all 0.2s;
+            color: #3A5566;
+        }
+        .db-filter-tab:hover { background: #e0d9cf; }
+        .db-filter-tab.active {
+            background: #3A5566;
+            color: #fff;
+        }
+
+        /* Quick Downloads */
+        .quick-downloads {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .quick-downloads h3 {
+            font-size: 1rem;
+            color: #3A5566;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .quick-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            background: #F0EBE1;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #3A5566;
+            font-weight: 600;
+            font-size: 0.88rem;
+            transition: all 0.2s;
+        }
+        .quick-card:hover {
+            background: #e8e1d5;
+            transform: translateY(-1px);
+        }
+        .quick-card img {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Form Categories */
+        .db-category {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            margin-bottom: 16px;
+        }
+        .db-cat-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .db-cat-header:hover { background: #F0EBE1; }
+        .db-cat-header.building { border-left: 4px solid #CBB279; }
+        .db-cat-header.covenant { border-left: 4px solid #7B746D; }
+        .db-cat-header.historic { border-left: 4px solid #918A83; }
+        .db-cat-header.trade { border-left: 4px solid #7A2A1D; }
+        .db-cat-header.str { border-left: 4px solid #3A5566; }
+        .db-cat-header.site { border-left: 4px solid #496778; }
+
+        .db-cat-icon {
+            width: 36px;
+            height: 36px;
+            background: #F0EBE1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .db-cat-icon img {
+            width: 20px;
+            height: 20px;
+        }
+        .db-cat-info { flex: 1; }
+        .db-cat-info h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #3A5566;
+            margin-bottom: 2px;
+        }
+        .db-cat-info p {
+            font-size: 0.82rem;
+            color: #7B746D;
+            margin: 0;
+        }
+        .db-cat-count {
+            background: #F0EBE1;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #3A5566;
+        }
+        .db-cat-toggle {
+            font-size: 0.8rem;
+            color: #918A83;
+            transition: transform 0.3s;
+        }
+        .db-cat-header.expanded .db-cat-toggle {
+            transform: rotate(180deg);
+        }
+
+        .db-cat-forms {
+            display: none;
+            padding: 0 20px 20px;
+        }
+        .db-cat-forms.expanded { display: block; }
+
+        .db-form-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 12px;
+        }
+        .db-form-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: #f5f5f0;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .db-form-card:hover { background: #F0EBE1; }
+        .db-form-card-icon {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .db-form-card-icon img {
+            width: 20px;
+            height: 20px;
+        }
+        .db-form-card-body { flex: 1; min-width: 0; }
+        .db-form-card-body h3 {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #3A5566;
+            margin-bottom: 4px;
+        }
+        .db-form-card-body p {
+            font-size: 0.8rem;
+            color: #7B746D;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .db-form-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        .db-tag {
+            font-size: 0.68rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .db-tag-required { background: #fce4e4; color: #c0392b; }
+        .db-tag-official { background: #e8f0f4; color: #3A5566; }
+        .db-tag-guide { background: #F0EBE1; color: #7B746D; }
+        .db-tag-mhzc { background: #e8f0f4; color: #496778; }
+        .db-tag-fire { background: #fce4e4; color: #7A2A1D; }
+        .db-form-dl-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: #3A5566;
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .db-form-dl-btn:hover { background: #496778; }
+
+        /* ── Helpful Resources ── */
+        .db-resources {
+            background: #3A5566;
+            color: #E1D4BB;
+            border-radius: 10px;
+            padding: 28px;
+            margin-top: 28px;
+        }
+        .db-resources h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .resource-card {
+            background: rgba(255,255,255,0.08);
+            padding: 16px;
+            border-radius: 8px;
+        }
+        .resource-card h4 {
+            font-size: 0.92rem;
+            margin-bottom: 6px;
+            color: #E1D4BB;
+        }
+        .resource-card p {
+            font-size: 0.82rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            color: #E1D4BB;
+        }
+        .resource-card a {
+            color: #CBB279;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.82rem;
+        }
+        .resource-card a:hover { text-decoration: underline; }
+
+        /* ── CTA Section ── */
+        .cta-section {
+            background: #3A5566;
+            padding: 56px 24px;
+            text-align: center;
+            margin-top: 48px;
+        }
+        .cta-section h2 {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 2rem;
+            color: #E1D4BB;
+            margin-bottom: 12px;
+        }
+        .cta-section p {
+            color: #E1D4BB;
+            opacity: 0.85;
+            margin-bottom: 24px;
+            font-size: 1.05rem;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .cta-btn-primary {
+            background: #CBB279;
+            color: #3A5566;
+        }
+        .cta-btn-primary:hover { background: #B8A068; }
+        .cta-btn-outline {
+            background: transparent;
+            color: #E1D4BB;
+            border: 2px solid rgba(225,212,187,0.4);
+        }
+        .cta-btn-outline:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: #E1D4BB;
+        }
+
+        /* ── Footer ── */
+        .page-footer {
+            background: #3A5566;
+            color: #E1D4BB;
+            padding: 48px 24px 24px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .footer-grid {
+            max-width: 960px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+        .footer-col h4 {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+            color: #CBB279;
+        }
+        .footer-col a {
+            display: block;
+            color: #918A83;
+            text-decoration: none;
+            font-size: 0.88rem;
+            padding: 4px 0;
+            transition: color 0.2s;
+        }
+        .footer-col a:hover { color: #E1D4BB; }
+        .footer-bottom {
+            max-width: 960px;
+            margin: 0 auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-bottom p {
+            font-size: 0.78rem;
+            color: #918A83;
+            margin: 0;
+        }
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+        .footer-social a {
+            color: #918A83;
+            text-decoration: none;
+            font-size: 0.82rem;
+        }
+        .footer-social a:hover { color: #E1D4BB; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .fw-hero h1 { font-size: 1.8rem; }
+            .tab-btn { padding: 12px 18px; font-size: 0.88rem; }
+            .db-form-cards { grid-template-columns: 1fr; }
+            .result-form-item { flex-direction: column; align-items: flex-start; }
+            .result-form-actions { width: 100%; }
+        }
+    </style>
+</head>
+<body class="dark-nav">
+
+<!-- Shared Header -->
+<div id="site-header"></div>
+
+<!-- ═══ HERO ═══ -->
+<section class="fw-hero">
+    <h1>Form Wizard</h1>
+    <p class="subtitle">Find exactly which forms you need and download them instantly</p>
+    <div class="pill-row">
+        <span class="pill">30+ Official Forms</span>
+        <span class="pill">Metro Nashville</span>
+        <span class="pill">Step-by-Step Guide</span>
+    </div>
+</section>
+
+<!-- ═══ TAB BAR ═══ -->
+<div class="tab-bar">
+    <button class="tab-btn active" data-tab="finder" onclick="switchTab('finder')">Find My Forms</button>
+    <button class="tab-btn" data-tab="database" onclick="switchTab('database')">All Forms Database</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TAB 1: FIND MY FORMS (Wizard)
+     ══════════════════════════════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-finder">
+    <div class="fw-container">
+        <div class="wizard-card">
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">1</div>
+                <div class="progress-step" data-step="2">2</div>
+                <div class="progress-step" data-step="3">3</div>
+                <div class="progress-step" data-step="4">4</div>
+                <div class="progress-step" data-step="5">5</div>
+            </div>
+
+            <!-- Question 1: Project Type -->
+            <div class="question-section active" data-question="1">
+                <h2>What type of DADU project are you planning?</h2>
+                <p>Select the option that best describes your project</p>
+                <div class="options-grid">
+                    <div class="option-card" data-value="new_construction">
+                        <img class="opt-icon" src="assets/icons/Building and Construction.png" alt="">
+                        <h3>New Construction</h3>
+                        <p>Building a brand new DADU from scratch</p>
+                    </div>
+                    <div class="option-card" data-value="conversion">
+                        <img class="opt-icon" src="assets/icons/ADU.png" alt="">
+                        <h3>Garage Conversion</h3>
+                        <p>Converting existing structure to DADU</p>
+                    </div>
+                    <div class="option-card" data-value="prefab">
+                        <img class="opt-icon" src="assets/icons/Appraisers.png" alt="">
+                        <h3>Prefab/Modular</h3>
+                        <p>Installing a prefabricated unit</p>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="wiz-btn wiz-btn-back" disabled>Back</button>
+                    <button class="wiz-btn wiz-btn-next btn-next" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Question 2: Historic District -->
+            <div class="question-section" data-question="2">
+                <h2>Is your property in a Historic Overlay District?</h2>
+                <p>This affects which permits and approvals you need</p>
+                <div class="options-grid">
+                    <div class="option-card" data-value="historic_yes">
+                        <img class="opt-icon" src="assets/icons/Recorded Docs.png" alt="">
+                        <h3>Yes, Historic District</h3>
+                        <p>My property is in a designated historic area</p>
+                    </div>
+                    <div class="option-card" data-value="historic_no">
+                        <img class="opt-icon" src="assets/icons/Zoning.png" alt="">
+                        <h3>No, Standard Zoning</h3>
+                        <p>Not in a historic overlay district</p>
+                    </div>
+                    <div class="option-card" data-value="historic_unsure">
+                        <img class="opt-icon" src="assets/icons/Parcel Search.png" alt="">
+                        <h3>Not Sure</h3>
+                        <p>I need to check this first</p>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="wiz-btn wiz-btn-back btn-back">Back</button>
+                    <button class="wiz-btn wiz-btn-next btn-next" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Question 3: Rental Plans -->
+            <div class="question-section" data-question="3">
+                <h2>Do you plan to rent the DADU?</h2>
+                <p>This determines if you need additional permits</p>
+                <div class="options-grid">
+                    <div class="option-card" data-value="rental_long">
+                        <img class="opt-icon" src="assets/icons/Property Owners.png" alt="">
+                        <h3>Long-Term Rental</h3>
+                        <p>Renting to tenants (30+ days)</p>
+                    </div>
+                    <div class="option-card" data-value="rental_str">
+                        <img class="opt-icon" src="assets/icons/Renewals.png" alt="">
+                        <h3>Short-Term Rental</h3>
+                        <p>Airbnb, VRBO, etc. (under 30 days)</p>
+                    </div>
+                    <div class="option-card" data-value="rental_family">
+                        <img class="opt-icon" src="assets/icons/Neighbors.png" alt="">
+                        <h3>Family Use Only</h3>
+                        <p>For family members, not renting</p>
+                    </div>
+                    <div class="option-card" data-value="rental_unsure">
+                        <img class="opt-icon" src="assets/icons/Exports & Reports.png" alt="">
+                        <h3>Not Decided Yet</h3>
+                        <p>I want to keep options open</p>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="wiz-btn wiz-btn-back btn-back">Back</button>
+                    <button class="wiz-btn wiz-btn-next btn-next" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Question 4: Owner Occupancy -->
+            <div class="question-section" data-question="4">
+                <h2>Will you live on the property?</h2>
+                <p>Nashville requires owner occupancy for DADUs</p>
+                <div class="options-grid">
+                    <div class="option-card" data-value="owner_main">
+                        <img class="opt-icon" src="assets/icons/Property Owners.png" alt="">
+                        <h3>Yes, in Main House</h3>
+                        <p>I will live in the primary residence</p>
+                    </div>
+                    <div class="option-card" data-value="owner_dadu">
+                        <img class="opt-icon" src="assets/icons/ADU.png" alt="">
+                        <h3>Yes, in the DADU</h3>
+                        <p>I will move into the DADU</p>
+                    </div>
+                    <div class="option-card" data-value="owner_no">
+                        <img class="opt-icon" src="assets/icons/Investments.png" alt="">
+                        <h3>No, Investment Property</h3>
+                        <p>This is not my primary residence</p>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="wiz-btn wiz-btn-back btn-back">Back</button>
+                    <button class="wiz-btn wiz-btn-next btn-next" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Question 5: Trade Work -->
+            <div class="question-section" data-question="5">
+                <h2>What trade work will your DADU include?</h2>
+                <p>Select all that apply</p>
+                <div class="checkbox-options">
+                    <label class="checkbox-option">
+                        <input type="checkbox" value="electrical">
+                        <span>Electrical (new panel, wiring, outlets)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" value="plumbing">
+                        <span>Plumbing (bathroom, kitchen, water heater)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" value="gas">
+                        <span>Gas (gas lines, HVAC, water heater)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" value="mechanical">
+                        <span>Mechanical/HVAC (heating, cooling systems)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" value="sewer">
+                        <span>Sewer Connection (new sewer tap)</span>
+                    </label>
+                </div>
+                <div class="nav-buttons">
+                    <button class="wiz-btn wiz-btn-back btn-back">Back</button>
+                    <button class="wiz-btn wiz-btn-next btn-finish">See My Forms</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" data-question="results">
+                <div class="results-header">
+                    <h2>Your Required Forms</h2>
+                    <p>Based on your answers, here are the forms you need</p>
+                </div>
+                <div class="summary-box">
+                    <h3>Project Summary</h3>
+                    <div id="summary-content"></div>
+                </div>
+                <div class="download-all-row">
+                    <button class="download-all-btn" onclick="downloadAllForms()">Download All My Forms</button>
+                </div>
+                <div id="forms-list"></div>
+                <a class="restart-link" onclick="restartWizard()">Start Over</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TAB 2: ALL FORMS DATABASE
+     ══════════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-database">
+    <div class="fw-container">
+
+        <!-- Banner linking to Tab 1 -->
+        <div class="db-banner">
+            <p>Not sure which forms you need?</p>
+            <button class="db-banner-btn" onclick="switchTab('finder')">Use the Form Finder</button>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="db-search-section">
+            <div class="db-search-box">
+                <input type="text" id="dbSearchInput" placeholder="Search forms by name or keyword...">
+            </div>
+            <div class="db-filter-tabs">
+                <button class="db-filter-tab active" data-filter="all">All Forms</button>
+                <button class="db-filter-tab" data-filter="building">Building Permits</button>
+                <button class="db-filter-tab" data-filter="covenant">Covenants</button>
+                <button class="db-filter-tab" data-filter="historic">Historic</button>
+                <button class="db-filter-tab" data-filter="trade">Trade Permits</button>
+                <button class="db-filter-tab" data-filter="str">Short-Term Rental</button>
+                <button class="db-filter-tab" data-filter="site">Site Plans</button>
+            </div>
+        </div>
+
+        <!-- Quick Downloads -->
+        <div class="quick-downloads">
+            <h3>Quick Downloads</h3>
+            <div class="quick-grid">
+                <a href="https://www.nashville.gov/sites/default/files/2024-04/Codes-Residential-Building-Permit-Application.pdf" target="_blank" class="quick-card">
+                    <img src="assets/icons/Building and Construction.png" alt="">
+                    <span>Residential Permit App</span>
+                </a>
+                <a href="https://www.nashville.gov/sites/default/files/2024-01/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf" target="_blank" class="quick-card">
+                    <img src="assets/icons/Legal.png" alt="">
+                    <span>DADU Covenant</span>
+                </a>
+                <a href="https://filetransfer.nashville.gov/portals/0/sitecontent/MHZC/docs/Preservation%20Permits/Application-DADU%20and%20outbuilding.pdf" target="_blank" class="quick-card">
+                    <img src="assets/icons/Recorded Docs.png" alt="">
+                    <span>Historic DADU App</span>
+                </a>
+                <a href="https://www.nashville.gov/sites/default/files/2022-09/ElectricalPermitApplication.pdf" target="_blank" class="quick-card">
+                    <img src="assets/icons/Utilities.png" alt="">
+                    <span>Electrical Permit</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ═══ BUILDING PERMITS ═══ -->
+        <div class="db-category" data-category="building">
+            <div class="db-cat-header building" onclick="toggleDbCategory(this)">
+                <div class="db-cat-icon"><img src="assets/icons/Building and Construction.png" alt=""></div>
+                <div class="db-cat-info">
+                    <h2>Building Permit Applications</h2>
+                    <p>Core permits for DADU construction</p>
+                </div>
+                <span class="db-cat-count">4 forms</span>
+                <span class="db-cat-toggle">&#9660;</span>
+            </div>
+            <div class="db-cat-forms">
+                <div class="db-form-cards">
+                    <div class="db-form-card" data-form-id="residential_permit">
+                        <div class="db-form-card-icon"><img src="assets/icons/Claims.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Residential Building Permit Application</h3>
+                            <p>Main application for new DADU construction. Required for all projects.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-required">Required</span>
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2024-04/Codes-Residential-Building-Permit-Application.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="commercial_permit">
+                        <div class="db-form-card-icon"><img src="assets/icons/Claims.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Commercial Permit Application</h3>
+                            <p>For larger DADU projects that exceed residential thresholds.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Commercial-Permit-Application.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="self_permit">
+                        <div class="db-form-card-icon"><img src="assets/icons/Claims.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Self-Permit Affidavit</h3>
+                            <p>For owner-builders who want to do their own work.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/SelfPermitAffidavit.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="accessory_instructions">
+                        <div class="db-form-card-icon"><img src="assets/icons/Exports & Reports.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Accessory Structure Permitting Instructions</h3>
+                            <p>Step-by-step guide for DADU permit process.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-guide">Guide</span>
+                            </div>
+                            <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/accessory-structure-permitting-instructions" target="_blank" class="db-form-dl-btn">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ RESTRICTIVE COVENANTS ═══ -->
+        <div class="db-category" data-category="covenant">
+            <div class="db-cat-header covenant" onclick="toggleDbCategory(this)">
+                <div class="db-cat-icon"><img src="assets/icons/Legal.png" alt=""></div>
+                <div class="db-cat-info">
+                    <h2>Restrictive Covenants</h2>
+                    <p>Required owner-occupancy covenant forms</p>
+                </div>
+                <span class="db-cat-count">4 forms</span>
+                <span class="db-cat-toggle">&#9660;</span>
+            </div>
+            <div class="db-cat-forms">
+                <div class="db-form-cards">
+                    <div class="db-form-card" data-form-id="dadu_covenant">
+                        <div class="db-form-card-icon"><img src="assets/icons/Legal.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>DADU Restrictive Covenant</h3>
+                            <p>Required covenant for all DADU permits. Must be recorded with Register of Deeds.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-required">Required</span>
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2024-01/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="covenant_instructions">
+                        <div class="db-form-card-icon"><img src="assets/icons/Exports & Reports.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Covenant Filing Instructions</h3>
+                            <p>How to file your covenant with the Davidson County Register of Deeds.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-guide">Guide</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Restrictive-Covenant-Filing-Instructions.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="accessory_apartment_covenant">
+                        <div class="db-form-card-icon"><img src="assets/icons/Legal.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Accessory Apartment Covenant</h3>
+                            <p>For attached accessory dwelling units (internal ADUs).</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Restrictive_Covenants_Accessory_Apartment_rev.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="landscaping_covenant">
+                        <div class="db-form-card-icon"><img src="assets/icons/Legal.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Landscaping Restrictive Covenant</h3>
+                            <p>For properties requiring landscape buffer maintenance.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Landscaping-Restrictive-Covenant.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ HISTORIC ZONING ═══ -->
+        <div class="db-category" data-category="historic">
+            <div class="db-cat-header historic" onclick="toggleDbCategory(this)">
+                <div class="db-cat-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+                <div class="db-cat-info">
+                    <h2>Historic Zoning Applications</h2>
+                    <p>For properties in Historic Overlay Districts</p>
+                </div>
+                <span class="db-cat-count">4 forms</span>
+                <span class="db-cat-toggle">&#9660;</span>
+            </div>
+            <div class="db-cat-forms">
+                <div class="db-form-cards">
+                    <div class="db-form-card" data-form-id="historic_dadu">
+                        <div class="db-form-card-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Historic Preservation Permit - DADU &amp; Outbuilding</h3>
+                            <p>Required for all DADU projects in Historic Overlay Districts.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-required">Required in Historic Areas</span>
+                                <span class="db-tag db-tag-mhzc">MHZC Form</span>
+                            </div>
+                            <a href="https://filetransfer.nashville.gov/portals/0/sitecontent/MHZC/docs/Preservation%20Permits/Application-DADU%20and%20outbuilding.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="historic_general">
+                        <div class="db-form-card-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Historic Zoning Application Cover Sheet</h3>
+                            <p>General cover sheet for MHZC applications.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-mhzc">MHZC Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/HistoricZoning_Application_CoverSheet.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="historic_overlay">
+                        <div class="db-form-card-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Historic Overlay Application</h3>
+                            <p>General application for historic overlay districts.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-mhzc">MHZC Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Historic-Overlay-Application.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="mhzc_notice">
+                        <div class="db-form-card-icon"><img src="assets/icons/Exports & Reports.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>MHZC Public Notice Requirements</h3>
+                            <p>Guide for historic preservation permit public notice requirements.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-guide">Guide</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/MHZC-Preservation-Permit-Application-Public-Notice-Requirements.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ TRADE PERMITS ═══ -->
+        <div class="db-category" data-category="trade">
+            <div class="db-cat-header trade" onclick="toggleDbCategory(this)">
+                <div class="db-cat-icon"><img src="assets/icons/Utilities.png" alt=""></div>
+                <div class="db-cat-info">
+                    <h2>Trade Permit Applications</h2>
+                    <p>Electrical, plumbing, gas and mechanical permits</p>
+                </div>
+                <span class="db-cat-count">4 forms</span>
+                <span class="db-cat-toggle">&#9660;</span>
+            </div>
+            <div class="db-cat-forms">
+                <div class="db-form-cards">
+                    <div class="db-form-card" data-form-id="electrical">
+                        <div class="db-form-card-icon"><img src="assets/icons/Utilities.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Electrical Permit Application</h3>
+                            <p>For new electrical panels, wiring, circuits, and outlets.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-required">Required for electrical work</span>
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/ElectricalPermitApplication.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="plumbing">
+                        <div class="db-form-card-icon"><img src="assets/icons/Utilities.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Plumbing Permit Application</h3>
+                            <p>For new plumbing, fixtures, water heaters, sewer connections.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-required">Required for plumbing work</span>
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/PlumbingPermitApplication.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="gas_mechanical">
+                        <div class="db-form-card-icon"><img src="assets/icons/Utilities.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Gas/Mechanical Permit Application</h3>
+                            <p>For HVAC systems, gas lines, heating and cooling equipment.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-required">Required for HVAC/gas work</span>
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/GasMechanicalPermitApplication.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="combo_trade">
+                        <div class="db-form-card-icon"><img src="assets/icons/Utilities.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Detached Structure Trade Permits Combo Form</h3>
+                            <p>Combined electrical, plumbing, gas and mechanical for detached structures.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Detached_Structure_Elect-Plbg-Gas-Mech_011106.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ SHORT-TERM RENTAL ═══ -->
+        <div class="db-category" data-category="str">
+            <div class="db-cat-header str" onclick="toggleDbCategory(this)">
+                <div class="db-cat-icon"><img src="assets/icons/Renewals.png" alt=""></div>
+                <div class="db-cat-info">
+                    <h2>Short-Term Rental Permits</h2>
+                    <p>STR permit applications and affidavits</p>
+                </div>
+                <span class="db-cat-count">6 forms</span>
+                <span class="db-cat-toggle">&#9660;</span>
+            </div>
+            <div class="db-cat-forms">
+                <div class="db-form-cards">
+                    <div class="db-form-card" data-form-id="str_checklist">
+                        <div class="db-form-card-icon"><img src="assets/icons/Renewals.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>STR Permit Application Checklist</h3>
+                            <p>Complete checklist of requirements for STR permit applications.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-required">Required for STR</span>
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/STRP_PermitApplicationChecklist.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="str_owner_occupied">
+                        <div class="db-form-card-icon"><img src="assets/icons/Property Owners.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Owner-Occupied STR Permit Affidavit</h3>
+                            <p>For STR properties where owner lives on-site.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-required">Required - Owner Occupied</span>
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Owner-Occupied-Short-Term-Rental-Permit-affidavit.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="str_not_owner">
+                        <div class="db-form-card-icon"><img src="assets/icons/Property Owners.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Not-Owner-Occupied STR Permit Affidavit</h3>
+                            <p>For STR properties where owner does not live on-site.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-required">Required - Non-Owner</span>
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Not-Owner-Occupied-Short-Term-Rental-Permit-affidavit.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="str_renewal">
+                        <div class="db-form-card-icon"><img src="assets/icons/Renewals.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>STR Renewal Affidavit</h3>
+                            <p>For renewing existing STR permits.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/STRP-Renewal-Affidavit.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="str_authorization">
+                        <div class="db-form-card-icon"><img src="assets/icons/Legal.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>STR Non-Owner Authorization Form</h3>
+                            <p>Notarized authorization for property manager to operate STR.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Notarized-STR-Non-Owner-Authorization-Form-revised.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="str_fire">
+                        <div class="db-form-card-icon"><img src="assets/icons/Claims.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Fire Department STR Applicant Checklist</h3>
+                            <p>Fire safety requirements checklist for STR permits.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-fire">Fire Marshal Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/FireDepartmentSTRPApplicantChecklist.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ SITE PLANS & DEVELOPMENT ═══ -->
+        <div class="db-category" data-category="site">
+            <div class="db-cat-header site" onclick="toggleDbCategory(this)">
+                <div class="db-cat-icon"><img src="assets/icons/Surveyors adn Engineers.png" alt=""></div>
+                <div class="db-cat-info">
+                    <h2>Site Plans &amp; Development</h2>
+                    <p>Site plan applications and development guides</p>
+                </div>
+                <span class="db-cat-count">4 forms</span>
+                <span class="db-cat-toggle">&#9660;</span>
+            </div>
+            <div class="db-cat-forms">
+                <div class="db-form-cards">
+                    <div class="db-form-card" data-form-id="example_site_plan">
+                        <div class="db-form-card-icon"><img src="assets/icons/APN Maps.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Example Residential Site Plan</h3>
+                            <p>Sample site plan showing required elements and format.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-guide">Example</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/Building-Permits-Central-Example-Site-Plan.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="sf_dev_guide">
+                        <div class="db-form-card-icon"><img src="assets/icons/Exports & Reports.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>Single Family Residential Development Guide</h3>
+                            <p>Comprehensive guide for residential development including DADUs.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-guide">Guide</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2025-04/Single_Family_Residential_Development_Guide-05.29.2025.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="udo_site_plan">
+                        <div class="db-form-card-icon"><img src="assets/icons/Zoning.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>UDO Final Site Plan Application</h3>
+                            <p>For final site plan approval under Unified Development Ordinance.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/UDO-Final-Site-Plan.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                    <div class="db-form-card" data-form-id="udo_modification">
+                        <div class="db-form-card-icon"><img src="assets/icons/Zoning.png" alt=""></div>
+                        <div class="db-form-card-body">
+                            <h3>UDO Modification Application</h3>
+                            <p>For requesting modifications to UDO requirements.</p>
+                            <div class="db-form-tags">
+                                <span class="db-tag db-tag-official">Official Metro Form</span>
+                            </div>
+                            <a href="https://www.nashville.gov/sites/default/files/2022-09/UDO-Modification-Application.pdf" target="_blank" class="db-form-dl-btn">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Helpful Resources -->
+        <div class="db-resources">
+            <h3>Helpful Resources</h3>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h4>Metro Codes Contact List</h4>
+                    <p>Directory of departments for permit questions</p>
+                    <a href="https://www.nashville.gov/departments/codes/construction-and-permits/contact-list" target="_blank">View Contacts</a>
+                </div>
+                <div class="resource-card">
+                    <h4>ePermits Portal</h4>
+                    <p>Submit and track your permits online</p>
+                    <a href="https://epermits.nashville.gov/" target="_blank">Go to ePermits</a>
+                </div>
+                <div class="resource-card">
+                    <h4>Register of Deeds</h4>
+                    <p>File your restrictive covenants here</p>
+                    <a href="https://www.nashville.gov/departments/county-clerk/recording-and-registration-services/register-deeds" target="_blank">Visit Register</a>
+                </div>
+                <div class="resource-card">
+                    <h4>Building Requirements</h4>
+                    <p>Size, setback, and height requirements</p>
+                    <a href="dadu_requirements_overview.html">View Requirements</a>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end fw-container -->
+</div><!-- end panel-database -->
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+    <h2>Need help with your permit application?</h2>
+    <p>Explore our planning tools and DADU requirements guide to prepare your project.</p>
+    <div class="cta-buttons">
+        <a href="dadu_requirements_overview.html" class="cta-btn cta-btn-primary">View Requirements</a>
+        <a href="project_planner.html" class="cta-btn cta-btn-outline">Project Planner</a>
+    </div>
+</section>
+
+<!-- ═══ Footer ═══ -->
+<footer class="page-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Learn</h4>
+            <a href="am_i_eligible.html">Am I Eligible?</a>
+            <a href="size_calculator.html">Size Calculator</a>
+            <a href="project_cost_estimator.html">Cost Estimator</a>
+            <a href="what_is_dadu.html">What is a DADU?</a>
+        </div>
+        <div class="footer-col">
+            <h4>Features</h4>
+            <a href="contractor_marketplace.html">Contractor Directory</a>
+            <a href="project_planner.html">Planning Resources</a>
+            <a href="homebody_dadu_pricing.html">Pricing</a>
+        </div>
+        <div class="footer-col">
+            <h4>Get in Touch</h4>
+            <a href="mailto:hello@homebodyprojects.com">hello@homebodyprojects.com</a>
+            <a href="about.html">About</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>Powered by Castlehold</p>
+        <div class="footer-social">
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ══════════════════════════════════════
+//  FORM DATABASE (shared between tabs)
+// ══════════════════════════════════════
+const FORMS_DB = {
+    residential_permit: {
+        name: 'Residential Building Permit Application',
+        description: 'Required for all new DADU construction',
+        url: 'https://www.nashville.gov/sites/default/files/2024-04/Codes-Residential-Building-Permit-Application.pdf',
+        category: 'building'
+    },
+    self_permit: {
+        name: 'Self-Permit Affidavit',
+        description: 'For owner-builders doing their own work',
+        url: 'https://www.nashville.gov/sites/default/files/2022-09/SelfPermitAffidavit.pdf',
+        category: 'building'
+    },
+    dadu_covenant: {
+        name: 'DADU Restrictive Covenant',
+        description: 'Required covenant for all DADUs. Must be recorded.',
+        url: 'https://www.nashville.gov/sites/default/files/2024-01/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf',
+        category: 'covenant'
+    },
+    covenant_instructions: {
+        name: 'Covenant Filing Instructions',
+        description: 'How to file your covenant with Register of Deeds',
+        url: 'https://www.nashville.gov/sites/default/files/2022-09/Restrictive-Covenant-Filing-Instructions.pdf',
+        category: 'covenant'
+    },
+    historic_dadu: {
+        name: 'Historic Preservation Permit - DADU & Outbuilding',
+        description: 'Required for properties in Historic Overlay Districts',
+        url: 'https://filetransfer.nashville.gov/portals/0/sitecontent/MHZC/docs/Preservation%20Permits/Application-DADU%20and%20outbuilding.pdf',
+        category: 'historic'
+    },
+    historic_general: {
+        name: 'Historic Zoning Application Cover Sheet',
+        description: 'General cover sheet for MHZC applications',
+        url: 'https://www.nashville.gov/sites/default/files/2022-09/HistoricZoning_Application_CoverSheet.pdf',
+        category: 'historic'
+    },
+    electrical: {
+        name: 'Electrical Permit Application',
+        description: 'For new electrical panels, wiring, outlets',
+        url: 'https://www.nashville.gov/sites/default/files/2022-09/ElectricalPermitApplication.pdf',
+        category: 'trade'
+    },
+    plumbing: {
+        name: 'Plumbing Permit Application',
+        description: 'For new plumbing, fixtures, water heaters',
+        url: 'https://www.nashville.gov/sites/default/files/2022-09/PlumbingPermitApplication.pdf',
+        category: 'trade'
+    },
+    gas_mechanical: {
+        name: 'Gas/Mechanical Permit Application',
+        description: 'For HVAC, gas lines, mechanical systems',
+        url: 'https://www.nashville.gov/sites/default/files/2022-09/GasMechanicalPermitApplication.pdf',
+        category: 'trade'
+    },
+    str_owner_occupied: {
+        name: 'Owner-Occupied STR Permit Affidavit',
+        description: 'For STR where owner lives on property',
+        url: 'https://www.nashville.gov/sites/default/files/2022-09/Owner-Occupied-Short-Term-Rental-Permit-affidavit.pdf',
+        category: 'str'
+    },
+    str_not_owner: {
+        name: 'Not-Owner-Occupied STR Permit Affidavit',
+        description: 'For STR where owner does not live on property',
+        url: 'https://www.nashville.gov/sites/default/files/2022-09/Not-Owner-Occupied-Short-Term-Rental-Permit-affidavit.pdf',
+        category: 'str'
+    },
+    str_checklist: {
+        name: 'STR Permit Application Checklist',
+        description: 'Complete checklist for STR applications',
+        url: 'https://www.nashville.gov/sites/default/files/2022-09/STRP_PermitApplicationChecklist.pdf',
+        category: 'str'
+    }
+};
+
+// Category labels for "View in Database" links
+const CATEGORY_LABELS = {
+    building: 'Building Permits',
+    covenant: 'Covenants',
+    historic: 'Historic',
+    trade: 'Trade Permits',
+    str: 'Short-Term Rental',
+    site: 'Site Plans'
+};
+
+
+// ══════════════════════════════════════
+//  TAB SWITCHING
+// ══════════════════════════════════════
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.tab === tabId);
+    });
+    document.querySelectorAll('.tab-panel').forEach(function(p) {
+        p.classList.toggle('active', p.id === 'panel-' + tabId);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function switchToDbCategory(category) {
+    switchTab('database');
+    setTimeout(function() {
+        var cat = document.querySelector('.db-category[data-category="' + category + '"]');
+        if (cat) {
+            var header = cat.querySelector('.db-cat-header');
+            if (!header.classList.contains('expanded')) {
+                toggleDbCategory(header);
+            }
+            cat.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, 100);
+}
+
+
+// ══════════════════════════════════════
+//  TAB 1: WIZARD LOGIC
+// ══════════════════════════════════════
+var answers = {
+    projectType: null,
+    historic: null,
+    rental: null,
+    ownerOccupancy: null,
+    trades: []
+};
+var currentStep = 1;
+
+// Option card selection
+document.querySelectorAll('.option-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+        var section = this.closest('.question-section');
+        section.querySelectorAll('.option-card').forEach(function(c) { c.classList.remove('selected'); });
+        this.classList.add('selected');
+        section.querySelector('.btn-next').disabled = false;
+
+        var q = section.dataset.question;
+        var v = this.dataset.value;
+        if (q === '1') answers.projectType = v;
+        if (q === '2') answers.historic = v;
+        if (q === '3') answers.rental = v;
+        if (q === '4') answers.ownerOccupancy = v;
+    });
+});
+
+// Checkbox options
+document.querySelectorAll('.checkbox-option').forEach(function(opt) {
+    opt.addEventListener('click', function(e) {
+        if (e.target.type !== 'checkbox') {
+            var cb = this.querySelector('input');
+            cb.checked = !cb.checked;
+        }
+        this.classList.toggle('checked', this.querySelector('input').checked);
+        answers.trades = Array.from(document.querySelectorAll('.checkbox-option input:checked')).map(function(c) { return c.value; });
+    });
+});
+
+// Navigation buttons
+document.querySelectorAll('.btn-next').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        if (currentStep < 5) goToStep(currentStep + 1);
+    });
+});
+document.querySelectorAll('.btn-back').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        if (currentStep > 1) goToStep(currentStep - 1);
+    });
+});
+document.querySelector('.btn-finish').addEventListener('click', function() {
+    showResults();
+});
+
+function goToStep(step) {
+    document.querySelector('.question-section[data-question="' + currentStep + '"]').classList.remove('active');
+    document.querySelector('.question-section[data-question="' + step + '"]').classList.add('active');
+    document.querySelectorAll('.progress-step').forEach(function(ps) {
+        var s = parseInt(ps.dataset.step);
+        ps.classList.remove('active', 'completed');
+        if (s < step) ps.classList.add('completed');
+        if (s === step) ps.classList.add('active');
+    });
+    currentStep = step;
+}
+
+function showResults() {
+    document.querySelector('.question-section[data-question="' + currentStep + '"]').classList.remove('active');
+    document.querySelector('.results-section').classList.add('active');
+    document.querySelectorAll('.progress-step').forEach(function(ps) {
+        ps.classList.remove('active');
+        ps.classList.add('completed');
+    });
+
+    // Summary
+    document.getElementById('summary-content').innerHTML =
+        summaryRow('Project Type', formatAnswer(answers.projectType)) +
+        summaryRow('Historic District', formatAnswer(answers.historic)) +
+        summaryRow('Rental Plans', formatAnswer(answers.rental)) +
+        summaryRow('Owner Occupancy', formatAnswer(answers.ownerOccupancy)) +
+        summaryRow('Trade Work', answers.trades.length > 0 ? answers.trades.map(function(t) { return t.charAt(0).toUpperCase() + t.slice(1); }).join(', ') : 'None selected');
+
+    // Forms
+    var result = getRequiredForms();
+    document.getElementById('forms-list').innerHTML = generateFormsHtml(result);
+
+    // Store URLs for download-all
+    window._allFormUrls = [];
+    result.required.forEach(function(f) { window._allFormUrls.push(f.url); });
+    result.optional.forEach(function(f) { window._allFormUrls.push(f.url); });
+}
+
+function summaryRow(label, value) {
+    return '<div class="summary-item"><span class="label">' + label + '</span><span class="value">' + value + '</span></div>';
+}
+
+function formatAnswer(v) {
+    var m = {
+        'new_construction': 'New Construction', 'conversion': 'Garage Conversion', 'prefab': 'Prefab/Modular',
+        'historic_yes': 'Yes', 'historic_no': 'No', 'historic_unsure': 'Not Sure',
+        'rental_long': 'Long-Term Rental', 'rental_str': 'Short-Term Rental', 'rental_family': 'Family Use Only', 'rental_unsure': 'Undecided',
+        'owner_main': 'Main House', 'owner_dadu': 'In DADU', 'owner_no': 'Investment Property'
+    };
+    return m[v] || v || '-';
+}
+
+function getRequiredForms() {
+    var req = [], opt = [];
+
+    // Always required
+    req.push(Object.assign({}, FORMS_DB.residential_permit, { required: true, formId: 'residential_permit' }));
+    req.push(Object.assign({}, FORMS_DB.dadu_covenant, { required: true, formId: 'dadu_covenant' }));
+    req.push(Object.assign({}, FORMS_DB.covenant_instructions, { required: true, formId: 'covenant_instructions' }));
+
+    // Historic
+    if (answers.historic === 'historic_yes') {
+        req.push(Object.assign({}, FORMS_DB.historic_dadu, { required: true, formId: 'historic_dadu' }));
+        req.push(Object.assign({}, FORMS_DB.historic_general, { required: true, formId: 'historic_general' }));
+    } else if (answers.historic === 'historic_unsure') {
+        opt.push(Object.assign({}, FORMS_DB.historic_dadu, { required: false, formId: 'historic_dadu' }));
+    }
+
+    // Trade permits
+    if (answers.trades.includes('electrical')) {
+        req.push(Object.assign({}, FORMS_DB.electrical, { required: true, formId: 'electrical' }));
+    }
+    if (answers.trades.includes('plumbing') || answers.trades.includes('sewer')) {
+        req.push(Object.assign({}, FORMS_DB.plumbing, { required: true, formId: 'plumbing' }));
+    }
+    if (answers.trades.includes('gas') || answers.trades.includes('mechanical')) {
+        req.push(Object.assign({}, FORMS_DB.gas_mechanical, { required: true, formId: 'gas_mechanical' }));
+    }
+
+    // Short-term rental
+    if (answers.rental === 'rental_str') {
+        req.push(Object.assign({}, FORMS_DB.str_checklist, { required: true, formId: 'str_checklist' }));
+        if (answers.ownerOccupancy === 'owner_main' || answers.ownerOccupancy === 'owner_dadu') {
+            req.push(Object.assign({}, FORMS_DB.str_owner_occupied, { required: true, formId: 'str_owner_occupied' }));
+        } else {
+            req.push(Object.assign({}, FORMS_DB.str_not_owner, { required: true, formId: 'str_not_owner' }));
+        }
+    }
+
+    // Self-permit always optional
+    opt.push(Object.assign({}, FORMS_DB.self_permit, { required: false, formId: 'self_permit' }));
+
+    return { required: req, optional: opt };
+}
+
+function generateFormsHtml(formsList) {
+    var html = '';
+    if (formsList.required.length > 0) {
+        html += '<div class="forms-category"><h3>Required Forms (' + formsList.required.length + ')</h3>';
+        formsList.required.forEach(function(f) {
+            html += formResultCard(f, true);
+        });
+        html += '</div>';
+    }
+    if (formsList.optional.length > 0) {
+        html += '<div class="forms-category"><h3>Optional / May Be Needed</h3>';
+        formsList.optional.forEach(function(f) {
+            html += formResultCard(f, false);
+        });
+        html += '</div>';
+    }
+    return html;
+}
+
+function formResultCard(form, isRequired) {
+    var badgeClass = isRequired ? 'badge-required' : 'badge-optional';
+    var badgeText = isRequired ? 'Required' : 'Optional';
+    var catLabel = CATEGORY_LABELS[form.category] || form.category;
+    return '<div class="result-form-item">' +
+        '<div class="result-form-info">' +
+            '<h4>' + form.name + '<span class="result-badge ' + badgeClass + '">' + badgeText + '</span></h4>' +
+            '<p>' + form.description + '</p>' +
+        '</div>' +
+        '<div class="result-form-actions">' +
+            '<a href="' + form.url + '" target="_blank" class="result-dl-btn">Download PDF</a>' +
+            '<a class="result-db-link" onclick="switchToDbCategory(\'' + form.category + '\')">View in Database</a>' +
+        '</div>' +
+    '</div>';
+}
+
+function downloadAllForms() {
+    if (window._allFormUrls && window._allFormUrls.length > 0) {
+        window._allFormUrls.forEach(function(url) {
+            window.open(url, '_blank');
+        });
+    }
+}
+
+function restartWizard() {
+    answers.projectType = null;
+    answers.historic = null;
+    answers.rental = null;
+    answers.ownerOccupancy = null;
+    answers.trades = [];
+
+    document.querySelectorAll('.option-card').forEach(function(c) { c.classList.remove('selected'); });
+    document.querySelectorAll('.checkbox-option').forEach(function(c) {
+        c.classList.remove('checked');
+        c.querySelector('input').checked = false;
+    });
+    document.querySelectorAll('.btn-next').forEach(function(b) { b.disabled = true; });
+    document.querySelectorAll('.progress-step').forEach(function(ps, i) {
+        ps.classList.remove('active', 'completed');
+        if (i === 0) ps.classList.add('active');
+    });
+    document.querySelector('.results-section').classList.remove('active');
+    document.querySelector('.question-section[data-question="1"]').classList.add('active');
+    currentStep = 1;
+}
+
+
+// ══════════════════════════════════════
+//  TAB 2: DATABASE LOGIC
+// ══════════════════════════════════════
+function toggleDbCategory(header) {
+    header.classList.toggle('expanded');
+    header.nextElementSibling.classList.toggle('expanded');
+}
+
+// Expand first category by default
+document.querySelector('.db-cat-header').click();
+
+// Database search
+document.getElementById('dbSearchInput').addEventListener('input', function(e) {
+    var term = e.target.value.toLowerCase();
+    document.querySelectorAll('.db-form-card').forEach(function(card) {
+        var text = card.textContent.toLowerCase();
+        card.style.display = (term === '' || text.includes(term)) ? '' : 'none';
+    });
+    // Show/hide categories based on visible cards
+    document.querySelectorAll('.db-category').forEach(function(cat) {
+        var cards = cat.querySelectorAll('.db-form-card');
+        var visible = Array.from(cards).filter(function(c) { return c.style.display !== 'none'; });
+        cat.style.display = (term === '' || visible.length > 0) ? '' : 'none';
+        if (term !== '' && visible.length > 0) {
+            var h = cat.querySelector('.db-cat-header');
+            if (!h.classList.contains('expanded')) toggleDbCategory(h);
+        }
+    });
+});
+
+// Database filter tabs
+document.querySelectorAll('.db-filter-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.db-filter-tab').forEach(function(t) { t.classList.remove('active'); });
+        this.classList.add('active');
+        var filter = this.dataset.filter;
+        document.querySelectorAll('.db-category').forEach(function(cat) {
+            cat.style.display = (filter === 'all' || cat.dataset.category === filter) ? '' : 'none';
+        });
+        document.getElementById('dbSearchInput').value = '';
+        // Reset card visibility
+        document.querySelectorAll('.db-form-card').forEach(function(c) { c.style.display = ''; });
+    });
+});
+</script>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>
