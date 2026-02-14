@@ -450,6 +450,8 @@
  let isLoading = false;
  let selectedParcel = null;
  let eligibilityCache = {};
+ let moveDebounceTimer = null;
+ let suppressMoveLoad = false;
 
  // Symbium-style colors
  const COLORS = {
@@ -595,22 +597,30 @@
  selectedParcelLayer.addData(feature);
  selectedParcel = feature;
 
- // Load footprints for this parcel
- await loadFootprintsForParcel(feature);
-
- // Get eligibility data
- const eligData = await getEligibilityData(stanpar);
-
- // Merge parcel props with eligibility data for panel display
- updatePropertyPanel(props, eligData);
-
- // Show panel
+ // Show panel first so map container resizes before we center
+ suppressMoveLoad = true;
  document.getElementById('property-panel').classList.add('visible');
  document.getElementById('welcome-panel').classList.add('hidden');
+ map.invalidateSize({ animate: false });
 
- // Pan to the actual parcel bounds
+ // Zoom INTO the parcel — use flyTo at zoom 18 centered on the parcel
  const parcelBounds = L.geoJSON(feature).getBounds();
- map.fitBounds(parcelBounds, { padding: [100, 100], maxZoom: 18 });
+ const center = parcelBounds.getCenter();
+ const currentZoom = map.getZoom();
+ const targetZoom = Math.max(currentZoom, 18);
+ map.flyTo(center, targetZoom, { duration: 0.5 });
+
+ // Release move suppression after fly animation completes
+ setTimeout(() => { suppressMoveLoad = false; }, 700);
+
+ // Load footprints and eligibility data in parallel
+ const [_, eligData] = await Promise.all([
+ loadFootprintsForParcel(feature),
+ getEligibilityData(stanpar)
+ ]);
+
+ // Update property panel
+ updatePropertyPanel(props, eligData);
  }
 
  // Load footprints for selected parcel
@@ -735,15 +745,17 @@
  return 700;
  }
 
- // Map move handler - load data for viewport
- async function onMapMove() {
+ // Map move handler - debounced, load data for viewport
+ function onMapMove() {
+ if (suppressMoveLoad) return;
+ if (moveDebounceTimer) clearTimeout(moveDebounceTimer);
+ moveDebounceTimer = setTimeout(async () => {
  const zoom = map.getZoom();
  if (zoom < 15) return;
-
  const bounds = map.getBounds();
  if (loadedBounds && loadedBounds.contains(bounds)) return;
-
  await loadViewportData(bounds);
+ }, 300);
  }
 
  // Load parcels and footprints for viewport
@@ -754,15 +766,17 @@
  document.getElementById('loading').classList.add('visible');
 
  try {
- // Load parcels from parcel-level service (not block-level cadastral)
- const parcels = await queryService(SERVICES.parcels, bounds, 'STANPAR,PropAddr,Acres,APN,ParcelID');
+ // Load parcels and footprints in parallel
+ const [parcels, footprints] = await Promise.all([
+ queryService(SERVICES.parcels, bounds, 'STANPAR,PropAddr,Acres,APN,ParcelID'),
+ queryService(SERVICES.footprints, bounds, '*')
+ ]);
+
+ // Swap layers only after data arrives (no flash)
  if (parcels.features) {
  parcelLayer.clearLayers();
  parcelLayer.addData(parcels);
  }
-
- // Load footprints
- const footprints = await queryService(SERVICES.footprints, bounds, '*');
  if (footprints.features) {
  footprintLayer.clearLayers();
  footprintLayer.addData(footprints);
@@ -805,6 +819,7 @@
 
  // Zoom change handler
  function onZoomChange() {
+ if (suppressMoveLoad) return;
  const zoom = map.getZoom();
  const msg = document.getElementById('zoom-message');
 
