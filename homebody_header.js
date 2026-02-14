@@ -57,7 +57,7 @@
                     ${col('ADU.png', 'Learn',
                         item('what_is_dadu.html', 'ADU.png', 'What is a DADU?') +
                         item('dadu_history.html', 'Recorded Docs.png', 'History &amp; Timeline') +
-                        item('dadu_building_requirements.html', 'Building and Construction.png', 'Requirements') +
+                        item('dadu_requirements_overview.html', 'Building and Construction.png', 'Requirements') +
                         item('dadu_zoning_standards.html', 'Zoning.png', 'Zoning Standards') +
                         item('dadu_code_legislation_v3.html', 'Legal.png', 'Code &amp; Legislation') +
                         item('permit_process_timeline.html', 'Renewals.png', 'Permit Process')
@@ -68,10 +68,10 @@
                         item('dadu_near_me_v2.html', 'Neighbors.png', 'DADUs Near Me') +
                         item('dadu_opportunity_explorer_v2.html', 'Area Maps and Visual layers.png', 'Opportunity Explorer')
                     )}
-                    ${col('Property Owners.png', 'By Role',
-                        item('homeowner_portal.html', 'Property Owners.png', 'Homeowner') +
+                    ${col('Property Owners.png', 'User Types',
+                        item('user-homeowners.html', 'Property Owners.png', 'Homeowner') +
                         item('contractor_marketplace.html', 'Building and Construction.png', 'Contractor') +
-                        item('designer_portal.html', 'Surveyers adn Engineers.png', 'Designer / Architect') +
+                        item('designer_resources.html', 'Surveyers adn Engineers.png', 'Designer / Architect') +
                         item('municipal_dashboard.html', 'Municipal.png', 'Municipal / Agency') +
                         item('legal_resources.html', 'Legal.png', 'Legal / Appraiser')
                     )}
@@ -83,24 +83,27 @@
                 <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="build">
                     BUILD <span class="chevron">&#9660;</span>
                 </button>
-                <div class="dropdown-menu mega-menu mega-menu-3" id="build-dropdown" role="menu">
+                <div class="dropdown-menu mega-menu mega-menu-4" id="build-dropdown" role="menu">
                     ${col('Exports & Reports.png', 'Plan',
                         item('project_planner.html', 'Exports & Reports.png', 'Project Planner') +
                         item('project_checklist.html', 'Renewals.png', 'Interactive Checklist') +
-                        item('site_plan_downloads.html', 'Surveyers adn Engineers.png', 'Site Plans') +
                         item('draw_dadu_on_parcel.html', 'APN Maps.png', 'Draw DADU on Parcel')
                     )}
-                    ${col('Valuations.png', 'Calculate',
+                    ${col('Valuations.png', 'Design &amp; Calculate',
+                        item('site_plan_downloads.html', 'Surveyers adn Engineers.png', 'Site Plan Finder') +
                         item('project_cost_estimator.html', 'Valuations.png', 'Cost Estimator') +
                         item('roi_calculator.html', 'Appraisers.png', 'ROI Calculator') +
                         item('size_calculator.html', 'ADU.png', 'Size Calculator') +
                         item('property_tax_calculator.html', 'Investments.png', 'Tax Calculator')
                     )}
+                    ${col('Building and Construction.png', 'Hire',
+                        item('contractor_marketplace.html', 'Building and Construction.png', 'Contractor Marketplace')
+                    )}
                     ${col('Claims.png', 'File',
                         item('determine_forms_required.html', 'Claims.png', 'Determine Forms') +
                         item('legal_form_filler.html', 'Recordable Legal Report.png', 'Form Filler') +
                         item('owner_occupancy.html', 'Property Owners.png', 'Owner Occupancy') +
-                        item('short_term_rental_permit.html', 'Renewals.png', 'Short Term Permit')
+                        item('str_permit.html', 'Renewals.png', 'STR Permit')
                     )}
                 </div>
             </div>
@@ -110,30 +113,27 @@
                 <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="data">
                     DATA <span class="chevron">&#9660;</span>
                 </button>
-                <div class="dropdown-menu mega-menu mega-menu-4" id="data-dropdown" role="menu">
+                <div class="dropdown-menu mega-menu mega-menu-3" id="data-dropdown" role="menu">
                     ${col('Enhanced Transaction History Report .png', 'Activity',
-                        item('permit_activity_dashboard.html', 'Enhanced Transaction History Report .png', 'Permit Activity') +
+                        item('permit_activity_dashboard.html', 'Enhanced Transaction History Report .png', 'Permit Dashboard') +
                         item('contractor_dashboard.html', 'Building and Construction.png', 'Contractor Dashboard') +
                         item('market_trends.html', 'Investments.png', 'Market Trends')
                     )}
                     ${col('Exports & Reports.png', 'Reports',
                         item('eligibility_report.html', 'Claims.png', 'Eligibility Report') +
+                        item('property-report-card.html', 'Property Detail Report .png', 'Property Intelligence') +
                         item('project_report.html', 'Exports & Reports.png', 'Project Report') +
                         item('dadu_reports_store.html', 'Building and Construction.png', 'Contractor Report') +
                         item('dadu_reports_store.html', 'Market Statistics Report .png', 'Market Analysis') +
-                        item('dadu_reports_store.html', 'Area Maps and Visual layers.png', 'Area Analysis') +
-                        item('property-report-card.html', 'Property Detail Report .png', 'Property Report')
+                        item('dadu_reports_store.html', 'Area Maps and Visual layers.png', 'Area Analysis')
                     )}
                     ${col('Recorded Docs.png', 'Records',
+                        item('nashville_permit_explorer_v3.html', 'Enhanced Transaction History Report .png', 'Permit Explorer') +
+                        item('site_plan_downloads.html', 'Surveyers adn Engineers.png', 'Permit Site Plans') +
                         item('dadu_documents_portal.html', 'Recorded Docs.png', 'Recorded Documents') +
                         item('restrictive_covenants_v2.html', 'Legal.png', 'Restrictive Covenants') +
                         item('overlay-districts.html', 'Zoning.png', 'Zoning Documents') +
-                        item('property-report-card.html', 'Property Detail Report .png', 'Property Cards')
-                    )}
-                    ${col('Enhanced Transaction History Report .png', 'Documents',
-                        item('nashville_permit_explorer_v3.html', 'Enhanced Transaction History Report .png', 'Permit Explorer') +
-                        item('dadu_code_legislation_v3.html', 'Legal.png', 'Code &amp; Legislation') +
-                        item('dadu_design_standards.html', 'Surveyers adn Engineers.png', 'Design Standards')
+                        item('pdf_database_lookup.html', 'Recorded Docs.png', 'PDF Database')
                     )}
                 </div>
             </div>

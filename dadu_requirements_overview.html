@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>DADU Requirements Overview | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
+ <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+   font-family: 'Inter', sans-serif;
+   background: #F2F0ED;
+   color: #333;
+   line-height: 1.6;
+  }
+
+  a { text-decoration: none; }
+
+  /* ========== HERO ========== */
+  .req-hero {
+   background: #3A5566;
+   padding: 56px 24px 48px;
+   text-align: center;
+  }
+
+  .req-hero h1 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: italic;
+   font-size: 36px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
+
+  .req-hero .subtitle {
+   color: #F0EBE1;
+   font-size: 16px;
+   max-width: 680px;
+   margin: 0 auto 20px;
+  }
+
+  .req-hero .hero-badges {
+   display: flex;
+   justify-content: center;
+   gap: 12px;
+   flex-wrap: wrap;
+  }
+
+  .req-hero .badge {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   background: rgba(255,255,255,0.12);
+   border: 1px solid rgba(225,212,187,0.3);
+   border-radius: 20px;
+   padding: 6px 16px;
+   font-size: 13px;
+   color: #E1D4BB;
+   font-weight: 600;
+  }
+
+  .req-hero .badge img {
+   width: 18px;
+   height: 18px;
+  }
+
+  /* ========== JUMP BAR ========== */
+  .jump-bar {
+   background: #fff;
+   border-bottom: 1px solid #E2E2E0;
+   position: sticky;
+   top: 64px;
+   z-index: 90;
+   overflow-x: auto;
+   -webkit-overflow-scrolling: touch;
+  }
+
+  .jump-bar-inner {
+   max-width: 1100px;
+   margin: 0 auto;
+   display: flex;
+   gap: 0;
+   padding: 0 16px;
+  }
+
+  .jump-bar a {
+   display: flex;
+   align-items: center;
+   gap: 6px;
+   padding: 12px 16px;
+   font-size: 13px;
+   font-weight: 600;
+   color: #7B746D;
+   white-space: nowrap;
+   border-bottom: 3px solid transparent;
+   transition: color 0.2s, border-color 0.2s;
+  }
+
+  .jump-bar a:hover {
+   color: #3A5566;
+   border-bottom-color: #CBB279;
+  }
+
+  .jump-bar a img {
+   width: 16px;
+   height: 16px;
+  }
+
+  /* ========== MAIN CONTENT ========== */
+  .req-main {
+   max-width: 900px;
+   margin: 0 auto;
+   padding: 0 24px 60px;
+  }
+
+  /* ========== SECTION BLOCKS ========== */
+  .req-section {
+   margin-top: 40px;
+   scroll-margin-top: 130px;
+  }
+
+  .section-header {
+   background: #3A5566;
+   padding: 14px 20px;
+   border-radius: 10px 10px 0 0;
+   display: flex;
+   align-items: center;
+   gap: 12px;
+  }
+
+  .section-header .sh-icon {
+   width: 36px;
+   height: 36px;
+   background: rgba(255,255,255,0.15);
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+  }
+
+  .section-header .sh-icon img {
+   width: 20px;
+   height: 20px;
+  }
+
+  .section-header h2 {
+   color: #fff;
+   font-size: 15px;
+   font-weight: 700;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+  }
+
+  .section-header .code-ref {
+   margin-left: auto;
+   font-size: 11px;
+   color: #CBB279;
+   font-weight: 600;
+   white-space: nowrap;
+  }
+
+  .section-body {
+   background: #f5f5f0;
+   border: 1px solid #E2E2E0;
+   border-top: none;
+   border-radius: 0 0 10px 10px;
+   padding: 24px;
+  }
+
+  /* ========== RULE LISTS ========== */
+  .rule-list {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+  }
+
+  .rule-list li {
+   padding: 10px 0 10px 24px;
+   position: relative;
+   font-size: 14px;
+   color: #333;
+   border-bottom: 1px solid #E2E2E0;
+  }
+
+  .rule-list li:last-child { border-bottom: none; }
+
+  .rule-list li::before {
+   content: "";
+   position: absolute;
+   left: 0;
+   top: 16px;
+   width: 8px;
+   height: 8px;
+   border-radius: 50%;
+   background: #7B746D;
+  }
+
+  .rule-list .sub-list {
+   margin-top: 8px;
+   padding-left: 20px;
+   list-style: none;
+  }
+
+  .rule-list .sub-list li {
+   padding: 6px 0 6px 20px;
+   font-size: 13px;
+   border-bottom: 1px dashed #E2E2E0;
+  }
+
+  .rule-list .sub-list li::before {
+   width: 6px;
+   height: 6px;
+   top: 13px;
+   background: #CBB279;
+  }
+
+  .hl { color: #3A5566; font-weight: 700; }
+  .code-cite { color: #7B746D; font-size: 12px; font-weight: 600; }
+
+  /* ========== SIZE CARDS ========== */
+  .size-cards {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 16px;
+   margin-bottom: 16px;
+  }
+
+  .size-card {
+   background: #fff;
+   border-radius: 10px;
+   padding: 24px;
+   text-align: center;
+   border: 2px solid #E2E2E0;
+  }
+
+  .size-card.small { border-color: #7B746D; }
+  .size-card.large { border-color: #CBB279; }
+
+  .size-card .sc-label {
+   font-size: 11px;
+   font-weight: 700;
+   color: #706F6C;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   margin-bottom: 8px;
+  }
+
+  .size-card .sc-value {
+   font-size: 40px;
+   font-weight: 800;
+   margin-bottom: 4px;
+  }
+
+  .size-card.small .sc-value { color: #7B746D; }
+  .size-card.large .sc-value { color: #CBB279; }
+
+  .size-card .sc-unit { font-size: 14px; color: #706F6C; }
+  .size-card .sc-note { font-size: 11px; color: #918A83; margin-top: 6px; }
+
+  /* ========== HEIGHT SPECS ========== */
+  .height-rows {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   margin-bottom: 16px;
+  }
+
+  .h-row {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   padding: 14px 16px;
+   background: #fff;
+   border-radius: 8px;
+   border: 1px solid #E2E2E0;
+  }
+
+  .h-row .h-icon {
+   width: 48px;
+   height: 40px;
+   display: flex;
+   align-items: flex-end;
+   justify-content: center;
+   flex-shrink: 0;
+  }
+
+  .h-row .h-block {
+   background: #7B746D;
+   border-radius: 2px 2px 0 0;
+  }
+
+  .h-row .h-block.one { width: 36px; height: 22px; }
+  .h-row .h-block.two { width: 36px; height: 32px; }
+  .h-row .h-block.ridge { width: 36px; height: 36px; position: relative; }
+  .h-row .h-block.ridge::after {
+   content: "";
+   position: absolute;
+   top: -8px;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 0; height: 0;
+   border-left: 18px solid transparent;
+   border-right: 18px solid transparent;
+   border-bottom: 8px solid #CBB279;
+  }
+
+  .h-row .h-text { flex: 1; }
+  .h-row .h-text .h-type { font-weight: 700; color: #3A5566; font-size: 14px; }
+  .h-row .h-text .h-spec { font-size: 12px; color: #706F6C; }
+  .h-row .h-measure { font-size: 22px; font-weight: 800; color: #7B746D; white-space: nowrap; }
+
+  /* ========== SETBACK TABLE ========== */
+  .setback-table {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 13px;
+   margin-bottom: 16px;
+  }
+
+  .setback-table th {
+   background: #3A5566;
+   color: #fff;
+   padding: 10px 12px;
+   font-weight: 700;
+   font-size: 11px;
+   text-transform: uppercase;
+   text-align: left;
+  }
+
+  .setback-table td {
+   padding: 10px 12px;
+   border-bottom: 1px solid #E2E2E0;
+   color: #333;
+  }
+
+  .setback-table tr:nth-child(even) td { background: #F0EBE1; }
+
+  /* ========== RESTRICTION CARDS ========== */
+  .restrict-grid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 14px;
+  }
+
+  .restrict-card {
+   background: #fff;
+   border-radius: 8px;
+   padding: 16px;
+   border-left: 4px solid #CBB279;
+  }
+
+  .restrict-card.warning { border-left-color: #7A2A1D; background: #fdf6f5; }
+
+  .restrict-card .rc-title {
+   font-weight: 700;
+   color: #3A5566;
+   font-size: 14px;
+   margin-bottom: 4px;
+  }
+
+  .restrict-card .rc-desc {
+   font-size: 13px;
+   color: #706F6C;
+   line-height: 1.5;
+  }
+
+  /* ========== DESIGN CARDS ========== */
+  .design-grid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 14px;
+  }
+
+  .design-card {
+   background: #fff;
+   border-radius: 8px;
+   padding: 16px;
+   border: 1px solid #E2E2E0;
+  }
+
+  .design-card .dc-title {
+   font-weight: 700;
+   color: #3A5566;
+   font-size: 14px;
+   margin-bottom: 4px;
+  }
+
+  .design-card .dc-desc {
+   font-size: 13px;
+   color: #706F6C;
+   line-height: 1.5;
+  }
+
+  /* ========== OVERLAY BOX ========== */
+  .overlay-box {
+   background: #fff;
+   border: 2px solid #7B746D;
+   border-radius: 10px;
+   padding: 20px;
+   margin-bottom: 14px;
+  }
+
+  .overlay-box h3 {
+   color: #3A5566;
+   font-size: 15px;
+   font-weight: 700;
+   margin-bottom: 10px;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+  }
+
+  .overlay-box h3 img {
+   width: 24px;
+   height: 24px;
+  }
+
+  .overlay-box ul {
+   list-style: none;
+   padding: 0;
+  }
+
+  .overlay-box ul li {
+   padding: 6px 0 6px 20px;
+   position: relative;
+   font-size: 13px;
+   color: #333;
+   border-bottom: 1px dashed #E2E2E0;
+  }
+
+  .overlay-box ul li:last-child { border-bottom: none; }
+
+  .overlay-box ul li::before {
+   content: "";
+   position: absolute;
+   left: 0;
+   top: 13px;
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+   background: #7B746D;
+  }
+
+  /* ========== PERMIT STEPS ========== */
+  .permit-steps {
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+  }
+
+  .p-step {
+   display: flex;
+   align-items: flex-start;
+   gap: 16px;
+   padding: 16px;
+   background: #fff;
+   border-radius: 8px;
+   border: 1px solid #E2E2E0;
+  }
+
+  .p-step .step-num {
+   width: 36px;
+   height: 36px;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-weight: 800;
+   font-size: 15px;
+   color: #fff;
+   flex-shrink: 0;
+  }
+
+  .p-step:nth-child(odd) .step-num { background: #496778; }
+  .p-step:nth-child(even) .step-num { background: #CBB279; color: #3A5566; }
+
+  .p-step .step-body { flex: 1; }
+
+  .p-step .step-title {
+   font-weight: 700;
+   color: #3A5566;
+   font-size: 15px;
+   margin-bottom: 4px;
+  }
+
+  .p-step .step-desc {
+   font-size: 13px;
+   color: #706F6C;
+   line-height: 1.5;
+  }
+
+  /* ========== NOTE BOX ========== */
+  .note-box {
+   background: #F0EBE1;
+   border: 1px solid #7B746D;
+   border-radius: 8px;
+   padding: 14px 16px;
+   margin-top: 16px;
+  }
+
+  .note-box .nb-title {
+   font-weight: 700;
+   color: #3A5566;
+   font-size: 12px;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   margin-bottom: 4px;
+  }
+
+  .note-box .nb-text {
+   font-size: 13px;
+   color: #706F6C;
+   line-height: 1.5;
+  }
+
+  /* ========== INLINE LINKS ========== */
+  .tool-link {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   color: #3A5566;
+   font-weight: 600;
+   font-size: 13px;
+   border-bottom: 1px solid #CBB279;
+   padding-bottom: 1px;
+   transition: color 0.2s;
+  }
+
+  .tool-link:hover { color: #496778; }
+
+  .tool-link img {
+   width: 16px;
+   height: 16px;
+  }
+
+  .links-row {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 16px;
+   margin-top: 16px;
+  }
+
+  /* ========== CTA SECTION ========== */
+  .req-cta {
+   background: #3A5566;
+   padding: 56px 24px;
+   text-align: center;
+   margin-top: 48px;
+  }
+
+  .req-cta h2 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: italic;
+   font-size: 32px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
+
+  .req-cta p {
+   color: #F0EBE1;
+   font-size: 15px;
+   margin-bottom: 28px;
+   max-width: 550px;
+   margin-left: auto;
+   margin-right: auto;
+  }
+
+  .req-cta .cta-btn {
+   display: inline-block;
+   padding: 16px 40px;
+   background: #CBB279;
+   color: #3A5566;
+   border-radius: 8px;
+   font-size: 16px;
+   font-weight: 700;
+   transition: background 0.2s, transform 0.2s;
+  }
+
+  .req-cta .cta-btn:hover {
+   background: #D4A54E;
+   transform: translateY(-2px);
+  }
+
+  /* ========== FOOTER ========== */
+  .req-footer {
+   background: #3A5566;
+   border-top: 1px solid #496778;
+   padding: 24px;
+   text-align: center;
+  }
+
+  .req-footer p {
+   font-size: 12px;
+   color: #918A83;
+   margin-bottom: 6px;
+  }
+
+  .req-footer a {
+   color: #CBB279;
+  }
+
+  .req-footer .brand {
+   color: #E1D4BB;
+   font-weight: 700;
+   letter-spacing: 1px;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 700px) {
+   .req-hero h1 { font-size: 28px; }
+   .size-cards { grid-template-columns: 1fr; }
+   .restrict-grid { grid-template-columns: 1fr; }
+   .design-grid { grid-template-columns: 1fr; }
+   .jump-bar a { padding: 10px 12px; font-size: 12px; }
+   .section-header .code-ref { display: none; }
+  }
+ </style>
+</head>
+<body>
+
+<!-- Shared Header -->
+<div id="site-header"></div>
+
+<!-- Hero -->
+<section class="req-hero">
+ <h1>Nashville DADU Requirements Overview</h1>
+ <p class="subtitle">Complete eligibility rules, size limits, setbacks, design standards, and permit process under BL2025-1007. Effective December 12, 2025.</p>
+ <div class="hero-badges">
+  <span class="badge"><img src="assets/icons/Zoning.png" alt=""> R &amp; RS Zones</span>
+  <span class="badge"><img src="assets/icons/ADU.png" alt=""> 67,707 Eligible Parcels</span>
+  <span class="badge"><img src="assets/icons/Legal.png" alt=""> Metro Code 17.16.030G</span>
+ </div>
+</section>
+
+<!-- Sticky Jump Bar -->
+<nav class="jump-bar" aria-label="Section navigation">
+ <div class="jump-bar-inner">
+  <a href="#eligibility"><img src="assets/icons/Zoning.png" alt="">Eligibility</a>
+  <a href="#size"><img src="assets/icons/Appraisers.png" alt="">Size</a>
+  <a href="#height"><img src="assets/icons/Building and Construction.png" alt="">Height</a>
+  <a href="#setbacks"><img src="assets/icons/APN Maps.png" alt="">Setbacks</a>
+  <a href="#use"><img src="assets/icons/Property Owners.png" alt="">Use</a>
+  <a href="#design"><img src="assets/icons/Surveyers adn Engineers.png" alt="">Design</a>
+  <a href="#overlays"><img src="assets/icons/Recorded Docs.png" alt="">Overlays</a>
+  <a href="#permits"><img src="assets/icons/Renewals.png" alt="">Permits</a>
+ </div>
+</nav>
+
+<div class="req-main">
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- SECTION 1: ELIGIBILITY -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="req-section" id="eligibility">
+  <div class="section-header">
+   <div class="sh-icon"><img src="assets/icons/Zoning.png" alt=""></div>
+   <h2>1. Eligibility</h2>
+   <span class="code-ref">Land Use Table &middot; 17.12</span>
+  </div>
+  <div class="section-body">
+   <p style="font-size:14px;color:#706F6C;margin-bottom:16px;">To build a DADU, your property must meet <span class="hl">ALL</span> of the following criteria:</p>
+
+   <ul class="rule-list">
+    <li>Land Use Table must show the parcel's zoning district permits DADUs with conditions (<span class="hl">PC</span>)</li>
+    <li>Lot area must comply with <span class="hl">minimum lot area</span> for the zoning district <span class="code-cite">(see bulk regulation tables in 17.12)</span></li>
+    <li>Parcel must meet <span class="hl">one</span> of these four paths:
+     <ul class="sub-list">
+      <li><span class="hl">a.</span> Be in the Urban Services District (by-right)</li>
+      <li><span class="hl">b.</span> Be within a DADU Overlay in the General Services District</li>
+      <li><span class="hl">c.</span> Be within an Urban Design Overlay (UDO) with DADU development standards</li>
+      <li><span class="hl">d.</span> Be within a Specific Plan (SP) with DADU development standards</li>
+     </ul>
+    </li>
+    <li>Only <span class="hl">one DADU</span> per parcel</li>
+    <li>Only when <span class="hl">one single-family principal structure</span> is present</li>
+    <li>When two or more principal structures exist, DADU is <span class="hl">NOT</span> permitted</li>
+   </ul>
+
+   <div class="links-row">
+    <a href="am_i_eligible.html" class="tool-link"><img src="assets/icons/Property Owners.png" alt="">Check My Eligibility</a>
+    <a href="dadu_eligibility_map.html" class="tool-link"><img src="assets/icons/Area Maps and Visual layers.png" alt="">View Eligibility Map</a>
+   </div>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- SECTION 2: SIZE LIMITS -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="req-section" id="size">
+  <div class="section-header">
+   <div class="sh-icon"><img src="assets/icons/Appraisers.png" alt=""></div>
+   <h2>2. Size Limits</h2>
+   <span class="code-ref">17.16.030G.7.a</span>
+  </div>
+  <div class="section-body">
+   <div class="size-cards">
+    <div class="size-card small">
+     <div class="sc-label">Lots Under 10,000 SF</div>
+     <div class="sc-value">700</div>
+     <div class="sc-unit">SF max living space</div>
+    </div>
+    <div class="size-card large">
+     <div class="sc-label">Lots 10,000 SF or Greater</div>
+     <div class="sc-value">850</div>
+     <div class="sc-unit">SF max living space</div>
+    </div>
+   </div>
+
+   <ul class="rule-list">
+    <li>Living space <span class="hl">cannot exceed the size</span> of the principal structure <span class="code-cite">(17.16.030G.7.a)</span></li>
+    <li>DADU footprint <span class="hl">cannot exceed the footprint</span> of the primary structure <span class="code-cite">(17.16.030G.7.a)</span></li>
+    <li>No other accessory structure can exceed <span class="hl">200 SF</span> when a DADU exists on the lot</li>
+   </ul>
+
+   <div class="links-row">
+    <a href="size_calculator.html" class="tool-link"><img src="assets/icons/Appraisers.png" alt="">DADU Size Calculator</a>
+   </div>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- SECTION 3: HEIGHT -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="req-section" id="height">
+  <div class="section-header">
+   <div class="sh-icon"><img src="assets/icons/Building and Construction.png" alt=""></div>
+   <h2>3. Height</h2>
+   <span class="code-ref">17.16.060G.7.b &middot; 7.c</span>
+  </div>
+  <div class="section-body">
+   <div class="height-rows">
+    <div class="h-row">
+     <div class="h-icon"><div class="h-block one"></div></div>
+     <div class="h-text">
+      <div class="h-type">Single-Story DADU</div>
+      <div class="h-spec">Max eave height from average finished grade</div>
+     </div>
+     <div class="h-measure">10 ft</div>
+    </div>
+    <div class="h-row">
+     <div class="h-icon"><div class="h-block two"></div></div>
+     <div class="h-text">
+      <div class="h-type">Two-Story DADU</div>
+      <div class="h-spec">Max eave height from average finished grade</div>
+     </div>
+     <div class="h-measure">17 ft</div>
+    </div>
+    <div class="h-row">
+     <div class="h-icon"><div class="h-block ridge"></div></div>
+     <div class="h-text">
+      <div class="h-type">Roof Ridge Maximum</div>
+      <div class="h-spec">Must be less than primary structure ridge</div>
+     </div>
+     <div class="h-measure">27 ft</div>
+    </div>
+   </div>
+
+   <div class="note-box">
+    <div class="nb-title">Key Rule</div>
+    <div class="nb-text">DADU cannot be taller than the principal structure measured to the eave line. Roof ridge cannot exceed 27 ft from average finished grade. <span class="code-cite">(17.16.060G.7.b, 7.c)</span></div>
+   </div>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- SECTION 4: SETBACKS -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="req-section" id="setbacks">
+  <div class="section-header">
+   <div class="sh-icon"><img src="assets/icons/APN Maps.png" alt=""></div>
+   <h2>4. Setbacks</h2>
+   <span class="code-ref">17.12.040E.1.a</span>
+  </div>
+  <div class="section-body">
+   <p style="font-size:13px;color:#706F6C;margin-bottom:14px;font-weight:600;">Footprint 850 SF or less, located to rear of principal structure:</p>
+
+   <table class="setback-table">
+    <thead>
+     <tr>
+      <th>Footprint Size</th>
+      <th>Side Setback</th>
+      <th>Rear Setback</th>
+      <th>Rear (Alley)</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr>
+      <td>850 SF or less</td>
+      <td>Min. half of zoning district requirement, not less than 3 ft</td>
+      <td>3 ft minimum</td>
+      <td>10 ft (garage doors/carport openings face alley)</td>
+     </tr>
+     <tr>
+      <td>Over 850 SF</td>
+      <td>Full zoning district setbacks</td>
+      <td>Full zoning district setbacks</td>
+      <td>Full zoning district setbacks</td>
+     </tr>
+    </tbody>
+   </table>
+
+   <ul class="rule-list">
+    <li>Cannot build over an <span class="hl">easement</span> or <span class="hl">platted setback</span> <span class="code-cite">(17.12.040E.1.a)</span></li>
+    <li>Cannot build over <span class="hl">side street setback</span> on corner lots</li>
+   </ul>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- SECTION 5: USE RESTRICTIONS -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="req-section" id="use">
+  <div class="section-header">
+   <div class="sh-icon"><img src="assets/icons/Property Owners.png" alt=""></div>
+   <h2>5. Use Restrictions</h2>
+   <span class="code-ref">17.04.060</span>
+  </div>
+  <div class="section-body">
+   <div class="restrict-grid">
+    <div class="restrict-card">
+     <div class="rc-title">Subordinate Structure</div>
+     <div class="rc-desc">DADU must be clearly subordinate in size, height, and purpose to the principal structure. <span class="code-cite">(17.04.060)</span></div>
+    </div>
+    <div class="restrict-card">
+     <div class="rc-title">Same Lot, Detached</div>
+     <div class="rc-desc">Must be located on same lot as principal structure and detached from it. Can be independent structure, dwelling above garage, or attached to workshop/accessory structure.</div>
+    </div>
+    <div class="restrict-card">
+     <div class="rc-title">Owner Occupancy</div>
+     <div class="rc-desc">Same owner must own both DADU and principal structure. One of the two dwellings must be owner-occupied.</div>
+    </div>
+    <div class="restrict-card">
+     <div class="rc-title">Parking</div>
+     <div class="rc-desc">One off-street parking space required for the DADU.</div>
+    </div>
+    <div class="restrict-card warning">
+     <div class="rc-title">No Short-Term Rentals</div>
+     <div class="rc-desc">No STRPs in DADUs on single-family, RN, or RL zoned lots.</div>
+    </div>
+    <div class="restrict-card">
+     <div class="rc-title">Restrictive Covenant</div>
+     <div class="rc-desc">Covenant must be recorded with Davidson County Register of Deeds before permit issuance.</div>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- SECTION 6: DESIGN STANDARDS -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="req-section" id="design">
+  <div class="section-header">
+   <div class="sh-icon"><img src="assets/icons/Surveyers adn Engineers.png" alt=""></div>
+   <h2>6. Design Standards</h2>
+   <span class="code-ref">17.16.030G.8</span>
+  </div>
+  <div class="section-body">
+   <div class="design-grid">
+    <div class="design-card">
+     <div class="dc-title">Style Matching</div>
+     <div class="dc-desc">Similar style, design, and material color as principal structure. <span class="code-cite">(17.16.030G.8)</span></div>
+    </div>
+    <div class="design-card">
+     <div class="dc-title">Roof Form</div>
+     <div class="dc-desc">Similar roof form and pitch as the principal structure.</div>
+    </div>
+    <div class="design-card">
+     <div class="dc-title">Dormers</div>
+     <div class="dc-desc">Must relate to style/proportion of windows. Cannot cover more than 50% of roof. Must be set back minimum 2 ft from exterior wall.</div>
+    </div>
+    <div class="design-card">
+     <div class="dc-title">Accessory Structures</div>
+     <div class="dc-desc">No other accessory structure can exceed 200 SF when a DADU exists on the lot.</div>
+    </div>
+   </div>
+
+   <div class="links-row">
+    <a href="designer_resources.html" class="tool-link"><img src="assets/icons/Surveyers adn Engineers.png" alt="">Designer Resources</a>
+    <a href="site_plan_downloads.html" class="tool-link"><img src="assets/icons/Recorded Docs.png" alt="">Approved Site Plans</a>
+   </div>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- SECTION 7: HISTORIC, SP, UDO -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="req-section" id="overlays">
+  <div class="section-header">
+   <div class="sh-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+   <h2>7. Historic Overlay, SP, and UDO Properties</h2>
+   <span class="code-ref">Overlay Districts</span>
+  </div>
+  <div class="section-body">
+   <div class="overlay-box">
+    <h3><img src="assets/icons/Recorded Docs.png" alt="">Historic Overlay Properties</h3>
+    <ul>
+     <li>Setbacks, size, and design enforced by <span class="hl">Historic Commission</span></li>
+     <li>Use and living space enforced by <span class="hl">Zoning</span> <span class="code-cite">(17.16.030G)</span></li>
+     <li>Historic Preservation Permit required <span class="hl">in addition to</span> building permit</li>
+     <li>Contact Metropolitan Historic Zoning Commission for design guidelines</li>
+    </ul>
+   </div>
+
+   <div class="overlay-box">
+    <h3><img src="assets/icons/Legal.png" alt="">Specific Plan (SP) or Urban Design Overlay (UDO)</h3>
+    <ul>
+     <li>Planning Department determines requirements</li>
+     <li>Building permit required with <span class="hl">Metro Codes and Planning approval</span></li>
+     <li>SP or UDO development standards may impose additional restrictions beyond base zoning</li>
+    </ul>
+   </div>
+
+   <div class="links-row">
+    <a href="overlay-districts.html" class="tool-link"><img src="assets/icons/Zoning.png" alt="">Overlay Districts Reference</a>
+    <a href="dadu_code_legislation_v3.html" class="tool-link"><img src="assets/icons/Legal.png" alt="">Code &amp; Legislation Database</a>
+   </div>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- SECTION 8: PERMIT PROCESS -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="req-section" id="permits">
+  <div class="section-header">
+   <div class="sh-icon"><img src="assets/icons/Renewals.png" alt=""></div>
+   <h2>8. Permit Process</h2>
+   <span class="code-ref">5 Steps</span>
+  </div>
+  <div class="section-body">
+   <div class="permit-steps">
+    <div class="p-step">
+     <div class="step-num">1</div>
+     <div class="step-body">
+      <div class="step-title">Hire a Licensed Contractor</div>
+      <div class="step-desc">Property owners <span class="hl">CANNOT</span> pull self-permits for DADU construction or garage-to-DADU conversion. Homeowners can only self-permit renovations to an already-permitted DADU up to $25,000.</div>
+     </div>
+    </div>
+    <div class="p-step">
+     <div class="step-num">2</div>
+     <div class="step-body">
+      <div class="step-title">Submit to Zoning Help Desk</div>
+      <div class="step-desc">Contractor submits: residential permit application, site plan with distances to property lines/structures/easements, elevations from four corners, floor plan with fixtures/appliances.</div>
+     </div>
+    </div>
+    <div class="p-step">
+     <div class="step-num">3</div>
+     <div class="step-body">
+      <div class="step-title">Zoning Examiner Review</div>
+      <div class="step-desc">Application assigned to a zoning examiner for review against all DADU requirements.</div>
+     </div>
+    </div>
+    <div class="p-step">
+     <div class="step-num">4</div>
+     <div class="step-body">
+      <div class="step-title">Complete Signoff Checklist</div>
+      <div class="step-desc">Obtain all required signoffs from Codes divisions and Metro agencies before permit issuance.</div>
+     </div>
+    </div>
+    <div class="p-step">
+     <div class="step-num">5</div>
+     <div class="step-body">
+      <div class="step-title">Pay Fees and Build</div>
+      <div class="step-desc">Pay permit fees and begin construction. Schedule inspections with Metro Nashville throughout the build process.</div>
+     </div>
+    </div>
+   </div>
+
+   <div class="note-box">
+    <div class="nb-title">Self-Permit Exception</div>
+    <div class="nb-text">Homeowners may only self-permit renovations to an already-permitted DADU, and only up to $25,000 in value. All new DADU construction and garage conversions require a licensed contractor.</div>
+   </div>
+
+   <div class="links-row">
+    <a href="contractor_marketplace.html" class="tool-link"><img src="assets/icons/Building and Construction.png" alt="">Find a Contractor</a>
+    <a href="determine_forms_required.html" class="tool-link"><img src="assets/icons/Claims.png" alt="">Determine Required Forms</a>
+    <a href="https://epermits.nashville.gov" target="_blank" class="tool-link"><img src="assets/icons/Renewals.png" alt="">Nashville ePermits Portal</a>
+   </div>
+  </div>
+ </div>
+
+</div>
+
+<!-- CTA -->
+<section class="req-cta">
+ <h2>Ready to Check Your Property?</h2>
+ <p>Enter your address to instantly check DADU eligibility based on Nashville's BL2025-1007 requirements.</p>
+ <a href="am_i_eligible.html" class="cta-btn">Check Eligibility Now</a>
+</section>
+
+<!-- Footer -->
+<div class="req-footer">
+ <p>Source: <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/building-permits-central-i-want-0" target="_blank">Metro Nashville Codes Administration</a> &middot; Metro Code 17.16.030G &middot; <a href="dadu_code_legislation_v3.html">Full Code &amp; Legislation Database</a></p>
+ <p><span class="brand">HOMEBODY PROJECTS</span> &middot; Powered by Castlehold &middot; Nashville, Tennessee &middot; 2026</p>
+</div>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>
