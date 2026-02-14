@@ -156,7 +156,7 @@ Each dropdown item with an icon should show the PNG icon at 32-40px, clearly vis
 
 ### Routing
 - LOGO → index.html
-- PRICING → homebody_pricing.html (no dropdown)
+- PRICING → homebody_dadu_pricing.html (no dropdown)
 - ABOUT → about.html (no dropdown)
 
 ---
@@ -254,7 +254,7 @@ Eligibility Map note: Full parcel map colored by eligibility status (Yes = #2E6F
 ---
 
 ### PRICING
-Direct link to homebody_pricing.html. No dropdown.
+Direct link to homebody_dadu_pricing.html. No dropdown.
 
 ### ABOUT
 Direct link to about.html. No dropdown.
@@ -280,7 +280,7 @@ dadu_eligibility_map.html, parcel_footprint_map.html, property_search.html, dadu
 roi_calculator.html, project_cost_estimator.html, property_tax_calculator.html, size_calculator.html, project_checklist.html, project_planner.html, draw_dadu_on_parcel.html, site_plan_downloads.html
 
 **Reports & Pricing (5 files):**
-eligibility_report.html, project_report.html, dadu_reports_store.html, reports_pricing.html, homebody_pricing.html
+eligibility_report.html, project_report.html, dadu_reports_store.html, reports_pricing.html, homebody_dadu_pricing.html
 
 **Legal & Forms (5 files):**
 determine_forms_required.html, legal_form_filler.html, restrictive_covenants_v2.html, dadu_documents_portal.html, pdf_database_lookup.html
