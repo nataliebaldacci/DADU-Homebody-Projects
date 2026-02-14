@@ -3,7 +3,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Castlehold | DADU Zoning & Buildability Intelligence</title>
+ <title>Homebody Projects | DADU Eligibility Map</title>
  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
@@ -638,7 +638,7 @@
  .quick-nav { grid-template-columns: 1fr; }
  }</style></head>
 <body>
-<!-- Shared Header - Castlehold -->
+<!-- Shared Header -->
 <div id="site-header"></div>
 
 <!-- End Shared Header -->
@@ -714,7 +714,7 @@
  <a href="am_i_eligible.html"><span class="ico"></span>Eligibility Check</a>
  <a href="property_search.html"><span class="ico"></span>Property Search</a>
  <a href="dadu_near_me_v2.html"><span class="ico"></span>Near Me</a>
- <a href="dadu_explorer_v3.html"><span class="ico"></span>Explorer</a>
+ <a href="dadu_opportunity_explorer_v2.html"><span class="ico"></span>Explorer</a>
  <a href="roi_calculator.html"><span class="ico"></span>ROI Calculator</a>
  <a href="dadu_reports_store.html"><span class="ico"></span>Reports</a></div></div>
 
@@ -808,7 +808,7 @@
  <div class="ico"></div>
  <h4>Contractor Rankings</h4>
  <p>Top builders by volume</p></a>
- <a href="dadu_explorer.html" class="bf-tool-card">
+ <a href="dadu_opportunity_explorer_v2.html" class="bf-tool-card">
  <div class="ico"></div>
  <h4>DADU Explorer</h4>
  <p>Browse completed projects</p></a></div></div>
@@ -828,7 +828,7 @@
  <a href="owner_occupancy.html">Owner Occupancy</a>
  <a href="restrictive_covenants_v2.html">Restrictive Covenants</a>
  <a href="dadu_code_legislation_v3.html">Metro Code</a>
- <a href="dadu_legal_citations.html">Legal Citations</a></div>
+ <a href="dadu_code_legislation_v3.html">Legal Citations</a></div>
  <div class="ql-group">
  <h4>Tools</h4>
  <a href="dadu_property_viewer_v3.html">Property Lookup</a>
@@ -843,7 +843,7 @@
  <a href="dadu_resources.html">All Forms & Docs</a></div></div></div></div>
 
  <footer class="page-footer">
- <p>Castlehold | DADU Zoning & Buildability Intelligence | <a href="about_platform_infographic.html">About This Platform</a></p>
+ <p>Powered by Castlehold | <a href="about_platform_infographic.html">About This Platform</a></p>
  <p style="margin-top: 6px;">Data sources: Nashville Open Data, Metro Codes, Property Assessor. Not legal advice.</p></footer></div>
 
 <!-- ========== SCRIPTS ========== -->
@@ -864,7 +864,7 @@
  };
 
  const ARCGIS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Eligibility_Enhanced_Polygons_20260213_065606/FeatureServer/0';
- const CADASTRAL_SERVICE = 'https://maps.nashville.gov/arcgis/rest/services/Cadastral/Cadastral_Layers/MapServer/4';
+ const PARCELS_SERVICE = 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_with_Building_Characteristics_view/FeatureServer/0';
 
  let map;
  let parcelLayer;
@@ -912,7 +912,7 @@
  return queryArcGIS({ ...options, where: whereClause });
  }
 
- async function queryCadastral(stanpars) {
+ async function queryParcels(stanpars) {
  if (!stanpars || stanpars.length === 0) return null;
  const whereClause = stanpars.map(s =>`STANPAR = '${s}'`).join(' OR ');
  const params = new URLSearchParams({
@@ -923,16 +923,16 @@
  f: 'geojson'
  });
  try {
- const response = await fetch(`${CADASTRAL_SERVICE}/query?${params.toString()}`);
- if (!response.ok) throw new Error(`Cadastral query failed: ${response.status}`);
+ const response = await fetch(`${PARCELS_SERVICE}/query?${params.toString()}`);
+ if (!response.ok) throw new Error(`Parcel query failed: ${response.status}`);
  return await response.json();
  } catch (err) {
- console.error('Cadastral query error:', err);
+ console.error('Parcel query error:', err);
  return null;
  }
  }
 
- async function queryCadastralByBounds(bounds) {
+ async function queryParcelsByBounds(bounds) {
  const geometry = JSON.stringify({
  xmin: bounds.getWest(), ymin: bounds.getSouth(),
  xmax: bounds.getEast(), ymax: bounds.getNorth(),
@@ -947,11 +947,35 @@
  resultRecordCount: 500
  });
  try {
- const response = await fetch(`${CADASTRAL_SERVICE}/query?${params.toString()}`);
- if (!response.ok) throw new Error(`Cadastral query failed: ${response.status}`);
+ const response = await fetch(`${PARCELS_SERVICE}/query?${params.toString()}`);
+ if (!response.ok) throw new Error(`Parcel query failed: ${response.status}`);
  return await response.json();
  } catch (err) {
- console.error('Cadastral bounds query error:', err);
+ console.error('Parcel bounds query error:', err);
+ return null;
+ }
+ }
+
+ // Point query for map click — returns single parcel at click location
+ async function queryParcelAtPoint(lat, lng) {
+ const geometry = JSON.stringify({
+ x: lng, y: lat,
+ spatialReference: { wkid: 4326 }
+ });
+ const params = new URLSearchParams({
+ where: '1=1', geometry: geometry,
+ geometryType: 'esriGeometryPoint',
+ spatialRel: 'esriSpatialRelIntersects',
+ outFields: 'STANPAR,PropAddr,Acres',
+ returnGeometry: true, outSR: 4326, f: 'geojson',
+ resultRecordCount: 1
+ });
+ try {
+ const response = await fetch(`${PARCELS_SERVICE}/query?${params.toString()}`);
+ if (!response.ok) return null;
+ return await response.json();
+ } catch (err) {
+ console.error('Parcel point query error:', err);
  return null;
  }
  }
@@ -1041,6 +1065,61 @@
  }, 300);
  });
 
+ // Map click — point query for individual parcel selection
+ map.on('click', async function(e) {
+ if (map.getZoom() < 15) return;
+ const result = await queryParcelAtPoint(e.latlng.lat, e.latlng.lng);
+ if (!result || !result.features || result.features.length === 0) return;
+
+ const feature = result.features[0];
+ const stanpar = feature.properties.STANPAR;
+ if (!stanpar) return;
+
+ // Get eligibility data for this parcel
+ try {
+ const eligData = await queryArcGIS({
+ where: `STANPAR = '${stanpar}'`,
+ outFields: 'STANPAR,Address,Zoning,Eligibility_Status,Max_DADU_Living_SF,Lot_SqFt,Acres,Service_District',
+ resultRecordCount: 1
+ });
+ if (eligData.features && eligData.features.length > 0) {
+ const attrs = eligData.features[0].attributes;
+ const status = attrs.Eligibility_Status || '';
+ let eligClass = 'not-eligible', fillColor = COLORS.notEligible;
+ if (status === 'CHECK_SP_USD') { eligClass = 'eligible'; fillColor = COLORS.eligible; }
+ else if (status === 'GSD_NEEDS_OVERLAY' || status === 'CHECK_SP_GSD') { eligClass = 'conditional'; fillColor = COLORS.conditional; }
+
+ const lotSf = attrs.Lot_SqFt || (attrs.Acres ? Math.round(attrs.Acres * 43560) : 0);
+ const maxDadu = attrs.Max_DADU_Living_SF || (lotSf >= 10000 ? 850 : 700);
+ const eligLabel = ELIG_LABELS[eligClass] || 'Unknown';
+
+ // Highlight the clicked parcel polygon
+ feature.properties.fillColor = fillColor;
+ parcelLayer.eachLayer(l => {
+ if (l.feature && l.feature.properties && l.feature.properties.parcelData &&
+ l.feature.properties.parcelData.apn === stanpar) {
+ l.setStyle({ weight: 3, color: '#1f2937', dashArray: '6, 4' });
+ } else if (l.setStyle) {
+ l.setStyle({ weight: 1, color: '#fff', dashArray: null });
+ }
+ });
+
+ showParcelDetail({
+ apn: stanpar,
+ address: attrs.Address || feature.properties.PropAddr || 'No Address',
+ zoning: attrs.Zoning || 'N/A',
+ lotSf: lotSf,
+ maxDadu: maxDadu,
+ district: attrs.Service_District || 'N/A',
+ eligClass: eligClass,
+ eligLabel: eligLabel
+ });
+ }
+ } catch (err) {
+ console.error('Error fetching eligibility for clicked parcel:', err);
+ }
+ });
+
  loadEligibilityData();
  }
 
@@ -1093,13 +1172,13 @@
  isLoading = true;
 
  try {
- const cadastralData = await queryCadastralByBounds(bounds);
- if (!cadastralData || !cadastralData.features || cadastralData.features.length === 0) {
+ const parcelData = await queryParcelsByBounds(bounds);
+ if (!parcelData || !parcelData.features || parcelData.features.length === 0) {
  await loadViewportMarkers();
  return;
  }
 
- const stanpars = cadastralData.features.map(f =>f.properties.STANPAR).filter(s =>s);
+ const stanpars = parcelData.features.map(f =>f.properties.STANPAR).filter(s =>s);
  if (stanpars.length === 0) return;
 
  const eligibilityMap = {};
@@ -1122,7 +1201,7 @@
 
  parcelLayer.clearLayers();
 
- cadastralData.features.forEach(feature =>{
+ parcelData.features.forEach(feature =>{
  const stanpar = feature.properties.STANPAR;
  const eligData = eligibilityMap[stanpar];
  if (!eligData) return;
