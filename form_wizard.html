@@ -52,6 +52,60 @@
             font-weight: 600;
         }
 
+        /* ── How It Works ── */
+        .hiw-section {
+            background: #F0EBE1;
+            padding: 32px 24px;
+        }
+        .hiw-row {
+            max-width: 860px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .hiw-card {
+            text-align: center;
+            padding: 20px 16px;
+            background: #fff;
+            border-radius: 10px;
+        }
+        .hiw-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #CBB279;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.88rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .hiw-icon {
+            width: 36px;
+            height: 36px;
+            margin: 0 auto 10px;
+            display: block;
+        }
+        .hiw-card h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-style: normal;
+            color: #3A5566;
+            margin-bottom: 6px;
+        }
+        .hiw-card p {
+            font-size: 0.8rem;
+            color: #7B746D;
+            line-height: 1.45;
+            margin: 0;
+        }
+        @media (max-width: 640px) {
+            .hiw-row { grid-template-columns: 1fr; max-width: 360px; }
+        }
+
         /* ── Tab Bar ── */
         .tab-bar {
             background: #fff;
@@ -853,6 +907,30 @@
         <span class="pill">30+ Official Forms</span>
         <span class="pill">Metro Nashville</span>
         <span class="pill">Step-by-Step Guide</span>
+    </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="hiw-section">
+    <div class="hiw-row">
+        <div class="hiw-card">
+            <div class="hiw-num">1</div>
+            <img class="hiw-icon" src="assets/icons/Parcel Search.png" alt="">
+            <h3>Determine Your Forms</h3>
+            <p>Answer 5 quick questions about your project to get a personalized list of required forms.</p>
+        </div>
+        <div class="hiw-card">
+            <div class="hiw-num">2</div>
+            <img class="hiw-icon" src="assets/icons/Recorded Docs.png" alt="">
+            <h3>Download &amp; Fill Out</h3>
+            <p>Download every official Metro Nashville form you need directly from our database.</p>
+        </div>
+        <div class="hiw-card">
+            <div class="hiw-num">3</div>
+            <img class="hiw-icon" src="assets/icons/Building and Construction.png" alt="">
+            <h3>Submit &amp; Build</h3>
+            <p>File your completed forms with Metro Nashville and start your DADU project.</p>
+        </div>
     </div>
 </section>
 
