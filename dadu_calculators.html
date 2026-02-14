@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>DADU Calculators | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
+ <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+   font-family: 'Inter', sans-serif;
+   background: #F2F0ED;
+   color: #333;
+   line-height: 1.6;
+  }
+
+  a { text-decoration: none; }
+
+  /* ========== HERO ========== */
+  .calc-hero {
+   background: #3A5566;
+   padding: 56px 24px 48px;
+   text-align: center;
+  }
+
+  .calc-hero h1 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 40px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
+
+  .calc-hero .subtitle {
+   color: #E1D4BB;
+   font-size: 16px;
+   max-width: 560px;
+   margin: 0 auto 20px;
+   opacity: 0.85;
+  }
+
+  .hero-badges {
+   display: flex;
+   justify-content: center;
+   gap: 10px;
+   flex-wrap: wrap;
+  }
+
+  .badge {
+   display: inline-block;
+   padding: 6px 16px;
+   border-radius: 20px;
+   font-size: 12px;
+   font-weight: 700;
+   letter-spacing: 0.5px;
+   background: rgba(203, 178, 121, 0.15);
+   color: #CBB279;
+   border: 1px solid rgba(203, 178, 121, 0.3);
+  }
+
+  /* ========== CALCULATOR TABS ========== */
+  .tabs-container {
+   max-width: 960px;
+   margin: 0 auto;
+   padding: 32px 24px 0;
+  }
+
+  .tabs {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 12px;
+  }
+
+  .tab-btn {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+   padding: 18px 16px;
+   background: #fff;
+   border: 2px solid #E2E2E0;
+   border-radius: 12px;
+   font-family: 'Inter', sans-serif;
+   font-size: 14px;
+   font-weight: 700;
+   color: #3A5566;
+   cursor: pointer;
+   transition: all 0.2s;
+  }
+
+  .tab-btn:hover {
+   border-color: #CBB279;
+   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  .tab-btn.active {
+   background: #3A5566;
+   color: #E1D4BB;
+   border-color: #3A5566;
+   box-shadow: 0 4px 16px rgba(58,85,102,0.2);
+  }
+
+  .tab-btn .tab-icon {
+   width: 36px;
+   height: 36px;
+   border-radius: 50%;
+   background: #F0EBE1;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+  }
+
+  .tab-btn.active .tab-icon {
+   background: rgba(225,212,187,0.15);
+  }
+
+  .tab-btn .tab-icon img {
+   width: 20px;
+   height: 20px;
+  }
+
+  /* ========== CALCULATOR PANELS ========== */
+  .calc-panel {
+   display: none;
+   max-width: 960px;
+   margin: 0 auto;
+   padding: 32px 24px 48px;
+  }
+
+  .calc-panel.active {
+   display: block;
+   animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+   from { opacity: 0; transform: translateY(8px); }
+   to { opacity: 1; transform: translateY(0); }
+  }
+
+  .calc-card {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 16px;
+   overflow: hidden;
+   box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+
+  .calc-section {
+   padding: 28px 32px;
+   border-bottom: 1px solid #E2E2E0;
+  }
+
+  .calc-section:last-child { border-bottom: none; }
+
+  .calc-section-title {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 16px;
+   color: #3A5566;
+   margin-bottom: 20px;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+  }
+
+  .section-dot {
+   width: 8px;
+   height: 8px;
+   border-radius: 50%;
+   background: #CBB279;
+   flex-shrink: 0;
+  }
+
+  /* ========== FORM ELEMENTS ========== */
+  .input-group {
+   margin-bottom: 18px;
+  }
+
+  .input-group:last-child { margin-bottom: 0; }
+
+  .input-label {
+   display: block;
+   font-size: 13px;
+   font-weight: 600;
+   color: #3A5566;
+   margin-bottom: 6px;
+  }
+
+  .input-hint {
+   font-size: 11px;
+   color: #918A83;
+   font-weight: 400;
+   margin-left: 6px;
+  }
+
+  .input-field {
+   width: 100%;
+   padding: 12px 14px;
+   border: 2px solid #E2E2E0;
+   border-radius: 10px;
+   font-size: 15px;
+   font-family: 'Inter', sans-serif;
+   color: #333;
+   transition: all 0.2s;
+   background: #fff;
+  }
+
+  .input-field:focus {
+   outline: none;
+   border-color: #CBB279;
+   box-shadow: 0 0 0 3px rgba(203,178,121,0.12);
+  }
+
+  select.input-field {
+   cursor: pointer;
+   -webkit-appearance: none;
+   appearance: none;
+   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23918A83' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+   background-repeat: no-repeat;
+   background-position: right 14px center;
+   padding-right: 36px;
+  }
+
+  .input-row {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 16px;
+  }
+
+  /* Radio group */
+  .radio-group {
+   display: flex;
+   gap: 10px;
+  }
+
+  .radio-option {
+   flex: 1;
+   padding: 14px 16px;
+   border: 2px solid #E2E2E0;
+   border-radius: 10px;
+   text-align: center;
+   cursor: pointer;
+   transition: all 0.2s;
+   font-size: 13px;
+   font-weight: 600;
+   color: #3A5566;
+  }
+
+  .radio-option:hover {
+   border-color: #CBB279;
+   background: #FDFCF9;
+  }
+
+  .radio-option.selected {
+   border-color: #CBB279;
+   background: rgba(203,178,121,0.08);
+   box-shadow: 0 0 0 1px #CBB279;
+  }
+
+  .radio-option .radio-label {
+   font-weight: 700;
+  }
+
+  .radio-option .radio-desc {
+   font-size: 11px;
+   color: #918A83;
+   margin-top: 2px;
+   font-weight: 400;
+  }
+
+  /* Slider */
+  .slider-container {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+  }
+
+  .range-slider {
+   flex: 1;
+   height: 6px;
+   border-radius: 3px;
+   background: #E2E2E0;
+   outline: none;
+   -webkit-appearance: none;
+  }
+
+  .range-slider::-webkit-slider-thumb {
+   -webkit-appearance: none;
+   width: 22px;
+   height: 22px;
+   border-radius: 50%;
+   background: #CBB279;
+   cursor: pointer;
+   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  .range-slider::-moz-range-thumb {
+   width: 22px;
+   height: 22px;
+   border-radius: 50%;
+   background: #CBB279;
+   cursor: pointer;
+   border: none;
+  }
+
+  .slider-value {
+   font-size: 18px;
+   font-weight: 800;
+   color: #3A5566;
+   min-width: 60px;
+   text-align: right;
+  }
+
+  /* ========== BUTTONS ========== */
+  .btn-row {
+   display: flex;
+   gap: 12px;
+   margin-top: 24px;
+  }
+
+  .calc-button {
+   flex: 1;
+   padding: 16px 32px;
+   background: #CBB279;
+   color: #3A5566;
+   border: none;
+   border-radius: 10px;
+   font-size: 15px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   cursor: pointer;
+   transition: all 0.2s;
+  }
+
+  .calc-button:hover {
+   background: #D4A54E;
+   transform: translateY(-2px);
+   box-shadow: 0 4px 12px rgba(203,178,121,0.3);
+  }
+
+  .reset-button {
+   padding: 16px 24px;
+   background: #F0EBE1;
+   color: #7B746D;
+   border: none;
+   border-radius: 10px;
+   font-size: 14px;
+   font-weight: 600;
+   font-family: 'Inter', sans-serif;
+   cursor: pointer;
+   transition: all 0.2s;
+  }
+
+  .reset-button:hover {
+   background: #E2E2E0;
+  }
+
+  .print-button {
+   padding: 16px 24px;
+   background: transparent;
+   color: #3A5566;
+   border: 2px solid #E2E2E0;
+   border-radius: 10px;
+   font-size: 14px;
+   font-weight: 600;
+   font-family: 'Inter', sans-serif;
+   cursor: pointer;
+   transition: all 0.2s;
+  }
+
+  .print-button:hover {
+   border-color: #3A5566;
+   background: rgba(58,85,102,0.04);
+  }
+
+  /* ========== RESULTS ========== */
+  .results-card {
+   display: none;
+   margin-top: 24px;
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 16px;
+   overflow: hidden;
+   box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+   animation: fadeIn 0.4s ease;
+  }
+
+  .results-card.show { display: block; }
+
+  .results-header {
+   background: #3A5566;
+   padding: 28px 32px;
+   text-align: center;
+  }
+
+  .results-header-label {
+   font-size: 12px;
+   font-weight: 700;
+   text-transform: uppercase;
+   letter-spacing: 1.5px;
+   color: #918A83;
+   margin-bottom: 6px;
+  }
+
+  .results-header-value {
+   font-size: 42px;
+   font-weight: 800;
+   color: #CBB279;
+   line-height: 1.1;
+  }
+
+  .results-header-sub {
+   font-size: 13px;
+   color: #E1D4BB;
+   opacity: 0.7;
+   margin-top: 6px;
+  }
+
+  .results-body {
+   padding: 28px 32px;
+  }
+
+  .result-line {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 12px 0;
+   border-bottom: 1px solid #F0EBE1;
+   font-size: 14px;
+  }
+
+  .result-line:last-child { border-bottom: none; }
+
+  .result-line-label {
+   color: #706F6C;
+  }
+
+  .result-line-value {
+   font-weight: 700;
+   color: #3A5566;
+  }
+
+  .result-line.total {
+   border-top: 2px solid #3A5566;
+   border-bottom: none;
+   margin-top: 8px;
+   padding-top: 16px;
+   font-weight: 700;
+   font-size: 16px;
+  }
+
+  .result-line.total .result-line-label { color: #3A5566; }
+
+  .result-line.highlight .result-line-value {
+   color: #2E6F4E;
+   font-size: 18px;
+  }
+
+  .result-badge {
+   display: inline-block;
+   margin-top: 16px;
+   padding: 10px 20px;
+   background: #F0EBE1;
+   border-radius: 8px;
+   font-size: 13px;
+   font-weight: 600;
+   color: #3A5566;
+   width: 100%;
+   text-align: center;
+  }
+
+  .result-note {
+   margin-top: 20px;
+   padding: 16px;
+   background: #F0EBE1;
+   border-radius: 10px;
+   font-size: 12px;
+   color: #706F6C;
+   line-height: 1.6;
+  }
+
+  .result-note strong {
+   color: #3A5566;
+  }
+
+  /* Results grid for ROI */
+  .results-stat-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 12px;
+   margin-bottom: 24px;
+  }
+
+  .results-stat-card {
+   background: #F0EBE1;
+   border-radius: 12px;
+   padding: 20px 16px;
+   text-align: center;
+  }
+
+  .results-stat-card .stat-label {
+   font-size: 11px;
+   font-weight: 700;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   color: #918A83;
+   margin-bottom: 6px;
+  }
+
+  .results-stat-card .stat-value {
+   font-size: 26px;
+   font-weight: 800;
+   color: #3A5566;
+   line-height: 1.1;
+  }
+
+  .results-stat-card .stat-value.accent {
+   color: #CBB279;
+  }
+
+  .results-stat-card .stat-value.green {
+   color: #2E6F4E;
+  }
+
+  .results-stat-card .stat-sub {
+   font-size: 11px;
+   color: #706F6C;
+   margin-top: 4px;
+  }
+
+  /* Comparison table for tax */
+  .comparison-table {
+   margin-top: 16px;
+   border-radius: 10px;
+   overflow: hidden;
+   border: 1px solid #E2E2E0;
+  }
+
+  .comp-row {
+   display: grid;
+   grid-template-columns: 1.2fr 1fr 1fr;
+   padding: 12px 16px;
+   border-bottom: 1px solid #F0EBE1;
+   font-size: 13px;
+  }
+
+  .comp-row:last-child { border-bottom: none; }
+
+  .comp-row.comp-header {
+   background: #F0EBE1;
+   font-weight: 700;
+   font-size: 11px;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   color: #7B746D;
+  }
+
+  .comp-cell { color: #706F6C; }
+  .comp-cell:not(:first-child) { text-align: right; }
+  .comp-row:not(.comp-header) .comp-cell:first-child { color: #3A5566; font-weight: 500; }
+
+  /* ========== BOTTOM CTA ========== */
+  .cta-section {
+   background: #3A5566;
+   padding: 64px 24px;
+   text-align: center;
+  }
+
+  .cta-section h2 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 32px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
+
+  .cta-section p {
+   color: #F0EBE1;
+   font-size: 15px;
+   max-width: 520px;
+   margin: 0 auto 28px;
+   opacity: 0.85;
+  }
+
+  .cta-links {
+   display: flex;
+   justify-content: center;
+   gap: 16px;
+   flex-wrap: wrap;
+  }
+
+  .cta-link {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   padding: 14px 32px;
+   border-radius: 8px;
+   font-size: 15px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+  }
+
+  .cta-link.primary {
+   background: #CBB279;
+   color: #3A5566;
+  }
+
+  .cta-link.primary:hover {
+   background: #D4A54E;
+   transform: translateY(-2px);
+  }
+
+  .cta-link.secondary {
+   background: rgba(255,255,255,0.1);
+   border: 1px solid rgba(225,212,187,0.3);
+   color: #E1D4BB;
+  }
+
+  .cta-link.secondary:hover {
+   background: rgba(255,255,255,0.18);
+  }
+
+  /* ========== FOOTER ========== */
+  .page-footer {
+   background: #3A5566;
+   border-top: 1px solid #496778;
+   padding: 48px 24px 24px;
+   color: #E1D4BB;
+  }
+
+  .footer-inner {
+   max-width: 1100px;
+   margin: 0 auto;
+   display: flex;
+   justify-content: space-between;
+   align-items: flex-start;
+   gap: 40px;
+  }
+
+  .footer-links { display: flex; gap: 60px; }
+
+  .footer-col {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+  }
+
+  .footer-col h4 {
+   font-size: 14px;
+   font-weight: 700;
+   color: #E1D4BB;
+   margin-bottom: 4px;
+   font-family: 'Inter', sans-serif;
+  }
+
+  .footer-col a {
+   font-size: 13px;
+   color: #918A83;
+   transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: #E1D4BB; }
+
+  .footer-social { display: flex; gap: 12px; }
+
+  .footer-social a {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 36px;
+   height: 36px;
+   border-radius: 50%;
+   background: rgba(255,255,255,0.1);
+   transition: background 0.2s;
+  }
+
+  .footer-social a:hover { background: rgba(255,255,255,0.2); }
+  .footer-social svg { width: 16px; height: 16px; fill: #E1D4BB; }
+
+  .footer-bottom {
+   max-width: 1100px;
+   margin: 32px auto 0;
+   padding-top: 20px;
+   border-top: 1px solid rgba(255,255,255,0.1);
+   display: flex;
+   justify-content: space-between;
+   font-size: 12px;
+   color: #918A83;
+  }
+
+  .footer-bottom a { color: #918A83; transition: color 0.2s; }
+  .footer-bottom a:hover { color: rgba(225,212,187,0.8); }
+
+  /* ========== PRINT ========== */
+  @media print {
+   .calc-hero, .tabs-container, .cta-section, .page-footer, #site-header,
+   .calc-button, .reset-button, .print-button, .btn-row { display: none !important; }
+   .calc-panel { display: block !important; padding: 0; }
+   .calc-panel:not(.print-target) { display: none !important; }
+   .calc-panel.print-target { display: block !important; }
+   .results-card { display: block !important; box-shadow: none; border: 1px solid #ccc; }
+   body { background: #fff; }
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+   .calc-hero h1 { font-size: 30px; }
+   .calc-hero { padding: 40px 20px; }
+   .tabs { grid-template-columns: 1fr; }
+   .tab-btn { justify-content: flex-start; }
+   .input-row { grid-template-columns: 1fr; }
+   .radio-group { flex-direction: column; }
+   .results-stat-grid { grid-template-columns: 1fr; }
+   .comp-row { font-size: 12px; }
+   .results-header-value { font-size: 34px; }
+   .cta-links { flex-direction: column; align-items: center; }
+   .footer-inner { flex-direction: column; }
+   .footer-links { flex-direction: column; gap: 24px; }
+   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+   .calc-hero h1 { font-size: 26px; }
+   .hero-badges { gap: 6px; }
+   .badge { font-size: 11px; padding: 4px 10px; }
+   .calc-section { padding: 22px 20px; }
+   .results-body { padding: 22px 20px; }
+   .cta-section h2 { font-size: 26px; }
+  }
+ </style>
+</head>
+<body class="dark-nav">
+
+<!-- Shared Header -->
+<div id="site-header"></div>
+
+<!-- Hero -->
+<section class="calc-hero">
+ <h1>DADU Calculators</h1>
+ <p class="subtitle">Estimate costs, calculate ROI, and project tax impact for your Nashville DADU.</p>
+ <div class="hero-badges">
+  <span class="badge">BL2025-1007</span>
+  <span class="badge">Nashville-Davidson County</span>
+  <span class="badge">2026 Data</span>
+ </div>
+</section>
+
+<!-- Calculator Tabs -->
+<div class="tabs-container">
+ <div class="tabs">
+  <button class="tab-btn active" data-tab="cost" onclick="switchTab('cost')">
+   <span class="tab-icon"><img src="assets/icons/Valuations.png" alt=""></span>
+   Project Cost Estimator
+  </button>
+  <button class="tab-btn" data-tab="roi" onclick="switchTab('roi')">
+   <span class="tab-icon"><img src="assets/icons/Appraisers.png" alt=""></span>
+   ROI Calculator
+  </button>
+  <button class="tab-btn" data-tab="tax" onclick="switchTab('tax')">
+   <span class="tab-icon"><img src="assets/icons/Investments.png" alt=""></span>
+   Property Tax Calculator
+  </button>
+ </div>
+</div>
+
+<!-- ========================================
+     PANEL 1: PROJECT COST ESTIMATOR
+     ======================================== -->
+<div class="calc-panel active" id="panel-cost">
+ <div class="calc-card">
+  <!-- DADU Size -->
+  <div class="calc-section">
+   <h3 class="calc-section-title"><span class="section-dot"></span> DADU Size</h3>
+   <div class="input-group">
+    <label class="input-label">Square Footage <span class="input-hint">(400 - 850 SF)</span></label>
+    <div class="slider-container">
+     <input type="range" class="range-slider" id="cost-sqft-slider" min="400" max="850" value="700" oninput="syncCostSlider()">
+     <span class="slider-value" id="cost-sqft-display">700 SF</span>
+    </div>
+   </div>
+  </div>
+
+  <!-- Stories -->
+  <div class="calc-section">
+   <h3 class="calc-section-title"><span class="section-dot"></span> Number of Stories</h3>
+   <div class="radio-group" id="cost-stories">
+    <div class="radio-option selected" data-value="1" onclick="selectRadio(this, 'cost-stories')">
+     <div class="radio-label">1 Story</div>
+     <div class="radio-desc">Single level</div>
+    </div>
+    <div class="radio-option" data-value="2" onclick="selectRadio(this, 'cost-stories')">
+     <div class="radio-label">2 Stories</div>
+     <div class="radio-desc">Multi-level</div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Finish Level -->
+  <div class="calc-section">
+   <h3 class="calc-section-title"><span class="section-dot"></span> Finish Level</h3>
+   <div class="radio-group" id="cost-finish">
+    <div class="radio-option" data-value="basic" onclick="selectRadio(this, 'cost-finish')">
+     <div class="radio-label">Basic</div>
+     <div class="radio-desc">$150/SF</div>
+    </div>
+    <div class="radio-option selected" data-value="standard" onclick="selectRadio(this, 'cost-finish')">
+     <div class="radio-label">Standard</div>
+     <div class="radio-desc">$200/SF</div>
+    </div>
+    <div class="radio-option" data-value="premium" onclick="selectRadio(this, 'cost-finish')">
+     <div class="radio-label">Premium</div>
+     <div class="radio-desc">$275/SF</div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Foundation -->
+  <div class="calc-section">
+   <h3 class="calc-section-title"><span class="section-dot"></span> Foundation Type</h3>
+   <div class="input-group">
+    <select class="input-field" id="cost-foundation">
+     <option value="slab">Slab ($5,000)</option>
+     <option value="pier">Pier ($8,000)</option>
+     <option value="crawl" selected>Crawl Space ($10,000)</option>
+    </select>
+   </div>
+  </div>
+
+  <!-- Calculate -->
+  <div class="calc-section">
+   <div class="btn-row">
+    <button class="calc-button" onclick="calculateCost()">Calculate Cost</button>
+    <button class="reset-button" onclick="resetCost()">Reset</button>
+   </div>
+  </div>
+ </div>
+
+ <!-- Cost Results -->
+ <div class="results-card" id="cost-results">
+  <div class="results-header">
+   <div class="results-header-label">Estimated Total Project Cost</div>
+   <div class="results-header-value" id="cost-total">$0</div>
+   <div class="results-header-sub" id="cost-range">Range: $0 - $0</div>
+  </div>
+  <div class="results-body">
+   <div class="result-line">
+    <span class="result-line-label">Construction Cost</span>
+    <span class="result-line-value" id="cost-construction">$0</span>
+   </div>
+   <div class="result-line">
+    <span class="result-line-label">Permit Fees (estimate)</span>
+    <span class="result-line-value" id="cost-permits">$2,500</span>
+   </div>
+   <div class="result-line">
+    <span class="result-line-label">Site Prep / Foundation</span>
+    <span class="result-line-value" id="cost-site">$0</span>
+   </div>
+   <div class="result-line">
+    <span class="result-line-label">Design / Engineering</span>
+    <span class="result-line-value" id="cost-design">$0</span>
+   </div>
+   <div class="result-line total">
+    <span class="result-line-label">Total Estimated Cost</span>
+    <span class="result-line-value" id="cost-total2">$0</span>
+   </div>
+   <div class="result-badge" id="cost-persqft">$0 per square foot</div>
+   <div class="result-note">
+    <strong>Note:</strong> Estimates based on Nashville DADU permit data. Actual costs vary by contractor, site conditions, and materials.
+   </div>
+   <div class="btn-row" style="margin-top:16px;">
+    <button class="print-button" onclick="printResults('cost')">Print Results</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- ========================================
+     PANEL 2: ROI CALCULATOR
+     ======================================== -->
+<div class="calc-panel" id="panel-roi">
+ <div class="calc-card">
+  <!-- Investment -->
+  <div class="calc-section">
+   <h3 class="calc-section-title"><span class="section-dot"></span> Investment</h3>
+   <div class="input-row">
+    <div class="input-group">
+     <label class="input-label">Total Project Cost <span class="input-hint">($)</span></label>
+     <input type="number" class="input-field" id="roi-cost" value="150000" placeholder="150000">
+    </div>
+    <div class="input-group">
+     <label class="input-label">Monthly Rental Income <span class="input-hint">($)</span></label>
+     <input type="number" class="input-field" id="roi-rent" value="1500" placeholder="1500">
+    </div>
+   </div>
+  </div>
+
+  <!-- Expenses -->
+  <div class="calc-section">
+   <h3 class="calc-section-title"><span class="section-dot"></span> Annual Expenses</h3>
+   <div class="input-group">
+    <label class="input-label">Expenses as % of Income <span class="input-hint">(maintenance, insurance, vacancy)</span></label>
+    <div class="slider-container">
+     <input type="range" class="range-slider" id="roi-expense-slider" min="10" max="40" value="25" oninput="syncROISlider()">
+     <span class="slider-value" id="roi-expense-display">25%</span>
+    </div>
+   </div>
+  </div>
+
+  <!-- Property Value -->
+  <div class="calc-section">
+   <h3 class="calc-section-title"><span class="section-dot"></span> Property Value Impact</h3>
+   <div class="input-group">
+    <label class="input-label">Property Value Increase Estimate <span class="input-hint">($)</span></label>
+    <input type="number" class="input-field" id="roi-value-increase" value="75000" placeholder="75000">
+   </div>
+  </div>
+
+  <!-- Calculate -->
+  <div class="calc-section">
+   <div class="btn-row">
+    <button class="calc-button" onclick="calculateROI()">Calculate ROI</button>
+    <button class="reset-button" onclick="resetROI()">Reset</button>
+   </div>
+  </div>
+ </div>
+
+ <!-- ROI Results -->
+ <div class="results-card" id="roi-results">
+  <div class="results-header">
+   <div class="results-header-label">10-Year Total ROI</div>
+   <div class="results-header-value" id="roi-total-roi">0%</div>
+   <div class="results-header-sub" id="roi-summary-sub">Including rental income and property value increase</div>
+  </div>
+  <div class="results-body">
+   <div class="results-stat-grid">
+    <div class="results-stat-card">
+     <div class="stat-label">Monthly Cash Flow</div>
+     <div class="stat-value green" id="roi-cash-flow">$0</div>
+     <div class="stat-sub">After expenses</div>
+    </div>
+    <div class="results-stat-card">
+     <div class="stat-label">Years to Break Even</div>
+     <div class="stat-value accent" id="roi-breakeven">0</div>
+     <div class="stat-sub">Payback period</div>
+    </div>
+    <div class="results-stat-card">
+     <div class="stat-label">Net Annual Income</div>
+     <div class="stat-value" id="roi-annual-net">$0</div>
+     <div class="stat-sub">After expenses</div>
+    </div>
+   </div>
+   <div class="result-line">
+    <span class="result-line-label">Gross Annual Rental Income</span>
+    <span class="result-line-value" id="roi-annual-gross">$0</span>
+   </div>
+   <div class="result-line">
+    <span class="result-line-label">Annual Expenses</span>
+    <span class="result-line-value" id="roi-annual-expenses">$0</span>
+   </div>
+   <div class="result-line">
+    <span class="result-line-label">Net Annual Income</span>
+    <span class="result-line-value" id="roi-net-income">$0</span>
+   </div>
+   <div class="result-line">
+    <span class="result-line-label">10-Year Rental Income (Net)</span>
+    <span class="result-line-value" id="roi-10yr">$0</span>
+   </div>
+   <div class="result-line">
+    <span class="result-line-label">Property Value Increase</span>
+    <span class="result-line-value" id="roi-value-display">$0</span>
+   </div>
+   <div class="result-line total highlight">
+    <span class="result-line-label">10-Year Total ROI</span>
+    <span class="result-line-value" id="roi-total-pct">0%</span>
+   </div>
+   <div class="result-note">
+    <strong>Note:</strong> Projections only. Consult a financial advisor for investment decisions.
+   </div>
+   <div class="btn-row" style="margin-top:16px;">
+    <button class="print-button" onclick="printResults('roi')">Print Results</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- ========================================
+     PANEL 3: PROPERTY TAX CALCULATOR
+     ======================================== -->
+<div class="calc-panel" id="panel-tax">
+ <div class="calc-card">
+  <!-- Current Property -->
+  <div class="calc-section">
+   <h3 class="calc-section-title"><span class="section-dot"></span> Current Property</h3>
+   <div class="input-group">
+    <label class="input-label">Current Assessed Value <span class="input-hint">($)</span></label>
+    <input type="number" class="input-field" id="tax-current-value" value="300000" placeholder="300000">
+   </div>
+  </div>
+
+  <!-- DADU Impact -->
+  <div class="calc-section">
+   <h3 class="calc-section-title"><span class="section-dot"></span> Estimated DADU Impact</h3>
+   <div class="input-group">
+    <label class="input-label">Value Increase from DADU <span class="input-hint">($)</span></label>
+    <input type="number" class="input-field" id="tax-value-increase" value="75000" placeholder="75000">
+   </div>
+  </div>
+
+  <!-- Tax Rate -->
+  <div class="calc-section">
+   <h3 class="calc-section-title"><span class="section-dot"></span> Davidson County Tax Rate</h3>
+   <div class="input-row">
+    <div class="input-group">
+     <label class="input-label">Tax Rate (per $100 assessed)</label>
+     <input type="number" class="input-field" id="tax-rate" value="3.254" step="0.001" placeholder="3.254">
+    </div>
+    <div class="input-group">
+     <label class="input-label">Residential Assessment Ratio</label>
+     <input type="number" class="input-field" id="tax-ratio" value="25" step="1" placeholder="25">
+     <span class="input-hint" style="display:block;margin-top:4px;">Tennessee assesses residential at 25%</span>
+    </div>
+   </div>
+  </div>
+
+  <!-- Calculate -->
+  <div class="calc-section">
+   <div class="btn-row">
+    <button class="calc-button" onclick="calculateTax()">Calculate Tax Impact</button>
+    <button class="reset-button" onclick="resetTax()">Reset</button>
+   </div>
+  </div>
+ </div>
+
+ <!-- Tax Results -->
+ <div class="results-card" id="tax-results">
+  <div class="results-header">
+   <div class="results-header-label">Annual Tax Increase</div>
+   <div class="results-header-value" id="tax-increase">$0</div>
+   <div class="results-header-sub" id="tax-monthly-increase">$0 / month</div>
+  </div>
+  <div class="results-body">
+   <div class="results-stat-grid">
+    <div class="results-stat-card">
+     <div class="stat-label">Current Tax</div>
+     <div class="stat-value" id="tax-current-annual">$0</div>
+     <div class="stat-sub">Annual</div>
+    </div>
+    <div class="results-stat-card">
+     <div class="stat-label">New Tax</div>
+     <div class="stat-value accent" id="tax-new-annual">$0</div>
+     <div class="stat-sub">Annual</div>
+    </div>
+    <div class="results-stat-card">
+     <div class="stat-label">Monthly Increase</div>
+     <div class="stat-value" id="tax-monthly-amt">$0</div>
+     <div class="stat-sub">Per month</div>
+    </div>
+   </div>
+
+   <h4 style="font-family:'Inter',sans-serif;font-weight:700;font-style:normal;font-size:14px;color:#3A5566;margin-bottom:12px;">Before vs. After Comparison</h4>
+   <div class="comparison-table">
+    <div class="comp-row comp-header">
+     <div class="comp-cell">Detail</div>
+     <div class="comp-cell">Before DADU</div>
+     <div class="comp-cell">After DADU</div>
+    </div>
+    <div class="comp-row">
+     <div class="comp-cell">Appraised Value</div>
+     <div class="comp-cell" id="tax-before-appraised">$0</div>
+     <div class="comp-cell" id="tax-after-appraised">$0</div>
+    </div>
+    <div class="comp-row">
+     <div class="comp-cell">Assessed Value (25%)</div>
+     <div class="comp-cell" id="tax-before-assessed">$0</div>
+     <div class="comp-cell" id="tax-after-assessed">$0</div>
+    </div>
+    <div class="comp-row">
+     <div class="comp-cell">Annual Property Tax</div>
+     <div class="comp-cell" id="tax-before-tax">$0</div>
+     <div class="comp-cell" id="tax-after-tax">$0</div>
+    </div>
+   </div>
+
+   <div class="result-note">
+    <strong>Note:</strong> Based on current Davidson County tax rate of $3.254 per $100 assessed value at 25% residential assessment ratio. Rates may change annually.
+   </div>
+   <div class="btn-row" style="margin-top:16px;">
+    <button class="print-button" onclick="printResults('tax')">Print Results</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+ <h2>Ready to Start Your DADU Project?</h2>
+ <p>Use your estimates to plan the next step. Find a contractor, check eligibility, or review the full requirements.</p>
+ <div class="cta-links">
+  <a href="contractor_marketplace.html" class="cta-link primary">Find a Contractor</a>
+  <a href="am_i_eligible.html" class="cta-link secondary">Check Eligibility</a>
+  <a href="dadu_requirements_overview.html" class="cta-link secondary">View Requirements</a>
+ </div>
+</section>
+
+<!-- Footer -->
+<footer class="page-footer">
+ <div class="footer-inner">
+  <div class="footer-links">
+   <div class="footer-col">
+    <h4>Learn</h4>
+    <a href="am_i_eligible.html">Am I Eligible?</a>
+    <a href="size_calculator.html">Size Calculator</a>
+    <a href="dadu_calculators.html">Cost Estimator</a>
+   </div>
+   <div class="footer-col">
+    <h4>Features</h4>
+    <a href="contractor_marketplace.html">Contractor Directory</a>
+    <a href="dadu_requirements_overview.html">Planning Resources</a>
+    <a href="homebody_dadu_pricing.html">Pricing</a>
+   </div>
+   <div class="footer-col">
+    <h4>Get in Touch</h4>
+    <a href="mailto:hello@castlehold.com">hello@castlehold.com</a>
+    <a href="mailto:hello@castlehold.com">Contact</a>
+    <a href="#">Sign in</a>
+   </div>
+  </div>
+  <div class="footer-social">
+   <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+   <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+  </div>
+ </div>
+ <div class="footer-bottom">
+  <span>&copy; 2026 Homebody Projects. Powered by Castlehold. All rights reserved.</span>
+  <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span>
+ </div>
+</footer>
+
+<script>
+// ========================================
+// TAB SWITCHING
+// ========================================
+function switchTab(tabId) {
+ // Update tab buttons
+ document.querySelectorAll('.tab-btn').forEach(function(btn) {
+  btn.classList.toggle('active', btn.dataset.tab === tabId);
+ });
+ // Update panels
+ document.querySelectorAll('.calc-panel').forEach(function(panel) {
+  panel.classList.toggle('active', panel.id === 'panel-' + tabId);
+ });
+ // If switching to ROI and cost was calculated, auto-fill cost
+ if (tabId === 'roi' && lastCostTotal > 0) {
+  document.getElementById('roi-cost').value = Math.round(lastCostTotal);
+ }
+}
+
+// ========================================
+// SHARED HELPERS
+// ========================================
+function fmt(n) {
+ return '$' + Math.round(n).toLocaleString();
+}
+
+function selectRadio(el, groupId) {
+ var group = document.getElementById(groupId);
+ group.querySelectorAll('.radio-option').forEach(function(opt) {
+  opt.classList.remove('selected');
+ });
+ el.classList.add('selected');
+}
+
+function getSelectedRadio(groupId) {
+ var group = document.getElementById(groupId);
+ var selected = group.querySelector('.radio-option.selected');
+ return selected ? selected.dataset.value : null;
+}
+
+// ========================================
+// COST ESTIMATOR
+// ========================================
+var lastCostTotal = 0;
+
+function syncCostSlider() {
+ var val = document.getElementById('cost-sqft-slider').value;
+ document.getElementById('cost-sqft-display').textContent = val + ' SF';
+}
+
+function calculateCost() {
+ var sqft = parseInt(document.getElementById('cost-sqft-slider').value) || 700;
+ var stories = getSelectedRadio('cost-stories') || '1';
+ var finish = getSelectedRadio('cost-finish') || 'standard';
+ var foundation = document.getElementById('cost-foundation').value;
+
+ // Base cost per SF
+ var baseCosts = { basic: 150, standard: 200, premium: 275 };
+ var baseCostPerSF = baseCosts[finish];
+
+ // Stories multiplier (2 stories is slightly cheaper per SF)
+ var storyMultiplier = stories === '2' ? 0.95 : 1.0;
+
+ var constructionCost = sqft * baseCostPerSF * storyMultiplier;
+
+ // Permit fees (flat estimate)
+ var permitFees = 2500;
+
+ // Site prep / foundation
+ var foundationCosts = { slab: 5000, pier: 8000, crawl: 10000 };
+ var siteCost = foundationCosts[foundation];
+
+ // Design / engineering (based on finish level)
+ var designCosts = { basic: 3000, standard: 5000, premium: 8000 };
+ var designCost = designCosts[finish];
+
+ // Total
+ var total = constructionCost + permitFees + siteCost + designCost;
+ var perSqft = total / sqft;
+ var lowRange = total * 0.9;
+ var highRange = total * 1.1;
+
+ lastCostTotal = total;
+
+ // Update display
+ document.getElementById('cost-construction').textContent = fmt(constructionCost);
+ document.getElementById('cost-permits').textContent = fmt(permitFees);
+ document.getElementById('cost-site').textContent = fmt(siteCost);
+ document.getElementById('cost-design').textContent = fmt(designCost);
+ document.getElementById('cost-total').textContent = fmt(total);
+ document.getElementById('cost-total2').textContent = fmt(total);
+ document.getElementById('cost-range').textContent = 'Range: ' + fmt(lowRange) + ' - ' + fmt(highRange);
+ document.getElementById('cost-persqft').textContent = fmt(perSqft) + ' per square foot';
+
+ // Show results
+ document.getElementById('cost-results').classList.add('show');
+ document.getElementById('cost-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetCost() {
+ document.getElementById('cost-sqft-slider').value = 700;
+ document.getElementById('cost-sqft-display').textContent = '700 SF';
+ document.getElementById('cost-foundation').value = 'crawl';
+
+ // Reset radios
+ document.querySelectorAll('#cost-stories .radio-option').forEach(function(opt, i) {
+  opt.classList.toggle('selected', i === 0);
+ });
+ var finishOpts = document.querySelectorAll('#cost-finish .radio-option');
+ finishOpts.forEach(function(opt) { opt.classList.remove('selected'); });
+ finishOpts[1].classList.add('selected');
+
+ document.getElementById('cost-results').classList.remove('show');
+ lastCostTotal = 0;
+}
+
+// ========================================
+// ROI CALCULATOR
+// ========================================
+function syncROISlider() {
+ var val = document.getElementById('roi-expense-slider').value;
+ document.getElementById('roi-expense-display').textContent = val + '%';
+}
+
+function calculateROI() {
+ var totalCost = parseFloat(document.getElementById('roi-cost').value) || 150000;
+ var monthlyRent = parseFloat(document.getElementById('roi-rent').value) || 1500;
+ var expensePct = parseFloat(document.getElementById('roi-expense-slider').value) || 25;
+ var valueIncrease = parseFloat(document.getElementById('roi-value-increase').value) || 75000;
+
+ var grossAnnual = monthlyRent * 12;
+ var annualExpenses = grossAnnual * (expensePct / 100);
+ var netAnnual = grossAnnual - annualExpenses;
+ var monthlyCashFlow = netAnnual / 12;
+ var breakeven = netAnnual > 0 ? totalCost / netAnnual : Infinity;
+ var tenYearNet = netAnnual * 10;
+ var totalROI = ((tenYearNet + valueIncrease - totalCost) / totalCost) * 100;
+
+ // Update display
+ document.getElementById('roi-cash-flow').textContent = fmt(monthlyCashFlow);
+ document.getElementById('roi-breakeven').textContent = breakeven === Infinity ? 'N/A' : breakeven.toFixed(1) + ' yrs';
+ document.getElementById('roi-annual-net').textContent = fmt(netAnnual);
+ document.getElementById('roi-annual-gross').textContent = fmt(grossAnnual);
+ document.getElementById('roi-annual-expenses').textContent = fmt(annualExpenses);
+ document.getElementById('roi-net-income').textContent = fmt(netAnnual);
+ document.getElementById('roi-10yr').textContent = fmt(tenYearNet);
+ document.getElementById('roi-value-display').textContent = fmt(valueIncrease);
+ document.getElementById('roi-total-roi').textContent = totalROI.toFixed(1) + '%';
+ document.getElementById('roi-total-pct').textContent = totalROI.toFixed(1) + '%';
+
+ // Show results
+ document.getElementById('roi-results').classList.add('show');
+ document.getElementById('roi-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetROI() {
+ document.getElementById('roi-cost').value = 150000;
+ document.getElementById('roi-rent').value = 1500;
+ document.getElementById('roi-expense-slider').value = 25;
+ document.getElementById('roi-expense-display').textContent = '25%';
+ document.getElementById('roi-value-increase').value = 75000;
+ document.getElementById('roi-results').classList.remove('show');
+}
+
+// ========================================
+// PROPERTY TAX CALCULATOR
+// ========================================
+function calculateTax() {
+ var currentValue = parseFloat(document.getElementById('tax-current-value').value) || 300000;
+ var valueIncrease = parseFloat(document.getElementById('tax-value-increase').value) || 75000;
+ var taxRate = parseFloat(document.getElementById('tax-rate').value) || 3.254;
+ var assessRatio = (parseFloat(document.getElementById('tax-ratio').value) || 25) / 100;
+
+ var newValue = currentValue + valueIncrease;
+ var currentAssessed = currentValue * assessRatio;
+ var newAssessed = newValue * assessRatio;
+ var currentTax = currentAssessed * (taxRate / 100);
+ var newTax = newAssessed * (taxRate / 100);
+ var annualIncrease = newTax - currentTax;
+ var monthlyIncrease = annualIncrease / 12;
+
+ // Update display
+ document.getElementById('tax-increase').textContent = fmt(annualIncrease);
+ document.getElementById('tax-monthly-increase').textContent = fmt(monthlyIncrease) + ' / month';
+ document.getElementById('tax-current-annual').textContent = fmt(currentTax);
+ document.getElementById('tax-new-annual').textContent = fmt(newTax);
+ document.getElementById('tax-monthly-amt').textContent = fmt(monthlyIncrease);
+
+ // Comparison table
+ document.getElementById('tax-before-appraised').textContent = fmt(currentValue);
+ document.getElementById('tax-after-appraised').textContent = fmt(newValue);
+ document.getElementById('tax-before-assessed').textContent = fmt(currentAssessed);
+ document.getElementById('tax-after-assessed').textContent = fmt(newAssessed);
+ document.getElementById('tax-before-tax').textContent = fmt(currentTax);
+ document.getElementById('tax-after-tax').textContent = fmt(newTax);
+
+ // Show results
+ document.getElementById('tax-results').classList.add('show');
+ document.getElementById('tax-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetTax() {
+ document.getElementById('tax-current-value').value = 300000;
+ document.getElementById('tax-value-increase').value = 75000;
+ document.getElementById('tax-rate').value = 3.254;
+ document.getElementById('tax-ratio').value = 25;
+ document.getElementById('tax-results').classList.remove('show');
+}
+
+// ========================================
+// PRINT
+// ========================================
+function printResults(panelId) {
+ document.querySelectorAll('.calc-panel').forEach(function(p) {
+  p.classList.remove('print-target');
+ });
+ document.getElementById('panel-' + panelId).classList.add('print-target');
+ window.print();
+}
+
+// ========================================
+// URL HASH SUPPORT
+// ========================================
+(function() {
+ var hash = window.location.hash.replace('#', '');
+ if (hash === 'roi' || hash === 'tax' || hash === 'cost') {
+  switchTab(hash);
+ }
+})();
+</script>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>

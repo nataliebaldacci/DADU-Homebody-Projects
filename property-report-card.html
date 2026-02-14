@@ -974,10 +974,10 @@
  <h3>Quick Actions</h3></div>
  <div class="report-section-body">
  <div class="quick-actions">
- <a href="roi_calculator.html" class="quick-action-btn">
+ <a href="dadu_calculators.html#roi" class="quick-action-btn">
  <img src="assets/icons/Market Statistics Report .png" alt="">
  Calculate ROI</a>
- <a href="project_cost_estimator.html" class="quick-action-btn">
+ <a href="dadu_calculators.html" class="quick-action-btn">
  <img src="assets/icons/Appraisers.png" alt="">
  Estimate Costs</a>
  <a href="contractor_marketplace.html" class="quick-action-btn">
@@ -1022,7 +1022,7 @@
  <div class="data-item">
  <div class="data-item-label">Cost per SF</div>
  <div class="data-item-value">$200 - $300</div></div>
- <a href="cost_estimator.html" style="display: block; margin-top: 16px; color: var(--terracotta); font-weight: 600; font-size: 13px;">
+ <a href="dadu_calculators.html" style="display: block; margin-top: 16px; color: var(--terracotta); font-weight: 600; font-size: 13px;">
  Get detailed estimate</a></div></section></div></div></div></main>
 
  <!-- Footer -->
@@ -2037,7 +2037,10 @@
 
  const MAP_APIS = {
  parcels: 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_view/FeatureServer/0',
- buildings: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Footprints_Trimmed_20260213_060215/FeatureServer/0'
+ buildings: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Footprints_Trimmed_20260213_060215/FeatureServer/0',
+ parcelsBuilding: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Parcels_Building_Info_20260213_070754/FeatureServer/0',
+ secondary: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Secondary_SFH_Merged_SHP_20251231_0015/FeatureServer/0',
+ permits: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_MERGED_v2_20260213/FeatureServer/0'
  };
 
  function isAccessoryStructure(props) {

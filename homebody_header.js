@@ -91,10 +91,8 @@
                     )}
                     ${col('Valuations.png', 'Design &amp; Calculate',
                         item('site_plan_downloads.html', 'Surveyers adn Engineers.png', 'Site Plan Finder') +
-                        item('project_cost_estimator.html', 'Valuations.png', 'Cost Estimator') +
-                        item('roi_calculator.html', 'Appraisers.png', 'ROI Calculator') +
-                        item('size_calculator.html', 'ADU.png', 'Size Calculator') +
-                        item('property_tax_calculator.html', 'Investments.png', 'Tax Calculator')
+                        item('dadu_calculators.html', 'Appraisers.png', 'Calculators') +
+                        item('size_calculator.html', 'ADU.png', 'Size Calculator')
                     )}
                     ${col('Building and Construction.png', 'Hire',
                         item('contractor_marketplace.html', 'Building and Construction.png', 'Contractor Marketplace')
