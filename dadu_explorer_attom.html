@@ -1203,21 +1203,35 @@
  map.setView([coords[1], coords[0]], 17);
  showPropertyInResults(found, foundType);
  } else {
- // Try geocoding
+ // Fallback 1: Esri World Geocoder
+ let lat = null, lon = null;
+ try {
+ const esriUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${encodeURIComponent(address + ', Nashville, TN')}&f=json&outFields=Match_addr&maxLocations=1`;
+ const esriResp = await fetch(esriUrl);
+ const esriData = await esriResp.json();
+ if (esriData.candidates && esriData.candidates.length > 0) {
+ lat = esriData.candidates[0].location.y;
+ lon = esriData.candidates[0].location.x;
+ }
+ } catch (e) { console.log('Esri geocoder failed'); }
+
+ // Fallback 2: Nominatim
+ if (!lat || !lon) {
  try {
  const geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Nashville, TN')}`;
  const response = await fetch(geocodeUrl);
  const results = await response.json();
+ if (results && results.length > 0) {
+ lat = parseFloat(results[0].lat);
+ lon = parseFloat(results[0].lon);
+ }
+ } catch (e) { console.log('Nominatim failed'); }
+ }
 
- if (results && results.length >0) {
- const lat = parseFloat(results[0].lat);
- const lon = parseFloat(results[0].lon);
+ if (lat && lon) {
  map.setView([lat, lon], 17);
  } else {
  alert('Address not found. Try a different search term.');
- }
- } catch (err) {
- alert('Error searching for address.');
  }
  }
  }
