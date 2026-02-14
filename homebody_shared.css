@@ -214,6 +214,44 @@ a {
     transform: rotate(180deg);
 }
 
+/* ========================================
+   DARK NAV VARIANT
+   Add class="dark-nav" to <body> for dark
+   slate nav that blends with dark hero sections
+   ======================================== */
+.dark-nav .main-nav {
+    background: #3A5566;
+    border-bottom: none;
+}
+
+.dark-nav .nav-logo-brand {
+    color: #E1D4BB;
+}
+
+.dark-nav .nav-link {
+    color: #E1D4BB;
+}
+
+.dark-nav .nav-link:hover,
+.dark-nav .nav-link:focus {
+    background: #496778;
+    color: #fff;
+}
+
+.dark-nav .nav-link[aria-expanded="true"] {
+    background: #496778;
+    color: #CBB279;
+}
+
+.dark-nav .nav-search-btn {
+    background: #CBB279;
+    color: #3A5566;
+}
+
+.dark-nav .nav-search-btn:hover {
+    background: #D4A54E;
+}
+
 /* Dropdown Menus */
 .dropdown-menu {
     position: absolute;
