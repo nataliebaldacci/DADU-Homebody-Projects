@@ -4,7 +4,7 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Short-Term Rental Permits for DADUs | Homebody Projects</title>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
  <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -671,12 +671,82 @@
 
   .footer-bottom a:hover { color: rgba(225, 212, 187, 0.8); }
 
+  /* ========== FORMS GRID ========== */
+  .forms-grid {
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+   gap: 16px;
+  }
+
+  .form-card {
+   display: flex;
+   align-items: flex-start;
+   gap: 14px;
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   padding: 20px 22px;
+   color: #3A5566;
+   transition: all 0.2s;
+  }
+
+  .form-card:hover {
+   border-color: #CBB279;
+   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+   transform: translateY(-2px);
+  }
+
+  .form-card-icon {
+   width: 40px;
+   height: 40px;
+   background: #F0EBE1;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+  }
+
+  .form-card-icon img {
+   width: 22px;
+   height: 22px;
+  }
+
+  .form-card-text h4 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 14px;
+   color: #3A5566;
+   margin-bottom: 4px;
+  }
+
+  .form-card-text p {
+   font-size: 12px;
+   color: #706F6C;
+   line-height: 1.5;
+  }
+
+  .form-card-arrow {
+   margin-left: auto;
+   color: #918A83;
+   font-size: 18px;
+   align-self: center;
+   flex-shrink: 0;
+   transition: color 0.2s;
+  }
+
+  .form-card:hover .form-card-arrow {
+   color: #CBB279;
+  }
+
   /* ========== RESPONSIVE ========== */
   @media (max-width: 768px) {
    .str-hero h1 { font-size: 28px; }
    .str-hero .hero-badges { gap: 8px; }
    .str-hero .badge { font-size: 12px; padding: 5px 12px; }
    .permit-grid { grid-template-columns: 1fr; }
+   .forms-grid { grid-template-columns: 1fr; }
    .section-heading { font-size: 24px; }
    .links-section { flex-direction: column; align-items: center; }
    .footer-inner { flex-direction: column; }
@@ -880,6 +950,45 @@
     <p>Once approved, display your permit number on all rental listings and register for hotel occupancy tax collection.</p>
    </div>
   </div>
+ </div>
+</div>
+
+<!-- STR Forms & Applications -->
+<div class="section-container">
+ <h2 class="section-heading">STR Forms and Applications</h2>
+ <div class="forms-grid">
+  <a href="https://www.nashville.gov/departments/codes/short-term-rentals/apply-short-term-rental-property-permit" target="_blank" class="form-card">
+   <div class="form-card-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+   <div class="form-card-text">
+    <h4>Apply for an STR Permit</h4>
+    <p>Start your owner-occupied STR permit application through Metro Nashville.</p>
+   </div>
+   <span class="form-card-arrow">&rarr;</span>
+  </a>
+  <a href="https://www.nashville.gov/sites/default/files/2022-03/STRP-Affidavit-Owner-Occupied.pdf" target="_blank" class="form-card">
+   <div class="form-card-icon"><img src="assets/icons/Legal.png" alt=""></div>
+   <div class="form-card-text">
+    <h4>Owner-Occupied Affidavit (PDF)</h4>
+    <p>Required affidavit confirming owner occupancy of the property.</p>
+   </div>
+   <span class="form-card-arrow">&rarr;</span>
+  </a>
+  <a href="https://www.nashville.gov/departments/codes/short-term-rentals/apply-short-term-rental-property-permit/checklist" target="_blank" class="form-card">
+   <div class="form-card-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
+   <div class="form-card-text">
+    <h4>STR Application Checklist</h4>
+    <p>Complete checklist of documents and requirements for your application.</p>
+   </div>
+   <span class="form-card-arrow">&rarr;</span>
+  </a>
+  <a href="https://www.nashville.gov/sites/default/files/2025-06/STRP_Owner_Occupied_Neighbor_Notification_Template.docx" target="_blank" class="form-card">
+   <div class="form-card-icon"><img src="assets/icons/Legal.png" alt=""></div>
+   <div class="form-card-text">
+    <h4>Neighbor Notification Template (DOCX)</h4>
+    <p>Required neighbor notification letter template for owner-occupied STR permits.</p>
+   </div>
+   <span class="form-card-arrow">&rarr;</span>
+  </a>
  </div>
 </div>
 
