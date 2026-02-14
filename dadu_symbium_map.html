@@ -841,7 +841,10 @@
  document.getElementById('loading').classList.add('visible');
 
  try {
- // First try eligibility service
+ let lat = null, lon = null;
+
+ // Try 1: Eligibility service address lookup
+ try {
  const params = new URLSearchParams({
  where: `Address LIKE '%${address.toUpperCase().replace(/'/g, "''")}%'`,
  outFields: 'STANPAR,Address,Lat,Lon',
@@ -849,27 +852,57 @@
  f: 'json',
  resultRecordCount: 1
  });
-
  const response = await fetch(`${SERVICES.eligibility}/query?${params}`);
  const data = await response.json();
-
- if (data.features && data.features.length >0) {
+ if (data.features && data.features.length > 0) {
  const result = data.features[0].attributes;
- const lat = result.Lat;
- const lon = result.Lon;
+ lat = result.Lat;
+ lon = result.Lon;
+ }
+ } catch (e) { console.log('Eligibility search failed, trying geocoder'); }
 
- if (lat && lon) {
+ // Try 2: Esri World Geocoder (reliable, Nashville-specific)
+ if (!lat || !lon) {
+ try {
+ const esriUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${encodeURIComponent(address + ', Nashville, TN')}&f=json&outFields=Match_addr&maxLocations=1`;
+ const esriResp = await fetch(esriUrl);
+ const esriData = await esriResp.json();
+ if (esriData.candidates && esriData.candidates.length > 0) {
+ lat = esriData.candidates[0].location.y;
+ lon = esriData.candidates[0].location.x;
+ }
+ } catch (e) { console.log('Esri geocoder failed, trying Nominatim'); }
+ }
+
+ // Try 3: Nominatim fallback
+ if (!lat || !lon) {
+ try {
+ const nomUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Nashville, TN')}`;
+ const nomResp = await fetch(nomUrl);
+ const nomData = await nomResp.json();
+ if (nomData && nomData.length > 0) {
+ lat = parseFloat(nomData[0].lat);
+ lon = parseFloat(nomData[0].lon);
+ }
+ } catch (e) { console.log('Nominatim failed'); }
+ }
+
+ if (!lat || !lon) {
+ alert('Address not found. Please try a different address.');
+ return;
+ }
+
+ // Found coordinates — zoom to location
  map.setView([lat, lon], 18);
  document.getElementById('welcome-panel').classList.add('hidden');
 
- // Load data then find and select the parcel
+ // Load viewport data first
  await loadViewportData(map.getBounds());
 
- // Query the exact parcel at the search coordinates
+ // Then query the exact parcel at those coordinates
  setTimeout(async () => {
  const geometry = JSON.stringify({
- x: lon,
- y: lat,
+ x: lon, y: lat,
  spatialReference: { wkid: 4326 }
  });
  const pParams = new URLSearchParams({
@@ -893,23 +926,7 @@
  console.error('Error selecting parcel after search:', err);
  }
  }, 1000);
- return;
- }
- }
 
- // Fallback to geocoder
- const geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Nashville, TN')}`;
- const geoResponse = await fetch(geocodeUrl);
- const geoResults = await geoResponse.json();
-
- if (geoResults && geoResults.length >0) {
- const lat = parseFloat(geoResults[0].lat);
- const lon = parseFloat(geoResults[0].lon);
- map.setView([lat, lon], 18);
- document.getElementById('welcome-panel').classList.add('hidden');
- } else {
- alert('Address not found. Please try a different address.');
- }
  } catch (err) {
  console.error('Search error:', err);
  alert('Error searching. Please try again.');
@@ -951,12 +968,15 @@
  document.addEventListener('DOMContentLoaded', () =>{
  initMap();
 
- // Header search
- document.getElementById('header-search').addEventListener('keypress', (e) =>{
+ // Header search (may not exist if shared header is used)
+ const headerSearch = document.getElementById('header-search');
+ if (headerSearch) {
+ headerSearch.addEventListener('keypress', (e) =>{
  if (e.key === 'Enter') {
  searchAddress(e.target.value.trim());
  }
  });
+ }
 
  // Welcome search
  document.getElementById('welcome-search-input').addEventListener('keypress', (e) =>{
