@@ -3,529 +3,1008 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Short-Term Rental Permits | Castlehold</title>
- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <title>Short-Term Rental Permits for DADUs | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
  <style>
- :root {
- --navy: #3A5566;
- --navy-dark: #2E4553;
- --teal: #7B746D;
- --terracotta: #CBB279;
- --terracotta-hover: #B8A068;
- --tan: #7B746D;
- --cream: #F0EBE1;
- --background: #F2F0ED;
- --white: #ffffff;
- --border: #e0e0e0;
- --text: #333333;
- --text-light: #666666;
- --terracotta: #27ae60;
- --yellow: #f39c12;
- --red: #c0392b;
- }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
- * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+   font-family: 'Inter', sans-serif;
+   background: #F2F0ED;
+   color: #333;
+   line-height: 1.6;
+  }
 
- body {
- font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
- background: var(--background);
- color: var(--text);
- line-height: 1.6;
- }
+  a { text-decoration: none; color: #3A5566; }
 
- .header {
- background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
- padding: 0 24px;
- height: 64px;
- display: flex;
- align-items: center;
- justify-content: space-between;
- position: sticky;
- top: 0;
- z-index: 1000;
- }
+  /* ========== HERO ========== */
+  .str-hero {
+   background: #3A5566;
+   padding: 48px 24px;
+   text-align: center;
+  }
 
- .logo {
- display: flex;
- align-items: center;
- gap: 12px;
- text-decoration: none;
- color: white;
- font-weight: 700;
- font-size: 20px;
- }
+  .str-hero h1 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 36px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
 
- .logo-icon {
- width: 40px;
- height: 40px;
- background: var(--terracotta);
- border-radius: 10px;
- display: flex;
- align-items: center;
- justify-content: center;
- }
+  .str-hero .subtitle {
+   color: #F0EBE1;
+   font-size: 16px;
+   max-width: 640px;
+   margin: 0 auto 24px;
+  }
 
- .nav-links {
- display: flex;
- gap: 8px;
- }
+  .str-hero .hero-badges {
+   display: flex;
+   justify-content: center;
+   gap: 12px;
+   flex-wrap: wrap;
+  }
 
- .nav-link {
- color: rgba(255,255,255,0.9);
- text-decoration: none;
- padding: 8px 16px;
- border-radius: 6px;
- font-size: 14px;
- font-weight: 500;
- }
+  .str-hero .badge {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   background: rgba(255,255,255,0.12);
+   border: 1px solid rgba(225,212,187,0.3);
+   border-radius: 20px;
+   padding: 6px 16px;
+   font-size: 13px;
+   color: #E1D4BB;
+   font-weight: 600;
+  }
 
- .nav-link:hover {
- background: rgba(255,255,255,0.1);
- }
+  .str-hero .badge img {
+   width: 18px;
+   height: 18px;
+  }
 
- .hero {
- background: linear-gradient(135deg, var(--tan) 0%, var(--terracotta) 100%);
- padding: 60px 24px;
- color: white;
- text-align: center;
- }
+  /* ========== CORE RULE ========== */
+  .core-rule {
+   max-width: 860px;
+   margin: 0 auto;
+   padding: 48px 24px 0;
+  }
 
- .hero h1 {
- font-size: 36px;
- font-weight: 800;
- margin-bottom: 12px;
- }
+  .core-rule-box {
+   background: #3A5566;
+   border-radius: 12px;
+   padding: 28px 32px;
+   text-align: center;
+  }
 
- .hero p {
- font-size: 18px;
- opacity: 0.95;
- max-width: 600px;
- margin: 0 auto;
- }
+  .core-rule-box h2 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 18px;
+   color: #E1D4BB;
+   margin-bottom: 10px;
+  }
 
- .main {
- max-width: 1200px;
- margin: 0 auto;
- padding: 40px 24px;
- }
+  .core-rule-box p {
+   font-size: 15px;
+   color: #F0EBE1;
+   line-height: 1.7;
+   max-width: 620px;
+   margin: 0 auto;
+  }
 
- .section-title {
- font-size: 24px;
- font-weight: 700;
- color: var(--navy);
- margin-bottom: 24px;
- }
+  .core-rule-box .hl {
+   color: #CBB279;
+   font-weight: 700;
+  }
 
- .alert-box {
- background: linear-gradient(135deg, var(--yellow) 0%, #e67e22 100%);
- color: white;
- padding: 24px;
- border-radius: 12px;
- margin-bottom: 32px;
- display: flex;
- align-items: center;
- gap: 20px;
- }
+  /* ========== WARNING ========== */
+  .warning-section {
+   max-width: 860px;
+   margin: 0 auto;
+   padding: 24px 24px 0;
+  }
 
- .alert-icon {
- font-size: 48px;
- }
+  .warning-box {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-left: 4px solid #D4A017;
+   border-radius: 12px;
+   padding: 24px 28px;
+  }
 
- .alert-content h3 {
- font-size: 18px;
- font-weight: 700;
- margin-bottom: 8px;
- }
+  .warning-box h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 16px;
+   color: #3A5566;
+   margin-bottom: 8px;
+  }
 
- .alert-content p {
- font-size: 14px;
- opacity: 0.95;
- }
+  .warning-box p {
+   font-size: 14px;
+   color: #706F6C;
+   line-height: 1.6;
+  }
 
- .permit-types {
- display: grid;
- grid-template-columns: repeat(2, 1fr);
- gap: 24px;
- margin-bottom: 48px;
- }
+  /* ========== BL2025-1007 RULE ========== */
+  .bl-rule-section {
+   max-width: 860px;
+   margin: 0 auto;
+   padding: 24px 24px 0;
+  }
 
- .permit-card {
- background: var(--white);
- border-radius: 12px;
- overflow: hidden;
- border: 1px solid var(--border);
- }
+  .bl-rule-box {
+   background: #7A2A1D;
+   border-radius: 12px;
+   padding: 28px 32px;
+  }
 
- .permit-header {
- padding: 24px;
- color: white;
- }
+  .bl-rule-box h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 16px;
+   color: #E1D4BB;
+   margin-bottom: 10px;
+  }
 
- .permit-header.owner {
- background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-hover) 100%);
- }
+  .bl-rule-box .restriction-badge {
+   display: inline-block;
+   background: rgba(255,255,255,0.15);
+   color: #E1D4BB;
+   font-size: 11px;
+   font-weight: 800;
+   text-transform: uppercase;
+   letter-spacing: 1.5px;
+   padding: 4px 12px;
+   border-radius: 4px;
+   margin-bottom: 14px;
+  }
 
- .permit-header.non-owner {
- background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
- }
+  .bl-rule-box blockquote {
+   font-size: 13px;
+   color: rgba(255,255,255,0.85);
+   font-style: italic;
+   line-height: 1.7;
+   margin-bottom: 14px;
+   padding-left: 16px;
+   border-left: 3px solid rgba(255,255,255,0.3);
+  }
 
- .permit-header h3 {
- font-size: 20px;
- font-weight: 700;
- margin-bottom: 8px;
- }
+  .bl-rule-box p {
+   font-size: 14px;
+   color: rgba(255,255,255,0.9);
+   line-height: 1.6;
+  }
 
- .permit-header p {
- font-size: 14px;
- opacity: 0.9;
- }
+  .bl-rule-box .hl {
+   color: #CBB279;
+   font-weight: 700;
+  }
 
- .permit-body {
- padding: 24px;
- }
+  /* ========== PERMIT TYPES ========== */
+  .section-container {
+   max-width: 860px;
+   margin: 0 auto;
+   padding: 48px 24px 0;
+  }
 
- .permit-detail {
- display: flex;
- justify-content: space-between;
- padding: 14px 0;
- border-bottom: 1px solid var(--border);
- }
+  .section-heading {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 28px;
+   color: #3A5566;
+   text-align: center;
+   margin-bottom: 32px;
+  }
 
- .permit-detail:last-child {
- border-bottom: none;
- }
+  .permit-grid {
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+   gap: 24px;
+  }
 
- .permit-detail .label {
- color: var(--text-light);
- font-size: 14px;
- }
+  .permit-card {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   overflow: hidden;
+   transition: box-shadow 0.2s, transform 0.2s;
+  }
 
- .permit-detail .value {
- font-weight: 600;
- color: var(--navy);
- font-size: 14px;
- }
+  .permit-card:hover {
+   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+   transform: translateY(-2px);
+  }
 
- .status-badge {
- display: inline-block;
- padding: 4px 12px;
- border-radius: 12px;
- font-size: 12px;
- font-weight: 600;
- }
+  .permit-card-header {
+   padding: 24px;
+   color: #fff;
+  }
 
- .status-badge.allowed {
- background: rgba(39, 174, 96, 0.15);
- color: var(--terracotta);
- }
+  .permit-card-header.eligible {
+   background: #496778;
+  }
 
- .status-badge.restricted {
- background: rgba(243, 156, 18, 0.15);
- color: var(--yellow);
- }
+  .permit-card-header.not-permitted {
+   background: #7A2A1D;
+  }
 
- .status-badge.prohibited {
- background: rgba(192, 57, 43, 0.15);
- color: var(--red);
- }
+  .permit-card-header h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-size: 18px;
+   margin-bottom: 4px;
+  }
 
- .requirements-section {
- background: var(--white);
- border-radius: 12px;
- padding: 32px;
- margin-bottom: 48px;
- }
+  .permit-card-header p {
+   font-size: 13px;
+   opacity: 0.9;
+  }
 
- .requirements-grid {
- display: grid;
- grid-template-columns: repeat(3, 1fr);
- gap: 24px;
- margin-top: 24px;
- }
+  .permit-card-body {
+   padding: 24px;
+  }
 
- .requirement-block {
- padding: 20px;
- background: var(--cream);
- border-radius: 10px;
- }
+  .permit-detail {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 12px 0;
+   border-bottom: 1px solid #E2E2E0;
+   font-size: 14px;
+  }
 
- .requirement-block h4 {
- display: flex;
- align-items: center;
- gap: 10px;
- font-size: 15px;
- font-weight: 700;
- color: var(--navy);
- margin-bottom: 12px;
- }
+  .permit-detail:last-child {
+   border-bottom: none;
+  }
 
- .requirement-block ul {
- list-style: none;
- }
+  .permit-detail .label {
+   color: #706F6C;
+  }
 
- .requirement-block li {
- padding: 8px 0;
- font-size: 13px;
- color: var(--text-light);
- border-bottom: 1px solid var(--border);
- display: flex;
- align-items: flex-start;
- gap: 8px;
- }
+  .permit-detail .value {
+   font-weight: 600;
+   color: #3A5566;
+  }
 
- .requirement-block li:last-child {
- border-bottom: none;
- }
+  .status-pill {
+   display: inline-block;
+   padding: 4px 12px;
+   border-radius: 20px;
+   font-size: 12px;
+   font-weight: 700;
+  }
 
- .check { color: var(--terracotta); }
- .warn { color: var(--yellow); }
+  .status-pill.may-eligible {
+   background: rgba(46,111,78,0.12);
+   color: #2E6F4E;
+  }
 
- .process-timeline {
- background: var(--white);
- border-radius: 12px;
- padding: 32px;
- margin-bottom: 48px;
- }
+  .status-pill.not-allowed {
+   background: rgba(122,42,29,0.12);
+   color: #7A2A1D;
+  }
 
- .timeline-steps {
- display: flex;
- justify-content: space-between;
- margin-top: 32px;
- position: relative;
- }
+  /* ========== REQUIREMENTS ========== */
+  .requirements-box {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   padding: 32px;
+  }
 
- .timeline-steps::before {
- content: '';
- position: absolute;
- top: 24px;
- left: 80px;
- right: 80px;
- height: 4px;
- background: var(--border);
- }
+  .requirements-box h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 18px;
+   color: #3A5566;
+   text-align: center;
+   margin-bottom: 24px;
+  }
 
- .timeline-step {
- display: flex;
- flex-direction: column;
- align-items: center;
- text-align: center;
- position: relative;
- z-index: 1;
- width: 140px;
- }
+  .req-list {
+   list-style: none;
+  }
 
- .step-icon {
- width: 48px;
- height: 48px;
- background: var(--terracotta);
- color: white;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 20px;
- margin-bottom: 12px;
- }
+  .req-list li {
+   display: flex;
+   align-items: flex-start;
+   gap: 14px;
+   padding: 14px 0;
+   border-bottom: 1px solid #E2E2E0;
+   font-size: 14px;
+   color: #333;
+  }
 
- .step-title {
- font-size: 14px;
- font-weight: 600;
- color: var(--navy);
- margin-bottom: 4px;
- }
+  .req-list li:last-child {
+   border-bottom: none;
+  }
 
- .step-desc {
- font-size: 12px;
- color: var(--text-light);
- }
+  .req-check {
+   width: 24px;
+   height: 24px;
+   background: #496778;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+   margin-top: 1px;
+  }
 
- .dadu-note {
- background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
- border-radius: 12px;
- padding: 32px;
- color: white;
- display: flex;
- align-items: center;
- gap: 24px;
- }
+  .req-check svg {
+   width: 14px;
+   height: 14px;
+   fill: #fff;
+  }
 
- .dadu-note-icon {
- font-size: 64px;
- }
+  .req-list strong {
+   color: #3A5566;
+  }
 
- .dadu-note-content h3 {
- font-size: 20px;
- font-weight: 700;
- margin-bottom: 12px;
- }
+  /* ========== PROCESS STEPS ========== */
+  .steps-list {
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+  }
 
- .dadu-note-content p {
- font-size: 14px;
- opacity: 0.9;
- margin-bottom: 16px;
- }
+  .step-row {
+   display: flex;
+   gap: 20px;
+   align-items: flex-start;
+  }
 
- .dadu-note-content a {
- display: inline-flex;
- align-items: center;
- gap: 8px;
- color: white;
- text-decoration: none;
- font-weight: 600;
- padding: 10px 20px;
- background: rgba(255,255,255,0.2);
- border-radius: 8px;
- transition: background 0.2s ease;
- }
+  .step-num {
+   width: 40px;
+   height: 40px;
+   background: #3A5566;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: #fff;
+   font-weight: 800;
+   font-size: 16px;
+   flex-shrink: 0;
+  }
 
- .dadu-note-content a:hover {
- background: rgba(255,255,255,0.3);
- }
+  .step-card {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   padding: 20px 24px;
+   flex: 1;
+  }
 
- @media (max-width: 1024px) {
- .permit-types {
- grid-template-columns: 1fr;
- }
- .requirements-grid {
- grid-template-columns: 1fr;
- }
- .timeline-steps {
- flex-direction: column;
- align-items: center;
- gap: 24px;
- }
- .timeline-steps::before {
- display: none;
- }
- }
+  .step-card h4 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 15px;
+   color: #3A5566;
+   margin-bottom: 6px;
+  }
 
- @media (max-width: 640px) {
- .dadu-note {
- flex-direction: column;
- text-align: center;
- }
- .alert-box {
- flex-direction: column;
- text-align: center;
- }
- }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
-<body>
-<!-- Shared Header - Castlehold -->
+  .step-card p {
+   font-size: 13px;
+   color: #706F6C;
+   line-height: 1.6;
+  }
+
+  /* ========== FEES TABLE ========== */
+  .fees-box {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   overflow: hidden;
+  }
+
+  .fees-box h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 18px;
+   color: #3A5566;
+   padding: 24px 28px 0;
+   text-align: center;
+   margin-bottom: 20px;
+  }
+
+  .fees-table {
+   width: 100%;
+   border-collapse: collapse;
+  }
+
+  .fees-table th {
+   background: #3A5566;
+   color: #E1D4BB;
+   font-size: 13px;
+   font-weight: 700;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   padding: 12px 24px;
+   text-align: left;
+  }
+
+  .fees-table td {
+   padding: 14px 24px;
+   font-size: 14px;
+   color: #333;
+   border-bottom: 1px solid #E2E2E0;
+  }
+
+  .fees-table tr:last-child td {
+   border-bottom: none;
+  }
+
+  .fees-table td:last-child {
+   font-weight: 700;
+   color: #3A5566;
+  }
+
+  .fees-table tbody tr:nth-child(even) {
+   background: #F0EBE1;
+  }
+
+  /* ========== LEGAL CITATION ========== */
+  .legal-box {
+   background: #3A5566;
+   border-radius: 12px;
+   padding: 28px 32px;
+  }
+
+  .legal-box h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 13px;
+   color: #CBB279;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   margin-bottom: 12px;
+  }
+
+  .legal-box blockquote {
+   font-size: 14px;
+   color: rgba(255,255,255,0.85);
+   font-style: italic;
+   line-height: 1.7;
+   margin-bottom: 8px;
+  }
+
+  .legal-box .cite {
+   font-size: 13px;
+   color: #CBB279;
+   font-style: normal;
+   font-weight: 600;
+  }
+
+  /* ========== ALTERNATIVE ========== */
+  .alt-box {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-left: 4px solid #2E6F4E;
+   border-radius: 12px;
+   padding: 24px 28px;
+  }
+
+  .alt-box h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 16px;
+   color: #3A5566;
+   margin-bottom: 8px;
+  }
+
+  .alt-box p {
+   font-size: 14px;
+   color: #706F6C;
+   line-height: 1.6;
+  }
+
+  /* ========== LINKS ========== */
+  .links-section {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 12px;
+   justify-content: center;
+  }
+
+  .link-pill {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 10px 20px;
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 600;
+   color: #3A5566;
+   transition: all 0.2s;
+  }
+
+  .link-pill:hover {
+   background: #F0EBE1;
+   border-color: #CBB279;
+  }
+
+  .link-pill img {
+   width: 20px;
+   height: 20px;
+  }
+
+  /* ========== CTA ========== */
+  .cta-section {
+   background: #3A5566;
+   padding: 64px 24px;
+   text-align: center;
+  }
+
+  .cta-section h2 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 32px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
+
+  .cta-section p {
+   color: #F0EBE1;
+   font-size: 15px;
+   max-width: 520px;
+   margin: 0 auto 28px;
+  }
+
+  .cta-btn {
+   display: inline-block;
+   padding: 16px 44px;
+   background: #CBB279;
+   color: #3A5566;
+   border-radius: 8px;
+   font-size: 16px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+  }
+
+  .cta-btn:hover {
+   background: #D4A54E;
+   transform: translateY(-2px);
+  }
+
+  /* ========== FOOTER ========== */
+  .page-footer {
+   background: #3A5566;
+   border-top: 1px solid #496778;
+   padding: 48px 24px 24px;
+   color: #E1D4BB;
+  }
+
+  .footer-inner {
+   max-width: 1100px;
+   margin: 0 auto;
+   display: flex;
+   justify-content: space-between;
+   align-items: flex-start;
+   gap: 40px;
+  }
+
+  .footer-links {
+   display: flex;
+   gap: 60px;
+  }
+
+  .footer-col {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+  }
+
+  .footer-col h4 {
+   font-size: 14px;
+   font-weight: 700;
+   color: #E1D4BB;
+   margin-bottom: 4px;
+   font-family: 'Inter', sans-serif;
+  }
+
+  .footer-col a {
+   font-size: 13px;
+   color: #918A83;
+   transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: #E1D4BB; }
+
+  .footer-social {
+   display: flex;
+   gap: 12px;
+  }
+
+  .footer-social a {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 36px;
+   height: 36px;
+   border-radius: 50%;
+   background: rgba(255,255,255,0.1);
+   transition: background 0.2s;
+  }
+
+  .footer-social a:hover { background: rgba(255,255,255,0.2); }
+
+  .footer-social svg {
+   width: 16px;
+   height: 16px;
+   fill: #E1D4BB;
+  }
+
+  .footer-bottom {
+   max-width: 1100px;
+   margin: 32px auto 0;
+   padding-top: 20px;
+   border-top: 1px solid rgba(255,255,255,0.1);
+   display: flex;
+   justify-content: space-between;
+   font-size: 12px;
+   color: #918A83;
+  }
+
+  .footer-bottom a {
+   color: #918A83;
+   transition: color 0.2s;
+  }
+
+  .footer-bottom a:hover { color: rgba(225, 212, 187, 0.8); }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+   .str-hero h1 { font-size: 28px; }
+   .str-hero .hero-badges { gap: 8px; }
+   .str-hero .badge { font-size: 12px; padding: 5px 12px; }
+   .permit-grid { grid-template-columns: 1fr; }
+   .section-heading { font-size: 24px; }
+   .links-section { flex-direction: column; align-items: center; }
+   .footer-inner { flex-direction: column; }
+   .footer-links { flex-direction: column; gap: 24px; }
+   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+   .str-hero { padding: 36px 16px; }
+   .str-hero h1 { font-size: 24px; }
+   .core-rule-box { padding: 20px; }
+   .step-row { flex-direction: column; gap: 12px; }
+   .step-num { margin: 0 auto; }
+   .step-card { text-align: center; }
+   .cta-section h2 { font-size: 26px; }
+  }
+ </style>
+</head>
+<body class="dark-nav">
+
+<!-- Shared Header -->
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
-
-
- 
-
- <section class="hero">
+<!-- Hero -->
+<section class="str-hero">
  <h1>Short-Term Rental Permits</h1>
- <p>Understanding STR requirements for DADUs in Metro Nashville</p></section>
+ <p class="subtitle">Understanding STR requirements, permit types, fees, and restrictions for DADUs in Metro Nashville-Davidson County.</p>
+ <div class="hero-badges">
+  <span class="badge">
+   <img src="assets/icons/Legal.png" alt="">
+   Owner Occupancy Required
+  </span>
+  <span class="badge">
+   <img src="assets/icons/Renewals.png" alt="">
+   Metro Code 17.16.070
+  </span>
+  <span class="badge">
+   <img src="assets/icons/Property Owners.png" alt="">
+   BL2025-1007
+  </span>
+ </div>
+</section>
 
- <main class="main">
- <div class="alert-box">
- <span class="alert-icon"></span>
- <div class="alert-content">
- <h3>Important: Owner Occupancy Requirement</h3>
- <p>DADUs in Nashville require owner occupancy of either the primary dwelling OR the DADU itself. Short-term rentals of the DADU may only be permitted if you reside in the primary dwelling and obtain proper STR permits.</p></div></div>
+<!-- Core Rule -->
+<div class="core-rule">
+ <div class="core-rule-box">
+  <h2>The Core Rule</h2>
+  <p>In Nashville, you <span class="hl">cannot operate a DADU as a short-term rental</span> unless you meet the owner-occupancy requirement. The owner must reside on the property as their primary residence.</p>
+ </div>
+</div>
 
- <h2 class="section-title">STR Permit Types</h2>
- <div class="permit-types">
- <div class="permit-card">
- <div class="permit-header owner">
- <h3>Owner-Occupied STR</h3>
- <p>Rent your DADU while living in the primary dwelling</p></div>
- <div class="permit-body">
- <div class="permit-detail">
- <span class="label">Permit Type</span>
- <span class="value">Type 1 - Owner Occupied</span></div>
- <div class="permit-detail">
- <span class="label">DADU Eligibility</span>
- <span class="status-badge allowed">Potentially Allowed</span></div>
- <div class="permit-detail">
- <span class="label">Annual Permit Fee</span>
- <span class="value">$313</span></div>
- <div class="permit-detail">
- <span class="label">Renewal</span>
- <span class="value">Annual</span></div>
- <div class="permit-detail">
- <span class="label">Zoning Check</span>
- <span class="value">Required</span></div></div></div>
+<!-- STR Phase-Out Warning -->
+<div class="warning-section">
+ <div class="warning-box">
+  <h3>STR Permit Phase-Out</h3>
+  <p>Nashville has restricted new non-owner-occupied STR permits in most residential zones. Many areas are no longer issuing new permits. Always verify current availability with <a href="https://www.nashville.gov/departments/codes" target="_blank" style="color: #3A5566; font-weight: 700;">Metro Codes</a> before planning an STR investment.</p>
+ </div>
+</div>
 
- <div class="permit-card">
- <div class="permit-header non-owner">
- <h3>Non-Owner Occupied STR</h3>
- <p>Investment property short-term rental</p></div>
- <div class="permit-body">
- <div class="permit-detail">
- <span class="label">Permit Type</span>
- <span class="value">Type 2/3 - Not Owner Occupied</span></div>
- <div class="permit-detail">
- <span class="label">DADU Eligibility</span>
- <span class="status-badge prohibited">Not Allowed</span></div>
- <div class="permit-detail">
- <span class="label">Reason</span>
- <span class="value">Owner occupancy required</span></div>
- <div class="permit-detail">
- <span class="label">Alternative</span>
- <span class="value">Long-term rental only</span></div>
- <div class="permit-detail">
- <span class="label">Note</span>
- <span class="value">DADU must be occupied by owner OR primary dwelling</span></div></div></div></div>
+<!-- BL2025-1007 New Restriction -->
+<div class="bl-rule-section">
+ <div class="bl-rule-box">
+  <span class="restriction-badge">BL2025-1007 RESTRICTION</span>
+  <h3>New DADUs on RS/RN/RL Lots: No STR Permitted</h3>
+  <blockquote>"Upon enactment of this section, on any single-family-zoned, Residential Neighborhood-zoned, or Residential Limited-zoned lot where a new DADU is built or established via conversion, short term rental property -- owner occupied is NOT a permitted use in the accessory dwelling unit."</blockquote>
+  <p>This means <span class="hl">new DADUs built under BL2025-1007 on RS, RN, or RL lots cannot have any STR at all</span> -- not even owner-occupied. This restriction applies to DADUs built or converted after December 12, 2025.</p>
+ </div>
+</div>
 
- <section class="requirements-section">
- <h2 class="section-title">STR Permit Requirements</h2>
- <div class="requirements-grid">
- <div class="requirement-block">
- <h4>Application Documents</h4>
- <ul>
- <li><span class="check"></span>Completed STR application form</li>
- <li><span class="check"></span>Proof of property ownership</li>
- <li><span class="check"></span>Valid government ID</li>
- <li><span class="check"></span>Floor plan of rental unit</li>
- <li><span class="check"></span>Proof of insurance ($1M liability)</li></ul></div>
- <div class="requirement-block">
- <h4>Property Requirements</h4>
- <ul>
- <li><span class="check"></span>Working smoke detectors</li>
- <li><span class="check"></span>Carbon monoxide detectors</li>
- <li><span class="check"></span>Fire extinguisher</li>
- <li><span class="check"></span>Posted emergency info</li>
- <li><span class="check"></span>Adequate parking</li></ul></div>
- <div class="requirement-block">
- <h4>Restrictions</h4>
- <ul>
- <li><span class="warn">!</span>Not in R/RS zones without owner occupancy</li>
- <li><span class="warn">!</span>Distance requirements from other STRs</li>
- <li><span class="warn">!</span>Maximum occupancy limits (2/bedroom + 2)</li>
- <li><span class="warn">!</span>Quiet hours 10pm - 7am</li>
- <li><span class="warn">!</span>No events or parties</li></ul></div></div></section>
+<!-- Permit Types -->
+<div class="section-container">
+ <h2 class="section-heading">STR Permit Types</h2>
 
- <section class="process-timeline">
- <h2 class="section-title">STR Permit Application Process</h2>
- <div class="timeline-steps">
- <div class="timeline-step">
- <div class="step-icon">1</div>
- <div class="step-title">Check Eligibility</div>
- <div class="step-desc">Verify zoning and distance requirements</div></div>
- <div class="timeline-step">
- <div class="step-icon">2</div>
- <div class="step-title">Submit Application</div>
- <div class="step-desc">Complete forms and pay fee online</div></div>
- <div class="timeline-step">
- <div class="step-icon">3</div>
- <div class="step-title">Inspection</div>
- <div class="step-desc">Safety inspection scheduled</div></div>
- <div class="timeline-step">
- <div class="step-icon">4</div>
- <div class="step-title">Permit Issued</div>
- <div class="step-desc">Display permit number in listing</div></div></div></section>
+ <div class="permit-grid">
+  <div class="permit-card">
+   <div class="permit-card-header eligible">
+    <h3>Owner-Occupied STR</h3>
+    <p>Rent your DADU while living in the primary dwelling</p>
+   </div>
+   <div class="permit-card-body">
+    <div class="permit-detail">
+     <span class="label">DADU Eligibility</span>
+     <span class="status-pill may-eligible">May Be Eligible</span>
+    </div>
+    <div class="permit-detail">
+     <span class="label">Requirement</span>
+     <span class="value">Must live on property</span>
+    </div>
+    <div class="permit-detail">
+     <span class="label">Initial Fee</span>
+     <span class="value">$313</span>
+    </div>
+    <div class="permit-detail">
+     <span class="label">Renewal</span>
+     <span class="value">$100/year</span>
+    </div>
+    <div class="permit-detail">
+     <span class="label">Note</span>
+     <span class="value">Not available for new DADUs on RS/RN/RL lots</span>
+    </div>
+   </div>
+  </div>
 
- <div class="dadu-note">
- <span class="dadu-note-icon"></span>
- <div class="dadu-note-content">
- <h3>Considering a DADU for Rental Income?</h3>
- <p>While STR permits for DADUs have restrictions, long-term rentals are permitted in all eligible zones. Many DADU owners find that long-term tenants provide more stable income with less management overhead.</p>
- <a href="roi_calculator.html">Calculate Your ROI</a></div></div></main>
- <script src="homebody_header.js"></script></body></html>
+  <div class="permit-card">
+   <div class="permit-card-header not-permitted">
+    <h3>Non-Owner-Occupied STR</h3>
+    <p>Investment property short-term rental</p>
+   </div>
+   <div class="permit-card-body">
+    <div class="permit-detail">
+     <span class="label">DADU Eligibility</span>
+     <span class="status-pill not-allowed">Not Permitted</span>
+    </div>
+    <div class="permit-detail">
+     <span class="label">Reason</span>
+     <span class="value">Owner occupancy required</span>
+    </div>
+    <div class="permit-detail">
+     <span class="label">Alternative</span>
+     <span class="value">Long-term rental (30+ days)</span>
+    </div>
+    <div class="permit-detail">
+     <span class="label">Phase-Out</span>
+     <span class="value">Most zones no longer issuing</span>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- Requirements -->
+<div class="section-container">
+ <div class="requirements-box">
+  <h3>Requirements for Owner-Occupied STR Permit</h3>
+  <ul class="req-list">
+   <li>
+    <div class="req-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span><strong>Primary Residence:</strong> You must live in the main house or the DADU as your primary residence (at least 51% of the year)</span>
+   </li>
+   <li>
+    <div class="req-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span><strong>Valid DADU Permit:</strong> Your DADU must have received all required building permits and passed final inspection</span>
+   </li>
+   <li>
+    <div class="req-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span><strong>Zoning Compliance:</strong> Property must be in a zone that permits owner-occupied STRs</span>
+   </li>
+   <li>
+    <div class="req-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span><strong>No Restrictive Covenants:</strong> HOA or deed restrictions must not prohibit short-term rentals</span>
+   </li>
+   <li>
+    <div class="req-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span><strong>Safety Requirements:</strong> Fire extinguishers, smoke detectors, CO detectors, and posted evacuation plan required</span>
+   </li>
+   <li>
+    <div class="req-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span><strong>Parking:</strong> One off-street parking space per rental unit</span>
+   </li>
+  </ul>
+ </div>
+</div>
+
+<!-- Application Process -->
+<div class="section-container">
+ <h2 class="section-heading">Application Process</h2>
+
+ <div class="steps-list">
+  <div class="step-row">
+   <div class="step-num">1</div>
+   <div class="step-card">
+    <h4>Complete DADU Construction</h4>
+    <p>Ensure your DADU has received a Certificate of Occupancy and all building permits are closed out.</p>
+   </div>
+  </div>
+  <div class="step-row">
+   <div class="step-num">2</div>
+   <div class="step-card">
+    <h4>Verify Zoning Eligibility</h4>
+    <p>Contact Metro Codes to confirm your property is in a zone that allows owner-occupied STR permits. Remember: new DADUs on RS/RN/RL lots are not eligible.</p>
+   </div>
+  </div>
+  <div class="step-row">
+   <div class="step-num">3</div>
+   <div class="step-card">
+    <h4>Submit STR Application</h4>
+    <p>Apply through the <a href="https://epermits.nashville.gov" target="_blank" style="color: #3A5566; font-weight: 700;">Metro Nashville ePermits portal</a>. Include proof of primary residence and property ownership.</p>
+   </div>
+  </div>
+  <div class="step-row">
+   <div class="step-num">4</div>
+   <div class="step-card">
+    <h4>Pass Safety Inspection</h4>
+    <p>Schedule and pass the required safety inspection for fire and life safety compliance.</p>
+   </div>
+  </div>
+  <div class="step-row">
+   <div class="step-num">5</div>
+   <div class="step-card">
+    <h4>Receive Permit and Register</h4>
+    <p>Once approved, display your permit number on all rental listings and register for hotel occupancy tax collection.</p>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- Fees -->
+<div class="section-container">
+ <div class="fees-box">
+  <h3>STR Permit Fees and Taxes</h3>
+  <table class="fees-table">
+   <thead>
+    <tr>
+     <th>Fee Type</th>
+     <th>Amount</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td>Initial Application Fee</td>
+     <td>$313</td>
+    </tr>
+    <tr>
+     <td>Annual Renewal Fee</td>
+     <td>$100</td>
+    </tr>
+    <tr>
+     <td>Hotel Occupancy Tax</td>
+     <td>6% of rental income</td>
+    </tr>
+    <tr>
+     <td>State Sales Tax</td>
+     <td>7% of rental income</td>
+    </tr>
+    <tr>
+     <td>Local Option Tax</td>
+     <td>2.25% of rental income</td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+</div>
+
+<!-- Legal Citation -->
+<div class="section-container">
+ <div class="legal-box">
+  <h3>Legal Reference</h3>
+  <blockquote>"Short term rental property means a residential dwelling unit containing not more than four (4) sleeping rooms that is used and/or advertised for rent for transient occupancy by guests..."</blockquote>
+  <span class="cite">Metro Nashville Code of Laws, Section 17.16.070</span>
+ </div>
+</div>
+
+<!-- Long-Term Alternative -->
+<div class="section-container">
+ <div class="alt-box">
+  <h3>Consider Long-Term Rental Instead</h3>
+  <p>Given the restrictions on STR permits and the owner-occupancy requirement for DADUs, many homeowners find that long-term rental (leases of 30+ days) is a simpler option. Long-term rentals do not require an STR permit and can provide stable, consistent income without the complexity of STR regulations and tax collection. Use the <a href="roi_calculator.html" style="color: #3A5566; font-weight: 700;">ROI Calculator</a> to compare your options.</p>
+ </div>
+</div>
+
+<!-- Related Links -->
+<div class="section-container" style="padding-bottom: 48px;">
+ <h2 class="section-heading">Related Resources</h2>
+ <div class="links-section">
+  <a href="owner_occupancy.html" class="link-pill">
+   <img src="assets/icons/Property Owners.png" alt="">
+   Owner Occupancy
+  </a>
+  <a href="dadu_requirements_overview.html" class="link-pill">
+   <img src="assets/icons/Building and Construction.png" alt="">
+   DADU Requirements
+  </a>
+  <a href="https://www.nashville.gov/departments/codes" target="_blank" class="link-pill">
+   <img src="assets/icons/Municipal.png" alt="">
+   Metro Nashville Codes
+  </a>
+  <a href="https://epermits.nashville.gov" target="_blank" class="link-pill">
+   <img src="assets/icons/Renewals.png" alt="">
+   ePermits Portal
+  </a>
+  <a href="roi_calculator.html" class="link-pill">
+   <img src="assets/icons/Appraisers.png" alt="">
+   ROI Calculator
+  </a>
+ </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+ <h2>Ready to Check Your Property?</h2>
+ <p>Find out if your parcel qualifies for a DADU under BL2025-1007.</p>
+ <a href="am_i_eligible.html" class="cta-btn">Check Eligibility Now</a>
+</section>
+
+<!-- Footer -->
+<footer class="page-footer">
+ <div class="footer-inner">
+  <div class="footer-links">
+   <div class="footer-col">
+    <h4>Learn</h4>
+    <a href="am_i_eligible.html">Am I Eligible?</a>
+    <a href="size_calculator.html">Size Calculator</a>
+    <a href="project_cost_estimator.html">Cost Estimator</a>
+   </div>
+   <div class="footer-col">
+    <h4>Features</h4>
+    <a href="contractor_marketplace.html">Contractor Directory</a>
+    <a href="dadu_requirements_overview.html">Planning Resources</a>
+    <a href="homebody_dadu_pricing.html">Pricing</a>
+   </div>
+   <div class="footer-col">
+    <h4>Get in Touch</h4>
+    <a href="mailto:hello@castlehold.com">hello@castlehold.com</a>
+    <a href="mailto:hello@castlehold.com">Contact</a>
+    <a href="#">Sign in</a>
+   </div>
+  </div>
+  <div class="footer-social">
+   <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+   <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+  </div>
+ </div>
+ <div class="footer-bottom">
+  <span>&copy; 2026 Homebody Projects. Powered by Castlehold. All rights reserved.</span>
+  <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span>
+ </div>
+</footer>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>
