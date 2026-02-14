@@ -3,7 +3,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>DADU Property Explorer | Castlehold</title>
+ <title>DADU Property Explorer | Homebody Projects</title>
  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
  <style>
@@ -350,7 +350,7 @@
  }</style>
  <link rel="stylesheet" href="homebody_shared.css"></head>
 <body>
-<!-- Shared Header - Castlehold -->
+<!-- Shared Header -->
 <div id="site-header"></div>
 
 <!-- End Shared Header -->
@@ -436,7 +436,7 @@
  // ArcGIS Service URLs
  const SERVICES = {
  eligibility: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Eligibility_Enhanced_Polygons_20260213_065606/FeatureServer/0',
- cadastral: 'https://maps.nashville.gov/arcgis/rest/services/Cadastral/Cadastral_Layers/MapServer/4',
+ parcels: 'https://services2.arcgis.com/HdTo6HJqh92wn4D8/ArcGIS/rest/services/Parcels_with_Building_Characteristics_view/FeatureServer/0',
  footprints: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Footprints_Trimmed_20260213_060215/FeatureServer/0',
  buildingSpecs: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Building_Specs_Polygons_20260213_065606/FeatureServer/0'
  };
@@ -521,12 +521,53 @@
  // Event handlers
  map.on('moveend', onMapMove);
  map.on('zoomend', onZoomChange);
+ map.on('click', onMapClick);
 
  // Initial zoom check
  onZoomChange();
  }
 
- // Handle each parcel feature
+ // Map click handler — query parcel layer with exact click point
+ async function onMapClick(e) {
+ const lat = e.latlng.lat;
+ const lng = e.latlng.lng;
+
+ document.getElementById('loading').classList.add('visible');
+
+ try {
+ const geometry = JSON.stringify({
+ x: lng,
+ y: lat,
+ spatialReference: { wkid: 4326 }
+ });
+
+ const params = new URLSearchParams({
+ where: '1=1',
+ geometry: geometry,
+ geometryType: 'esriGeometryPoint',
+ spatialRel: 'esriSpatialRelIntersects',
+ outFields: '*',
+ returnGeometry: true,
+ outSR: 4326,
+ f: 'geojson',
+ resultRecordCount: 1
+ });
+
+ const response = await fetch(`${SERVICES.parcels}/query?${params}`);
+ const data = await response.json();
+
+ if (data.features && data.features.length > 0) {
+ const feature = data.features[0];
+ selectParcelFromQuery(feature);
+ }
+ } catch (err) {
+ console.error('Error querying parcel at click point:', err);
+ } finally {
+ document.getElementById('loading').classList.remove('visible');
+ }
+ }
+
+ // Handle each parcel feature (viewport parcels for display only)
  function onEachParcel(feature, layer) {
  const props = feature.properties;
  const address = props.PropAddr || props.STANPAR || 'Unknown';
@@ -538,20 +579,19 @@
  <div class="county">Davidson County, TN</div></div>
  `, { sticky: true, direction: 'top', offset: [0, -10] });
 
- // Click to select
- layer.on('click', () =>selectParcel(feature, layer));
+ // No click handler here — map click handler queries the parcel service directly
  }
 
- // Select a parcel
- async function selectParcel(feature, layer) {
+ // Select a parcel from a point query result (actual parcel polygon)
+ async function selectParcelFromQuery(feature) {
  const props = feature.properties;
- const stanpar = props.STANPAR;
+ const stanpar = props.STANPAR || props.APN || props.ParcelID || '';
 
  // Clear previous selection
  selectedParcelLayer.clearLayers();
  selectedFootprintLayer.clearLayers();
 
- // Highlight selected parcel with dashed border
+ // Draw the actual parcel polygon with dashed border (NOT a bounding box)
  selectedParcelLayer.addData(feature);
  selectedParcel = feature;
 
@@ -561,15 +601,16 @@
  // Get eligibility data
  const eligData = await getEligibilityData(stanpar);
 
- // Update property panel
+ // Merge parcel props with eligibility data for panel display
  updatePropertyPanel(props, eligData);
 
  // Show panel
  document.getElementById('property-panel').classList.add('visible');
  document.getElementById('welcome-panel').classList.add('hidden');
 
- // Pan to parcel
- map.fitBounds(layer.getBounds(), { padding: [100, 100], maxZoom: 18 });
+ // Pan to the actual parcel bounds
+ const parcelBounds = L.geoJSON(feature).getBounds();
+ map.fitBounds(parcelBounds, { padding: [100, 100], maxZoom: 18 });
  }
 
  // Load footprints for selected parcel
@@ -713,8 +754,8 @@
  document.getElementById('loading').classList.add('visible');
 
  try {
- // Load parcels
- const parcels = await queryService(SERVICES.cadastral, bounds, 'STANPAR,PropAddr,Acres');
+ // Load parcels from parcel-level service (not block-level cadastral)
+ const parcels = await queryService(SERVICES.parcels, bounds, 'STANPAR,PropAddr,Acres,APN,ParcelID');
  if (parcels.features) {
  parcelLayer.clearLayers();
  parcelLayer.addData(parcels);
@@ -809,15 +850,33 @@
  // Load data then find and select the parcel
  await loadViewportData(map.getBounds());
 
- // Find parcel by clicking
- setTimeout(() =>{
- const point = map.latLngToContainerPoint([lat, lon]);
- // Simulate finding the parcel
- parcelLayer.eachLayer(layer =>{
- if (layer.getBounds && layer.getBounds().contains([lat, lon])) {
- selectParcel(layer.feature, layer);
- }
+ // Query the exact parcel at the search coordinates
+ setTimeout(async () => {
+ const geometry = JSON.stringify({
+ x: lon,
+ y: lat,
+ spatialReference: { wkid: 4326 }
  });
+ const pParams = new URLSearchParams({
+ where: '1=1',
+ geometry: geometry,
+ geometryType: 'esriGeometryPoint',
+ spatialRel: 'esriSpatialRelIntersects',
+ outFields: '*',
+ returnGeometry: true,
+ outSR: 4326,
+ f: 'geojson',
+ resultRecordCount: 1
+ });
+ try {
+ const pResp = await fetch(`${SERVICES.parcels}/query?${pParams}`);
+ const pData = await pResp.json();
+ if (pData.features && pData.features.length > 0) {
+ selectParcelFromQuery(pData.features[0]);
+ }
+ } catch (err) {
+ console.error('Error selecting parcel after search:', err);
+ }
  }, 1000);
  return;
  }
