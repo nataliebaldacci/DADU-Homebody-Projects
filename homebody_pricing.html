@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Pricing | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
+ <style>
+ /* ========== PAGE-SPECIFIC: Pricing ========== */
+
+ /* Nav overrides for dark slate nav */
+ .main-nav {
+  background: #3A5566 !important;
+  border-bottom: 1px solid rgba(225, 212, 187, 0.15) !important;
+ }
+ .nav-container { height: 64px !important; }
+ .nav-link {
+  color: #E1D4BB !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+ }
+ .nav-link:hover,
+ .nav-link:focus {
+  background: #496778 !important;
+  color: #ffffff !important;
+ }
+ .nav-link[aria-expanded="true"] {
+  background: #496778 !important;
+  color: #ffffff !important;
+ }
+ .nav-search-btn {
+  background: #CBB279 !important;
+  color: #3A5566 !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  padding: 10px 24px !important;
+  border-radius: 8px !important;
+ }
+ .nav-search-btn:hover {
+  background: #D4A54E !important;
+  color: #3A5566 !important;
+ }
+ .nav-logo-img {
+  height: 42px !important;
+  width: auto !important;
+ }
+ .nav-logo-brand {
+  color: #ffffff;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  margin-left: 10px;
+  white-space: nowrap;
+ }
+ .nav-container a[title="Search"] {
+  color: #E1D4BB !important;
+ }
+ .nav-container a[title="Search"]:hover {
+  color: #ffffff !important;
+ }
+
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+
+ body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #F2F0ED;
+  color: #3A5566;
+  line-height: 1.6;
+ }
+
+ a { text-decoration: none; color: inherit; }
+
+ /* ========== PAGE HERO ========== */
+ .pricing-hero {
+  background: #3A5566;
+  padding: 100px 24px 60px;
+  text-align: center;
+ }
+
+ .pricing-hero h1 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 42px;
+  color: #E1D4BB;
+  margin-bottom: 16px;
+  line-height: 1.2;
+ }
+
+ .pricing-hero p {
+  color: #F0EBE1;
+  font-size: 18px;
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.6;
+ }
+
+ /* ========== PRICING CARDS ========== */
+ .pricing-section {
+  background: #F2F0ED;
+  padding: 64px 24px 80px;
+ }
+
+ .pricing-grid {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  align-items: start;
+ }
+
+ .pricing-card {
+  background: #f5f5f0;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 36px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+ }
+
+ .pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(58, 85, 102, 0.12);
+ }
+
+ .pricing-card.popular {
+  border: 2px solid #CBB279;
+ }
+
+ .popular-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #CBB279;
+  color: #3A5566;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 4px 18px;
+  border-radius: 20px;
+  white-space: nowrap;
+ }
+
+ .pricing-card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #3A5566;
+  margin-bottom: 8px;
+ }
+
+ .pricing-card-price {
+  font-size: 48px;
+  font-weight: 800;
+  color: #3A5566;
+  line-height: 1.1;
+  margin-bottom: 4px;
+ }
+
+ .pricing-card-period {
+  font-size: 14px;
+  color: #706F6C;
+  margin-bottom: 24px;
+  min-height: 20px;
+ }
+
+ .pricing-card-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px;
+  width: 100%;
+  text-align: left;
+ }
+
+ .pricing-card-features li {
+  font-size: 14px;
+  color: #706F6C;
+  padding: 8px 0;
+  border-bottom: 1px solid #E2E2E0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+ }
+
+ .pricing-card-features li:last-child {
+  border-bottom: none;
+ }
+
+ .check-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+ }
+
+ .check-icon svg {
+  width: 18px;
+  height: 18px;
+ }
+
+ .btn-primary {
+  display: inline-block;
+  background: #CBB279;
+  color: #3A5566;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 12px 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
+ }
+
+ .btn-primary:hover {
+  background: #B8A068;
+  transform: translateY(-1px);
+ }
+
+ .btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: #3A5566;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 12px 32px;
+  border-radius: 8px;
+  border: 2px solid #3A5566;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
+ }
+
+ .btn-outline:hover {
+  background: #3A5566;
+  color: #E1D4BB;
+  transform: translateY(-1px);
+ }
+
+ /* ========== WHAT'S INCLUDED SECTION ========== */
+ .included-section {
+  background: #ffffff;
+  padding: 64px 24px;
+ }
+
+ .included-section h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 32px;
+  color: #3A5566;
+  text-align: center;
+  margin-bottom: 48px;
+ }
+
+ .included-grid {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  text-align: center;
+ }
+
+ .included-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+ }
+
+ .included-icon {
+  width: 56px;
+  height: 56px;
+  background: #F0EBE1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ }
+
+ .included-icon svg {
+  width: 26px;
+  height: 26px;
+  stroke: #3A5566;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+ }
+
+ .included-item h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3A5566;
+ }
+
+ .included-item p {
+  font-size: 13px;
+  color: #706F6C;
+  line-height: 1.5;
+ }
+
+ /* ========== FAQ SECTION ========== */
+ .faq-section {
+  background: #F2F0ED;
+  padding: 64px 24px 80px;
+ }
+
+ .faq-section h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 32px;
+  color: #3A5566;
+  text-align: center;
+  margin-bottom: 48px;
+ }
+
+ .faq-list {
+  max-width: 720px;
+  margin: 0 auto;
+ }
+
+ .faq-item {
+  background: #f5f5f0;
+  border: 1px solid #E2E2E0;
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+ }
+
+ .faq-item:hover {
+  box-shadow: 0 4px 12px rgba(58, 85, 102, 0.08);
+ }
+
+ .faq-question {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3A5566;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+ }
+
+ .faq-toggle {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.25s ease;
+ }
+
+ .faq-toggle svg {
+  width: 24px;
+  height: 24px;
+  stroke: #7B746D;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+ }
+
+ .faq-item.open .faq-toggle {
+  transform: rotate(45deg);
+ }
+
+ .faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding-top 0.3s ease;
+ }
+
+ .faq-item.open .faq-answer {
+  max-height: 200px;
+  padding-top: 16px;
+ }
+
+ .faq-answer p {
+  font-size: 15px;
+  color: #706F6C;
+  line-height: 1.7;
+ }
+
+ /* ========== FOOTER ========== */
+ .page-footer {
+  background: #3A5566;
+  color: #E1D4BB;
+  padding: 48px 24px 24px;
+ }
+
+ .footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 32px;
+ }
+
+ .footer-links {
+  display: flex;
+  gap: 60px;
+ }
+
+ .footer-col h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #CBB279;
+ }
+
+ .footer-col a {
+  display: block;
+  color: rgba(225, 212, 187, 0.65);
+  font-size: 14px;
+  margin-bottom: 10px;
+  transition: color 0.2s;
+ }
+
+ .footer-col a:hover { color: #E1D4BB; }
+
+ .footer-social {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+ }
+
+ .footer-social a {
+  color: rgba(225, 212, 187, 0.6);
+  transition: color 0.2s;
+ }
+
+ .footer-social a:hover { color: #E1D4BB; }
+
+ .footer-social svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+ }
+
+ .footer-bottom {
+  max-width: 1100px;
+  margin: 24px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(225, 212, 187, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: rgba(225, 212, 187, 0.5);
+ }
+
+ .footer-bottom a {
+  color: rgba(225, 212, 187, 0.5);
+  transition: color 0.2s;
+ }
+
+ .footer-bottom a:hover { color: rgba(225, 212, 187, 0.8); }
+
+ .footer-powered {
+  text-align: center;
+  max-width: 1100px;
+  margin: 16px auto 0;
+  font-size: 12px;
+  color: rgba(225, 212, 187, 0.35);
+ }
+
+ /* ========== RESPONSIVE ========== */
+ @media (max-width: 1024px) {
+  .pricing-grid {
+   grid-template-columns: repeat(2, 1fr);
+   max-width: 640px;
+  }
+  .included-grid {
+   grid-template-columns: repeat(2, 1fr);
+  }
+ }
+
+ @media (max-width: 600px) {
+  .pricing-hero h1 { font-size: 30px; }
+  .pricing-hero p { font-size: 16px; }
+  .pricing-grid {
+   grid-template-columns: 1fr;
+   max-width: 400px;
+  }
+  .pricing-card-price { font-size: 40px; }
+  .included-grid {
+   grid-template-columns: 1fr;
+   gap: 24px;
+  }
+  .footer-inner { flex-direction: column; }
+  .footer-links { flex-direction: column; gap: 24px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+ }
+ </style>
+</head>
+<body>
+
+<!-- Shared Navigation -->
+<div id="site-header"></div>
+
+<!-- Page Hero -->
+<section class="pricing-hero">
+ <h1>Simple, Transparent Pricing</h1>
+ <p>Get the data you need at every stage of your DADU project</p>
+</section>
+
+<main>
+
+ <!-- Pricing Cards -->
+ <section class="pricing-section">
+  <div class="pricing-grid">
+
+   <!-- Free Tier -->
+   <div class="pricing-card">
+    <div class="pricing-card-title">Free</div>
+    <div class="pricing-card-price">$0</div>
+    <div class="pricing-card-period">&nbsp;</div>
+    <ul class="pricing-card-features">
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Near Me locator
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Basic permit info
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Contractor names
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Cost ranges
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      External links to Nashville portals
+     </li>
+    </ul>
+    <a href="am_i_eligible.html" class="btn-outline">Get Started</a>
+   </div>
+
+   <!-- Detail Report -->
+   <div class="pricing-card popular">
+    <span class="popular-badge">POPULAR</span>
+    <div class="pricing-card-title">Detail Report</div>
+    <div class="pricing-card-price">$4.99</div>
+    <div class="pricing-card-period">per report</div>
+    <ul class="pricing-card-features">
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Full permit details (cost, sqft, dates)
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Cost per square foot analysis
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Permit PDFs and site plans
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Property card with assessor data
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Aerial and street view imagery
+     </li>
+    </ul>
+    <span class="btn-primary">Coming Soon</span>
+   </div>
+
+   <!-- Contractor Report -->
+   <div class="pricing-card">
+    <div class="pricing-card-title">Contractor Report</div>
+    <div class="pricing-card-price">$9.99</div>
+    <div class="pricing-card-period">per report</div>
+    <ul class="pricing-card-features">
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      All DADUs by contractor
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Average cost per square foot
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Project locations and map
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Contact information
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      License verification
+     </li>
+    </ul>
+    <span class="btn-primary">Coming Soon</span>
+   </div>
+
+   <!-- Area Analysis -->
+   <div class="pricing-card">
+    <div class="pricing-card-title">Area Analysis</div>
+    <div class="pricing-card-price">$14.99</div>
+    <div class="pricing-card-period">per report</div>
+    <ul class="pricing-card-features">
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      All DADUs in neighborhood/ZIP
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Cost trends over time
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Most active contractors
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Approval timeline statistics
+     </li>
+     <li>
+      <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6F4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      Market demand indicators
+     </li>
+    </ul>
+    <span class="btn-primary">Coming Soon</span>
+   </div>
+
+  </div>
+ </section>
+
+ <!-- What's Included in Every Report -->
+ <section class="included-section">
+  <h2>What's Included in Every Report</h2>
+  <div class="included-grid">
+
+   <div class="included-item">
+    <div class="included-icon">
+     <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+    </div>
+    <h3>Data Sourced from Nashville Metro</h3>
+    <p>Official GIS, permit, and assessor records from Davidson County</p>
+   </div>
+
+   <div class="included-item">
+    <div class="included-icon">
+     <svg viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"></path><polyline points="17 6 23 6 23 12"></polyline></svg>
+    </div>
+    <h3>Updated Regularly</h3>
+    <p>Data refreshed from Nashville open data and ArcGIS services</p>
+   </div>
+
+   <div class="included-item">
+    <div class="included-icon">
+     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+    </div>
+    <h3>Professional PDF Export</h3>
+    <p>Download polished reports ready for lenders and stakeholders</p>
+   </div>
+
+   <div class="included-item">
+    <div class="included-icon">
+     <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+    </div>
+    <h3>Shareable Link</h3>
+    <p>Send a link to contractors, architects, or family members</p>
+   </div>
+
+  </div>
+ </section>
+
+ <!-- FAQ Section -->
+ <section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-list">
+
+   <div class="faq-item open">
+    <div class="faq-question">
+     <span>When will paid reports be available?</span>
+     <span class="faq-toggle"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
+    </div>
+    <div class="faq-answer">
+     <p>We are finalizing our Stripe integration and expect to launch paid reports soon. Sign up for updates and we will notify you as soon as they are available.</p>
+    </div>
+   </div>
+
+   <div class="faq-item">
+    <div class="faq-question">
+     <span>What data sources power the reports?</span>
+     <span class="faq-toggle"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
+    </div>
+    <div class="faq-answer">
+     <p>Nashville Metro GIS parcel data, building permit records, restrictive covenant filings, and Davidson County assessor records. All data is sourced from official public repositories and updated regularly.</p>
+    </div>
+   </div>
+
+   <div class="faq-item">
+    <div class="faq-question">
+     <span>Can I get a refund?</span>
+     <span class="faq-toggle"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
+    </div>
+    <div class="faq-answer">
+     <p>Reports are delivered instantly upon purchase. If you experience any issues with your report, contact us within 24 hours and we will resolve the situation promptly.</p>
+    </div>
+   </div>
+
+  </div>
+ </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="page-footer">
+ <div class="footer-inner">
+  <div class="footer-links">
+   <div class="footer-col">
+    <h4>Learn</h4>
+    <a href="am_i_eligible.html">Am I Eligible?</a>
+    <a href="size_calculator.html">Size Calculator</a>
+    <a href="project_cost_estimator.html">Cost Estimator</a>
+   </div>
+   <div class="footer-col">
+    <h4>Features</h4>
+    <a href="contractor_marketplace.html">Contractor Directory</a>
+    <a href="dadu_building_requirements.html">Planning Resources</a>
+    <a href="homebody_pricing.html">Pricing</a>
+   </div>
+   <div class="footer-col">
+    <h4>Get in Touch</h4>
+    <a href="mailto:hello@castlehold.com">hello@castlehold.com</a>
+    <a href="mailto:hello@castlehold.com">Contact</a>
+    <a href="#">Sign in</a>
+   </div>
+  </div>
+  <div class="footer-social">
+   <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+   <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+  </div>
+ </div>
+ <div class="footer-bottom">
+  <span>&copy; 2026 Homebody Projects. All rights reserved.</span>
+  <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span>
+ </div>
+ <div class="footer-powered">Powered by Castlehold</div>
+</footer>
+
+<script>
+ // FAQ toggle
+ document.addEventListener('DOMContentLoaded', function() {
+  var faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(function(item) {
+   var question = item.querySelector('.faq-question');
+   question.addEventListener('click', function() {
+    // Close other open items
+    faqItems.forEach(function(other) {
+     if (other !== item && other.classList.contains('open')) {
+      other.classList.remove('open');
+     }
+    });
+    // Toggle this item
+    item.classList.toggle('open');
+   });
+  });
+ });
+</script>
+<script src="homebody_header.js"></script>
+</body>
+</html>

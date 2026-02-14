@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADU Footprint Cards | Homebody Projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="homebody_shared.css">
+    <style>
+        /* ========================================
+           FOOTPRINT CARDS PAGE STYLES
+           ======================================== */
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F2F0ED;
+            color: #706F6C;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ---- Hero ---- */
+        .fc-hero {
+            background: #3A5566;
+            padding: 72px 24px 64px;
+            text-align: center;
+        }
+
+        .fc-hero h1 {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 42px;
+            color: #E1D4BB;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .fc-hero .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            color: #F0EBE1;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* ---- Section Layout ---- */
+        .fc-section {
+            padding: 64px 24px;
+        }
+
+        .fc-section--linen {
+            background: #F2F0ED;
+        }
+
+        .fc-section--white {
+            background: #ffffff;
+        }
+
+        .fc-section--dark {
+            background: #3A5566;
+        }
+
+        .fc-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .fc-section-heading {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 32px;
+            color: #3A5566;
+            text-align: center;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .fc-section-heading--light {
+            color: #E1D4BB;
+        }
+
+        .fc-section-subtext {
+            font-size: 16px;
+            color: #706F6C;
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+        }
+
+        /* ---- What is a Footprint Card ---- */
+        .fc-explainer {
+            max-width: 780px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .fc-explainer p {
+            font-size: 16px;
+            color: #706F6C;
+            line-height: 1.8;
+        }
+
+        /* ---- Feature Grid (3x2) ---- */
+        .fc-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .fc-feature-card {
+            background: #f5f5f0;
+            border: 1px solid #E2E2E0;
+            border-radius: 10px;
+            padding: 28px 24px;
+            text-align: center;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .fc-feature-card:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .fc-feature-card h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: #3A5566;
+            margin-bottom: 10px;
+        }
+
+        .fc-feature-card p {
+            font-size: 14px;
+            color: #706F6C;
+            line-height: 1.6;
+        }
+
+        /* ---- Sample Card ---- */
+        .fc-sample-card {
+            background: #f5f5f0;
+            border: 1px solid #E2E2E0;
+            border-radius: 12px;
+            max-width: 760px;
+            margin: 48px auto 0;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .fc-sample-card-header {
+            background: #3A5566;
+            padding: 20px 28px;
+        }
+
+        .fc-sample-card-header h3 {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 22px;
+            color: #E1D4BB;
+            margin-bottom: 4px;
+        }
+
+        .fc-sample-card-header .fc-apn {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #918A83;
+            font-weight: 500;
+        }
+
+        .fc-sample-card-body {
+            padding: 28px;
+        }
+
+        .fc-sample-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+
+        .fc-sample-table thead th {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #7B746D;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid #E2E2E0;
+        }
+
+        .fc-sample-table tbody td {
+            font-size: 14px;
+            color: #706F6C;
+            padding: 12px;
+            border-bottom: 1px solid #E2E2E0;
+        }
+
+        .fc-sample-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .fc-sample-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .fc-metric {
+            background: #F2F0ED;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .fc-metric-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #7B746D;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .fc-metric-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #3A5566;
+        }
+
+        .fc-metric-value--accent {
+            color: #CBB279;
+        }
+
+        /* ---- Use Cases ---- */
+        .fc-use-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .fc-use-card {
+            background: #f5f5f0;
+            border: 1px solid #E2E2E0;
+            border-radius: 10px;
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .fc-use-card-icon {
+            width: 48px;
+            height: 48px;
+            background: #F0EBE1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+        }
+
+        .fc-use-card-icon img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .fc-use-card h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: #3A5566;
+            margin-bottom: 10px;
+        }
+
+        .fc-use-card p {
+            font-size: 14px;
+            color: #706F6C;
+            line-height: 1.6;
+        }
+
+        /* ---- CTA Section ---- */
+        .fc-cta {
+            text-align: center;
+            padding: 72px 24px;
+        }
+
+        .fc-cta h2 {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 32px;
+            color: #E1D4BB;
+            margin-bottom: 24px;
+        }
+
+        .fc-cta-btn {
+            display: inline-block;
+            background: #CBB279;
+            color: #3A5566;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 14px 36px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+
+        .fc-cta-btn:hover {
+            background: #B8A068;
+        }
+
+        /* ---- Footer ---- */
+        .fc-footer {
+            background: #3A5566;
+            padding: 48px 24px 32px;
+            color: #E1D4BB;
+        }
+
+        .fc-footer-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .fc-footer-col h4 {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #E1D4BB;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .fc-footer-col a {
+            display: block;
+            font-size: 14px;
+            color: #918A83;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: color 0.2s ease;
+        }
+
+        .fc-footer-col a:hover {
+            color: #E1D4BB;
+        }
+
+        .fc-footer-bottom {
+            max-width: 1100px;
+            margin: 32px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .fc-footer-bottom span {
+            font-size: 13px;
+            color: #918A83;
+        }
+
+        .fc-footer-bottom a {
+            font-size: 13px;
+            color: #918A83;
+            text-decoration: none;
+        }
+
+        .fc-footer-bottom a:hover {
+            color: #E1D4BB;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 900px) {
+            .fc-feature-grid,
+            .fc-use-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .fc-sample-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .fc-footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .fc-hero h1 {
+                font-size: 30px;
+            }
+
+            .fc-section-heading {
+                font-size: 26px;
+            }
+
+            .fc-feature-grid,
+            .fc-use-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .fc-sample-table {
+                font-size: 13px;
+            }
+
+            .fc-sample-table thead th {
+                font-size: 11px;
+                padding: 8px 8px;
+            }
+
+            .fc-sample-table tbody td {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+
+            .fc-footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Shared Navigation -->
+    <div id="site-header"></div>
+
+    <!-- ============================================
+         SECTION 1: HERO
+         ============================================ -->
+    <section class="fc-hero">
+        <h1>DADU Footprint Cards</h1>
+        <p class="subtitle">Detailed building footprint data for every Nashville property</p>
+    </section>
+
+    <!-- ============================================
+         SECTION 2: WHAT IS A FOOTPRINT CARD?
+         ============================================ -->
+    <section class="fc-section fc-section--linen">
+        <div class="fc-container">
+            <h2 class="fc-section-heading">What is a Footprint Card?</h2>
+            <div class="fc-explainer">
+                <p>
+                    A footprint card is a detailed summary of a building's physical footprint on a parcel.
+                    It provides key metrics about structures on the property, helping homeowners, contractors,
+                    and designers understand existing conditions before planning a DADU. Each card pulls from
+                    Nashville's assessor records, building footprint data, and ArcGIS spatial layers to give
+                    you an accurate picture of what already exists on the lot.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 3: WHAT A FOOTPRINT CARD SHOWS
+         ============================================ -->
+    <section class="fc-section fc-section--white">
+        <div class="fc-container">
+            <h2 class="fc-section-heading">What a Footprint Card Shows</h2>
+            <p class="fc-section-subtext">
+                Every footprint card contains six essential data points about structures on a parcel.
+            </p>
+            <div class="fc-feature-grid">
+                <div class="fc-feature-card">
+                    <h3>Structure Type</h3>
+                    <p>Primary residence, garage, shed, or existing accessory structure. Each building on the parcel is classified individually.</p>
+                </div>
+                <div class="fc-feature-card">
+                    <h3>Building Area</h3>
+                    <p>Square footage of each structure's ground-floor footprint, measured from assessor records and spatial data.</p>
+                </div>
+                <div class="fc-feature-card">
+                    <h3>Height</h3>
+                    <p>Measured height of existing structures. Under BL2025-1007, a DADU cannot exceed the height of the principal structure.</p>
+                </div>
+                <div class="fc-feature-card">
+                    <h3>Year Built</h3>
+                    <p>Construction year from assessor records, useful for understanding the age and condition of existing improvements.</p>
+                </div>
+                <div class="fc-feature-card">
+                    <h3>Roof Type</h3>
+                    <p>Roof style and material classification. Helpful for designers planning a DADU that complements existing architecture.</p>
+                </div>
+                <div class="fc-feature-card">
+                    <h3>Lot Coverage</h3>
+                    <p>Percentage of the lot covered by existing structures. A critical factor in determining how much buildable area remains.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 4: SAMPLE FOOTPRINT CARD
+         ============================================ -->
+    <section class="fc-section fc-section--linen">
+        <div class="fc-container">
+            <h2 class="fc-section-heading">Sample Footprint Card</h2>
+            <p class="fc-section-subtext">
+                Here is an example of what a footprint card looks like for a Nashville property.
+            </p>
+            <div class="fc-sample-card">
+                <div class="fc-sample-card-header">
+                    <h3>1500 Woodland St, Nashville TN 37206</h3>
+                    <span class="fc-apn">APN: 09305018300</span>
+                </div>
+                <div class="fc-sample-card-body">
+                    <table class="fc-sample-table">
+                        <thead>
+                            <tr>
+                                <th>Structure</th>
+                                <th>Type</th>
+                                <th>Area</th>
+                                <th>Height</th>
+                                <th>Year Built</th>
+                                <th>Roof</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Structure 1</td>
+                                <td>Primary Residence</td>
+                                <td>1,850 SF</td>
+                                <td>28 ft</td>
+                                <td>1952</td>
+                                <td>Gable</td>
+                            </tr>
+                            <tr>
+                                <td>Structure 2</td>
+                                <td>Detached Garage</td>
+                                <td>400 SF</td>
+                                <td>14 ft</td>
+                                <td>1960</td>
+                                <td>Flat</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="fc-sample-metrics">
+                        <div class="fc-metric">
+                            <div class="fc-metric-label">Lot Size</div>
+                            <div class="fc-metric-value">8,500 SF</div>
+                        </div>
+                        <div class="fc-metric">
+                            <div class="fc-metric-label">Current Lot Coverage</div>
+                            <div class="fc-metric-value">26.5%</div>
+                        </div>
+                        <div class="fc-metric">
+                            <div class="fc-metric-label">Max DADU Footprint</div>
+                            <div class="fc-metric-value fc-metric-value--accent">750 SF</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 5: HOW TO USE FOOTPRINT DATA
+         ============================================ -->
+    <section class="fc-section fc-section--white">
+        <div class="fc-container">
+            <h2 class="fc-section-heading">How to Use Footprint Data</h2>
+            <p class="fc-section-subtext">
+                Footprint cards serve different purposes depending on your role in a DADU project.
+            </p>
+            <div class="fc-use-grid">
+                <div class="fc-use-card">
+                    <div class="fc-use-card-icon">
+                        <img src="assets/icons/Property_Owners.png" alt="Homeowners">
+                    </div>
+                    <h3>Homeowners</h3>
+                    <p>Understand what is already on your lot before planning a DADU addition. See how much buildable area remains and what your maximum DADU footprint can be.</p>
+                </div>
+                <div class="fc-use-card">
+                    <div class="fc-use-card-icon">
+                        <img src="assets/icons/Building_and_Construction.png" alt="Contractors">
+                    </div>
+                    <h3>Contractors</h3>
+                    <p>Verify existing structures and lot coverage before bidding on a project. Accurate footprint data helps you scope work and estimate costs more precisely.</p>
+                </div>
+                <div class="fc-use-card">
+                    <div class="fc-use-card-icon">
+                        <img src="assets/icons/Surveyors_and_Engineers.png" alt="Designers">
+                    </div>
+                    <h3>Designers</h3>
+                    <p>Use footprint dimensions for site plans and setback calculations. Knowing existing structure locations and sizes is essential for code-compliant designs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 6: CTA
+         ============================================ -->
+    <section class="fc-section fc-section--dark fc-cta">
+        <div class="fc-container">
+            <h2>Look Up Your Property's Footprint</h2>
+            <a href="property_search.html" class="fc-cta-btn">Search Properties</a>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="fc-footer">
+        <div class="fc-footer-grid">
+            <div class="fc-footer-col">
+                <h4>Learn</h4>
+                <a href="am_i_eligible.html">Am I Eligible?</a>
+                <a href="size_calculator.html">Size Calculator</a>
+                <a href="project_cost_estimator.html">Cost Estimator</a>
+                <a href="what_is_dadu.html">What is a DADU?</a>
+            </div>
+            <div class="fc-footer-col">
+                <h4>Features</h4>
+                <a href="contractor_marketplace.html">Contractor Directory</a>
+                <a href="project_planner.html">Planning Resources</a>
+                <a href="homebody_pricing.html">Pricing</a>
+                <a href="dadu_eligibility_map.html">Eligibility Map</a>
+            </div>
+            <div class="fc-footer-col">
+                <h4>Get in Touch</h4>
+                <a href="mailto:contact@homebodyprojects.com">Email Us</a>
+                <a href="about.html">About</a>
+            </div>
+        </div>
+        <div class="fc-footer-bottom">
+            <span>Powered by Castlehold</span>
+            <span>
+                <a href="#">Privacy Policy</a> | <a href="#">Terms</a>
+            </span>
+        </div>
+    </footer>
+
+    <!-- Shared Header Script -->
+    <script src="homebody_header.js"></script>
+
+</body>
+</html>

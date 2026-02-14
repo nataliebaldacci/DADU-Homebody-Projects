@@ -267,13 +267,243 @@
   text-decoration: underline;
  }
 
- /* ========== CTA SECTION ========== */
+ /* ========== SECTION 3: PLATFORM FEATURES ========== */
+ .platform-section {
+  padding: 72px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: transparent;
+ }
+
+ .platform-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+ }
+
+ .platform-grid .feature-card {
+  text-align: center;
+  align-items: center;
+ }
+
+ .platform-grid .icon-circle {
+  margin: 0 auto 16px;
+  width: 56px;
+  height: 56px;
+ }
+
+ .platform-grid .icon-circle img {
+  width: 30px;
+  height: 30px;
+ }
+
+ /* ========== SECTION 4: USER TYPES ========== */
+ .user-types-section {
+  padding: 72px 24px;
+  background: #F0EBE1;
+ }
+
+ .user-types-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+ }
+
+ .section-sub {
+  color: #706F6C;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  text-align: center;
+  margin-top: -24px;
+  margin-bottom: 40px;
+ }
+
+ .user-types-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+ }
+
+ .user-card {
+  background: #ffffff;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+ }
+
+ .user-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+ }
+
+ .user-card .icon-circle {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+ }
+
+ .user-card .icon-circle img {
+  width: 32px;
+  height: 32px;
+ }
+
+ .user-card h3 {
+  color: #3A5566;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 8px;
+ }
+
+ .user-card p {
+  color: #706F6C;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex: 1;
+ }
+
+ .user-card .card-btn {
+  display: inline-block;
+  padding: 10px 24px;
+  background: #CBB279;
+  color: #3A5566;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.2s;
+  text-align: center;
+  align-self: flex-start;
+ }
+
+ .user-card .card-btn:hover { background: #D4A54E; }
+
+ /* ========== SECTION 5: REPORTS (DARK) ========== */
+ .reports-section {
+  padding: 72px 24px;
+  background: #3A5566;
+ }
+
+ .reports-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+ }
+
+ .reports-section .section-heading {
+  color: #E1D4BB;
+ }
+
+ .reports-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+ }
+
+ .report-card {
+  background: #f5f5f0;
+  border-radius: 12px;
+  padding: 28px 24px;
+  transition: box-shadow 0.2s, transform 0.2s;
+ }
+
+ .report-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+ }
+
+ .report-card .icon-circle {
+  margin-bottom: 16px;
+ }
+
+ .report-card h3 {
+  color: #3A5566;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+ }
+
+ .report-card p {
+  color: #706F6C;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+ }
+
+ .report-card .learn-more {
+  color: #496778;
+  font-weight: 600;
+  font-size: 13px;
+ }
+
+ .report-card:hover .learn-more {
+  color: #3A5566;
+  text-decoration: underline;
+ }
+
+ /* ========== SECTION 6: DATA & RESOURCES ========== */
+ .data-section {
+  padding: 72px 24px;
+  background: #F0EBE1;
+ }
+
+ .data-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+ }
+
+ .data-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+ }
+
+ .data-card {
+  background: #ffffff;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  transition: box-shadow 0.2s, transform 0.2s;
+ }
+
+ .data-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+ }
+
+ .data-card .icon-circle {
+  flex-shrink: 0;
+  margin-bottom: 0;
+ }
+
+ .data-card-text h3 {
+  color: #3A5566;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 4px;
+ }
+
+ .data-card-text p {
+  color: #706F6C;
+  font-size: 13px;
+  line-height: 1.5;
+ }
+
+ /* ========== SECTION 7: FINAL CTA ========== */
  .cta-section {
   position: relative;
   background: url('ChatGPT%20Image%20Feb%2012%2C%202026%2C%2006_17_37%20AM.png') center bottom / cover no-repeat;
   padding: 80px 24px;
   color: white;
   overflow: hidden;
+  text-align: center;
  }
 
  .cta-section::before {
@@ -287,69 +517,33 @@
  .cta-content {
   position: relative;
   z-index: 2;
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 60px;
  }
 
- .cta-text { flex: 1; }
-
- .cta-text h2 {
+ .cta-content h2 {
   font-family: 'Source Serif 4', Georgia, serif;
   font-weight: 700;
   font-style: italic;
-  font-size: 30px;
+  font-size: 36px;
   line-height: 1.3;
-  margin-bottom: 28px;
+  margin-bottom: 12px;
   color: #E1D4BB;
  }
 
- .cta-checklist {
-  list-style: none;
-  padding: 0;
- }
-
- .cta-checklist li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 15px;
-  margin-bottom: 16px;
+ .cta-content p {
   color: #F0EBE1;
+  font-size: 16px;
+  margin-bottom: 32px;
  }
-
- .cta-check {
-  width: 24px;
-  height: 24px;
-  background: rgba(203, 178, 121, 0.3);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
- }
-
- .cta-check svg {
-  width: 14px;
-  height: 14px;
-  stroke: #CBB279;
-  fill: none;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
- }
-
- .cta-action { flex-shrink: 0; }
 
  .cta-btn {
   display: inline-block;
-  padding: 16px 40px;
+  padding: 18px 48px;
   background: #CBB279;
   color: #3A5566;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   font-family: 'Inter', sans-serif;
   transition: all 0.2s;
@@ -441,7 +635,10 @@
  /* ========== RESPONSIVE ========== */
  @media (max-width: 900px) {
   .features-grid { grid-template-columns: repeat(2, 1fr); }
-  .cta-content { flex-direction: column; text-align: center; gap: 32px; }
+  .platform-grid { grid-template-columns: repeat(2, 1fr); }
+  .user-types-grid { grid-template-columns: repeat(2, 1fr); }
+  .reports-grid { grid-template-columns: repeat(2, 1fr); }
+  .data-grid { grid-template-columns: 1fr; }
   .stats-row { gap: 40px; }
  }
 
@@ -454,7 +651,15 @@
   .hero-search { flex-direction: column; border-radius: 8px; }
   .hero-search button { border-radius: 0; }
   .features-grid { grid-template-columns: 1fr; }
+  .platform-grid { grid-template-columns: 1fr; }
+  .user-types-grid { grid-template-columns: 1fr; }
+  .reports-grid { grid-template-columns: 1fr; }
   .features-section { padding: 48px 16px; }
+  .platform-section { padding: 48px 16px; }
+  .user-types-section { padding: 48px 16px; }
+  .reports-section { padding: 48px 16px; }
+  .data-section { padding: 48px 16px; }
+  .cta-content h2 { font-size: 28px; }
   .footer-inner { flex-direction: column; }
   .footer-links { flex-direction: column; gap: 24px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
@@ -559,29 +764,242 @@
   </div>
  </section>
 
- <!-- CTA Section -->
+ <!-- Section 3: All-In-One Platform Features -->
+ <section class="platform-section">
+  <h2 class="section-heading">All-In-One DADU Platform Features</h2>
+
+  <div class="platform-grid">
+   <a href="dadu_eligibility_map.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/Area Maps and Visual layers.png" alt="">
+    </div>
+    <h3>Interactive Maps</h3>
+    <p>Explore parcel eligibility, building footprints, and permit activity on a live map.</p>
+    <span class="learn-more">Explore &rarr;</span>
+   </a>
+
+   <a href="project_planner.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/Exports & Reports.png" alt="">
+    </div>
+    <h3>Project Planning</h3>
+    <p>Step-by-step project planner with checklists and timeline tracking.</p>
+    <span class="learn-more">Plan &rarr;</span>
+   </a>
+
+   <a href="determine_forms_required.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/Claims.png" alt="">
+    </div>
+    <h3>Form Wizard</h3>
+    <p>Determine which forms you need and auto-fill them for your property.</p>
+    <span class="learn-more">Start &rarr;</span>
+   </a>
+
+   <a href="dadu_documents_portal.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/Recorded Docs.png" alt="">
+    </div>
+    <h3>Document Portal</h3>
+    <p>Search 18,000+ recorded documents by APN, address, or permit number.</p>
+    <span class="learn-more">Search &rarr;</span>
+   </a>
+
+   <a href="permit_activity_dashboard.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/Enhanced Transaction History Report .png" alt="">
+    </div>
+    <h3>Activity Dashboard</h3>
+    <p>Track permit activity, approval timelines, and construction trends.</p>
+    <span class="learn-more">View &rarr;</span>
+   </a>
+
+   <a href="market_trends.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/Investments.png" alt="">
+    </div>
+    <h3>Market Insights</h3>
+    <p>Cost trends, demand by ZIP code, and construction cost benchmarks.</p>
+    <span class="learn-more">Analyze &rarr;</span>
+   </a>
+
+   <a href="contractor_marketplace.html" class="feature-card">
+    <div class="icon-circle">
+     <img src="assets/icons/Building and Construction.png" alt="">
+    </div>
+    <h3>Contractor Marketplace</h3>
+    <p>Find builders ranked by permit volume, cost per SF, and project history.</p>
+    <span class="learn-more">Browse &rarr;</span>
+   </a>
+  </div>
+ </section>
+
+ <!-- Section 4: Built For Your Needs -->
+ <section class="user-types-section">
+  <div class="user-types-inner">
+   <h2 class="section-heading">Built For Your Needs</h2>
+   <p class="section-sub">Specialized tools and data for every user type</p>
+
+   <div class="user-types-grid">
+    <div class="user-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Property Owners.png" alt="">
+     </div>
+     <h3>Homeowners</h3>
+     <p>Check your eligibility, understand requirements, estimate costs, and find qualified contractors.</p>
+     <a href="user-homeowners.html" class="card-btn">Get Started</a>
+    </div>
+
+    <div class="user-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Building and Construction.png" alt="">
+     </div>
+     <h3>Contractors &amp; Builders</h3>
+     <p>Find leads and market insights. See top contractors by permit volume and cost benchmarks.</p>
+     <a href="contractor_marketplace.html" class="card-btn">Get Started</a>
+    </div>
+
+    <div class="user-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Surveyers adn Engineers.png" alt="">
+     </div>
+     <h3>Designers &amp; Architects</h3>
+     <p>Building requirements, site analysis, precedent projects, and approved site plans.</p>
+     <a href="designer_resources.html" class="card-btn">Get Started</a>
+    </div>
+
+    <div class="user-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Municipal.png" alt="">
+     </div>
+     <h3>Municipal &amp; Agencies</h3>
+     <p>Permit tracking, policy analysis, compliance monitoring, and impact assessment.</p>
+     <a href="municipal_dashboard.html" class="card-btn">Get Started</a>
+    </div>
+
+    <div class="user-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Legal.png" alt="">
+     </div>
+     <h3>Legal Professionals</h3>
+     <p>Covenant research, title issues, zoning compliance, and legal citations database.</p>
+     <a href="legal_resources.html" class="card-btn">Get Started</a>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <!-- Section 5: Professional Reports (dark background) -->
+ <section class="reports-section">
+  <div class="reports-inner">
+   <h2 class="section-heading">Professional Reports</h2>
+
+   <div class="reports-grid">
+    <a href="eligibility_report.html" class="report-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Claims.png" alt="">
+     </div>
+     <h3>Eligibility Report</h3>
+     <p>Complete zoning analysis with lot dimensions, setbacks, and regulatory compliance status.</p>
+     <span class="learn-more">View Report &rarr;</span>
+    </a>
+
+    <a href="project_report.html" class="report-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Exports & Reports.png" alt="">
+     </div>
+     <h3>Project Report</h3>
+     <p>Full project plan with cost estimates, timeline, and permit requirements.</p>
+     <span class="learn-more">View Report &rarr;</span>
+    </a>
+
+    <a href="neighbors_report.html" class="report-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Neighbors.png" alt="">
+     </div>
+     <h3>Neighbors Report</h3>
+     <p>Nearby DADU activity, comparable projects, costs, and contractor data.</p>
+     <span class="learn-more">View Report &rarr;</span>
+    </a>
+
+    <a href="dadu_reports_store.html" class="report-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Market Statistics Report .png" alt="">
+     </div>
+     <h3>Market Report</h3>
+     <p>Area-wide DADU trends, pricing benchmarks, and demand analysis.</p>
+     <span class="learn-more">View Report &rarr;</span>
+    </a>
+   </div>
+  </div>
+ </section>
+
+ <!-- Section 6: Data & Resources -->
+ <section class="data-section">
+  <div class="data-inner">
+   <h2 class="section-heading">Data &amp; Resources</h2>
+   <p class="section-sub">Access Nashville's most comprehensive DADU dataset</p>
+
+   <div class="data-grid">
+    <a href="dadu_documents_portal.html" class="data-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Recorded Docs.png" alt="">
+     </div>
+     <div class="data-card-text">
+      <h3>Recorded Documents</h3>
+      <p>Search 18,782 recorded documents including permits, covenants, and property cards.</p>
+     </div>
+    </a>
+
+    <a href="site_plan_downloads.html" class="data-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Surveyers adn Engineers.png" alt="">
+     </div>
+     <div class="data-card-text">
+      <h3>Permits &amp; Site Plans</h3>
+      <p>Download approved site plans and permit documents for DADU projects.</p>
+     </div>
+    </a>
+
+    <a href="dadu_code_legislation_v3.html" class="data-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Legal.png" alt="">
+     </div>
+     <div class="data-card-text">
+      <h3>Codes &amp; Legislation</h3>
+      <p>111+ legal citations in Bluebook format covering DADU regulations.</p>
+     </div>
+    </a>
+
+    <a href="what_is_dadu.html" class="data-card">
+     <div class="icon-circle">
+      <img src="assets/icons/ADU.png" alt="">
+     </div>
+     <div class="data-card-text">
+      <h3>DADU Guide</h3>
+      <p>Everything you need to know about Detached Accessory Dwelling Units.</p>
+     </div>
+    </a>
+
+    <a href="dadu_building_requirements.html" class="data-card">
+     <div class="icon-circle">
+      <img src="assets/icons/Zoning.png" alt="">
+     </div>
+     <div class="data-card-text">
+      <h3>Building Requirements</h3>
+      <p>Setbacks, height limits, lot coverage, and zoning standards for DADUs.</p>
+     </div>
+    </a>
+   </div>
+  </div>
+ </section>
+
+ <!-- Section 7: CTA - Ready to Build Your DADU? -->
  <section class="cta-section">
   <div class="cta-content">
-   <div class="cta-text">
-    <h2>Power your building process from search to construction</h2>
-    <ul class="cta-checklist">
-     <li>
-      <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-      Faster and easier than ever
-     </li>
-     <li>
-      <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-      Trusted local partners you can rely on
-     </li>
-     <li>
-      <span class="cta-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-      Automatic updates from the Nashville Open Data portal
-     </li>
-    </ul>
-   </div>
-   <div class="cta-action">
-    <a href="am_i_eligible.html" class="cta-btn">Get Started</a>
-   </div>
+   <h2>Ready to Build Your DADU?</h2>
+   <p>Check your property's eligibility in seconds. 67,707 Nashville parcels qualify under BL2025-1007.</p>
+   <a href="am_i_eligible.html" class="cta-btn">Check Eligibility Now</a>
   </div>
  </section>
 
@@ -601,7 +1019,7 @@
     <h4>Features</h4>
     <a href="contractor_marketplace.html">Contractor Directory</a>
     <a href="dadu_building_requirements.html">Planning Resources</a>
-    <a href="homebody_dadu_pricing.html">Pricing</a>
+    <a href="homebody_pricing.html">Pricing</a>
    </div>
    <div class="footer-col">
     <h4>Get in Touch</h4>
@@ -616,7 +1034,7 @@
   </div>
  </div>
  <div class="footer-bottom">
-  <span>&copy; 2026 Homebody Projects. All rights reserved.</span>
+  <span>&copy; 2026 Homebody Projects. Powered by Castlehold. All rights reserved.</span>
   <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span>
  </div>
 </footer>
