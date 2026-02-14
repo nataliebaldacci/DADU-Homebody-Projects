@@ -85,9 +85,10 @@
                 </button>
                 <div class="dropdown-menu mega-menu mega-menu-4" id="build-dropdown" role="menu">
                     ${col('Exports & Reports.png', 'Plan',
-                        item('project_planner.html', 'Exports & Reports.png', 'Project Planner') +
-                        item('project_checklist.html', 'Renewals.png', 'Interactive Checklist') +
-                        item('draw_dadu_on_parcel.html', 'APN Maps.png', 'Draw DADU on Parcel')
+                        item('project_planner_hub.html', 'Exports & Reports.png', 'Project Planner') +
+                        item('project_planner.html', 'Project_Planner.png', 'Schedule &amp; Timeline') +
+                        item('project_checklist.html', 'Project_Checklist.png', 'Interactive Checklist') +
+                        item('draw_dadu_on_parcel.html', 'Draw_on_Parcel.png', 'Draw DADU on Parcel')
                     )}
                     ${col('Valuations.png', 'Design &amp; Calculate',
                         item('site_plan_downloads.html', 'Surveyers adn Engineers.png', 'Site Plan Finder') +
