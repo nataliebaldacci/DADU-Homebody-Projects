@@ -4,7 +4,7 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>DADU Property Explorer | Homebody Projects</title>
- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
  <style>
  :root {
@@ -31,16 +31,74 @@
  * { box-sizing: border-box; margin: 0; padding: 0; }
 
  body {
- font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+ font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
  background: var(--white);
  color: var(--text);
  overflow: hidden;
  }
 
+ /* Top search bar — always visible above the map */
+ .top-search-bar {
+ background: var(--navy);
+ padding: 14px 24px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ gap: 12px;
+ }
+
+ .top-search-bar h2 {
+ color: #E1D4BB;
+ font-size: 15px;
+ font-weight: 700;
+ white-space: nowrap;
+ }
+
+ .top-search-container {
+ max-width: 560px;
+ width: 100%;
+ display: flex;
+ border-radius: 10px;
+ overflow: hidden;
+ border: 2px solid rgba(255,255,255,0.2);
+ background: var(--white);
+ }
+
+ .top-search-container input {
+ flex: 1;
+ padding: 12px 18px;
+ border: none;
+ outline: none;
+ font-family: 'Inter', sans-serif;
+ font-size: 14px;
+ color: var(--navy);
+ background: transparent;
+ }
+
+ .top-search-container input::placeholder {
+ color: #7b746d;
+ }
+
+ .top-search-container button {
+ padding: 12px 24px;
+ background: var(--terracotta);
+ color: var(--navy);
+ border: none;
+ font-family: 'Inter', sans-serif;
+ font-size: 14px;
+ font-weight: 700;
+ cursor: pointer;
+ white-space: nowrap;
+ }
+
+ .top-search-container button:hover {
+ background: var(--terracotta-hover);
+ }
+
  /* Main layout */
  .main-container {
  display: flex;
- height: calc(100vh - 75px);
+ height: calc(100vh - 75px - 54px);
  margin-top: 75px;
  }
 
@@ -356,8 +414,14 @@
 <!-- End Shared Header -->
 
 
- <!-- Header -->
- 
+ <!-- Top Search Bar — always visible -->
+ <div class="top-search-bar">
+ <h2>DADU Property Explorer</h2>
+ <div class="top-search-container">
+  <input type="text" id="top-search-input" placeholder="Enter a Nashville address (e.g., 123 Main Street)" autocomplete="off">
+  <button onclick="searchFromTop()">Search</button>
+ </div>
+ </div>
 
  <!-- Main Container -->
  <div class="main-container">
@@ -414,10 +478,8 @@
  <!-- Welcome Panel -->
  <div class="welcome-panel" id="welcome-panel">
  <h1>Explore DADU Eligibility</h1>
- <p>Enter a Nashville address to see property details, eligibility status, and what you can build under BL2025-1007.</p>
- <div class="welcome-search">
- <input type="text" id="welcome-search-input" placeholder="Enter address (e.g., 123 Main St)">
- <button onclick="searchFromWelcome()">Search</button></div></div>
+ <p>Enter a Nashville address in the search bar above to see property details, eligibility status, and what you can build under BL2025-1007.</p>
+ <p style="font-size:13px;color:var(--text-light);margin-bottom:0;">Or zoom in and click any parcel on the map.</p></div>
 
  <!-- Loading Indicator -->
  <div class="loading-indicator" id="loading">Loading parcels...</div>
@@ -935,8 +997,8 @@
  }
  }
 
- function searchFromWelcome() {
- const address = document.getElementById('welcome-search-input').value.trim();
+ function searchFromTop() {
+ const address = document.getElementById('top-search-input').value.trim();
  searchAddress(address);
  }
 
@@ -968,20 +1030,10 @@
  document.addEventListener('DOMContentLoaded', () =>{
  initMap();
 
- // Header search (may not exist if shared header is used)
- const headerSearch = document.getElementById('header-search');
- if (headerSearch) {
- headerSearch.addEventListener('keypress', (e) =>{
+ // Top search bar — Enter key triggers search
+ document.getElementById('top-search-input').addEventListener('keypress', (e) =>{
  if (e.key === 'Enter') {
- searchAddress(e.target.value.trim());
- }
- });
- }
-
- // Welcome search
- document.getElementById('welcome-search-input').addEventListener('keypress', (e) =>{
- if (e.key === 'Enter') {
- searchFromWelcome();
+ searchFromTop();
  }
  });
  });</script>
