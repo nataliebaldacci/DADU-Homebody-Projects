@@ -1,133 +1,892 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Contractor Report | Homebody Projects</title>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="homebody_shared.css">
- <style>
- body {
- font-family: 'Inter', Arial, sans-serif;
- background-color: #F2F0ED;
- color: #333;
- margin: 0;
- line-height: 1.6;
- }
- .page-container { max-width: 960px; margin: 0 auto; padding: 40px 30px; }
- .hero { text-align: center; margin-bottom: 40px; }
- .hero h1 { font-size: 32px; font-weight: 800; color: #3A5566; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
- .hero .subtitle { font-size: 14px; color: #7B746D; font-weight: 600; letter-spacing: 1px; }
- .divider { width: 80px; height: 3px; background: #7B746D; margin: 20px auto; }
- .search-section {
- background: #F0EBE1; border-radius: 8px; padding: 30px; text-align: center; margin-bottom: 40px;
- }
- .search-section h2 { color: #3A5566; font-size: 20px; margin-bottom: 16px; }
- .search-row { display: flex; gap: 12px; max-width: 500px; margin: 0 auto; }
- .search-row input {
- flex: 1; padding: 12px 16px; border: 2px solid #ddd; border-radius: 6px;
- font-size: 14px; font-family: inherit;
- }
- .search-row input:focus { border-color: #CBB279; outline: none; }
- .search-row button {
- background: #CBB279; color: #fff; border: none; padding: 12px 24px;
- border-radius: 6px; font-weight: 700; font-size: 14px; cursor: pointer;
- }
- .search-row button:hover { background: #a87623; }
- .features { margin-top: 40px; }
- .features h2 { color: #3A5566; font-size: 22px; margin-bottom: 20px; }
- .feature-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
- .feature-item {
- background: #fff; border-radius: 8px; padding: 24px; border: 1px solid #e0ddd8;
- display: flex; gap: 16px; align-items: flex-start;
- }
- .feature-icon {
- width: 44px; height: 44px; background: #3A5566; border-radius: 8px;
- display: flex; align-items: center; justify-content: center; flex-shrink: 0;
- color: #fff; font-size: 20px;
- }
- .feature-item h3 { color: #3A5566; font-size: 15px; margin-bottom: 4px; }
- .feature-item p { color: #666; font-size: 13px; }
- .price-banner {
- text-align: center; margin-top: 40px; padding: 30px;
- background: #3A5566; border-radius: 8px; color: #fff;
- }
- .price-banner .price { font-size: 36px; font-weight: 800; color: #CBB279; }
- .price-banner p { margin-top: 8px; font-size: 14px; opacity: 0.85; }
- .price-banner a {
- display: inline-block; margin-top: 16px; background: #CBB279; color: #fff;
- padding: 12px 32px; border-radius: 6px; text-decoration: none; font-weight: 700;
- }
- .sample-link {
- text-align: center; margin-top: 20px;
- }
- .sample-link a { color: #CBB279; font-weight: 600; font-size: 14px; }
- .footer { text-align: center; margin-top: 60px; padding: 20px; color: #7B746D; font-size: 12px; }
- .footer .brand { font-weight: 700; color: #3A5566; }</style></head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contractor Report | Homebody Projects</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="homebody_shared.css">
+  <style>
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background-color: #F2F0ED;
+      color: #333;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .page-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 30px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #3A5566;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    .hero .subtitle {
+      font-size: 14px;
+      color: #7B746D;
+      font-weight: 500;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .divider {
+      width: 80px;
+      height: 3px;
+      background: #CBB279;
+      margin: 20px auto;
+    }
+
+    /* Search Section */
+    .search-section {
+      background: #F0EBE1;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .search-section h2 {
+      color: #3A5566;
+      font-size: 20px;
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+    .search-wrapper {
+      max-width: 520px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .search-row {
+      display: flex;
+      gap: 12px;
+    }
+    .search-row input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid #E2E2E0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+    }
+    .search-row input:focus {
+      border-color: #CBB279;
+      outline: none;
+    }
+    .search-row button {
+      background: #CBB279;
+      color: #3A5566;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .search-row button:hover {
+      background: #b8a06a;
+    }
+
+    /* Autocomplete dropdown */
+    .autocomplete-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 80px;
+      background: #fff;
+      border: 1px solid #E2E2E0;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      max-height: 280px;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+      text-align: left;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .autocomplete-item {
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #3A5566;
+      border-bottom: 1px solid #F0EBE1;
+    }
+    .autocomplete-item:last-child {
+      border-bottom: none;
+    }
+    .autocomplete-item:hover,
+    .autocomplete-item.active {
+      background: #F0EBE1;
+    }
+    .autocomplete-item .match {
+      font-weight: 700;
+    }
+    .autocomplete-item .permit-count {
+      float: right;
+      font-size: 11px;
+      color: #7B746D;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .search-hint {
+      font-size: 12px;
+      color: #7B746D;
+      margin-top: 10px;
+    }
+
+    /* Loading indicator */
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: #7B746D;
+      font-size: 14px;
+    }
+
+    /* Report Card */
+    .report-card {
+      display: none;
+    }
+    .report-card.visible {
+      display: block;
+    }
+
+    .contractor-header {
+      background: #3A5566;
+      border-radius: 12px 12px 0 0;
+      padding: 30px;
+      text-align: center;
+    }
+    .contractor-header h2 {
+      color: #E1D4BB;
+      font-size: 24px;
+      font-weight: 800;
+      margin: 0 0 4px 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .contractor-header .permit-type-summary {
+      color: #918A83;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Stats Row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+      margin-top: -1px;
+      background: #fff;
+      border: 1px solid #E2E2E0;
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      padding: 24px 20px;
+    }
+    .stat-card {
+      text-align: center;
+      padding: 12px 8px;
+    }
+    .stat-card .stat-number {
+      font-size: 28px;
+      font-weight: 800;
+      color: #CBB279;
+      line-height: 1.1;
+    }
+    .stat-card .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #706F6C;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* Section panels */
+    .report-section {
+      background: #fff;
+      border: 1px solid #E2E2E0;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .report-section-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid #E2E2E0;
+    }
+    .report-section-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #3A5566;
+      margin: 0;
+    }
+    .report-section-body {
+      padding: 20px 24px;
+    }
+
+    /* Status breakdown */
+    .status-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #F5F5F0;
+      border-radius: 8px;
+      padding: 10px 16px;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .status-dot.done { background: #406A64; }
+    .status-dot.issued { background: #4C5C66; }
+    .status-dot.open { background: #CBB279; }
+    .status-dot.expired { background: #B58676; }
+    .status-dot.other { background: #918A83; }
+    .status-label {
+      font-size: 13px;
+      color: #3A5566;
+      font-weight: 600;
+    }
+    .status-count {
+      font-size: 13px;
+      color: #706F6C;
+      font-weight: 500;
+    }
+
+    /* Zip badges */
+    .zip-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .zip-badge {
+      background: #F0EBE1;
+      color: #3A5566;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Permit Subtypes */
+    .subtype-bar-container {
+      margin-bottom: 12px;
+    }
+    .subtype-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .subtype-bar-label .name {
+      color: #3A5566;
+      font-weight: 600;
+    }
+    .subtype-bar-label .count {
+      color: #706F6C;
+      font-weight: 500;
+    }
+    .subtype-bar-track {
+      height: 8px;
+      background: #F0EBE1;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .subtype-bar-fill {
+      height: 100%;
+      background: #CBB279;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+    .subtype-bar-fill.dadu {
+      background: #406A64;
+    }
+
+    /* Permit Table */
+    .permit-table-wrapper {
+      overflow-x: auto;
+    }
+    .permit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .permit-table thead th {
+      background: #3A5566;
+      color: #fff;
+      padding: 12px 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    .permit-table tbody td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #F0EBE1;
+      color: #3A5566;
+    }
+    .permit-table tbody tr:nth-child(even) {
+      background: #F5F5F0;
+    }
+    .permit-table tbody tr:hover {
+      background: #F0EBE1;
+    }
+    .permit-table a {
+      color: #3A5566;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .permit-table a:hover {
+      color: #CBB279;
+      text-decoration: underline;
+    }
+
+    /* No results */
+    .no-results {
+      text-align: center;
+      padding: 40px;
+      color: #7B746D;
+      font-size: 14px;
+      display: none;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 60px;
+      padding: 20px;
+      color: #7B746D;
+      font-size: 12px;
+    }
+    .footer .brand {
+      font-weight: 700;
+      color: #3A5566;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .page-container {
+        padding: 24px 16px;
+      }
+      .hero h1 {
+        font-size: 24px;
+      }
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .stat-card .stat-number {
+        font-size: 22px;
+      }
+      .search-row {
+        flex-direction: column;
+      }
+      .autocomplete-list {
+        right: 0;
+      }
+      .contractor-header h2 {
+        font-size: 18px;
+      }
+      .permit-table {
+        font-size: 12px;
+      }
+      .permit-table thead th,
+      .permit-table tbody td {
+        padding: 8px 10px;
+      }
+    }
+  </style>
+</head>
 <body>
 <div id="site-header"></div>
 
 <div class="page-container">
- <div class="hero">
- <h1>Contractor Report</h1>
- <p class="subtitle">Parcel-Level Build Intelligence for Professionals</p>
- <div class="divider"></div></div>
 
- <div class="search-section">
- <h2>Generate Contractor Report</h2>
- <div class="search-row">
- <input type="text" id="address-input" placeholder="Enter address or APN...">
- <button onclick="generateReport()">Generate</button></div></div>
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Contractor Report</h1>
+    <p class="subtitle">Search any Nashville DADU contractor to see their full permit history and project data.</p>
+    <div class="divider"></div>
+  </div>
 
- <div class="features">
- <h2>Report Contents</h2>
- <div class="feature-list">
- <div class="feature-item">
- <div class="feature-icon"></div>
- <div>
- <h3>Building Specifications</h3>
- <p>Max DADU size, footprint, height, setbacks, and impervious surface limits for the specific parcel.</p></div></div>
- <div class="feature-item">
- <div class="feature-icon"></div>
- <div>
- <h3>Permit Requirements</h3>
- <p>Required Metro Nashville permits, application forms, and filing sequence for DADU construction.</p></div></div>
- <div class="feature-item">
- <div class="feature-icon"></div>
- <div>
- <h3>Cost Benchmarks</h3>
- <p>Local construction cost ranges, permit fees, and utility connection estimates for Davidson County.</p></div></div>
- <div class="feature-item">
- <div class="feature-icon"></div>
- <div>
- <h3>Site Constraints</h3>
- <p>Overlay districts, restrictive covenants, floodplain status, and utility easement information.</p></div></div>
- <div class="feature-item">
- <div class="feature-icon"></div>
- <div>
- <h3>Competitor Activity</h3>
- <p>Active DADU permits in the area, contractor names on record, and neighborhood build activity.</p></div></div>
- <div class="feature-item">
- <div class="feature-icon"></div>
- <div>
- <h3>Linked Documents</h3>
- <p>Direct links to property card, ePermits, permit documents, and recorded covenants.</p></div></div></div></div>
+  <!-- Search -->
+  <div class="search-section">
+    <h2>Search Contractor</h2>
+    <div class="search-wrapper">
+      <div class="search-row">
+        <input type="text" id="contractor-input" placeholder="Enter contractor name..." autocomplete="off">
+        <button id="search-btn" onclick="handleSearch()">Search</button>
+      </div>
+      <div class="autocomplete-list" id="autocomplete-list"></div>
+    </div>
+    <p class="search-hint" id="search-hint">Loading contractor data...</p>
+  </div>
 
- <div class="price-banner">
- <div class="price">$9.99</div>
- <p>One-time purchase &middot; Instant PDF &middot; Parcel-specific build data</p>
- <a href="dadu_reports_store.html">View All Reports</a></div>
+  <!-- No results message -->
+  <div class="no-results" id="no-results">
+    No contractor found matching your search. Try a different name.
+  </div>
 
- <div class="sample-link">
- <a href="sample_reports/sample_contractor_report.html">View Sample Report</a></div>
+  <!-- Report Card -->
+  <div class="report-card" id="report-card">
 
- <div class="footer">
- <p><span class="brand">HOMEBODY PROJECTS</span> &middot; Powered by Castlehold &middot; Nashville-Davidson County &middot; 2026</p></div></div>
+    <!-- Contractor Header -->
+    <div class="contractor-header">
+      <h2 id="contractor-name"></h2>
+      <p class="permit-type-summary" id="permit-type-summary"></p>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-total-permits">--</div>
+        <div class="stat-label">Total Permits</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-dadu-permits">--</div>
+        <div class="stat-label">DADU Permits</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-years-active">--</div>
+        <div class="stat-label">Years Active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-total-value">--</div>
+        <div class="stat-label">Total Value</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-avg-value">--</div>
+        <div class="stat-label">Avg Cost / Project</div>
+      </div>
+    </div>
+
+    <!-- Permit Subtypes -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <h3>Permit Types</h3>
+      </div>
+      <div class="report-section-body" id="subtypes-body"></div>
+    </div>
+
+    <!-- Status Breakdown -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <h3>Permit Status Breakdown</h3>
+      </div>
+      <div class="report-section-body">
+        <div class="status-grid" id="status-grid"></div>
+      </div>
+    </div>
+
+    <!-- Zip Codes Served -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <h3>Zip Codes Served</h3>
+      </div>
+      <div class="report-section-body">
+        <div class="zip-badges" id="zip-badges"></div>
+      </div>
+    </div>
+
+    <!-- Permit Table -->
+    <div class="report-section">
+      <div class="report-section-header">
+        <h3>Permit History</h3>
+      </div>
+      <div class="report-section-body">
+        <div class="permit-table-wrapper">
+          <table class="permit-table">
+            <thead>
+              <tr>
+                <th>Permit #</th>
+                <th>Address</th>
+                <th>APN</th>
+              </tr>
+            </thead>
+            <tbody id="permit-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p><span class="brand">HOMEBODY PROJECTS</span> &middot; Powered by Castlehold &middot; Nashville-Davidson County &middot; 2026</p>
+  </div>
+
+</div>
 
 <script src="homebody_header.js"></script>
 <script>
-function generateReport() {
- var input = document.getElementById('address-input').value.trim();
- if (!input) { alert('Please enter an address or APN.'); return; }
- alert('Report generation coming soon. Search: ' + input);
-}</script></body></html>
+(function() {
+  'use strict';
+
+  var contractorData = null;
+  var contractorNames = [];
+  var activeIndex = -1;
+
+  var inputEl = document.getElementById('contractor-input');
+  var listEl = document.getElementById('autocomplete-list');
+  var hintEl = document.getElementById('search-hint');
+  var reportEl = document.getElementById('report-card');
+  var noResultsEl = document.getElementById('no-results');
+
+  // Load contractor_stats.json
+  fetch('data/contractor_stats.json')
+    .then(function(resp) {
+      if (!resp.ok) throw new Error('Failed to load contractor data');
+      return resp.json();
+    })
+    .then(function(data) {
+      contractorData = data.contractors || {};
+      contractorNames = Object.keys(contractorData).sort(function(a, b) {
+        return contractorData[b].permit_count - contractorData[a].permit_count;
+      });
+      hintEl.textContent = contractorNames.length + ' contractors available. Start typing to search.';
+    })
+    .catch(function(err) {
+      hintEl.textContent = 'Error loading contractor data. Please refresh the page.';
+      console.error(err);
+    });
+
+  // Autocomplete input handler
+  inputEl.addEventListener('input', function() {
+    var query = this.value.trim().toUpperCase();
+    activeIndex = -1;
+    if (!query || query.length < 2 || !contractorNames.length) {
+      listEl.style.display = 'none';
+      return;
+    }
+
+    var matches = contractorNames.filter(function(name) {
+      return name.toUpperCase().indexOf(query) !== -1;
+    }).slice(0, 15);
+
+    if (!matches.length) {
+      listEl.style.display = 'none';
+      return;
+    }
+
+    listEl.innerHTML = matches.map(function(name, i) {
+      var data = contractorData[name];
+      var displayName = highlightMatch(name, query);
+      return '<div class="autocomplete-item" data-index="' + i + '" data-name="' + escapeAttr(name) + '">'
+        + '<span class="permit-count">' + data.permit_count + ' permits</span>'
+        + displayName
+        + '</div>';
+    }).join('');
+
+    listEl.style.display = 'block';
+
+    // Attach click handlers
+    var items = listEl.querySelectorAll('.autocomplete-item');
+    items.forEach(function(item) {
+      item.addEventListener('click', function() {
+        var name = this.getAttribute('data-name');
+        inputEl.value = name;
+        listEl.style.display = 'none';
+        showReport(name);
+      });
+    });
+  });
+
+  // Keyboard navigation
+  inputEl.addEventListener('keydown', function(e) {
+    var items = listEl.querySelectorAll('.autocomplete-item');
+    if (!items.length || listEl.style.display === 'none') {
+      if (e.key === 'Enter') {
+        handleSearch();
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeIndex = Math.min(activeIndex + 1, items.length - 1);
+      updateActive(items);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeIndex = Math.max(activeIndex - 1, -1);
+      updateActive(items);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIndex >= 0 && activeIndex < items.length) {
+        var name = items[activeIndex].getAttribute('data-name');
+        inputEl.value = name;
+        listEl.style.display = 'none';
+        showReport(name);
+      } else {
+        handleSearch();
+      }
+    } else if (e.key === 'Escape') {
+      listEl.style.display = 'none';
+    }
+  });
+
+  function updateActive(items) {
+    items.forEach(function(item, i) {
+      if (i === activeIndex) {
+        item.classList.add('active');
+        item.scrollIntoView({ block: 'nearest' });
+      } else {
+        item.classList.remove('active');
+      }
+    });
+  }
+
+  // Close autocomplete on outside click
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.search-wrapper')) {
+      listEl.style.display = 'none';
+    }
+  });
+
+  // Highlight matching text
+  function highlightMatch(text, query) {
+    var idx = text.toUpperCase().indexOf(query);
+    if (idx === -1) return escapeHtml(text);
+    return escapeHtml(text.substring(0, idx))
+      + '<span class="match">' + escapeHtml(text.substring(idx, idx + query.length)) + '</span>'
+      + escapeHtml(text.substring(idx + query.length));
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function escapeAttr(str) {
+    return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // Global search handler
+  window.handleSearch = function() {
+    if (!contractorData) return;
+    var query = inputEl.value.trim().toUpperCase();
+    listEl.style.display = 'none';
+
+    if (!query) {
+      alert('Please enter a contractor name.');
+      return;
+    }
+
+    // Exact match first
+    if (contractorData[query]) {
+      showReport(query);
+      return;
+    }
+
+    // Case-insensitive exact match
+    var exactMatch = contractorNames.find(function(name) {
+      return name.toUpperCase() === query;
+    });
+    if (exactMatch) {
+      showReport(exactMatch);
+      return;
+    }
+
+    // Partial match -- take the best match
+    var partials = contractorNames.filter(function(name) {
+      return name.toUpperCase().indexOf(query) !== -1;
+    });
+
+    if (partials.length === 1) {
+      inputEl.value = partials[0];
+      showReport(partials[0]);
+    } else if (partials.length > 1) {
+      // Show autocomplete with matches
+      inputEl.dispatchEvent(new Event('input'));
+    } else {
+      noResultsEl.style.display = 'block';
+      reportEl.classList.remove('visible');
+    }
+  };
+
+  function showReport(name) {
+    var c = contractorData[name];
+    if (!c) return;
+
+    noResultsEl.style.display = 'none';
+
+    // Contractor name
+    document.getElementById('contractor-name').textContent = name;
+
+    // Permit type summary
+    var subtypeKeys = Object.keys(c.permit_subtypes || {});
+    var summary = subtypeKeys.slice(0, 3).map(function(k) {
+      return titleCase(k);
+    }).join(' / ');
+    document.getElementById('permit-type-summary').textContent = summary || 'General Contractor';
+
+    // Stats
+    document.getElementById('stat-total-permits').textContent = c.permit_count || 0;
+
+    // Calculate DADU permits from subtypes
+    var daduCount = 0;
+    if (c.permit_subtypes) {
+      Object.keys(c.permit_subtypes).forEach(function(key) {
+        var k = key.toUpperCase();
+        if (k.indexOf('DADU') !== -1 || k.indexOf('DETACHED ACCESSORY DWELLING') !== -1 || k.indexOf('ADU') !== -1) {
+          daduCount += c.permit_subtypes[key];
+        }
+      });
+    }
+    document.getElementById('stat-dadu-permits').textContent = daduCount;
+
+    // Years active
+    var yearsActive = 0;
+    if (c.years_active && c.years_active.length) {
+      yearsActive = c.years_active[c.years_active.length - 1] - c.years_active[0] + 1;
+    }
+    document.getElementById('stat-years-active').textContent = yearsActive;
+
+    // Total value
+    document.getElementById('stat-total-value').textContent = formatCurrency(c.total_value || 0);
+
+    // Avg value
+    document.getElementById('stat-avg-value').textContent = formatCurrency(c.avg_value || 0);
+
+    // Permit subtypes bars
+    var subtypesBody = document.getElementById('subtypes-body');
+    if (subtypeKeys.length) {
+      var maxCount = Math.max.apply(null, subtypeKeys.map(function(k) { return c.permit_subtypes[k]; }));
+      subtypesBody.innerHTML = subtypeKeys.map(function(key) {
+        var count = c.permit_subtypes[key];
+        var pct = Math.round((count / maxCount) * 100);
+        var isDadu = key.toUpperCase().indexOf('DADU') !== -1 || key.toUpperCase().indexOf('DETACHED ACCESSORY DWELLING') !== -1;
+        return '<div class="subtype-bar-container">'
+          + '<div class="subtype-bar-label"><span class="name">' + escapeHtml(titleCase(key)) + '</span><span class="count">' + count + '</span></div>'
+          + '<div class="subtype-bar-track"><div class="subtype-bar-fill' + (isDadu ? ' dadu' : '') + '" style="width:' + pct + '%"></div></div>'
+          + '</div>';
+      }).join('');
+    } else {
+      subtypesBody.innerHTML = '<p style="color:#7B746D;font-size:13px;">No permit subtype data available.</p>';
+    }
+
+    // Status breakdown
+    var statusGrid = document.getElementById('status-grid');
+    var statuses = c.statuses || {};
+    var statusKeys = Object.keys(statuses);
+    if (statusKeys.length) {
+      statusGrid.innerHTML = statusKeys.map(function(key) {
+        var dotClass = getStatusDotClass(key);
+        return '<div class="status-item">'
+          + '<span class="status-dot ' + dotClass + '"></span>'
+          + '<span class="status-label">' + escapeHtml(titleCase(key)) + '</span>'
+          + '<span class="status-count">(' + statuses[key] + ')</span>'
+          + '</div>';
+      }).join('');
+    } else {
+      statusGrid.innerHTML = '<p style="color:#7B746D;font-size:13px;">No status data available.</p>';
+    }
+
+    // Zip codes -- extract from addresses
+    var zips = {};
+    (c.addresses || []).forEach(function(addr) {
+      var match = addr.match(/(\d{5})\s*$/);
+      if (match) {
+        zips[match[1]] = true;
+      }
+    });
+    var zipList = Object.keys(zips).sort();
+    var zipBadges = document.getElementById('zip-badges');
+    if (zipList.length) {
+      zipBadges.innerHTML = zipList.map(function(z) {
+        return '<span class="zip-badge">' + z + '</span>';
+      }).join('');
+    } else {
+      zipBadges.innerHTML = '<p style="color:#7B746D;font-size:13px;">No zip code data available.</p>';
+    }
+
+    // Permit table
+    var tbody = document.getElementById('permit-table-body');
+    var permits = c.permit_numbers || [];
+    var addresses = c.addresses || [];
+    var apns = c.apns || [];
+
+    if (permits.length) {
+      tbody.innerHTML = permits.map(function(pnum, i) {
+        var addr = i < addresses.length ? addresses[i] : '--';
+        var apn = i < apns.length ? apns[i] : '--';
+        var permitUrl = 'https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=' + encodeURIComponent(pnum);
+        return '<tr>'
+          + '<td><a href="' + permitUrl + '" target="_blank" rel="noopener">' + escapeHtml(pnum) + '</a></td>'
+          + '<td>' + escapeHtml(addr) + '</td>'
+          + '<td>' + escapeHtml(apn) + '</td>'
+          + '</tr>';
+      }).join('');
+    } else {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#7B746D;padding:20px;">No permit records available.</td></tr>';
+    }
+
+    // Show report
+    reportEl.classList.add('visible');
+
+    // Scroll to report
+    reportEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function formatCurrency(val) {
+    if (val >= 1000000) {
+      return '$' + (val / 1000000).toFixed(1) + 'M';
+    } else if (val >= 1000) {
+      return '$' + Math.round(val).toLocaleString();
+    }
+    return '$' + val;
+  }
+
+  function titleCase(str) {
+    return str.toLowerCase().replace(/(?:^|\s|,)\S/g, function(c) { return c.toUpperCase(); });
+  }
+
+  function getStatusDotClass(status) {
+    var s = status.toUpperCase();
+    if (s === 'DONE' || s === 'COMPLETED' || s === 'COMPLETE') return 'done';
+    if (s === 'ISSUED' || s === 'ACTIVE') return 'issued';
+    if (s === 'OPEN' || s === 'PENDING' || s === 'IN REVIEW') return 'open';
+    if (s === 'EXPIRED' || s === 'CANCELLED' || s === 'CANCELED' || s === 'VOID') return 'expired';
+    return 'other';
+  }
+
+  // Check for URL parameter
+  var urlParams = new URLSearchParams(window.location.search);
+  var preselected = urlParams.get('contractor');
+  if (preselected) {
+    inputEl.value = preselected;
+    // Wait for data to load, then show report
+    var checkInterval = setInterval(function() {
+      if (contractorData) {
+        clearInterval(checkInterval);
+        handleSearch();
+      }
+    }, 200);
+    // Safety timeout
+    setTimeout(function() { clearInterval(checkInterval); }, 10000);
+  }
+
+})();
+</script>
+</body>
+</html>

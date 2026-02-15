@@ -47,22 +47,17 @@
     '    </a>' +
     '    <div class="nav-links">' +
 
-    // ═══ WHO WE SERVE ═══
+    // ═══ WHO WE SERVE (single-column flat list) ═══
     '      <div class="nav-item">' +
     '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="who-we-serve">' +
     '          WHO WE SERVE <span class="chevron">&#9660;</span>' +
     '        </button>' +
-    '        <div class="dropdown-menu mega-menu mega-menu-2" id="who-we-serve-dropdown" role="menu">' +
-             col('Property_Owners.svg', 'User Portals',
+    '        <div class="dropdown-menu dropdown-single" id="who-we-serve-dropdown" role="menu">' +
                  item('homeowner_portal.html', 'Property_Owners.svg', 'Homeowners') +
                  item('contractor_portal.html', 'Building_and_Construction.svg', 'Contractors') +
-                 item('designer_portal.html', 'Surveyors_and_Engineers.svg', 'Designers &amp; Architects')
-             ) +
-             col('Municipal.svg', 'Professional',
+                 item('designer_portal.html', 'Surveyors_and_Engineers.svg', 'Designers &amp; Architects') +
                  item('user-homeowners.html', 'Municipal.svg', 'Municipal &amp; Agencies') +
-                 item('dadu_contractors_infographic.html', 'Legal.svg', 'Legal Professionals') +
-                 item('contractor_portal.html#advertise', 'Building_and_Construction.svg', 'Advertise With Us')
-             ) +
+                 item('legal_professionals_portal.html', 'Legal.svg', 'Legal Professionals') +
     '        </div>' +
     '      </div>' +
 
@@ -91,24 +86,19 @@
     '        </div>' +
     '      </div>' +
 
-    // ═══ BUILD ═══
+    // ═══ BUILD (single-column flat list) ═══
     '      <div class="nav-item">' +
     '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="build">' +
     '          BUILD <span class="chevron">&#9660;</span>' +
     '        </button>' +
-    '        <div class="dropdown-menu mega-menu mega-menu-4" id="build-dropdown" role="menu">' +
-             col('Project_Planner.svg', 'Project Planner',
-                 item('project_planner_hub.html', 'Project_Planner.svg', 'Project Planner')
-             ) +
-             col('Appraisers.svg', 'Calculators',
-                 item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators')
-             ) +
-             col('Claims.png', 'Form Wizard',
-                 item('form_wizard.html', 'Claims.png', 'Form Wizard')
-             ) +
-             col('Building_and_Construction.svg', 'Hire',
-                 item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Find a Contractor')
-             ) +
+    '        <div class="dropdown-menu dropdown-single" id="build-dropdown" role="menu">' +
+                 item('project_planner_hub.html', 'Project_Planner.svg', 'Planning Hub') +
+                 item('project_checklist.html', 'Project_Checklist.svg', 'Interactive Checklist') +
+                 item('draw_dadu_on_parcel.html', 'Draw_on_Parcel.svg', 'Draw DADU on Parcel') +
+                 item('permit_process_timeline.html', 'Renewals.png', 'Permit Process Timeline') +
+                 item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
+                 item('size_calculator.html', 'ADU.png', 'Size Calculator') +
+                 item('form_wizard.html', 'Claims.png', 'Form Wizard') +
     '        </div>' +
     '      </div>' +
 
@@ -122,6 +112,7 @@
                  item('eligibility_report.html', 'Claims.png', 'Eligibility Report') +
                  item('project_report.html', 'Exports__Reports.svg', 'Project Report') +
                  item('neighbors_report.html', 'Neighbors.svg', 'Neighbors Report') +
+                 item('contractor_report.html', 'Building_and_Construction.svg', 'Contractor Report') +
                  item('dadu_reports_store.html', 'Market Statistics Report .svg', 'Market Report') +
                  item('property-report-card.html', 'Property Detail Report .svg', 'Property Report Card')
              ) +

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Legal Professionals | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
+ <style>
+ :root {
+  --slate: #3A5566;
+  --wheat: #CBB279;
+  --linen: #F0EBE1;
+  --cream: #E1D4BB;
+  --stone: #7B746D;
+  --background: #F2F0ED;
+  --gray-warm: #706F6C;
+ }
+ body {
+  font-family: 'Inter', Arial, sans-serif;
+  background-color: var(--background);
+  color: #333;
+  margin: 0;
+  line-height: 1.6;
+ }
+ .page-container { max-width: 960px; margin: 0 auto; padding: 40px 30px; }
+ .hero { text-align: center; margin-bottom: 40px; }
+ .hero h1 { font-size: 32px; font-weight: 800; color: var(--slate); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+ .hero .subtitle { font-size: 14px; color: var(--stone); font-weight: 600; letter-spacing: 1px; }
+ .divider { width: 80px; height: 3px; background: var(--stone); margin: 20px auto; }
+
+ /* Section headings */
+ .section-heading { font-size: 24px; font-weight: 700; color: var(--slate); margin-bottom: 6px; }
+ .section-subheading { font-size: 14px; color: var(--stone); margin-bottom: 24px; }
+
+ /* Tool cards (Section 1) */
+ .portal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 30px; }
+ .portal-card {
+  background: var(--linen); border-radius: 8px; padding: 28px; border-left: 4px solid var(--wheat);
+  transition: transform 0.2s, box-shadow 0.2s;
+ }
+ .portal-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+ .portal-card .card-icon { width: 40px; height: 40px; margin-bottom: 12px; }
+ .portal-card h3 { color: var(--slate); font-size: 18px; margin-top: 0; margin-bottom: 8px; }
+ .portal-card p { color: #666; font-size: 14px; margin-bottom: 16px; }
+ .portal-card a.card-btn {
+  display: inline-block; background: var(--wheat); color: #fff; padding: 8px 20px;
+  border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 600;
+ }
+ .portal-card a.card-btn:hover { background: #a87623; }
+
+ /* Reference cards (Section 2) */
+ .ref-section { margin-top: 60px; }
+ .ref-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 20px; }
+ .ref-card {
+  background: #fff; border-left: 4px solid var(--slate); border-radius: 6px; padding: 20px;
+  display: flex; align-items: flex-start; gap: 16px;
+  transition: box-shadow 0.2s;
+ }
+ .ref-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+ .ref-card .ref-icon { width: 28px; height: 28px; flex-shrink: 0; margin-top: 2px; }
+ .ref-card-content { flex: 1; }
+ .ref-card-content h4 { color: var(--slate); font-size: 16px; margin: 0 0 6px 0; }
+ .ref-card-content p { color: #666; font-size: 13px; margin: 0 0 10px 0; line-height: 1.5; }
+ .ref-card-content a.ref-link {
+  color: var(--slate); font-size: 13px; font-weight: 600; text-decoration: none;
+ }
+ .ref-card-content a.ref-link:hover { text-decoration: underline; }
+
+ /* CTA section (Section 3) */
+ .cta-section {
+  background: var(--slate); border-radius: 10px; padding: 50px 30px; text-align: center; margin-top: 60px;
+ }
+ .cta-section h2 { color: var(--cream); font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+ .cta-section p { color: var(--linen); font-size: 15px; margin-bottom: 24px; }
+ .cta-section a.cta-btn {
+  display: inline-block; background: var(--wheat); color: var(--slate); padding: 12px 32px;
+  border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: 700;
+ }
+ .cta-section a.cta-btn:hover { background: #b89f6a; }
+
+ .footer { text-align: center; margin-top: 60px; padding: 20px; color: var(--stone); font-size: 12px; }
+ .footer .brand { font-weight: 700; color: var(--slate); }
+ </style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="page-container">
+ <div class="hero">
+  <h1>Legal Professionals</h1>
+  <p class="subtitle">Covenant research, zoning compliance, permit documentation, and regulatory tools for Nashville DADU projects.</p>
+  <div class="divider"></div>
+ </div>
+
+ <!-- Section 1: Your Legal Toolkit -->
+ <h2 class="section-heading">Your Legal Toolkit</h2>
+
+ <div class="portal-grid">
+  <div class="portal-card">
+   <img src="assets/icons/Claims.png" alt="Form Wizard" class="card-icon">
+   <h3>Form Wizard</h3>
+   <p>Determine which Metro Nashville forms and applications your client needs for a DADU project.</p>
+   <a href="form_wizard.html" class="card-btn">Open Tool</a>
+  </div>
+  <div class="portal-card">
+   <img src="assets/icons/Recorded_Docs.svg" alt="PDF Database" class="card-icon">
+   <h3>PDF Database</h3>
+   <p>Search permits, site plans, property cards, and recorded documents by APN, address, or permit number.</p>
+   <a href="pdf_database_lookup.html" class="card-btn">Open Tool</a>
+  </div>
+  <div class="portal-card">
+   <img src="assets/icons/Restrictive_Covenants.svg" alt="Restrictive Covenants" class="card-icon">
+   <h3>Restrictive Covenants</h3>
+   <p>Search 43,000+ recorded covenant documents that may restrict DADU construction on a parcel.</p>
+   <a href="restrictive_covenants_v2.html" class="card-btn">Open Tool</a>
+  </div>
+  <div class="portal-card">
+   <img src="assets/icons/Recorded_Docs.svg" alt="Recorded Documents" class="card-icon">
+   <h3>Recorded Documents</h3>
+   <p>Access the full document portal: permits, covenants, site plans, and surveys indexed by parcel.</p>
+   <a href="dadu_documents_portal.html" class="card-btn">Open Tool</a>
+  </div>
+  <div class="portal-card">
+   <img src="assets/icons/Permit_Explorer.svg" alt="Permit Explorer" class="card-icon">
+   <h3>Permit Explorer</h3>
+   <p>Search all Nashville building permits with contractor, cost, timeline, and linked documents.</p>
+   <a href="permit_explorer.html" class="card-btn">Open Tool</a>
+  </div>
+  <div class="portal-card">
+   <img src="assets/icons/Legislation.svg" alt="Code and Legislation" class="card-icon">
+   <h3>Code &amp; Legislation</h3>
+   <p>111 legal citations database covering all Nashville DADU legislation, Bluebook format.</p>
+   <a href="dadu_code_legislation_v5.html" class="card-btn">Open Tool</a>
+  </div>
+  <div class="portal-card">
+   <img src="assets/icons/Property_Owners.svg" alt="Property Report Card" class="card-icon">
+   <h3>Property Report Card</h3>
+   <p>Complete parcel analysis with eligibility, permits, covenants, building specs, and external links.</p>
+   <a href="property-report-card.html" class="card-btn">Open Tool</a>
+  </div>
+ </div>
+
+ <!-- Section 2: Regulatory Requirements -->
+ <div class="ref-section">
+  <h2 class="section-heading">Regulatory Requirements</h2>
+  <p class="section-subheading">Key compliance areas for DADU projects</p>
+
+  <div class="ref-grid">
+   <div class="ref-card">
+    <img src="assets/icons/Owner_Occupancy.svg" alt="Owner Occupancy" class="ref-icon">
+    <div class="ref-card-content">
+     <h4>Owner Occupancy</h4>
+     <p>BL2025-1007 requires the property owner to occupy either the principal structure or the DADU. A restrictive covenant must be recorded before permit issuance.</p>
+     <a href="owner_occupancy.html" class="ref-link">Learn More &gt;</a>
+    </div>
+   </div>
+   <div class="ref-card">
+    <img src="assets/icons/STR_Permit.svg" alt="Short-Term Rental Restrictions" class="ref-icon">
+    <div class="ref-card-content">
+     <h4>Short-Term Rental Restrictions</h4>
+     <p>New DADUs on single-family, RN, and RL lots are prohibited from obtaining short-term rental permits under the current code.</p>
+     <a href="str_permit.html" class="ref-link">Learn More &gt;</a>
+    </div>
+   </div>
+   <div class="ref-card">
+    <img src="assets/icons/Restrictive_Covenants.svg" alt="Restrictive Covenants" class="ref-icon">
+    <div class="ref-card-content">
+     <h4>Restrictive Covenants</h4>
+     <p>Property owners must record a restrictive covenant with the Register of Deeds acknowledging owner occupancy and DADU conditions before receiving a building permit.</p>
+     <a href="restrictive_covenants_v2.html" class="ref-link">Learn More &gt;</a>
+    </div>
+   </div>
+   <div class="ref-card">
+    <img src="assets/icons/Zoning_Documents.svg" alt="Overlay District Requirements" class="ref-icon">
+    <div class="ref-card-content">
+     <h4>Overlay District Requirements</h4>
+     <p>Parcels in DADU Overlays, UDO districts, or Specific Plans may have additional design standards and require Planning Department review.</p>
+     <a href="overlay-districts.html" class="ref-link">Learn More &gt;</a>
+    </div>
+   </div>
+   <div class="ref-card">
+    <img src="assets/icons/Overlay_Design_Standards.svg" alt="Design Standards" class="ref-icon">
+    <div class="ref-card-content">
+     <h4>Design Standards</h4>
+     <p>DADUs must match the principal structure in style, materials, color, and roof form. Specific height, dormer, and setback rules apply.</p>
+     <a href="dadu_design_standards.html" class="ref-link">Learn More &gt;</a>
+    </div>
+   </div>
+   <div class="ref-card">
+    <img src="assets/icons/Renewals.png" alt="Trade Permits" class="ref-icon">
+    <div class="ref-card-content">
+     <h4>Trade Permits</h4>
+     <p>Separate electrical, plumbing, mechanical, and gas permits are required in addition to the building permit.</p>
+     <a href="trade_permits.html" class="ref-link">Learn More &gt;</a>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <!-- Section 3: CTA -->
+ <div class="cta-section">
+  <h2>Search a Property</h2>
+  <p>Run a complete eligibility and document analysis for any Nashville parcel.</p>
+  <a href="property-report-card.html" class="cta-btn">Property Report Card</a>
+ </div>
+
+ <div class="footer">
+  <p><span class="brand">HOMEBODY PROJECTS</span> &middot; Powered by Castlehold &middot; Nashville-Davidson County &middot; 2026</p>
+ </div>
+</div>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>
