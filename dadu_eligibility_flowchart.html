@@ -28,7 +28,6 @@
   .flow-hero h1 {
    font-family: 'Source Serif 4', Georgia, serif;
    font-weight: 700;
-   font-style: normal;
    font-size: 36px;
    color: #E1D4BB;
    margin-bottom: 12px;
@@ -66,17 +65,143 @@
    height: 18px;
   }
 
+  /* ========== PROGRESS BAR ========== */
+  .progress-section {
+   max-width: 860px;
+   margin: 0 auto;
+   padding: 32px 24px 0;
+  }
+
+  .progress-bar-wrap {
+   display: flex;
+   align-items: center;
+   gap: 0;
+   margin-bottom: 16px;
+  }
+
+  .progress-step {
+   flex: 1;
+   text-align: center;
+   position: relative;
+  }
+
+  .progress-dot {
+   width: 32px;
+   height: 32px;
+   border-radius: 50%;
+   background: #E2E2E0;
+   color: #918A83;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 13px;
+   font-weight: 700;
+   margin: 0 auto 6px;
+   transition: all 0.4s ease;
+   position: relative;
+   z-index: 2;
+  }
+
+  .progress-step.active .progress-dot {
+   background: #CBB279;
+   color: #3A5566;
+   box-shadow: 0 0 0 4px rgba(203,178,121,0.25);
+  }
+
+  .progress-step.completed .progress-dot {
+   background: #406A64;
+   color: #fff;
+  }
+
+  .progress-step.failed .progress-dot {
+   background: #B58676;
+   color: #fff;
+  }
+
+  .progress-label {
+   font-size: 10px;
+   color: #918A83;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   font-weight: 600;
+   transition: color 0.3s;
+  }
+
+  .progress-step.active .progress-label { color: #3A5566; }
+  .progress-step.completed .progress-label { color: #406A64; }
+  .progress-step.failed .progress-label { color: #B58676; }
+
+  .progress-line {
+   flex: 1;
+   height: 2px;
+   background: #E2E2E0;
+   margin-top: -20px;
+   transition: background 0.4s;
+  }
+
+  .progress-line.filled {
+   background: #406A64;
+  }
+
+  /* Controls */
+  .flow-controls {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+  }
+
+  .show-all-btn {
+   padding: 8px 18px;
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 8px;
+   font-size: 13px;
+   font-weight: 600;
+   color: #3A5566;
+   cursor: pointer;
+   font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+  }
+
+  .show-all-btn:hover {
+   background: #F0EBE1;
+   border-color: #CBB279;
+  }
+
+  .show-all-btn.active {
+   background: #3A5566;
+   color: #E1D4BB;
+   border-color: #3A5566;
+  }
+
+  .start-over-btn {
+   padding: 8px 18px;
+   background: transparent;
+   border: 1px solid #E2E2E0;
+   border-radius: 8px;
+   font-size: 13px;
+   font-weight: 600;
+   color: #918A83;
+   cursor: pointer;
+   font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+  }
+
+  .start-over-btn:hover {
+   background: #F0EBE1;
+   color: #3A5566;
+  }
+
   /* ========== SECTION CONTAINER ========== */
   .section-container {
    max-width: 860px;
    margin: 0 auto;
-   padding: 48px 24px 0;
+   padding: 32px 24px 0;
   }
 
   .section-heading {
    font-family: 'Source Serif 4', Georgia, serif;
    font-weight: 700;
-   font-style: normal;
    font-size: 28px;
    color: #3A5566;
    text-align: center;
@@ -104,11 +229,35 @@
    height: 32px;
    border-left: 2px dashed #E2E2E0;
    margin: 0 auto;
+   transition: opacity 0.3s;
   }
 
   .flow-step {
    width: 100%;
    max-width: 800px;
+   opacity: 0;
+   transform: translateY(20px);
+   transition: opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease;
+   pointer-events: none;
+   max-height: 0;
+   overflow: hidden;
+  }
+
+  .flow-step.visible {
+   opacity: 1;
+   transform: translateY(0);
+   pointer-events: auto;
+   max-height: 3000px;
+   overflow: visible;
+  }
+
+  .flow-step.show-all {
+   opacity: 1;
+   transform: translateY(0);
+   pointer-events: auto;
+   max-height: 3000px;
+   overflow: visible;
+   transition: none;
   }
 
   .flow-step-inner {
@@ -138,12 +287,28 @@
    border-radius: 12px;
    padding: 24px 28px;
    flex: 1;
+   transition: border-color 0.3s;
+  }
+
+  .flow-step.visible .step-card {
+   border-color: #CBB279;
+   box-shadow: 0 4px 20px rgba(203,178,121,0.12);
+  }
+
+  .flow-step.answered .step-card {
+   border-color: #E2E2E0;
+   box-shadow: none;
+   opacity: 0.85;
+  }
+
+  .flow-step.answered.show-all .step-card {
+   opacity: 1;
+   border-color: #E2E2E0;
   }
 
   .step-card h3 {
    font-family: 'Inter', sans-serif;
    font-weight: 700;
-   font-style: normal;
    font-size: 17px;
    color: #3A5566;
    margin-bottom: 6px;
@@ -160,104 +325,432 @@
    border-radius: 8px;
   }
 
-  /* ========== YES/NO OUTCOMES ========== */
-  .outcomes {
+  /* ========== COLLAPSED SUMMARY BAR ========== */
+  .step-summary {
+   display: none;
+   width: 100%;
+   max-width: 800px;
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-left: 4px solid #406A64;
+   border-radius: 8px;
+   padding: 14px 20px;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+  }
+
+  .step-summary.visible {
+   display: flex;
+  }
+
+  .step-summary.show-all {
+   display: none;
+  }
+
+  .step-summary-left {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   flex: 1;
+   min-width: 0;
+  }
+
+  .step-summary-check {
+   width: 24px;
+   height: 24px;
+   background: #406A64;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+  }
+
+  .step-summary-check svg {
+   width: 14px;
+   height: 14px;
+   fill: #fff;
+  }
+
+  .step-summary-text {
+   font-size: 14px;
+   font-weight: 600;
+   color: #3A5566;
+  }
+
+  .step-summary-text span {
+   color: #706F6C;
+   font-weight: 400;
+  }
+
+  .change-answer-btn {
+   padding: 6px 14px;
+   background: transparent;
+   border: 1px solid #E2E2E0;
+   border-radius: 6px;
+   font-size: 12px;
+   font-weight: 600;
+   color: #918A83;
+   cursor: pointer;
+   font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+   white-space: nowrap;
+   flex-shrink: 0;
+  }
+
+  .change-answer-btn:hover {
+   background: #F0EBE1;
+   color: #3A5566;
+   border-color: #CBB279;
+  }
+
+  .step-summary.failed-summary {
+   border-left-color: #B58676;
+  }
+
+  .step-summary.failed-summary .step-summary-check {
+   background: #B58676;
+  }
+
+  /* ========== ANSWER BUTTONS ========== */
+  .answer-buttons {
    display: grid;
    grid-template-columns: 1fr 1fr;
    gap: 12px;
    margin-bottom: 16px;
   }
 
-  .outcome-box {
+  .answer-btn {
+   padding: 14px 20px;
    border-radius: 8px;
-   padding: 12px 16px;
-   font-size: 13px;
-   font-weight: 600;
-   line-height: 1.5;
+   font-size: 14px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   cursor: pointer;
+   transition: all 0.2s;
+   border: 2px solid;
+   text-align: center;
   }
 
-  .outcome-box .outcome-label {
-   display: inline-block;
-   font-size: 11px;
-   font-weight: 800;
-   text-transform: uppercase;
-   letter-spacing: 1px;
-   padding: 2px 8px;
-   border-radius: 4px;
-   margin-bottom: 6px;
-  }
-
-  .outcome-yes {
+  .answer-btn.yes-btn {
    background: rgba(64,106,100,0.08);
-   border: 1px solid rgba(64,106,100,0.2);
-   color: #333;
+   border-color: #406A64;
+   color: #406A64;
   }
 
-  .outcome-yes .outcome-label {
+  .answer-btn.yes-btn:hover {
+   background: #406A64;
+   color: #fff;
+   transform: translateY(-1px);
+  }
+
+  .answer-btn.no-btn {
+   background: rgba(181,134,118,0.08);
+   border-color: #B58676;
+   color: #B58676;
+  }
+
+  .answer-btn.no-btn:hover {
+   background: #B58676;
+   color: #fff;
+   transform: translateY(-1px);
+  }
+
+  .answer-btn.selected {
+   transform: none;
+   cursor: default;
+  }
+
+  .answer-btn.yes-btn.selected {
    background: #406A64;
    color: #fff;
   }
 
-  .outcome-no {
-   background: rgba(181,134,118,0.08);
-   border: 1px solid rgba(181,134,118,0.2);
-   color: #333;
-  }
-
-  .outcome-no .outcome-label {
+  .answer-btn.no-btn.selected {
    background: #B58676;
    color: #fff;
   }
 
-  /* ========== SUB-OPTIONS (Step 3) ========== */
-  .sub-options {
+  .answer-btn.dimmed {
+   opacity: 0.3;
+   cursor: default;
+  }
+
+  .answer-btn.dimmed:hover {
+   transform: none;
+  }
+
+  /* Answer result text */
+  .answer-result {
+   display: none;
+   padding: 12px 16px;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 600;
+   margin-bottom: 16px;
+   line-height: 1.5;
+  }
+
+  .answer-result.visible { display: block; }
+
+  .answer-result.eligible {
+   background: rgba(64,106,100,0.08);
+   border: 1px solid rgba(64,106,100,0.2);
+   color: #406A64;
+  }
+
+  .answer-result.not-eligible {
+   background: rgba(181,134,118,0.08);
+   border: 1px solid rgba(181,134,118,0.2);
+   color: #B58676;
+  }
+
+  /* Step 3 special: multiple options */
+  .answer-options {
    display: flex;
    flex-direction: column;
    gap: 8px;
    margin-bottom: 16px;
   }
 
-  .sub-option {
+  .option-btn {
    display: flex;
-   align-items: flex-start;
-   gap: 10px;
-   padding: 10px 14px;
+   align-items: center;
+   gap: 12px;
+   padding: 12px 16px;
    border-radius: 8px;
+   border: 2px solid #E2E2E0;
+   background: #fff;
+   cursor: pointer;
+   font-family: 'Inter', sans-serif;
    font-size: 13px;
-   line-height: 1.5;
    color: #333;
+   text-align: left;
+   transition: all 0.2s;
+   line-height: 1.5;
   }
 
-  .sub-option-eligible {
-   background: rgba(64,106,100,0.08);
-   border: 1px solid rgba(64,106,100,0.2);
+  .option-btn:hover {
+   border-color: #CBB279;
+   background: #F0EBE1;
   }
 
-  .sub-option-none {
-   background: rgba(181,134,118,0.08);
-   border: 1px solid rgba(181,134,118,0.2);
-  }
-
-  .sub-option .option-tag {
+  .option-btn .option-tag {
    display: inline-block;
    font-size: 11px;
    font-weight: 800;
    text-transform: uppercase;
    letter-spacing: 0.5px;
-   padding: 2px 8px;
+   padding: 3px 10px;
    border-radius: 4px;
    flex-shrink: 0;
-   margin-top: 1px;
+   background: #3A5566;
+   color: #E1D4BB;
   }
 
-  .sub-option-eligible .option-tag {
+  .option-btn.eligible-opt .option-tag {
    background: #406A64;
    color: #fff;
   }
 
-  .sub-option-none .option-tag {
+  .option-btn.not-eligible-opt .option-tag {
    background: #B58676;
    color: #fff;
+  }
+
+  .option-btn.selected {
+   cursor: default;
+  }
+
+  .option-btn.selected.eligible-opt {
+   border-color: #406A64;
+   background: rgba(64,106,100,0.08);
+  }
+
+  .option-btn.selected.not-eligible-opt {
+   border-color: #B58676;
+   background: rgba(181,134,118,0.08);
+  }
+
+  .option-btn.dimmed {
+   opacity: 0.3;
+   cursor: default;
+  }
+
+  .option-btn.dimmed:hover {
+   border-color: #E2E2E0;
+   background: #fff;
+  }
+
+  /* ========== NOT ELIGIBLE RESULT ========== */
+  .not-eligible-result {
+   display: none;
+   max-width: 800px;
+   margin: 0 auto;
+   padding: 0 24px;
+  }
+
+  .not-eligible-result.visible { display: block; }
+
+  .not-eligible-box {
+   background: #fff;
+   border: 2px solid #B58676;
+   border-radius: 12px;
+   padding: 32px;
+   text-align: center;
+  }
+
+  .not-eligible-box h3 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-size: 24px;
+   color: #B58676;
+   margin-bottom: 12px;
+  }
+
+  .not-eligible-box p {
+   font-size: 15px;
+   color: #706F6C;
+   max-width: 500px;
+   margin: 0 auto 20px;
+   line-height: 1.6;
+  }
+
+  .not-eligible-box .restart-btn {
+   display: inline-block;
+   padding: 12px 32px;
+   background: #CBB279;
+   color: #3A5566;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   border: none;
+   cursor: pointer;
+   transition: all 0.2s;
+  }
+
+  .not-eligible-box .restart-btn:hover {
+   opacity: 0.9;
+   transform: translateY(-1px);
+  }
+
+  /* ========== ELIGIBLE RESULT ========== */
+  .eligible-result {
+   display: none;
+   max-width: 800px;
+   margin: 0 auto;
+   padding: 0 24px;
+  }
+
+  .eligible-result.visible { display: block; }
+
+  .eligible-box {
+   background: #fff;
+   border: 2px solid #406A64;
+   border-radius: 12px;
+   padding: 32px;
+   text-align: center;
+  }
+
+  .eligible-box .eligible-icon {
+   width: 56px;
+   height: 56px;
+   background: #406A64;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 0 auto 16px;
+  }
+
+  .eligible-box .eligible-icon svg {
+   width: 28px;
+   height: 28px;
+   fill: #fff;
+  }
+
+  .eligible-box h3 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-size: 24px;
+   color: #406A64;
+   margin-bottom: 12px;
+  }
+
+  .eligible-box p {
+   font-size: 15px;
+   color: #706F6C;
+   max-width: 520px;
+   margin: 0 auto 24px;
+   line-height: 1.6;
+  }
+
+  .eligible-box .result-actions {
+   display: flex;
+   justify-content: center;
+   gap: 12px;
+   flex-wrap: wrap;
+  }
+
+  .result-btn-primary {
+   display: inline-block;
+   padding: 12px 32px;
+   background: #CBB279;
+   color: #3A5566;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   border: none;
+   cursor: pointer;
+   transition: all 0.2s;
+  }
+
+  .result-btn-primary:hover {
+   opacity: 0.9;
+   transform: translateY(-1px);
+  }
+
+  .result-btn-secondary {
+   display: inline-block;
+   padding: 12px 32px;
+   background: transparent;
+   border: 2px solid #E2E2E0;
+   color: #3A5566;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   cursor: pointer;
+   transition: all 0.2s;
+  }
+
+  .result-btn-secondary:hover {
+   background: #F0EBE1;
+   border-color: #CBB279;
+  }
+
+  /* ========== CONTINUE BUTTON (Step 5) ========== */
+  .continue-btn {
+   display: inline-block;
+   padding: 14px 32px;
+   background: #CBB279;
+   color: #3A5566;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   border: none;
+   cursor: pointer;
+   transition: all 0.2s;
+   margin-top: 8px;
+  }
+
+  .continue-btn:hover {
+   opacity: 0.9;
+   transform: translateY(-1px);
   }
 
   /* ========== STEP LINKS ========== */
@@ -333,9 +826,7 @@
    line-height: 1.6;
   }
 
-  .conditions-list li:last-child {
-   border-bottom: none;
-  }
+  .conditions-list li:last-child { border-bottom: none; }
 
   .cond-check {
    width: 24px;
@@ -355,14 +846,8 @@
    fill: #fff;
   }
 
-  .conditions-list strong {
-   color: #3A5566;
-  }
-
-  .hl {
-   color: #CBB279;
-   font-weight: 700;
-  }
+  .conditions-list strong { color: #3A5566; }
+  .hl { color: #CBB279; font-weight: 700; }
 
   /* ========== SPECIAL CASES BOX ========== */
   .special-cases-box {
@@ -374,7 +859,6 @@
   .special-cases-box h3 {
    font-family: 'Inter', sans-serif;
    font-weight: 700;
-   font-style: normal;
    font-size: 17px;
    color: #E1D4BB;
    margin-bottom: 16px;
@@ -388,9 +872,7 @@
    margin-bottom: 12px;
   }
 
-  .special-case-item:last-of-type {
-   margin-bottom: 16px;
-  }
+  .special-case-item:last-of-type { margin-bottom: 16px; }
 
   .special-case-item h4 {
    font-family: 'Inter', sans-serif;
@@ -448,16 +930,13 @@
   .quick-checklist-box h3 {
    font-family: 'Inter', sans-serif;
    font-weight: 700;
-   font-style: normal;
    font-size: 18px;
    color: #3A5566;
    text-align: center;
    margin-bottom: 24px;
   }
 
-  .checklist-items {
-   list-style: none;
-  }
+  .checklist-items { list-style: none; }
 
   .checklist-items li {
    display: flex;
@@ -470,9 +949,7 @@
    line-height: 1.5;
   }
 
-  .checklist-items li:last-child {
-   border-bottom: none;
-  }
+  .checklist-items li:last-child { border-bottom: none; }
 
   .check-circle {
    width: 28px;
@@ -519,10 +996,7 @@
    border-color: #CBB279;
   }
 
-  .link-pill img {
-   width: 20px;
-   height: 20px;
-  }
+  .link-pill img { width: 20px; height: 20px; }
 
   /* ========== CTA ========== */
   .cta-section {
@@ -534,7 +1008,6 @@
   .cta-section h2 {
    font-family: 'Source Serif 4', Georgia, serif;
    font-weight: 700;
-   font-style: normal;
    font-size: 32px;
    color: #E1D4BB;
    margin-bottom: 12px;
@@ -560,7 +1033,7 @@
   }
 
   .cta-btn:hover {
-   background: #D4A54E;
+   opacity: 0.9;
    transform: translateY(-2px);
   }
 
@@ -581,56 +1054,17 @@
    gap: 40px;
   }
 
-  .footer-links {
-   display: flex;
-   gap: 60px;
-  }
+  .footer-links { display: flex; gap: 60px; }
 
-  .footer-col {
-   display: flex;
-   flex-direction: column;
-   gap: 8px;
-  }
-
-  .footer-col h4 {
-   font-size: 14px;
-   font-weight: 700;
-   color: #E1D4BB;
-   margin-bottom: 4px;
-   font-family: 'Inter', sans-serif;
-  }
-
-  .footer-col a {
-   font-size: 13px;
-   color: #918A83;
-   transition: color 0.2s;
-  }
-
+  .footer-col { display: flex; flex-direction: column; gap: 8px; }
+  .footer-col h4 { font-size: 14px; font-weight: 700; color: #E1D4BB; margin-bottom: 4px; }
+  .footer-col a { font-size: 13px; color: #918A83; transition: color 0.2s; }
   .footer-col a:hover { color: #E1D4BB; }
 
-  .footer-social {
-   display: flex;
-   gap: 12px;
-  }
-
-  .footer-social a {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   width: 36px;
-   height: 36px;
-   border-radius: 50%;
-   background: rgba(255,255,255,0.1);
-   transition: background 0.2s;
-  }
-
+  .footer-social { display: flex; gap: 12px; }
+  .footer-social a { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); transition: background 0.2s; }
   .footer-social a:hover { background: rgba(255,255,255,0.2); }
-
-  .footer-social svg {
-   width: 16px;
-   height: 16px;
-   fill: #E1D4BB;
-  }
+  .footer-social svg { width: 16px; height: 16px; fill: #E1D4BB; }
 
   .footer-bottom {
    max-width: 1100px;
@@ -643,11 +1077,7 @@
    color: #918A83;
   }
 
-  .footer-bottom a {
-   color: #918A83;
-   transition: color 0.2s;
-  }
-
+  .footer-bottom a { color: #918A83; transition: color 0.2s; }
   .footer-bottom a:hover { color: rgba(225, 212, 187, 0.8); }
 
   /* ========== RESPONSIVE ========== */
@@ -656,15 +1086,19 @@
    .flow-hero .hero-badges { gap: 8px; }
    .flow-hero .badge { font-size: 12px; padding: 5px 12px; }
    .section-heading { font-size: 24px; }
-   .outcomes { grid-template-columns: 1fr; }
+   .answer-buttons { grid-template-columns: 1fr; }
    .step-links { flex-direction: column; }
    .step-link { justify-content: center; }
    .special-cases-links { flex-direction: column; }
    .special-link { justify-content: center; }
    .links-section { flex-direction: column; align-items: center; }
+   .progress-label { font-size: 9px; }
    .footer-inner { flex-direction: column; }
    .footer-links { flex-direction: column; gap: 24px; }
    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+   .step-summary { flex-direction: column; gap: 8px; }
+   .step-summary .change-answer-btn { align-self: flex-start; }
+   .eligible-box .result-actions { flex-direction: column; align-items: center; }
   }
 
   @media (max-width: 480px) {
@@ -672,7 +1106,6 @@
    .flow-hero h1 { font-size: 24px; }
    .flow-step-inner { flex-direction: column; gap: 12px; }
    .step-num { margin: 0 auto; }
-   .step-card { text-align: left; }
    .cta-section h2 { font-size: 26px; }
    .special-cases-box { padding: 20px; }
   }
@@ -688,25 +1121,31 @@
  <h1>DADU Eligibility Flowchart</h1>
  <p class="subtitle">Follow Nashville.gov's official step-by-step process to determine if your property qualifies for a Detached Accessory Dwelling Unit under BL2025-1007.</p>
  <div class="hero-badges">
-  <span class="badge">
-   <img src="assets/icons/Zoning.svg" alt="">
-   BL2025-1007
-  </span>
-  <span class="badge">
-   <img src="assets/icons/Legal.svg" alt="">
-   Nashville.gov Process
-  </span>
-  <span class="badge">
-   <img src="assets/icons/Property_Owners.svg" alt="">
-   67,707 Eligible Parcels
-  </span>
+  <span class="badge"><img src="assets/icons/Zoning.svg" alt=""> BL2025-1007</span>
+  <span class="badge"><img src="assets/icons/Legal.svg" alt=""> Nashville.gov Process</span>
+  <span class="badge"><img src="assets/icons/Property_Owners.svg" alt=""> 67,707 Eligible Parcels</span>
  </div>
 </section>
 
-<!-- Intro -->
-<div class="section-container">
- <h2 class="section-heading">How Eligibility Works</h2>
- <p class="section-subtitle">Nashville uses a four-step process to determine DADU eligibility. Your property must pass each step to qualify. If eligible, zoning conditions in Step 5 apply to your build.</p>
+<!-- Progress Bar -->
+<div class="progress-section">
+ <div class="progress-bar-wrap">
+  <div class="progress-step active" id="prog-1"><div class="progress-dot">1</div><div class="progress-label">Zoning</div></div>
+  <div class="progress-line" id="pline-1"></div>
+  <div class="progress-step" id="prog-2"><div class="progress-dot">2</div><div class="progress-label">Lot Size</div></div>
+  <div class="progress-line" id="pline-2"></div>
+  <div class="progress-step" id="prog-3"><div class="progress-dot">3</div><div class="progress-label">District</div></div>
+  <div class="progress-line" id="pline-3"></div>
+  <div class="progress-step" id="prog-4"><div class="progress-dot">4</div><div class="progress-label">Structure</div></div>
+  <div class="progress-line" id="pline-4"></div>
+  <div class="progress-step" id="prog-5"><div class="progress-dot">5</div><div class="progress-label">Conditions</div></div>
+  <div class="progress-line" id="pline-5"></div>
+  <div class="progress-step" id="prog-6"><div class="progress-dot">6</div><div class="progress-label">Special</div></div>
+ </div>
+ <div class="flow-controls">
+  <button class="start-over-btn" onclick="startOver()">Start Over</button>
+  <button class="show-all-btn" id="show-all-btn" onclick="toggleShowAll()">Show All Steps</button>
+ </div>
 </div>
 
 <!-- FLOWCHART -->
@@ -714,217 +1153,180 @@
  <div class="flowchart">
 
   <!-- ========== STEP 1 ========== -->
-  <div class="flow-step">
+  <div class="step-summary" id="summary-1">
+   <div class="step-summary-left">
+    <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="step-summary-text">Step 1: Land Use Table <span>-- Zoning permits DADUs</span></div>
+   </div>
+   <button class="change-answer-btn" onclick="changeAnswer(1)">Change Answer</button>
+  </div>
+
+  <div class="flow-step visible" id="step-1">
    <div class="flow-step-inner">
     <div class="step-num">1</div>
     <div class="step-card">
      <h3>Land Use Table Check</h3>
      <div class="step-question">Does the Land Use Table show your parcel's zoning district permits DADUs with conditions (PC)?</div>
+     <p style="font-size: 13px; color: #706F6C; margin-bottom: 16px;">R, RS, RN, and RL zones permit DADUs with conditions per BL2025-1007.</p>
 
-     <div class="outcomes">
-      <div class="outcome-box outcome-yes">
-       <span class="outcome-label">YES</span><br>
-       Your zoning district permits DADUs. Proceed to Step 2 to verify lot size.
-      </div>
-      <div class="outcome-box outcome-no">
-       <span class="outcome-label">NO</span><br>
-       Your zoning district does not permit DADUs. Your parcel is <strong>not eligible</strong>.
-      </div>
+     <div class="answer-buttons" id="answers-1">
+      <button class="answer-btn yes-btn" onclick="answerStep(1, true)">YES -- My zone permits DADUs</button>
+      <button class="answer-btn no-btn" onclick="answerStep(1, false)">NO -- My zone does not</button>
      </div>
 
+     <div class="answer-result eligible" id="result-1-yes">Your zoning district permits DADUs. Proceeding to Step 2.</div>
+     <div class="answer-result not-eligible" id="result-1-no">Your zoning district does not permit DADUs. Your parcel is not eligible.</div>
+
      <div class="step-links">
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.08LAUSDEST_17.08.030DILAUSTA" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       Land Use Tables
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link">
-       <img src="assets/icons/Zoning.svg" alt="">
-       Check Your Zoning
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/BaseZoning/MapServer/0" target="_blank" class="step-link">
-       <img src="assets/icons/GIS.svg" alt="">
-       Base Zoning Map
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" class="step-link">
-       <img src="assets/icons/Legal.svg" alt="">
-       BL2025-1007
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.08LAUSDEST_17.08.030DILAUSTA" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Land Use Tables <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link"><img src="assets/icons/Zoning.svg" alt=""> Check Your Zoning <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/BaseZoning/MapServer/0" target="_blank" class="step-link"><img src="assets/icons/GIS.svg" alt=""> Base Zoning Map <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" class="step-link"><img src="assets/icons/Legal.svg" alt=""> BL2025-1007 <span class="step-link-arrow">&rarr;</span></a>
      </div>
     </div>
    </div>
   </div>
 
-  <div class="flow-connector"></div>
+  <div class="flow-connector" id="conn-1-2"></div>
 
   <!-- ========== STEP 2 ========== -->
-  <div class="flow-step">
+  <div class="step-summary" id="summary-2">
+   <div class="step-summary-left">
+    <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="step-summary-text">Step 2: Minimum Lot Area <span>-- Meets minimum</span></div>
+   </div>
+   <button class="change-answer-btn" onclick="changeAnswer(2)">Change Answer</button>
+  </div>
+
+  <div class="flow-step" id="step-2">
    <div class="flow-step-inner">
     <div class="step-num">2</div>
     <div class="step-card">
      <h3>Minimum Lot Area</h3>
      <div class="step-question">Does your lot meet the minimum lot area required for your zoning district?</div>
 
-     <div class="outcomes">
-      <div class="outcome-box outcome-yes">
-       <span class="outcome-label">YES</span><br>
-       Your lot meets the minimum area. Proceed to Step 3 to check your service district.
-      </div>
-      <div class="outcome-box outcome-no">
-       <span class="outcome-label">NO</span><br>
-       Your lot is below the minimum area for your zoning district. Your parcel is <strong>not eligible</strong>.
-      </div>
+     <div class="answer-buttons" id="answers-2">
+      <button class="answer-btn yes-btn" onclick="answerStep(2, true)">YES -- Meets minimum area</button>
+      <button class="answer-btn no-btn" onclick="answerStep(2, false)">NO -- Below minimum</button>
      </div>
 
+     <div class="answer-result eligible" id="result-2-yes">Your lot meets the minimum area. Proceeding to Step 3.</div>
+     <div class="answer-result not-eligible" id="result-2-no">Your lot is below the minimum area. Your parcel is not eligible.</div>
+
      <div class="step-links">
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       Bulk Regulations
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS_17.12.030SE" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       Setback Requirements
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link">
-       <img src="assets/icons/Parcel Search.svg" alt="">
-       Check Lot Size
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Bulk Regulations <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS_17.12.030SE" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Setback Requirements <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link"><img src="assets/icons/Parcel Search.svg" alt=""> Check Lot Size <span class="step-link-arrow">&rarr;</span></a>
      </div>
     </div>
    </div>
   </div>
 
-  <div class="flow-connector"></div>
+  <div class="flow-connector" id="conn-2-3"></div>
 
   <!-- ========== STEP 3 ========== -->
-  <div class="flow-step">
+  <div class="step-summary" id="summary-3">
+   <div class="step-summary-left">
+    <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="step-summary-text">Step 3: Service District <span id="summary-3-detail">-- Qualifies</span></div>
+   </div>
+   <button class="change-answer-btn" onclick="changeAnswer(3)">Change Answer</button>
+  </div>
+
+  <div class="flow-step" id="step-3">
    <div class="flow-step-inner">
     <div class="step-num">3</div>
     <div class="step-card">
      <h3>Service District / Overlay Check</h3>
-     <div class="step-question">Does your parcel meet ONE of the following service district or overlay requirements?</div>
+     <div class="step-question">Which of the following applies to your parcel? Select the one that best describes your property.</div>
 
-     <div class="sub-options">
-      <div class="sub-option sub-option-eligible">
+     <div class="answer-options" id="answers-3">
+      <button class="option-btn eligible-opt" onclick="answerStep3('a')">
        <span class="option-tag">A</span>
-       <span><strong>In USD (Urban Services District):</strong> DADU is permitted by-right. No overlay needed.</span>
-      </div>
-      <div class="sub-option sub-option-eligible">
+       <span><strong>In USD (Urban Services District)</strong> -- DADU permitted by-right</span>
+      </button>
+      <button class="option-btn eligible-opt" onclick="answerStep3('b')">
        <span class="option-tag">B</span>
-       <span><strong>In DADU Overlay (GSD):</strong> Parcel is in the General Services District but within a DADU Overlay. Eligible with overlay conditions.</span>
-      </div>
-      <div class="sub-option sub-option-eligible">
+       <span><strong>In DADU Overlay (GSD)</strong> -- Eligible with overlay conditions</span>
+      </button>
+      <button class="option-btn eligible-opt" onclick="answerStep3('c')">
        <span class="option-tag">C</span>
-       <span><strong>In UDO with DADU standards:</strong> Parcel is in an Urban Design Overlay that includes DADU standards. Eligible with UDO conditions.</span>
-      </div>
-      <div class="sub-option sub-option-eligible">
+       <span><strong>In UDO with DADU standards</strong> -- Eligible with UDO conditions</span>
+      </button>
+      <button class="option-btn eligible-opt" onclick="answerStep3('d')">
        <span class="option-tag">D</span>
-       <span><strong>In SP with DADU standards:</strong> Parcel is in a Specific Plan that includes DADU standards. Eligible with SP conditions.</span>
-      </div>
-      <div class="sub-option sub-option-none">
+       <span><strong>In SP with DADU standards</strong> -- Eligible with SP conditions</span>
+      </button>
+      <button class="option-btn not-eligible-opt" onclick="answerStep3('none')">
        <span class="option-tag">NONE</span>
-       <span><strong>None of the above:</strong> Parcel is in GSD without a qualifying overlay, UDO, or SP. <strong>Not eligible.</strong></span>
-      </div>
+       <span><strong>None of the above</strong> -- GSD without qualifying overlay</span>
+      </button>
      </div>
 
+     <div class="answer-result eligible" id="result-3-yes">Your property qualifies under the selected service district or overlay. Proceeding to Step 4.</div>
+     <div class="answer-result not-eligible" id="result-3-no">Your parcel is in the GSD without a qualifying overlay. Your parcel is not eligible.</div>
+
      <div class="step-links">
-      <a href="https://maps.nashville.gov/webimages/MapGallery/PDFMaps/Urban%20Services%20District.pdf" target="_blank" class="step-link">
-       <img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt="">
-       USD Map (PDF)
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://maps.nashville.gov/arcgis/rest/services/Boundaries/USD_GSD/MapServer/0" target="_blank" class="step-link">
-       <img src="assets/icons/GIS.svg" alt="">
-       USD/GSD Boundary
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=THCH_APCH_APXONEDEBOURSEDI" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       USD Charter
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="overlay-districts.html" class="step-link">
-       <img src="assets/icons/Zoning_Documents.svg" alt="">
-       DADU Overlay Districts
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.730DEACDWUNOVDI" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       DADU Overlay Ordinance
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.40ADPR" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       UDO
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.40ADPR_ARTIIIAMZOCOOFZOMA_17.40.105SPPLURIN" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       Specific Plan
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Zoning_Overlay_Districts/MapServer" target="_blank" class="step-link">
-       <img src="assets/icons/GIS.svg" alt="">
-       Overlay Districts ArcGIS
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link">
-       <img src="assets/icons/Parcel Search.svg" alt="">
-       Check Overlays
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
+      <a href="https://maps.nashville.gov/webimages/MapGallery/PDFMaps/Urban%20Services%20District.pdf" target="_blank" class="step-link"><img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt=""> USD Map (PDF) <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/arcgis/rest/services/Boundaries/USD_GSD/MapServer/0" target="_blank" class="step-link"><img src="assets/icons/GIS.svg" alt=""> USD/GSD Boundary <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=THCH_APCH_APXONEDEBOURSEDI" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> USD Charter <span class="step-link-arrow">&rarr;</span></a>
+      <a href="overlay-districts.html" class="step-link"><img src="assets/icons/Zoning_Documents.svg" alt=""> DADU Overlay Districts <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.730DEACDWUNOVDI" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> DADU Overlay Ordinance <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.40ADPR" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> UDO <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.40ADPR_ARTIIIAMZOCOOFZOMA_17.40.105SPPLURIN" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Specific Plan <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Zoning_Overlay_Districts/MapServer" target="_blank" class="step-link"><img src="assets/icons/GIS.svg" alt=""> Overlay Districts ArcGIS <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link"><img src="assets/icons/Parcel Search.svg" alt=""> Check Overlays <span class="step-link-arrow">&rarr;</span></a>
      </div>
     </div>
    </div>
   </div>
 
-  <div class="flow-connector"></div>
+  <div class="flow-connector" id="conn-3-4"></div>
 
   <!-- ========== STEP 4 ========== -->
-  <div class="flow-step">
+  <div class="step-summary" id="summary-4">
+   <div class="step-summary-left">
+    <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="step-summary-text">Step 4: Single Principal Structure <span>-- One structure confirmed</span></div>
+   </div>
+   <button class="change-answer-btn" onclick="changeAnswer(4)">Change Answer</button>
+  </div>
+
+  <div class="flow-step" id="step-4">
    <div class="flow-step-inner">
     <div class="step-num">4</div>
     <div class="step-card">
      <h3>Single Principal Structure</h3>
      <div class="step-question">Is there exactly ONE single-family principal structure on the parcel?</div>
 
-     <div class="outcomes">
-      <div class="outcome-box outcome-yes">
-       <span class="outcome-label">YES</span><br>
-       Your parcel has one principal structure. You are <strong>eligible</strong> to build a DADU. Proceed to Step 5 for zoning conditions.
-      </div>
-      <div class="outcome-box outcome-no">
-       <span class="outcome-label">NO</span><br>
-       Parcels with zero or multiple principal structures do not qualify. Your parcel is <strong>not eligible</strong>.
-      </div>
+     <div class="answer-buttons" id="answers-4">
+      <button class="answer-btn yes-btn" onclick="answerStep(4, true)">YES -- One principal structure</button>
+      <button class="answer-btn no-btn" onclick="answerStep(4, false)">NO -- Zero or multiple</button>
      </div>
 
+     <div class="answer-result eligible" id="result-4-yes">Your parcel has one principal structure. You are eligible! Review the conditions below.</div>
+     <div class="answer-result not-eligible" id="result-4-no">Parcels with zero or multiple principal structures do not qualify. Not eligible.</div>
+
      <div class="step-links">
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.04DERU_17.04.060DEF" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       DADU Definition
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link">
-       <img src="assets/icons/Parcel Search.svg" alt="">
-       Check Building Count
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.04DERU_17.04.060DEF" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> DADU Definition <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link"><img src="assets/icons/Parcel Search.svg" alt=""> Check Building Count <span class="step-link-arrow">&rarr;</span></a>
      </div>
     </div>
    </div>
   </div>
 
-  <div class="flow-connector"></div>
+  <div class="flow-connector" id="conn-4-5"></div>
 
   <!-- ========== STEP 5 ========== -->
-  <div class="flow-step">
+  <div class="step-summary" id="summary-5">
+   <div class="step-summary-left">
+    <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="step-summary-text">Step 5: Zoning Conditions <span>-- Reviewed</span></div>
+   </div>
+   <button class="change-answer-btn" onclick="changeAnswer(5)">Change Answer</button>
+  </div>
+
+  <div class="flow-step" id="step-5">
    <div class="flow-step-inner">
     <div class="step-num">5</div>
     <div class="step-card">
@@ -935,137 +1337,71 @@
       Eligible -- Review Conditions Below
      </div>
 
-     <p style="font-size: 14px; color: #706F6C; margin-bottom: 16px;">Your DADU must comply with all conditions in Metro Code Section 17.16.030G. These requirements apply to every DADU regardless of service district or overlay.</p>
+     <p style="font-size: 14px; color: #706F6C; margin-bottom: 16px;">Your DADU must comply with all conditions in Metro Code Section 17.16.030G.</p>
 
      <ul class="conditions-list">
-      <li>
-       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-       <span><strong>Owner Occupancy:</strong> The property owner must occupy either the principal dwelling or the DADU as their primary residence.</span>
-      </li>
-      <li>
-       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-       <span><strong>Size (Living Area):</strong> Lot under 10,000 SF: maximum <span class="hl">700 SF</span> of living area. Lot 10,000 SF or greater: maximum <span class="hl">850 SF</span> of living area.</span>
-      </li>
-      <li>
-       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-       <span><strong>Footprint:</strong> Cannot exceed the principal structure footprint. No other accessory building on the parcel may exceed 200 SF.</span>
-      </li>
-      <li>
-       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-       <span><strong>Height:</strong> Cannot exceed the height of the principal structure. Eave height max 10 ft (1-story) or 17 ft (2-story). Ridge must be lower than primary ridge, max 27 ft.</span>
-      </li>
-      <li>
-       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-       <span><strong>Setbacks:</strong> Footprint 850 SF or less placed to rear: half the required side setback (minimum 3 ft), rear setback minimum 3 ft. Footprint over 850 SF: full setbacks apply.</span>
-      </li>
-      <li>
-       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-       <span><strong>Design:</strong> DADU must have similar style, materials, color, and roof form as the principal structure.</span>
-      </li>
-      <li>
-       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-       <span><strong>STR Prohibition:</strong> New DADUs on single-family (RS), residential neighborhood (RN), or residential limited (RL) lots <strong>cannot</strong> be operated as short-term rentals.</span>
-      </li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Owner Occupancy:</strong> The property owner must occupy either the principal dwelling or the DADU as their primary residence.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Size (Living Area):</strong> Lot under 10,000 SF: maximum <span class="hl">700 SF</span>. Lot 10,000 SF or greater: maximum <span class="hl">850 SF</span>.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Footprint:</strong> Cannot exceed the principal structure footprint. No other accessory building may exceed 200 SF.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Height:</strong> Cannot exceed principal structure height. Eave max 10 ft (1-story) or 17 ft (2-story). Ridge must be lower than primary, max 27 ft.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Setbacks:</strong> Footprint 850 SF or less placed to rear: half side setback (min 3 ft), rear min 3 ft. Over 850 SF: full setbacks.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Design:</strong> Must have similar style, materials, color, and roof form as the principal structure.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>STR Prohibition:</strong> New DADUs on RS, RN, or RL lots <strong>cannot</strong> be operated as short-term rentals.</span></li>
      </ul>
 
-     <div class="step-links">
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.16SPDINGS_17.16.030DINGS" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       Full DADU Conditions
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS_17.12.040ACST" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       Accessory Buildings
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT6BULIRE_DIVIGERE_CH6.28HORO_6.28.030SHTEREPRPE" target="_blank" class="step-link">
-       <img src="assets/icons/Legal.svg" alt="">
-       STR Restrictions
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://www.nashville.gov/departments/codes/construction-and-permits/land-use-and-zoning-information/zoning-examinations/restrictive-covenants" target="_blank" class="step-link">
-       <img src="assets/icons/Restrictive_Covenants.svg" alt="">
-       Restrictive Covenants
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO" target="_blank" class="step-link">
-       <img src="assets/icons/Legislation.svg" alt="">
-       Full Title 17
-       <span class="step-link-arrow">&rarr;</span>
-      </a>
+     <div class="step-links" style="margin-bottom: 20px;">
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.16SPDINGS_17.16.030DINGS" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Full DADU Conditions <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS_17.12.040ACST" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Accessory Buildings <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT6BULIRE_DIVIGERE_CH6.28HORO_6.28.030SHTEREPRPE" target="_blank" class="step-link"><img src="assets/icons/Legal.svg" alt=""> STR Restrictions <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://www.nashville.gov/departments/codes/construction-and-permits/land-use-and-zoning-information/zoning-examinations/restrictive-covenants" target="_blank" class="step-link"><img src="assets/icons/Restrictive_Covenants.svg" alt=""> Restrictive Covenants <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Full Title 17 <span class="step-link-arrow">&rarr;</span></a>
      </div>
+
+     <button class="continue-btn" id="continue-step5" onclick="continueFromStep5()">Continue to Special Cases</button>
     </div>
    </div>
   </div>
 
-  <div class="flow-connector"></div>
+  <div class="flow-connector" id="conn-5-6"></div>
 
   <!-- ========== STEP 6 ========== -->
-  <div class="flow-step">
+  <div class="step-summary" id="summary-6">
+   <div class="step-summary-left">
+    <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="step-summary-text">Step 6: Special Cases <span>-- Reviewed</span></div>
+   </div>
+   <button class="change-answer-btn" onclick="changeAnswer(6)">Change Answer</button>
+  </div>
+
+  <div class="flow-step" id="step-6">
    <div class="flow-step-inner">
     <div class="step-num">6</div>
     <div class="step-card" style="padding: 0; border: none; background: transparent;">
      <div class="special-cases-box">
       <h3>Special Cases: Additional Review Required</h3>
-
       <div class="special-case-item">
        <h4>Historic Overlay District</h4>
-       <p>If your property is in a Historic Overlay, your DADU project must be reviewed and approved by the Metropolitan Historic Zoning Commission (MHZC). Design guidelines for your specific district will apply, and approval can take additional time.</p>
+       <p>If your property is in a Historic Overlay, your DADU project must be reviewed and approved by the Metropolitan Historic Zoning Commission (MHZC).</p>
       </div>
-
       <div class="special-case-item">
        <h4>Specific Plan (SP) or Urban Design Overlay (UDO)</h4>
-       <p>If your property is in an SP or UDO that includes DADU standards, you must obtain approval from the Planning Department. Each SP and UDO has unique standards that may differ from the base zoning conditions listed in Step 5.</p>
+       <p>If your property is in an SP or UDO that includes DADU standards, you must obtain approval from the Planning Department.</p>
       </div>
-
       <div class="special-cases-links">
-       <a href="https://www.nashville.gov/departments/historic-preservation/programs/districts-and-design-guidelines" target="_blank" class="special-link">
-        <img src="assets/icons/Zoning_Documents.svg" alt="">
-        Historic Districts
-        <span class="step-link-arrow">&rarr;</span>
-       </a>
-       <a href="https://www.nashville.gov/departments/historic-preservation/programs/districts-and-design-guidelines/detached-accessory-dwelling-units" target="_blank" class="special-link">
-        <img src="assets/icons/Zoning_Documents.svg" alt="">
-        Historic DADUs
-        <span class="step-link-arrow">&rarr;</span>
-       </a>
-       <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=1025702" target="_blank" class="special-link">
-        <img src="assets/icons/Legislation.svg" alt="">
-        BL2011-900
-        <span class="step-link-arrow">&rarr;</span>
-       </a>
-       <a href="https://www.nashville.gov/departments/codes/construction-and-permits/contact-list" target="_blank" class="special-link">
-        <img src="assets/icons/Municipal.svg" alt="">
-        Planning Contact
-        <span class="step-link-arrow">&rarr;</span>
-       </a>
-       <a href="https://www.nashville.gov/departments/county-clerk/register-of-deeds" target="_blank" class="special-link">
-        <img src="assets/icons/Recorded_Docs.svg" alt="">
-        Register of Deeds
-        <span class="step-link-arrow">&rarr;</span>
-       </a>
-       <a href="https://www.nashville.gov/departments/water/stormwater" target="_blank" class="special-link">
-        <img src="assets/icons/Utilities.svg" alt="">
-        Metro Stormwater
-        <span class="step-link-arrow">&rarr;</span>
-       </a>
-       <a href="https://www.tn811.com/" target="_blank" class="special-link">
-        <img src="assets/icons/Utilities.svg" alt="">
-        Tennessee 811
-        <span class="step-link-arrow">&rarr;</span>
-       </a>
-       <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT16BUCO" target="_blank" class="special-link">
-        <img src="assets/icons/Legislation.svg" alt="">
-        Building Code Ch. 16
-        <span class="step-link-arrow">&rarr;</span>
-       </a>
-       <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/detached-accessory-dwelling-unit" target="_blank" class="special-link">
-        <img src="assets/icons/Municipal.svg" alt="">
-        Nashville.gov DADU Page
-        <span class="step-link-arrow">&rarr;</span>
-       </a>
+       <a href="https://www.nashville.gov/departments/historic-preservation/programs/districts-and-design-guidelines" target="_blank" class="special-link"><img src="assets/icons/Zoning_Documents.svg" alt=""> Historic Districts <span class="step-link-arrow">&rarr;</span></a>
+       <a href="https://www.nashville.gov/departments/historic-preservation/programs/districts-and-design-guidelines/detached-accessory-dwelling-units" target="_blank" class="special-link"><img src="assets/icons/Zoning_Documents.svg" alt=""> Historic DADUs <span class="step-link-arrow">&rarr;</span></a>
+       <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=1025702" target="_blank" class="special-link"><img src="assets/icons/Legislation.svg" alt=""> BL2011-900 <span class="step-link-arrow">&rarr;</span></a>
+       <a href="https://www.nashville.gov/departments/codes/construction-and-permits/contact-list" target="_blank" class="special-link"><img src="assets/icons/Municipal.svg" alt=""> Planning Contact <span class="step-link-arrow">&rarr;</span></a>
+       <a href="https://www.nashville.gov/departments/county-clerk/register-of-deeds" target="_blank" class="special-link"><img src="assets/icons/Recorded_Docs.svg" alt=""> Register of Deeds <span class="step-link-arrow">&rarr;</span></a>
+       <a href="https://www.nashville.gov/departments/water/stormwater" target="_blank" class="special-link"><img src="assets/icons/Utilities.svg" alt=""> Metro Stormwater <span class="step-link-arrow">&rarr;</span></a>
+       <a href="https://www.tn811.com/" target="_blank" class="special-link"><img src="assets/icons/Utilities.svg" alt=""> Tennessee 811 <span class="step-link-arrow">&rarr;</span></a>
+       <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT16BUCO" target="_blank" class="special-link"><img src="assets/icons/Legislation.svg" alt=""> Building Code Ch. 16 <span class="step-link-arrow">&rarr;</span></a>
+       <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/detached-accessory-dwelling-unit" target="_blank" class="special-link"><img src="assets/icons/Municipal.svg" alt=""> Nashville.gov DADU Page <span class="step-link-arrow">&rarr;</span></a>
       </div>
+     </div>
+
+     <div style="text-align: center; margin-top: 20px;">
+      <button class="continue-btn" id="finish-step6" onclick="finishFlowchart()">View My Results</button>
      </div>
     </div>
    </div>
@@ -1074,31 +1410,44 @@
  </div>
 </div>
 
+<!-- Not Eligible Result -->
+<div class="section-container">
+ <div class="not-eligible-result" id="not-eligible-result">
+  <div class="not-eligible-box">
+   <h3>Not Eligible for a DADU</h3>
+   <p id="not-eligible-reason">Based on your answers, your property does not currently qualify for a DADU under BL2025-1007.</p>
+   <button class="restart-btn" onclick="startOver()">Start Over</button>
+  </div>
+ </div>
+</div>
+
+<!-- Eligible Result -->
+<div class="section-container">
+ <div class="eligible-result" id="eligible-result">
+  <div class="eligible-box">
+   <div class="eligible-icon">
+    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+   </div>
+   <h3>Your Property Appears Eligible for a DADU</h3>
+   <p>Based on your answers, your property meets the eligibility requirements under BL2025-1007. Review the zoning conditions in Step 5 carefully before beginning your project.</p>
+   <div class="result-actions">
+    <a href="property-report-card.html" class="result-btn-primary">View Property Report Card</a>
+    <button class="result-btn-secondary" onclick="startOver()">Check Another Property</button>
+   </div>
+  </div>
+ </div>
+</div>
+
 <!-- Quick Checklist -->
 <div class="section-container">
  <div class="quick-checklist-box">
   <h3>Quick Eligibility Checklist</h3>
   <ul class="checklist-items">
-   <li>
-    <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <span>Zoning district permits DADUs (Land Use Table shows PC for your district)</span>
-   </li>
-   <li>
-    <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <span>Lot meets minimum area for your zoning district</span>
-   </li>
-   <li>
-    <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <span>Property is in the USD, a DADU Overlay (GSD), a UDO with DADU standards, or an SP with DADU standards</span>
-   </li>
-   <li>
-    <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <span>Only one single-family principal structure on the parcel</span>
-   </li>
-   <li>
-    <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <span>Owner will occupy either the principal dwelling or the DADU as primary residence</span>
-   </li>
+   <li><div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span>Zoning district permits DADUs (Land Use Table shows PC for your district)</span></li>
+   <li><div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span>Lot meets minimum area for your zoning district</span></li>
+   <li><div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span>Property is in the USD, a DADU Overlay (GSD), a UDO with DADU standards, or an SP with DADU standards</span></li>
+   <li><div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span>Only one single-family principal structure on the parcel</span></li>
+   <li><div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span>Owner will occupy either the principal dwelling or the DADU as primary residence</span></li>
   </ul>
  </div>
 </div>
@@ -1108,34 +1457,13 @@
  <h2 class="section-heading">Additional Resources</h2>
  <p class="section-subtitle">Official Nashville resources and contact information for your DADU project.</p>
  <div class="links-section">
-  <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="link-pill">
-   <img src="assets/icons/Parcel Search.svg" alt="">
-   Parcel Viewer
-  </a>
-  <a href="https://epermits.nashville.gov/" target="_blank" class="link-pill">
-   <img src="assets/icons/Permit_Explorer.svg" alt="">
-   ePermits Portal
-  </a>
-  <a href="https://documents.nashville.gov/Request/Form/PermitCodes" target="_blank" class="link-pill">
-   <img src="assets/icons/Recorded_Docs.svg" alt="">
-   Permit Search
-  </a>
-  <a href="https://nashville.legistar.com/Legislation.aspx" target="_blank" class="link-pill">
-   <img src="assets/icons/Legislation.svg" alt="">
-   Legistar
-  </a>
-  <a href="mailto:zoninghelpdesk@nashville.gov" class="link-pill">
-   <img src="assets/icons/Municipal.svg" alt="">
-   Zoning Help Desk
-  </a>
-  <a href="tel:6158626550" class="link-pill">
-   <img src="assets/icons/Municipal.svg" alt="">
-   Codes Help: 615-862-6550
-  </a>
-  <a href="https://www.google.com/maps/place/800+President+Ronald+Reagan+Way,+Nashville,+TN+37210" target="_blank" class="link-pill">
-   <img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt="">
-   Metro Codes Office
-  </a>
+  <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="link-pill"><img src="assets/icons/Parcel Search.svg" alt=""> Parcel Viewer</a>
+  <a href="https://epermits.nashville.gov/" target="_blank" class="link-pill"><img src="assets/icons/Permit_Explorer.svg" alt=""> ePermits Portal</a>
+  <a href="https://documents.nashville.gov/Request/Form/PermitCodes" target="_blank" class="link-pill"><img src="assets/icons/Recorded_Docs.svg" alt=""> Permit Search</a>
+  <a href="https://nashville.legistar.com/Legislation.aspx" target="_blank" class="link-pill"><img src="assets/icons/Legislation.svg" alt=""> Legistar</a>
+  <a href="mailto:zoninghelpdesk@nashville.gov" class="link-pill"><img src="assets/icons/Municipal.svg" alt=""> Zoning Help Desk</a>
+  <a href="tel:6158626550" class="link-pill"><img src="assets/icons/Municipal.svg" alt=""> Codes Help: 615-862-6550</a>
+  <a href="https://www.google.com/maps/place/800+President+Ronald+Reagan+Way,+Nashville,+TN+37210" target="_blank" class="link-pill"><img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt=""> Metro Codes Office</a>
  </div>
 </div>
 
@@ -1150,24 +1478,9 @@
 <footer class="page-footer">
  <div class="footer-inner">
   <div class="footer-links">
-   <div class="footer-col">
-    <h4>Learn</h4>
-    <a href="am_i_eligible.html">Am I Eligible?</a>
-    <a href="size_calculator.html">Size Calculator</a>
-    <a href="dadu_calculators.html">Cost Estimator</a>
-   </div>
-   <div class="footer-col">
-    <h4>Features</h4>
-    <a href="contractor_marketplace.html">Contractor Directory</a>
-    <a href="dadu_requirements_overview.html">Planning Resources</a>
-    <a href="homebody_dadu_pricing.html">Pricing</a>
-   </div>
-   <div class="footer-col">
-    <h4>Get in Touch</h4>
-    <a href="mailto:hello@castlehold.com">hello@castlehold.com</a>
-    <a href="mailto:hello@castlehold.com">Contact</a>
-    <a href="#">Sign in</a>
-   </div>
+   <div class="footer-col"><h4>Learn</h4><a href="am_i_eligible.html">Am I Eligible?</a><a href="size_calculator.html">Size Calculator</a><a href="dadu_calculators.html">Cost Estimator</a></div>
+   <div class="footer-col"><h4>Features</h4><a href="contractor_marketplace.html">Contractor Directory</a><a href="dadu_requirements_overview.html">Planning Resources</a><a href="homebody_dadu_pricing.html">Pricing</a></div>
+   <div class="footer-col"><h4>Get in Touch</h4><a href="mailto:hello@castlehold.com">hello@castlehold.com</a><a href="mailto:hello@castlehold.com">Contact</a><a href="#">Sign in</a></div>
   </div>
   <div class="footer-social">
    <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
@@ -1180,6 +1493,432 @@
  </div>
 </footer>
 
+<script>
+// =============================================
+// INTERACTIVE FLOWCHART LOGIC
+// =============================================
+
+var showAllMode = false;
+var answers = {}; // Track user answers: { 1: true, 2: true, 3: 'a', 4: true, 5: 'continue', 6: 'continue' }
+var step3Labels = {
+ a: 'In USD (by-right)',
+ b: 'DADU Overlay (GSD)',
+ c: 'UDO with DADU standards',
+ d: 'SP with DADU standards'
+};
+
+var notEligibleReasons = {
+ 1: 'Your zoning district does not permit DADUs. Only R, RS, RN, and RL zones qualify under BL2025-1007.',
+ 2: 'Your lot does not meet the minimum area required for your zoning district.',
+ 3: 'Your parcel is in the General Services District without a qualifying DADU Overlay, UDO, or SP.',
+ 4: 'Parcels with zero or multiple principal structures do not qualify for a DADU.'
+};
+
+function answerStep(stepNum, isYes) {
+ if (showAllMode) return;
+
+ answers[stepNum] = isYes;
+
+ var container = document.getElementById('answers-' + stepNum);
+ var buttons = container.querySelectorAll('.answer-btn');
+
+ // Mark buttons
+ buttons.forEach(function(btn) {
+  if ((isYes && btn.classList.contains('yes-btn')) || (!isYes && btn.classList.contains('no-btn'))) {
+   btn.classList.add('selected');
+  } else {
+   btn.classList.add('dimmed');
+  }
+  btn.onclick = null;
+ });
+
+ // Show result
+ var resultId = 'result-' + stepNum + '-' + (isYes ? 'yes' : 'no');
+ var resultEl = document.getElementById(resultId);
+ if (resultEl) resultEl.classList.add('visible');
+
+ // Update progress
+ var progStep = document.getElementById('prog-' + stepNum);
+ progStep.classList.remove('active');
+
+ if (isYes) {
+  progStep.classList.add('completed');
+  progStep.querySelector('.progress-dot').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+
+  // Fill progress line
+  var pline = document.getElementById('pline-' + stepNum);
+  if (pline) pline.classList.add('filled');
+
+  // Collapse current step to summary, show next
+  setTimeout(function() {
+   collapseStep(stepNum);
+
+   var nextStep = stepNum + 1;
+   if (nextStep <= 6) {
+    var nextEl = document.getElementById('step-' + nextStep);
+    if (nextEl) nextEl.classList.add('visible');
+
+    var nextProg = document.getElementById('prog-' + nextStep);
+    if (nextProg) nextProg.classList.add('active');
+
+    setTimeout(function() {
+     nextEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+   }
+  }, 400);
+ } else {
+  // Not eligible
+  progStep.classList.add('failed');
+  progStep.querySelector('.progress-dot').innerHTML = '&times;';
+
+  setTimeout(function() {
+   // Collapse to failed summary
+   var stepEl = document.getElementById('step-' + stepNum);
+   stepEl.classList.remove('visible');
+   stepEl.classList.add('answered');
+
+   var summary = document.getElementById('summary-' + stepNum);
+   summary.classList.add('visible', 'failed-summary');
+   summary.querySelector('.step-summary-text span').textContent = '-- Not eligible';
+
+   var resultBox = document.getElementById('not-eligible-result');
+   document.getElementById('not-eligible-reason').textContent = notEligibleReasons[stepNum];
+   resultBox.classList.add('visible');
+   setTimeout(function() {
+    resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+   }, 100);
+  }, 400);
+ }
+}
+
+function answerStep3(option) {
+ if (showAllMode) return;
+
+ answers[3] = option;
+
+ var container = document.getElementById('answers-3');
+ var buttons = container.querySelectorAll('.option-btn');
+ var isEligible = option !== 'none';
+
+ buttons.forEach(function(btn) {
+  var btnOpt = btn.querySelector('.option-tag').textContent.trim().toLowerCase();
+  if (btnOpt === option.toUpperCase() || btnOpt === option) {
+   btn.classList.add('selected');
+  } else {
+   btn.classList.add('dimmed');
+  }
+  btn.onclick = null;
+ });
+
+ // Show result
+ var resultId = 'result-3-' + (isEligible ? 'yes' : 'no');
+ document.getElementById(resultId).classList.add('visible');
+
+ // Update progress
+ var progStep = document.getElementById('prog-3');
+ progStep.classList.remove('active');
+
+ if (isEligible) {
+  progStep.classList.add('completed');
+  progStep.querySelector('.progress-dot').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+  var pline = document.getElementById('pline-3');
+  if (pline) pline.classList.add('filled');
+
+  // Update summary detail text
+  var detailEl = document.getElementById('summary-3-detail');
+  if (detailEl && step3Labels[option]) {
+   detailEl.textContent = '-- ' + step3Labels[option];
+  }
+
+  setTimeout(function() {
+   collapseStep(3);
+
+   document.getElementById('step-4').classList.add('visible');
+   document.getElementById('prog-4').classList.add('active');
+   setTimeout(function() {
+    document.getElementById('step-4').scrollIntoView({ behavior: 'smooth', block: 'center' });
+   }, 200);
+  }, 400);
+ } else {
+  progStep.classList.add('failed');
+  progStep.querySelector('.progress-dot').innerHTML = '&times;';
+
+  setTimeout(function() {
+   var stepEl = document.getElementById('step-3');
+   stepEl.classList.remove('visible');
+   stepEl.classList.add('answered');
+
+   var summary = document.getElementById('summary-3');
+   summary.classList.add('visible', 'failed-summary');
+   summary.querySelector('.step-summary-text span').textContent = '-- Not eligible';
+
+   var resultBox = document.getElementById('not-eligible-result');
+   document.getElementById('not-eligible-reason').textContent = notEligibleReasons[3];
+   resultBox.classList.add('visible');
+   setTimeout(function() {
+    resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+   }, 100);
+  }, 400);
+ }
+}
+
+function continueFromStep5() {
+ if (showAllMode) return;
+
+ answers[5] = 'continue';
+
+ // Complete Step 5
+ var progStep = document.getElementById('prog-5');
+ progStep.classList.remove('active');
+ progStep.classList.add('completed');
+ progStep.querySelector('.progress-dot').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+
+ var pline = document.getElementById('pline-5');
+ if (pline) pline.classList.add('filled');
+
+ setTimeout(function() {
+  collapseStep(5);
+
+  document.getElementById('step-6').classList.add('visible');
+  document.getElementById('prog-6').classList.add('active');
+  setTimeout(function() {
+   document.getElementById('step-6').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 200);
+ }, 300);
+}
+
+function finishFlowchart() {
+ if (showAllMode) return;
+
+ answers[6] = 'continue';
+
+ // Complete Step 6
+ var progStep = document.getElementById('prog-6');
+ progStep.classList.remove('active');
+ progStep.classList.add('completed');
+ progStep.querySelector('.progress-dot').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+
+ setTimeout(function() {
+  collapseStep(6);
+
+  var resultBox = document.getElementById('eligible-result');
+  resultBox.classList.add('visible');
+  setTimeout(function() {
+   resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+ }, 300);
+}
+
+function collapseStep(stepNum) {
+ var stepEl = document.getElementById('step-' + stepNum);
+ stepEl.classList.remove('visible');
+ stepEl.classList.add('answered');
+
+ var summary = document.getElementById('summary-' + stepNum);
+ summary.classList.remove('failed-summary');
+ summary.classList.add('visible');
+}
+
+function changeAnswer(fromStep) {
+ if (showAllMode) return;
+
+ // Reset from this step forward
+ for (var i = fromStep; i <= 6; i++) {
+  var stepEl = document.getElementById('step-' + i);
+  stepEl.classList.remove('visible', 'answered', 'show-all');
+
+  var summary = document.getElementById('summary-' + i);
+  summary.classList.remove('visible', 'failed-summary');
+
+  // Reset progress
+  var progStep = document.getElementById('prog-' + i);
+  progStep.classList.remove('active', 'completed', 'failed');
+  progStep.querySelector('.progress-dot').textContent = i;
+
+  var pline = document.getElementById('pline-' + i);
+  if (pline) pline.classList.remove('filled');
+
+  // Reset results
+  var resYes = document.getElementById('result-' + i + '-yes');
+  var resNo = document.getElementById('result-' + i + '-no');
+  if (resYes) resYes.classList.remove('visible');
+  if (resNo) resNo.classList.remove('visible');
+
+  delete answers[i];
+ }
+
+ // Reset answer buttons for affected steps
+ [1, 2, 4].forEach(function(s) {
+  if (s >= fromStep) {
+   var container = document.getElementById('answers-' + s);
+   if (container) {
+    var buttons = container.querySelectorAll('.answer-btn');
+    buttons.forEach(function(btn) {
+     btn.classList.remove('selected', 'dimmed');
+     if (btn.classList.contains('yes-btn')) {
+      btn.onclick = function() { answerStep(s, true); };
+     } else {
+      btn.onclick = function() { answerStep(s, false); };
+     }
+    });
+   }
+  }
+ });
+
+ // Reset step 3 options if affected
+ if (fromStep <= 3) {
+  var s3container = document.getElementById('answers-3');
+  if (s3container) {
+   var opts = s3container.querySelectorAll('.option-btn');
+   var optValues = ['a', 'b', 'c', 'd', 'none'];
+   opts.forEach(function(btn, idx) {
+    btn.classList.remove('selected', 'dimmed');
+    var val = optValues[idx];
+    btn.onclick = function() { answerStep3(val); };
+   });
+  }
+  // Reset summary-3 detail text
+  var detailEl = document.getElementById('summary-3-detail');
+  if (detailEl) detailEl.textContent = '-- Qualifies';
+ }
+
+ // Hide results
+ document.getElementById('not-eligible-result').classList.remove('visible');
+ document.getElementById('eligible-result').classList.remove('visible');
+
+ // Show the step being changed
+ var targetStep = document.getElementById('step-' + fromStep);
+ targetStep.classList.add('visible');
+
+ var targetProg = document.getElementById('prog-' + fromStep);
+ targetProg.classList.add('active');
+
+ // Scroll to it
+ setTimeout(function() {
+  targetStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ }, 100);
+}
+
+function startOver() {
+ showAllMode = false;
+ answers = {};
+ document.getElementById('show-all-btn').classList.remove('active');
+ document.getElementById('show-all-btn').textContent = 'Show All Steps';
+
+ // Reset all steps
+ for (var i = 1; i <= 6; i++) {
+  var stepEl = document.getElementById('step-' + i);
+  stepEl.classList.remove('visible', 'answered', 'show-all');
+  if (i === 1) stepEl.classList.add('visible');
+
+  var summary = document.getElementById('summary-' + i);
+  summary.classList.remove('visible', 'failed-summary', 'show-all');
+
+  // Reset progress
+  var progStep = document.getElementById('prog-' + i);
+  progStep.classList.remove('active', 'completed', 'failed');
+  progStep.querySelector('.progress-dot').textContent = i;
+  if (i === 1) progStep.classList.add('active');
+
+  var pline = document.getElementById('pline-' + i);
+  if (pline) pline.classList.remove('filled');
+
+  // Reset results
+  var resYes = document.getElementById('result-' + i + '-yes');
+  var resNo = document.getElementById('result-' + i + '-no');
+  if (resYes) resYes.classList.remove('visible');
+  if (resNo) resNo.classList.remove('visible');
+ }
+
+ // Reset answer buttons for steps 1,2,4
+ [1, 2, 4].forEach(function(s) {
+  var container = document.getElementById('answers-' + s);
+  if (container) {
+   var buttons = container.querySelectorAll('.answer-btn');
+   buttons.forEach(function(btn) {
+    btn.classList.remove('selected', 'dimmed');
+    if (btn.classList.contains('yes-btn')) {
+     btn.onclick = function() { answerStep(s, true); };
+    } else {
+     btn.onclick = function() { answerStep(s, false); };
+    }
+   });
+  }
+ });
+
+ // Reset step 3 options
+ var s3container = document.getElementById('answers-3');
+ if (s3container) {
+  var opts = s3container.querySelectorAll('.option-btn');
+  var optValues = ['a', 'b', 'c', 'd', 'none'];
+  opts.forEach(function(btn, idx) {
+   btn.classList.remove('selected', 'dimmed');
+   var val = optValues[idx];
+   btn.onclick = function() { answerStep3(val); };
+  });
+ }
+
+ // Reset summary-3 detail text
+ var detailEl = document.getElementById('summary-3-detail');
+ if (detailEl) detailEl.textContent = '-- Qualifies';
+
+ // Hide results
+ document.getElementById('not-eligible-result').classList.remove('visible');
+ document.getElementById('eligible-result').classList.remove('visible');
+
+ // Scroll to top of flowchart
+ document.querySelector('.progress-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toggleShowAll() {
+ showAllMode = !showAllMode;
+ var btn = document.getElementById('show-all-btn');
+
+ if (showAllMode) {
+  btn.classList.add('active');
+  btn.textContent = 'Interactive Mode';
+
+  // Show all steps, hide all summaries
+  for (var i = 1; i <= 6; i++) {
+   var stepEl = document.getElementById('step-' + i);
+   stepEl.classList.add('visible', 'show-all');
+   stepEl.classList.remove('answered');
+
+   var summary = document.getElementById('summary-' + i);
+   summary.classList.remove('visible');
+   summary.classList.add('show-all');
+
+   // Reset progress to neutral
+   var progStep = document.getElementById('prog-' + i);
+   progStep.classList.remove('active', 'completed', 'failed');
+   progStep.querySelector('.progress-dot').textContent = i;
+  }
+
+  // Hide results
+  document.getElementById('not-eligible-result').classList.remove('visible');
+  document.getElementById('eligible-result').classList.remove('visible');
+
+  // Hide all answer results
+  document.querySelectorAll('.answer-result').forEach(function(el) {
+   el.classList.remove('visible');
+  });
+
+  // Reset buttons to un-interactive state
+  document.querySelectorAll('.answer-btn').forEach(function(btn) {
+   btn.classList.remove('selected', 'dimmed');
+   btn.onclick = null;
+  });
+  document.querySelectorAll('.option-btn').forEach(function(btn) {
+   btn.classList.remove('selected', 'dimmed');
+   btn.onclick = null;
+  });
+ } else {
+  btn.classList.remove('active');
+  btn.textContent = 'Show All Steps';
+  startOver();
+ }
+}
+</script>
 <script src="homebody_header.js"></script>
 </body>
 </html>
