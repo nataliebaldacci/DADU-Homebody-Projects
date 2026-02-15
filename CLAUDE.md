@@ -179,7 +179,8 @@ Eligibility shows as a subtle outline on the parcel, NOT by recoloring the footp
 - No em dashes. Break long sentences into two.
 
 ### Logo
-- **File:** `assets/icons/ADU.png` (house icon)
+- **Nav logo:** `assets/icons/ADU_Light.svg` (light/white house icon for dark nav background)
+- **General logo:** `assets/icons/ADU.png` (dark house icon for light backgrounds, dropdown items)
 - Display at ~42px height in nav bar
 - Brand text "Homebody Projects" next to the logo: white, Inter, weight 700
 - **DO NOT USE** the old castle logo (castlehold-logo.png) or castle SVG
@@ -226,7 +227,7 @@ Each dropdown item shows an SVG/PNG icon at 32-40px, clearly visible next to the
 |-------|------|------|
 | Municipal & Agencies | Municipal.svg | user-homeowners.html |
 | Legal Professionals | Legal.svg | dadu_contractors_infographic.html |
-| Advertise With Us | Building_and_Construction.svg | contractor_advertising.html |
+| Advertise With Us | Building_and_Construction.svg | contractor_portal.html#advertise |
 
 ---
 
@@ -273,7 +274,6 @@ Each dropdown item shows an SVG/PNG icon at 32-40px, clearly visible next to the
 | Label | Icon | File |
 |-------|------|------|
 | All Calculators | Appraisers.svg | dadu_calculators.html |
-| Size Calculator | ADU.png | size_calculator.html |
 
 **Column 3: Form Wizard** (Icon: Claims.png)
 
@@ -370,27 +370,28 @@ Direct link to homebody_dadu_pricing.html#about. No dropdown.
 ### Live Pages (87 HTML files at root)
 The site is deployed at https://nataliebaldacci.github.io/DADU-Homebody-Projects/
 
-**Linked in Navigation (41 pages):**
+**Linked in Navigation (39 pages):**
 These are the pages directly accessible from the nav dropdowns:
 
 | Nav Section | Pages |
 |-------------|-------|
-| WHO WE SERVE | homeowner_portal.html, contractor_portal.html, designer_portal.html, user-homeowners.html, dadu_contractors_infographic.html, contractor_advertising.html |
+| WHO WE SERVE | homeowner_portal.html, contractor_portal.html, designer_portal.html, user-homeowners.html, dadu_contractors_infographic.html |
 | EXPLORE > Maps | dadu_eligibility_map.html, property_search.html, dadu_near_me_v2.html, dadu_opportunity_explorer_v2.html, permit_explorer.html, parcel_footprint_map.html, adu_permit_map.html, homebody_index_map.html |
 | EXPLORE > Dashboards | permit_activity_dashboard.html, contractor_marketplace.html, market_trends.html, contractor_dashboard.html, nashville_permit_analytics.html |
-| BUILD | project_planner_hub.html, project_checklist.html, draw_dadu_on_parcel.html, permit_process_timeline.html, dadu_calculators.html, size_calculator.html, form_wizard.html |
+| BUILD | project_planner_hub.html, project_checklist.html, draw_dadu_on_parcel.html, permit_process_timeline.html, dadu_calculators.html, form_wizard.html |
 | DATA > Reports | eligibility_report.html, project_report.html, neighbors_report.html, dadu_reports_store.html, property-report-card.html |
 | DATA > Docs | site_plan_downloads.html, dadu_documents_portal.html, restrictive_covenants_v2.html, pdf_database_lookup.html |
 | RESOURCES | what_is_dadu.html, dadu_requirements_overview.html, dadu_history.html, dadu_code_legislation_v5.html, dadu_zoning_standards.html, owner_occupancy.html, str_permit.html, trade_permits.html, overlay-districts.html, dadu_design_standards.html |
 | Direct links | homebody_dadu_pricing.html, am_i_eligible.html |
 | Homepage | index.html |
 
-**Unlinked but Worth Keeping (11 pages):**
+**Unlinked but Worth Keeping (13 pages):**
 These have unique content not duplicated elsewhere:
 
 | File | Purpose |
 |------|---------|
 | area_analysis_report.html | Unique area analysis report |
+| contractor_advertising.html | Original advertising page (content merged into contractor_portal.html#advertise) |
 | contractor_report.html | Unique contractor report |
 | designer_resources.html | Designer resource content |
 | feature-documents.html | Feature landing page |
@@ -399,6 +400,7 @@ These have unique content not duplicated elsewhere:
 | project_planner.html | Original project planner |
 | property_intelligence_report.html | Unique intelligence report |
 | property_report.html | Original property report |
+| size_calculator.html | Size calculator (removed from nav, may return) |
 | user-types.html | User types overview |
 | zoning_documents.html | Zoning document content |
 
@@ -428,6 +430,10 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 - ✅ ArcGIS layer URLs migrated to Feb 2026 services (14 files)
 - ✅ Shared ArcGIS registry created (js/arcgis-services.js)
 - ✅ Phase 2 data files created: apn_to_account.json, gdrive_docs_index.json, contractor_stats.json, master_parcel_data.json
+- ✅ Contractor advertising merged: content from contractor_advertising.html merged into contractor_portal.html#advertise
+- ✅ Contractor pricing added to homebody_dadu_pricing.html (3 tiers: $29/$79/$149)
+- ✅ Nav updated: "Advertise With Us" now links to contractor_portal.html#advertise (both header.js and header.html)
+- ✅ contractor_portal.html fully rebranded: Inter font, CSS variables, SVG icons, fixed broken link to deleted page
 
 ### PRIORITY 1: Delete 26 Identified Duplicate Pages
 **Status:** Identified, awaiting user confirmation to delete.
@@ -906,7 +912,8 @@ Each user type has a dedicated portal page linked from WHO WE SERVE:
 | Legal/Appraisers | dadu_contractors_infographic.html | WHO WE SERVE > Professional | Recorded documents, covenant checks, valuation data |
 
 **Additional pages in WHO WE SERVE > Professional:**
-- contractor_advertising.html — "Advertise With Us" B2B sales page
+- "Advertise With Us" links to contractor_portal.html#advertise (advertising content merged into contractor portal)
+- contractor_advertising.html still exists as a standalone page but is no longer linked from nav
 
 **NOTE:** There is no Developer/Investor user type in the nav or on the site. If that content exists, it stays as a standalone page not linked from primary navigation.
 
@@ -1184,7 +1191,7 @@ source ~/dadu_env/bin/activate
 | Unique Contractors | 393 |
 | Legal Citations in Database | 111 |
 | Parcels with Covenants | 43,000+ |
-| HTML Pages on Site | 87 (41 linked in nav, 11 unlinked worth keeping, 26 duplicate candidates for deletion) |
+| HTML Pages on Site | 87 (39 linked in nav, 13 unlinked worth keeping, 26 duplicate candidates for deletion) |
 
 ---
 

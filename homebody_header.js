@@ -42,7 +42,7 @@
     '<nav class="main-nav" role="navigation" aria-label="Main navigation">' +
     '  <div class="nav-container">' +
     '    <a href="' + basePath + 'index.html" class="nav-logo">' +
-    '      <img src="' + basePath + 'assets/icons/ADU.png" alt="Homebody Projects" class="nav-logo-img" style="height:42px;width:auto;">' +
+    '      <img src="' + basePath + 'assets/icons/ADU_Light.svg" alt="Homebody Projects" class="nav-logo-img" style="height:42px;width:auto;">' +
     '      <span class="nav-logo-brand">Homebody Projects</span>' +
     '    </a>' +
     '    <div class="nav-links">' +
@@ -105,8 +105,7 @@
                  item('permit_process_timeline.html', 'Renewals.png', 'Permit Process Timeline')
              ) +
              col('Appraisers.svg', 'Calculators',
-                 item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
-                 item('size_calculator.html', 'ADU.png', 'Size Calculator')
+                 item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators')
              ) +
              col('Claims.png', 'Form Wizard',
                  item('form_wizard.html', 'Claims.png', 'Form Wizard')
