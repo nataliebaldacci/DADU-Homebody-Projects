@@ -70,10 +70,9 @@
              col('Area_Maps_and_Visual_layers.svg', 'Interactive Maps',
                  item('dadu_eligibility_map.html', 'Zoning.svg', 'Eligibility Map') +
                  item('property_search.html', 'Parcel Search.svg', 'Property Search') +
-                 item('dadu_near_me_v2.html', 'Neighbors.svg', 'DADUs Near Me') +
                  item('existing_dadus_map.html', 'ADU.png', 'Existing DADUs') +
                  item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map') +
-                item('dadu_near_me_v3.html', 'Neighbors.svg', 'Find DADUs Near You')
+                item('dadu_near_me_v3.html', 'Neighbors.svg', 'DADUs Near Me')
              ) +
              col('Permit_Activity.svg', 'Dashboards',
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
@@ -97,6 +96,8 @@
                  item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
                  item('size_calculator.html', 'ADU.png', 'Size Calculator') +
                  item('form_wizard.html', 'Claims.png', 'Form Wizard') +
+                 item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Hire a Contractor') +
+                 item('contractor_marketplace.html', 'Building_and_Construction.svg', 'Contractor Marketplace') +
     '        </div>' +
     '      </div>' +
 
