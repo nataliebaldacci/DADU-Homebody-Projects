@@ -536,8 +536,9 @@ a.text-link:hover {
 
 /* 4-column mega menu */
 .dropdown-menu.mega-menu.mega-menu-4 {
-    min-width: 880px;
+    min-width: 780px;
     grid-template-columns: repeat(4, 1fr);
+    max-width: calc(100vw - 48px);
 }
 
 /* 5-column mega menu (BUILD) */
