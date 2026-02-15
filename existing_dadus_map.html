@@ -56,80 +56,190 @@ body {
  flex-shrink: 0;
 }
 
-/* Filter Bar */
-.filter-bar {
- background: white;
- padding: 10px 20px;
+/* Main layout: sidebar + map */
+.main-content {
  display: flex;
- align-items: center;
- gap: 12px;
- border-bottom: 1px solid rgba(62,74,79,0.12);
- flex-wrap: wrap;
+ flex: 1;
+ min-height: 0;
+}
+
+/* Sidebar Filter Panel */
+.sidebar {
+ width: 320px;
  flex-shrink: 0;
+ background: #ffffff;
+ border-right: 1px solid #E2E2E0;
+ display: flex;
+ flex-direction: column;
+ overflow-y: auto;
+}
+.sidebar-header {
+ padding: 20px 20px 12px;
+ border-bottom: 1px solid #E2E2E0;
+}
+.sidebar-title {
+ font-size: 16px;
+ font-weight: 700;
+ color: #3A5566;
+ margin-bottom: 4px;
+}
+.sidebar-subtitle {
+ font-size: 12px;
+ color: #918A83;
+ line-height: 1.4;
+}
+.sidebar-filters {
+ padding: 16px 20px;
+ flex: 1;
 }
 .filter-group {
- display: flex;
- align-items: center;
- gap: 6px;
+ margin-bottom: 16px;
 }
 .filter-label {
+ display: block;
  font-size: 11px;
- color: #3E4A4F;
- font-weight: 600;
+ color: #3A5566;
+ font-weight: 700;
  text-transform: uppercase;
- letter-spacing: 0.3px;
- white-space: nowrap;
+ letter-spacing: 0.5px;
+ margin-bottom: 6px;
 }
+.filter-input,
 .filter-select {
- padding: 6px 10px;
+ width: 100%;
+ padding: 8px 12px;
  border: 1px solid #E2E2E0;
  border-radius: 6px;
- font-size: 12px;
+ font-size: 13px;
  font-family: inherit;
- background: white;
+ background: #ffffff;
  color: #3A5566;
- min-width: 100px;
+ transition: border-color 0.2s;
 }
-.filter-input {
- padding: 6px 10px;
- border: 1px solid #E2E2E0;
- border-radius: 6px;
- font-size: 12px;
- font-family: inherit;
- background: white;
- color: #3A5566;
- width: 140px;
+.filter-input:focus,
+.filter-select:focus {
+ outline: none;
+ border-color: #CBB279;
+ box-shadow: 0 0 0 3px rgba(203,178,121,0.15);
 }
 .filter-input::placeholder { color: #918A83; }
-.filter-num {
- width: 70px;
- padding: 6px 8px;
- border: 1px solid #E2E2E0;
- border-radius: 6px;
- font-size: 12px;
- font-family: inherit;
- color: #3A5566;
+.filter-range {
+ display: flex;
+ align-items: center;
+ gap: 8px;
 }
-.filter-btn-reset {
- padding: 6px 14px;
- border: 1px solid #E2E2E0;
- border-radius: 6px;
- background: #F0EBE1;
- color: #3A5566;
- font-size: 11px;
+.filter-range .filter-input {
+ flex: 1;
+ min-width: 0;
+}
+.filter-range-sep {
+ color: #918A83;
  font-weight: 600;
- cursor: pointer;
- font-family: inherit;
+ font-size: 14px;
+ flex-shrink: 0;
 }
-.filter-btn-reset:hover { background: #E2E2E0; }
+.filter-hint {
+ font-size: 10px;
+ color: #918A83;
+ margin-top: 4px;
+ line-height: 1.3;
+}
+
+/* Search button and reset */
+.sidebar-actions {
+ padding: 16px 20px 20px;
+ border-top: 1px solid #E2E2E0;
+}
+.btn-search {
+ display: block;
+ width: 100%;
+ padding: 12px 20px;
+ background: #CBB279;
+ color: #3A5566;
+ font-family: inherit;
+ font-size: 14px;
+ font-weight: 700;
+ border: none;
+ border-radius: 8px;
+ cursor: pointer;
+ transition: opacity 0.2s;
+ text-align: center;
+}
+.btn-search:hover { opacity: 0.85; }
+.btn-search:disabled {
+ opacity: 0.5;
+ cursor: not-allowed;
+}
+.btn-reset-link {
+ display: block;
+ text-align: center;
+ margin-top: 10px;
+ font-size: 12px;
+ color: #918A83;
+ cursor: pointer;
+ background: none;
+ border: none;
+ font-family: inherit;
+ text-decoration: underline;
+ transition: color 0.2s;
+}
+.btn-reset-link:hover { color: #3A5566; }
+.results-count {
+ text-align: center;
+ margin-top: 12px;
+ font-size: 12px;
+ color: #706F6C;
+ font-weight: 500;
+}
+.results-count strong {
+ color: #3A5566;
+ font-weight: 700;
+}
 
 /* Map */
 .map-container {
  flex: 1;
  position: relative;
  min-height: 0;
+ min-width: 0;
 }
 #map { width: 100%; height: 100%; }
+
+/* Blank map message overlay */
+.map-blank-message {
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ z-index: 800;
+ background: rgba(255,255,255,0.95);
+ border: 1px solid #E2E2E0;
+ border-radius: 12px;
+ padding: 32px 40px;
+ text-align: center;
+ box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+ max-width: 420px;
+}
+.map-blank-message.hidden { display: none; }
+.map-blank-icon {
+ margin-bottom: 12px;
+}
+.map-blank-icon img {
+ width: 48px;
+ height: 48px;
+ opacity: 0.5;
+}
+.map-blank-title {
+ font-size: 16px;
+ font-weight: 700;
+ color: #3A5566;
+ margin-bottom: 8px;
+}
+.map-blank-text {
+ font-size: 13px;
+ color: #706F6C;
+ line-height: 1.5;
+}
 
 /* Legend */
 .legend {
@@ -401,13 +511,29 @@ body {
 .loading-sub { font-size: 13px; color: #706F6C; margin-top: 8px; }
 
 /* Responsive */
+@media (max-width: 900px) {
+ .main-content { flex-direction: column; }
+ .sidebar {
+  width: 100%;
+  max-height: 260px;
+  border-right: none;
+  border-bottom: 1px solid #E2E2E0;
+ }
+ .sidebar-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  padding: 12px 16px;
+ }
+ .filter-group { margin-bottom: 8px; }
+ .sidebar-header { padding: 12px 16px 8px; }
+ .sidebar-actions { padding: 8px 16px 12px; }
+}
 @media (max-width: 768px) {
  .stats-bar { gap: 16px; padding: 10px 16px; }
  .stat-value { font-size: 18px; }
- .filter-bar { padding: 8px 12px; gap: 8px; }
- .filter-input { width: 100px; }
- .filter-num { width: 55px; }
  .legend { bottom: 10px; left: 8px; padding: 10px 12px; }
+ .sidebar-filters { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -437,70 +563,119 @@ body {
  </div>
 </div>
 
-<!-- Filter Bar -->
-<div class="filter-bar">
- <div class="filter-group">
-  <span class="filter-label">Year</span>
-  <select class="filter-select" id="filter-year">
-   <option value="">All</option>
-  </select>
- </div>
- <div class="filter-group">
-  <span class="filter-label">ZIP</span>
-  <select class="filter-select" id="filter-zip">
-   <option value="">All</option>
-  </select>
- </div>
- <div class="filter-group">
-  <span class="filter-label">Contractor</span>
-  <input type="text" class="filter-input" id="filter-contractor" placeholder="Search contractor...">
- </div>
- <div class="filter-group">
-  <span class="filter-label">SqFt</span>
-  <input type="number" class="filter-num" id="filter-sqft-min" placeholder="Min">
-  <span style="color:#918A83;">-</span>
-  <input type="number" class="filter-num" id="filter-sqft-max" placeholder="Max">
- </div>
- <div class="filter-group">
-  <span class="filter-label">Cost</span>
-  <select class="filter-select" id="filter-cost">
-   <option value="">All</option>
-   <option value="0-100000">Under $100K</option>
-   <option value="100000-200000">$100K - $200K</option>
-   <option value="200000-300000">$200K - $300K</option>
-   <option value="300000-999999999">$300K+</option>
-  </select>
- </div>
- <button class="filter-btn-reset" id="btn-reset" onclick="resetFilters()">Reset</button>
-</div>
+<!-- Main Content: Sidebar + Map -->
+<div class="main-content">
 
-<!-- Map -->
-<div class="map-container">
- <div id="map"></div>
+ <!-- Sidebar Filter Panel -->
+ <div class="sidebar">
+  <div class="sidebar-header">
+   <div class="sidebar-title">Search Existing DADUs</div>
+   <div class="sidebar-subtitle">Set filters and click Search to find completed DADUs on the map.</div>
+  </div>
+  <div class="sidebar-filters">
 
- <!-- Legend -->
- <div class="legend">
-  <div class="legend-title">Existing DADUs</div>
-  <div class="legend-item">
-   <span class="legend-dot" style="background:#406A64;"></span>
-   <span class="legend-label">Completed</span>
+   <div class="filter-group">
+    <label class="filter-label" for="filter-zip">Zipcode</label>
+    <input type="text" class="filter-input" id="filter-zip" placeholder="e.g. 37209, 37206">
+    <div class="filter-hint">Comma-separated for multiple</div>
+   </div>
+
+   <div class="filter-group">
+    <label class="filter-label" for="filter-district">Service District</label>
+    <select class="filter-select" id="filter-district">
+     <option value="">All Districts</option>
+     <option value="USD">USD (Urban Services)</option>
+     <option value="GSD">GSD (General Services)</option>
+    </select>
+   </div>
+
+   <div class="filter-group">
+    <label class="filter-label">Year Range</label>
+    <div class="filter-range">
+     <input type="number" class="filter-input" id="filter-year-from" placeholder="From" min="2010" max="2030">
+     <span class="filter-range-sep">to</span>
+     <input type="number" class="filter-input" id="filter-year-to" placeholder="To" min="2010" max="2030">
+    </div>
+   </div>
+
+   <div class="filter-group">
+    <label class="filter-label" for="filter-contractor">Contractor</label>
+    <input type="text" class="filter-input" id="filter-contractor" placeholder="Search contractor name...">
+   </div>
+
+   <div class="filter-group">
+    <label class="filter-label">Lot Size (SF)</label>
+    <div class="filter-range">
+     <input type="number" class="filter-input" id="filter-lot-min" placeholder="Min">
+     <span class="filter-range-sep">to</span>
+     <input type="number" class="filter-input" id="filter-lot-max" placeholder="Max">
+    </div>
+   </div>
+
+   <div class="filter-group">
+    <label class="filter-label">Building SqFt</label>
+    <div class="filter-range">
+     <input type="number" class="filter-input" id="filter-sqft-min" placeholder="Min">
+     <span class="filter-range-sep">to</span>
+     <input type="number" class="filter-input" id="filter-sqft-max" placeholder="Max">
+    </div>
+   </div>
+
+   <div class="filter-group">
+    <label class="filter-label">Construction Cost</label>
+    <div class="filter-range">
+     <input type="number" class="filter-input" id="filter-cost-min" placeholder="Min $">
+     <span class="filter-range-sep">to</span>
+     <input type="number" class="filter-input" id="filter-cost-max" placeholder="Max $">
+    </div>
+   </div>
+
   </div>
-  <div class="legend-item">
-   <span class="legend-dot" style="background:#CBB279;"></span>
-   <span class="legend-label">Recent (2024-25)</span>
-  </div>
-  <div class="footprint-toggle">
-   <label>
-    <input type="checkbox" id="toggle-footprints" onchange="toggleFootprints()">
-    <span class="legend-rect"></span>
-    Building Footprints
-   </label>
+
+  <!-- Actions -->
+  <div class="sidebar-actions">
+   <button class="btn-search" id="btn-search" onclick="searchDADUs()">Search DADUs</button>
+   <button class="btn-reset-link" id="btn-reset" onclick="resetFilters()">Reset All Filters</button>
+   <div class="results-count hidden" id="results-count"></div>
   </div>
  </div>
+
+ <!-- Map -->
+ <div class="map-container">
+  <div id="map"></div>
+
+  <!-- Blank map message -->
+  <div class="map-blank-message" id="map-blank-message">
+   <div class="map-blank-icon"><img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt=""></div>
+   <div class="map-blank-title">Search for Existing DADUs</div>
+   <div class="map-blank-text">Set your search criteria and click Search to find existing DADUs. You can also search with no filters to see all completed DADUs.</div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+   <div class="legend-title">Existing DADUs</div>
+   <div class="legend-item">
+    <span class="legend-dot" style="background:#406A64;"></span>
+    <span class="legend-label">Completed</span>
+   </div>
+   <div class="legend-item">
+    <span class="legend-dot" style="background:#CBB279;"></span>
+    <span class="legend-label">Recent (2024-25)</span>
+   </div>
+   <div class="footprint-toggle">
+    <label>
+     <input type="checkbox" id="toggle-footprints" onchange="toggleFootprints()">
+     <span class="legend-rect"></span>
+     Building Footprints
+    </label>
+   </div>
+  </div>
+ </div>
+
 </div>
 
 <!-- Loading -->
-<div class="loading-overlay" id="loading">
+<div class="loading-overlay hidden" id="loading">
  <div class="spinner"></div>
  <div class="loading-text">Loading Existing DADUs</div>
  <div class="loading-sub" id="loading-status">Connecting to ArcGIS...</div>
@@ -527,7 +702,7 @@ let footprintLayer;
 let footprintsVisible = false;
 let footprintsLoaded = false;
 let allPermits = []; // All loaded permit data
-let filteredMarkers = []; // Currently visible markers
+let dataLoaded = false; // Whether permit data has been fetched
 let docsIndex = null; // gdrive_docs_index.json parcels lookup
 let apnToAccount = null; // apn_to_account.json lookup
 
@@ -782,10 +957,12 @@ function escHtml(str) {
 }
 
 // ====================================================================
-// LOAD DATA
+// LOAD DATA (called once, then filter client-side)
 // ====================================================================
-async function loadPermits() {
+async function loadPermitData() {
+ const loadingEl = document.getElementById('loading');
  const statusEl = document.getElementById('loading-status');
+ loadingEl.classList.remove('hidden');
  statusEl.textContent = 'Loading document index...';
 
  // Load docs index and APN-to-account in parallel with permits
@@ -795,7 +972,7 @@ async function loadPermits() {
 
  try {
   const features = await queryAllPages(PERMITS_SERVICE, {
-   outFields: 'Parcel_ID,Permit_Number,Address,Zip_Code,Contractor,Construction_Cost,Building_SqFt,Cost_Per_SqFt,Status,Date_Issued,Project_Scope,ADU_Type,ePermits_Link,Documents_Link,Street_View,Aerial_View',
+   outFields: 'Parcel_ID,Permit_Number,Address,Zip_Code,Contractor,Construction_Cost,Building_SqFt,Cost_Per_SqFt,Status,Date_Issued,Project_Scope,ADU_Type,ePermits_Link,Documents_Link,Street_View,Aerial_View,Lot_Size',
    returnGeometry: true,
    outSR: 4326,
    resultRecordCount: 2000
@@ -806,7 +983,6 @@ async function loadPermits() {
   // Filter to completed only
   allPermits = [];
   const yearSet = new Set();
-  const zipSet = new Set();
   const contractorSet = new Set();
 
   features.forEach(function(f) {
@@ -820,7 +996,6 @@ async function loadPermits() {
 
    const year = getYear(attrs.Date_Issued);
    if (year) yearSet.add(year);
-   if (attrs.Zip_Code) zipSet.add(String(attrs.Zip_Code));
    if (attrs.Contractor) contractorSet.add(attrs.Contractor);
 
    allPermits.push(attrs);
@@ -835,51 +1010,53 @@ async function loadPermits() {
    document.getElementById('stat-years').textContent = years[0] + ' - ' + years[years.length - 1];
   }
 
-  // Populate filter dropdowns
-  populateYearFilter(yearSet);
-  populateZipFilter(zipSet);
-
-  // Add markers
-  addMarkersToMap(allPermits);
+  dataLoaded = true;
 
   // Hide loading
   setTimeout(function() {
-   document.getElementById('loading').classList.add('hidden');
+   loadingEl.classList.add('hidden');
   }, 400);
+
+  return true;
 
  } catch (err) {
   console.error('Error loading permits:', err);
   statusEl.textContent = 'Error loading data. Please refresh.';
+  return false;
  }
 }
 
-function populateYearFilter(yearSet) {
- const select = document.getElementById('filter-year');
- Array.from(yearSet).sort().reverse().forEach(function(y) {
-  const opt = document.createElement('option');
-  opt.value = y;
-  opt.textContent = y;
-  select.appendChild(opt);
- });
-}
+// ====================================================================
+// SEARCH (triggered by button)
+// ====================================================================
+async function searchDADUs() {
+ var searchBtn = document.getElementById('btn-search');
+ searchBtn.disabled = true;
+ searchBtn.textContent = 'Searching...';
 
-function populateZipFilter(zipSet) {
- const select = document.getElementById('filter-zip');
- // Count permits per ZIP for sorting
- const zipCounts = {};
- allPermits.forEach(function(p) {
-  const z = String(p.Zip_Code || '');
-  if (z) zipCounts[z] = (zipCounts[z] || 0) + 1;
- });
- // Sort by count descending, show top 20
- Array.from(zipSet).sort(function(a, b) {
-  return (zipCounts[b] || 0) - (zipCounts[a] || 0);
- }).slice(0, 20).forEach(function(z) {
-  const opt = document.createElement('option');
-  opt.value = z;
-  opt.textContent = z + ' (' + (zipCounts[z] || 0) + ')';
-  select.appendChild(opt);
- });
+ // Load data on first search
+ if (!dataLoaded) {
+  var ok = await loadPermitData();
+  if (!ok) {
+   searchBtn.disabled = false;
+   searchBtn.textContent = 'Search DADUs';
+   return;
+  }
+ }
+
+ // Hide blank message
+ document.getElementById('map-blank-message').classList.add('hidden');
+
+ // Apply filters
+ var filtered = applyFilters();
+
+ // Show results count
+ var resultsEl = document.getElementById('results-count');
+ resultsEl.classList.remove('hidden');
+ resultsEl.innerHTML = '<strong>' + filtered.toLocaleString() + '</strong> DADUs found';
+
+ searchBtn.disabled = false;
+ searchBtn.textContent = 'Search DADUs';
 }
 
 // ====================================================================
@@ -910,52 +1087,113 @@ function addMarkersToMap(permits) {
 // FILTERS
 // ====================================================================
 function applyFilters() {
- const yearVal = document.getElementById('filter-year').value;
- const zipVal = document.getElementById('filter-zip').value;
- const contractorVal = document.getElementById('filter-contractor').value.trim().toUpperCase();
- const sqftMin = parseInt(document.getElementById('filter-sqft-min').value) || 0;
- const sqftMax = parseInt(document.getElementById('filter-sqft-max').value) || 999999;
- const costVal = document.getElementById('filter-cost').value;
-
- let costMin = 0, costMax = 999999999;
- if (costVal) {
-  const parts = costVal.split('-');
-  costMin = parseInt(parts[0]) || 0;
-  costMax = parseInt(parts[1]) || 999999999;
+ // Zipcode (comma-separated)
+ var zipRaw = document.getElementById('filter-zip').value.trim();
+ var zipList = [];
+ if (zipRaw) {
+  zipList = zipRaw.split(',').map(function(z) { return z.trim(); }).filter(function(z) { return z.length > 0; });
  }
 
- const filtered = allPermits.filter(function(p) {
-  // Year filter
-  if (yearVal) {
-   const year = getYear(p.Date_Issued);
-   if (String(year) !== yearVal) return false;
+ // District
+ var districtVal = document.getElementById('filter-district').value;
+
+ // Year range
+ var yearFrom = parseInt(document.getElementById('filter-year-from').value) || 0;
+ var yearTo = parseInt(document.getElementById('filter-year-to').value) || 9999;
+
+ // Contractor
+ var contractorVal = document.getElementById('filter-contractor').value.trim().toUpperCase();
+
+ // Lot size range
+ var lotMin = parseInt(document.getElementById('filter-lot-min').value) || 0;
+ var lotMax = parseInt(document.getElementById('filter-lot-max').value) || 999999999;
+
+ // SqFt range
+ var sqftMin = parseInt(document.getElementById('filter-sqft-min').value) || 0;
+ var sqftMax = parseInt(document.getElementById('filter-sqft-max').value) || 999999;
+
+ // Cost range
+ var costMin = parseInt(document.getElementById('filter-cost-min').value) || 0;
+ var costMax = parseInt(document.getElementById('filter-cost-max').value) || 999999999;
+
+ var filtered = allPermits.filter(function(p) {
+  // Zipcode filter
+  if (zipList.length > 0) {
+   var pzip = String(p.Zip_Code || '');
+   if (!zipList.some(function(z) { return pzip.indexOf(z) !== -1; })) return false;
   }
-  // ZIP filter
-  if (zipVal && String(p.Zip_Code) !== zipVal) return false;
+
+  // District filter (based on ADU_Type or similar field if available)
+  if (districtVal) {
+   var aduType = String(p.ADU_Type || '').toUpperCase();
+   if (districtVal === 'USD' && aduType.indexOf('USD') === -1 && aduType.indexOf('URBAN') === -1) {
+    // If field isn't available or doesn't match, skip filter for this record
+    if (aduType) return false;
+   }
+   if (districtVal === 'GSD' && aduType.indexOf('GSD') === -1 && aduType.indexOf('GENERAL') === -1) {
+    if (aduType) return false;
+   }
+  }
+
+  // Year range filter
+  var year = getYear(p.Date_Issued);
+  if (year) {
+   if (yearFrom && year < yearFrom) return false;
+   if (yearTo < 9999 && year > yearTo) return false;
+  }
+
   // Contractor filter
   if (contractorVal && (!p.Contractor || p.Contractor.toUpperCase().indexOf(contractorVal) === -1)) return false;
+
+  // Lot size filter
+  if (p.Lot_Size) {
+   if (lotMin && p.Lot_Size < lotMin) return false;
+   if (lotMax < 999999999 && p.Lot_Size > lotMax) return false;
+  }
+
   // SqFt filter
   if (p.Building_SqFt) {
-   if (p.Building_SqFt < sqftMin || p.Building_SqFt > sqftMax) return false;
+   if (sqftMin && p.Building_SqFt < sqftMin) return false;
+   if (sqftMax < 999999 && p.Building_SqFt > sqftMax) return false;
   }
+
   // Cost filter
-  if (costVal && p.Construction_Cost) {
-   if (p.Construction_Cost < costMin || p.Construction_Cost > costMax) return false;
+  if (p.Construction_Cost) {
+   if (costMin && p.Construction_Cost < costMin) return false;
+   if (costMax < 999999999 && p.Construction_Cost > costMax) return false;
   }
+
   return true;
  });
 
  addMarkersToMap(filtered);
+ return filtered.length;
 }
 
 function resetFilters() {
- document.getElementById('filter-year').value = '';
  document.getElementById('filter-zip').value = '';
+ document.getElementById('filter-district').value = '';
+ document.getElementById('filter-year-from').value = '';
+ document.getElementById('filter-year-to').value = '';
  document.getElementById('filter-contractor').value = '';
+ document.getElementById('filter-lot-min').value = '';
+ document.getElementById('filter-lot-max').value = '';
  document.getElementById('filter-sqft-min').value = '';
  document.getElementById('filter-sqft-max').value = '';
- document.getElementById('filter-cost').value = '';
- addMarkersToMap(allPermits);
+ document.getElementById('filter-cost-min').value = '';
+ document.getElementById('filter-cost-max').value = '';
+
+ // Clear map markers
+ clusterGroup.clearLayers();
+
+ // Reset stats
+ document.getElementById('stat-visible').textContent = '--';
+
+ // Hide results count
+ document.getElementById('results-count').classList.add('hidden');
+
+ // Show blank message
+ document.getElementById('map-blank-message').classList.remove('hidden');
 }
 
 // ====================================================================
@@ -1081,27 +1319,23 @@ function initMap() {
   }
  });
 
- // Load permit data
- loadPermits();
+ // DO NOT auto-load permits. Map starts blank.
 }
 
 // ====================================================================
-// FILTER EVENT LISTENERS
+// INIT
 // ====================================================================
 document.addEventListener('DOMContentLoaded', function() {
- // Debounced filter application
- var filterTimeout;
- function debouncedFilter() {
-  clearTimeout(filterTimeout);
-  filterTimeout = setTimeout(applyFilters, 300);
- }
-
- document.getElementById('filter-year').addEventListener('change', applyFilters);
- document.getElementById('filter-zip').addEventListener('change', applyFilters);
- document.getElementById('filter-contractor').addEventListener('input', debouncedFilter);
- document.getElementById('filter-sqft-min').addEventListener('input', debouncedFilter);
- document.getElementById('filter-sqft-max').addEventListener('input', debouncedFilter);
- document.getElementById('filter-cost').addEventListener('change', applyFilters);
+ // Allow Enter key in filter inputs to trigger search
+ var filterInputs = document.querySelectorAll('.sidebar .filter-input, .sidebar .filter-select');
+ filterInputs.forEach(function(input) {
+  input.addEventListener('keydown', function(e) {
+   if (e.key === 'Enter') {
+    e.preventDefault();
+    searchDADUs();
+   }
+  });
+ });
 
  // Init map after header loads
  function waitForHeader(cb) {
