@@ -72,7 +72,8 @@
                  item('property_search.html', 'Parcel Search.svg', 'Property Search') +
                  item('existing_dadus_map.html', 'ADU.png', 'Existing DADUs') +
                  item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map') +
-                item('dadu_near_me_v3.html', 'Neighbors.svg', 'DADUs Near Me')
+                item('dadu_near_me_v3.html', 'Neighbors.svg', 'DADUs Near Me') +
+                item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans')
              ) +
              col('Permit_Activity.svg', 'Dashboards',
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +

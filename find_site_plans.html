@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Find Site Plans | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
+ <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #F2F0ED; color: #333; line-height: 1.6; }
+  a { text-decoration: none; color: #3A5566; }
+
+  /* ========== PAGE HEADER ========== */
+  .page-header {
+   background: #3A5566;
+   padding: 32px 24px 24px;
+   text-align: center;
+  }
+  .page-header h1 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700; font-style: italic; font-size: 32px;
+   color: #E1D4BB; margin-bottom: 8px;
+  }
+  .page-header .subtitle {
+   color: #F0EBE1; font-size: 15px; max-width: 600px; margin: 0 auto;
+  }
+
+  /* ========== MAIN LAYOUT ========== */
+  .main-content {
+   display: flex; min-height: calc(100vh - 180px);
+  }
+
+  /* ========== SIDEBAR ========== */
+  .sidebar {
+   width: 320px; min-width: 320px; background: #F2F0ED;
+   border-right: 1px solid #E2E2E0; padding: 20px;
+   overflow-y: auto; max-height: calc(100vh - 160px);
+  }
+  .sidebar h3 {
+   font-size: 13px; font-weight: 700; text-transform: uppercase;
+   letter-spacing: 1px; color: #3A5566; margin-bottom: 16px;
+  }
+  .filter-group { margin-bottom: 16px; }
+  .filter-group label {
+   display: block; font-size: 11px; font-weight: 600;
+   text-transform: uppercase; letter-spacing: 0.5px;
+   color: #7B746D; margin-bottom: 4px;
+  }
+  .filter-group input[type="text"],
+  .filter-group input[type="number"],
+  .filter-group select {
+   width: 100%; height: 36px; border: 1px solid #ccc;
+   border-radius: 6px; padding: 0 10px; font-size: 13px;
+   font-family: 'Inter', sans-serif; background: #fff;
+  }
+  .filter-group input:focus, .filter-group select:focus {
+   outline: none; border-color: #3A5566; box-shadow: 0 0 0 2px rgba(58,85,102,0.15);
+  }
+  .range-row {
+   display: flex; gap: 8px; align-items: center;
+  }
+  .range-row input { flex: 1; }
+  .range-row .range-sep {
+   font-size: 11px; color: #918A83; white-space: nowrap;
+  }
+
+  /* Radio + Checkbox */
+  .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+  .radio-group label {
+   display: flex; align-items: center; gap: 4px;
+   font-size: 13px; color: #3A5566; text-transform: none;
+   letter-spacing: 0; font-weight: 500; cursor: pointer;
+  }
+  .radio-group input[type="radio"],
+  .checkbox-group input[type="checkbox"] { accent-color: #3A5566; }
+  .checkbox-group { margin-top: 4px; }
+  .checkbox-group label {
+   display: flex; align-items: center; gap: 6px;
+   font-size: 13px; color: #3A5566; text-transform: none;
+   letter-spacing: 0; font-weight: 500; cursor: pointer;
+  }
+
+  .btn-search {
+   width: 100%; padding: 10px; border: none; border-radius: 8px;
+   background: #CBB279; color: #3A5566; font-weight: 700;
+   font-size: 14px; cursor: pointer; margin-top: 8px;
+   font-family: 'Inter', sans-serif;
+  }
+  .btn-search:hover { background: #b9a068; }
+  .btn-reset {
+   width: 100%; padding: 8px; border: 1px solid #918A83;
+   border-radius: 8px; background: transparent; color: #7B746D;
+   font-weight: 600; font-size: 13px; cursor: pointer; margin-top: 8px;
+   font-family: 'Inter', sans-serif;
+  }
+  .btn-reset:hover { background: #E2E2E0; }
+
+  /* ========== RESULTS AREA ========== */
+  .results-area {
+   flex: 1; background: #fff; padding: 24px;
+   overflow-y: auto; max-height: calc(100vh - 160px);
+  }
+
+  /* Results header bar */
+  .results-header {
+   display: flex; justify-content: space-between; align-items: center;
+   margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
+  }
+  .results-count {
+   font-size: 14px; font-weight: 600; color: #3A5566;
+  }
+  .results-count span { color: #CBB279; font-weight: 800; }
+  .sort-select {
+   height: 32px; border: 1px solid #ccc; border-radius: 6px;
+   padding: 0 8px; font-size: 12px; font-family: 'Inter', sans-serif;
+  }
+
+  /* ========== EMPTY STATE ========== */
+  .empty-state {
+   display: flex; flex-direction: column; align-items: center;
+   justify-content: center; padding: 80px 24px; text-align: center;
+  }
+  .empty-state img { width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.7; }
+  .empty-state h2 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700; font-style: italic; font-size: 24px;
+   color: #3A5566; margin-bottom: 8px;
+  }
+  .empty-state p { color: #7B746D; font-size: 14px; max-width: 480px; margin-bottom: 24px; }
+  .example-chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .example-chip {
+   display: inline-block; padding: 8px 16px; border-radius: 20px;
+   background: #F0EBE1; color: #3A5566; font-size: 13px;
+   font-weight: 600; cursor: pointer; border: 1px solid #E2E2E0;
+   transition: all 0.2s;
+  }
+  .example-chip:hover { background: #CBB279; color: #3A5566; border-color: #CBB279; }
+
+  /* ========== LOADING / ERROR ========== */
+  .loading-state {
+   display: none; flex-direction: column; align-items: center;
+   justify-content: center; padding: 80px 24px; text-align: center;
+  }
+  .spinner {
+   width: 40px; height: 40px; border: 4px solid #E2E2E0;
+   border-top-color: #3A5566; border-radius: 50%;
+   animation: spin 0.8s linear infinite; margin-bottom: 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-state {
+   display: none; flex-direction: column; align-items: center;
+   padding: 60px 24px; text-align: center;
+  }
+  .error-state p { color: #B58676; font-weight: 600; margin-bottom: 12px; }
+  .btn-retry {
+   padding: 8px 20px; border: 1px solid #3A5566; border-radius: 8px;
+   background: transparent; color: #3A5566; font-weight: 600;
+   font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+
+  /* ========== RESULT CARDS ========== */
+  .results-list { display: flex; flex-direction: column; gap: 16px; }
+  .result-card {
+   background: #fff; border: 1px solid #E2E2E0; border-radius: 8px;
+   padding: 16px; transition: box-shadow 0.2s;
+  }
+  .result-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .result-address {
+   font-size: 16px; font-weight: 700; color: #3A5566;
+   margin-bottom: 6px;
+  }
+  .result-address a { color: #3A5566; }
+  .result-address a:hover { text-decoration: underline; }
+  .result-meta {
+   display: flex; flex-wrap: wrap; gap: 6px 16px;
+   font-size: 13px; color: #706F6C; margin-bottom: 8px;
+  }
+  .result-meta strong { color: #3A5566; }
+  .result-contractor {
+   font-size: 13px; color: #7B746D; margin-bottom: 4px;
+  }
+  .result-permit {
+   font-size: 12px; color: #918A83; margin-bottom: 10px;
+  }
+
+  /* Thumbnails */
+  .result-thumbs {
+   display: flex; gap: 10px; margin-bottom: 12px;
+  }
+  .result-thumbs img {
+   height: 100px; max-width: 160px; object-fit: cover;
+   border-radius: 6px; border: 1px solid #E2E2E0; cursor: pointer;
+  }
+
+  /* Action buttons */
+  .result-actions {
+   display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .action-btn {
+   display: inline-flex; align-items: center; gap: 4px;
+   padding: 6px 14px; border-radius: 6px; font-size: 12px;
+   font-weight: 600; text-decoration: none; border: 1px solid transparent;
+   font-family: 'Inter', sans-serif; cursor: pointer;
+   transition: all 0.15s;
+  }
+  .action-btn-primary {
+   background: #CBB279; color: #3A5566; border-color: #CBB279;
+  }
+  .action-btn-primary:hover { background: #b9a068; }
+  .action-btn-secondary {
+   background: transparent; color: #3A5566; border-color: #3A5566;
+  }
+  .action-btn-secondary:hover { background: #F0EBE1; }
+  .action-btn-disabled {
+   background: #E2E2E0; color: #918A83; border-color: #E2E2E0;
+   cursor: default; pointer-events: none;
+  }
+
+  /* Load More */
+  .load-more-row {
+   text-align: center; margin-top: 20px;
+  }
+  .btn-load-more {
+   padding: 10px 32px; border: 1px solid #3A5566; border-radius: 8px;
+   background: transparent; color: #3A5566; font-weight: 600;
+   font-size: 14px; cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+  .btn-load-more:hover { background: #F0EBE1; }
+
+  /* ========== GDRIVE FOOTER ========== */
+  .gdrive-footer {
+   background: #F2F0ED; padding: 32px 24px; border-top: 1px solid #E2E2E0;
+  }
+  .gdrive-footer h3 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700; font-style: italic; font-size: 20px;
+   color: #3A5566; text-align: center; margin-bottom: 16px;
+  }
+  .gdrive-cards {
+   display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+  }
+  .gdrive-card {
+   display: flex; align-items: center; gap: 10px;
+   background: #fff; border: 1px solid #E2E2E0; border-radius: 8px;
+   padding: 14px 20px; font-size: 14px; font-weight: 600;
+   color: #3A5566; text-decoration: none; transition: box-shadow 0.2s;
+  }
+  .gdrive-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .gdrive-card img { width: 28px; height: 28px; }
+
+  /* ========== FOOTER ========== */
+  .site-footer {
+   background: #3A5566; color: #E1D4BB; padding: 24px;
+   text-align: center; font-size: 13px;
+  }
+  .site-footer a { color: #918A83; }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 900px) {
+   .main-content { flex-direction: column; }
+   .sidebar {
+    width: 100%; min-width: auto; max-height: none;
+    border-right: none; border-bottom: 1px solid #E2E2E0;
+   }
+   .results-area { max-height: none; }
+   .filter-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+   }
+  }
+ </style>
+</head>
+<body>
+
+<!-- Shared Header -->
+<div id="site-header"></div>
+
+<!-- Page Header -->
+<div class="page-header">
+ <h1>Find Site Plans</h1>
+ <p class="subtitle">Search approved DADU site plans, permit documents, and construction details by project criteria.</p>
+</div>
+
+<!-- Main Layout -->
+<div class="main-content">
+
+ <!-- LEFT SIDEBAR: Filters -->
+ <div class="sidebar">
+  <h3>Search Filters</h3>
+
+  <div class="filter-grid">
+   <div class="filter-group">
+    <label for="f-zip">Zip Code</label>
+    <input type="text" id="f-zip" placeholder="e.g. 37206, 37209">
+   </div>
+
+   <div class="filter-group">
+    <label for="f-zone">Zoning District</label>
+    <select id="f-zone">
+     <option value="">All</option>
+     <option value="RS">RS (any)</option>
+     <option value="R">R (any)</option>
+     <option value="RM">RM (any)</option>
+     <option value="AG">AG / AR2a</option>
+     <option value="SP">SP</option>
+    </select>
+   </div>
+
+   <div class="filter-group">
+    <label for="f-district">Service District</label>
+    <select id="f-district">
+     <option value="">All</option>
+     <option value="USD">USD</option>
+     <option value="GSD">GSD</option>
+    </select>
+   </div>
+
+   <div class="filter-group">
+    <label>Lot Size (SF)</label>
+    <div class="range-row">
+     <input type="number" id="f-lot-min" placeholder="Min">
+     <span class="range-sep">to</span>
+     <input type="number" id="f-lot-max" placeholder="Max">
+    </div>
+   </div>
+
+   <div class="filter-group">
+    <label>DADU Size (SF)</label>
+    <div class="range-row">
+     <input type="number" id="f-sqft-min" placeholder="Min">
+     <span class="range-sep">to</span>
+     <input type="number" id="f-sqft-max" placeholder="Max">
+    </div>
+   </div>
+
+   <div class="filter-group">
+    <label>Construction Cost ($)</label>
+    <div class="range-row">
+     <input type="number" id="f-cost-min" placeholder="Min">
+     <span class="range-sep">to</span>
+     <input type="number" id="f-cost-max" placeholder="Max">
+    </div>
+   </div>
+
+   <div class="filter-group">
+    <label>Cost Per SF ($)</label>
+    <div class="range-row">
+     <input type="number" id="f-cpsf-min" placeholder="Min">
+     <span class="range-sep">to</span>
+     <input type="number" id="f-cpsf-max" placeholder="Max">
+    </div>
+   </div>
+
+   <div class="filter-group">
+    <label for="f-contractor">Contractor</label>
+    <input type="text" id="f-contractor" placeholder="Search contractor name">
+   </div>
+
+   <div class="filter-group">
+    <label>Year</label>
+    <div class="range-row">
+     <input type="number" id="f-year-min" placeholder="From">
+     <span class="range-sep">to</span>
+     <input type="number" id="f-year-max" placeholder="To">
+    </div>
+   </div>
+
+   <div class="filter-group">
+    <label for="f-status">Status</label>
+    <select id="f-status">
+     <option value="">All</option>
+     <option value="Completed">Completed</option>
+     <option value="Active">Active</option>
+     <option value="In Review">In Review</option>
+     <option value="Expired">Expired</option>
+    </select>
+   </div>
+
+   <div class="filter-group">
+    <label>Type</label>
+    <div class="radio-group">
+     <label><input type="radio" name="f-type" value="" checked> All</label>
+     <label><input type="radio" name="f-type" value="detached"> Detached</label>
+     <label><input type="radio" name="f-type" value="attached"> Attached</label>
+    </div>
+   </div>
+
+   <div class="filter-group">
+    <div class="checkbox-group">
+     <label><input type="checkbox" id="f-has-pdf" checked> Only show results with downloadable documents</label>
+    </div>
+   </div>
+  </div>
+
+  <button class="btn-search" onclick="doSearch()">Search Site Plans</button>
+  <button class="btn-reset" onclick="resetFilters()">Reset All Filters</button>
+ </div>
+
+ <!-- RIGHT: Results Area -->
+ <div class="results-area">
+
+  <!-- Empty state (before search) -->
+  <div class="empty-state" id="empty-state">
+   <img src="assets/icons/Permit_Site_Plans.svg" alt="">
+   <h2>Search DADU Site Plans</h2>
+   <p>Enter your criteria to find approved site plans, permit documents, and construction details from 4,117 permit records across Nashville.</p>
+   <div class="example-chips">
+    <span class="example-chip" onclick="exampleSearch('small')">Small lot DADUs under 700 SF</span>
+    <span class="example-chip" onclick="exampleSearch('expensive')">DADUs over $100K</span>
+    <span class="example-chip" onclick="exampleSearch('zip37206')">Completed projects in 37206</span>
+   </div>
+  </div>
+
+  <!-- Loading state -->
+  <div class="loading-state" id="loading-state">
+   <div class="spinner"></div>
+   <p style="color:#7B746D;">Searching permit records...</p>
+  </div>
+
+  <!-- Error state -->
+  <div class="error-state" id="error-state">
+   <p>Failed to load permit data. The server may be temporarily unavailable.</p>
+   <button class="btn-retry" onclick="doSearch()">Try Again</button>
+  </div>
+
+  <!-- Results header + list -->
+  <div id="results-container" style="display:none;">
+   <div class="results-header">
+    <div class="results-count"><span id="result-count">0</span> site plans found</div>
+    <select class="sort-select" id="sort-select" onchange="sortAndRender()">
+     <option value="date-desc">Most Recent</option>
+     <option value="date-asc">Oldest First</option>
+     <option value="cost-asc">Cost: Low to High</option>
+     <option value="cost-desc">Cost: High to Low</option>
+     <option value="size-asc">Size: Small to Large</option>
+     <option value="size-desc">Size: Large to Small</option>
+     <option value="cpsf-asc">Cost/SF: Low to High</option>
+    </select>
+   </div>
+   <div class="results-list" id="results-list"></div>
+   <div class="load-more-row" id="load-more-row" style="display:none;">
+    <button class="btn-load-more" onclick="showMore()">Load More Results</button>
+   </div>
+  </div>
+
+ </div><!-- /results-area -->
+</div><!-- /main-content -->
+
+<!-- Google Drive Browse Footer -->
+<div class="gdrive-footer">
+ <h3>Browse Google Drive Document Folders</h3>
+ <div class="gdrive-cards">
+  <a href="https://drive.google.com/drive/folders/1N_IpJaweqoFhbmBnYHjQJs1G1ItTQjC4" target="_blank" class="gdrive-card">
+   <img src="assets/icons/Permit_Site_Plans.svg" alt=""> Permits &amp; Site Plans
+  </a>
+  <a href="https://drive.google.com/drive/folders/1UGNXAbDE1RuXfzMc6Vk3YL2r1AlZMwLZ" target="_blank" class="gdrive-card">
+   <img src="assets/icons/Recorded_Docs.svg" alt=""> Property Cards
+  </a>
+  <a href="https://drive.google.com/drive/folders/1bEZN1kEZxqZLkdX0QjT0g9N7K0sXAy3Z" target="_blank" class="gdrive-card">
+   <img src="assets/icons/Restrictive_Covenants.svg" alt=""> Restrictive Covenants
+  </a>
+  <a href="https://drive.google.com/drive/folders/1eD1TUNuYMOMK7VdVJW3Pc6mHYFS02VUj" target="_blank" class="gdrive-card">
+   <img src="assets/icons/Exports__Reports.svg" alt=""> Assessor Cards
+  </a>
+ </div>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+ <p>Powered by <strong>Castlehold</strong> | Data from Nashville Metro &amp; Vanderbilt ArcGIS</p>
+</footer>
+
+<script src="homebody_header.js"></script>
+<script>
+(function() {
+ 'use strict';
+
+ // ══════════════════════════════════════
+ //  CONFIG
+ // ══════════════════════════════════════
+ var ARCGIS_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_MERGED_v2_20260213/FeatureServer/0/query';
+ var OUT_FIELDS = 'ZIPCODE,ZONE,SERVICE_DISTRICT,LOT_SQFT,BUILDING_SQFT,CONSTRUCTION_COST,COST_PER_SQFT,CONTRACTOR_BIZ_NAME_ORIGINAL,PERMIT_NUMBER,PERMIT_DATE,PERMIT_SUBTYPE,STATUS_NORMALIZED,DESCRIPTION,STREET,APN,ATTACHED_DETACHED,DWELLING_TYPE,TOTAL_DOCS,DOCUMENTS_LINK,EPERMITS_LINK,GOOGLE_MAPS,STREET_VIEW,AERIAL_VIEW,ASSESSOR_CARD2_PHOTO_URL,ASSESSOR_CARD2_SKETCH_URL';
+ var PAGE_SIZE = 2000;
+ var DISPLAY_LIMIT = 100;
+
+ // State
+ var permitToDocs = {};  // permit_number -> {gdrive_url, download_url, file_id}
+ var apnToDocs = {};     // apn -> {permits: [...]}
+ var docsLoaded = false;
+ var allResults = [];
+ var displayedCount = 0;
+
+ // ══════════════════════════════════════
+ //  LOAD GDRIVE DOCS INDEX
+ // ══════════════════════════════════════
+ function loadDocsIndex() {
+  fetch('data/gdrive_docs_index.json')
+   .then(function(r) { return r.json(); })
+   .then(function(data) {
+    var parcels = data.parcels || data;
+    Object.keys(parcels).forEach(function(apn) {
+     var p = parcels[apn];
+     apnToDocs[apn] = p;
+     if (p.permits && p.permits.length) {
+      p.permits.forEach(function(doc) {
+       if (doc.permit_number && doc.gdrive_url) {
+        permitToDocs[doc.permit_number] = {
+         gdrive_url: doc.gdrive_url,
+         download_url: doc.download_url || '',
+         file_id: doc.file_id || ''
+        };
+       }
+      });
+     }
+    });
+    docsLoaded = true;
+    console.log('GDrive docs index loaded:', Object.keys(permitToDocs).length, 'permits,', Object.keys(apnToDocs).length, 'parcels');
+   })
+   .catch(function(err) {
+    console.warn('Failed to load gdrive_docs_index.json:', err);
+    docsLoaded = false;
+   });
+ }
+
+ // Start loading on page load
+ loadDocsIndex();
+
+ // ══════════════════════════════════════
+ //  BUILD WHERE CLAUSE
+ // ══════════════════════════════════════
+ function buildWhere() {
+  var clauses = [];
+
+  var zip = document.getElementById('f-zip').value.trim();
+  if (zip) {
+   var zips = zip.split(',').map(function(z) { return "'" + z.trim() + "'"; }).filter(function(z) { return z !== "''"; });
+   if (zips.length) clauses.push('ZIPCODE IN (' + zips.join(',') + ')');
+  }
+
+  var zone = document.getElementById('f-zone').value;
+  if (zone) clauses.push("ZONE LIKE '" + zone + "%'");
+
+  var district = document.getElementById('f-district').value;
+  if (district) clauses.push("SERVICE_DISTRICT = '" + district + "'");
+
+  var lotMin = document.getElementById('f-lot-min').value;
+  var lotMax = document.getElementById('f-lot-max').value;
+  if (lotMin) clauses.push('LOT_SQFT >= ' + lotMin);
+  if (lotMax) clauses.push('LOT_SQFT <= ' + lotMax);
+
+  var sqftMin = document.getElementById('f-sqft-min').value;
+  var sqftMax = document.getElementById('f-sqft-max').value;
+  if (sqftMin) clauses.push('BUILDING_SQFT >= ' + sqftMin);
+  if (sqftMax) clauses.push('BUILDING_SQFT <= ' + sqftMax);
+
+  var costMin = document.getElementById('f-cost-min').value;
+  var costMax = document.getElementById('f-cost-max').value;
+  if (costMin) clauses.push('CONSTRUCTION_COST >= ' + costMin);
+  if (costMax) clauses.push('CONSTRUCTION_COST <= ' + costMax);
+
+  var cpsfMin = document.getElementById('f-cpsf-min').value;
+  var cpsfMax = document.getElementById('f-cpsf-max').value;
+  if (cpsfMin) clauses.push('COST_PER_SQFT >= ' + cpsfMin);
+  if (cpsfMax) clauses.push('COST_PER_SQFT <= ' + cpsfMax);
+
+  var contractor = document.getElementById('f-contractor').value.trim();
+  if (contractor) clauses.push("CONTRACTOR_BIZ_NAME_ORIGINAL LIKE '%" + contractor.replace(/'/g, "''") + "%'");
+
+  var yearMin = document.getElementById('f-year-min').value;
+  var yearMax = document.getElementById('f-year-max').value;
+  if (yearMin) clauses.push("PERMIT_DATE >= '" + yearMin + "-01-01'");
+  if (yearMax) clauses.push("PERMIT_DATE <= '" + yearMax + "-12-31'");
+
+  var status = document.getElementById('f-status').value;
+  if (status) clauses.push("STATUS_NORMALIZED = '" + status + "'");
+
+  var typeRadio = document.querySelector('input[name="f-type"]:checked');
+  if (typeRadio && typeRadio.value) clauses.push("ATTACHED_DETACHED = '" + typeRadio.value + "'");
+
+  var hasPdf = document.getElementById('f-has-pdf').checked;
+  if (hasPdf) clauses.push('TOTAL_DOCS > 0');
+
+  return clauses.length ? clauses.join(' AND ') : '1=1';
+ }
+
+ // ══════════════════════════════════════
+ //  QUERY ARCGIS (with pagination)
+ // ══════════════════════════════════════
+ function queryArcGIS(where) {
+  var allFeatures = [];
+  var offset = 0;
+
+  function fetchPage() {
+   var params = new URLSearchParams({
+    where: where,
+    outFields: OUT_FIELDS,
+    returnGeometry: 'true',
+    outSR: '4326',
+    resultOffset: offset,
+    resultRecordCount: PAGE_SIZE,
+    f: 'json'
+   });
+   return fetch(ARCGIS_URL + '?' + params.toString())
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+     if (data.error) throw new Error(data.error.message || 'ArcGIS query failed');
+     var features = data.features || [];
+     allFeatures = allFeatures.concat(features);
+     if (features.length === PAGE_SIZE) {
+      offset += PAGE_SIZE;
+      return fetchPage();
+     }
+     return allFeatures;
+    });
+  }
+
+  return fetchPage();
+ }
+
+ // ══════════════════════════════════════
+ //  SEARCH
+ // ══════════════════════════════════════
+ window.doSearch = function() {
+  showState('loading');
+  var where = buildWhere();
+  console.log('Querying ArcGIS:', where);
+
+  queryArcGIS(where)
+   .then(function(features) {
+    allResults = features.map(function(f) { return f.attributes || f; });
+    // Attach geometry
+    features.forEach(function(f, i) {
+     if (f.geometry) {
+      allResults[i]._lat = f.geometry.y;
+      allResults[i]._lng = f.geometry.x;
+     }
+    });
+    if (allResults.length === 0) {
+     showState('empty-no-results');
+    } else {
+     displayedCount = 0;
+     sortAndRender();
+     showState('results');
+    }
+   })
+   .catch(function(err) {
+    console.error('ArcGIS query error:', err);
+    showState('error');
+   });
+ };
+
+ // ══════════════════════════════════════
+ //  SORT + RENDER
+ // ══════════════════════════════════════
+ window.sortAndRender = function() {
+  var sortVal = document.getElementById('sort-select').value;
+  allResults.sort(function(a, b) {
+   switch (sortVal) {
+    case 'date-desc': return (b.PERMIT_DATE || 0) - (a.PERMIT_DATE || 0);
+    case 'date-asc': return (a.PERMIT_DATE || 0) - (b.PERMIT_DATE || 0);
+    case 'cost-asc': return (a.CONSTRUCTION_COST || 0) - (b.CONSTRUCTION_COST || 0);
+    case 'cost-desc': return (b.CONSTRUCTION_COST || 0) - (a.CONSTRUCTION_COST || 0);
+    case 'size-asc': return (a.BUILDING_SQFT || 0) - (b.BUILDING_SQFT || 0);
+    case 'size-desc': return (b.BUILDING_SQFT || 0) - (a.BUILDING_SQFT || 0);
+    case 'cpsf-asc': return (a.COST_PER_SQFT || 0) - (b.COST_PER_SQFT || 0);
+    default: return 0;
+   }
+  });
+  displayedCount = 0;
+  document.getElementById('results-list').innerHTML = '';
+  document.getElementById('result-count').textContent = allResults.length.toLocaleString();
+  showMore();
+ };
+
+ window.showMore = function() {
+  var list = document.getElementById('results-list');
+  var end = Math.min(displayedCount + DISPLAY_LIMIT, allResults.length);
+  for (var i = displayedCount; i < end; i++) {
+   list.appendChild(buildCard(allResults[i]));
+  }
+  displayedCount = end;
+  var loadMoreRow = document.getElementById('load-more-row');
+  loadMoreRow.style.display = (displayedCount < allResults.length) ? 'block' : 'none';
+ };
+
+ // ══════════════════════════════════════
+ //  BUILD RESULT CARD
+ // ══════════════════════════════════════
+ function buildCard(r) {
+  var card = document.createElement('div');
+  card.className = 'result-card';
+
+  var address = r.STREET || 'Unknown Address';
+  var zone = r.ZONE || '---';
+  var lotSqft = r.LOT_SQFT ? Number(r.LOT_SQFT).toLocaleString() + ' SF lot' : '';
+  var bldgSqft = r.BUILDING_SQFT ? Number(r.BUILDING_SQFT).toLocaleString() + ' SF DADU' : '';
+  var cost = r.CONSTRUCTION_COST ? '$' + Number(r.CONSTRUCTION_COST).toLocaleString() : '';
+  var cpsf = r.COST_PER_SQFT ? '$' + Number(r.COST_PER_SQFT).toFixed(0) + '/SF' : '';
+  var contractor = r.CONTRACTOR_BIZ_NAME_ORIGINAL || '';
+  var permitNum = r.PERMIT_NUMBER || '';
+  var permitDate = r.PERMIT_DATE ? formatDate(r.PERMIT_DATE) : '';
+  var googleMaps = r.GOOGLE_MAPS || '';
+
+  // PDF lookup
+  var gdriveInfo = null;
+  if (permitNum && permitToDocs[permitNum]) {
+   gdriveInfo = permitToDocs[permitNum];
+  } else if (r.APN && apnToDocs[r.APN]) {
+   var apnDocs = apnToDocs[r.APN];
+   if (apnDocs.permits && apnDocs.permits.length) {
+    var match = apnDocs.permits[0];
+    if (match.gdrive_url) {
+     gdriveInfo = { gdrive_url: match.gdrive_url, download_url: match.download_url || '' };
+    }
+   }
+  }
+
+  var html = '';
+
+  // Address
+  html += '<div class="result-address">';
+  if (googleMaps) {
+   html += '<a href="' + googleMaps + '" target="_blank">' + esc(address) + '</a>';
+  } else {
+   html += esc(address);
+  }
+  html += '</div>';
+
+  // Meta line
+  html += '<div class="result-meta">';
+  if (zone) html += '<span><strong>' + esc(zone) + '</strong></span>';
+  if (lotSqft) html += '<span>' + lotSqft + '</span>';
+  if (bldgSqft) html += '<span>' + bldgSqft + '</span>';
+  if (cost) html += '<span>' + cost + '</span>';
+  if (cpsf) html += '<span>' + cpsf + '</span>';
+  html += '</div>';
+
+  // Contractor
+  if (contractor) {
+   html += '<div class="result-contractor">Contractor: ' + esc(contractor) + '</div>';
+  }
+
+  // Permit line
+  html += '<div class="result-permit">';
+  if (permitNum) html += 'Permit: ' + esc(permitNum);
+  if (permitDate) html += ' | ' + permitDate;
+  if (r.STATUS_NORMALIZED) html += ' | ' + esc(r.STATUS_NORMALIZED);
+  html += '</div>';
+
+  // Thumbnails
+  var photoUrl = r.ASSESSOR_CARD2_PHOTO_URL;
+  var sketchUrl = r.ASSESSOR_CARD2_SKETCH_URL;
+  if (photoUrl || sketchUrl) {
+   html += '<div class="result-thumbs">';
+   if (photoUrl) html += '<img src="' + esc(photoUrl) + '" alt="Photo" onerror="this.style.display=\'none\'" onclick="window.open(this.src,\'_blank\')">';
+   if (sketchUrl) html += '<img src="' + esc(sketchUrl) + '" alt="Sketch" onerror="this.style.display=\'none\'" onclick="window.open(this.src,\'_blank\')">';
+   html += '</div>';
+  }
+
+  // Action buttons
+  html += '<div class="result-actions">';
+
+  if (gdriveInfo && gdriveInfo.gdrive_url) {
+   html += '<a href="' + gdriveInfo.gdrive_url + '" target="_blank" class="action-btn action-btn-primary">View PDF</a>';
+   if (gdriveInfo.download_url) {
+    html += '<a href="' + gdriveInfo.download_url + '" target="_blank" class="action-btn action-btn-secondary">Download</a>';
+   }
+  } else {
+   html += '<span class="action-btn action-btn-disabled">View PDF</span>';
+  }
+
+  if (r.DOCUMENTS_LINK) {
+   html += '<a href="' + r.DOCUMENTS_LINK + '" target="_blank" class="action-btn action-btn-secondary">Nashville Docs</a>';
+  }
+  if (r.EPERMITS_LINK) {
+   html += '<a href="' + r.EPERMITS_LINK + '" target="_blank" class="action-btn action-btn-secondary">ePermits</a>';
+  }
+  if (r.STREET_VIEW) {
+   html += '<a href="' + r.STREET_VIEW + '" target="_blank" class="action-btn action-btn-secondary">Street View</a>';
+  }
+  if (r.AERIAL_VIEW) {
+   html += '<a href="' + r.AERIAL_VIEW + '" target="_blank" class="action-btn action-btn-secondary">Aerial</a>';
+  }
+
+  html += '</div>';
+
+  card.innerHTML = html;
+  return card;
+ }
+
+ // ══════════════════════════════════════
+ //  UI STATES
+ // ══════════════════════════════════════
+ function showState(state) {
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('loading-state').style.display = 'none';
+  document.getElementById('error-state').style.display = 'none';
+  document.getElementById('results-container').style.display = 'none';
+
+  if (state === 'empty') {
+   document.getElementById('empty-state').style.display = 'flex';
+  } else if (state === 'loading') {
+   document.getElementById('loading-state').style.display = 'flex';
+  } else if (state === 'error') {
+   document.getElementById('error-state').style.display = 'flex';
+  } else if (state === 'results') {
+   document.getElementById('results-container').style.display = 'block';
+  } else if (state === 'empty-no-results') {
+   // Reuse empty state with different message
+   var es = document.getElementById('empty-state');
+   es.querySelector('h2').textContent = 'No Results Found';
+   es.querySelector('p').textContent = 'No site plans match your criteria. Try broadening your search.';
+   es.querySelector('.example-chips').style.display = 'none';
+   es.style.display = 'flex';
+  }
+ }
+
+ // ══════════════════════════════════════
+ //  EXAMPLE SEARCHES
+ // ══════════════════════════════════════
+ window.exampleSearch = function(type) {
+  resetFiltersQuiet();
+  if (type === 'small') {
+   document.getElementById('f-lot-max').value = '10000';
+   document.getElementById('f-sqft-max').value = '700';
+  } else if (type === 'expensive') {
+   document.getElementById('f-cost-min').value = '100000';
+  } else if (type === 'zip37206') {
+   document.getElementById('f-zip').value = '37206';
+   document.getElementById('f-status').value = 'Completed';
+  }
+  doSearch();
+ };
+
+ // ══════════════════════════════════════
+ //  RESET
+ // ══════════════════════════════════════
+ function resetFiltersQuiet() {
+  document.getElementById('f-zip').value = '';
+  document.getElementById('f-zone').value = '';
+  document.getElementById('f-district').value = '';
+  document.getElementById('f-lot-min').value = '';
+  document.getElementById('f-lot-max').value = '';
+  document.getElementById('f-sqft-min').value = '';
+  document.getElementById('f-sqft-max').value = '';
+  document.getElementById('f-cost-min').value = '';
+  document.getElementById('f-cost-max').value = '';
+  document.getElementById('f-cpsf-min').value = '';
+  document.getElementById('f-cpsf-max').value = '';
+  document.getElementById('f-contractor').value = '';
+  document.getElementById('f-year-min').value = '';
+  document.getElementById('f-year-max').value = '';
+  document.getElementById('f-status').value = '';
+  document.querySelector('input[name="f-type"][value=""]').checked = true;
+  document.getElementById('f-has-pdf').checked = true;
+ }
+
+ window.resetFilters = function() {
+  resetFiltersQuiet();
+  allResults = [];
+  displayedCount = 0;
+  // Restore empty state
+  var es = document.getElementById('empty-state');
+  es.querySelector('h2').textContent = 'Search DADU Site Plans';
+  es.querySelector('p').textContent = 'Enter your criteria to find approved site plans, permit documents, and construction details from 4,117 permit records across Nashville.';
+  es.querySelector('.example-chips').style.display = 'flex';
+  showState('empty');
+ };
+
+ // ══════════════════════════════════════
+ //  HELPERS
+ // ══════════════════════════════════════
+ function formatDate(ts) {
+  if (!ts) return '';
+  var d = new Date(ts);
+  if (isNaN(d.getTime())) return '';
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return months[d.getMonth()] + ' ' + d.getFullYear();
+ }
+
+ function esc(str) {
+  if (!str) return '';
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+ }
+
+ // Enter key triggers search
+ document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && e.target.closest('.sidebar')) {
+   doSearch();
+  }
+ });
+
+})();
+</script>
+
+</body>
+</html>
