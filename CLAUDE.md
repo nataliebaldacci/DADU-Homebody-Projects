@@ -207,7 +207,7 @@ Each dropdown item shows an SVG/PNG icon at 32-40px, clearly visible next to the
 ### Routing
 - LOGO → index.html
 - PRICING → homebody_dadu_pricing.html (no dropdown)
-- ABOUT → homebody_dadu_pricing.html#about (no dropdown)
+- ABOUT → about_platform.html (no dropdown)
 
 ---
 
@@ -386,7 +386,7 @@ These are the pages directly accessible from the nav dropdowns:
 | DATA > Reports | eligibility_report.html, project_report.html, neighbors_report.html, dadu_reports_store.html, property-report-card.html |
 | DATA > Docs | site_plan_downloads.html, dadu_resources.html, restrictive_covenants_v2.html, pdf_database_lookup.html |
 | RESOURCES | what_is_dadu.html, dadu_requirements_overview.html, dadu_history.html, dadu_code_legislation_v5.html, owner_occupancy.html, str_permit.html, trade_permits.html, overlay-districts.html, dadu_design_standards.html |
-| Direct links | homebody_dadu_pricing.html, am_i_eligible.html, dadu_documents_portal.html (via Pricing page) |
+| Direct links | homebody_dadu_pricing.html, am_i_eligible.html, about_platform.html, dadu_documents_portal.html (via Pricing page) |
 | Homepage | index.html |
 
 **Unlinked but Worth Keeping (17 pages):**
@@ -400,16 +400,16 @@ These have unique content not duplicated elsewhere:
 | dadu_zoning_standards.html | Zoning standards (content merged into dadu_requirements_overview.html) |
 | designer_resources.html | Designer resource content |
 | draw_dadu_on_parcel.html | Visual DADU placement tool (linked from project_planner_hub.html) |
-| feature-documents.html | Feature landing page |
-| feature-eligibility-map.html | Feature landing page |
-| features.html | Features overview |
+| feature-documents.html | Feature landing page (absorbed into about_platform.html) |
+| feature-eligibility-map.html | Feature landing page (absorbed into about_platform.html) |
+| features.html | Features overview (absorbed into about_platform.html) |
 | permit_process_timeline.html | Step-by-step permitting guide (linked from project_planner_hub.html) |
 | project_checklist.html | Interactive project checklist (linked from project_planner_hub.html) |
 | project_planner.html | Original project planner |
 | property_intelligence_report.html | Unique intelligence report |
 | property_report.html | Original property report |
 | size_calculator.html | Size calculator (removed from nav, may return) |
-| user-types.html | User types overview |
+| user-types.html | User types overview (absorbed into about_platform.html) |
 | zoning_documents.html | Zoning document content |
 
 **Unlinked Duplicates (25 pages, candidates for deletion):**
@@ -444,6 +444,7 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 - ✅ contractor_portal.html fully rebranded: Inter font, CSS variables, SVG icons, fixed broken link to deleted page
 - ✅ Eligibility flowchart made fully interactive: step-through wizard with YES/NO gates, collapsed summary bars with "Change Answer", progress bar, Step 5 informational with Continue button, Step 6 ends with Eligible result card + Property Report Card link, Show All toggle, Start Over, all 49 links preserved
 - ✅ Three-page styling fix: trade_permits.html (title, Montserrat→Inter, CSS var fixes incl. green --terracotta bug), overlay-districts.html (title, Montserrat→Inter, removed banned colors --yellow/--red/purple, footer branding), contractor_dashboard.html (already correct, no changes needed)
+- ✅ About page created: about_platform.html with 7 sections (Hero, What Is, Platform Features 12 cards, How It Works, Data Sources 6 cards, Built For Every User 4 portals, CTA). ABOUT nav updated from pricing#about to about_platform.html in both header.js and header.html. Absorbs: features.html, feature-documents.html, feature-eligibility-map.html, user-types.html
 
 ### PRIORITY 1: Delete 24 Identified Duplicate Pages
 **Status:** Identified, awaiting user confirmation to delete. (dadu_eligibility_checklist already deleted; dadu_eligibility_flowchart is now active in RESOURCES nav)
