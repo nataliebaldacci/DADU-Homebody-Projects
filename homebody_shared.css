@@ -257,7 +257,8 @@ a {
     position: absolute;
     top: 100%;
     left: 0;
-    background: var(--white);
+    background: #FFFFFF;
+    background-color: #FFFFFF;
     border: 1px solid var(--border);
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.15);
@@ -549,13 +550,20 @@ a.text-link:hover {
     position: absolute;
     top: 100%;
     left: 0;
-    background: var(--slate);
+    background: #FFFFFF;
+    border: 1px solid #E2E2E0;
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.18);
     z-index: 1000;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
 }
 .dropdown-menu.dropdown-single.open {
     display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
 }
 .dropdown-menu.dropdown-single .dropdown-item {
     display: flex;
