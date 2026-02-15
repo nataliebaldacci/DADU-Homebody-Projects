@@ -61,7 +61,7 @@
              col('Municipal.svg', 'Professional',
                  item('user-homeowners.html', 'Municipal.svg', 'Municipal &amp; Agencies') +
                  item('dadu_contractors_infographic.html', 'Legal.svg', 'Legal Professionals') +
-                 item('contractor_advertising.html', 'Building_and_Construction.svg', 'Advertise With Us')
+                 item('contractor_portal.html#advertise', 'Building_and_Construction.svg', 'Advertise With Us')
              ) +
     '        </div>' +
     '      </div>' +
