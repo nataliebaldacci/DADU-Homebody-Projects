@@ -143,6 +143,7 @@
              col('ADU.png', 'Learn',
                  item('what_is_dadu.html', 'ADU.png', 'What is a DADU?') +
                  item('dadu_requirements_overview.html', 'Building_and_Construction.svg', 'General Requirements') +
+                 item('dadu_eligibility_flowchart.html', 'Zoning.svg', 'Eligibility Flowchart') +
                  item('dadu_history.html', 'Recorded_Docs.svg', 'DADU History') +
                  item('dadu_code_legislation_v5.html', 'Legislation.svg', 'Code &amp; Legislation')
              ) +

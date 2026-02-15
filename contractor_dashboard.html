@@ -3,678 +3,1197 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>DADU Contractor Activity Dashboard | Castlehold</title>
+ <title>Find a Contractor | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
  <style>
- * { margin: 0; padding: 0; box-sizing: border-box; }
- body {
- font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif;
- background: #f5f7fa;
- color: #333;
- }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
- /* Header */
- .header {
- background: linear-gradient(135deg, #3A5566 0%, #4A6B7D 100%);
- color: white;
- padding: 20px 30px;
- display: flex;
- align-items: center;
- justify-content: space-between;
- }
- .logo {
- display: flex;
- align-items: center;
- gap: 15px;
- }
- .logo-icon {
- width: 45px;
- height: 45px;
- background: #CBB279;
- border-radius: 10px;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 24px;
- }
- .logo-text { font-size: 22px; font-weight: 600; }
- .logo-sub { font-size: 13px; opacity: 0.8; }
+  body {
+   font-family: 'Inter', sans-serif;
+   background: #F2F0ED;
+   color: #333;
+   line-height: 1.6;
+  }
 
- /* Stats Bar */
- .stats-bar {
- background: white;
- padding: 20px 30px;
- display: flex;
- gap: 40px;
- border-bottom: 1px solid #e0e0e0;
- flex-wrap: wrap;
- }
- .stat-item {
- text-align: center;
- }
- .stat-value {
- font-size: 28px;
- font-weight: 700;
- color: #3A5566;
- }
- .stat-label {
- font-size: 12px;
- color: #888;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- }
+  a { text-decoration: none; color: #3A5566; }
 
- /* Area Pricing Tool */
- .pricing-tool {
- background: linear-gradient(135deg, #CBB279 0%, #c97a60 100%);
- padding: 20px 30px;
- color: white;
- }
- .pricing-tool h3 {
- margin-bottom: 15px;
- font-size: 18px;
- }
- .pricing-form {
- display: flex;
- gap: 15px;
- flex-wrap: wrap;
- align-items: center;
- }
- .pricing-input {
- flex: 1;
- min-width: 300px;
- padding: 12px 15px;
- border: none;
- border-radius: 8px;
- font-size: 14px;
- }
- .pricing-btn {
- padding: 12px 25px;
- background: #3A5566;
- color: white;
- border: none;
- border-radius: 8px;
- font-size: 14px;
- font-weight: 600;
- cursor: pointer;
- transition: background 0.2s;
- }
- .pricing-btn:hover { background: #2E4553; }
- .pricing-results {
- margin-top: 15px;
- display: none;
- background: rgba(255,255,255,0.15);
- padding: 15px;
- border-radius: 8px;
- }
- .pricing-results.active { display: block; }
- .pricing-grid {
- display: grid;
- grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
- gap: 15px;
- }
- .pricing-stat {
- text-align: center;
- }
- .pricing-stat-value {
- font-size: 24px;
- font-weight: 700;
- }
- .pricing-stat-label {
- font-size: 11px;
- opacity: 0.9;
- text-transform: uppercase;
- }
+  /* ========== HERO ========== */
+  .cd-hero {
+   background: #3A5566;
+   padding: 48px 24px;
+   text-align: center;
+  }
 
- /* Main Content */
- .main-content {
- display: grid;
- grid-template-columns: 1fr 400px;
- gap: 20px;
- padding: 20px 30px;
- max-width: 1600px;
- margin: 0 auto;
- }
+  .cd-hero h1 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-size: 36px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
 
- /* Cards */
- .card {
- background: white;
- border-radius: 12px;
- box-shadow: 0 2px 8px rgba(0,0,0,0.08);
- overflow: hidden;
- }
- .card-header {
- padding: 15px 20px;
- border-bottom: 1px solid #eee;
- display: flex;
- justify-content: space-between;
- align-items: center;
- }
- .card-title {
- font-size: 16px;
- font-weight: 600;
- color: #3A5566;
- }
- .card-body {
- padding: 15px 20px;
- }
+  .cd-hero .subtitle {
+   color: #F0EBE1;
+   font-size: 16px;
+   max-width: 640px;
+   margin: 0 auto 24px;
+  }
 
- /* Search & Filters */
- .filters {
- display: flex;
- gap: 15px;
- margin-bottom: 20px;
- flex-wrap: wrap;
- }
- .search-box {
- flex: 1;
- min-width: 250px;
- position: relative;
- }
- .search-input {
- width: 100%;
- padding: 12px 15px 12px 40px;
- border: 2px solid #e0e0e0;
- border-radius: 8px;
- font-size: 14px;
- transition: border-color 0.2s;
- }
- .search-input:focus {
- outline: none;
- border-color: #CBB279;
- }
- .search-icon {
- position: absolute;
- left: 12px;
- top: 50%;
- transform: translateY(-50%);
- color: #888;
- }
- .filter-select {
- padding: 12px 15px;
- border: 2px solid #e0e0e0;
- border-radius: 8px;
- font-size: 14px;
- background: white;
- cursor: pointer;
- min-width: 150px;
- }
+  .cd-hero .hero-badges {
+   display: flex;
+   justify-content: center;
+   gap: 12px;
+   flex-wrap: wrap;
+  }
 
- /* Contractor Table */
- .contractor-table {
- width: 100%;
- border-collapse: collapse;
- }
- .contractor-table th {
- text-align: left;
- padding: 12px 10px;
- background: #f8f9fa;
- font-size: 11px;
- font-weight: 600;
- color: #666;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- border-bottom: 2px solid #e0e0e0;
- cursor: pointer;
- white-space: nowrap;
- }
- .contractor-table th:hover {
- background: #eef0f2;
- }
- .contractor-table th.sorted {
- color: #CBB279;
- }
- .contractor-table td {
- padding: 10px;
- border-bottom: 1px solid #eee;
- font-size: 13px;
- }
- .contractor-table tr:hover {
- background: #f8faf5;
- }
- .contractor-name {
- font-weight: 600;
- color: #3A5566;
- max-width: 200px;
- overflow: hidden;
- text-overflow: ellipsis;
- white-space: nowrap;
- }
- .contractor-name:hover {
- color: #CBB279;
- cursor: pointer;
- }
- .permit-count {
- font-weight: 700;
- color: #CBB279;
- }
- .cost-per-sf {
- font-weight: 600;
- color: #e65100;
- }
- .badge {
- display: inline-block;
- padding: 3px 8px;
- border-radius: 12px;
- font-size: 11px;
- font-weight: 600;
- }
- .badge-building { background: #e3f2fd; color: #1565c0; }
- .badge-has-pricing { background: #fff3e0; color: #e65100; }
+  .cd-hero .badge {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   background: rgba(255,255,255,0.12);
+   border: 1px solid rgba(225,212,187,0.3);
+   border-radius: 20px;
+   padding: 6px 16px;
+   font-size: 13px;
+   color: #E1D4BB;
+   font-weight: 600;
+  }
 
- /* Pagination */
- .pagination {
- display: flex;
- justify-content: center;
- gap: 5px;
- padding: 20px;
- }
- .page-btn {
- padding: 8px 14px;
- border: 1px solid #e0e0e0;
- background: white;
- border-radius: 6px;
- cursor: pointer;
- font-size: 13px;
- }
- .page-btn:hover { background: #f5f5f5; }
- .page-btn.active {
- background: #CBB279;
- color: white;
- border-color: #CBB279;
- }
+  .cd-hero .badge img {
+   width: 18px;
+   height: 18px;
+  }
 
- /* Sidebar - Top Lists */
- .sidebar {
- display: flex;
- flex-direction: column;
- gap: 20px;
- }
- .top-list {
- list-style: none;
- }
- .top-list li {
- display: flex;
- justify-content: space-between;
- align-items: center;
- padding: 10px 0;
- border-bottom: 1px solid #eee;
- }
- .top-list li:last-child { border-bottom: none; }
- .rank {
- width: 24px;
- height: 24px;
- background: #CBB279;
- color: white;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 11px;
- font-weight: 600;
- margin-right: 10px;
- flex-shrink: 0;
- }
- .rank.gold { background: #f59e0b; }
- .rank.silver { background: #9ca3af; }
- .rank.bronze { background: #d97706; }
- .top-name {
- flex: 1;
- font-size: 13px;
- font-weight: 500;
- overflow: hidden;
- text-overflow: ellipsis;
- white-space: nowrap;
- }
- .top-value {
- font-weight: 700;
- color: #CBB279;
- font-size: 14px;
- }
- .top-value.price { color: #e65100; }
+  /* ========== STATS BAR ========== */
+  .stats-bar {
+   max-width: 1100px;
+   margin: -28px auto 0;
+   padding: 0 24px;
+   position: relative;
+   z-index: 2;
+  }
 
- /* Bar chart simple */
- .bar-chart {
- display: flex;
- flex-direction: column;
- gap: 8px;
- }
- .bar-row {
- display: flex;
- align-items: center;
- gap: 10px;
- }
- .bar-label {
- width: 80px;
- font-size: 12px;
- color: #666;
- text-align: right;
- }
- .bar-track {
- flex: 1;
- height: 24px;
- background: #eee;
- border-radius: 4px;
- overflow: hidden;
- }
- .bar-fill {
- height: 100%;
- background: linear-gradient(90deg, #CBB279 0%, #c97a60 100%);
- border-radius: 4px;
- display: flex;
- align-items: center;
- padding-left: 8px;
- font-size: 11px;
- color: white;
- font-weight: 600;
- min-width: fit-content;
- }
+  .stats-bar-inner {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   padding: 24px 32px;
+   display: flex;
+   justify-content: space-around;
+   gap: 24px;
+   flex-wrap: wrap;
+  }
 
- /* Zipcode table */
- .zipcode-table {
- width: 100%;
- border-collapse: collapse;
- font-size: 13px;
- }
- .zipcode-table th {
- text-align: left;
- padding: 8px;
- background: #f8f9fa;
- font-size: 11px;
- font-weight: 600;
- color: #666;
- }
- .zipcode-table td {
- padding: 8px;
- border-bottom: 1px solid #eee;
- }
- .zipcode-table tr:hover {
- background: #f8faf5;
- }
+  .stat-item { text-align: center; }
 
- /* Modal */
- .modal-overlay {
- position: fixed;
- top: 0;
- left: 0;
- right: 0;
- bottom: 0;
- background: rgba(0,0,0,0.5);
- display: none;
- align-items: center;
- justify-content: center;
- z-index: 1000;
- }
- .modal-overlay.active { display: flex; }
- .modal {
- background: white;
- border-radius: 12px;
- width: 90%;
- max-width: 800px;
- max-height: 85vh;
- overflow: auto;
- }
- .modal-header {
- padding: 20px;
- border-bottom: 1px solid #eee;
- display: flex;
- justify-content: space-between;
- align-items: center;
- position: sticky;
- top: 0;
- background: white;
- }
- .modal-title { font-size: 18px; font-weight: 600; }
- .modal-close {
- background: none;
- border: none;
- font-size: 24px;
- cursor: pointer;
- color: #888;
- }
- .modal-body { padding: 20px; }
- .detail-grid {
- display: grid;
- grid-template-columns: repeat(3, 1fr);
- gap: 15px;
- margin-bottom: 20px;
- }
- .detail-item {
- background: #f8f9fa;
- padding: 15px;
- border-radius: 8px;
- text-align: center;
- }
- .detail-value {
- font-size: 24px;
- font-weight: 700;
- color: #3A5566;
- }
- .detail-label {
- font-size: 12px;
- color: #888;
- }
- .pricing-detail {
- background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
- border: 2px solid #e65100;
- }
- .pricing-detail .detail-value {
- color: #e65100;
- }
+  .stat-value {
+   font-size: 28px;
+   font-weight: 800;
+   color: #CBB279;
+  }
 
- /* Permit list in modal */
- .permit-list {
- max-height: 300px;
- overflow-y: auto;
- border: 1px solid #eee;
- border-radius: 8px;
- }
- .permit-item {
- padding: 10px 15px;
- border-bottom: 1px solid #eee;
- display: flex;
- justify-content: space-between;
- font-size: 13px;
- }
- .permit-item:last-child { border-bottom: none; }
- .permit-item:hover { background: #f8f9fa; }
- .permit-address { flex: 1; }
- .permit-details { color: #888; }
- .permit-price { font-weight: 600; color: #e65100; }
+  .stat-label {
+   font-size: 12px;
+   color: #706F6C;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   font-weight: 600;
+  }
 
- /* Loading */
- .loading {
- text-align: center;
- padding: 40px;
- color: #888;
- }
+  /* ========== SEARCH / FILTERS ========== */
+  .search-section {
+   max-width: 1100px;
+   margin: 32px auto 0;
+   padding: 0 24px;
+  }
 
- /* Responsive */
- @media (max-width: 1200px) {
- .main-content {
- grid-template-columns: 1fr;
- }
- .sidebar {
- display: grid;
- grid-template-columns: repeat(2, 1fr);
- }
- }
- @media (max-width: 768px) {
- .sidebar {
- grid-template-columns: 1fr;
- }
- .stats-bar {
- justify-content: center;
- }
- .pricing-form {
- flex-direction: column;
- }
- .pricing-input {
- min-width: 100%;
- }
- }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
-<body>
-<!-- Shared Header - Castlehold -->
+  .search-bar {
+   display: flex;
+   gap: 12px;
+   flex-wrap: wrap;
+  }
+
+  .search-input-wrap {
+   flex: 1;
+   min-width: 250px;
+   position: relative;
+  }
+
+  .search-input-wrap svg {
+   position: absolute;
+   left: 14px;
+   top: 50%;
+   transform: translateY(-50%);
+   width: 18px;
+   height: 18px;
+   fill: #918A83;
+  }
+
+  .search-input {
+   width: 100%;
+   padding: 14px 16px 14px 42px;
+   border: 1px solid #E2E2E0;
+   border-radius: 8px;
+   font-size: 14px;
+   font-family: 'Inter', sans-serif;
+   background: #fff;
+   transition: border-color 0.2s;
+  }
+
+  .search-input:focus {
+   outline: none;
+   border-color: #CBB279;
+  }
+
+  .filter-select {
+   padding: 14px 16px;
+   border: 1px solid #E2E2E0;
+   border-radius: 8px;
+   font-size: 14px;
+   font-family: 'Inter', sans-serif;
+   background: #fff;
+   cursor: pointer;
+   min-width: 180px;
+  }
+
+  .filter-select:focus {
+   outline: none;
+   border-color: #CBB279;
+  }
+
+  /* ========== MAIN LAYOUT ========== */
+  .main-layout {
+   max-width: 1100px;
+   margin: 32px auto 0;
+   padding: 0 24px 48px;
+   display: grid;
+   grid-template-columns: 1fr 340px;
+   gap: 24px;
+  }
+
+  /* ========== CONTRACTOR TABLE CARD ========== */
+  .table-card {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   overflow: hidden;
+  }
+
+  .table-card-header {
+   padding: 20px 24px;
+   border-bottom: 1px solid #E2E2E0;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+  }
+
+  .table-card-title {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-size: 20px;
+   color: #3A5566;
+  }
+
+  .showing-count {
+   font-size: 13px;
+   color: #918A83;
+  }
+
+  /* Table */
+  .contractor-table {
+   width: 100%;
+   border-collapse: collapse;
+  }
+
+  .contractor-table th {
+   text-align: left;
+   padding: 12px 16px;
+   background: #F0EBE1;
+   font-size: 11px;
+   font-weight: 700;
+   color: #706F6C;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   border-bottom: 1px solid #E2E2E0;
+   cursor: pointer;
+   white-space: nowrap;
+   user-select: none;
+  }
+
+  .contractor-table th:hover {
+   background: #E2E2E0;
+  }
+
+  .contractor-table th.sorted {
+   color: #CBB279;
+  }
+
+  .contractor-table td {
+   padding: 12px 16px;
+   border-bottom: 1px solid #E2E2E0;
+   font-size: 13px;
+   color: #333;
+  }
+
+  .contractor-table tr:hover {
+   background: #F0EBE1;
+  }
+
+  .contractor-table tr:last-child td {
+   border-bottom: none;
+  }
+
+  .contractor-name-cell {
+   font-weight: 600;
+   color: #3A5566;
+   max-width: 220px;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   cursor: pointer;
+   transition: color 0.2s;
+  }
+
+  .contractor-name-cell:hover {
+   color: #CBB279;
+  }
+
+  .permit-count-cell {
+   font-weight: 700;
+   color: #CBB279;
+  }
+
+  .dadu-count-cell {
+   font-weight: 600;
+   color: #406A64;
+  }
+
+  .value-cell {
+   font-weight: 600;
+   color: #3A5566;
+  }
+
+  .subtype-pill {
+   display: inline-block;
+   padding: 2px 8px;
+   border-radius: 12px;
+   font-size: 10px;
+   font-weight: 600;
+   margin: 1px 2px;
+  }
+
+  .subtype-pill.dadu {
+   background: rgba(64,106,100,0.12);
+   color: #406A64;
+  }
+
+  .subtype-pill.accessory {
+   background: rgba(203,178,121,0.15);
+   color: #7B746D;
+  }
+
+  /* Pagination */
+  .pagination {
+   display: flex;
+   justify-content: center;
+   gap: 6px;
+   padding: 20px;
+   flex-wrap: wrap;
+  }
+
+  .page-btn {
+   padding: 8px 14px;
+   border: 1px solid #E2E2E0;
+   background: #fff;
+   border-radius: 8px;
+   cursor: pointer;
+   font-size: 13px;
+   font-family: 'Inter', sans-serif;
+   font-weight: 500;
+   color: #3A5566;
+   transition: all 0.2s;
+  }
+
+  .page-btn:hover {
+   background: #F0EBE1;
+   border-color: #CBB279;
+  }
+
+  .page-btn.active {
+   background: #CBB279;
+   color: #3A5566;
+   border-color: #CBB279;
+   font-weight: 700;
+  }
+
+  /* ========== SIDEBAR ========== */
+  .sidebar {
+   display: flex;
+   flex-direction: column;
+   gap: 24px;
+  }
+
+  .sidebar-card {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   overflow: hidden;
+  }
+
+  .sidebar-card-header {
+   padding: 16px 20px;
+   border-bottom: 1px solid #E2E2E0;
+  }
+
+  .sidebar-card-title {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-size: 15px;
+   color: #3A5566;
+  }
+
+  .sidebar-card-sub {
+   font-size: 11px;
+   color: #918A83;
+   margin-top: 2px;
+  }
+
+  .sidebar-card-body {
+   padding: 16px 20px;
+  }
+
+  /* Top Lists */
+  .top-list {
+   list-style: none;
+  }
+
+  .top-list li {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   padding: 10px 0;
+   border-bottom: 1px solid #E2E2E0;
+  }
+
+  .top-list li:last-child { border-bottom: none; }
+
+  .rank-num {
+   width: 24px;
+   height: 24px;
+   background: #3A5566;
+   color: #E1D4BB;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 11px;
+   font-weight: 700;
+   flex-shrink: 0;
+  }
+
+  .rank-num.r1 { background: #CBB279; color: #3A5566; }
+  .rank-num.r2 { background: #918A83; color: #fff; }
+  .rank-num.r3 { background: #7B746D; color: #fff; }
+
+  .top-name {
+   flex: 1;
+   font-size: 13px;
+   font-weight: 500;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   color: #333;
+  }
+
+  .top-value {
+   font-weight: 700;
+   color: #CBB279;
+   font-size: 14px;
+   white-space: nowrap;
+  }
+
+  /* ZIP code mini-table */
+  .zip-table {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 13px;
+  }
+
+  .zip-table th {
+   text-align: left;
+   padding: 8px 6px;
+   font-size: 11px;
+   font-weight: 700;
+   color: #706F6C;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   border-bottom: 1px solid #E2E2E0;
+  }
+
+  .zip-table td {
+   padding: 8px 6px;
+   border-bottom: 1px solid #E2E2E0;
+   color: #333;
+  }
+
+  .zip-table tr:last-child td { border-bottom: none; }
+
+  .zip-table tr:hover {
+   background: #F0EBE1;
+   cursor: pointer;
+  }
+
+  .zip-code-val {
+   font-weight: 700;
+   color: #3A5566;
+  }
+
+  /* Status bar chart */
+  .status-bars {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+  }
+
+  .status-bar-row {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+  }
+
+  .status-bar-label {
+   width: 70px;
+   font-size: 12px;
+   color: #706F6C;
+   text-align: right;
+   flex-shrink: 0;
+  }
+
+  .status-bar-track {
+   flex: 1;
+   height: 22px;
+   background: #F0EBE1;
+   border-radius: 4px;
+   overflow: hidden;
+  }
+
+  .status-bar-fill {
+   height: 100%;
+   border-radius: 4px;
+   display: flex;
+   align-items: center;
+   padding-left: 8px;
+   font-size: 11px;
+   color: white;
+   font-weight: 600;
+   min-width: fit-content;
+  }
+
+  .status-bar-fill.done { background: #406A64; }
+  .status-bar-fill.issued { background: #4C5C66; }
+  .status-bar-fill.expired { background: #B58676; }
+  .status-bar-fill.open { background: #A59D8B; }
+  .status-bar-fill.other { background: #918A83; }
+
+  /* ========== MODAL ========== */
+  .modal-overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background: rgba(47,58,69,0.6);
+   display: none;
+   align-items: center;
+   justify-content: center;
+   z-index: 1000;
+   padding: 24px;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal {
+   background: #fff;
+   border-radius: 12px;
+   width: 100%;
+   max-width: 800px;
+   max-height: 85vh;
+   overflow: auto;
+   border: 1px solid #E2E2E0;
+  }
+
+  .modal-header {
+   padding: 24px;
+   border-bottom: 1px solid #E2E2E0;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   position: sticky;
+   top: 0;
+   background: #fff;
+   border-radius: 12px 12px 0 0;
+  }
+
+  .modal-title {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-size: 22px;
+   color: #3A5566;
+  }
+
+  .modal-close {
+   background: none;
+   border: 1px solid #E2E2E0;
+   border-radius: 8px;
+   width: 36px;
+   height: 36px;
+   font-size: 20px;
+   cursor: pointer;
+   color: #706F6C;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   transition: all 0.2s;
+  }
+
+  .modal-close:hover {
+   background: #F0EBE1;
+   color: #3A5566;
+  }
+
+  .modal-body { padding: 24px; }
+
+  .detail-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 16px;
+   margin-bottom: 24px;
+  }
+
+  .detail-item {
+   background: #F0EBE1;
+   padding: 16px;
+   border-radius: 8px;
+   text-align: center;
+  }
+
+  .detail-value {
+   font-size: 24px;
+   font-weight: 800;
+   color: #3A5566;
+  }
+
+  .detail-value.accent { color: #CBB279; }
+
+  .detail-label {
+   font-size: 12px;
+   color: #706F6C;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   margin-top: 4px;
+  }
+
+  .modal-section {
+   margin-bottom: 20px;
+  }
+
+  .modal-section-title {
+   font-size: 13px;
+   font-weight: 700;
+   color: #706F6C;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   margin-bottom: 10px;
+  }
+
+  .modal-info-box {
+   background: #F0EBE1;
+   padding: 16px;
+   border-radius: 8px;
+   font-size: 14px;
+   color: #333;
+   font-weight: 500;
+  }
+
+  .permit-list {
+   max-height: 250px;
+   overflow-y: auto;
+   border: 1px solid #E2E2E0;
+   border-radius: 8px;
+  }
+
+  .permit-item {
+   padding: 10px 16px;
+   border-bottom: 1px solid #E2E2E0;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   font-size: 13px;
+  }
+
+  .permit-item:last-child { border-bottom: none; }
+  .permit-item:hover { background: #F0EBE1; }
+
+  .permit-addr {
+   flex: 1;
+   color: #333;
+   font-weight: 500;
+  }
+
+  .permit-num {
+   color: #918A83;
+   font-size: 12px;
+  }
+
+  .permit-link {
+   color: #3A5566;
+   font-weight: 600;
+   font-size: 12px;
+   margin-left: 12px;
+   white-space: nowrap;
+  }
+
+  .permit-link:hover { color: #CBB279; }
+
+  /* Subtype tags in modal */
+  .subtype-tags {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+  }
+
+  .subtype-tag {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 6px 14px;
+   border-radius: 20px;
+   font-size: 13px;
+   font-weight: 600;
+  }
+
+  .subtype-tag.dadu {
+   background: rgba(64,106,100,0.12);
+   color: #406A64;
+  }
+
+  .subtype-tag.accessory {
+   background: rgba(203,178,121,0.15);
+   color: #7B746D;
+  }
+
+  .subtype-tag-count {
+   background: rgba(0,0,0,0.1);
+   border-radius: 10px;
+   padding: 1px 8px;
+   font-size: 11px;
+   font-weight: 700;
+  }
+
+  /* ========== LOADING ========== */
+  .loading-state {
+   text-align: center;
+   padding: 48px;
+   color: #918A83;
+   font-size: 14px;
+  }
+
+  /* ========== CTA ========== */
+  .cta-section {
+   background: #3A5566;
+   padding: 64px 24px;
+   text-align: center;
+  }
+
+  .cta-section h2 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-size: 32px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
+
+  .cta-section p {
+   color: #F0EBE1;
+   font-size: 15px;
+   max-width: 520px;
+   margin: 0 auto 28px;
+  }
+
+  .cta-btn {
+   display: inline-block;
+   padding: 16px 44px;
+   background: #CBB279;
+   color: #3A5566;
+   border-radius: 8px;
+   font-size: 16px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+  }
+
+  .cta-btn:hover {
+   background: #D4A54E;
+   transform: translateY(-2px);
+  }
+
+  /* ========== FOOTER ========== */
+  .page-footer {
+   background: #3A5566;
+   border-top: 1px solid #496778;
+   padding: 48px 24px 24px;
+   color: #E1D4BB;
+  }
+
+  .footer-inner {
+   max-width: 1100px;
+   margin: 0 auto;
+   display: flex;
+   justify-content: space-between;
+   align-items: flex-start;
+   gap: 40px;
+  }
+
+  .footer-links {
+   display: flex;
+   gap: 60px;
+  }
+
+  .footer-col {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+  }
+
+  .footer-col h4 {
+   font-size: 14px;
+   font-weight: 700;
+   color: #E1D4BB;
+   margin-bottom: 4px;
+  }
+
+  .footer-col a {
+   font-size: 13px;
+   color: #918A83;
+   transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: #E1D4BB; }
+
+  .footer-social {
+   display: flex;
+   gap: 12px;
+  }
+
+  .footer-social a {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 36px;
+   height: 36px;
+   border-radius: 50%;
+   background: rgba(255,255,255,0.1);
+   transition: background 0.2s;
+  }
+
+  .footer-social a:hover { background: rgba(255,255,255,0.2); }
+
+  .footer-social svg {
+   width: 16px;
+   height: 16px;
+   fill: #E1D4BB;
+  }
+
+  .footer-bottom {
+   max-width: 1100px;
+   margin: 32px auto 0;
+   padding-top: 20px;
+   border-top: 1px solid rgba(255,255,255,0.1);
+   display: flex;
+   justify-content: space-between;
+   font-size: 12px;
+   color: #918A83;
+  }
+
+  .footer-bottom a {
+   color: #918A83;
+   transition: color 0.2s;
+  }
+
+  .footer-bottom a:hover { color: rgba(225, 212, 187, 0.8); }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 900px) {
+   .main-layout {
+    grid-template-columns: 1fr;
+   }
+   .sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+   }
+  }
+
+  @media (max-width: 768px) {
+   .cd-hero h1 { font-size: 28px; }
+   .stats-bar-inner { padding: 20px; gap: 16px; }
+   .stat-value { font-size: 22px; }
+   .search-bar { flex-direction: column; }
+   .filter-select { min-width: 100%; }
+   .detail-grid { grid-template-columns: 1fr 1fr; }
+   .sidebar { grid-template-columns: 1fr; }
+   .footer-inner { flex-direction: column; }
+   .footer-links { flex-direction: column; gap: 24px; }
+   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+   .cd-hero { padding: 36px 16px; }
+   .cd-hero h1 { font-size: 24px; }
+   .detail-grid { grid-template-columns: 1fr; }
+   .cta-section h2 { font-size: 26px; }
+  }
+ </style>
+</head>
+<body class="dark-nav">
+
+<!-- Shared Header -->
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
+<!-- Hero -->
+<section class="cd-hero">
+ <h1>Find a Contractor</h1>
+ <p class="subtitle">Browse Nashville DADU and accessory structure contractors ranked by permit activity, project history, and areas served.</p>
+ <div class="hero-badges">
+  <span class="badge">
+   <img src="assets/icons/Building_and_Construction.svg" alt="">
+   <span id="badge-contractors">370</span> Contractors
+  </span>
+  <span class="badge">
+   <img src="assets/icons/Permit_Activity.svg" alt="">
+   <span id="badge-permits">628</span> Permits
+  </span>
+  <span class="badge">
+   <img src="assets/icons/Property_Owners.svg" alt="">
+   <span id="badge-dadu">304</span> DADU Permits
+  </span>
+ </div>
+</section>
 
+<!-- Stats Bar -->
+<div class="stats-bar">
+ <div class="stats-bar-inner">
+  <div class="stat-item">
+   <div class="stat-value" id="stat-contractors">--</div>
+   <div class="stat-label">Contractors</div>
+  </div>
+  <div class="stat-item">
+   <div class="stat-value" id="stat-permits">--</div>
+   <div class="stat-label">Total Permits</div>
+  </div>
+  <div class="stat-item">
+   <div class="stat-value" id="stat-dadu">--</div>
+   <div class="stat-label">DADU Permits</div>
+  </div>
+  <div class="stat-item">
+   <div class="stat-value" id="stat-value">--</div>
+   <div class="stat-label">Total Value</div>
+  </div>
+  <div class="stat-item">
+   <div class="stat-value" id="stat-zips">--</div>
+   <div class="stat-label">Zip Codes</div>
+  </div>
+ </div>
+</div>
 
- <div class="header">
- <div class="logo">
- <div class="logo-icon"></div>
- <div>
- <div class="logo-text">DADU Contractor Dashboard</div>
- <div class="logo-sub">Castlehold - Nashville Contractor Activity & Pricing</div></div></div>
- <a href="parcel_footprint_map.html" style="color: white; text-decoration: none; font-size: 14px;">Back to Map</a></div>
+<!-- Search and Filters -->
+<div class="search-section">
+ <div class="search-bar">
+  <div class="search-input-wrap">
+   <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+   <input type="text" class="search-input" id="search" placeholder="Search by contractor name, zip code, or address...">
+  </div>
+  <select class="filter-select" id="type-filter">
+   <option value="all">All Contractors</option>
+   <option value="dadu">DADU Builders Only</option>
+   <option value="accessory">Accessory Structures</option>
+   <option value="active">Currently Active (Issued/Open)</option>
+  </select>
+  <select class="filter-select" id="sort-by">
+   <option value="total">Sort by Total Permits</option>
+   <option value="dadu">Sort by DADU Count</option>
+   <option value="value">Sort by Total Value</option>
+   <option value="name">Sort by Name (A-Z)</option>
+   <option value="years">Sort by Years Active</option>
+  </select>
+ </div>
+</div>
 
- <!-- Area Pricing Tool -->
- <div class="pricing-tool">
- <h3>Get Average $/SF Pricing by Area</h3>
- <div class="pricing-form">
- <input type="text" class="pricing-input" id="address-input" placeholder="Enter address or zip code (e.g., 1234 Main St, Nashville 37206 or just 37206)">
- <button class="pricing-btn" onclick="lookupAreaPricing()">Get Area Pricing</button></div>
- <div class="pricing-results" id="pricing-results">
- <div class="pricing-grid" id="pricing-grid"></div>
- <div id="area-contractors" style="margin-top: 15px;"></div></div></div>
+<!-- Main Content -->
+<div class="main-layout">
+ <!-- Table -->
+ <div class="table-card">
+  <div class="table-card-header">
+   <div class="table-card-title">All Contractors</div>
+   <div class="showing-count" id="showing-count">Loading...</div>
+  </div>
 
- <div class="stats-bar">
- <div class="stat-item">
- <div class="stat-value" id="total-permits">-</div>
- <div class="stat-label">Total Permits</div></div>
- <div class="stat-item">
- <div class="stat-value" id="total-contractors">-</div>
- <div class="stat-label">Contractors</div></div>
- <div class="stat-item">
- <div class="stat-value" id="dadu-count">-</div>
- <div class="stat-label">DADU Permits</div></div>
- <div class="stat-item">
- <div class="stat-value" id="avg-cost-sf">-</div>
- <div class="stat-label">Avg $/SF</div></div>
- <div class="stat-item">
- <div class="stat-value" id="total-value">-</div>
- <div class="stat-label">Total Value</div></div></div>
+  <table class="contractor-table">
+   <thead>
+    <tr>
+     <th>#</th>
+     <th>Contractor Name</th>
+     <th>Permits</th>
+     <th>DADU</th>
+     <th>Avg Value</th>
+     <th>Years Active</th>
+    </tr>
+   </thead>
+   <tbody id="contractor-tbody">
+    <tr><td colspan="6" class="loading-state">Loading contractors...</td></tr>
+   </tbody>
+  </table>
 
- <div class="main-content">
- <div class="card">
- <div class="card-header">
- <div class="card-title">All Contractors</div>
- <div id="showing-count" style="font-size: 13px; color: #888;">Loading...</div></div>
- <div class="card-body">
- <div class="filters">
- <div class="search-box">
- <span class="search-icon"></span>
- <input type="text" class="search-input" id="search" placeholder="Search contractors..."></div>
- <select class="filter-select" id="type-filter">
- <option value="all">All Contractors</option>
- <option value="has-pricing">Has $/SF Data</option>
- <option value="dadu">DADU Builders</option></select>
- <select class="filter-select" id="sort-by">
- <option value="total">Sort by Total Permits</option>
- <option value="dadu">Sort by DADU Count</option>
- <option value="pricing-count">Sort by $/SF Records</option>
- <option value="cost-low">Sort by $/SF (Low to High)</option>
- <option value="cost-high">Sort by $/SF (High to Low)</option>
- <option value="value">Sort by Total Value</option></select></div>
+  <div class="pagination" id="pagination"></div>
+ </div>
 
- <table class="contractor-table">
- <thead>
- <tr>
- <th>#</th>
- <th>Contractor Name</th>
- <th>Permits</th>
- <th>DADU</th>
- <th>Avg $/SF</th>
- <th>Range</th>
- <th># w/Price</th>
- <th>Zip Codes</th></tr></thead>
- <tbody id="contractor-tbody">
- <tr><td colspan="8" class="loading">Loading contractors...</td></tr></tbody></table>
-
- <div class="pagination" id="pagination"></div></div></div>
-
+ <!-- Sidebar -->
  <div class="sidebar">
- <div class="card">
- <div class="card-header">
- <div class="card-title">Best Value Contractors</div>
- <div style="font-size: 11px; color: #888;">Lowest avg $/SF (5+ records)</div></div>
- <div class="card-body">
- <ul class="top-list" id="top-value"></ul></div></div>
+  <!-- Top DADU Builders -->
+  <div class="sidebar-card">
+   <div class="sidebar-card-header">
+    <div class="sidebar-card-title">Top DADU Builders</div>
+    <div class="sidebar-card-sub">By DADU permit count</div>
+   </div>
+   <div class="sidebar-card-body">
+    <ul class="top-list" id="top-dadu"></ul>
+   </div>
+  </div>
 
- <div class="card">
- <div class="card-header">
- <div class="card-title">Top DADU Builders</div></div>
- <div class="card-body">
- <ul class="top-list" id="top-dadu"></ul></div></div>
+  <!-- Top by Value -->
+  <div class="sidebar-card">
+   <div class="sidebar-card-header">
+    <div class="sidebar-card-title">Highest Value Contractors</div>
+    <div class="sidebar-card-sub">By total permit value</div>
+   </div>
+   <div class="sidebar-card-body">
+    <ul class="top-list" id="top-value"></ul>
+   </div>
+  </div>
 
- <div class="card">
- <div class="card-header">
- <div class="card-title">$/SF by Zip Code</div></div>
- <div class="card-body">
- <table class="zipcode-table" id="zipcode-table">
- <thead>
- <tr>
- <th>Zip</th>
- <th>Permits</th>
- <th>Avg $/SF</th>
- <th>Contractors</th></tr></thead>
- <tbody id="zipcode-tbody"></tbody></table></div></div></div></div>
+  <!-- Activity by ZIP -->
+  <div class="sidebar-card">
+   <div class="sidebar-card-header">
+    <div class="sidebar-card-title">Activity by Zip Code</div>
+   </div>
+   <div class="sidebar-card-body">
+    <table class="zip-table" id="zip-table">
+     <thead>
+      <tr>
+       <th>Zip</th>
+       <th>Permits</th>
+       <th>Contractors</th>
+      </tr>
+     </thead>
+     <tbody id="zip-tbody"></tbody>
+    </table>
+   </div>
+  </div>
 
- <!-- Modal -->
- <div class="modal-overlay" id="modal-overlay">
+  <!-- Permit Status Distribution -->
+  <div class="sidebar-card">
+   <div class="sidebar-card-header">
+    <div class="sidebar-card-title">Permit Status Distribution</div>
+   </div>
+   <div class="sidebar-card-body">
+    <div class="status-bars" id="status-bars"></div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
  <div class="modal">
- <div class="modal-header">
- <div class="modal-title" id="modal-title">Contractor Details</div>
- <button class="modal-close" onclick="closeModal()">&times;</button></div>
- <div class="modal-body" id="modal-body"></div></div></div>
+  <div class="modal-header">
+   <div class="modal-title" id="modal-title">Contractor Details</div>
+   <button class="modal-close" onclick="closeModal()">&times;</button>
+  </div>
+  <div class="modal-body" id="modal-body"></div>
+ </div>
+</div>
 
- <script>
- let allContractors = [];
- let filteredContractors = [];
- let zipcodeData = [];
- let currentPage = 1;
- const perPage = 25;
+<!-- CTA -->
+<section class="cta-section">
+ <h2>Ready to Build Your DADU?</h2>
+ <p>Check if your property qualifies under BL2025-1007 and start planning your project today.</p>
+ <a href="am_i_eligible.html" class="cta-btn">Check Eligibility Now</a>
+</section>
 
- // Load both data files
- Promise.all([
- fetch('contractor_data_enhanced.json').then(r =>r.json()),
- fetch('zipcode_pricing_data.json').then(r =>r.json())
- ]).then(([contractors, zipcodes]) =>{
- allContractors = contractors;
- zipcodeData = zipcodes;
- filteredContractors = [...allContractors];
+<!-- Footer -->
+<footer class="page-footer">
+ <div class="footer-inner">
+  <div class="footer-links">
+   <div class="footer-col">
+    <h4>Learn</h4>
+    <a href="am_i_eligible.html">Am I Eligible?</a>
+    <a href="size_calculator.html">Size Calculator</a>
+    <a href="dadu_calculators.html">Cost Estimator</a>
+   </div>
+   <div class="footer-col">
+    <h4>Features</h4>
+    <a href="contractor_marketplace.html">Contractor Marketplace</a>
+    <a href="dadu_requirements_overview.html">Planning Resources</a>
+    <a href="homebody_dadu_pricing.html">Pricing</a>
+   </div>
+   <div class="footer-col">
+    <h4>Get in Touch</h4>
+    <a href="mailto:hello@castlehold.com">hello@castlehold.com</a>
+    <a href="mailto:hello@castlehold.com">Contact</a>
+    <a href="#">Sign in</a>
+   </div>
+  </div>
+  <div class="footer-social">
+   <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+   <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+  </div>
+ </div>
+ <div class="footer-bottom">
+  <span>&copy; 2026 Homebody Projects. Powered by Castlehold. All rights reserved.</span>
+  <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span>
+ </div>
+</footer>
 
- // Calculate stats
- let totalPermits = 0, totalDadu = 0, totalValue = 0, totalSqft = 0;
- let allCostPerSf = [];
+<script>
+// =============================================
+// CONTRACTOR DASHBOARD — Live Data from contractor_stats.json
+// =============================================
 
- allContractors.forEach(c =>{
- totalPermits += c.permit_count;
- totalDadu += c.dadu_count || 0;
- totalValue += c.total_value || 0;
- totalSqft += c.total_sqft || 0;
- if (c.avg_cost_per_sf) {
- allCostPerSf.push(c.avg_cost_per_sf);
- }
+let allContractors = [];
+let filteredContractors = [];
+let zipcodeData = [];
+let currentPage = 1;
+const perPage = 25;
+
+// Load contractor_stats.json
+fetch('data/contractor_stats.json')
+ .then(r => r.json())
+ .then(data => {
+  // Transform the data from {name: {...}} format to array format
+  const contractors = data.contractors;
+  allContractors = Object.entries(contractors).map(([name, info]) => {
+   // Count DADU permits
+   let daduCount = 0;
+   let accessoryCount = 0;
+   const subtypes = info.permit_subtypes || {};
+   for (const [subtype, count] of Object.entries(subtypes)) {
+    if (subtype.includes('DWELLING') || subtype.includes('DADU')) {
+     daduCount += count;
+    } else {
+     accessoryCount += count;
+    }
+   }
+
+   // Extract zip codes from addresses
+   const zipcodes = [];
+   (info.addresses || []).forEach(addr => {
+    const parts = addr.split(/\s+/);
+    const last = parts[parts.length - 1];
+    if (last && last.length === 5 && /^\d{5}$/.test(last)) {
+     if (!zipcodes.includes(last)) zipcodes.push(last);
+    }
+   });
+
+   // Format display name (title case)
+   const displayName = name.split(/\s+/).map(w => {
+    if (['LLC', 'INC', 'CO', 'LP', 'LLP', 'CORP', 'DBA'].includes(w)) return w;
+    return w.charAt(0) + w.slice(1).toLowerCase();
+   }).join(' ');
+
+   // Determine if currently active (has ISSUED or OPEN permits)
+   const statuses = info.statuses || {};
+   const hasActive = (statuses['ISSUED'] || 0) + (statuses['OPEN'] || 0) > 0;
+
+   return {
+    name: name,
+    displayName: displayName,
+    permit_count: info.permit_count || 0,
+    total_value: info.total_value || 0,
+    avg_value: info.avg_value || 0,
+    dadu_count: daduCount,
+    accessory_count: accessoryCount,
+    addresses: info.addresses || [],
+    apns: info.apns || [],
+    permit_numbers: info.permit_numbers || [],
+    years_active: info.years_active || [],
+    permit_subtypes: subtypes,
+    statuses: statuses,
+    zipcodes: zipcodes,
+    hasActive: hasActive
+   };
+  });
+
+  // Sort by permit count initially
+  allContractors.sort((a, b) => b.permit_count - a.permit_count);
+  filteredContractors = [...allContractors];
+
+  // Calculate stats
+  let totalPermits = 0, totalDadu = 0, totalValue = 0;
+  const allZips = new Set();
+
+  allContractors.forEach(c => {
+   totalPermits += c.permit_count;
+   totalDadu += c.dadu_count;
+   totalValue += c.total_value;
+   c.zipcodes.forEach(z => allZips.add(z));
+  });
+
+  // Update stats
+  document.getElementById('stat-contractors').textContent = allContractors.length.toLocaleString();
+  document.getElementById('stat-permits').textContent = totalPermits.toLocaleString();
+  document.getElementById('stat-dadu').textContent = totalDadu.toLocaleString();
+  document.getElementById('stat-value').textContent = '$' + (totalValue / 1000000).toFixed(1) + 'M';
+  document.getElementById('stat-zips').textContent = allZips.size.toLocaleString();
+
+  // Update badges
+  document.getElementById('badge-contractors').textContent = allContractors.length;
+  document.getElementById('badge-permits').textContent = totalPermits;
+  document.getElementById('badge-dadu').textContent = totalDadu;
+
+  // Build zip code data
+  buildZipcodeData();
+
+  // Render
+  renderTable();
+  renderTopLists();
+  renderZipcodeTable();
+  renderStatusBars();
+ })
+ .catch(err => {
+  document.getElementById('contractor-tbody').innerHTML =
+   '<tr><td colspan="6" class="loading-state">Error loading data. Please refresh the page.</td></tr>';
+  console.error('Failed to load contractor data:', err);
  });
 
- const avgCostPerSf = allCostPerSf.length >0
- ? (allCostPerSf.reduce((a,b) =>a+b, 0) / allCostPerSf.length).toFixed(2)
- : 'N/A';
-
- document.getElementById('total-permits').textContent = totalPermits.toLocaleString();
- document.getElementById('total-contractors').textContent = allContractors.length.toLocaleString();
- document.getElementById('dadu-count').textContent = totalDadu.toLocaleString();
- document.getElementById('avg-cost-sf').textContent = avgCostPerSf !== 'N/A' ? '$' + avgCostPerSf : 'N/A';
- document.getElementById('total-value').textContent = '$' + (totalValue / 1000000).toFixed(1) + 'M';
-
- // Render
- renderTable();
- renderTopLists();
- renderZipcodeTable();
+function buildZipcodeData() {
+ const zipMap = {};
+ allContractors.forEach(c => {
+  c.zipcodes.forEach(zip => {
+   if (!zipMap[zip]) {
+    zipMap[zip] = { zip: zip, permits: 0, contractors: new Set() };
+   }
+   zipMap[zip].permits += c.permit_count;
+   zipMap[zip].contractors.add(c.name);
+  });
  });
+ zipcodeData = Object.values(zipMap).map(z => ({
+  zip: z.zip,
+  permits: z.permits,
+  contractors: z.contractors.size
+ })).sort((a, b) => b.permits - a.permits);
+}
 
- function renderTable() {
+function renderTable() {
  const start = (currentPage - 1) * perPage;
  const end = start + perPage;
  const pageData = filteredContractors.slice(start, end);
@@ -682,326 +1201,309 @@
  const tbody = document.getElementById('contractor-tbody');
 
  if (pageData.length === 0) {
- tbody.innerHTML = '<tr><td colspan="8" class="loading">No contractors found</td></tr>';
- return;
+  tbody.innerHTML = '<tr><td colspan="6" class="loading-state">No contractors found matching your search.</td></tr>';
+  document.getElementById('showing-count').textContent = '0 results';
+  document.getElementById('pagination').innerHTML = '';
+  return;
  }
 
- tbody.innerHTML = pageData.map((c, i) =>{
- const avgCost = c.avg_cost_per_sf ? '$' + c.avg_cost_per_sf.toFixed(0) : '-';
- const range = c.min_cost_per_sf && c.max_cost_per_sf
- ? '$' + c.min_cost_per_sf.toFixed(0) + '-$' + c.max_cost_per_sf.toFixed(0)
- : '-';
- const zipcodes = c.zipcodes ? c.zipcodes.slice(0, 3).join(', ') + (c.zipcodes.length >3 ? '...' : '') : '-';
+ tbody.innerHTML = pageData.map((c, i) => {
+  const avgVal = c.avg_value > 0 ? '$' + c.avg_value.toLocaleString() : '-';
+  const yearsStr = c.years_active.length > 0
+   ? c.years_active[0] + (c.years_active.length > 1 ? '-' + c.years_active[c.years_active.length - 1] : '')
+   : '-';
+  const rank = start + i + 1;
 
- return `
- <tr>
- <td>${start + i + 1}</td>
- <td class="contractor-name" onclick="showDetails(${i + start})">${c.display_name || c.name}</td>
- <td class="permit-count">${c.permit_count}</td>
- <td>${c.dadu_count || '-'}</td>
- <td class="cost-per-sf">${avgCost}</td>
- <td style="font-size: 11px; color: #666;">${range}</td>
- <td>${c.cost_per_sf_count || '-'}</td>
- <td style="font-size: 11px;">${zipcodes}</td></tr>
- `;
+  return '<tr onclick="showDetails(' + (start + i) + ')" style="cursor:pointer;">' +
+   '<td>' + rank + '</td>' +
+   '<td class="contractor-name-cell">' + c.displayName + '</td>' +
+   '<td class="permit-count-cell">' + c.permit_count + '</td>' +
+   '<td class="dadu-count-cell">' + (c.dadu_count > 0 ? c.dadu_count : '-') + '</td>' +
+   '<td class="value-cell">' + avgVal + '</td>' +
+   '<td style="font-size:12px;color:#706F6C;">' + yearsStr + '</td>' +
+   '</tr>';
  }).join('');
 
  document.getElementById('showing-count').textContent =
- `Showing ${start + 1}-${Math.min(end, filteredContractors.length)} of ${filteredContractors.length}`;
+  'Showing ' + (start + 1) + '-' + Math.min(end, filteredContractors.length) + ' of ' + filteredContractors.length;
 
  renderPagination();
- }
+}
 
- function renderPagination() {
+function renderPagination() {
  const totalPages = Math.ceil(filteredContractors.length / perPage);
  const pagination = document.getElementById('pagination');
 
+ if (totalPages <= 1) { pagination.innerHTML = ''; return; }
+
  let html = '';
- if (currentPage >1) {
- html += `<button class="page-btn" onclick="goToPage(${currentPage - 1})">Prev</button>`;
+ if (currentPage > 1) {
+  html += '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')">Prev</button>';
  }
 
- for (let i = 1; i <= Math.min(totalPages, 10); i++) {
- html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+ // Show page numbers smartly
+ let startPage = Math.max(1, currentPage - 3);
+ let endPage = Math.min(totalPages, startPage + 6);
+ if (endPage - startPage < 6) startPage = Math.max(1, endPage - 6);
+
+ if (startPage > 1) {
+  html += '<button class="page-btn" onclick="goToPage(1)">1</button>';
+  if (startPage > 2) html += '<span style="padding:8px;color:#918A83;">...</span>';
  }
 
- if (totalPages >10) {
- html += `<span style="padding: 8px;">...</span>`;
- html += `<button class="page-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+ for (let i = startPage; i <= endPage; i++) {
+  html += '<button class="page-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+ }
+
+ if (endPage < totalPages) {
+  if (endPage < totalPages - 1) html += '<span style="padding:8px;color:#918A83;">...</span>';
+  html += '<button class="page-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
  }
 
  if (currentPage < totalPages) {
- html += `<button class="page-btn" onclick="goToPage(${currentPage + 1})">Next</button>`;
+  html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')">Next</button>';
  }
 
  pagination.innerHTML = html;
- }
+}
 
- function goToPage(page) {
+function goToPage(page) {
  currentPage = page;
  renderTable();
- window.scrollTo({ top: 300, behavior: 'smooth' });
- }
+ document.querySelector('.table-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
- function renderTopLists() {
- // Best Value (lowest $/SF with 5+ records)
- const withPricing = allContractors
- .filter(c =>c.avg_cost_per_sf && c.cost_per_sf_count >= 5 && !c.name.includes('SELF CONTRACTOR'))
- .sort((a, b) =>a.avg_cost_per_sf - b.avg_cost_per_sf)
- .slice(0, 10);
-
- document.getElementById('top-value').innerHTML = withPricing.map((c, i) =>`
- <li>
- <span class="rank ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">${i + 1}</span>
- <span class="top-name">${c.display_name || c.name}</span>
- <span class="top-value price">$${c.avg_cost_per_sf.toFixed(0)}/SF</span></li>
- `).join('');
-
- // Top DADU builders
+function renderTopLists() {
+ // Top DADU builders (exclude SELF CONTRACTOR)
  const topDadu = allContractors
- .filter(c =>c.dadu_count >0 && !c.name.includes('SELF CONTRACTOR'))
- .sort((a, b) =>b.dadu_count - a.dadu_count)
- .slice(0, 10);
+  .filter(c => c.dadu_count > 0 && !c.name.includes('SELF CONTRACTOR'))
+  .sort((a, b) => b.dadu_count - a.dadu_count)
+  .slice(0, 8);
 
- document.getElementById('top-dadu').innerHTML = topDadu.map((c, i) =>`
- <li>
- <span class="rank ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">${i + 1}</span>
- <span class="top-name">${c.display_name || c.name}</span>
- <span class="top-value">${c.dadu_count}</span></li>
- `).join('');
- }
+ document.getElementById('top-dadu').innerHTML = topDadu.map((c, i) => {
+  const rankClass = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
+  return '<li>' +
+   '<span class="rank-num ' + rankClass + '">' + (i + 1) + '</span>' +
+   '<span class="top-name">' + c.displayName + '</span>' +
+   '<span class="top-value">' + c.dadu_count + '</span>' +
+   '</li>';
+ }).join('');
 
- function renderZipcodeTable() {
- const tbody = document.getElementById('zipcode-tbody');
- tbody.innerHTML = zipcodeData.slice(0, 12).map(z =>`
- <tr onclick="filterByZipcode('${z.zipcode}')" style="cursor: pointer;">
- <td><strong>${z.zipcode}</strong></td>
- <td>${z.permit_count}</td>
- <td class="cost-per-sf">${z.avg_cost_per_sf ? '$' + z.avg_cost_per_sf.toFixed(0) : '-'}</td>
- <td>${z.contractor_count}</td></tr>
- `).join('');
- }
+ // Top by value (exclude SELF CONTRACTOR)
+ const topValue = allContractors
+  .filter(c => c.total_value > 0 && !c.name.includes('SELF CONTRACTOR'))
+  .sort((a, b) => b.total_value - a.total_value)
+  .slice(0, 8);
 
- function filterByZipcode(zipcode) {
- document.getElementById('search').value = zipcode;
- applyFilters();
- }
+ document.getElementById('top-value').innerHTML = topValue.map((c, i) => {
+  const rankClass = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
+  return '<li>' +
+   '<span class="rank-num ' + rankClass + '">' + (i + 1) + '</span>' +
+   '<span class="top-name">' + c.displayName + '</span>' +
+   '<span class="top-value">$' + (c.total_value / 1000).toFixed(0) + 'K</span>' +
+   '</li>';
+ }).join('');
+}
 
- // Area pricing lookup
- function lookupAreaPricing() {
- const input = document.getElementById('address-input').value.trim();
- if (!input) return;
+function renderZipcodeTable() {
+ const tbody = document.getElementById('zip-tbody');
+ tbody.innerHTML = zipcodeData.slice(0, 12).map(z => {
+  return '<tr onclick="filterByZip(\'' + z.zip + '\')">' +
+   '<td class="zip-code-val">' + z.zip + '</td>' +
+   '<td>' + z.permits + '</td>' +
+   '<td>' + z.contractors + '</td>' +
+   '</tr>';
+ }).join('');
+}
 
- // Extract zip code from input
- const zipMatch = input.match(/\b(\d{5})\b/);
- let zipcode = zipMatch ? zipMatch[1] : null;
-
- // If no zip found, check if it's just a zip
- if (!zipcode && /^\d{5}$/.test(input)) {
- zipcode = input;
- }
-
- const results = document.getElementById('pricing-results');
- const grid = document.getElementById('pricing-grid');
- const contractors = document.getElementById('area-contractors');
-
- if (!zipcode) {
- grid.innerHTML = '<p style="text-align: center;">Please include a Nashville zip code (e.g., 37206)</p>';
- results.classList.add('active');
- contractors.innerHTML = '';
- return;
- }
-
- // Find zip code data
- const zipData = zipcodeData.find(z =>z.zipcode === zipcode);
-
- if (!zipData) {
- grid.innerHTML = `<p style="text-align: center;">No DADU permit data found for zip code ${zipcode}</p>`;
- results.classList.add('active');
- contractors.innerHTML = '';
- return;
- }
-
- // Display pricing stats
- grid.innerHTML = `
- <div class="pricing-stat">
- <div class="pricing-stat-value">${zipData.permit_count}</div>
- <div class="pricing-stat-label">Permits in ${zipcode}</div></div>
- <div class="pricing-stat">
- <div class="pricing-stat-value">${zipData.avg_cost_per_sf ? '$' + zipData.avg_cost_per_sf.toFixed(0) : 'N/A'}</div>
- <div class="pricing-stat-label">Avg $/SF</div></div>
- <div class="pricing-stat">
- <div class="pricing-stat-value">${zipData.contractor_count}</div>
- <div class="pricing-stat-label">Contractors</div></div>
- <div class="pricing-stat">
- <div class="pricing-stat-value">$${Math.round(zipData.total_value / zipData.permit_count).toLocaleString()}</div>
- <div class="pricing-stat-label">Avg Permit Value</div></div>
- `;
-
- // Show top contractors in this area
- const areaContractors = allContractors
- .filter(c =>c.zipcodes && c.zipcodes.includes(zipcode))
- .sort((a, b) =>(b.cost_per_sf_count || 0) - (a.cost_per_sf_count || 0))
- .slice(0, 5);
-
- if (areaContractors.length >0) {
- contractors.innerHTML = `
- <div style="font-size: 12px; margin-bottom: 8px; opacity: 0.9;">Top contractors in ${zipcode}:</div>
- ${areaContractors.map(c =>`
- <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.2);">
- <span>${c.display_name || c.name}</span>
- <span>${c.avg_cost_per_sf ? '$' + c.avg_cost_per_sf.toFixed(0) + '/SF' : 'No pricing'}</span></div>
- `).join('')}
- `;
- } else {
- contractors.innerHTML = '';
- }
-
- results.classList.add('active');
- }
-
- // Search & Filters
- document.getElementById('search').addEventListener('input', applyFilters);
- document.getElementById('type-filter').addEventListener('change', applyFilters);
- document.getElementById('sort-by').addEventListener('change', applyFilters);
- document.getElementById('address-input').addEventListener('keypress', (e) =>{
- if (e.key === 'Enter') lookupAreaPricing();
+function renderStatusBars() {
+ // Aggregate all statuses
+ const statusTotals = {};
+ allContractors.forEach(c => {
+  for (const [status, count] of Object.entries(c.statuses)) {
+   statusTotals[status] = (statusTotals[status] || 0) + count;
+  }
  });
 
- function applyFilters() {
- const query = document.getElementById('search').value.toLowerCase();
+ const sorted = Object.entries(statusTotals).sort((a, b) => b[1] - a[1]);
+ const maxCount = sorted.length > 0 ? sorted[0][1] : 1;
+
+ const statusColors = {
+  'DONE': 'done',
+  'ISSUED': 'issued',
+  'EXPIRED': 'expired',
+  'OPEN': 'open'
+ };
+
+ document.getElementById('status-bars').innerHTML = sorted.map(([status, count]) => {
+  const pct = Math.max(10, (count / maxCount) * 100);
+  const colorClass = statusColors[status] || 'other';
+  return '<div class="status-bar-row">' +
+   '<div class="status-bar-label">' + status.charAt(0) + status.slice(1).toLowerCase() + '</div>' +
+   '<div class="status-bar-track">' +
+   '<div class="status-bar-fill ' + colorClass + '" style="width:' + pct + '%">' + count + '</div>' +
+   '</div></div>';
+ }).join('');
+}
+
+function filterByZip(zip) {
+ document.getElementById('search').value = zip;
+ applyFilters();
+}
+
+// Search & Filters
+document.getElementById('search').addEventListener('input', applyFilters);
+document.getElementById('type-filter').addEventListener('change', applyFilters);
+document.getElementById('sort-by').addEventListener('change', applyFilters);
+
+function applyFilters() {
+ const query = document.getElementById('search').value.toLowerCase().trim();
  const type = document.getElementById('type-filter').value;
  const sort = document.getElementById('sort-by').value;
 
- filteredContractors = allContractors.filter(c =>{
- // Search filter
- if (query) {
- const matchName = (c.name || '').toLowerCase().includes(query) ||
- (c.display_name || '').toLowerCase().includes(query);
- const matchZip = c.zipcodes && c.zipcodes.some(z =>z.includes(query));
- if (!matchName && !matchZip) return false;
- }
+ filteredContractors = allContractors.filter(c => {
+  // Search filter
+  if (query) {
+   const matchName = c.name.toLowerCase().includes(query) || c.displayName.toLowerCase().includes(query);
+   const matchZip = c.zipcodes.some(z => z.includes(query));
+   const matchAddr = c.addresses.some(a => a.toLowerCase().includes(query));
+   if (!matchName && !matchZip && !matchAddr) return false;
+  }
 
- // Type filter
- if (type === 'has-pricing' && !c.avg_cost_per_sf) return false;
- if (type === 'dadu' && (!c.dadu_count || c.dadu_count === 0)) return false;
+  // Type filter
+  if (type === 'dadu' && c.dadu_count === 0) return false;
+  if (type === 'accessory' && c.accessory_count === 0) return false;
+  if (type === 'active' && !c.hasActive) return false;
 
- return true;
+  return true;
  });
 
  // Sort
- if (sort === 'dadu') {
- filteredContractors.sort((a, b) =>(b.dadu_count || 0) - (a.dadu_count || 0));
- } else if (sort === 'pricing-count') {
- filteredContractors.sort((a, b) =>(b.cost_per_sf_count || 0) - (a.cost_per_sf_count || 0));
- } else if (sort === 'cost-low') {
- filteredContractors.sort((a, b) =>{
- if (!a.avg_cost_per_sf) return 1;
- if (!b.avg_cost_per_sf) return -1;
- return a.avg_cost_per_sf - b.avg_cost_per_sf;
- });
- } else if (sort === 'cost-high') {
- filteredContractors.sort((a, b) =>{
- if (!a.avg_cost_per_sf) return 1;
- if (!b.avg_cost_per_sf) return -1;
- return b.avg_cost_per_sf - a.avg_cost_per_sf;
- });
- } else if (sort === 'value') {
- filteredContractors.sort((a, b) =>(b.total_value || 0) - (a.total_value || 0));
- } else {
- filteredContractors.sort((a, b) =>b.permit_count - a.permit_count);
+ switch (sort) {
+  case 'dadu':
+   filteredContractors.sort((a, b) => b.dadu_count - a.dadu_count);
+   break;
+  case 'value':
+   filteredContractors.sort((a, b) => b.total_value - a.total_value);
+   break;
+  case 'name':
+   filteredContractors.sort((a, b) => a.displayName.localeCompare(b.displayName));
+   break;
+  case 'years':
+   filteredContractors.sort((a, b) => {
+    const aRange = a.years_active.length > 0 ? (a.years_active[a.years_active.length - 1] - a.years_active[0]) : -1;
+    const bRange = b.years_active.length > 0 ? (b.years_active[b.years_active.length - 1] - b.years_active[0]) : -1;
+    return bRange - aRange;
+   });
+   break;
+  default:
+   filteredContractors.sort((a, b) => b.permit_count - a.permit_count);
  }
 
  currentPage = 1;
  renderTable();
+}
+
+// Modal
+function showDetails(index) {
+ const c = filteredContractors[index];
+ if (!c) return;
+
+ document.getElementById('modal-title').textContent = c.displayName;
+
+ const valueStr = c.total_value > 0 ? '$' + c.total_value.toLocaleString() : 'N/A';
+
+ // Subtypes
+ let subtypeHtml = '<div class="subtype-tags">';
+ for (const [subtype, count] of Object.entries(c.permit_subtypes)) {
+  const isDadu = subtype.includes('DWELLING') || subtype.includes('DADU');
+  const label = subtype.split(',').map(s => s.trim().charAt(0) + s.trim().slice(1).toLowerCase()).join(', ');
+  subtypeHtml += '<span class="subtype-tag ' + (isDadu ? 'dadu' : 'accessory') + '">' +
+   label + '<span class="subtype-tag-count">' + count + '</span></span>';
+ }
+ subtypeHtml += '</div>';
+
+ // Status breakdown
+ let statusHtml = '';
+ for (const [status, count] of Object.entries(c.statuses)) {
+  statusHtml += '<span style="margin-right:16px;"><strong>' + count + '</strong> ' +
+   status.charAt(0) + status.slice(1).toLowerCase() + '</span>';
  }
 
- // Modal
- function showDetails(index) {
- const contractor = filteredContractors[index];
- if (!contractor) return;
-
- document.getElementById('modal-title').textContent = contractor.display_name || contractor.name;
-
- const valueStr = contractor.total_value >0 ? '$' + contractor.total_value.toLocaleString() : 'N/A';
- const sqftStr = contractor.total_sqft >0 ? contractor.total_sqft.toLocaleString() + ' SF' : 'N/A';
- const avgCost = contractor.avg_cost_per_sf ? '$' + contractor.avg_cost_per_sf.toFixed(2) + '/SF' : 'N/A';
- const costRange = contractor.min_cost_per_sf && contractor.max_cost_per_sf
- ? '$' + contractor.min_cost_per_sf.toFixed(0) + ' - $' + contractor.max_cost_per_sf.toFixed(0) + '/SF'
- : 'N/A';
-
+ // Permits list
  let permitListHtml = '';
- if (contractor.cost_per_sf_details && contractor.cost_per_sf_details.length >0) {
- permitListHtml = `
- <h4 style="margin: 20px 0 10px; font-size: 14px; color: #666;">$/SF Data Points</h4>
- <div class="permit-list">
- ${contractor.cost_per_sf_details.map(p =>`
- <div class="permit-item">
- <span class="permit-address">${p.address || 'Unknown'}</span>
- <span class="permit-details">${p.sqft ? p.sqft.toLocaleString() + ' SF' : ''}</span>
- <span class="permit-price">$${p.cost_per_sf.toFixed(2)}/SF</span></div>
- `).join('')}</div>
- `;
+ if (c.addresses.length > 0) {
+  permitListHtml = '<div class="modal-section">' +
+   '<div class="modal-section-title">Projects (' + c.addresses.length + ' addresses)</div>' +
+   '<div class="permit-list">' +
+   c.addresses.map((addr, i) => {
+    const permitNum = c.permit_numbers[i] || '';
+    const apn = c.apns[i] || '';
+    const permitLink = permitNum
+     ? '<a href="https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=' + permitNum + '" target="_blank" class="permit-link">View Permit</a>'
+     : '';
+    return '<div class="permit-item">' +
+     '<span class="permit-addr">' + addr + '</span>' +
+     '<span class="permit-num">' + permitNum + '</span>' +
+     permitLink +
+     '</div>';
+   }).join('') +
+   '</div></div>';
  }
 
- document.getElementById('modal-body').innerHTML = `
- <div class="detail-grid">
- <div class="detail-item">
- <div class="detail-value">${contractor.permit_count}</div>
- <div class="detail-label">Total Permits</div></div>
- <div class="detail-item">
- <div class="detail-value">${contractor.dadu_count || 0}</div>
- <div class="detail-label">DADU Permits</div></div>
- <div class="detail-item">
- <div class="detail-value">${contractor.building_count || 0}</div>
- <div class="detail-label">Building Permits</div></div></div>
+ document.getElementById('modal-body').innerHTML =
+  '<div class="detail-grid">' +
+   '<div class="detail-item"><div class="detail-value accent">' + c.permit_count + '</div><div class="detail-label">Total Permits</div></div>' +
+   '<div class="detail-item"><div class="detail-value" style="color:#406A64;">' + c.dadu_count + '</div><div class="detail-label">DADU Permits</div></div>' +
+   '<div class="detail-item"><div class="detail-value">' + (c.avg_value > 0 ? '$' + c.avg_value.toLocaleString() : 'N/A') + '</div><div class="detail-label">Avg Permit Value</div></div>' +
+  '</div>' +
 
- <div class="detail-grid">
- <div class="detail-item pricing-detail">
- <div class="detail-value">${avgCost}</div>
- <div class="detail-label">Average $/SF</div></div>
- <div class="detail-item pricing-detail">
- <div class="detail-value" style="font-size: 16px;">${costRange}</div>
- <div class="detail-label">$/SF Range</div></div>
- <div class="detail-item pricing-detail">
- <div class="detail-value">${contractor.cost_per_sf_count || 0}</div>
- <div class="detail-label">Records with Pricing</div></div></div>
+  '<div class="detail-grid" style="grid-template-columns:1fr 1fr;">' +
+   '<div class="detail-item"><div class="detail-value" style="font-size:18px;">' + valueStr + '</div><div class="detail-label">Total Construction Value</div></div>' +
+   '<div class="detail-item"><div class="detail-value" style="font-size:18px;">' + c.accessory_count + '</div><div class="detail-label">Accessory Permits</div></div>' +
+  '</div>' +
 
- <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
- <div class="detail-item">
- <div class="detail-value" style="font-size: 18px;">${valueStr}</div>
- <div class="detail-label">Total Construction Value</div></div>
- <div class="detail-item">
- <div class="detail-value" style="font-size: 18px;">${sqftStr}</div>
- <div class="detail-label">Total Sq Ft Built</div></div></div>
+  '<div class="modal-section">' +
+   '<div class="modal-section-title">Permit Types</div>' +
+   subtypeHtml +
+  '</div>' +
 
- <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
- <div style="font-size: 13px; color: #666; margin-bottom: 8px;">Active Areas (Zip Codes)</div>
- <div style="font-size: 14px; font-weight: 500;">
- ${contractor.zipcodes && contractor.zipcodes.length >0 ? contractor.zipcodes.join(', ') : 'No zip code data'}</div></div>
+  '<div class="modal-section">' +
+   '<div class="modal-section-title">Permit Statuses</div>' +
+   '<div class="modal-info-box">' + statusHtml + '</div>' +
+  '</div>' +
 
- <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
- <div style="font-size: 13px; color: #666; margin-bottom: 8px;">Years Active</div>
- <div style="font-size: 14px; font-weight: 500;">
- ${contractor.years_active && contractor.years_active.length >0 ? contractor.years_active.join(', ') : 'Unknown'}</div></div>
+  '<div class="modal-section">' +
+   '<div class="modal-section-title">Areas Served (Zip Codes)</div>' +
+   '<div class="modal-info-box">' + (c.zipcodes.length > 0 ? c.zipcodes.join(', ') : 'No zip code data') + '</div>' +
+  '</div>' +
 
- ${permitListHtml}
- `;
+  '<div class="modal-section">' +
+   '<div class="modal-section-title">Years Active</div>' +
+   '<div class="modal-info-box">' + (c.years_active.length > 0 ? c.years_active.join(', ') : 'Unknown') + '</div>' +
+  '</div>' +
+
+  permitListHtml;
 
  document.getElementById('modal-overlay').classList.add('active');
- }
+ document.body.style.overflow = 'hidden';
+}
 
- function closeModal() {
+function closeModal() {
  document.getElementById('modal-overlay').classList.remove('active');
- }
+ document.body.style.overflow = '';
+}
 
- // Close modal on overlay click
- document.getElementById('modal-overlay').addEventListener('click', (e) =>{
+// Close modal on overlay click
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
  if (e.target === e.currentTarget) closeModal();
- });
+});
 
- // Close modal on Escape key
- document.addEventListener('keydown', (e) =>{
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
  if (e.key === 'Escape') closeModal();
- });</script>
- <script src="homebody_header.js"></script></body></html>
+});
+</script>
+<script src="homebody_header.js"></script>
+</body>
+</html>

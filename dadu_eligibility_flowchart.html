@@ -3,593 +3,1183 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>DADU Eligibility Flowchart | Castlehold</title>
+ <title>DADU Eligibility Flowchart | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
  <style>
- * { margin: 0; padding: 0; box-sizing: border-box; }
- body {
- font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif;
- background: #F0EBE1;
- color: #3A5566;
- line-height: 1.6;
- }
- 
- .header {
- background: #3A5566;
- color: white;
- padding: 15px 30px;
- display: flex;
- justify-content: space-between;
- align-items: center;
- }
- .logo { font-size: 20px; font-weight: 700; }
- .logo span { color: #7B746D; }
- .nav a {
- color: white;
- text-decoration: none;
- margin-left: 25px;
- font-size: 14px;
- }
- 
- .hero {
- background: linear-gradient(135deg, #CBB279, #7da35c);
- color: white;
- padding: 50px 40px;
- text-align: center;
- }
- .hero h1 { font-size: 36px; margin-bottom: 15px; }
- .hero p { opacity: 0.95; max-width: 600px; margin: 0 auto; }
- 
- .main {
- max-width: 900px;
- margin: 0 auto;
- padding: 40px 20px;
- }
- 
- /* Flowchart Container */
- .flowchart {
- display: flex;
- flex-direction: column;
- align-items: center;
- gap: 0;
- }
- 
- /* Flow Node */
- .flow-node {
- background: white;
- border-radius: 16px;
- padding: 30px;
- width: 100%;
- max-width: 600px;
- box-shadow: 0 4px 20px rgba(0,0,0,0.08);
- position: relative;
- transition: transform 0.2s, box-shadow 0.2s;
- }
- .flow-node:hover {
- transform: translateY(-3px);
- box-shadow: 0 8px 30px rgba(0,0,0,0.12);
- }
- 
- .flow-node.start {
- background: linear-gradient(135deg, #3A5566, #4A6B7D);
- color: white;
- }
- .flow-node.decision {
- border-left: 5px solid #7B746D;
- }
- .flow-node.result-yes {
- border-left: 5px solid #CBB279;
- background: #f1f8e9;
- }
- .flow-node.result-no {
- border-left: 5px solid #e57373;
- background: #ffebee;
- }
- .flow-node.result-maybe {
- border-left: 5px solid #7B746D;
- background: #e3f2fd;
- }
- 
- .step-number {
- position: absolute;
- top: -15px;
- left: 20px;
- background: #7B746D;
- color: white;
- width: 30px;
- height: 30px;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- font-weight: 700;
- font-size: 14px;
- }
- .flow-node.decision .step-number { background: #7B746D; }
- .flow-node.result-yes .step-number { background: #CBB279; }
- .flow-node.result-no .step-number { background: #e57373; }
- 
- .flow-node h3 {
- font-size: 18px;
- margin-bottom: 12px;
- color: #3A5566;
- }
- .flow-node.start h3 { color: white; }
- 
- .flow-node p {
- font-size: 14px;
- color: #555;
- margin-bottom: 15px;
- }
- .flow-node.start p { color: rgba(255,255,255,0.9); }
- 
- .flow-links {
- display: flex;
- flex-wrap: wrap;
- gap: 10px;
- }
- .flow-link {
- display: inline-flex;
- align-items: center;
- gap: 6px;
- padding: 8px 16px;
- background: #F0EBE1;
- color: #3A5566;
- text-decoration: none;
- border-radius: 8px;
- font-size: 13px;
- font-weight: 500;
- transition: background 0.2s, color 0.2s;
- }
- .flow-link:hover {
- background: #7B746D;
- color: white;
- }
- .flow-node.start .flow-link {
- background: rgba(255,255,255,0.2);
- color: white;
- }
- .flow-node.start .flow-link:hover {
- background: rgba(255,255,255,0.3);
- }
- 
- /* Arrow */
- .flow-arrow {
- display: flex;
- flex-direction: column;
- align-items: center;
- padding: 15px 0;
- color: #999;
- }
- .flow-arrow .line {
- width: 3px;
- height: 30px;
- background: #ddd;
- }
- .flow-arrow .arrow {
- font-size: 20px;
- }
- 
- /* Branch */
- .flow-branch {
- display: flex;
- gap: 30px;
- width: 100%;
- max-width: 700px;
- }
- .flow-branch .branch {
- flex: 1;
- display: flex;
- flex-direction: column;
- align-items: center;
- }
- .branch-label {
- background: #CBB279;
- color: white;
- padding: 8px 20px;
- border-radius: 20px;
- font-size: 14px;
- font-weight: 600;
- margin-bottom: 15px;
- }
- .branch-label.no { background: #e57373; }
- .branch-label.maybe { background: #7B746D; }
- 
- .flow-branch .flow-node {
- width: 100%;
- }
- 
- /* Checklist Section */
- .checklist-section {
- background: white;
- border-radius: 16px;
- margin-top: 40px;
- overflow: hidden;
- box-shadow: 0 4px 20px rgba(0,0,0,0.08);
- }
- .checklist-header {
- background: #3A5566;
- color: white;
- padding: 20px 30px;
- cursor: pointer;
- display: flex;
- justify-content: space-between;
- align-items: center;
- }
- .checklist-header h3 { font-size: 18px; }
- .checklist-content {
- padding: 30px;
- }
- .checklist-content.collapsed {
- display: none;
- }
- 
- .check-item {
- display: flex;
- align-items: flex-start;
- gap: 15px;
- padding: 15px;
- border-bottom: 1px solid #eee;
- transition: background 0.2s;
- }
- .check-item:hover { background: #fafafa; }
- .check-item:last-child { border-bottom: none; }
- 
- .check-box {
- width: 24px;
- height: 24px;
- border: 2px solid #ccc;
- border-radius: 6px;
- cursor: pointer;
- display: flex;
- align-items: center;
- justify-content: center;
- transition: all 0.2s;
- flex-shrink: 0;
- }
- .check-box:hover { border-color: #CBB279; }
- .check-box.checked {
- background: #CBB279;
- border-color: #CBB279;
- color: white;
- }
- 
- .check-info { flex: 1; }
- .check-info h4 {
- font-size: 15px;
- color: #3A5566;
- margin-bottom: 5px;
- }
- .check-info p {
- font-size: 13px;
- color: #666;
- margin-bottom: 8px;
- }
- .check-info a {
- color: #7B746D;
- text-decoration: none;
- font-size: 13px;
- }
- .check-info a:hover { text-decoration: underline; }
- 
- /* Progress */
- .progress-bar {
- background: white;
- padding: 15px 30px;
- border-radius: 12px;
- margin-bottom: 30px;
- box-shadow: 0 2px 10px rgba(0,0,0,0.06);
- display: flex;
- align-items: center;
- gap: 20px;
- }
- .progress-bar label { font-weight: 600; font-size: 14px; }
- .progress-track {
- flex: 1;
- height: 10px;
- background: #e0e0e0;
- border-radius: 5px;
- overflow: hidden;
- }
- .progress-fill {
- height: 100%;
- background: linear-gradient(90deg, #CBB279, #8bc34a);
- width: 0%;
- transition: width 0.3s;
- }
- .progress-text {
- font-size: 14px;
- color: #666;
- min-width: 60px;
- }
- 
- .footer {
- background: #3A5566;
- color: white;
- padding: 30px;
- text-align: center;
- margin-top: 60px;
- }
- .footer a { color: #7B746D; text-decoration: none; }
- 
- @media (max-width: 768px) {
- .flow-branch { flex-direction: column; }
- .flow-node { padding: 25px 20px; }
- }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
-<body>
-<!-- Shared Header - Castlehold -->
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+   font-family: 'Inter', sans-serif;
+   background: #F2F0ED;
+   color: #333;
+   line-height: 1.6;
+  }
+
+  a { text-decoration: none; color: #3A5566; }
+
+  /* ========== HERO ========== */
+  .flow-hero {
+   background: #3A5566;
+   padding: 48px 24px;
+   text-align: center;
+  }
+
+  .flow-hero h1 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 36px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
+
+  .flow-hero .subtitle {
+   color: #F0EBE1;
+   font-size: 16px;
+   max-width: 680px;
+   margin: 0 auto 24px;
+  }
+
+  .flow-hero .hero-badges {
+   display: flex;
+   justify-content: center;
+   gap: 12px;
+   flex-wrap: wrap;
+  }
+
+  .flow-hero .badge {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   background: rgba(255,255,255,0.12);
+   border: 1px solid rgba(225,212,187,0.3);
+   border-radius: 20px;
+   padding: 6px 16px;
+   font-size: 13px;
+   color: #E1D4BB;
+   font-weight: 600;
+  }
+
+  .flow-hero .badge img {
+   width: 18px;
+   height: 18px;
+  }
+
+  /* ========== SECTION CONTAINER ========== */
+  .section-container {
+   max-width: 860px;
+   margin: 0 auto;
+   padding: 48px 24px 0;
+  }
+
+  .section-heading {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 28px;
+   color: #3A5566;
+   text-align: center;
+   margin-bottom: 12px;
+  }
+
+  .section-subtitle {
+   text-align: center;
+   color: #706F6C;
+   font-size: 15px;
+   max-width: 600px;
+   margin: 0 auto 32px;
+  }
+
+  /* ========== FLOWCHART ========== */
+  .flowchart {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 0;
+  }
+
+  .flow-connector {
+   width: 2px;
+   height: 32px;
+   border-left: 2px dashed #E2E2E0;
+   margin: 0 auto;
+  }
+
+  .flow-step {
+   width: 100%;
+   max-width: 800px;
+  }
+
+  .flow-step-inner {
+   display: flex;
+   gap: 20px;
+   align-items: flex-start;
+  }
+
+  .step-num {
+   width: 40px;
+   height: 40px;
+   background: #3A5566;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: #fff;
+   font-weight: 800;
+   font-size: 16px;
+   flex-shrink: 0;
+   margin-top: 4px;
+  }
+
+  .step-card {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   padding: 24px 28px;
+   flex: 1;
+  }
+
+  .step-card h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 17px;
+   color: #3A5566;
+   margin-bottom: 6px;
+  }
+
+  .step-question {
+   font-size: 15px;
+   color: #333;
+   font-style: italic;
+   line-height: 1.6;
+   margin-bottom: 16px;
+   padding: 12px 16px;
+   background: #F0EBE1;
+   border-radius: 8px;
+  }
+
+  /* ========== YES/NO OUTCOMES ========== */
+  .outcomes {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 12px;
+   margin-bottom: 16px;
+  }
+
+  .outcome-box {
+   border-radius: 8px;
+   padding: 12px 16px;
+   font-size: 13px;
+   font-weight: 600;
+   line-height: 1.5;
+  }
+
+  .outcome-box .outcome-label {
+   display: inline-block;
+   font-size: 11px;
+   font-weight: 800;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   padding: 2px 8px;
+   border-radius: 4px;
+   margin-bottom: 6px;
+  }
+
+  .outcome-yes {
+   background: rgba(64,106,100,0.08);
+   border: 1px solid rgba(64,106,100,0.2);
+   color: #333;
+  }
+
+  .outcome-yes .outcome-label {
+   background: #406A64;
+   color: #fff;
+  }
+
+  .outcome-no {
+   background: rgba(181,134,118,0.08);
+   border: 1px solid rgba(181,134,118,0.2);
+   color: #333;
+  }
+
+  .outcome-no .outcome-label {
+   background: #B58676;
+   color: #fff;
+  }
+
+  /* ========== SUB-OPTIONS (Step 3) ========== */
+  .sub-options {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+   margin-bottom: 16px;
+  }
+
+  .sub-option {
+   display: flex;
+   align-items: flex-start;
+   gap: 10px;
+   padding: 10px 14px;
+   border-radius: 8px;
+   font-size: 13px;
+   line-height: 1.5;
+   color: #333;
+  }
+
+  .sub-option-eligible {
+   background: rgba(64,106,100,0.08);
+   border: 1px solid rgba(64,106,100,0.2);
+  }
+
+  .sub-option-none {
+   background: rgba(181,134,118,0.08);
+   border: 1px solid rgba(181,134,118,0.2);
+  }
+
+  .sub-option .option-tag {
+   display: inline-block;
+   font-size: 11px;
+   font-weight: 800;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   padding: 2px 8px;
+   border-radius: 4px;
+   flex-shrink: 0;
+   margin-top: 1px;
+  }
+
+  .sub-option-eligible .option-tag {
+   background: #406A64;
+   color: #fff;
+  }
+
+  .sub-option-none .option-tag {
+   background: #B58676;
+   color: #fff;
+  }
+
+  /* ========== STEP LINKS ========== */
+  .step-links {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+  }
+
+  .step-link {
+   display: inline-flex;
+   align-items: center;
+   gap: 5px;
+   padding: 6px 14px;
+   background: #F0EBE1;
+   border: 1px solid #E2E2E0;
+   border-radius: 6px;
+   font-size: 12px;
+   font-weight: 600;
+   color: #3A5566;
+   transition: all 0.2s;
+  }
+
+  .step-link:hover {
+   background: #E1D4BB;
+   border-color: #CBB279;
+  }
+
+  .step-link img {
+   width: 16px;
+   height: 16px;
+  }
+
+  .step-link-arrow {
+   font-size: 10px;
+   margin-left: 2px;
+  }
+
+  /* ========== ELIGIBLE BADGE (Step 5) ========== */
+  .eligible-badge-large {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   background: #406A64;
+   color: #fff;
+   font-size: 14px;
+   font-weight: 700;
+   padding: 10px 20px;
+   border-radius: 8px;
+   margin-bottom: 16px;
+  }
+
+  .eligible-badge-large svg {
+   width: 20px;
+   height: 20px;
+   fill: #fff;
+  }
+
+  /* ========== CONDITIONS CHECKLIST ========== */
+  .conditions-list {
+   list-style: none;
+   margin-bottom: 16px;
+  }
+
+  .conditions-list li {
+   display: flex;
+   align-items: flex-start;
+   gap: 12px;
+   padding: 12px 0;
+   border-bottom: 1px solid #E2E2E0;
+   font-size: 14px;
+   color: #333;
+   line-height: 1.6;
+  }
+
+  .conditions-list li:last-child {
+   border-bottom: none;
+  }
+
+  .cond-check {
+   width: 24px;
+   height: 24px;
+   background: #496778;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+   margin-top: 1px;
+  }
+
+  .cond-check svg {
+   width: 14px;
+   height: 14px;
+   fill: #fff;
+  }
+
+  .conditions-list strong {
+   color: #3A5566;
+  }
+
+  .hl {
+   color: #CBB279;
+   font-weight: 700;
+  }
+
+  /* ========== SPECIAL CASES BOX ========== */
+  .special-cases-box {
+   background: #3A5566;
+   border-radius: 12px;
+   padding: 28px 32px;
+  }
+
+  .special-cases-box h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 17px;
+   color: #E1D4BB;
+   margin-bottom: 16px;
+  }
+
+  .special-case-item {
+   background: rgba(255,255,255,0.08);
+   border: 1px solid rgba(255,255,255,0.12);
+   border-radius: 8px;
+   padding: 16px 20px;
+   margin-bottom: 12px;
+  }
+
+  .special-case-item:last-of-type {
+   margin-bottom: 16px;
+  }
+
+  .special-case-item h4 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-size: 14px;
+   color: #CBB279;
+   margin-bottom: 4px;
+  }
+
+  .special-case-item p {
+   font-size: 13px;
+   color: rgba(255,255,255,0.85);
+   line-height: 1.6;
+  }
+
+  .special-cases-links {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+  }
+
+  .special-link {
+   display: inline-flex;
+   align-items: center;
+   gap: 5px;
+   padding: 6px 14px;
+   background: rgba(255,255,255,0.1);
+   border: 1px solid rgba(255,255,255,0.15);
+   border-radius: 6px;
+   font-size: 12px;
+   font-weight: 600;
+   color: #E1D4BB;
+   transition: all 0.2s;
+  }
+
+  .special-link:hover {
+   background: rgba(255,255,255,0.2);
+   color: #fff;
+  }
+
+  .special-link img {
+   width: 16px;
+   height: 16px;
+   filter: brightness(10);
+  }
+
+  /* ========== QUICK CHECKLIST ========== */
+  .quick-checklist-box {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   padding: 32px;
+  }
+
+  .quick-checklist-box h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 18px;
+   color: #3A5566;
+   text-align: center;
+   margin-bottom: 24px;
+  }
+
+  .checklist-items {
+   list-style: none;
+  }
+
+  .checklist-items li {
+   display: flex;
+   align-items: flex-start;
+   gap: 14px;
+   padding: 14px 0;
+   border-bottom: 1px solid #E2E2E0;
+   font-size: 15px;
+   color: #333;
+   line-height: 1.5;
+  }
+
+  .checklist-items li:last-child {
+   border-bottom: none;
+  }
+
+  .check-circle {
+   width: 28px;
+   height: 28px;
+   border: 2px solid #406A64;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+   margin-top: 1px;
+  }
+
+  .check-circle svg {
+   width: 16px;
+   height: 16px;
+   fill: #406A64;
+  }
+
+  /* ========== LINKS SECTION ========== */
+  .links-section {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 12px;
+   justify-content: center;
+  }
+
+  .link-pill {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 10px 20px;
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 600;
+   color: #3A5566;
+   transition: all 0.2s;
+  }
+
+  .link-pill:hover {
+   background: #F0EBE1;
+   border-color: #CBB279;
+  }
+
+  .link-pill img {
+   width: 20px;
+   height: 20px;
+  }
+
+  /* ========== CTA ========== */
+  .cta-section {
+   background: #3A5566;
+   padding: 64px 24px;
+   text-align: center;
+  }
+
+  .cta-section h2 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700;
+   font-style: normal;
+   font-size: 32px;
+   color: #E1D4BB;
+   margin-bottom: 12px;
+  }
+
+  .cta-section p {
+   color: #F0EBE1;
+   font-size: 15px;
+   max-width: 520px;
+   margin: 0 auto 28px;
+  }
+
+  .cta-btn {
+   display: inline-block;
+   padding: 16px 44px;
+   background: #CBB279;
+   color: #3A5566;
+   border-radius: 8px;
+   font-size: 16px;
+   font-weight: 700;
+   font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+  }
+
+  .cta-btn:hover {
+   background: #D4A54E;
+   transform: translateY(-2px);
+  }
+
+  /* ========== FOOTER ========== */
+  .page-footer {
+   background: #3A5566;
+   border-top: 1px solid #496778;
+   padding: 48px 24px 24px;
+   color: #E1D4BB;
+  }
+
+  .footer-inner {
+   max-width: 1100px;
+   margin: 0 auto;
+   display: flex;
+   justify-content: space-between;
+   align-items: flex-start;
+   gap: 40px;
+  }
+
+  .footer-links {
+   display: flex;
+   gap: 60px;
+  }
+
+  .footer-col {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+  }
+
+  .footer-col h4 {
+   font-size: 14px;
+   font-weight: 700;
+   color: #E1D4BB;
+   margin-bottom: 4px;
+   font-family: 'Inter', sans-serif;
+  }
+
+  .footer-col a {
+   font-size: 13px;
+   color: #918A83;
+   transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: #E1D4BB; }
+
+  .footer-social {
+   display: flex;
+   gap: 12px;
+  }
+
+  .footer-social a {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 36px;
+   height: 36px;
+   border-radius: 50%;
+   background: rgba(255,255,255,0.1);
+   transition: background 0.2s;
+  }
+
+  .footer-social a:hover { background: rgba(255,255,255,0.2); }
+
+  .footer-social svg {
+   width: 16px;
+   height: 16px;
+   fill: #E1D4BB;
+  }
+
+  .footer-bottom {
+   max-width: 1100px;
+   margin: 32px auto 0;
+   padding-top: 20px;
+   border-top: 1px solid rgba(255,255,255,0.1);
+   display: flex;
+   justify-content: space-between;
+   font-size: 12px;
+   color: #918A83;
+  }
+
+  .footer-bottom a {
+   color: #918A83;
+   transition: color 0.2s;
+  }
+
+  .footer-bottom a:hover { color: rgba(225, 212, 187, 0.8); }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+   .flow-hero h1 { font-size: 28px; }
+   .flow-hero .hero-badges { gap: 8px; }
+   .flow-hero .badge { font-size: 12px; padding: 5px 12px; }
+   .section-heading { font-size: 24px; }
+   .outcomes { grid-template-columns: 1fr; }
+   .step-links { flex-direction: column; }
+   .step-link { justify-content: center; }
+   .special-cases-links { flex-direction: column; }
+   .special-link { justify-content: center; }
+   .links-section { flex-direction: column; align-items: center; }
+   .footer-inner { flex-direction: column; }
+   .footer-links { flex-direction: column; gap: 24px; }
+   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+   .flow-hero { padding: 36px 16px; }
+   .flow-hero h1 { font-size: 24px; }
+   .flow-step-inner { flex-direction: column; gap: 12px; }
+   .step-num { margin: 0 auto; }
+   .step-card { text-align: left; }
+   .cta-section h2 { font-size: 26px; }
+   .special-cases-box { padding: 20px; }
+  }
+ </style>
+</head>
+<body class="dark-nav">
+
+<!-- Shared Header -->
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
+<!-- Hero -->
+<section class="flow-hero">
+ <h1>DADU Eligibility Flowchart</h1>
+ <p class="subtitle">Follow Nashville.gov's official step-by-step process to determine if your property qualifies for a Detached Accessory Dwelling Unit under BL2025-1007.</p>
+ <div class="hero-badges">
+  <span class="badge">
+   <img src="assets/icons/Zoning.svg" alt="">
+   BL2025-1007
+  </span>
+  <span class="badge">
+   <img src="assets/icons/Legal.svg" alt="">
+   Nashville.gov Process
+  </span>
+  <span class="badge">
+   <img src="assets/icons/Property_Owners.svg" alt="">
+   67,707 Eligible Parcels
+  </span>
+ </div>
+</section>
 
+<!-- Intro -->
+<div class="section-container">
+ <h2 class="section-heading">How Eligibility Works</h2>
+ <p class="section-subtitle">Nashville uses a four-step process to determine DADU eligibility. Your property must pass each step to qualify. If eligible, zoning conditions in Step 5 apply to your build.</p>
+</div>
 
- 
- 
- <section class="hero">
- <h1>Am I Eligible for a DADU?</h1>
- <p>Follow this interactive flowchart to determine if your Nashville property qualifies for a Detached Accessory Dwelling Unit</p></section>
- 
- <main class="main">
- 
- <!-- Progress Bar -->
- <div class="progress-bar">
- <label>Checklist Progress:</label>
- <div class="progress-track">
- <div class="progress-fill" id="progressFill"></div></div>
- <span class="progress-text" id="progressText">0 / 12</span></div>
- 
- <!-- Flowchart -->
+<!-- FLOWCHART -->
+<div class="section-container" style="padding-top: 24px;">
  <div class="flowchart">
- 
- <!-- Start -->
- <div class="flow-node start">
- <h3>Can I Build a DADU on My Property?</h3>
- <p>Answer each question below to determine your eligibility under Nashville's BL2025-1007</p>
- <div class="flow-links">
- <a href="dadu_property_viewer_v3.html" class="flow-link">Look Up My Property</a>
- <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="flow-link">Parcel Viewer</a></div></div>
- 
- <div class="flow-arrow"><div class="line"></div><div class="arrow"></div></div>
- 
- <!-- Step 1: Zoning -->
- <div class="flow-node decision">
- <span class="step-number">1</span>
- <h3>Is your property zoned R, RS, RM, OR, or ORI?</h3>
- <p>DADUs are only permitted in residential zoning districts. Check your parcel's zoning code.</p>
- <div class="flow-links">
- <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="flow-link">Check Zoning</a>
- <a href="dadu_zoning_standards.html" class="flow-link">Zoning Guide</a></div></div>
- 
- <div class="flow-arrow"><div class="line"></div><div class="arrow"></div></div>
- 
- <!-- Branch: Yes/No -->
- <div class="flow-branch">
- <div class="branch">
- <div class="branch-label">YES</div>
- <div class="flow-node result-yes">
- <h3>Zoning Eligible</h3>
- <p>Your zoning district permits DADUs. Continue to Step 2.</p></div></div>
- <div class="branch">
- <div class="branch-label no">NO</div>
- <div class="flow-node result-no">
- <h3>Not Eligible</h3>
- <p>DADUs are not permitted in your zoning district (e.g., commercial, industrial).</p>
- <div class="flow-links">
- <a href="https://www.nashville.gov/departments/planning" target="_blank" class="flow-link">Contact Planning</a></div></div></div></div>
- 
- <div class="flow-arrow"><div class="line"></div><div class="arrow"></div></div>
- 
- <!-- Step 2: Service District -->
- <div class="flow-node decision">
- <span class="step-number">2</span>
- <h3>Is your parcel in the Urban Services District (USD)?</h3>
- <p>Under BL2025-1007 (effective Dec 2025), parcels in the USD can build DADUs <strong>by-right</strong>without special overlay.</p>
- <div class="flow-links">
- <a href="am_i_eligible.html" class="flow-link">Check USD Map</a>
- <a href="dadu_code_legislation_v3.html" class="flow-link">BL2025-1007</a></div></div>
- 
- <div class="flow-arrow"><div class="line"></div><div class="arrow"></div></div>
- 
- <!-- Branch: USD/GSD -->
- <div class="flow-branch">
- <div class="branch">
- <div class="branch-label">YES (USD)</div>
- <div class="flow-node result-yes">
- <h3>By-Right Eligible!</h3>
- <p>Your parcel is in the USD and can build a DADU without special overlay approval.</p>
- <div class="flow-links">
- <a href="dadu_building_requirements.html" class="flow-link">See Size Limits</a></div></div></div>
- <div class="branch">
- <div class="branch-label maybe">NO (GSD)</div>
- <div class="flow-node result-maybe">
- <h3>Check for Overlay</h3>
- <p>Your parcel is in the GSD. You need a DADU Overlay, UDO, or SP with DADU standards.</p>
- <div class="flow-links">
- <a href="dadu_code_legislation_v3.html#overlays" class="flow-link">Check Overlays</a></div></div></div></div>
- 
- <div class="flow-arrow"><div class="line"></div><div class="arrow"></div></div>
- 
- <!-- Step 3: Principal Structure -->
- <div class="flow-node decision">
- <span class="step-number">3</span>
- <h3>Does your lot have exactly ONE single-family home?</h3>
- <p>DADUs can only be added to parcels with a single principal dwelling. Multi-family, duplexes, or vacant lots don't qualify.</p>
- <div class="flow-links">
- <a href="dadu_property_viewer_v3.html" class="flow-link">Check My Property</a></div></div>
- 
- <div class="flow-arrow"><div class="line"></div><div class="arrow"></div></div>
- 
- <!-- Branch: Structure -->
- <div class="flow-branch">
- <div class="branch">
- <div class="branch-label">YES</div>
- <div class="flow-node result-yes">
- <h3>Structure Eligible</h3>
- <p>Your lot has a qualifying principal structure. Continue to requirements.</p></div></div>
- <div class="branch">
- <div class="branch-label no">NO</div>
- <div class="flow-node result-no">
- <h3>Not Eligible</h3>
- <p>Lots with 2+ structures, multi-family, or no principal dwelling don't qualify for DADUs.</p></div></div></div>
- 
- <div class="flow-arrow"><div class="line"></div><div class="arrow"></div></div>
- 
- <!-- Step 4: Size -->
- <div class="flow-node decision">
- <span class="step-number">4</span>
- <h3>What size DADU can I build?</h3>
- <p>Maximum size depends on your lot area. Check your lot size to determine limits.</p>
- <div class="flow-links">
- <a href="dadu_building_requirements.html" class="flow-link">Size Calculator</a></div></div>
- 
- <div class="flow-arrow"><div class="line"></div><div class="arrow"></div></div>
- 
- <!-- Size Result -->
- <div class="flow-branch">
- <div class="branch">
- <div class="branch-label">LOT &lt; 10,000 SF</div>
- <div class="flow-node result-yes">
- <h3>Max Living: 850 SF</h3>
- <p>Max Footprint: 750 SF</p></div></div>
- <div class="branch">
- <div class="branch-label">LOT ≥ 10,000 SF</div>
- <div class="flow-node result-yes">
- <h3>Max Living: 1,200 SF</h3>
- <p>Max Footprint: 1,000 SF</p></div></div></div>
- 
- <div class="flow-arrow"><div class="line"></div><div class="arrow"></div></div>
- 
- <!-- Final -->
- <div class="flow-node start">
- <h3>Ready to Plan Your DADU!</h3>
- <p>Your property appears eligible. Complete the detailed checklist below to verify all requirements.</p>
- <div class="flow-links">
- <a href="permit_process_timeline.html" class="flow-link">Permit Process</a>
- <a href="contractor_dashboard.html" class="flow-link">Find Contractors</a>
- <a href="dadu_property_viewer_v3.html" class="flow-link">Cost Estimator</a>
- <a href="dadu_resources.html" class="flow-link">Required Forms</a></div></div></div>
- 
- <!-- Detailed Checklist -->
- <div class="checklist-section">
- <div class="checklist-header" onclick="toggleChecklist()">
- <h3>Detailed Requirements Checklist</h3>
- <span id="toggleIcon"></span></div>
- <div class="checklist-content" id="checklistContent">
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>Zoning is R, RS, RM, OR, or ORI</h4>
- <p>Property must be in an eligible residential zoning district</p>
- <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank">Check Parcel Viewer</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>In USD OR has DADU Overlay/UDO</h4>
- <p>Urban Services District = by-right. GSD requires overlay.</p>
- <a href="am_i_eligible.html">Check Eligibility Map</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>Single principal dwelling on lot</h4>
- <p>Only one single-family home exists on the parcel</p>
- <a href="dadu_property_viewer_v3.html">Check Property</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>No existing DADU on parcel</h4>
- <p>Only one DADU is permitted per lot</p>
- <a href="dadu_opportunity_explorer_v2.html">Check DADU Map</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>DADU ≤ principal structure size</h4>
- <p>Living area and footprint cannot exceed the main house</p>
- <a href="dadu_building_requirements.html">Size Requirements</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>Height ≤ principal structure eave</h4>
- <p>DADU height cannot exceed the main house eave line</p>
- <a href="dadu_building_requirements.html#height">Height Limits</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>Located behind principal structure</h4>
- <p>DADU must be in the rear portion of the lot</p>
- <a href="dadu_building_requirements.html#setbacks">Setback Rules</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>Meets setback requirements</h4>
- <p>Side and rear setbacks based on footprint size</p>
- <a href="dadu_zoning_standards.html">Zoning Standards</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>Similar design to principal</h4>
- <p>Style, materials, and roof form must complement main house</p>
- <a href="dadu_building_requirements.html#design">Design Standards</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>Owner occupancy requirement</h4>
- <p>Owner must live in either main house or DADU</p>
- <a href="owner_occupancy.html">Owner Occupancy Guide</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>Restrictive covenant recorded</h4>
- <p>Covenant must be filed before permit issuance</p>
- <a href="https://www.nashville.gov/sites/default/files/2023-03/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf" target="_blank">Download Form</a></div></div>
- 
- <div class="check-item">
- <div class="check-box" onclick="toggleCheck(this)"></div>
- <div class="check-info">
- <h4>NO Short-Term Rental in DADU</h4>
- <p>STRPs are prohibited in DADUs on R/RS/RM zoned lots</p>
- <a href="https://www.nashville.gov/departments/codes/short-term-rentals" target="_blank">STRP Info</a></div></div></div></div></main>
- 
- <footer class="footer">
- <p>Castlehold | DADU Zoning & Buildability Intelligence</p>
- <p style="margin-top: 10px;">
- <a href="homebody_index.html">Home</a>· 
- <a href="dadu_resources.html">Resources</a>· 
- <a href="about_platform_infographic.html">About</a></p></footer>
- 
- <script>
- function toggleCheck(el) {
- el.classList.toggle('checked');
- el.innerHTML = el.classList.contains('checked') ? '' : '';
- updateProgress();
- }
- 
- function updateProgress() {
- const total = document.querySelectorAll('.check-box').length;
- const checked = document.querySelectorAll('.check-box.checked').length;
- const pct = (checked / total) * 100;
- 
- document.getElementById('progressFill').style.width = pct + '%';
- document.getElementById('progressText').textContent = checked + ' / ' + total;
- }
- 
- function toggleChecklist() {
- const content = document.getElementById('checklistContent');
- const icon = document.getElementById('toggleIcon');
- content.classList.toggle('collapsed');
- icon.textContent = content.classList.contains('collapsed') ? '' : '';
- }
- 
- // Initialize
- updateProgress();</script>
- <script src="homebody_header.js"></script></body></html>
+
+  <!-- ========== STEP 1 ========== -->
+  <div class="flow-step">
+   <div class="flow-step-inner">
+    <div class="step-num">1</div>
+    <div class="step-card">
+     <h3>Land Use Table Check</h3>
+     <div class="step-question">Does the Land Use Table show your parcel's zoning district permits DADUs with conditions (PC)?</div>
+
+     <div class="outcomes">
+      <div class="outcome-box outcome-yes">
+       <span class="outcome-label">YES</span><br>
+       Your zoning district permits DADUs. Proceed to Step 2 to verify lot size.
+      </div>
+      <div class="outcome-box outcome-no">
+       <span class="outcome-label">NO</span><br>
+       Your zoning district does not permit DADUs. Your parcel is <strong>not eligible</strong>.
+      </div>
+     </div>
+
+     <div class="step-links">
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.08LAUSDEST_17.08.030DILAUSTA" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       Land Use Tables
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link">
+       <img src="assets/icons/Zoning.svg" alt="">
+       Check Your Zoning
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/BaseZoning/MapServer/0" target="_blank" class="step-link">
+       <img src="assets/icons/GIS.svg" alt="">
+       Base Zoning Map
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" class="step-link">
+       <img src="assets/icons/Legal.svg" alt="">
+       BL2025-1007
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="flow-connector"></div>
+
+  <!-- ========== STEP 2 ========== -->
+  <div class="flow-step">
+   <div class="flow-step-inner">
+    <div class="step-num">2</div>
+    <div class="step-card">
+     <h3>Minimum Lot Area</h3>
+     <div class="step-question">Does your lot meet the minimum lot area required for your zoning district?</div>
+
+     <div class="outcomes">
+      <div class="outcome-box outcome-yes">
+       <span class="outcome-label">YES</span><br>
+       Your lot meets the minimum area. Proceed to Step 3 to check your service district.
+      </div>
+      <div class="outcome-box outcome-no">
+       <span class="outcome-label">NO</span><br>
+       Your lot is below the minimum area for your zoning district. Your parcel is <strong>not eligible</strong>.
+      </div>
+     </div>
+
+     <div class="step-links">
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       Bulk Regulations
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS_17.12.030SE" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       Setback Requirements
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link">
+       <img src="assets/icons/Parcel Search.svg" alt="">
+       Check Lot Size
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="flow-connector"></div>
+
+  <!-- ========== STEP 3 ========== -->
+  <div class="flow-step">
+   <div class="flow-step-inner">
+    <div class="step-num">3</div>
+    <div class="step-card">
+     <h3>Service District / Overlay Check</h3>
+     <div class="step-question">Does your parcel meet ONE of the following service district or overlay requirements?</div>
+
+     <div class="sub-options">
+      <div class="sub-option sub-option-eligible">
+       <span class="option-tag">A</span>
+       <span><strong>In USD (Urban Services District):</strong> DADU is permitted by-right. No overlay needed.</span>
+      </div>
+      <div class="sub-option sub-option-eligible">
+       <span class="option-tag">B</span>
+       <span><strong>In DADU Overlay (GSD):</strong> Parcel is in the General Services District but within a DADU Overlay. Eligible with overlay conditions.</span>
+      </div>
+      <div class="sub-option sub-option-eligible">
+       <span class="option-tag">C</span>
+       <span><strong>In UDO with DADU standards:</strong> Parcel is in an Urban Design Overlay that includes DADU standards. Eligible with UDO conditions.</span>
+      </div>
+      <div class="sub-option sub-option-eligible">
+       <span class="option-tag">D</span>
+       <span><strong>In SP with DADU standards:</strong> Parcel is in a Specific Plan that includes DADU standards. Eligible with SP conditions.</span>
+      </div>
+      <div class="sub-option sub-option-none">
+       <span class="option-tag">NONE</span>
+       <span><strong>None of the above:</strong> Parcel is in GSD without a qualifying overlay, UDO, or SP. <strong>Not eligible.</strong></span>
+      </div>
+     </div>
+
+     <div class="step-links">
+      <a href="https://maps.nashville.gov/webimages/MapGallery/PDFMaps/Urban%20Services%20District.pdf" target="_blank" class="step-link">
+       <img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt="">
+       USD Map (PDF)
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://maps.nashville.gov/arcgis/rest/services/Boundaries/USD_GSD/MapServer/0" target="_blank" class="step-link">
+       <img src="assets/icons/GIS.svg" alt="">
+       USD/GSD Boundary
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=THCH_APCH_APXONEDEBOURSEDI" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       USD Charter
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="overlay-districts.html" class="step-link">
+       <img src="assets/icons/Zoning_Documents.svg" alt="">
+       DADU Overlay Districts
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.730DEACDWUNOVDI" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       DADU Overlay Ordinance
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.40ADPR" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       UDO
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.40ADPR_ARTIIIAMZOCOOFZOMA_17.40.105SPPLURIN" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       Specific Plan
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Zoning_Overlay_Districts/MapServer" target="_blank" class="step-link">
+       <img src="assets/icons/GIS.svg" alt="">
+       Overlay Districts ArcGIS
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link">
+       <img src="assets/icons/Parcel Search.svg" alt="">
+       Check Overlays
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="flow-connector"></div>
+
+  <!-- ========== STEP 4 ========== -->
+  <div class="flow-step">
+   <div class="flow-step-inner">
+    <div class="step-num">4</div>
+    <div class="step-card">
+     <h3>Single Principal Structure</h3>
+     <div class="step-question">Is there exactly ONE single-family principal structure on the parcel?</div>
+
+     <div class="outcomes">
+      <div class="outcome-box outcome-yes">
+       <span class="outcome-label">YES</span><br>
+       Your parcel has one principal structure. You are <strong>eligible</strong> to build a DADU. Proceed to Step 5 for zoning conditions.
+      </div>
+      <div class="outcome-box outcome-no">
+       <span class="outcome-label">NO</span><br>
+       Parcels with zero or multiple principal structures do not qualify. Your parcel is <strong>not eligible</strong>.
+      </div>
+     </div>
+
+     <div class="step-links">
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.04DERU_17.04.060DEF" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       DADU Definition
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link">
+       <img src="assets/icons/Parcel Search.svg" alt="">
+       Check Building Count
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="flow-connector"></div>
+
+  <!-- ========== STEP 5 ========== -->
+  <div class="flow-step">
+   <div class="flow-step-inner">
+    <div class="step-num">5</div>
+    <div class="step-card">
+     <h3>IF ELIGIBLE: Zoning Conditions</h3>
+
+     <div class="eligible-badge-large">
+      <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      Eligible -- Review Conditions Below
+     </div>
+
+     <p style="font-size: 14px; color: #706F6C; margin-bottom: 16px;">Your DADU must comply with all conditions in Metro Code Section 17.16.030G. These requirements apply to every DADU regardless of service district or overlay.</p>
+
+     <ul class="conditions-list">
+      <li>
+       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+       <span><strong>Owner Occupancy:</strong> The property owner must occupy either the principal dwelling or the DADU as their primary residence.</span>
+      </li>
+      <li>
+       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+       <span><strong>Size (Living Area):</strong> Lot under 10,000 SF: maximum <span class="hl">700 SF</span> of living area. Lot 10,000 SF or greater: maximum <span class="hl">850 SF</span> of living area.</span>
+      </li>
+      <li>
+       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+       <span><strong>Footprint:</strong> Cannot exceed the principal structure footprint. No other accessory building on the parcel may exceed 200 SF.</span>
+      </li>
+      <li>
+       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+       <span><strong>Height:</strong> Cannot exceed the height of the principal structure. Eave height max 10 ft (1-story) or 17 ft (2-story). Ridge must be lower than primary ridge, max 27 ft.</span>
+      </li>
+      <li>
+       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+       <span><strong>Setbacks:</strong> Footprint 850 SF or less placed to rear: half the required side setback (minimum 3 ft), rear setback minimum 3 ft. Footprint over 850 SF: full setbacks apply.</span>
+      </li>
+      <li>
+       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+       <span><strong>Design:</strong> DADU must have similar style, materials, color, and roof form as the principal structure.</span>
+      </li>
+      <li>
+       <div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+       <span><strong>STR Prohibition:</strong> New DADUs on single-family (RS), residential neighborhood (RN), or residential limited (RL) lots <strong>cannot</strong> be operated as short-term rentals.</span>
+      </li>
+     </ul>
+
+     <div class="step-links">
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.16SPDINGS_17.16.030DINGS" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       Full DADU Conditions
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS_17.12.040ACST" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       Accessory Buildings
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT6BULIRE_DIVIGERE_CH6.28HORO_6.28.030SHTEREPRPE" target="_blank" class="step-link">
+       <img src="assets/icons/Legal.svg" alt="">
+       STR Restrictions
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://www.nashville.gov/departments/codes/construction-and-permits/land-use-and-zoning-information/zoning-examinations/restrictive-covenants" target="_blank" class="step-link">
+       <img src="assets/icons/Restrictive_Covenants.svg" alt="">
+       Restrictive Covenants
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO" target="_blank" class="step-link">
+       <img src="assets/icons/Legislation.svg" alt="">
+       Full Title 17
+       <span class="step-link-arrow">&rarr;</span>
+      </a>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="flow-connector"></div>
+
+  <!-- ========== STEP 6 ========== -->
+  <div class="flow-step">
+   <div class="flow-step-inner">
+    <div class="step-num">6</div>
+    <div class="step-card" style="padding: 0; border: none; background: transparent;">
+     <div class="special-cases-box">
+      <h3>Special Cases: Additional Review Required</h3>
+
+      <div class="special-case-item">
+       <h4>Historic Overlay District</h4>
+       <p>If your property is in a Historic Overlay, your DADU project must be reviewed and approved by the Metropolitan Historic Zoning Commission (MHZC). Design guidelines for your specific district will apply, and approval can take additional time.</p>
+      </div>
+
+      <div class="special-case-item">
+       <h4>Specific Plan (SP) or Urban Design Overlay (UDO)</h4>
+       <p>If your property is in an SP or UDO that includes DADU standards, you must obtain approval from the Planning Department. Each SP and UDO has unique standards that may differ from the base zoning conditions listed in Step 5.</p>
+      </div>
+
+      <div class="special-cases-links">
+       <a href="https://www.nashville.gov/departments/historic-preservation/programs/districts-and-design-guidelines" target="_blank" class="special-link">
+        <img src="assets/icons/Zoning_Documents.svg" alt="">
+        Historic Districts
+        <span class="step-link-arrow">&rarr;</span>
+       </a>
+       <a href="https://www.nashville.gov/departments/historic-preservation/programs/districts-and-design-guidelines/detached-accessory-dwelling-units" target="_blank" class="special-link">
+        <img src="assets/icons/Zoning_Documents.svg" alt="">
+        Historic DADUs
+        <span class="step-link-arrow">&rarr;</span>
+       </a>
+       <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=1025702" target="_blank" class="special-link">
+        <img src="assets/icons/Legislation.svg" alt="">
+        BL2011-900
+        <span class="step-link-arrow">&rarr;</span>
+       </a>
+       <a href="https://www.nashville.gov/departments/codes/construction-and-permits/contact-list" target="_blank" class="special-link">
+        <img src="assets/icons/Municipal.svg" alt="">
+        Planning Contact
+        <span class="step-link-arrow">&rarr;</span>
+       </a>
+       <a href="https://www.nashville.gov/departments/county-clerk/register-of-deeds" target="_blank" class="special-link">
+        <img src="assets/icons/Recorded_Docs.svg" alt="">
+        Register of Deeds
+        <span class="step-link-arrow">&rarr;</span>
+       </a>
+       <a href="https://www.nashville.gov/departments/water/stormwater" target="_blank" class="special-link">
+        <img src="assets/icons/Utilities.svg" alt="">
+        Metro Stormwater
+        <span class="step-link-arrow">&rarr;</span>
+       </a>
+       <a href="https://www.tn811.com/" target="_blank" class="special-link">
+        <img src="assets/icons/Utilities.svg" alt="">
+        Tennessee 811
+        <span class="step-link-arrow">&rarr;</span>
+       </a>
+       <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT16BUCO" target="_blank" class="special-link">
+        <img src="assets/icons/Legislation.svg" alt="">
+        Building Code Ch. 16
+        <span class="step-link-arrow">&rarr;</span>
+       </a>
+       <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/detached-accessory-dwelling-unit" target="_blank" class="special-link">
+        <img src="assets/icons/Municipal.svg" alt="">
+        Nashville.gov DADU Page
+        <span class="step-link-arrow">&rarr;</span>
+       </a>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+ </div>
+</div>
+
+<!-- Quick Checklist -->
+<div class="section-container">
+ <div class="quick-checklist-box">
+  <h3>Quick Eligibility Checklist</h3>
+  <ul class="checklist-items">
+   <li>
+    <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span>Zoning district permits DADUs (Land Use Table shows PC for your district)</span>
+   </li>
+   <li>
+    <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span>Lot meets minimum area for your zoning district</span>
+   </li>
+   <li>
+    <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span>Property is in the USD, a DADU Overlay (GSD), a UDO with DADU standards, or an SP with DADU standards</span>
+   </li>
+   <li>
+    <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span>Only one single-family principal structure on the parcel</span>
+   </li>
+   <li>
+    <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <span>Owner will occupy either the principal dwelling or the DADU as primary residence</span>
+   </li>
+  </ul>
+ </div>
+</div>
+
+<!-- Additional Resources -->
+<div class="section-container" style="padding-bottom: 48px;">
+ <h2 class="section-heading">Additional Resources</h2>
+ <p class="section-subtitle">Official Nashville resources and contact information for your DADU project.</p>
+ <div class="links-section">
+  <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="link-pill">
+   <img src="assets/icons/Parcel Search.svg" alt="">
+   Parcel Viewer
+  </a>
+  <a href="https://epermits.nashville.gov/" target="_blank" class="link-pill">
+   <img src="assets/icons/Permit_Explorer.svg" alt="">
+   ePermits Portal
+  </a>
+  <a href="https://documents.nashville.gov/Request/Form/PermitCodes" target="_blank" class="link-pill">
+   <img src="assets/icons/Recorded_Docs.svg" alt="">
+   Permit Search
+  </a>
+  <a href="https://nashville.legistar.com/Legislation.aspx" target="_blank" class="link-pill">
+   <img src="assets/icons/Legislation.svg" alt="">
+   Legistar
+  </a>
+  <a href="mailto:zoninghelpdesk@nashville.gov" class="link-pill">
+   <img src="assets/icons/Municipal.svg" alt="">
+   Zoning Help Desk
+  </a>
+  <a href="tel:6158626550" class="link-pill">
+   <img src="assets/icons/Municipal.svg" alt="">
+   Codes Help: 615-862-6550
+  </a>
+  <a href="https://www.google.com/maps/place/800+President+Ronald+Reagan+Way,+Nashville,+TN+37210" target="_blank" class="link-pill">
+   <img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt="">
+   Metro Codes Office
+  </a>
+ </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+ <h2>Ready to Check Your Property?</h2>
+ <p>Enter your address to find out if your parcel qualifies for a DADU under BL2025-1007.</p>
+ <a href="am_i_eligible.html" class="cta-btn">Check Eligibility Now</a>
+</section>
+
+<!-- Footer -->
+<footer class="page-footer">
+ <div class="footer-inner">
+  <div class="footer-links">
+   <div class="footer-col">
+    <h4>Learn</h4>
+    <a href="am_i_eligible.html">Am I Eligible?</a>
+    <a href="size_calculator.html">Size Calculator</a>
+    <a href="dadu_calculators.html">Cost Estimator</a>
+   </div>
+   <div class="footer-col">
+    <h4>Features</h4>
+    <a href="contractor_marketplace.html">Contractor Directory</a>
+    <a href="dadu_requirements_overview.html">Planning Resources</a>
+    <a href="homebody_dadu_pricing.html">Pricing</a>
+   </div>
+   <div class="footer-col">
+    <h4>Get in Touch</h4>
+    <a href="mailto:hello@castlehold.com">hello@castlehold.com</a>
+    <a href="mailto:hello@castlehold.com">Contact</a>
+    <a href="#">Sign in</a>
+   </div>
+  </div>
+  <div class="footer-social">
+   <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+   <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+  </div>
+ </div>
+ <div class="footer-bottom">
+  <span>&copy; 2026 Homebody Projects. Powered by Castlehold. All rights reserved.</span>
+  <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span>
+ </div>
+</footer>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>
