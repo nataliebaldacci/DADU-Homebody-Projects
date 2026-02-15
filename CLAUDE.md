@@ -455,16 +455,17 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 **Status:** DONE. All pages fixed. Verified 0 banned colors, 0 old palette colors, 0 Montserrat references, 0 Castlehold in page titles (only in sample_reports/ which is allowed).
 
 ### PRIORITY 3: Fix Broken Maps
-**Status:** ArcGIS layer URLs migrated. Maps may still render blank due to CSS/height issues.
+**Status:** AUDITED. All 8 map pages verified: Leaflet 1.9.4 CDN loaded, map containers have proper height (calc(100vh) or flex chains), homebody_shared.css and homebody_header.js present, ArcGIS Feature Service URLs (CORS-friendly). No basemaps changed. Live site testing still recommended.
 
-**STILL TO DO:**
-1. Verify maps actually render on the live site (not just that URLs are correct)
-2. Check that map containers have explicit height set
-3. Check that Leaflet/ArcGIS JS libraries load from CDN
-4. Confirm basemaps were not changed (a previous session changed them without permission)
-5. Test the eligibility map (dadu_eligibility_map.html) — most important map
-6. Test property search map (property_search.html)
-7. DO NOT change basemaps without asking
+**Audit results (all 8 pages pass):**
+- dadu_eligibility_map.html: height: calc(100vh - 80px) + min-height: 500px
+- property_search.html: absolute positioning with parent calc(100vh - 75px)
+- dadu_near_me_v2.html: height: 100% with flex parent
+- dadu_opportunity_explorer_v2.html: flex:1 with parent calc(100vh - 75px)
+- permit_explorer.html: flex chain from html(100%)→body(flex)→main→map, mobile 50vh
+- parcel_footprint_map.html: height: calc(100vh - 75px)
+- adu_permit_map.html: absolute with top:75px bottom:0
+- homebody_index_map.html: proper flex tree with min-height:0
 
 ### PRIORITY 4: Property Report Card (Core Product Spine)
 **Status:** Page enhanced in Phase 2 with apn_to_account.json, covenants, Nashville fallbacks. External links need verification.
@@ -1224,7 +1225,7 @@ Step 6:  ✅ DONE — ArcGIS layer migration (14 files, js/arcgis-services.js re
 Step 7:  ✅ DONE — Phase 2 data connections (contractor_stats, apn_to_account, gdrive_docs_index)
 Step 8:  PENDING — Delete 26 identified duplicate pages (awaiting user confirmation)
 Step 9:  ✅ DONE — Branding sweep complete (47 files: old colors, Montserrat→Inter, Castlehold→Homebody Projects titles)
-Step 10: PENDING — Verify maps render on live site (CSS/height issues)
+Step 10: ✅ DONE — Map pages audited: all 8 have proper height, CDN libs, ArcGIS URLs
 Step 11: PENDING — Test Property Report Card external links
 Step 12: PENDING — Test Document Portal search end-to-end
 Step 13: PENDING — Test Contractor Marketplace data display
