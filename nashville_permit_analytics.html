@@ -3,81 +3,33 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Nashville Contractor & Permit Analytics | Homebody Projects</title>
+ <title>Nashville Permit Analytics | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  <style>
  * { margin: 0; padding: 0; box-sizing: border-box; }
- body { 
- font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif; 
- background: #f5f7fa;
+ body {
+ font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+ background: #F2F0ED;
  color: #333;
  }
- 
- /* Header */
- .header {
- background: linear-gradient(135deg, #3A5566 0%, #4A6B7D 100%);
- color: white;
- padding: 20px 30px;
- display: flex;
- align-items: center;
- justify-content: space-between;
- box-shadow: 0 2px 10px rgba(0,0,0,0.15);
- }
- .logo {
- display: flex;
- align-items: center;
- gap: 12px;
- }
- .logo-icon {
- width: 42px;
- height: 42px;
- background: #CBB279;
- border-radius: 10px;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 24px;
- }
- .logo-text {
- font-size: 22px;
- font-weight: 600;
- }
- .logo-sub {
- font-size: 13px;
- opacity: 0.8;
- }
- .header-nav {
- display: flex;
- gap: 20px;
- }
- .header-nav a {
- color: white;
- text-decoration: none;
- padding: 8px 16px;
- border-radius: 6px;
- font-size: 14px;
- opacity: 0.9;
- transition: all 0.2s;
- }
- .header-nav a:hover, .header-nav a.active {
- background: rgba(255,255,255,0.15);
- opacity: 1;
- }
- 
+
  /* Summary Cards */
  .summary-section {
  padding: 25px 30px;
  background: white;
- border-bottom: 1px solid #e0e0e0;
+ border-bottom: 1px solid #E2E2E0;
  }
  .summary-cards {
  display: grid;
  grid-template-columns: repeat(5, 1fr);
  gap: 20px;
+ max-width: 1600px;
+ margin: 0 auto;
  }
  .summary-card {
- background: linear-gradient(135deg, #f8faf8 0%, #fff 100%);
- border: 1px solid #e8e8e8;
+ background: #F5F5F0;
+ border: 1px solid #E2E2E0;
  border-radius: 12px;
  padding: 20px;
  text-align: center;
@@ -87,17 +39,52 @@
  font-weight: 700;
  color: #3A5566;
  }
- .summary-card-value.green { color: #CBB279; }
- .summary-card-value.blue { color: #3498db; }
- .summary-card-value.orange { color: #f39c12; }
+ .summary-card-value.accent { color: #CBB279; }
  .summary-card-label {
  font-size: 12px;
- color: #888;
+ color: #706F6C;
  margin-top: 5px;
  text-transform: uppercase;
  letter-spacing: 0.5px;
  }
- 
+
+ /* Filter Toggle */
+ .filter-toggle-section {
+ padding: 16px 30px;
+ background: white;
+ border-bottom: 1px solid #E2E2E0;
+ }
+ .filter-toggle {
+ display: flex;
+ justify-content: center;
+ gap: 0;
+ max-width: 400px;
+ margin: 0 auto;
+ }
+ .toggle-btn {
+ padding: 10px 24px;
+ font-family: 'Inter', sans-serif;
+ font-size: 14px;
+ font-weight: 600;
+ border: 2px solid #3A5566;
+ background: transparent;
+ color: #3A5566;
+ cursor: pointer;
+ transition: all 0.15s;
+ }
+ .toggle-btn:first-child { border-radius: 8px 0 0 8px; }
+ .toggle-btn:last-child { border-radius: 0 8px 8px 0; border-left: none; }
+ .toggle-btn.active {
+ background: #3A5566;
+ color: white;
+ }
+ .filter-label {
+ text-align: center;
+ font-size: 12px;
+ color: #7B746D;
+ margin-top: 8px;
+ }
+
  /* Main Content */
  .main-content {
  display: grid;
@@ -107,7 +94,7 @@
  max-width: 1600px;
  margin: 0 auto;
  }
- 
+
  /* Contractor Search Panel */
  .search-panel {
  background: white;
@@ -117,24 +104,26 @@
  }
  .panel-header {
  padding: 18px 20px;
- background: #fafafa;
- border-bottom: 1px solid #eee;
+ background: #F5F5F0;
+ border-bottom: 1px solid #E2E2E0;
  font-weight: 600;
  font-size: 15px;
+ color: #3A5566;
  display: flex;
  align-items: center;
  gap: 10px;
  }
  .search-box {
  padding: 15px 20px;
- border-bottom: 1px solid #eee;
+ border-bottom: 1px solid #E2E2E0;
  }
  .search-input {
  width: 100%;
  padding: 12px 16px;
- border: 1px solid #ddd;
+ border: 1px solid #E2E2E0;
  border-radius: 8px;
  font-size: 14px;
+ font-family: inherit;
  outline: none;
  transition: border-color 0.2s;
  }
@@ -147,28 +136,28 @@
  }
  .contractor-item {
  padding: 15px 20px;
- border-bottom: 1px solid #f0f0f0;
+ border-bottom: 1px solid #F0EBE1;
  cursor: pointer;
  transition: background 0.15s;
  }
  .contractor-item:hover {
- background: #f8faf8;
+ background: #F0EBE1;
  }
  .contractor-item.selected {
- background: #e8f5e8;
+ background: #F0EBE1;
  border-left: 3px solid #CBB279;
  }
  .contractor-name {
  font-weight: 600;
  font-size: 14px;
- color: #333;
+ color: #3A5566;
  margin-bottom: 6px;
  }
  .contractor-stats {
  display: flex;
  gap: 15px;
  font-size: 12px;
- color: #666;
+ color: #706F6C;
  }
  .contractor-stats span {
  display: flex;
@@ -183,10 +172,10 @@
  font-weight: 600;
  margin-left: 8px;
  }
- .badge-gold { background: #fef3cd; color: #856404; }
- .badge-silver { background: #e2e3e5; color: #495057; }
- .badge-bronze { background: #f8d7da; color: #721c24; }
- 
+ .badge-gold { background: #F0EBE1; color: #7B746D; }
+ .badge-silver { background: #E2E2E0; color: #706F6C; }
+ .badge-bronze { background: #F0EBE1; color: #7B746D; }
+
  /* Charts Section */
  .charts-section {
  display: flex;
@@ -210,7 +199,7 @@
  .chart-title {
  font-size: 15px;
  font-weight: 600;
- color: #333;
+ color: #3A5566;
  margin-bottom: 15px;
  display: flex;
  align-items: center;
@@ -223,7 +212,7 @@
  .chart-container.tall {
  height: 350px;
  }
- 
+
  /* Contractor Detail Modal */
  .modal-overlay {
  position: fixed;
@@ -246,6 +235,7 @@
  max-height: 80vh;
  overflow: hidden;
  box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+ position: relative;
  }
  .modal-header {
  padding: 25px;
@@ -276,6 +266,8 @@
  }
  .modal-body {
  padding: 25px;
+ overflow-y: auto;
+ max-height: 60vh;
  }
  .detail-grid {
  display: grid;
@@ -286,7 +278,7 @@
  .detail-stat {
  text-align: center;
  padding: 15px;
- background: #f8f9fa;
+ background: #F5F5F0;
  border-radius: 10px;
  }
  .detail-stat-value {
@@ -296,7 +288,7 @@
  }
  .detail-stat-label {
  font-size: 11px;
- color: #888;
+ color: #706F6C;
  margin-top: 4px;
  text-transform: uppercase;
  }
@@ -306,7 +298,7 @@
  .detail-section-title {
  font-size: 13px;
  font-weight: 600;
- color: #888;
+ color: #706F6C;
  margin-bottom: 10px;
  text-transform: uppercase;
  letter-spacing: 0.5px;
@@ -318,55 +310,39 @@
  }
  .permit-type-tag {
  padding: 6px 12px;
- background: #e8f5e8;
+ background: #F0EBE1;
  border-radius: 15px;
  font-size: 12px;
- color: #5a7d3f;
+ color: #3A5566;
  }
- 
- /* Leaderboard */
- .leaderboard-item {
- display: flex;
- align-items: center;
- padding: 12px 0;
- border-bottom: 1px solid #f0f0f0;
- }
- .leaderboard-rank {
- width: 30px;
- font-weight: 700;
- color: #888;
- }
- .leaderboard-rank.gold { color: #f1c40f; }
- .leaderboard-rank.silver { color: #95a5a6; }
- .leaderboard-rank.bronze { color: #e67e22; }
- .leaderboard-name {
- flex: 1;
- font-size: 13px;
- font-weight: 500;
- }
- .leaderboard-value {
- font-weight: 600;
- color: #CBB279;
- }
- 
+
  /* Loading */
  .loading {
  display: flex;
  align-items: center;
  justify-content: center;
  padding: 50px;
- color: #888;
+ color: #7B746D;
  }
  .loading-spinner {
  width: 30px;
  height: 30px;
- border: 3px solid #e0e0e0;
+ border: 3px solid #E2E2E0;
  border-top-color: #CBB279;
  border-radius: 50%;
  animation: spin 1s linear infinite;
  margin-right: 15px;
  }
  @keyframes spin { to { transform: rotate(360deg); } }
+
+ /* Footer */
+ .analytics-footer {
+ background: #3A5566;
+ color: #918A83;
+ padding: 32px 24px;
+ text-align: center;
+ font-size: 13px;
+ }
 
  /* Responsive */
  @media (max-width: 1200px) {
@@ -388,34 +364,39 @@
  grid-template-columns: repeat(2, 1fr);
  }
  }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
+ <link rel="stylesheet" href="homebody_shared.css">
+</head>
 <body>
-<!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
-<!-- Header -->
- 
- 
  <!-- Summary Cards -->
  <section class="summary-section">
  <div class="summary-cards">
  <div class="summary-card">
- <div class="summary-card-value" id="totalPermits">—</div>
+ <div class="summary-card-value" id="totalPermits">&mdash;</div>
  <div class="summary-card-label">Total Permits</div></div>
  <div class="summary-card">
- <div class="summary-card-value green" id="totalValue">—</div>
+ <div class="summary-card-value accent" id="totalValue">&mdash;</div>
  <div class="summary-card-label">Total Value</div></div>
  <div class="summary-card">
- <div class="summary-card-value blue" id="avgValue">—</div>
+ <div class="summary-card-value" id="avgValue">&mdash;</div>
  <div class="summary-card-label">Avg Permit Value</div></div>
  <div class="summary-card">
- <div class="summary-card-value orange" id="totalContractors">—</div>
+ <div class="summary-card-value accent" id="totalContractors">&mdash;</div>
  <div class="summary-card-label">Contractors</div></div>
  <div class="summary-card">
- <div class="summary-card-value" id="totalProperties">—</div>
+ <div class="summary-card-value" id="totalProperties">&mdash;</div>
  <div class="summary-card-label">Properties</div></div></div></section>
- 
+
+ <!-- Filter Toggle -->
+ <section class="filter-toggle-section">
+ <div class="filter-toggle">
+ <button class="toggle-btn active" data-filter="all">All Permits</button>
+ <button class="toggle-btn" data-filter="dadu">DADU Only</button>
+ </div>
+ <div class="filter-label" id="filterLabel">Showing all Nashville building permits</div>
+ </section>
+
  <!-- Main Content -->
  <main class="main-content">
  <!-- Contractor Search Panel -->
@@ -428,48 +409,48 @@
  <div class="loading">
  <div class="loading-spinner"></div>
  Loading contractors...</div></div></div>
- 
+
  <!-- Charts Section -->
  <div class="charts-section">
  <!-- Yearly Trends -->
  <div class="chart-card full-width">
- <div class="chart-title">Permit Activity by Year (1980-2024)</div>
+ <div class="chart-title" id="yearlyChartTitle">Permit Activity by Year</div>
  <div class="chart-container tall">
  <canvas id="yearlyChart"></canvas></div></div>
- 
+
  <div class="chart-row">
  <!-- Permit Types -->
  <div class="chart-card">
  <div class="chart-title">Permits by Type</div>
  <div class="chart-container">
  <canvas id="typeChart"></canvas></div></div>
- 
+
  <!-- Value Distribution -->
  <div class="chart-card">
  <div class="chart-title">Permit Value Distribution</div>
  <div class="chart-container">
  <canvas id="valueChart"></canvas></div></div></div>
- 
+
  <div class="chart-row">
  <!-- Top Contractors by Permits -->
  <div class="chart-card">
  <div class="chart-title">Top 10 Contractors (by Permits)</div>
  <div class="chart-container">
  <canvas id="topContractorsChart"></canvas></div></div>
- 
+
  <!-- Top Contractors by Value -->
  <div class="chart-card">
  <div class="chart-title">Top 10 Contractors (by Value)</div>
  <div class="chart-container">
  <canvas id="topValueChart"></canvas></div></div></div></div></main>
- 
+
  <!-- Contractor Detail Modal -->
  <div class="modal-overlay" id="contractorModal">
  <div class="modal">
  <div class="modal-header">
  <div class="modal-title" id="modalContractorName">Contractor Name</div>
  <div class="modal-subtitle" id="modalContractorYears">Active: 2010 - 2024</div>
- <button class="modal-close" onclick="closeModal()">×</button></div>
+ <button class="modal-close" onclick="closeModal()">x</button></div>
  <div class="modal-body">
  <div class="detail-grid">
  <div class="detail-stat">
@@ -487,276 +468,451 @@
  <div class="detail-section">
  <div class="detail-section-title">Average Permit Value</div>
  <div id="modalAvgValue" style="font-size: 24px; font-weight: 600; color: #CBB279;">$0</div></div></div></div></div>
- 
+
+ <!-- Footer -->
+ <footer class="analytics-footer">
+ <p>&copy; 2026 Homebody Projects. Powered by Castlehold.</p>
+ </footer>
+
  <script>
  // Data storage
  let contractors = [];
  let analytics = null;
- 
+ let daduPermits = null;
+ let activeFilter = 'all';
+
  // Chart instances
  let yearlyChart, typeChart, valueChart, topContractorsChart, topValueChart;
- 
+
  // Load data
  async function loadData() {
  try {
- // Load contractors
- const contractorsRes = await fetch('https://nataliebaldacci.github.io/DADU-Homebody-Projects/contractors_stats.json');
+ const [contractorsRes, analyticsRes, daduRes] = await Promise.all([
+   fetch('contractors_stats.json'),
+   fetch('permit_analytics.json'),
+   fetch('data/dadu_permits_dashboard.json')
+ ]);
+
  const contractorsData = await contractorsRes.json();
  contractors = contractorsData.contractors;
- 
- // Load analytics
- const analyticsRes = await fetch('https://nataliebaldacci.github.io/DADU-Homebody-Projects/permit_analytics.json');
+
  analytics = await analyticsRes.json();
- 
- // Render everything
- renderSummary();
- renderContractorList();
- renderCharts();
- 
+ daduPermits = await daduRes.json();
+
+ renderAll();
+
  } catch (error) {
  console.error('Error loading data:', error);
- document.getElementById('contractorList').innerHTML = 
+ document.getElementById('contractorList').innerHTML =
  '<div class="loading">Error loading data. Please refresh.</div>';
  }
  }
- 
- // Render summary cards
- function renderSummary() {
+
+ function renderAll() {
+   if (activeFilter === 'dadu') {
+     renderDaduMode();
+   } else {
+     renderAllMode();
+   }
+ }
+
+ // ═══ ALL PERMITS MODE ═══
+ function renderAllMode() {
  const s = analytics.summary;
  document.getElementById('totalPermits').textContent = s.total_permits.toLocaleString();
  document.getElementById('totalValue').textContent = '$' + (s.total_value / 1e9).toFixed(1) + 'B';
  document.getElementById('avgValue').textContent = '$' + (s.avg_value / 1000).toFixed(0) + 'k';
  document.getElementById('totalContractors').textContent = s.contractors.toLocaleString();
  document.getElementById('totalProperties').textContent = s.properties.toLocaleString();
+ document.getElementById('filterLabel').textContent = 'Showing all Nashville building permits';
+ document.getElementById('yearlyChartTitle').textContent = 'Permit Activity by Year';
+
+ renderContractorList();
+ destroyCharts();
+ renderAllCharts();
  }
- 
- // Render contractor list
- function renderContractorList(filter = '') {
- const list = document.getElementById('contractorList');
- let filtered = contractors;
- 
- if (filter) {
- const query = filter.toLowerCase();
- filtered = contractors.filter(c =>c.name.toLowerCase().includes(query));
- }
- 
- // Show top 50
- const display = filtered.slice(0, 50);
- 
- if (display.length === 0) {
- list.innerHTML = '<div class="loading">No contractors found</div>';
- return;
- }
- 
- list.innerHTML = display.map((c, i) =>{
- let badge = '';
- const rank = contractors.indexOf(c) + 1;
- if (rank === 1) badge = '<span class="contractor-badge badge-gold">#1</span>';
- else if (rank === 2) badge = '<span class="contractor-badge badge-silver">#2</span>';
- else if (rank === 3) badge = '<span class="contractor-badge badge-bronze">#3</span>';
- else if (rank <= 10) badge = `<span class="contractor-badge" style="background:#e3f2fd;color:#1565c0;">Top 10</span>`;
- 
- return `
- <div class="contractor-item" onclick="showContractorDetail(${contractors.indexOf(c)})">
- <div class="contractor-name">${c.name}${badge}</div>
- <div class="contractor-stats">
- <span>${c.permits.toLocaleString()} permits</span>
- <span>$${(c.value / 1e6).toFixed(1)}M</span>
- <span>${c.props} properties</span></div></div>
- `;
- }).join('');
- }
- 
- // Show contractor detail modal
- function showContractorDetail(index) {
- const c = contractors[index];
- document.getElementById('modalContractorName').textContent = c.name;
- document.getElementById('modalContractorYears').textContent = 
- `Active: ${c.first || '?'} - ${c.last || '?'}`;
- document.getElementById('modalPermits').textContent = c.permits.toLocaleString();
- document.getElementById('modalValue').textContent = '$' + (c.value / 1e6).toFixed(1) + 'M';
- document.getElementById('modalProperties').textContent = c.props.toLocaleString();
- document.getElementById('modalAvgValue').textContent = '$' + (c.avg).toLocaleString();
- 
- document.getElementById('modalTypes').innerHTML = (c.types || []).map(t => 
- `<span class="permit-type-tag">${t}</span>`
- ).join('') || '<span style="color:#888;">No type data</span>';
- 
- document.getElementById('contractorModal').classList.add('active');
- }
- 
- function closeModal() {
- document.getElementById('contractorModal').classList.remove('active');
- }
- 
- // Render all charts
- function renderCharts() {
+
+ function renderAllCharts() {
  // Yearly trend chart
  const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
  yearlyChart = new Chart(yearlyCtx, {
  type: 'bar',
  data: {
- labels: analytics.by_year.map(d =>d.year),
+ labels: analytics.by_year.map(d => d.year),
  datasets: [{
  label: 'Permits',
- data: analytics.by_year.map(d =>d.count),
+ data: analytics.by_year.map(d => d.count),
  backgroundColor: '#CBB279',
  borderRadius: 3
  }]
  },
- options: {
- responsive: true,
- maintainAspectRatio: false,
- plugins: {
- legend: { display: false }
- },
- scales: {
- y: {
- beginAtZero: true,
- ticks: {
- callback: v =>v >= 1000 ? (v/1000) + 'k' : v
- }
- }
- }
- }
+ options: chartOpts('y', v => v >= 1000 ? (v/1000) + 'k' : v)
  });
- 
+
  // Permit types chart
  const typeCtx = document.getElementById('typeChart').getContext('2d');
  const typeData = analytics.by_type.slice(0, 8);
  typeChart = new Chart(typeCtx, {
  type: 'doughnut',
  data: {
- labels: typeData.map(d =>d.type),
+ labels: typeData.map(d => d.type),
  datasets: [{
- data: typeData.map(d =>d.count),
- backgroundColor: [
- '#CBB279', '#3498db', '#f39c12', '#e74c3c',
- '#9b59b6', '#1abc9c', '#4A6B7D', '#95a5a6'
- ]
+ data: typeData.map(d => d.count),
+ backgroundColor: ['#CBB279','#4A6B7D','#7B746D','#B58676','#918A83','#406A64','#4C5C66','#A59D8B']
  }]
  },
  options: {
- responsive: true,
- maintainAspectRatio: false,
- plugins: {
- legend: {
- position: 'right',
- labels: { boxWidth: 12, font: { size: 11 } }
- }
- }
+ responsive: true, maintainAspectRatio: false,
+ plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: { size: 11 } } } }
  }
  });
- 
+
  // Value distribution chart
  const valueCtx = document.getElementById('valueChart').getContext('2d');
  valueChart = new Chart(valueCtx, {
  type: 'bar',
  data: {
- labels: analytics.value_distribution.map(d =>d.range),
+ labels: analytics.value_distribution.map(d => d.range),
  datasets: [{
  label: 'Permits',
- data: analytics.value_distribution.map(d =>d.count),
- backgroundColor: '#3498db',
+ data: analytics.value_distribution.map(d => d.count),
+ backgroundColor: '#4A6B7D',
  borderRadius: 4
  }]
  },
- options: {
- responsive: true,
- maintainAspectRatio: false,
- indexAxis: 'y',
- plugins: {
- legend: { display: false }
- },
- scales: {
- x: {
- ticks: {
- callback: v =>v >= 1000 ? (v/1000) + 'k' : v
- }
- }
- }
- }
+ options: chartOpts('x', v => v >= 1000 ? (v/1000) + 'k' : v, true)
  });
- 
+
  // Top contractors by permits
  const topCtx = document.getElementById('topContractorsChart').getContext('2d');
  const topData = analytics.top_contractors.slice(0, 10);
  topContractorsChart = new Chart(topCtx, {
  type: 'bar',
  data: {
- labels: topData.map(d =>d.name.substring(0, 20) + (d.name.length >20 ? '...' : '')),
+ labels: topData.map(d => truncName(d.name)),
  datasets: [{
  label: 'Permits',
- data: topData.map(d =>d.permits),
- backgroundColor: '#f39c12',
+ data: topData.map(d => d.permits),
+ backgroundColor: '#7B746D',
  borderRadius: 4
  }]
  },
- options: {
- responsive: true,
- maintainAspectRatio: false,
- indexAxis: 'y',
- plugins: {
- legend: { display: false }
- },
- scales: {
- x: {
- ticks: {
- callback: v =>v >= 1000 ? (v/1000) + 'k' : v
- }
- }
- }
- }
+ options: chartOpts('x', v => v >= 1000 ? (v/1000) + 'k' : v, true)
  });
- 
+
  // Top contractors by value
  const valueTopCtx = document.getElementById('topValueChart').getContext('2d');
  const valueTop = [...contractors]
- .filter(c =>c.name !== 'UNKNOWN')
- .sort((a, b) =>b.value - a.value)
+ .filter(c => c.name !== 'UNKNOWN')
+ .sort((a, b) => b.value - a.value)
  .slice(0, 10);
  topValueChart = new Chart(valueTopCtx, {
  type: 'bar',
  data: {
- labels: valueTop.map(d =>d.name.substring(0, 20) + (d.name.length >20 ? '...' : '')),
+ labels: valueTop.map(d => truncName(d.name)),
  datasets: [{
  label: 'Value',
- data: valueTop.map(d =>d.value),
+ data: valueTop.map(d => d.value),
  backgroundColor: '#CBB279',
  borderRadius: 4
  }]
  },
- options: {
- responsive: true,
- maintainAspectRatio: false,
- indexAxis: 'y',
- plugins: {
- legend: { display: false }
+ options: chartOpts('x', v => '$' + (v / 1e6).toFixed(0) + 'M', true)
+ });
+ }
+
+ // ═══ DADU ONLY MODE ═══
+ function renderDaduMode() {
+ if (!daduPermits || !daduPermits.permits) return;
+ const permits = daduPermits.permits;
+
+ // Summary stats
+ const totalCost = permits.reduce((s, p) => s + (p.cost > 0 ? p.cost : 0), 0);
+ const withCost = permits.filter(p => p.cost > 0);
+ const avgCost = withCost.length ? totalCost / withCost.length : 0;
+ const uniqueContractors = new Set(permits.filter(p => p.con).map(p => p.con)).size;
+ const uniqueProps = new Set(permits.filter(p => p.addr).map(p => p.addr)).size;
+
+ document.getElementById('totalPermits').textContent = permits.length.toLocaleString();
+ document.getElementById('totalValue').textContent = '$' + (totalCost / 1e6).toFixed(1) + 'M';
+ document.getElementById('avgValue').textContent = '$' + Math.round(avgCost / 1000) + 'k';
+ document.getElementById('totalContractors').textContent = uniqueContractors.toLocaleString();
+ document.getElementById('totalProperties').textContent = uniqueProps.toLocaleString();
+ document.getElementById('filterLabel').textContent = 'Showing DADU permits only (' + permits.length + ' permits)';
+ document.getElementById('yearlyChartTitle').textContent = 'DADU Permit Activity by Year';
+
+ // Contractor list from DADU data
+ renderDaduContractorList();
+ destroyCharts();
+ renderDaduCharts(permits);
+ }
+
+ function renderDaduCharts(permits) {
+ // By year
+ const byYear = {};
+ permits.forEach(p => {
+   if (!p.date) return;
+   const yr = p.date.substring(0, 4);
+   byYear[yr] = (byYear[yr] || 0) + 1;
+ });
+ const years = Object.keys(byYear).sort();
+
+ const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
+ yearlyChart = new Chart(yearlyCtx, {
+ type: 'bar',
+ data: {
+ labels: years,
+ datasets: [{ label: 'DADU Permits', data: years.map(y => byYear[y]), backgroundColor: '#CBB279', borderRadius: 3 }]
  },
- scales: {
- x: {
- ticks: {
- callback: v =>'$' + (v / 1e6).toFixed(0) + 'M'
- }
- }
- }
- }
+ options: chartOpts('y', v => v)
+ });
+
+ // By status (type chart)
+ const byStatus = {};
+ permits.forEach(p => {
+   const st = normalizeStatus(p.st);
+   byStatus[st] = (byStatus[st] || 0) + 1;
+ });
+ const statusKeys = Object.keys(byStatus).sort((a,b) => byStatus[b] - byStatus[a]);
+
+ const typeCtx = document.getElementById('typeChart').getContext('2d');
+ typeChart = new Chart(typeCtx, {
+ type: 'doughnut',
+ data: {
+ labels: statusKeys,
+ datasets: [{ data: statusKeys.map(k => byStatus[k]), backgroundColor: ['#406A64','#B58676','#918A83','#CBB279','#4C5C66','#7B746D','#A59D8B','#4A6B7D'] }]
+ },
+ options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: { size: 11 } } } } }
+ });
+
+ // Value distribution
+ const buckets = [
+   { range: '$0-50K', min: 0, max: 50000, count: 0 },
+   { range: '$50-100K', min: 50000, max: 100000, count: 0 },
+   { range: '$100-150K', min: 100000, max: 150000, count: 0 },
+   { range: '$150-200K', min: 150000, max: 200000, count: 0 },
+   { range: '$200-250K', min: 200000, max: 250000, count: 0 },
+   { range: '$250K+', min: 250000, max: Infinity, count: 0 }
+ ];
+ permits.forEach(p => {
+   if (p.cost <= 0) return;
+   for (const b of buckets) {
+     if (p.cost >= b.min && p.cost < b.max) { b.count++; break; }
+   }
+ });
+
+ const valueCtx = document.getElementById('valueChart').getContext('2d');
+ valueChart = new Chart(valueCtx, {
+ type: 'bar',
+ data: {
+ labels: buckets.map(b => b.range),
+ datasets: [{ label: 'Permits', data: buckets.map(b => b.count), backgroundColor: '#4A6B7D', borderRadius: 4 }]
+ },
+ options: chartOpts('x', v => v, true)
+ });
+
+ // Top contractors by permit count
+ const conCounts = {};
+ permits.forEach(p => {
+   if (!p.con) return;
+   conCounts[p.con] = (conCounts[p.con] || 0) + 1;
+ });
+ const topCons = Object.entries(conCounts).sort((a,b) => b[1] - a[1]).slice(0, 10);
+
+ const topCtx = document.getElementById('topContractorsChart').getContext('2d');
+ topContractorsChart = new Chart(topCtx, {
+ type: 'bar',
+ data: {
+ labels: topCons.map(c => truncName(c[0])),
+ datasets: [{ label: 'DADU Permits', data: topCons.map(c => c[1]), backgroundColor: '#7B746D', borderRadius: 4 }]
+ },
+ options: chartOpts('x', v => v, true)
+ });
+
+ // Top contractors by value
+ const conValues = {};
+ permits.forEach(p => {
+   if (!p.con || p.cost <= 0) return;
+   conValues[p.con] = (conValues[p.con] || 0) + p.cost;
+ });
+ const topVal = Object.entries(conValues).sort((a,b) => b[1] - a[1]).slice(0, 10);
+
+ const vtCtx = document.getElementById('topValueChart').getContext('2d');
+ topValueChart = new Chart(vtCtx, {
+ type: 'bar',
+ data: {
+ labels: topVal.map(c => truncName(c[0])),
+ datasets: [{ label: 'Value', data: topVal.map(c => c[1]), backgroundColor: '#CBB279', borderRadius: 4 }]
+ },
+ options: chartOpts('x', v => '$' + (v / 1e6).toFixed(1) + 'M', true)
  });
  }
- 
+
+ function renderDaduContractorList(filter) {
+   if (!daduPermits || !daduPermits.permits) return;
+   const permits = daduPermits.permits;
+
+   // Aggregate by contractor
+   const conMap = {};
+   permits.forEach(p => {
+     if (!p.con) return;
+     if (!conMap[p.con]) conMap[p.con] = { name: p.con, permits: 0, value: 0 };
+     conMap[p.con].permits++;
+     if (p.cost > 0) conMap[p.con].value += p.cost;
+   });
+
+   let conList = Object.values(conMap).sort((a,b) => b.permits - a.permits);
+
+   if (filter) {
+     const q = filter.toLowerCase();
+     conList = conList.filter(c => c.name.toLowerCase().includes(q));
+   }
+
+   const display = conList.slice(0, 50);
+   const list = document.getElementById('contractorList');
+
+   if (!display.length) {
+     list.innerHTML = '<div class="loading">No DADU contractors found</div>';
+     return;
+   }
+
+   list.innerHTML = display.map(c => {
+     return '<div class="contractor-item" onclick="window.open(\'contractor_report.html?contractor=' + encodeURIComponent(c.name) + '\',\'_blank\')">' +
+       '<div class="contractor-name">' + escapeHtml(c.name) + '</div>' +
+       '<div class="contractor-stats"><span>' + c.permits + ' DADU permits</span>' +
+       '<span>$' + (c.value / 1e6).toFixed(1) + 'M</span></div></div>';
+   }).join('');
+ }
+
+ // ═══ SHARED HELPERS ═══
+ function normalizeStatus(st) {
+   if (!st) return 'Unknown';
+   const u = st.toUpperCase();
+   if (u === 'DONE' || u === 'COMPLETED' || u === 'COMPLETE') return 'Completed';
+   if (u === 'ISSUED' || u === 'ISSUE') return 'Issued';
+   if (u === 'OPEN' || u === 'PENDING') return 'Open';
+   if (u === 'EXPIRED') return 'Expired';
+   if (u === 'CANCELLED' || u === 'CANCELED') return 'Cancelled';
+   return st;
+ }
+
+ function truncName(name) {
+   return name.length > 22 ? name.substring(0, 22) + '...' : name;
+ }
+
+ function escapeHtml(str) {
+   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+ }
+
+ function chartOpts(axis, tickFn, horizontal) {
+   var opts = {
+     responsive: true, maintainAspectRatio: false,
+     plugins: { legend: { display: false } },
+     scales: {}
+   };
+   if (horizontal) {
+     opts.indexAxis = 'y';
+     opts.scales.x = { ticks: { callback: tickFn } };
+   } else {
+     opts.scales.y = { beginAtZero: true, ticks: { callback: tickFn } };
+   }
+   return opts;
+ }
+
+ function destroyCharts() {
+   [yearlyChart, typeChart, valueChart, topContractorsChart, topValueChart].forEach(c => {
+     if (c) c.destroy();
+   });
+   yearlyChart = typeChart = valueChart = topContractorsChart = topValueChart = null;
+ }
+
+ // Render contractor list (all mode)
+ function renderContractorList(filter) {
+ const list = document.getElementById('contractorList');
+ let filtered = contractors;
+
+ if (filter) {
+ const query = filter.toLowerCase();
+ filtered = contractors.filter(c => c.name.toLowerCase().includes(query));
+ }
+
+ const display = filtered.slice(0, 50);
+
+ if (display.length === 0) {
+ list.innerHTML = '<div class="loading">No contractors found</div>';
+ return;
+ }
+
+ list.innerHTML = display.map((c, i) => {
+ let badge = '';
+ const rank = contractors.indexOf(c) + 1;
+ if (rank === 1) badge = '<span class="contractor-badge badge-gold">#1</span>';
+ else if (rank === 2) badge = '<span class="contractor-badge badge-silver">#2</span>';
+ else if (rank === 3) badge = '<span class="contractor-badge badge-bronze">#3</span>';
+ else if (rank <= 10) badge = '<span class="contractor-badge" style="background:#F0EBE1;color:#3A5566;">Top 10</span>';
+
+ return '<div class="contractor-item" onclick="showContractorDetail(' + contractors.indexOf(c) + ')">' +
+ '<div class="contractor-name">' + escapeHtml(c.name) + badge + '</div>' +
+ '<div class="contractor-stats">' +
+ '<span>' + c.permits.toLocaleString() + ' permits</span>' +
+ '<span>$' + (c.value / 1e6).toFixed(1) + 'M</span>' +
+ '<span>' + c.props + ' properties</span></div></div>';
+ }).join('');
+ }
+
+ // Show contractor detail modal
+ function showContractorDetail(index) {
+ const c = contractors[index];
+ document.getElementById('modalContractorName').textContent = c.name;
+ document.getElementById('modalContractorYears').textContent =
+ 'Active: ' + (c.first || '?') + ' - ' + (c.last || '?');
+ document.getElementById('modalPermits').textContent = c.permits.toLocaleString();
+ document.getElementById('modalValue').textContent = '$' + (c.value / 1e6).toFixed(1) + 'M';
+ document.getElementById('modalProperties').textContent = c.props.toLocaleString();
+ document.getElementById('modalAvgValue').textContent = '$' + (c.avg).toLocaleString();
+
+ document.getElementById('modalTypes').innerHTML = (c.types || []).map(function(t) {
+   return '<span class="permit-type-tag">' + t + '</span>';
+ }).join('') || '<span style="color:#706F6C;">No type data</span>';
+
+ document.getElementById('contractorModal').classList.add('active');
+ }
+
+ function closeModal() {
+ document.getElementById('contractorModal').classList.remove('active');
+ }
+
  // Search handler
- document.getElementById('contractorSearch').addEventListener('input', (e) =>{
- renderContractorList(e.target.value);
+ document.getElementById('contractorSearch').addEventListener('input', function(e) {
+   if (activeFilter === 'dadu') {
+     renderDaduContractorList(e.target.value);
+   } else {
+     renderContractorList(e.target.value);
+   }
  });
- 
+
+ // Toggle handler
+ document.querySelectorAll('.toggle-btn').forEach(function(btn) {
+   btn.addEventListener('click', function() {
+     document.querySelectorAll('.toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+     btn.classList.add('active');
+     activeFilter = btn.getAttribute('data-filter');
+     document.getElementById('contractorSearch').value = '';
+     renderAll();
+   });
+ });
+
  // Modal handlers
- document.getElementById('contractorModal').addEventListener('click', (e) =>{
+ document.getElementById('contractorModal').addEventListener('click', function(e) {
  if (e.target.id === 'contractorModal') closeModal();
  });
- document.addEventListener('keydown', (e) =>{
+ document.addEventListener('keydown', function(e) {
  if (e.key === 'Escape') closeModal();
  });
- 
+
  // Load on page ready
- loadData();</script>
- <script src="homebody_header.js"></script></body></html>
+ loadData();
+ </script>
+ <script src="homebody_header.js"></script>
+</body>
+</html>

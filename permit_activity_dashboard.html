@@ -1,531 +1,972 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Permit Activity Dashboard | Homebody Projects</title>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
- <style>
- :root {
- --navy: #3A5566;
- --navy-dark: #2E4553;
- --teal: #7B746D;
- --terracotta: #CBB279;
- --terracotta-hover: #B8A068;
- --tan: #7B746D;
- --cream: #F0EBE1;
- --background: #F2F0ED;
- --white: #ffffff;
- --border: #e0e0e0;
- --text: #333333;
- --text-light: #666666;
- --terracotta: #27ae60;
- --yellow: #f39c12;
- --red: #c0392b;
- --blue: #3498db;
- }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DADU Activity Dashboard | Homebody Projects</title>
+  <link rel="stylesheet" href="homebody_shared.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --slate: #3A5566;
+      --dark-anchor: #2F3A45;
+      --slate-mid: #496778;
+      --slate-azure: #4C5C66;
+      --stone: #7B746D;
+      --stone-light: #918A83;
+      --wheat: #CBB279;
+      --cream: #E1D4BB;
+      --linen: #F0EBE1;
+      --background: #F2F0ED;
+      --card-bg: #F5F5F0;
+      --gray-light: #E2E2E0;
+      --gray-warm: #706F6C;
+      --eligible: #406A64;
+      --not-eligible: #B58676;
+      --conditional: #918A83;
+    }
 
- * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
- body {
- font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
- background: var(--background);
- color: var(--text);
- line-height: 1.6;
- }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: #333;
+      line-height: 1.6;
+    }
 
- /* Header */
- .header {
- background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
- padding: 0 24px;
- height: 64px;
- display: flex;
- align-items: center;
- justify-content: space-between;
- position: sticky;
- top: 0;
- z-index: 1000;
- }
+    /* Hero */
+    .hero {
+      background: var(--slate);
+      padding: 56px 24px 72px;
+      color: #fff;
+    }
 
- .logo {
- display: flex;
- align-items: center;
- gap: 12px;
- text-decoration: none;
- color: white;
- font-weight: 700;
- font-size: 20px;
- }
+    .hero-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
- .logo-icon {
- width: 40px;
- height: 40px;
- background: var(--terracotta);
- border-radius: 10px;
- display: flex;
- align-items: center;
- justify-content: center;
- }
+    .hero h1 {
+      font-size: 34px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
 
- .logo-icon img {
- width: 24px;
- height: 24px;
- filter: brightness(0) invert(1);
- }
+    .hero p {
+      font-size: 16px;
+      color: var(--cream);
+    }
 
- .nav-links {
- display: flex;
- gap: 8px;
- }
+    /* Stats Grid */
+    .stats-grid {
+      max-width: 1200px;
+      margin: -44px auto 0;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      position: relative;
+      z-index: 10;
+    }
 
- .nav-link {
- color: rgba(255,255,255,0.9);
- text-decoration: none;
- padding: 8px 16px;
- border-radius: 6px;
- font-size: 14px;
- font-weight: 500;
- }
+    .stat-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
 
- .nav-link:hover {
- background: rgba(255,255,255,0.1);
- }
+    .stat-value {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--wheat);
+      line-height: 1.1;
+    }
 
- /* Hero */
- .hero {
- background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
- padding: 48px 24px;
- color: white;
- }
+    .stat-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
- .hero-content {
- max-width: 1200px;
- margin: 0 auto;
- }
+    .stat-change {
+      font-size: 12px;
+      margin-top: 8px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      font-weight: 600;
+    }
 
- .hero h1 {
- font-size: 32px;
- font-weight: 800;
- margin-bottom: 8px;
- }
+    .stat-change.up {
+      background: rgba(64, 106, 100, 0.12);
+      color: var(--eligible);
+    }
 
- .hero p {
- font-size: 16px;
- opacity: 0.9;
- }
+    .stat-change.down {
+      background: rgba(181, 134, 118, 0.12);
+      color: var(--not-eligible);
+    }
 
- /* Stats Grid */
- .stats-grid {
- max-width: 1200px;
- margin: -40px auto 0;
- padding: 0 24px;
- display: grid;
- grid-template-columns: repeat(4, 1fr);
- gap: 20px;
- position: relative;
- z-index: 10;
- }
+    .stat-change.neutral {
+      background: rgba(145, 138, 131, 0.12);
+      color: var(--conditional);
+    }
 
- .stat-card {
- background: var(--white);
- border-radius: 12px;
- padding: 24px;
- text-align: center;
- box-shadow: 0 4px 12px rgba(0,0,0,0.1);
- }
+    /* Main */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
 
- .stat-card-value {
- font-size: 36px;
- font-weight: 800;
- color: var(--navy);
- }
+    .section {
+      margin-bottom: 48px;
+    }
 
- .stat-card-value.green { color: var(--terracotta); }
- .stat-card-value.yellow { color: var(--yellow); }
- .stat-card-value.blue { color: var(--blue); }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
- .stat-card-label {
- font-size: 13px;
- color: var(--text-light);
- margin-top: 4px;
- }
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--slate);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
- .stat-card-change {
- font-size: 12px;
- margin-top: 8px;
- padding: 4px 8px;
- border-radius: 20px;
- display: inline-block;
- }
+    .section-title img {
+      width: 28px;
+      height: 28px;
+    }
 
- .stat-card-change.up {
- background: #e8f5e9;
- color: var(--terracotta);
- }
+    /* Filter Pills */
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
- .stat-card-change.down {
- background: #ffebee;
- color: var(--red);
- }
+    .filter-pill {
+      padding: 8px 16px;
+      border: 1px solid var(--gray-light);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+      color: var(--gray-warm);
+    }
 
- /* Main Content */
- .main {
- max-width: 1200px;
- margin: 0 auto;
- padding: 40px 24px;
- }
+    .filter-pill:hover {
+      border-color: var(--wheat);
+      color: var(--slate);
+    }
 
- /* Section */
- .section {
- margin-bottom: 40px;
- }
+    .filter-pill.active {
+      background: var(--wheat);
+      color: var(--slate);
+      border-color: var(--wheat);
+      font-weight: 600;
+    }
 
- .section-header {
- display: flex;
- justify-content: space-between;
- align-items: center;
- margin-bottom: 20px;
- }
+    /* Activity Feed */
+    .activity-feed {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
 
- .section-title {
- font-size: 20px;
- font-weight: 700;
- color: var(--navy);
- display: flex;
- align-items: center;
- gap: 10px;
- }
+    .activity-item {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--gray-light);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      transition: background 0.15s;
+    }
 
- .section-title img {
- width: 28px;
- height: 28px;
- }
+    .activity-item:last-child {
+      border-bottom: none;
+    }
 
- .filter-pills {
- display: flex;
- gap: 8px;
- }
+    .activity-item:hover {
+      background: var(--linen);
+    }
 
- .filter-pill {
- padding: 8px 16px;
- border: 1px solid var(--border);
- border-radius: 20px;
- font-size: 13px;
- font-weight: 500;
- background: var(--white);
- cursor: pointer;
- transition: all 0.2s;
- }
+    .activity-info {
+      flex: 1;
+      min-width: 0;
+    }
 
- .filter-pill:hover,
- .filter-pill.active {
- background: var(--terracotta);
- color: white;
- border-color: var(--terracotta);
- }
+    .activity-address {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
- /* Activity Feed */
- .activity-feed {
- background: var(--white);
- border-radius: 12px;
- overflow: hidden;
- }
+    .activity-meta {
+      font-size: 13px;
+      color: var(--gray-warm);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
 
- .activity-item {
- padding: 20px 24px;
- border-bottom: 1px solid var(--border);
- display: flex;
- gap: 16px;
- align-items: flex-start;
- }
+    .activity-meta a {
+      color: var(--slate);
+      text-decoration: underline;
+      text-decoration-color: var(--gray-light);
+      text-underline-offset: 2px;
+    }
 
- .activity-item:last-child {
- border-bottom: none;
- }
+    .activity-meta a:hover {
+      text-decoration-color: var(--wheat);
+    }
 
- .activity-item:hover {
- background: var(--cream);
- }
+    .meta-sep {
+      color: var(--gray-light);
+    }
 
- .activity-icon {
- width: 44px;
- height: 44px;
- border-radius: 10px;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 20px;
- flex-shrink: 0;
- }
+    .activity-details {
+      font-size: 13px;
+      color: var(--stone);
+      margin-top: 2px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
 
- .activity-icon.new { background: #e8f5e9; }
- .activity-icon.approved { background: #e3f2fd; }
- .activity-icon.issued { background: #fff3e0; }
- .activity-icon.completed { background: #f3e5f5; }
+    /* Status Badge */
+    .status-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
 
- .activity-content {
- flex: 1;
- }
+    .status-badge.done {
+      background: var(--eligible);
+      color: #fff;
+    }
 
- .activity-title {
- font-size: 15px;
- font-weight: 600;
- color: var(--navy);
- margin-bottom: 4px;
- }
+    .status-badge.issued {
+      background: var(--wheat);
+      color: var(--slate);
+    }
 
- .activity-address {
- font-size: 14px;
- color: var(--text);
- margin-bottom: 4px;
- }
+    .status-badge.open {
+      background: var(--slate-azure);
+      color: #fff;
+    }
 
- .activity-meta {
- font-size: 12px;
- color: var(--text-light);
- }
+    .status-badge.expired {
+      background: var(--not-eligible);
+      color: #fff;
+    }
 
- .activity-status {
- padding: 6px 12px;
- border-radius: 20px;
- font-size: 12px;
- font-weight: 600;
- }
+    .status-badge.cancelled {
+      background: var(--conditional);
+      color: #fff;
+    }
 
- .activity-status.new { background: #e8f5e9; color: var(--terracotta); }
- .activity-status.approved { background: #e3f2fd; color: var(--blue); }
- .activity-status.issued { background: #fff3e0; color: var(--yellow); }
- .activity-status.completed { background: #f3e5f5; color: #8e44ad; }
+    /* Load More */
+    .load-more-wrap {
+      text-align: center;
+      padding: 20px;
+    }
 
- /* Chart Placeholder */
- .chart-container {
- background: var(--white);
- border-radius: 12px;
- padding: 24px;
- margin-bottom: 24px;
- }
+    .load-more-btn {
+      padding: 10px 32px;
+      background: var(--slate);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.2s;
+    }
 
- .chart-placeholder {
- height: 300px;
- background: linear-gradient(135deg, var(--cream) 0%, var(--background) 100%);
- border-radius: 8px;
- display: flex;
- align-items: center;
- justify-content: center;
- color: var(--text-light);
- font-size: 14px;
- }
+    .load-more-btn:hover {
+      background: var(--dark-anchor);
+    }
 
- /* Grid Layout */
- .grid-2 {
- display: grid;
- grid-template-columns: 1fr 1fr;
- gap: 24px;
- }
+    .load-more-btn:disabled {
+      background: var(--gray-light);
+      color: var(--stone);
+      cursor: default;
+    }
 
- /* Zip Code Table */
- .data-table {
- width: 100%;
- border-collapse: collapse;
- }
+    /* Grid Layout */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
 
- .data-table th,
- .data-table td {
- padding: 14px 16px;
- text-align: left;
- border-bottom: 1px solid var(--border);
- }
+    /* Chart Section */
+    .chart-container {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
 
- .data-table th {
- background: var(--cream);
- font-size: 12px;
- font-weight: 600;
- color: var(--text-light);
- text-transform: uppercase;
- }
+    .chart-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--slate);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
- .data-table tr:hover td {
- background: var(--cream);
- }
+    .chart-title img {
+      width: 24px;
+      height: 24px;
+    }
 
- .progress-bar {
- height: 8px;
- background: var(--border);
- border-radius: 4px;
- overflow: hidden;
- }
+    .bar-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
- .progress-bar-fill {
- height: 100%;
- background: var(--terracotta);
- border-radius: 4px;
- }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
- /* Footer */
- .footer {
- background: var(--navy-dark);
- color: rgba(255,255,255,0.7);
- padding: 40px 24px;
- text-align: center;
- font-size: 14px;
- }
+    .bar-label {
+      width: 64px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-warm);
+      text-align: right;
+      flex-shrink: 0;
+    }
 
- @media (max-width: 992px) {
- .stats-grid {
- grid-template-columns: repeat(2, 1fr);
- }
- .grid-2 {
- grid-template-columns: 1fr;
- }
- }
+    .bar-track {
+      flex: 1;
+      height: 22px;
+      background: var(--linen);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
 
- @media (max-width: 768px) {
- .stats-grid {
- grid-template-columns: 1fr;
- }
- .filter-pills {
- flex-wrap: wrap;
- }
- }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
+    .bar-fill {
+      height: 100%;
+      background: var(--wheat);
+      border-radius: 4px;
+      transition: width 0.6s ease;
+      min-width: 2px;
+    }
+
+    .bar-count {
+      width: 36px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate);
+      text-align: left;
+      flex-shrink: 0;
+    }
+
+    /* Zip Code Table */
+    .zip-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .zip-table th,
+    .zip-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .zip-table th {
+      background: var(--linen);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--stone);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .zip-table tr:hover td {
+      background: var(--linen);
+    }
+
+    .zip-table td {
+      font-size: 14px;
+    }
+
+    .zip-code {
+      font-weight: 700;
+      color: var(--slate);
+    }
+
+    .zip-neighborhood {
+      font-size: 12px;
+      color: var(--stone);
+    }
+
+    .zip-count {
+      font-weight: 700;
+      color: var(--slate);
+    }
+
+    .zip-bar-track {
+      height: 8px;
+      background: var(--linen);
+      border-radius: 4px;
+      overflow: hidden;
+      min-width: 100px;
+    }
+
+    .zip-bar-fill {
+      height: 100%;
+      background: var(--wheat);
+      border-radius: 4px;
+    }
+
+    /* Loading State */
+    .loading-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--stone);
+      font-size: 15px;
+    }
+
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--gray-light);
+      border-top-color: var(--wheat);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-state {
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--not-eligible);
+      font-size: 15px;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--slate);
+      color: var(--conditional);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        padding: 40px 16px 64px;
+      }
+      .hero h1 {
+        font-size: 26px;
+      }
+      .main {
+        padding: 32px 16px;
+      }
+      .filter-pills {
+        flex-wrap: wrap;
+      }
+      .activity-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .activity-address {
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stat-value {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
 <body>
-<!-- Shared Header - Castlehold -->
+
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>DADU Activity Dashboard</h1>
+    <p>DADU permit tracking for Nashville-Davidson County</p>
+  </div>
+</section>
 
+<div class="stats-grid" id="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value" id="stat-total">--</div>
+    <div class="stat-label">Total DADU Permits</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value" id="stat-year">--</div>
+    <div class="stat-label">Permits This Year (2026)</div>
+    <span class="stat-change neutral" id="stat-year-change"></span>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value" id="stat-active">--</div>
+    <div class="stat-label">Active (Open + Issued)</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value" id="stat-avg-cost">--</div>
+    <div class="stat-label">Avg Project Cost</div>
+  </div>
+</div>
 
- 
+<main class="main">
 
- <section class="hero">
- <div class="hero-content">
- <h1>Permit Activity Dashboard</h1>
- <p>Real-time DADU permit tracking for Nashville-Davidson County</p></div></section>
+  <!-- Recent Activity Feed -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">
+        <img src="assets/icons/Permit_Activity.svg" alt="">
+        Recent Permit Activity
+      </h2>
+      <div class="filter-pills" id="filter-pills">
+        <span class="filter-pill active" data-filter="all">All</span>
+        <span class="filter-pill" data-filter="issued">Issued</span>
+        <span class="filter-pill" data-filter="done">Completed</span>
+        <span class="filter-pill" data-filter="cancelled">Cancelled</span>
+        <span class="filter-pill" data-filter="open">Open</span>
+      </div>
+    </div>
 
- <div class="stats-grid">
- <div class="stat-card">
- <div class="stat-card-value">827</div>
- <div class="stat-card-label">Total DADU Permits</div>
- <span class="stat-card-change up">23% from 2024</span></div>
- <div class="stat-card">
- <div class="stat-card-value green">156</div>
- <div class="stat-card-label">Permits This Year</div>
- <span class="stat-card-change up">45% YoY</span></div>
- <div class="stat-card">
- <div class="stat-card-value yellow">34</div>
- <div class="stat-card-label">In Review</div>
- <span class="stat-card-change">Avg 21 days</span></div>
- <div class="stat-card">
- <div class="stat-card-value blue">$153K</div>
- <div class="stat-card-label">Avg Project Cost</div>
- <span class="stat-card-change down">5% from 2024</span></div></div>
+    <div id="activity-feed-container">
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        Loading permit data...
+      </div>
+    </div>
+  </section>
 
- <main class="main">
- <section class="section">
- <div class="section-header">
- <h2 class="section-title">
- <img src="assets/icons/Municipal.svg" alt="">
- Recent Permit Activity</h2>
- <div class="filter-pills">
- <span class="filter-pill active">All</span>
- <span class="filter-pill">New</span>
- <span class="filter-pill">Approved</span>
- <span class="filter-pill">Issued</span>
- <span class="filter-pill">Completed</span></div></div>
+  <!-- Charts Row -->
+  <div class="grid-2">
 
- <div class="activity-feed">
- <div class="activity-item">
- <div class="activity-icon new"></div>
- <div class="activity-content">
- <div class="activity-title">New DADU Application Submitted</div>
- <div class="activity-address">1847 Fatherland St, Nashville TN 37206</div>
- <div class="activity-meta">Permit #2026-DADU-0156 • Submitted 2 hours ago • 700 SF</div></div>
- <span class="activity-status new">New</span></div>
- <div class="activity-item">
- <div class="activity-icon approved"></div>
- <div class="activity-content">
- <div class="activity-title">Plan Review Approved</div>
- <div class="activity-address">2234 Porter Rd, Nashville TN 37206</div>
- <div class="activity-meta">Permit #2026-DADU-0148 • Approved today • 680 SF</div></div>
- <span class="activity-status approved">Approved</span></div>
- <div class="activity-item">
- <div class="activity-icon issued"></div>
- <div class="activity-content">
- <div class="activity-title">Building Permit Issued</div>
- <div class="activity-address">908 Boscobel St, Nashville TN 37206</div>
- <div class="activity-meta">Permit #2026-DADU-0132 • Issued yesterday • 750 SF • $142,000</div></div>
- <span class="activity-status issued">Issued</span></div>
- <div class="activity-item">
- <div class="activity-icon completed"></div>
- <div class="activity-content">
- <div class="activity-title">Certificate of Occupancy Issued</div>
- <div class="activity-address">1523 Woodland St, Nashville TN 37206</div>
- <div class="activity-meta">Permit #2025-DADU-0847 • Completed 3 days ago • 700 SF • $155,000</div></div>
- <span class="activity-status completed">Completed</span></div>
- <div class="activity-item">
- <div class="activity-icon new"></div>
- <div class="activity-content">
- <div class="activity-title">New DADU Application Submitted</div>
- <div class="activity-address">3401 Belmont Blvd, Nashville TN 37212</div>
- <div class="activity-meta">Permit #2026-DADU-0155 • Submitted 5 hours ago • 850 SF</div></div>
- <span class="activity-status new">New</span></div>
- <div class="activity-item">
- <div class="activity-icon approved"></div>
- <div class="activity-content">
- <div class="activity-title">Zoning Approval Granted</div>
- <div class="activity-address">4521 Charlotte Ave, Nashville TN 37209</div>
- <div class="activity-meta">Permit #2026-DADU-0141 • Approved 2 days ago • 700 SF</div></div>
- <span class="activity-status approved">Approved</span></div></div></section>
+    <!-- Monthly Chart -->
+    <section class="section">
+      <div class="chart-container">
+        <div class="chart-title">
+          <img src="assets/icons/Market Statistics Report .svg" alt="">
+          Permits by Month
+        </div>
+        <div id="monthly-chart">
+          <div class="loading-state">
+            <div class="loading-spinner"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
- <div class="grid-2">
- <section class="section">
- <h2 class="section-title">
- <img src="assets/icons/Market Statistics Report .svg" alt="">
- Permits by Month (2025-2026)</h2>
- <div class="chart-container">
- <div class="chart-placeholder" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;">
- <div style="font-size: 48px;"></div>
- <div style="font-weight: 600;">Monthly Permit Trends</div>
- <div style="font-size: 14px; color: #666;">View detailed analytics in the <a href="nashville_permit_analytics.html" style="color: var(--terracotta);">Permit Analytics</a>page</div></div></div></section>
+    <!-- Top Zip Codes -->
+    <section class="section">
+      <div class="chart-container" style="padding: 0; overflow: hidden;">
+        <div class="chart-title" style="padding: 24px 24px 16px;">
+          <img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt="">
+          Top Zip Codes
+        </div>
+        <div id="zip-table-container">
+          <div class="loading-state">
+            <div class="loading-spinner"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
- <section class="section">
- <h2 class="section-title">
- <img src="assets/icons/Area Maps and Visual layers.svg" alt="">
- Top Zip Codes</h2>
- <div class="chart-container" style="padding: 0; overflow: hidden;">
- <table class="data-table">
- <thead>
- <tr>
- <th>Zip Code</th>
- <th>Permits</th>
- <th>Share</th></tr></thead>
- <tbody>
- <tr>
- <td><strong>37206</strong>- East Nashville</td>
- <td>142</td>
- <td>
- <div class="progress-bar"><div class="progress-bar-fill" style="width: 85%"></div></div></td></tr>
- <tr>
- <td><strong>37212</strong>- Belmont/12 South</td>
- <td>98</td>
- <td>
- <div class="progress-bar"><div class="progress-bar-fill" style="width: 60%"></div></div></td></tr>
- <tr>
- <td><strong>37209</strong>- Sylvan Park/Nations</td>
- <td>87</td>
- <td>
- <div class="progress-bar"><div class="progress-bar-fill" style="width: 52%"></div></div></td></tr>
- <tr>
- <td><strong>37208</strong>- Germantown</td>
- <td>76</td>
- <td>
- <div class="progress-bar"><div class="progress-bar-fill" style="width: 45%"></div></div></td></tr>
- <tr>
- <td><strong>37204</strong>- Berry Hill/Woodbine</td>
- <td>64</td>
- <td>
- <div class="progress-bar"><div class="progress-bar-fill" style="width: 38%"></div></div></td></tr></tbody></table></div></section></div></main>
+  </div>
 
- <footer class="footer">
- <p>&copy; 2026 Homebody Projects. Powered by Castlehold. A Vanderbilt Law School Project.</p></footer>
- <script src="homebody_header.js"></script></body></html>
+</main>
+
+<footer class="footer">
+  <p>&copy; 2026 Homebody Projects. Powered by Castlehold.</p>
+</footer>
+
+<script src="homebody_header.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // Neighborhood map for zip codes
+  var ZIP_NAMES = {
+    '37206': 'East Nashville',
+    '37212': 'Belmont / 12 South',
+    '37209': 'Sylvan Park / The Nations',
+    '37208': 'Germantown',
+    '37204': 'Berry Hill / Woodbine',
+    '37211': 'South Nashville',
+    '37207': 'North Nashville / Inglewood',
+    '37210': 'Wedgewood-Houston',
+    '37216': 'Inglewood / Madison',
+    '37205': 'Belle Meade',
+    '37215': 'Green Hills'
+  };
+
+  var allPermits = [];
+  var currentFilter = 'all';
+  var displayCount = 20;
+
+  // Load data
+  fetch('data/dadu_permits_dashboard.json')
+    .then(function(res) {
+      if (!res.ok) throw new Error('Failed to load permit data (HTTP ' + res.status + ')');
+      return res.json();
+    })
+    .then(function(data) {
+      allPermits = data.permits || [];
+      renderStats();
+      renderFeed();
+      renderMonthlyChart();
+      renderZipTable();
+    })
+    .catch(function(err) {
+      document.getElementById('activity-feed-container').innerHTML =
+        '<div class="error-state">Unable to load permit data. Please try again later.</div>';
+      console.error(err);
+    });
+
+  // --- Stats ---
+  function renderStats() {
+    // Total
+    document.getElementById('stat-total').textContent = allPermits.length.toLocaleString();
+
+    // This year (2026)
+    var thisYear = allPermits.filter(function(p) { return p.date && p.date.indexOf('2026') === 0; });
+    var lastYear = allPermits.filter(function(p) { return p.date && p.date.indexOf('2025') === 0; });
+    document.getElementById('stat-year').textContent = thisYear.length.toLocaleString();
+
+    var changeEl = document.getElementById('stat-year-change');
+    if (lastYear.length > 0) {
+      var pct = Math.round(((thisYear.length - lastYear.length) / lastYear.length) * 100);
+      if (pct > 0) {
+        changeEl.textContent = '+' + pct + '% vs 2025';
+        changeEl.className = 'stat-change up';
+      } else if (pct < 0) {
+        changeEl.textContent = pct + '% vs 2025';
+        changeEl.className = 'stat-change down';
+      } else {
+        changeEl.textContent = '0% vs 2025';
+        changeEl.className = 'stat-change neutral';
+      }
+    } else {
+      changeEl.textContent = '';
+    }
+
+    // Active (Open + Issued)
+    var activeStatuses = ['Open', 'Issued', 'OPEN', 'ISSUE'];
+    var active = allPermits.filter(function(p) {
+      return activeStatuses.indexOf(p.st) !== -1;
+    });
+    document.getElementById('stat-active').textContent = active.length.toLocaleString();
+
+    // Avg cost
+    var withCost = allPermits.filter(function(p) { return p.cost && p.cost > 0; });
+    if (withCost.length > 0) {
+      var total = 0;
+      for (var i = 0; i < withCost.length; i++) total += withCost[i].cost;
+      var avg = total / withCost.length;
+      var avgK = Math.round(avg / 1000);
+      document.getElementById('stat-avg-cost').textContent = '$' + avgK + 'K';
+    } else {
+      document.getElementById('stat-avg-cost').textContent = '--';
+    }
+  }
+
+  // --- Filter pills ---
+  document.getElementById('filter-pills').addEventListener('click', function(e) {
+    var pill = e.target.closest('.filter-pill');
+    if (!pill) return;
+    var pills = this.querySelectorAll('.filter-pill');
+    for (var i = 0; i < pills.length; i++) pills[i].classList.remove('active');
+    pill.classList.add('active');
+    currentFilter = pill.getAttribute('data-filter');
+    displayCount = 20;
+    renderFeed();
+  });
+
+  // --- Normalize status for filtering ---
+  function getStatusCategory(st) {
+    if (!st) return 'other';
+    var s = st.toLowerCase().trim();
+    if (s === 'done' || s === 'completed') return 'done';
+    if (s === 'issued' || s === 'issue') return 'issued';
+    if (s === 'open') return 'open';
+    if (s === 'expired') return 'expired';
+    if (s === 'cancelled' || s === 'canceled') return 'cancelled';
+    if (s === 'ok to pay permit fee') return 'issued';
+    if (s === 'hold') return 'open';
+    return 'other';
+  }
+
+  function getStatusBadgeClass(st) {
+    var cat = getStatusCategory(st);
+    if (cat === 'done') return 'done';
+    if (cat === 'issued') return 'issued';
+    if (cat === 'open') return 'open';
+    if (cat === 'expired') return 'expired';
+    if (cat === 'cancelled') return 'cancelled';
+    return 'cancelled';
+  }
+
+  function getStatusLabel(st) {
+    var cat = getStatusCategory(st);
+    if (cat === 'done') return 'Completed';
+    if (cat === 'issued') return 'Issued';
+    if (cat === 'open') return 'Open';
+    if (cat === 'expired') return 'Expired';
+    if (cat === 'cancelled') return 'Cancelled';
+    return st || 'Unknown';
+  }
+
+  // --- Format helpers ---
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    var parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var m = parseInt(parts[1], 10) - 1;
+    var d = parseInt(parts[2], 10);
+    return months[m] + ' ' + d + ', ' + parts[0];
+  }
+
+  function formatCost(cost) {
+    if (!cost || cost <= 0) return '';
+    return '$' + cost.toLocaleString();
+  }
+
+  function cleanAddress(addr) {
+    if (!addr) return 'Address unavailable';
+    // Normalize multiple spaces and trim
+    return addr.replace(/\s+/g, ' ').trim();
+  }
+
+  // --- Render Activity Feed ---
+  function renderFeed() {
+    var filtered;
+    if (currentFilter === 'all') {
+      filtered = allPermits;
+    } else {
+      filtered = allPermits.filter(function(p) {
+        return getStatusCategory(p.st) === currentFilter;
+      });
+    }
+
+    var showing = filtered.slice(0, displayCount);
+    var hasMore = filtered.length > displayCount;
+
+    var html = '<div class="activity-feed">';
+
+    if (showing.length === 0) {
+      html += '<div style="padding: 40px; text-align: center; color: #918A83;">No permits match this filter.</div>';
+    }
+
+    for (var i = 0; i < showing.length; i++) {
+      var p = showing[i];
+      var permitLink = 'https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=' + encodeURIComponent(p.pn);
+
+      html += '<div class="activity-item">';
+      html += '<div class="activity-info">';
+      html += '<div class="activity-address">' + escapeHtml(cleanAddress(p.addr)) + '</div>';
+      html += '<div class="activity-meta">';
+      html += '<a href="' + permitLink + '" target="_blank" rel="noopener">' + escapeHtml(p.pn) + '</a>';
+      if (p.date) {
+        html += '<span class="meta-sep">|</span>' + formatDate(p.date);
+      }
+      html += '</div>';
+
+      // Details row: cost + sqft + contractor
+      var details = [];
+      if (p.cost && p.cost > 0) details.push(formatCost(p.cost));
+      if (p.sqft && p.sqft > 0) details.push(p.sqft.toLocaleString() + ' SF');
+      if (p.con) details.push(escapeHtml(p.con));
+      if (details.length > 0) {
+        html += '<div class="activity-details">' + details.join('<span class="meta-sep"> | </span>') + '</div>';
+      }
+
+      html += '</div>';
+      html += '<span class="status-badge ' + getStatusBadgeClass(p.st) + '">' + getStatusLabel(p.st) + '</span>';
+      html += '</div>';
+    }
+
+    html += '</div>';
+
+    if (hasMore) {
+      html += '<div class="load-more-wrap">';
+      html += '<button class="load-more-btn" id="load-more-btn">Load More (' + (filtered.length - displayCount) + ' remaining)</button>';
+      html += '</div>';
+    } else if (filtered.length > 20) {
+      html += '<div class="load-more-wrap">';
+      html += '<button class="load-more-btn" disabled>All ' + filtered.length + ' permits shown</button>';
+      html += '</div>';
+    }
+
+    document.getElementById('activity-feed-container').innerHTML = html;
+
+    var btn = document.getElementById('load-more-btn');
+    if (btn) {
+      btn.addEventListener('click', function() {
+        displayCount += 20;
+        renderFeed();
+      });
+    }
+  }
+
+  // --- Render Monthly Chart (last 18 months, horizontal bars) ---
+  function renderMonthlyChart() {
+    // Build month buckets
+    var monthCounts = {};
+    for (var i = 0; i < allPermits.length; i++) {
+      var d = allPermits[i].date;
+      if (!d) continue;
+      var ym = d.substring(0, 7); // "YYYY-MM"
+      monthCounts[ym] = (monthCounts[ym] || 0) + 1;
+    }
+
+    // Get all months, sort, take last 18
+    var allMonths = Object.keys(monthCounts).sort();
+    var recent = allMonths.slice(-18);
+
+    if (recent.length === 0) {
+      document.getElementById('monthly-chart').innerHTML =
+        '<div style="padding: 20px; text-align: center; color: #918A83;">No monthly data available.</div>';
+      return;
+    }
+
+    var maxCount = 0;
+    for (var j = 0; j < recent.length; j++) {
+      if (monthCounts[recent[j]] > maxCount) maxCount = monthCounts[recent[j]];
+    }
+
+    var shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var html = '<div class="bar-chart">';
+    for (var k = 0; k < recent.length; k++) {
+      var ym = recent[k];
+      var count = monthCounts[ym];
+      var pct = maxCount > 0 ? Math.round((count / maxCount) * 100) : 0;
+      var parts = ym.split('-');
+      var label = shortMonths[parseInt(parts[1], 10) - 1] + " '" + parts[0].substring(2);
+
+      html += '<div class="bar-row">';
+      html += '<div class="bar-label">' + label + '</div>';
+      html += '<div class="bar-track"><div class="bar-fill" style="width: ' + pct + '%"></div></div>';
+      html += '<div class="bar-count">' + count + '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    document.getElementById('monthly-chart').innerHTML = html;
+  }
+
+  // --- Render Zip Code Table ---
+  function renderZipTable() {
+    var zipCounts = {};
+    for (var i = 0; i < allPermits.length; i++) {
+      var z = allPermits[i].zip;
+      if (!z) continue;
+      zipCounts[z] = (zipCounts[z] || 0) + 1;
+    }
+
+    // Sort by count descending, take top 8
+    var zips = Object.keys(zipCounts).sort(function(a, b) {
+      return zipCounts[b] - zipCounts[a];
+    });
+    var top = zips.slice(0, 8);
+
+    if (top.length === 0) {
+      document.getElementById('zip-table-container').innerHTML =
+        '<div style="padding: 20px; text-align: center; color: #918A83;">No zip code data available.</div>';
+      return;
+    }
+
+    var maxZipCount = zipCounts[top[0]];
+
+    var html = '<table class="zip-table">';
+    html += '<thead><tr><th>Zip Code</th><th>Area</th><th>Permits</th><th>Share</th></tr></thead>';
+    html += '<tbody>';
+
+    for (var j = 0; j < top.length; j++) {
+      var zip = top[j];
+      var cnt = zipCounts[zip];
+      var pct = maxZipCount > 0 ? Math.round((cnt / maxZipCount) * 100) : 0;
+      var hood = ZIP_NAMES[zip] || '';
+
+      html += '<tr>';
+      html += '<td><span class="zip-code">' + escapeHtml(zip) + '</span></td>';
+      html += '<td><span class="zip-neighborhood">' + escapeHtml(hood) + '</span></td>';
+      html += '<td><span class="zip-count">' + cnt + '</span></td>';
+      html += '<td><div class="zip-bar-track"><div class="zip-bar-fill" style="width: ' + pct + '%"></div></div></td>';
+      html += '</tr>';
+    }
+
+    html += '</tbody></table>';
+
+    document.getElementById('zip-table-container').innerHTML = html;
+  }
+
+  // --- Escape HTML ---
+  function escapeHtml(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+
+})();
+</script>
+</body>
+</html>
