@@ -663,3 +663,26 @@ a.text-link:hover {
         display: none;
     }
 }
+
+/* ========================================
+   EDUCATIONAL FIGURE (infographic images)
+   ======================================== */
+.edu-figure {
+    margin: 24px auto;
+    max-width: 980px;
+}
+
+.edu-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid var(--gray-light, #E2E2E0);
+    background: var(--card-bg, #F5F5F0);
+}
+
+.edu-caption {
+    margin-top: 10px;
+    color: var(--gray-warm, #706F6C);
+    font-size: 0.95rem;
+}

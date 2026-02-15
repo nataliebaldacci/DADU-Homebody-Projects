@@ -86,7 +86,6 @@
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
                  item('contractor_marketplace.html', 'Building_and_Construction.svg', 'Contractor Marketplace') +
                  item('market_trends.html', 'Investments.png', 'Market Trends') +
-                 item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Contractor Dashboard') +
                  item('nashville_permit_analytics.html', 'Enhanced Transaction History Report .svg', 'Permit Analytics')
              ) +
     '        </div>' +
@@ -97,7 +96,7 @@
     '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="build">' +
     '          BUILD <span class="chevron">&#9660;</span>' +
     '        </button>' +
-    '        <div class="dropdown-menu mega-menu mega-menu-3" id="build-dropdown" role="menu">' +
+    '        <div class="dropdown-menu mega-menu mega-menu-4" id="build-dropdown" role="menu">' +
              col('Project_Planner.svg', 'Project Planner',
                  item('project_planner_hub.html', 'Project_Planner.svg', 'Project Planner')
              ) +
@@ -106,6 +105,9 @@
              ) +
              col('Claims.png', 'Form Wizard',
                  item('form_wizard.html', 'Claims.png', 'Form Wizard')
+             ) +
+             col('Building_and_Construction.svg', 'Hire',
+                 item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Find a Contractor')
              ) +
     '        </div>' +
     '      </div>' +

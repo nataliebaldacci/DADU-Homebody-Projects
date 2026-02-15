@@ -253,12 +253,11 @@ Each dropdown item shows an SVG/PNG icon at 32-40px, clearly visible next to the
 | Permit Activity | Permit_Activity.svg | permit_activity_dashboard.html |
 | Contractor Marketplace | Building_and_Construction.svg | contractor_marketplace.html |
 | Market Trends | Investments.png | market_trends.html |
-| Contractor Dashboard | Building_and_Construction.svg | contractor_dashboard.html |
 | Permit Analytics | Enhanced Transaction History Report .svg | nashville_permit_analytics.html |
 
 ---
 
-### BUILD Dropdown (mega-menu-3, three columns)
+### BUILD Dropdown (mega-menu-4, four columns)
 
 **Column 1: Project Planner** (Icon: Project_Planner.svg)
 
@@ -281,6 +280,12 @@ Note: project_planner_hub.html is the hub page that links to: project_checklist.
 | Form Wizard | Claims.png | form_wizard.html |
 
 Note: `form_wizard.html` is the unified replacement for the deleted `determine_forms_required.html` and `legal_form_filler.html`.
+
+**Column 4: Hire** (Icon: Building_and_Construction.svg)
+
+| Label | Icon | File |
+|-------|------|------|
+| Find a Contractor | Building_and_Construction.svg | contractor_dashboard.html |
 
 ---
 
@@ -375,8 +380,8 @@ These are the pages directly accessible from the nav dropdowns:
 |-------------|-------|
 | WHO WE SERVE | homeowner_portal.html, contractor_portal.html, designer_portal.html, user-homeowners.html, dadu_contractors_infographic.html |
 | EXPLORE > Maps | dadu_eligibility_map.html, property_search.html, dadu_near_me_v2.html, dadu_opportunity_explorer_v2.html, permit_explorer.html, parcel_footprint_map.html, adu_permit_map.html, homebody_index_map.html |
-| EXPLORE > Dashboards | permit_activity_dashboard.html, contractor_marketplace.html, market_trends.html, contractor_dashboard.html, nashville_permit_analytics.html |
-| BUILD | project_planner_hub.html, dadu_calculators.html, form_wizard.html |
+| EXPLORE > Dashboards | permit_activity_dashboard.html, contractor_marketplace.html, market_trends.html, nashville_permit_analytics.html |
+| BUILD | project_planner_hub.html, dadu_calculators.html, form_wizard.html, contractor_dashboard.html |
 | DATA > Reports | eligibility_report.html, project_report.html, neighbors_report.html, dadu_reports_store.html, property-report-card.html |
 | DATA > Docs | site_plan_downloads.html, dadu_documents_portal.html, restrictive_covenants_v2.html, pdf_database_lookup.html |
 | RESOURCES | what_is_dadu.html, dadu_requirements_overview.html, dadu_history.html, dadu_code_legislation_v5.html, owner_occupancy.html, str_permit.html, trade_permits.html, overlay-districts.html, dadu_design_standards.html |
@@ -1218,7 +1223,7 @@ source ~/dadu_env/bin/activate
 - Expose API keys in the repo
 - Delete, rename, or move existing files
 - Create "Developer/Investor" user type
-- Use "Contractor Finder" (use "Contractor Marketplace" only)
+- Nav label for contractor_dashboard.html is "Find a Contractor" in the BUILD dropdown. "Contractor Marketplace" stays as the label for contractor_marketplace.html in EXPLORE.
 - Change basemaps on any map page without explicit permission
 - Load GeoJSON files from the repo for map rendering (use live ArcGIS layers instead)
 
