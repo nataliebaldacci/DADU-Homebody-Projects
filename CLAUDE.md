@@ -445,14 +445,10 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 - ✅ Eligibility flowchart made fully interactive: step-through wizard with YES/NO gates, collapsed summary bars with "Change Answer", progress bar, Step 5 informational with Continue button, Step 6 ends with Eligible result card + Property Report Card link, Show All toggle, Start Over, all 49 links preserved
 - ✅ Three-page styling fix: trade_permits.html (title, Montserrat→Inter, CSS var fixes incl. green --terracotta bug), overlay-districts.html (title, Montserrat→Inter, removed banned colors --yellow/--red/purple, footer branding), contractor_dashboard.html (already correct, no changes needed)
 - ✅ About page created: about_platform.html with 7 sections (Hero, What Is, Platform Features 12 cards, How It Works, Data Sources 6 cards, Built For Every User 4 portals, CTA). ABOUT nav updated from pricing#about to about_platform.html in both header.js and header.html. Absorbs: features.html, feature-documents.html, feature-eligibility-map.html, user-types.html
+- ✅ 24 duplicate pages deleted (verified dadu_report_full.html aerial/street view already in property-report-card.html; kept dadu_resources.html as active nav page)
 
-### PRIORITY 1: Delete 24 Identified Duplicate Pages
-**Status:** Identified, awaiting user confirmation to delete. (dadu_eligibility_checklist already deleted; dadu_eligibility_flowchart is now active in RESOURCES nav)
-
-These are older versions or duplicates with content covered by active pages:
-am_i_eligible_compact, castlehold_homepage_flat, dadu_build_explorer, dadu_build_explorer_v2, dadu_build_tool, dadu_build_tool_backup, dadu_explorer_attom, dadu_explorer_attom_v2, dadu_explorer_v2, dadu_near_me_locator, dadu_near_me_v3, dadu_platform, dadu_property_report, dadu_property_viewer_v3, dadu_report_connected, dadu_report_full, dadu_symbium_map, footprints_proof_of_concept, homebody_index, homebody_index_v3, homebody_index_v4, homebody_main, index_pq, nashville_permit_explorer_v3
-
-Note: dadu_resources.html is linked in nav (DATA > External Links) so is NOT a duplicate.
+### PRIORITY 1: Delete Duplicate Pages
+**Status:** DONE. 24 duplicate pages deleted. dadu_resources.html kept (active nav page).
 
 ### PRIORITY 2: Fix Branding Consistency Across All Pages
 **Status:** Header/nav fixed. Individual page content still has old branding in many files.
