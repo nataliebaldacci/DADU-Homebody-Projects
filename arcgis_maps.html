@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArcGIS Maps | Homebody Projects</title>
+  <link rel="stylesheet" href="homebody_shared.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@1,700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background, #F2F0ED);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--slate, #3A5566);
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+    .hero h1 {
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 36px;
+      margin: 0 0 10px;
+    }
+    .hero p {
+      color: var(--cream, #E1D4BB);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    /* Grid */
+    .cards-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 64px;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .map-card {
+      background: var(--card-bg, #F5F5F0);
+      border: 1px solid var(--gray-light, #E2E2E0);
+      border-radius: 12px;
+      padding: 28px 24px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .map-card h2 {
+      color: var(--slate, #3A5566);
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      margin: 0 0 10px;
+    }
+    .map-card p {
+      color: var(--gray-warm, #706F6C);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0 0 20px;
+      flex: 1;
+    }
+    .map-card .btn-arcgis {
+      display: inline-block;
+      background: var(--wheat, #CBB279);
+      color: var(--slate, #3A5566);
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      text-align: center;
+      transition: opacity 0.2s;
+    }
+    .map-card .btn-arcgis:hover {
+      opacity: 0.85;
+    }
+
+    /* Footer */
+    .page-footer {
+      background: var(--slate, #3A5566);
+      padding: 24px;
+      text-align: center;
+    }
+    .page-footer p {
+      color: var(--stone-light, #918A83);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      margin: 0;
+    }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 28px; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <div style="padding-top: 75px;">
+    <!-- Hero -->
+    <div class="hero">
+      <h1>Interactive ArcGIS Maps</h1>
+      <p>Explore Nashville DADU data in ArcGIS Online</p>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards-section">
+      <div class="cards-grid">
+
+        <div class="map-card">
+          <h2>DADU Eligibility Map</h2>
+          <p>All 285,512 Nashville parcels color-coded by DADU eligibility under BL2025-1007.</p>
+          <a href="https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=d6c2c06db5744bb0836cfb0227548275" target="_blank" rel="noopener" class="btn-arcgis">Open in ArcGIS</a>
+        </div>
+
+        <div class="map-card">
+          <h2>Existing DADUs</h2>
+          <p>Properties with confirmed secondary structures identified through multi-source analysis.</p>
+          <a href="https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=9f40d0ca15a34c08bf2dab8e70b74a70" target="_blank" rel="noopener" class="btn-arcgis">Open in ArcGIS</a>
+        </div>
+
+        <div class="map-card">
+          <h2>DADU Permits + Covenants</h2>
+          <p>All historic DADU building permits overlaid with restrictive covenant records.</p>
+          <a href="https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=e07213bc0ae84fa198e29f0e2ddc4a58" target="_blank" rel="noopener" class="btn-arcgis">Open in ArcGIS</a>
+        </div>
+
+        <div class="map-card">
+          <h2>DADU Permits</h2>
+          <p>827+ historic DADU building permits from Metro Nashville.</p>
+          <a href="https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=50bbdc9c72e343b2a1e4e1e78f98e5f4" target="_blank" rel="noopener" class="btn-arcgis">Open in ArcGIS</a>
+        </div>
+
+        <div class="map-card">
+          <h2>Building Footprints</h2>
+          <p>327,000+ Nashville building footprints with height data.</p>
+          <a href="https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=d3f149a9ccb44bb5b1e7beda1e5c5bca" target="_blank" rel="noopener" class="btn-arcgis">Open in ArcGIS</a>
+        </div>
+
+        <div class="map-card">
+          <h2>Restrictive Covenants</h2>
+          <p>43,000+ parcels with recorded restrictive covenants and links to PDF documents.</p>
+          <a href="https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=168e16cf4c004f0e9e3dd94c33b5ea5d" target="_blank" rel="noopener" class="btn-arcgis">Open in ArcGIS</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="page-footer">
+      <p>Powered by Castlehold. Data hosted on Vanderbilt ArcGIS Online.</p>
+    </div>
+  </div>
+
+  <script src="homebody_header.js"></script>
+</body>
+</html>
