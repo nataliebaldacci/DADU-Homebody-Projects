@@ -1,13 +1,16 @@
 /**
- * Castlehold - Shared Header Component
+ * Homebody Projects - Shared Header Component
  * Single source of truth for site navigation.
  * Usage: Add <div id="site-header"></div> to any page, then include this script.
+ *
+ * NAV STRUCTURE (Feb 14, 2026):
+ * WHO WE SERVE | EXPLORE | BUILD | DATA | RESOURCES | PRICING | ABOUT | [Am I Eligible?]
  */
 
 (function() {
     'use strict';
 
-    // ── Detect base path for subdirectory pages ──
+    // Detect base path for subdirectory pages
     var scriptTag = document.querySelector('script[src*="homebody_header.js"]');
     var basePath = '';
     if (scriptTag) {
@@ -15,143 +18,165 @@
         basePath = src.replace('homebody_header.js', '');
     }
 
-    // ── Helper: build a dropdown menu item ──
+    // Helper: build a dropdown menu item
     function item(href, icon, title) {
-        return `<a href="${basePath}${href}" class="dropdown-item" role="menuitem">
-            <div class="dropdown-item-icon"><img src="${basePath}assets/icons/${icon}" alt=""></div>
-            <div class="dropdown-item-content"><div class="dropdown-item-title">${title}</div></div>
-        </a>`;
+        return '<a href="' + basePath + href + '" class="dropdown-item" role="menuitem">' +
+            '<div class="dropdown-item-icon"><img src="' + basePath + 'assets/icons/' + icon + '" alt=""></div>' +
+            '<div class="dropdown-item-content"><div class="dropdown-item-title">' + title + '</div></div>' +
+        '</a>';
     }
 
-    // ── Helper: build a mega-menu column ──
+    // Helper: build a mega-menu column
     function col(icon, label, items) {
-        return `<div class="mega-menu-column">
-            <div class="mega-menu-column-title"><img src="${basePath}assets/icons/${icon}" alt=""> ${label}</div>
-            ${items}
-        </div>`;
+        return '<div class="mega-menu-column">' +
+            '<div class="mega-menu-column-title"><img src="' + basePath + 'assets/icons/' + icon + '" alt=""> ' + label + '</div>' +
+            items +
+        '</div>';
     }
 
     // ══════════════════════════════════════
-    //  HEADER HTML — Edit nav structure here
+    //  HEADER HTML
     // ══════════════════════════════════════
 
-    const HEADER_HTML = `
-<!-- Main Navigation -->
-<nav class="main-nav" role="navigation" aria-label="Main navigation">
-    <div class="nav-container">
-        <!-- Logo -->
-        <a href="${basePath}index.html" class="nav-logo">
-            <img src="${basePath}assets/icons/ADU.png" alt="Homebody Projects" class="nav-logo-img" style="height: 42px; width: auto;">
-            <span class="nav-logo-brand">Homebody Projects</span>
-        </a>
+    var HEADER_HTML = '' +
+    '<nav class="main-nav" role="navigation" aria-label="Main navigation">' +
+    '  <div class="nav-container">' +
+    '    <a href="' + basePath + 'index.html" class="nav-logo">' +
+    '      <img src="' + basePath + 'assets/icons/ADU.png" alt="Homebody Projects" class="nav-logo-img" style="height:42px;width:auto;">' +
+    '      <span class="nav-logo-brand">Homebody Projects</span>' +
+    '    </a>' +
+    '    <div class="nav-links">' +
 
-        <!-- Navigation Links -->
-        <div class="nav-links">
+    // ═══ WHO WE SERVE ═══
+    '      <div class="nav-item">' +
+    '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="who-we-serve">' +
+    '          WHO WE SERVE <span class="chevron">&#9660;</span>' +
+    '        </button>' +
+    '        <div class="dropdown-menu mega-menu mega-menu-2" id="who-we-serve-dropdown" role="menu">' +
+             col('Property_Owners.svg', 'User Portals',
+                 item('homeowner_portal.html', 'Property_Owners.svg', 'Homeowners') +
+                 item('contractor_portal.html', 'Building_and_Construction.svg', 'Contractors') +
+                 item('designer_portal.html', 'Surveyors_and_Engineers.svg', 'Designers &amp; Architects')
+             ) +
+             col('Municipal.svg', 'Professional',
+                 item('user-homeowners.html', 'Municipal.svg', 'Municipal &amp; Agencies') +
+                 item('dadu_contractors_infographic.html', 'Legal.svg', 'Legal Professionals') +
+                 item('contractor_advertising.html', 'Building_and_Construction.svg', 'Advertise With Us')
+             ) +
+    '        </div>' +
+    '      </div>' +
 
-            <!-- ═══ EXPLORE ═══ -->
-            <div class="nav-item">
-                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="explore">
-                    EXPLORE <span class="chevron">&#9660;</span>
-                </button>
-                <div class="dropdown-menu mega-menu mega-menu-3" id="explore-dropdown" role="menu">
-                    ${col('ADU.png', 'Learn',
-                        item('what_is_dadu.html', 'ADU.png', 'What is a DADU?') +
-                        item('dadu_history.html', 'Recorded Docs.png', 'History &amp; Timeline') +
-                        item('dadu_requirements_overview.html', 'Building and Construction.png', 'Requirements') +
-                        item('dadu_zoning_standards.html', 'Zoning.png', 'Zoning Standards') +
-                        item('dadu_code_legislation_v3.html', 'Legal.png', 'Code &amp; Legislation') +
-                        item('permit_process_timeline.html', 'Renewals.png', 'Permit Process')
-                    )}
-                    ${col('Zoning.png', 'Discover',
-                        item('dadu_eligibility_map.html', 'Zoning.png', 'Eligibility Map') +
-                        item('property_search.html', 'Parcel Search.png', 'Property Search') +
-                        item('dadu_near_me_v2.html', 'Neighbors.png', 'DADUs Near Me') +
-                        item('dadu_opportunity_explorer_v2.html', 'Area Maps and Visual layers.png', 'Opportunity Explorer')
-                    )}
-                    ${col('Property Owners.png', 'User Types',
-                        item('user-homeowners.html', 'Property Owners.png', 'Homeowner') +
-                        item('contractor_marketplace.html', 'Building and Construction.png', 'Contractor') +
-                        item('designer_resources.html', 'Surveyers adn Engineers.png', 'Designer / Architect') +
-                        item('municipal_dashboard.html', 'Municipal.png', 'Municipal / Agency') +
-                        item('legal_resources.html', 'Legal.png', 'Legal / Appraiser')
-                    )}
-                </div>
-            </div>
+    // ═══ EXPLORE ═══
+    '      <div class="nav-item">' +
+    '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="explore">' +
+    '          EXPLORE <span class="chevron">&#9660;</span>' +
+    '        </button>' +
+    '        <div class="dropdown-menu mega-menu mega-menu-2" id="explore-dropdown" role="menu">' +
+             col('Area_Maps_and_Visual_layers.svg', 'Interactive Maps',
+                 item('dadu_eligibility_map.html', 'Zoning.svg', 'Eligibility Map') +
+                 item('property_search.html', 'Parcel Search.svg', 'Property Search') +
+                 item('dadu_near_me_v2.html', 'Neighbors.svg', 'DADUs Near Me') +
+                 item('dadu_opportunity_explorer_v2.html', 'Area_Maps_and_Visual_layers.svg', 'Opportunity Explorer') +
+                 item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map') +
+                 item('parcel_footprint_map.html', 'APN Maps.svg', 'Parcel Footprint Map') +
+                 item('adu_permit_map.html', 'Permit_Activity.svg', 'ADU Permit Map') +
+                 item('homebody_index_map.html', 'GIS.svg', 'Overview Map')
+             ) +
+             col('Permit_Activity.svg', 'Dashboards',
+                 item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
+                 item('contractor_marketplace.html', 'Building_and_Construction.svg', 'Contractor Marketplace') +
+                 item('market_trends.html', 'Investments.png', 'Market Trends') +
+                 item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Contractor Dashboard') +
+                 item('nashville_permit_analytics.html', 'Enhanced Transaction History Report .svg', 'Permit Analytics')
+             ) +
+    '        </div>' +
+    '      </div>' +
 
-            <!-- ═══ BUILD ═══ -->
-            <div class="nav-item">
-                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="build">
-                    BUILD <span class="chevron">&#9660;</span>
-                </button>
-                <div class="dropdown-menu mega-menu mega-menu-4" id="build-dropdown" role="menu">
-                    ${col('Exports & Reports.png', 'Plan',
-                        item('project_planner_hub.html', 'Exports & Reports.png', 'Project Planner') +
-                        item('project_planner.html', 'Project_Planner.png', 'Schedule &amp; Timeline') +
-                        item('project_checklist.html', 'Project_Checklist.png', 'Interactive Checklist') +
-                        item('draw_dadu_on_parcel.html', 'Draw_on_Parcel.png', 'Draw DADU on Parcel')
-                    )}
-                    ${col('Valuations.png', 'Design &amp; Calculate',
-                        item('site_plan_downloads.html', 'Surveyers adn Engineers.png', 'Site Plan Finder') +
-                        item('dadu_calculators.html', 'Appraisers.png', 'Calculators') +
-                        item('size_calculator.html', 'ADU.png', 'Size Calculator')
-                    )}
-                    ${col('Building and Construction.png', 'Hire',
-                        item('contractor_marketplace.html', 'Building and Construction.png', 'Contractor Marketplace')
-                    )}
-                    ${col('Claims.png', 'File',
-                        item('form_wizard.html', 'Claims.png', 'Form Wizard') +
-                        item('owner_occupancy.html', 'Property Owners.png', 'Owner Occupancy') +
-                        item('str_permit.html', 'Renewals.png', 'STR Permit')
-                    )}
-                </div>
-            </div>
+    // ═══ BUILD ═══
+    '      <div class="nav-item">' +
+    '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="build">' +
+    '          BUILD <span class="chevron">&#9660;</span>' +
+    '        </button>' +
+    '        <div class="dropdown-menu mega-menu mega-menu-3" id="build-dropdown" role="menu">' +
+             col('Project_Planner.svg', 'Project Planner',
+                 item('project_planner_hub.html', 'Project_Planner.svg', 'Planning Hub') +
+                 item('project_checklist.html', 'Project_Checklist.svg', 'Interactive Checklist') +
+                 item('draw_dadu_on_parcel.html', 'Draw_on_Parcel.svg', 'Draw DADU on Parcel') +
+                 item('permit_process_timeline.html', 'Renewals.png', 'Permit Process Timeline')
+             ) +
+             col('Appraisers.svg', 'Calculators',
+                 item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
+                 item('size_calculator.html', 'ADU.png', 'Size Calculator')
+             ) +
+             col('Claims.png', 'Form Wizard',
+                 item('determine_forms_required.html', 'Claims.png', 'Determine Forms Needed') +
+                 item('legal_form_filler.html', 'Recordable Legal Report.svg', 'Form Filler')
+             ) +
+    '        </div>' +
+    '      </div>' +
 
-            <!-- ═══ DATA ═══ -->
-            <div class="nav-item">
-                <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="data">
-                    DATA <span class="chevron">&#9660;</span>
-                </button>
-                <div class="dropdown-menu mega-menu mega-menu-3" id="data-dropdown" role="menu">
-                    ${col('Enhanced Transaction History Report .png', 'Activity',
-                        item('permit_activity_dashboard.html', 'Enhanced Transaction History Report .png', 'Permit Dashboard') +
-                        item('contractor_dashboard.html', 'Building and Construction.png', 'Contractor Dashboard') +
-                        item('market_trends.html', 'Investments.png', 'Market Trends')
-                    )}
-                    ${col('Exports & Reports.png', 'Reports',
-                        item('eligibility_report.html', 'Claims.png', 'Eligibility Report') +
-                        item('property-report-card.html', 'Property Detail Report .png', 'Property Intelligence') +
-                        item('project_report.html', 'Exports & Reports.png', 'Project Report') +
-                        item('dadu_reports_store.html', 'Building and Construction.png', 'Contractor Report') +
-                        item('dadu_reports_store.html', 'Market Statistics Report .png', 'Market Analysis') +
-                        item('dadu_reports_store.html', 'Area Maps and Visual layers.png', 'Area Analysis')
-                    )}
-                    ${col('Recorded Docs.png', 'Records',
-                        item('nashville_permit_explorer_v3.html', 'Enhanced Transaction History Report .png', 'Permit Explorer') +
-                        item('site_plan_downloads.html', 'Surveyers adn Engineers.png', 'Permit Site Plans') +
-                        item('dadu_documents_portal.html', 'Recorded Docs.png', 'Recorded Documents') +
-                        item('restrictive_covenants_v2.html', 'Legal.png', 'Restrictive Covenants') +
-                        item('overlay-districts.html', 'Zoning.png', 'Zoning Documents') +
-                        item('pdf_database_lookup.html', 'Recorded Docs.png', 'PDF Database')
-                    )}
-                </div>
-            </div>
+    // ═══ DATA ═══
+    '      <div class="nav-item">' +
+    '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="data">' +
+    '          DATA <span class="chevron">&#9660;</span>' +
+    '        </button>' +
+    '        <div class="dropdown-menu mega-menu mega-menu-2" id="data-dropdown" role="menu">' +
+             col('Exports__Reports.svg', 'Report Generator',
+                 item('eligibility_report.html', 'Claims.png', 'Eligibility Report') +
+                 item('project_report.html', 'Exports__Reports.svg', 'Project Report') +
+                 item('neighbors_report.html', 'Neighbors.svg', 'Neighbors Report') +
+                 item('dadu_reports_store.html', 'Market Statistics Report .svg', 'Market Report') +
+                 item('property-report-card.html', 'Property Detail Report .svg', 'Property Report Card')
+             ) +
+             col('Recorded_Docs.svg', 'Document Database',
+                 item('site_plan_downloads.html', 'Permit_Site_Plans.svg', 'Site Plans &amp; Permits') +
+                 item('dadu_documents_portal.html', 'Recorded_Docs.svg', 'Recorded Documents') +
+                 item('restrictive_covenants_v2.html', 'Restrictive_Covenants.svg', 'Restrictive Covenants') +
+                 item('pdf_database_lookup.html', 'Recorded_Docs.svg', 'PDF Database')
+             ) +
+    '        </div>' +
+    '      </div>' +
 
-            <!-- ═══ PRICING ═══ -->
-            <a href="${basePath}homebody_dadu_pricing.html" class="nav-link">PRICING</a>
-        </div>
+    // ═══ RESOURCES ═══
+    '      <div class="nav-item">' +
+    '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="resources">' +
+    '          RESOURCES <span class="chevron">&#9660;</span>' +
+    '        </button>' +
+    '        <div class="dropdown-menu mega-menu mega-menu-2" id="resources-dropdown" role="menu">' +
+             col('ADU.png', 'Learn',
+                 item('what_is_dadu.html', 'ADU.png', 'What is a DADU?') +
+                 item('dadu_requirements_overview.html', 'Building_and_Construction.svg', 'General Requirements') +
+                 item('dadu_history.html', 'Recorded_Docs.svg', 'DADU History') +
+                 item('dadu_code_legislation_v5.html', 'Legislation.svg', 'Code &amp; Legislation') +
+                 item('dadu_zoning_standards.html', 'Zoning.svg', 'Zoning Standards')
+             ) +
+             col('Legal.svg', 'Permits &amp; Forms',
+                 item('owner_occupancy.html', 'Owner_Occupancy.svg', 'Owner Occupancy') +
+                 item('str_permit.html', 'STR_Permit.svg', 'STR Permit') +
+                 item('trade_permits.html', 'Renewals.png', 'Required Trade Permits') +
+                 item('overlay-districts.html', 'Zoning_Documents.svg', 'Overlay Districts') +
+                 item('dadu_design_standards.html', 'Overlay_Design_Standards.svg', 'Design Standards')
+             ) +
+    '        </div>' +
+    '      </div>' +
 
-        <!-- Right-side: Search + CTA -->
-        <div style="display:flex;align-items:center;gap:12px;">
-            <a href="${basePath}property_search.html" class="nav-link" title="Search" style="padding:12px;">
-                &#128269;
-            </a>
-            <a href="${basePath}am_i_eligible.html" class="nav-search-btn">
-                <span>Get Started</span>
-                <span>&rarr;</span>
-            </a>
-        </div>
-    </div>
-</nav>`;
+    // ═══ PRICING (direct link) ═══
+    '      <a href="' + basePath + 'homebody_dadu_pricing.html" class="nav-link">PRICING</a>' +
+
+    // ═══ ABOUT (direct link) ═══
+    '      <a href="' + basePath + 'homebody_dadu_pricing.html#about" class="nav-link">ABOUT</a>' +
+
+    '    </div>' +
+
+    // Right side: CTA button
+    '    <div style="display:flex;align-items:center;gap:12px;">' +
+    '      <a href="' + basePath + 'am_i_eligible.html" class="nav-search-btn">' +
+    '        <span>Am I Eligible?</span>' +
+    '        <span>&rarr;</span>' +
+    '      </a>' +
+    '    </div>' +
+    '  </div>' +
+    '</nav>';
 
 
     // ══════════════════════════════════════
@@ -159,16 +184,11 @@
     // ══════════════════════════════════════
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Inject header HTML
         var target = document.getElementById('site-header');
         if (target) {
             target.innerHTML = HEADER_HTML;
         }
-
-        // Initialize dropdown behavior
         initDropdowns();
-
-        // Highlight current page in nav
         highlightCurrentPage();
     });
 
@@ -206,8 +226,8 @@
 
             // Arrow key nav within dropdown
             var items = dropdown.querySelectorAll('.dropdown-item');
-            items.forEach(function(item, index) {
-                item.addEventListener('keydown', function(e) {
+            items.forEach(function(menuItem, index) {
+                menuItem.addEventListener('keydown', function(e) {
                     if (e.key === 'Escape') {
                         closeDropdown(button, dropdown);
                         button.focus();
@@ -236,18 +256,18 @@
 
         // Hover for desktop
         if (window.matchMedia('(hover: hover)').matches) {
-            navItems.forEach(function(item) {
+            navItems.forEach(function(navItem) {
                 var hoverTimeout;
-                item.addEventListener('mouseenter', function() {
+                navItem.addEventListener('mouseenter', function() {
                     clearTimeout(hoverTimeout);
-                    var btn = item.querySelector('.nav-link[data-dropdown]');
-                    var dd = item.querySelector('.dropdown-menu');
+                    var btn = navItem.querySelector('.nav-link[data-dropdown]');
+                    var dd = navItem.querySelector('.dropdown-menu');
                     if (btn && dd) { closeAllDropdowns(); openDropdown(btn, dd); }
                 });
-                item.addEventListener('mouseleave', function() {
+                navItem.addEventListener('mouseleave', function() {
                     hoverTimeout = setTimeout(function() {
-                        var btn = item.querySelector('.nav-link[data-dropdown]');
-                        var dd = item.querySelector('.dropdown-menu');
+                        var btn = navItem.querySelector('.nav-link[data-dropdown]');
+                        var dd = navItem.querySelector('.dropdown-menu');
                         if (btn && dd) closeDropdown(btn, dd);
                     }, 150);
                 });
@@ -284,15 +304,18 @@
     function highlightCurrentPage() {
         var currentPage = window.location.pathname.split('/').pop() || 'index.html';
         document.querySelectorAll('.dropdown-item').forEach(function(link) {
-            if (link.getAttribute('href') === currentPage) {
-                link.style.background = 'var(--card-bg)';
-                link.querySelector('.dropdown-item-title').style.color = 'var(--terracotta)';
+            var href = link.getAttribute('href');
+            if (href && href.split('/').pop() === currentPage) {
+                link.style.background = '#F0EBE1';
+                var titleEl = link.querySelector('.dropdown-item-title');
+                if (titleEl) titleEl.style.color = '#CBB279';
             }
         });
-        // Also highlight direct nav links (Pricing)
+        // Highlight direct nav links (Pricing, About)
         document.querySelectorAll('.nav-links > a.nav-link').forEach(function(link) {
-            if (link.getAttribute('href') === currentPage) {
-                link.style.color = 'var(--terracotta)';
+            var href = link.getAttribute('href');
+            if (href && href.split('/').pop() === currentPage) {
+                link.style.color = '#CBB279';
                 link.style.fontWeight = '700';
             }
         });

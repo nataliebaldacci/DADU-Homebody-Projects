@@ -1,29 +1,25 @@
 # macOS
 .DS_Store
 
-# Large GeoJSON data files (>10MB)
-building_footprints_light.geojson
-permit_history_20260118_093536.geojson
-dadu_eligibility_master.geojson
-eligibility_by_right.geojson
-eligibility_data.geojson
-eligibility_points.geojson
-eligibility_usd.geojson
-Full_Cadastral_Parcels.geojson
-Lot_Boundaries.geojson
-eligibility_green.geojson
-eligibility_red.geojson
-eligibility_yellow.geojson
-eligibility_parcels.geojson
-footprints_map.geojson
-parcels_footprints_map.geojson
-DADU_All_Permits_MERGED_v2.geojson
-web_lite_parcels_points_20260123_120701.geojson
-web_lite_parcels_polygons_20260123_120701.geojson
-geojsons.xlsx
-*.csv
+# ALL GeoJSON files - data is served via live ArcGIS layers
+*.geojson
 
-# Large address index files (monolithic + unused formats)
+# Large data files
+*.csv
+*.xlsx
+*.xls
+geojsons.xlsx
+
+# Excel temp files
+~$*
+
+# Screenshots and misc images at root level
+Screenshot*.png
+
+# PDFs at root (not in docs/ or data/)
+*.pdf
+
+# Large address index files
 data/address_search_index.json
 data/addr_index/addr_typeahead.tsv
 data/addr_index/street_names.json
@@ -31,3 +27,7 @@ data/addr_index/street_names.json
 # Large data and nested repo folders
 DADU/
 DADU-Homebody-Projects/
+
+# Build artifacts and temp files
+*.tmp
+*.bak

@@ -1,265 +1,250 @@
 <!-- ========================================
- HOMEBODY PROJECTS - Shared Header
- Copy this entire block as the first element inside <body>
+ HOMEBODY PROJECTS - Shared Header (Static Template)
+ This file mirrors homebody_header.js for reference.
+ The JS version is the live source of truth.
  ======================================== -->
-
-<!-- Top Bar -->
-<div class="top-bar">
- <div class="top-bar-left">
- Castlehold &mdash; Nashville-Davidson County <span>BL2025-1007</span>DADU Zoning Intelligence</div>
- <div class="top-bar-right">
- <a href="homebody_dadu_pricing.html">Pricing</a>
- <a href="dadu_resources.html">Resources</a>
- <a href="mailto:hello@castlehold.com">Contact</a></div></div>
 
 <!-- Main Navigation -->
 <nav class="main-nav" role="navigation" aria-label="Main navigation">
- <div class="nav-container">
- <!-- Logo -->
- <a href="index.html" class="nav-logo">
- <div class="nav-logo-icon castle-icon">
- <img src="assets/castlehold-logo.png" alt="Castlehold" width="44" height="37" style="object-fit:contain;"></div>
- <div class="nav-logo-text">
- <span class="nav-logo-title">Castlehold</span>
- <span class="nav-logo-subtitle">DADU Zoning &amp; Buildability Intelligence</span></div></a>
+  <div class="nav-container">
+    <!-- Logo -->
+    <a href="index.html" class="nav-logo">
+      <img src="assets/icons/ADU.png" alt="Homebody Projects" class="nav-logo-img" style="height:42px;width:auto;">
+      <span class="nav-logo-brand">Homebody Projects</span>
+    </a>
 
- <!-- Navigation Links -->
- <div class="nav-links">
- <!-- EXPLORE Dropdown -->
- <div class="nav-item">
- <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="explore">
- Explore <span class="chevron"></span></button>
- <div class="dropdown-menu mega-menu mega-menu-3" id="explore-dropdown" role="menu">
- <!-- Column 1: Learn -->
- <div class="mega-menu-column">
- <div class="mega-menu-column-title">
- <img src="assets/icons/ADU.png" alt="">Learn</div>
- <a href="what_is_dadu.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/ADU.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">What is a DADU?</div></div></a>
- <a href="dadu_history.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">History & Timeline</div></div></a>
- <a href="dadu_building_requirements.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Building and Construction.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Requirements</div></div></a>
- <a href="dadu_zoning_standards.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Zoning.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Zoning Standards</div></div></a>
- <a href="dadu_code_legislation_v3.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Legal.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Code & Legislation</div></div></a>
- <a href="permit_process_timeline.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Renewals.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Permit Process</div></div></a></div>
+    <!-- Navigation Links -->
+    <div class="nav-links">
 
- <!-- Column 2: Discover -->
- <div class="mega-menu-column">
- <div class="mega-menu-column-title">
- <img src="assets/icons/Zoning.png" alt="">Discover</div>
- <a href="dadu_eligibility_map.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Zoning.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Eligibility Map</div></div></a>
- <a href="property_search.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Parcel Search.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Property Search</div></div></a>
- <a href="dadu_near_me_v2.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Neighbors.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">DADUs Near Me</div></div></a>
- <a href="dadu_opportunity_explorer_v2.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Area Maps and Visual layers.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Opportunity Explorer</div></div></a></div>
+      <!-- WHO WE SERVE -->
+      <div class="nav-item">
+        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="who-we-serve">
+          WHO WE SERVE <span class="chevron">&#9660;</span>
+        </button>
+        <div class="dropdown-menu mega-menu mega-menu-2" id="who-we-serve-dropdown" role="menu">
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/Property_Owners.svg" alt=""> User Portals</div>
+            <a href="homeowner_portal.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Property_Owners.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Homeowners</div></div></a>
+            <a href="contractor_portal.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Contractors</div></div></a>
+            <a href="designer_portal.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Surveyors_and_Engineers.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Designers &amp; Architects</div></div></a>
+          </div>
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/Municipal.svg" alt=""> Professional</div>
+            <a href="user-homeowners.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Municipal.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Municipal &amp; Agencies</div></div></a>
+            <a href="dadu_contractors_infographic.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Legal.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Legal Professionals</div></div></a>
+            <a href="contractor_advertising.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Advertise With Us</div></div></a>
+          </div>
+        </div>
+      </div>
 
- <!-- Column 3: User Types -->
- <div class="mega-menu-column">
- <div class="mega-menu-column-title">
- <img src="assets/icons/Property Owners.png" alt="">By Role</div>
- <a href="user-homeowners.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Property Owners.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Homeowner</div></div></a>
- <a href="contractor_marketplace.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Building and Construction.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Contractor</div></div></a>
- <a href="designer_resources.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Surveyers adn Engineers.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Designer / Architect</div></div></a>
- <a href="municipal_dashboard.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Municipal.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Municipal / Agency</div></div></a>
- <a href="legal_resources.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Legal.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Legal / Appraiser</div></div></a></div></div></div>
+      <!-- EXPLORE -->
+      <div class="nav-item">
+        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="explore">
+          EXPLORE <span class="chevron">&#9660;</span>
+        </button>
+        <div class="dropdown-menu mega-menu mega-menu-2" id="explore-dropdown" role="menu">
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt=""> Interactive Maps</div>
+            <a href="dadu_eligibility_map.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Zoning.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Eligibility Map</div></div></a>
+            <a href="property_search.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Parcel Search.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Property Search</div></div></a>
+            <a href="dadu_near_me_v2.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Neighbors.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">DADUs Near Me</div></div></a>
+            <a href="dadu_opportunity_explorer_v2.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Opportunity Explorer</div></div></a>
+            <a href="permit_explorer.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Permit_Explorer.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Permit Explorer Map</div></div></a>
+            <a href="parcel_footprint_map.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/APN Maps.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Parcel Footprint Map</div></div></a>
+            <a href="adu_permit_map.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Permit_Activity.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">ADU Permit Map</div></div></a>
+            <a href="homebody_index_map.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/GIS.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Overview Map</div></div></a>
+          </div>
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/Permit_Activity.svg" alt=""> Dashboards</div>
+            <a href="permit_activity_dashboard.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Permit_Activity.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Permit Activity</div></div></a>
+            <a href="contractor_marketplace.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Contractor Marketplace</div></div></a>
+            <a href="market_trends.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Investments.png" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Market Trends</div></div></a>
+            <a href="contractor_dashboard.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Contractor Dashboard</div></div></a>
+            <a href="nashville_permit_analytics.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Enhanced Transaction History Report .svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Permit Analytics</div></div></a>
+          </div>
+        </div>
+      </div>
 
- <!-- BUILD Dropdown -->
- <div class="nav-item">
- <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="build">
- Build <span class="chevron"></span></button>
- <div class="dropdown-menu mega-menu mega-menu-3" id="build-dropdown" role="menu">
- <!-- Column 1: Plan -->
- <div class="mega-menu-column">
- <div class="mega-menu-column-title">
- <img src="assets/icons/Exports & Reports.png" alt="">Plan</div>
- <a href="project_planner.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Exports & Reports.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Project Planner</div></div></a>
- <a href="project_checklist.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Renewals.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Interactive Checklist</div></div></a>
- <a href="site_plan_downloads.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Surveyers adn Engineers.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Site Plans</div></div></a>
- <a href="draw_dadu_on_parcel.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/APN Maps.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Draw DADU on Parcel</div></div></a></div>
+      <!-- BUILD -->
+      <div class="nav-item">
+        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="build">
+          BUILD <span class="chevron">&#9660;</span>
+        </button>
+        <div class="dropdown-menu mega-menu mega-menu-3" id="build-dropdown" role="menu">
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/Project_Planner.svg" alt=""> Project Planner</div>
+            <a href="project_planner_hub.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Project_Planner.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Planning Hub</div></div></a>
+            <a href="project_checklist.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Project_Checklist.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Interactive Checklist</div></div></a>
+            <a href="draw_dadu_on_parcel.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Draw_on_Parcel.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Draw DADU on Parcel</div></div></a>
+            <a href="permit_process_timeline.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Renewals.png" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Permit Process Timeline</div></div></a>
+          </div>
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/Appraisers.svg" alt=""> Calculators</div>
+            <a href="dadu_calculators.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Appraisers.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">All Calculators</div></div></a>
+            <a href="size_calculator.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/ADU.png" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Size Calculator</div></div></a>
+          </div>
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/Claims.png" alt=""> Form Wizard</div>
+            <a href="determine_forms_required.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Claims.png" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Determine Forms Needed</div></div></a>
+            <a href="legal_form_filler.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Recordable Legal Report.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Form Filler</div></div></a>
+          </div>
+        </div>
+      </div>
 
- <!-- Column 2: Calculate -->
- <div class="mega-menu-column">
- <div class="mega-menu-column-title">
- <img src="assets/icons/Valuations.png" alt="">Calculate</div>
- <a href="dadu_calculators.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Appraisers.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Calculators</div></div></a>
- <a href="size_calculator.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/ADU.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Size Calculator</div></div></a></div>
+      <!-- DATA -->
+      <div class="nav-item">
+        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="data">
+          DATA <span class="chevron">&#9660;</span>
+        </button>
+        <div class="dropdown-menu mega-menu mega-menu-2" id="data-dropdown" role="menu">
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/Exports__Reports.svg" alt=""> Report Generator</div>
+            <a href="eligibility_report.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Claims.png" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Eligibility Report</div></div></a>
+            <a href="project_report.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Exports__Reports.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Project Report</div></div></a>
+            <a href="neighbors_report.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Neighbors.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Neighbors Report</div></div></a>
+            <a href="dadu_reports_store.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Market Statistics Report .svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Market Report</div></div></a>
+            <a href="property-report-card.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Property Detail Report .svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Property Report Card</div></div></a>
+          </div>
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/Recorded_Docs.svg" alt=""> Document Database</div>
+            <a href="site_plan_downloads.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Permit_Site_Plans.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Site Plans &amp; Permits</div></div></a>
+            <a href="dadu_documents_portal.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Recorded_Docs.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Recorded Documents</div></div></a>
+            <a href="restrictive_covenants_v2.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Restrictive_Covenants.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Restrictive Covenants</div></div></a>
+            <a href="pdf_database_lookup.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Recorded_Docs.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">PDF Database</div></div></a>
+          </div>
+        </div>
+      </div>
 
- <!-- Column 3: File -->
- <div class="mega-menu-column">
- <div class="mega-menu-column-title">
- <img src="assets/icons/Claims.png" alt="">File</div>
- <a href="determine_forms_required.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Claims.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Determine Forms</div></div></a>
- <a href="legal_form_filler.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Recordable Legal Report.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Form Filler</div></div></a>
- <a href="owner_occupancy.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Property Owners.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Owner Occupancy</div></div></a>
- <a href="str_permit.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Renewals.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Short Term Permit</div></div></a></div></div></div>
+      <!-- RESOURCES -->
+      <div class="nav-item">
+        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="resources">
+          RESOURCES <span class="chevron">&#9660;</span>
+        </button>
+        <div class="dropdown-menu mega-menu mega-menu-2" id="resources-dropdown" role="menu">
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/ADU.png" alt=""> Learn</div>
+            <a href="what_is_dadu.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/ADU.png" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">What is a DADU?</div></div></a>
+            <a href="dadu_requirements_overview.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">General Requirements</div></div></a>
+            <a href="dadu_history.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Recorded_Docs.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">DADU History</div></div></a>
+            <a href="dadu_code_legislation_v5.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Legislation.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Code &amp; Legislation</div></div></a>
+            <a href="dadu_zoning_standards.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Zoning.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Zoning Standards</div></div></a>
+          </div>
+          <div class="mega-menu-column">
+            <div class="mega-menu-column-title"><img src="assets/icons/Legal.svg" alt=""> Permits &amp; Forms</div>
+            <a href="owner_occupancy.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Owner_Occupancy.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Owner Occupancy</div></div></a>
+            <a href="str_permit.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/STR_Permit.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">STR Permit</div></div></a>
+            <a href="trade_permits.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Renewals.png" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Required Trade Permits</div></div></a>
+            <a href="overlay-districts.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Zoning_Documents.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Overlay Districts</div></div></a>
+            <a href="dadu_design_standards.html" class="dropdown-item" role="menuitem">
+              <div class="dropdown-item-icon"><img src="assets/icons/Overlay_Design_Standards.svg" alt=""></div>
+              <div class="dropdown-item-content"><div class="dropdown-item-title">Design Standards</div></div></a>
+          </div>
+        </div>
+      </div>
 
- <!-- DATA Dropdown -->
- <div class="nav-item">
- <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="data">
- Data <span class="chevron"></span></button>
- <div class="dropdown-menu mega-menu mega-menu-4" id="data-dropdown" role="menu">
- <!-- Column 1: Activity -->
- <div class="mega-menu-column">
- <div class="mega-menu-column-title">
- <img src="assets/icons/Enhanced Transaction History Report .png" alt="">Activity</div>
- <a href="permit_activity_dashboard.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Enhanced Transaction History Report .png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Permit Activity</div></div></a>
- <a href="contractor_dashboard.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Building and Construction.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Contractor Dashboard</div></div></a>
- <a href="market_trends.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Investments.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Market Trends</div></div></a></div>
+      <!-- PRICING (direct link) -->
+      <a href="homebody_dadu_pricing.html" class="nav-link">PRICING</a>
 
- <!-- Column 2: Reports -->
- <div class="mega-menu-column">
- <div class="mega-menu-column-title">
- <img src="assets/icons/Exports & Reports.png" alt="">Reports</div>
- <a href="eligibility_report.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Claims.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Eligibility Report</div></div></a>
- <a href="project_report.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Exports & Reports.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Project Report</div></div></a>
- <a href="dadu_reports_store.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Building and Construction.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Contractor Report</div></div></a>
- <a href="dadu_reports_store.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Market Statistics Report .png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Market Analysis</div></div></a>
- <a href="dadu_reports_store.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Area Maps and Visual layers.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Area Analysis</div></div></a>
- <a href="property-report-card.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Property Detail Report .png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Property Report</div></div></a></div>
+      <!-- ABOUT (direct link) -->
+      <a href="homebody_dadu_pricing.html#about" class="nav-link">ABOUT</a>
+    </div>
 
- <!-- Column 3: Records -->
- <div class="mega-menu-column">
- <div class="mega-menu-column-title">
- <img src="assets/icons/Recorded Docs.png" alt="">Records</div>
- <a href="dadu_documents_portal.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Recorded Docs.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Recorded Documents</div></div></a>
- <a href="restrictive_covenants_v2.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Legal.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Restrictive Covenants</div></div></a>
- <a href="overlay-districts.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Zoning.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Zoning Documents</div></div></a>
- <a href="property-report-card.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Property Detail Report .png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Property Cards</div></div></a></div>
-
- <!-- Column 4: Documents -->
- <div class="mega-menu-column">
- <div class="mega-menu-column-title">
- <img src="assets/icons/Enhanced Transaction History Report .png" alt="">Documents</div>
- <a href="nashville_permit_explorer_v3.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Enhanced Transaction History Report .png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Permit Explorer</div></div></a>
- <a href="dadu_code_legislation_v3.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Legal.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Code & Legislation</div></div></a>
- <a href="dadu_design_standards.html" class="dropdown-item" role="menuitem">
- <div class="dropdown-item-icon"><img src="assets/icons/Surveyers adn Engineers.png" alt=""></div>
- <div class="dropdown-item-content">
- <div class="dropdown-item-title">Design Standards</div></div></a></div></div></div>
-
- <!-- PRICING Link (no dropdown) -->
- <a href="homebody_dadu_pricing.html" class="nav-link">Pricing</a></div>
-
- <!-- Right-side: Search + CTA -->
- <div style="display:flex;align-items:center;gap:12px;">
- <a href="property_search.html" class="nav-link" title="Search" style="padding:12px;"></a>
- <a href="am_i_eligible.html" class="nav-search-btn">
- <span>Get Started</span>
- <span></span></a></div></nav>
+    <!-- Right-side: CTA -->
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="am_i_eligible.html" class="nav-search-btn">
+        <span>Am I Eligible?</span>
+        <span>&rarr;</span>
+      </a>
+    </div>
+  </div>
+</nav>
