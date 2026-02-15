@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find DADUs Near Me | Castlehold</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="homebody_shared.css">
+  <style>
+:root {
+  --navy: #3A5566;
+  --navy-dark: #2E4553;
+  --navy-light: #4A6B7D;
+  --teal: #7B746D;
+  --terracotta: #CBB279;
+  --terracotta-hover: #B8A068;
+  --tan: #7B746D;
+  --background: #F2F0ED;
+  --card-bg: #ffffff;
+  --success: #4caf50;
+  --warning: #ff9800;
+  --info: #2196f3;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Inter, 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--background);
+  color: #333;
+}
+
+/* ===== HERO (from locator) ===== */
+.hero {
+  background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
+  padding: 30px 25px 50px;
+  text-align: center;
+  color: white;
+  margin-top: 75px; /* shared header height */
+}
+.hero h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.hero p {
+  font-size: 15px;
+  opacity: 0.9;
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ===== SEARCH BAR (floats over hero bottom) ===== */
+.search-bar {
+  max-width: 880px;
+  margin: -28px auto 0;
+  padding: 18px 22px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  position: relative;
+  z-index: 20;
+}
+.search-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--terracotta);
+}
+.distance-select {
+  padding: 12px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: white;
+  cursor: pointer;
+  min-width: 130px;
+}
+.location-btn {
+  padding: 12px 16px;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.location-btn:hover { background: #6a6d60; }
+.search-btn {
+  padding: 12px 24px;
+  background: var(--terracotta);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.search-btn:hover { background: var(--terracotta-hover); }
+.search-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+/* ===== FILTER CHIPS (from locator) ===== */
+.filters-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid #eee;
+  align-items: center;
+}
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-right: 2px;
+}
+.filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #f5f5f5;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.filter-chip:hover { background: #eee; }
+.filter-chip.active { background: var(--navy); color: white; border-color: var(--navy); }
+.filter-chip .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.filter-chip.completed .dot { background: var(--success); }
+.filter-chip.issued .dot { background: var(--info); }
+.filter-chip.expired .dot { background: var(--warning); }
+
+/* ===== MAIN LAYOUT (v2 sidebar + map) ===== */
+.main-container {
+  display: flex;
+  height: calc(100vh - 75px - 120px - 80px); /* header + hero + search */
+  min-height: 500px;
+}
+
+/* ===== SIDEBAR (v2 style) ===== */
+.sidebar {
+  width: 420px;
+  background: white;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Location info bar */
+.location-info {
+  padding: 12px 20px;
+  background: #f8f7f5;
+  border-bottom: 1px solid #eee;
+  display: none;
+}
+.location-info.active { display: block; }
+.location-address {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+.location-meta {
+  font-size: 11px;
+  color: #888;
+}
+
+/* Results header bar (v2 navy bar) */
+.results-header {
+  padding: 12px 20px;
+  background: var(--navy);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+.results-header.active { display: flex; }
+.results-header .count { font-size: 15px; }
+.contractor-summary {
+  font-size: 11px;
+  background: rgba(255,255,255,0.15);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* Results list */
+.results-section {
+  flex: 1;
+  overflow-y: auto;
+}
+.results-list {
+  list-style: none;
+}
+
+/* Result card (v2 compact style + locator action buttons) */
+.result-item {
+  padding: 14px 20px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-left: 4px solid transparent;
+}
+.result-item:hover { background: #fafaf8; }
+.result-item.active {
+  background: #f5f3ef;
+  border-left-color: var(--terracotta);
+}
+.result-item.completed { border-left-color: var(--success); }
+.result-item.completed.active { border-left-color: var(--terracotta); }
+.result-item.issued-border { border-left-color: var(--info); }
+.result-item.expired-border { border-left-color: var(--warning); }
+
+.result-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+.result-address {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.3;
+  flex: 1;
+}
+.result-distance {
+  display: inline-block;
+  padding: 3px 8px;
+  background: var(--teal);
+  color: white;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.result-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.result-status.done { background: #e8f5e9; color: #2e7d32; }
+.result-status.issued { background: #e3f2fd; color: #1565c0; }
+.result-status.expired { background: #fff3e0; color: #ef6c00; }
+
+.result-meta {
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.result-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.result-contractor {
+  background: #f8f9fa;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+.result-contractor .label {
+  font-size: 9px;
+  text-transform: uppercase;
+  color: #888;
+  letter-spacing: 0.4px;
+}
+.result-contractor .name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+/* Action buttons row (from locator) */
+.result-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.action-btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  display: block;
+}
+.action-btn.primary {
+  background: var(--terracotta);
+  color: white;
+}
+.action-btn.primary:hover { background: var(--terracotta-hover); }
+.action-btn.secondary {
+  background: #f0f0f0;
+  color: #444;
+}
+.action-btn.secondary:hover { background: #e0e0e0; }
+.action-btn.navy {
+  background: var(--navy);
+  color: white;
+}
+.action-btn.navy:hover { background: var(--navy-dark); }
+
+/* Empty state */
+.empty-state {
+  padding: 50px 25px;
+  text-align: center;
+  color: #888;
+}
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+.empty-state h3 { font-size: 16px; color: #555; margin-bottom: 6px; }
+.empty-state p { font-size: 13px; line-height: 1.5; }
+
+/* Loading */
+.loading {
+  padding: 50px 20px;
+  text-align: center;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e0e0e0;
+  border-top-color: var(--terracotta);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== MAP ===== */
+.map-container {
+  flex: 1;
+  position: relative;
+}
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Stats bar (v2 style, top-right of map) */
+.stats-bar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  padding: 14px 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+  z-index: 1000;
+  display: none;
+}
+.stats-bar.active { display: block; }
+.stats-row {
+  display: flex;
+  gap: 22px;
+}
+.stat { text-align: center; }
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.stat-label {
+  font-size: 10px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Map legend */
+.map-legend {
+  position: absolute;
+  bottom: 30px;
+  left: 10px;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  z-index: 1000;
+  font-size: 12px;
+}
+.legend-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--navy);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.legend-item:last-child { margin-bottom: 0; }
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.legend-dot.search { background: var(--terracotta); width: 14px; height: 14px; }
+.legend-dot.done { background: #4caf50; }
+.legend-dot.issued { background: #2196f3; }
+.legend-dot.expired { background: #ff9800; }
+
+/* Custom map markers */
+.search-marker {
+  background: var(--terracotta);
+  border: 3px solid white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+.permit-marker {
+  background: var(--teal);
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.permit-marker.done { background: #4caf50; }
+.permit-marker.issued { background: #2196f3; }
+.permit-marker.expired { background: #ff9800; }
+
+/* Popup (v2 style) */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  padding: 0;
+}
+.leaflet-popup-content {
+  margin: 0;
+  min-width: 280px;
+}
+.popup-header {
+  background: var(--navy);
+  color: white;
+  padding: 12px 15px;
+  border-radius: 12px 12px 0 0;
+}
+.popup-header h4 {
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+.popup-header .distance {
+  font-size: 11px;
+  opacity: 0.8;
+}
+.popup-body {
+  padding: 12px 15px;
+}
+.popup-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 12px;
+}
+.popup-row:last-child { border-bottom: none; }
+.popup-label { color: #888; }
+.popup-value {
+  font-weight: 600;
+  color: #333;
+  text-align: right;
+  max-width: 60%;
+}
+.popup-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 8px 15px 12px;
+}
+.popup-btn {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  display: block;
+  color: white;
+  background: var(--navy);
+}
+.popup-btn:hover { background: var(--navy-dark); }
+.popup-btn.accent { background: var(--terracotta); }
+.popup-btn.accent:hover { background: var(--terracotta-hover); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .hero { padding: 20px 15px 40px; }
+  .hero h1 { font-size: 22px; }
+  .search-bar { margin: -24px 12px 0; padding: 14px; }
+  .search-row { flex-direction: column; }
+  .main-container {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 75px - 100px - 60px);
+  }
+  .sidebar {
+    width: 100%;
+    max-height: 45vh;
+  }
+  .map-container {
+    height: 55vh;
+    min-height: 300px;
+  }
+  .stats-bar {
+    top: auto;
+    bottom: 80px;
+    right: 10px;
+    left: 10px;
+  }
+  .stats-row { justify-content: space-around; }
+}
+  </style>
+</head>
+<body>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+<!-- End Shared Header -->
+
+<!-- ===== HERO (from locator) ===== -->
+<section class="hero">
+  <h1>Find DADUs Near You</h1>
+  <p>Discover completed and permitted Detached Accessory Dwelling Units in your neighborhood. See costs, contractors, and project details.</p>
+</section>
+
+<!-- ===== SEARCH BAR (floating over hero bottom) ===== -->
+<div class="search-bar">
+  <div class="search-row">
+    <input type="text" id="addressInput" class="search-input" placeholder="Enter your Nashville address..." autocomplete="off">
+    <select id="distanceSelect" class="distance-select">
+      <option value="0.25">0.25 miles</option>
+      <option value="0.5" selected>0.5 miles</option>
+      <option value="1">1 mile</option>
+      <option value="2">2 miles</option>
+      <option value="5">5 miles</option>
+    </select>
+    <button class="location-btn" onclick="useMyLocation()" title="Use my current GPS location">My Location</button>
+    <button class="search-btn" id="searchBtn" onclick="searchAddress()">Search</button>
+  </div>
+
+  <!-- Filter chips (from locator) -->
+  <div class="filters-row">
+    <span class="filter-label">Status:</span>
+    <div class="filter-chip completed active" data-filter="DONE" onclick="toggleFilter(this)">
+      <span class="dot"></span>Completed (Inactive)
+    </div>
+    <div class="filter-chip issued active" data-filter="ISSUED" onclick="toggleFilter(this)">
+      <span class="dot"></span>Active
+    </div>
+    <div class="filter-chip expired active" data-filter="EXPIRED" onclick="toggleFilter(this)">
+      <span class="dot"></span>In Review
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN LAYOUT: Sidebar + Map (v2 style) ===== -->
+<div class="main-container">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <!-- Location Info -->
+    <div class="location-info" id="locationInfo">
+      <div class="location-address" id="locationAddress">-</div>
+      <div class="location-meta" id="locationMeta">-</div>
+    </div>
+
+    <!-- Results Header (v2 navy bar) -->
+    <div class="results-header" id="resultsHeader">
+      <div>
+        <span class="count" id="resultsCount">0</span> DADU Permits Found
+      </div>
+      <div class="contractor-summary" id="contractorSummary">0 contractors</div>
+    </div>
+
+    <!-- Results List -->
+    <div class="results-section">
+      <div id="resultsContainer">
+        <div class="empty-state">
+          <div class="icon"></div>
+          <h3>Search for nearby DADUs</h3>
+          <p>Enter your Nashville address to find DADU permits and contractors in your area.</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Map -->
+  <div class="map-container">
+    <div id="map"></div>
+
+    <!-- Stats bar (v2 style) -->
+    <div class="stats-bar" id="statsBar">
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-value" id="statPermits">0</div>
+          <div class="stat-label">Permits</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="statContractors">0</div>
+          <div class="stat-label">Contractors</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="statCompleted">0</div>
+          <div class="stat-label">Completed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="map-legend">
+      <div class="legend-title">Legend</div>
+      <div class="legend-item">
+        <div class="legend-dot search"></div>
+        <span>Your Location</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot done"></div>
+        <span>Completed</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot issued"></div>
+        <span>In Progress</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot expired"></div>
+        <span>Expired</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================
+// CONFIGURATION
+// ============================================
+var PERMIT_LAYER_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_MERGED_v2_20260213/FeatureServer/0';
+var METERS_PER_MILE = 1609.34;
+
+// State
+var map = null;
+var searchLocation = null;
+var searchMarker = null;
+var searchCircle = null;
+var permitMarkers = L.layerGroup();
+var allResults = [];
+var activeFilters = ['DONE', 'ISSUED', 'EXPIRED'];
+
+// ============================================
+// INIT
+// ============================================
+document.addEventListener('DOMContentLoaded', initMap);
+
+function initMap() {
+  map = L.map('map').setView([36.16, -86.78], 11);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap, &copy; CartoDB',
+    maxZoom: 19
+  }).addTo(map);
+  permitMarkers.addTo(map);
+
+  // Enter key triggers search
+  document.getElementById('addressInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') searchAddress();
+  });
+
+  // Re-search when distance changes
+  document.getElementById('distanceSelect').addEventListener('change', function() {
+    if (searchLocation) {
+      updateMapView();
+      searchNearbyPermits();
+    }
+  });
+
+  // Check URL params
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('address')) {
+    document.getElementById('addressInput').value = urlParams.get('address');
+    searchAddress();
+  }
+
+  console.log('[NEAR ME v3] Initialized');
+}
+
+// ============================================
+// FILTER CHIPS (from locator)
+// ============================================
+function toggleFilter(el) {
+  el.classList.toggle('active');
+  var filter = el.dataset.filter;
+
+  if (el.classList.contains('active')) {
+    if (activeFilters.indexOf(filter) === -1) activeFilters.push(filter);
+  } else {
+    activeFilters = activeFilters.filter(function(f) { return f !== filter; });
+  }
+
+  // Re-render with current results
+  if (allResults.length > 0) {
+    renderResults();
+  }
+}
+
+// ============================================
+// GEOLOCATION (from locator)
+// ============================================
+async function useMyLocation() {
+  if (!navigator.geolocation) {
+    alert('Geolocation is not supported by your browser.');
+    return;
+  }
+
+  var btn = document.getElementById('searchBtn');
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  navigator.geolocation.getCurrentPosition(
+    async function(position) {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+
+      // Reverse geocode to get address
+      try {
+        var revUrl = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?' +
+          new URLSearchParams({ location: lon + ',' + lat, f: 'json' }).toString();
+        var revRes = await fetch(revUrl);
+        var revData = await revRes.json();
+        if (revData.address) {
+          document.getElementById('addressInput').value = revData.address.Match_addr || revData.address.Address || '';
+        }
+      } catch (e) {
+        console.log('[NEAR ME v3] Reverse geocode error (non-critical):', e.message);
+      }
+
+      searchLocation = { lat: lat, lon: lon, address: document.getElementById('addressInput').value };
+      updateLocationInfo();
+      updateMapView();
+      await searchNearbyPermits();
+      btn.disabled = false;
+      btn.textContent = 'Search';
+    },
+    function(error) {
+      btn.disabled = false;
+      btn.textContent = 'Search';
+      alert('Unable to get your location. Please enter an address manually.');
+      console.error('[NEAR ME v3] Geolocation error:', error);
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+// ============================================
+// SEARCH (geocode + query permits)
+// ============================================
+async function searchAddress() {
+  var address = document.getElementById('addressInput').value.trim();
+  if (!address) return;
+
+  var btn = document.getElementById('searchBtn');
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  // Show loading in results area
+  document.getElementById('resultsContainer').innerHTML =
+    '<div class="loading"><div class="spinner"></div><p>Searching nearby permits...</p></div>';
+
+  try {
+    // Geocode via ArcGIS World Geocoder
+    var geocodeUrl = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?' +
+      new URLSearchParams({
+        SingleLine: address + ', Nashville, TN',
+        f: 'json',
+        outFields: 'Match_addr,Addr_type',
+        maxLocations: '1',
+        searchExtent: '-87.1,35.9,-86.5,36.5'
+      }).toString();
+
+    var geoRes = await fetch(geocodeUrl);
+    var geoData = await geoRes.json();
+
+    if (!geoData.candidates || geoData.candidates.length === 0) {
+      throw new Error('Address not found. Try a different Nashville address.');
+    }
+
+    var candidate = geoData.candidates[0];
+    if (candidate.score < 60) {
+      throw new Error('Address match too low (' + candidate.score + '). Try a more specific address.');
+    }
+
+    searchLocation = {
+      lat: candidate.location.y,
+      lon: candidate.location.x,
+      address: candidate.address
+    };
+
+    console.log('[NEAR ME v3] Geocoded:', searchLocation.address, 'score:', candidate.score);
+
+    updateLocationInfo();
+    updateMapView();
+    await searchNearbyPermits();
+
+  } catch (error) {
+    console.error('[NEAR ME v3] Search error:', error);
+    document.getElementById('resultsContainer').innerHTML =
+      '<div class="empty-state"><div class="icon"></div><h3>Address not found</h3><p>' + (error.message || 'Please try a different Nashville address.') + '</p></div>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Search';
+  }
+}
+
+// ============================================
+// UPDATE LOCATION INFO BAR
+// ============================================
+function updateLocationInfo() {
+  if (!searchLocation) return;
+  var el = document.getElementById('locationInfo');
+  el.classList.add('active');
+  document.getElementById('locationAddress').textContent = searchLocation.address || 'Your Location';
+  document.getElementById('locationMeta').textContent =
+    'Coordinates: ' + searchLocation.lat.toFixed(5) + ', ' + searchLocation.lon.toFixed(5);
+}
+
+// ============================================
+// UPDATE MAP VIEW (marker + radius circle)
+// ============================================
+function updateMapView() {
+  if (!searchLocation) return;
+
+  var distance = parseFloat(document.getElementById('distanceSelect').value);
+  var radiusMeters = distance * METERS_PER_MILE;
+
+  // Clear old
+  if (searchMarker) map.removeLayer(searchMarker);
+  if (searchCircle) map.removeLayer(searchCircle);
+
+  // Search marker (ochre dot)
+  searchMarker = L.marker([searchLocation.lat, searchLocation.lon], {
+    icon: L.divIcon({
+      className: 'search-marker-container',
+      html: '<div class="search-marker"></div>',
+      iconSize: [20, 20],
+      iconAnchor: [10, 10]
+    })
+  }).addTo(map);
+  searchMarker.bindPopup('<strong>Your Location</strong><br>' + (searchLocation.address || ''));
+
+  // Radius circle
+  searchCircle = L.circle([searchLocation.lat, searchLocation.lon], {
+    radius: radiusMeters,
+    color: '#CBB279',
+    fillColor: '#CBB279',
+    fillOpacity: 0.08,
+    weight: 2,
+    dashArray: '6, 4'
+  }).addTo(map);
+
+  map.fitBounds(searchCircle.getBounds(), { padding: [20, 20] });
+}
+
+// ============================================
+// QUERY NEARBY PERMITS
+// ============================================
+async function searchNearbyPermits() {
+  if (!searchLocation) return;
+
+  var distance = parseFloat(document.getElementById('distanceSelect').value);
+  var radiusMeters = distance * METERS_PER_MILE;
+
+  permitMarkers.clearLayers();
+  allResults = [];
+
+  try {
+    var queryUrl = PERMIT_LAYER_URL + '/query?' + new URLSearchParams({
+      where: '1=1',
+      geometry: JSON.stringify({
+        x: searchLocation.lon,
+        y: searchLocation.lat,
+        spatialReference: { wkid: 4326 }
+      }),
+      geometryType: 'esriGeometryPoint',
+      inSR: '4326',
+      spatialRel: 'esriSpatialRelIntersects',
+      distance: radiusMeters,
+      units: 'esriSRUnit_Meter',
+      outFields: '*',
+      returnGeometry: 'true',
+      outSR: '4326',
+      f: 'json',
+      resultRecordCount: '500'
+    }).toString();
+
+    console.log('[NEAR ME v3] Querying permits:', queryUrl);
+    var response = await fetch(queryUrl);
+    var data = await response.json();
+
+    if (data.error) {
+      throw new Error(data.error.message || 'ArcGIS query error');
+    }
+
+    if (data.features && data.features.length > 0) {
+      allResults = data.features.map(function(f) {
+        var attrs = f.attributes;
+        var geom = f.geometry;
+        var lat = null, lon = null;
+
+        if (geom && geom.y && geom.x) {
+          lat = geom.y;
+          lon = geom.x;
+        } else if (geom && geom.rings) {
+          var ring = geom.rings[0];
+          lon = ring.reduce(function(s, pt) { return s + pt[0]; }, 0) / ring.length;
+          lat = ring.reduce(function(s, pt) { return s + pt[1]; }, 0) / ring.length;
+        }
+
+        var dist = (lat && lon) ? calculateDistance(searchLocation.lat, searchLocation.lon, lat, lon) : null;
+
+        return {
+          address: attrs.STREET || attrs.Address || 'Unknown',
+          permitNumber: attrs.PERMIT_NUMBER || attrs.permit_number || '',
+          contractor: attrs.CONTRACTOR_BIZ_NAME_ORIGINAL || attrs.contractor || '',
+          dateIssued: attrs.PERMIT_DATE || attrs.date_issued || null,
+          status: attrs.STATUS_NORMALIZED || attrs.status || '',
+          purpose: attrs.PROJECT_SCOPE || attrs.purpose || '',
+          apn: attrs.APN || attrs.apn || '',
+          parcelId: attrs.APN || attrs.parcel_id || '',
+          cost: attrs.CONSTRUCTION_COST || attrs.cost || null,
+          sqft: attrs.BUILDING_SQFT || attrs.sqft || null,
+          costPerSqft: attrs.COST_PER_SQFT || null,
+          ePermitsLink: attrs.EPERMITS_LINK || null,
+          docsLink: attrs.DOCUMENTS_LINK || null,
+          lat: lat,
+          lon: lon,
+          distanceMeters: dist,
+          distanceMiles: dist ? (dist / METERS_PER_MILE) : null
+        };
+      }).filter(function(p) { return p.lat !== null; });
+
+      // Sort by distance
+      allResults.sort(function(a, b) { return (a.distanceMeters || Infinity) - (b.distanceMeters || Infinity); });
+    }
+
+    console.log('[NEAR ME v3] Found', allResults.length, 'total permits');
+    renderResults();
+    updateStats();
+
+  } catch (error) {
+    console.error('[NEAR ME v3] Permit query error:', error);
+    document.getElementById('resultsContainer').innerHTML =
+      '<div class="empty-state"><div class="icon"></div><h3>Error loading permits</h3><p>' + error.message + '</p></div>';
+  }
+}
+
+// ============================================
+// RENDER RESULTS (sidebar cards + map markers)
+// ============================================
+function renderResults() {
+  var container = document.getElementById('resultsContainer');
+  var header = document.getElementById('resultsHeader');
+
+  // Filter by active filter chips
+  var filtered = allResults.filter(function(r) {
+    var status = normalizeStatus(r.status);
+    return activeFilters.indexOf(status) !== -1;
+  });
+
+  // Results header
+  if (filtered.length > 0) {
+    header.classList.add('active');
+    document.getElementById('resultsCount').textContent = filtered.length;
+    var contractors = {};
+    filtered.forEach(function(r) { if (r.contractor) contractors[r.contractor] = true; });
+    document.getElementById('contractorSummary').textContent = Object.keys(contractors).length + ' contractors';
+  } else {
+    header.classList.remove('active');
+  }
+
+  // Clear map markers
+  permitMarkers.clearLayers();
+
+  if (filtered.length === 0) {
+    container.innerHTML =
+      '<div class="empty-state"><div class="icon"></div><h3>No DADU permits found</h3><p>Try increasing the search distance or adjusting the status filters.</p></div>';
+    return;
+  }
+
+  // Build sidebar list
+  var html = '<ul class="results-list">';
+  filtered.forEach(function(permit, index) {
+    var statusNorm = normalizeStatus(permit.status);
+    var statusClass = statusNorm === 'DONE' ? 'done' : statusNorm === 'ISSUED' ? 'issued' : 'expired';
+    var statusLabel = statusNorm === 'DONE' ? 'Completed' : statusNorm === 'ISSUED' ? 'Active' : 'In Review';
+    var borderClass = statusNorm === 'DONE' ? 'completed' : statusNorm === 'ISSUED' ? 'issued-border' : 'expired-border';
+
+    var ePermitsUrl = permit.ePermitsLink || 'https://epermits.nashville.gov/?#/search?permitnumber=' + encodeURIComponent(permit.permitNumber);
+    var parcelMapUrl = 'https://maps.nashville.gov/ParcelViewer/?quickSearch=' + encodeURIComponent(permit.parcelId || permit.apn);
+    var docsUrl = permit.docsLink || 'https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=' + encodeURIComponent(permit.permitNumber);
+    var reportUrl = 'property-report-card.html?address=' + encodeURIComponent(permit.address) + (permit.apn ? '&apn=' + encodeURIComponent(permit.apn) : '');
+
+    html += '<li class="result-item ' + borderClass + '" data-index="' + index + '" onclick="selectResult(' + index + ')">';
+    html += '<div class="result-top">';
+    html += '<div class="result-address">' + permit.address + '</div>';
+    html += '<span class="result-distance">' + (permit.distanceMiles ? permit.distanceMiles.toFixed(2) + ' mi' : '--') + '</span>';
+    html += '</div>';
+    html += '<span class="result-status ' + statusClass + '">' + statusLabel + '</span>';
+    html += '<div class="result-meta">';
+    html += '<span>Permit: ' + (permit.permitNumber || '--') + '</span>';
+    html += '<span>' + formatDate(permit.dateIssued) + '</span>';
+    if (permit.sqft) html += '<span>' + permit.sqft + ' SF</span>';
+    if (permit.cost) html += '<span>$' + Number(permit.cost).toLocaleString() + '</span>';
+    html += '</div>';
+
+    if (permit.contractor) {
+      html += '<div class="result-contractor">';
+      html += '<div class="label">Contractor</div>';
+      html += '<div class="name">' + permit.contractor + '</div>';
+      html += '</div>';
+    }
+
+    // Action buttons (from locator)
+    html += '<div class="result-actions">';
+    html += '<a href="' + reportUrl + '" class="action-btn primary" target="_blank" onclick="event.stopPropagation()">View Report</a>';
+    html += '<a href="' + ePermitsUrl + '" class="action-btn secondary" target="_blank" onclick="event.stopPropagation()">View Permit</a>';
+    html += '<a href="' + parcelMapUrl + '" class="action-btn secondary" target="_blank" onclick="event.stopPropagation()">Parcel Map</a>';
+    if (permit.permitNumber) {
+      html += '<a href="' + docsUrl + '" class="action-btn secondary" target="_blank" onclick="event.stopPropagation()">Documents</a>';
+    }
+    html += '</div>';
+
+    html += '</li>';
+  });
+  html += '</ul>';
+  container.innerHTML = html;
+
+  // Build map markers
+  filtered.forEach(function(permit, index) {
+    var statusNorm = normalizeStatus(permit.status);
+    var statusClass = statusNorm === 'DONE' ? 'done' : statusNorm === 'ISSUED' ? 'issued' : 'expired';
+    var statusLabel = statusNorm === 'DONE' ? 'Completed' : statusNorm === 'ISSUED' ? 'Active' : 'In Review';
+
+    var marker = L.marker([permit.lat, permit.lon], {
+      icon: L.divIcon({
+        className: 'permit-marker-container',
+        html: '<div class="permit-marker ' + statusClass + '"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      })
+    });
+
+    // Popup with details (from locator: Address, Status, Permit #, Date, Size, Contractor)
+    var popupHtml = '<div class="popup-header">';
+    popupHtml += '<h4>' + permit.address + '</h4>';
+    popupHtml += '<div class="distance">' + (permit.distanceMiles ? permit.distanceMiles.toFixed(2) + ' miles away' : '') + '</div>';
+    popupHtml += '</div>';
+    popupHtml += '<div class="popup-body">';
+    popupHtml += '<div class="popup-row"><span class="popup-label">Status</span><span class="popup-value">' + statusLabel + '</span></div>';
+    popupHtml += '<div class="popup-row"><span class="popup-label">Permit #</span><span class="popup-value">' + (permit.permitNumber || 'N/A') + '</span></div>';
+    popupHtml += '<div class="popup-row"><span class="popup-label">Date</span><span class="popup-value">' + formatDate(permit.dateIssued) + '</span></div>';
+    if (permit.sqft) {
+      popupHtml += '<div class="popup-row"><span class="popup-label">Size</span><span class="popup-value">' + permit.sqft + ' SF</span></div>';
+    }
+    if (permit.cost) {
+      popupHtml += '<div class="popup-row"><span class="popup-label">Cost</span><span class="popup-value">$' + Number(permit.cost).toLocaleString() + '</span></div>';
+    }
+    if (permit.contractor) {
+      popupHtml += '<div class="popup-row"><span class="popup-label">Contractor</span><span class="popup-value">' + permit.contractor + '</span></div>';
+    }
+    popupHtml += '</div>';
+
+    // Popup action buttons
+    var ePermitsUrl = permit.ePermitsLink || 'https://epermits.nashville.gov/?#/search?permitnumber=' + encodeURIComponent(permit.permitNumber);
+    var parcelMapUrl = 'https://maps.nashville.gov/ParcelViewer/?quickSearch=' + encodeURIComponent(permit.parcelId || permit.apn);
+    var reportUrl = 'property-report-card.html?address=' + encodeURIComponent(permit.address) + (permit.apn ? '&apn=' + encodeURIComponent(permit.apn) : '');
+
+    popupHtml += '<div class="popup-actions">';
+    popupHtml += '<a href="' + reportUrl + '" class="popup-btn accent" target="_blank">View Report</a>';
+    popupHtml += '<a href="' + ePermitsUrl + '" class="popup-btn" target="_blank">Permit</a>';
+    popupHtml += '<a href="' + parcelMapUrl + '" class="popup-btn" target="_blank">Parcel</a>';
+    popupHtml += '</div>';
+
+    marker.bindPopup(popupHtml);
+
+    // Click map marker → scroll sidebar to that card (from locator)
+    marker.on('click', function() {
+      highlightResult(index);
+    });
+
+    permitMarkers.addLayer(marker);
+  });
+}
+
+// ============================================
+// UPDATE STATS BAR (v2 style)
+// ============================================
+function updateStats() {
+  var statsBar = document.getElementById('statsBar');
+
+  var filtered = allResults.filter(function(r) {
+    return activeFilters.indexOf(normalizeStatus(r.status)) !== -1;
+  });
+
+  if (filtered.length === 0) {
+    statsBar.classList.remove('active');
+    return;
+  }
+
+  statsBar.classList.add('active');
+
+  var contractors = {};
+  filtered.forEach(function(r) { if (r.contractor) contractors[r.contractor] = true; });
+  var completed = filtered.filter(function(r) { return normalizeStatus(r.status) === 'DONE'; }).length;
+
+  document.getElementById('statPermits').textContent = filtered.length;
+  document.getElementById('statContractors').textContent = Object.keys(contractors).length;
+  document.getElementById('statCompleted').textContent = completed;
+}
+
+// ============================================
+// SELECT / HIGHLIGHT (map click → sidebar scroll, sidebar click → map zoom)
+// ============================================
+function selectResult(index) {
+  var filtered = allResults.filter(function(r) {
+    return activeFilters.indexOf(normalizeStatus(r.status)) !== -1;
+  });
+  var permit = filtered[index];
+  if (!permit) return;
+
+  // Highlight in sidebar
+  highlightResult(index);
+
+  // Pan map and open popup
+  map.setView([permit.lat, permit.lon], 17);
+  var i = 0;
+  permitMarkers.eachLayer(function(layer) {
+    if (i === index) layer.openPopup();
+    i++;
+  });
+}
+
+function highlightResult(index) {
+  // Clear all active
+  document.querySelectorAll('.result-item').forEach(function(item) {
+    item.classList.remove('active');
+  });
+
+  // Activate and scroll to card
+  var card = document.querySelector('.result-item[data-index="' + index + '"]');
+  if (card) {
+    card.classList.add('active');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// ============================================
+// HELPERS
+// ============================================
+function normalizeStatus(status) {
+  var s = String(status || '').toUpperCase().trim();
+  if (s === 'INACTIVE' || s === 'DONE' || s === 'COMPLETE' || s === 'COMPLETED' || s === 'CO' || s === 'CLOSED') return 'DONE';
+  if (s === 'ACTIVE' || s === 'ISSUED' || s === 'IN PROGRESS') return 'ISSUED';
+  if (s === 'IN REVIEW' || s === 'PENDING' || s === 'EXPIRED' || s === 'VOID' || s === 'CANCELLED') return 'EXPIRED';
+  return 'ISSUED'; // default
+}
+
+function formatDate(dateVal) {
+  if (!dateVal) return '--';
+  try {
+    var d = new Date(dateVal);
+    if (isNaN(d.getTime())) return String(dateVal).split(' ')[0] || '--';
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch (e) {
+    return '--';
+  }
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  var R = 6371000; // Earth radius in meters
+  var dLat = toRad(lat2 - lat1);
+  var dLon = toRad(lon2 - lon1);
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function toRad(deg) {
+  return deg * (Math.PI / 180);
+}
+</script>
+<script src="homebody_header.js"></script>
+</body>
+</html>

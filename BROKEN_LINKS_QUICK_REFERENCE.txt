@@ -1,0 +1,124 @@
+QUICK REFERENCE: ALL LINK FIXES NEEDED
+=======================================
+
+Total files to update: 21
+Total unique broken links: 18
+Total href changes: 27
+
+
+FIND-AND-REPLACE PATTERNS (Use in your editor):
+===============================================
+
+Pattern 1: cost_estimator.html → project_cost_estimator.html
+Files affected: 12
+
+Pattern 2: href="short_term_rental_permit.html" → href="str_permit.html"
+Files affected: 2
+
+Pattern 3: href="homeowner_portal.html" → href="user-homeowners.html"
+Files affected: 4
+
+Pattern 4: href="dadu_checklist.html" → href="project_checklist.html"
+Files affected: 2
+
+Pattern 5: href="contractors.html" → href="contractor_marketplace.html"
+Files affected: 4
+
+Pattern 6: href="dadu_explorer.html" → href="dadu_opportunity_explorer_v2.html"
+Files affected: 4
+
+Pattern 7: href="dadu_near_me.html" → href="dadu_near_me_v2.html"
+Files affected: 1
+
+
+FILE-BY-FILE CHANGES SUMMARY:
+=============================
+
+castlehold_homepage_flat.html (1 change):
+  cost_estimator.html → project_cost_estimator.html
+
+contractor_portal.html (1 change):
+  cost_estimator.html → project_cost_estimator.html
+
+dadu_eligibility_checklist.html (1 change):
+  dadu_explorer.html → dadu_opportunity_explorer_v2.html
+
+dadu_eligibility_flowchart.html (1 change):
+  dadu_explorer.html → dadu_opportunity_explorer_v2.html
+
+dadu_reports_store.html (1 change - REVIEW NEEDED):
+  DADU_MASTER_WEBSITE.html → [unknown target]
+
+feature-eligibility-map.html (1 change):
+  dadu_near_me.html → dadu_near_me_v2.html
+
+features.html (2 changes):
+  contractors.html → contractor_marketplace.html
+  cost_estimator.html → project_cost_estimator.html
+
+homebody_header.html (2 changes - CRITICAL FOR NAVIGATION):
+  cost_estimator.html → project_cost_estimator.html
+  short_term_rental_permit.html → str_permit.html
+
+homebody_index.html (1 change):
+  dadu_explorer.html → dadu_opportunity_explorer_v2.html
+
+homebody_index_map.html (1 change):
+  dadu_explorer.html → dadu_opportunity_explorer_v2.html
+
+homebody_index_v3.html (2 changes):
+  homeowner_portal.html → user-homeowners.html (×2)
+
+homebody_index_v4.html (5 changes):
+  homeowner_portal.html → user-homeowners.html (×2)
+  dadu_checklist.html → project_checklist.html
+  contractors.html → contractor_marketplace.html
+  cost_estimator.html → project_cost_estimator.html
+
+homeowner_portal.html (1 change):
+  cost_estimator.html → project_cost_estimator.html
+
+homebody_main.html (1 change):
+  cost_estimator.html → project_cost_estimator.html
+
+index.html (1 change - CRITICAL FOR HOMEPAGE):
+  cost_estimator.html → project_cost_estimator.html
+
+index_pq.html (1 change):
+  contractors.html → contractor_marketplace.html
+
+legal_resources.html (1 change):
+  short_term_rental_permit.html → str_permit.html
+
+project_checklist.html (1 change):
+  cost_estimator.html → project_cost_estimator.html
+
+property-report-card.html (1 change):
+  cost_estimator.html → project_cost_estimator.html
+
+size_calculator.html (1 change):
+  cost_estimator.html → project_cost_estimator.html
+
+user-homeowners.html (4 changes):
+  homeowner_portal.html → user-homeowners.html
+  dadu_checklist.html → project_checklist.html
+  contractors.html → contractor_marketplace.html
+  cost_estimator.html → project_cost_estimator.html
+
+
+PRIORITY ORDER FOR FIXES:
+==========================
+
+Fix in this order (critical items first):
+
+1. homebody_header.html        (affects all nav dropdowns)
+2. index.html                  (affects homepage)
+3. homebody_index_v3.html      (affects alternate homepage)
+4. homebody_index_v4.html      (affects alternate homepage, has 5 changes)
+5. user-homeowners.html        (user-facing, has 4 changes)
+6. features.html               (landing pages)
+7. feature-eligibility-map.html
+8. legal_resources.html
+9. [All Priority 3 files - see full report]
+10. dadu_reports_store.html    (REVIEW - unknown target)
+

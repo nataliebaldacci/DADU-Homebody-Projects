@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>DADU Explorer | Castlehold</title>
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+ <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+ <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+ <style>
+ :root {
+ /* Original Homebody Colors */
+ --navy: #3A5566;
+ --navy-dark: #2E4553;
+ --teal: #7B746D;
+ --terracotta: #CBB279;
+ --terracotta-hover: #B8A068;
+ --tan: #7B746D;
+ --cream: #F0EBE1;
+ --background: #F2F0ED;
+ /* Status Colors */
+ --terracotta: #CBB279;
+ --yellow: #f39c12;
+ --red: #c0392b;
+ /* Grays */
+ --gray-100: #f8f9fa;
+ --gray-200: #e9ecef;
+ --gray-300: #dee2e6;
+ --gray-400: #ced4da;
+ --gray-500: #adb5bd;
+ --gray-600: #6c757d;
+ --gray-700: #495057;
+ --gray-800: #343a40;
+ --white: #ffffff;
+ --border: #e0e0e0;
+ }
+
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+
+ body {
+ font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+ background: var(--gray-100);
+ color: var(--gray-800);
+ overflow: hidden;
+ }
+
+ /* Location Bar */
+ .location-bar {
+ position: fixed;
+ top: 75px;
+ left: 0;
+ right: 0;
+ background: white;
+ padding: 12px 24px;
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ border-bottom: 1px solid var(--border);
+ z-index: 999;
+ }
+
+ .search-wrapper {
+ flex: 1;
+ max-width: 500px;
+ position: relative;
+ }
+
+ .search-input {
+ width: 100%;
+ padding: 8px 12px 8px 36px;
+ border: 1px solid var(--gray-300);
+ border-radius: 4px;
+ font-size: 13px;
+ font-family: inherit;
+ }
+
+ .search-icon {
+ position: absolute;
+ left: 10px;
+ top: 50%;
+ transform: translateY(-50%);
+ color: var(--gray-500);
+ font-size: 14px;
+ }
+
+ .action-btn {
+ padding: 8px 16px;
+ border: 1px solid var(--gray-300);
+ border-radius: 4px;
+ font-size: 13px;
+ font-weight: 500;
+ font-family: inherit;
+ cursor: pointer;
+ background: white;
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ transition: all 0.2s;
+ }
+
+ .action-btn:hover {
+ background: var(--gray-100);
+ }
+
+ .action-btn.primary {
+ background: var(--terracotta);
+ color: white;
+ border-color: var(--terracotta);
+ }
+
+ .action-btn.primary:hover {
+ background: var(--terracotta-hover);
+ }
+
+ /* Main Layout */
+ .main-container {
+ margin-top: 75px;
+ display: flex;
+ height: calc(100vh - 75px);
+ }
+
+ /* Map Panel */
+ .map-panel {
+ flex: 1;
+ position: relative;
+ }
+
+ #map {
+ width: 100%;
+ height: 100%;
+ }
+
+ .map-controls {
+ position: absolute;
+ bottom: 20px;
+ left: 20px;
+ display: flex;
+ gap: 10px;
+ z-index: 500;
+ }
+
+ .map-layer-btn {
+ padding: 8px 14px;
+ background: white;
+ border: none;
+ border-radius: 4px;
+ font-size: 12px;
+ font-weight: 500;
+ font-family: inherit;
+ cursor: pointer;
+ box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ }
+
+ .map-layer-btn:hover {
+ background: var(--gray-100);
+ }
+
+ /* Right Panel */
+ .right-panel {
+ width: 480px;
+ background: white;
+ border-left: 1px solid var(--gray-300);
+ display: flex;
+ flex-direction: column;
+ overflow: hidden;
+ }
+
+ /* Search Criteria Header */
+ .criteria-header {
+ background: var(--terracotta);
+ color: white;
+ padding: 12px 16px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ }
+
+ .criteria-header h3 {
+ font-size: 14px;
+ font-weight: 600;
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ }
+
+ .toggle-btn {
+ background: none;
+ border: none;
+ color: white;
+ cursor: pointer;
+ font-size: 18px;
+ }
+
+ /* Search Criteria Form */
+ .criteria-form {
+ padding: 16px;
+ border-bottom: 1px solid var(--gray-300);
+ max-height: 320px;
+ overflow-y: auto;
+ }
+
+ .criteria-form.collapsed {
+ display: none;
+ }
+
+ .form-row {
+ display: grid;
+ grid-template-columns: repeat(4, 1fr);
+ gap: 10px;
+ margin-bottom: 12px;
+ }
+
+ .form-group {
+ display: flex;
+ flex-direction: column;
+ gap: 4px;
+ }
+
+ .form-group.span-2 {
+ grid-column: span 2;
+ }
+
+ .form-group label {
+ font-size: 11px;
+ font-weight: 600;
+ color: var(--gray-600);
+ text-transform: uppercase;
+ }
+
+ .form-group input,
+ .form-group select {
+ padding: 8px 10px;
+ border: 1px solid var(--gray-300);
+ border-radius: 4px;
+ font-size: 12px;
+ font-family: inherit;
+ }
+
+ .form-group input:focus,
+ .form-group select:focus {
+ outline: none;
+ border-color: var(--terracotta);
+ }
+
+ .range-inputs {
+ display: flex;
+ gap: 6px;
+ align-items: center;
+ }
+
+ .range-inputs input {
+ flex: 1;
+ min-width: 0;
+ }
+
+ .range-inputs span {
+ color: var(--gray-500);
+ font-size: 11px;
+ }
+
+ /* Results Header */
+ .results-header {
+ padding: 12px 16px;
+ background: var(--gray-100);
+ border-bottom: 1px solid var(--gray-300);
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ }
+
+ .results-actions {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ }
+
+ .results-actions label {
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ font-size: 12px;
+ cursor: pointer;
+ }
+
+ .icon-btn {
+ width: 32px;
+ height: 32px;
+ border: 1px solid var(--gray-300);
+ border-radius: 4px;
+ background: white;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 14px;
+ }
+
+ .icon-btn:hover {
+ background: var(--gray-100);
+ }
+
+ .new-search-btn {
+ padding: 8px 14px;
+ background: var(--terracotta);
+ color: white;
+ border: none;
+ border-radius: 4px;
+ font-size: 12px;
+ font-weight: 600;
+ font-family: inherit;
+ cursor: pointer;
+ }
+
+ .new-search-btn:hover {
+ background: #219a52;
+ }
+
+ .results-count {
+ font-size: 12px;
+ color: var(--gray-600);
+ }
+
+ .search-box-small {
+ padding: 6px 10px;
+ border: 1px solid var(--gray-300);
+ border-radius: 4px;
+ font-size: 12px;
+ width: 120px;
+ }
+
+ /* Results List */
+ .results-list {
+ flex: 1;
+ overflow-y: auto;
+ padding: 12px;
+ }
+
+ /* Property Card */
+ .property-card {
+ display: flex;
+ gap: 12px;
+ padding: 12px;
+ background: white;
+ border: 1px solid var(--gray-300);
+ border-radius: 8px;
+ margin-bottom: 12px;
+ cursor: pointer;
+ transition: all 0.2s;
+ }
+
+ .property-card:hover {
+ border-color: var(--terracotta);
+ box-shadow: 0 2px 8px rgba(229, 90, 51, 0.15);
+ }
+
+ .property-card.selected {
+ border-color: var(--terracotta);
+ background: #fff5f2;
+ }
+
+ .property-checkbox {
+ flex-shrink: 0;
+ margin-top: 4px;
+ }
+
+ .property-image {
+ width: 120px;
+ height: 90px;
+ border-radius: 6px;
+ overflow: hidden;
+ flex-shrink: 0;
+ background: var(--gray-200);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ }
+
+ .property-image img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ }
+
+ .property-image .no-image {
+ font-size: 11px;
+ color: var(--gray-500);
+ text-align: center;
+ }
+
+ .property-details {
+ flex: 1;
+ min-width: 0;
+ }
+
+ .property-address {
+ font-size: 14px;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 2px;
+ }
+
+ .property-city {
+ font-size: 12px;
+ color: var(--gray-600);
+ margin-bottom: 8px;
+ }
+
+ .property-type {
+ font-size: 11px;
+ color: var(--gray-500);
+ margin-bottom: 6px;
+ }
+
+ .property-stats {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 8px;
+ font-size: 11px;
+ margin-bottom: 8px;
+ }
+
+ .property-stat {
+ display: flex;
+ align-items: center;
+ gap: 4px;
+ }
+
+ .property-stat strong {
+ color: var(--gray-800);
+ }
+
+ .property-stat span {
+ color: var(--gray-500);
+ }
+
+ .property-sale {
+ font-size: 11px;
+ color: var(--gray-600);
+ }
+
+ .dadu-badge {
+ display: inline-flex;
+ align-items: center;
+ gap: 4px;
+ padding: 4px 8px;
+ border-radius: 4px;
+ font-size: 10px;
+ font-weight: 600;
+ text-transform: uppercase;
+ margin-top: 6px;
+ }
+
+ .dadu-badge.eligible {
+ background: #e8f5e9;
+ color: var(--terracotta);
+ }
+
+ .dadu-badge.conditional {
+ background: #fff3e0;
+ color: var(--yellow);
+ }
+
+ .dadu-badge.not-eligible {
+ background: #ffebee;
+ color: var(--red);
+ }
+
+ .view-report-btn {
+ display: inline-block;
+ padding: 6px 12px;
+ background: var(--terracotta);
+ color: white;
+ text-decoration: none;
+ border-radius: 4px;
+ font-size: 11px;
+ font-weight: 600;
+ margin-top: 8px;
+ }
+
+ .view-report-btn:hover {
+ background: var(--terracotta-hover);
+ }
+
+ /* Custom Cluster Icons */
+ .marker-cluster-eligible {
+ background-color: rgba(39, 174, 96, 0.6);
+ }
+ .marker-cluster-eligible div {
+ background-color: rgba(39, 174, 96, 0.9);
+ }
+ .marker-cluster-conditional {
+ background-color: rgba(243, 156, 18, 0.6);
+ }
+ .marker-cluster-conditional div {
+ background-color: rgba(243, 156, 18, 0.9);
+ }
+ .marker-cluster-not-eligible {
+ background-color: rgba(192, 57, 43, 0.6);
+ }
+ .marker-cluster-not-eligible div {
+ background-color: rgba(192, 57, 43, 0.9);
+ }
+
+ .marker-cluster {
+ border-radius: 50%;
+ }
+ .marker-cluster div {
+ width: 30px;
+ height: 30px;
+ margin-left: 5px;
+ margin-top: 5px;
+ text-align: center;
+ border-radius: 50%;
+ font-size: 12px;
+ font-weight: bold;
+ color: white;
+ line-height: 30px;
+ }
+
+ /* Recent Searches */
+ .recent-searches {
+ position: absolute;
+ bottom: 20px;
+ left: 20px;
+ background: white;
+ border-radius: 4px;
+ padding: 8px 12px;
+ font-size: 12px;
+ box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+ z-index: 500;
+ }
+
+ .recent-searches a {
+ color: var(--terracotta);
+ text-decoration: none;
+ }
+
+ /* Loading */
+ .loading-overlay {
+ position: fixed;
+ top: 75px;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ background: rgba(255,255,255,0.95);
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ z-index: 2000;
+ }
+
+ .loading-overlay.hidden {
+ display: none;
+ }
+
+ .spinner {
+ width: 40px;
+ height: 40px;
+ border: 3px solid var(--gray-300);
+ border-top-color: var(--terracotta);
+ border-radius: 50%;
+ animation: spin 1s linear infinite;
+ margin-bottom: 16px;
+ }
+
+ @keyframes spin {
+ to { transform: rotate(360deg); }
+ }
+
+ .loading-text {
+ font-size: 14px;
+ font-weight: 600;
+ color: var(--gray-700);
+ }
+
+ /* No results */
+ .no-results {
+ text-align: center;
+ padding: 40px 20px;
+ color: var(--gray-500);
+ }
+
+ .no-results h4 {
+ font-size: 16px;
+ margin-bottom: 8px;
+ color: var(--gray-700);
+ }
+
+ /* Help button */
+ .help-btn {
+ position: fixed;
+ bottom: 20px;
+ right: 500px;
+ width: 48px;
+ height: 48px;
+ background: var(--terracotta);
+ color: white;
+ border: none;
+ border-radius: 50%;
+ font-size: 20px;
+ cursor: pointer;
+ box-shadow: 0 4px 12px rgba(229, 90, 51, 0.4);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ z-index: 500;
+ }
+
+ /* Responsive */
+ @media (max-width: 900px) {
+ .right-panel {
+ width: 100%;
+ position: fixed;
+ top: 75px;
+ right: 0;
+ bottom: 0;
+ transform: translateX(100%);
+ transition: transform 0.3s;
+ z-index: 600;
+ }
+ .right-panel.open {
+ transform: translateX(0);
+ }
+ .help-btn {
+ right: 20px;
+ }
+ }</style>
+ <link rel="stylesheet" href="homebody_shared.css"></head>
+<body>
+<!-- Shared Header - Castlehold -->
+<div id="site-header"></div>
+
+<!-- End Shared Header -->
+
+
+ <!-- Header -->
+ 
+
+ <!-- Search Bar -->
+ <div class="location-bar">
+ <div class="search-wrapper">
+ <span class="search-icon"></span>
+ <input type="text" class="search-input" id="address-search" placeholder="Enter address or APN to search Nashville-Davidson County..."></div>
+ <button class="action-btn primary" onclick="searchAddress()">
+ Search</button>
+ <button class="action-btn" onclick="clearFilters()">
+ Clear Filters</button></div>
+
+ <!-- Main Container -->
+ <div class="main-container">
+ <!-- Map Panel -->
+ <div class="map-panel">
+ <div id="map"></div>
+ <div class="map-controls">
+ <button class="map-layer-btn" onclick="toggleMapLayer('street')">
+ <span></span>Map</button>
+ <button class="map-layer-btn" onclick="toggleMapLayer('satellite')">
+ <span></span>Satellite</button></div></div>
+
+ <!-- Right Panel -->
+ <div class="right-panel" id="right-panel">
+ <!-- Search Criteria Header -->
+ <div class="criteria-header">
+ <h3>
+ <span></span>Search Criteria</h3>
+ <button class="toggle-btn" onclick="toggleCriteria()"></button></div>
+
+ <!-- Search Criteria Form -->
+ <div class="criteria-form" id="criteria-form">
+ <div class="form-row">
+ <div class="form-group">
+ <label>Zip Code(s)</label>
+ <input type="text" id="filter-zip" placeholder="e.g. 37206"></div>
+ <div class="form-group">
+ <label>Classification</label>
+ <select id="filter-type">
+ <option value="">All Types</option>
+ <option value="Single Family">Single Family</option>
+ <option value="Multi Family">Multi Family</option>
+ <option value="Vacant">Vacant Land</option></select></div>
+ <div class="form-group span-2">
+ <label>Square Footage</label>
+ <div class="range-inputs">
+ <input type="number" id="filter-sqft-min" placeholder="From">
+ <span>to</span>
+ <input type="number" id="filter-sqft-max" placeholder="To"></div></div></div>
+
+ <div class="form-row">
+ <div class="form-group span-2">
+ <label>Lot Area (SF)</label>
+ <div class="range-inputs">
+ <input type="number" id="filter-lot-min" placeholder="From">
+ <span>to</span>
+ <input type="number" id="filter-lot-max" placeholder="To"></div></div>
+ <div class="form-group span-2">
+ <label>Year Built</label>
+ <div class="range-inputs">
+ <input type="number" id="filter-year-min" placeholder="From">
+ <span>to</span>
+ <input type="number" id="filter-year-max" placeholder="To"></div></div></div>
+
+ <div class="form-row">
+ <div class="form-group">
+ <label>Stories</label>
+ <select id="filter-stories">
+ <option value="">Any</option>
+ <option value="1">1 Story</option>
+ <option value="2">2 Stories</option>
+ <option value="3">3+ Stories</option></select></div>
+ <div class="form-group">
+ <label>Service District</label>
+ <select id="filter-district">
+ <option value="">All Districts</option>
+ <option value="USD">USD (Urban)</option>
+ <option value="GSD">GSD (General)</option></select></div>
+ <div class="form-group span-2">
+ <label>DADU Status</label>
+ <select id="filter-dadu">
+ <option value="">All Statuses</option>
+ <option value="eligible">Eligible (By Right)</option>
+ <option value="conditional">Conditional (Overlay)</option>
+ <option value="not-eligible">Not Eligible</option></select></div></div>
+
+ <div class="form-row">
+ <div class="form-group span-2">
+ <label>Est. DADU Cost</label>
+ <div class="range-inputs">
+ <input type="number" id="filter-cost-min" placeholder="$ Min">
+ <span>to</span>
+ <input type="number" id="filter-cost-max" placeholder="$ Max"></div></div>
+ <div class="form-group span-2">
+ <label>Max DADU Sqft</label>
+ <div class="range-inputs">
+ <input type="number" id="filter-dadu-sqft-min" placeholder="From">
+ <span>to</span>
+ <input type="number" id="filter-dadu-sqft-max" placeholder="To"></div></div></div>
+
+ <button class="action-btn primary" onclick="applyFilters()" style="width: 100%; justify-content: center; margin-top: 8px;">
+ Apply Filters</button></div>
+
+ <!-- Results Header -->
+ <div class="results-header">
+ <div class="results-actions">
+ <label>
+ <input type="checkbox" id="select-all" onchange="toggleSelectAll()">
+ Select All</label>
+ <button class="icon-btn" title="Print"></button>
+ <button class="icon-btn" title="Export CSV">CSV</button>
+ <button class="icon-btn" title="Save Search"></button>
+ <button class="new-search-btn" onclick="newSearch()">New Search</button></div>
+ <div style="display: flex; align-items: center; gap: 10px;">
+ <span class="results-count" id="results-count">0 results</span>
+ <input type="text" class="search-box-small" placeholder="Search results..."></div></div>
+
+ <!-- Results List -->
+ <div class="results-list" id="results-list">
+ <div class="no-results">
+ <h4>Search for Properties</h4>
+ <p>Use the map or filters to find DADU-eligible properties</p></div></div></div></div>
+
+ <!-- Help Button -->
+ <button class="help-btn" title="Help">?</button>
+
+ <!-- Loading Overlay -->
+ <div class="loading-overlay" id="loading">
+ <div class="spinner"></div>
+ <div class="loading-text">Loading property data...</div></div>
+
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+ <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+ <script>
+ // Google Drive folder IDs for property card images
+ const GDRIVE_FOLDERS = {
+ property_cards: '1UGNXAbDE1RuXfzMc6Vk3YL2r1AlZMwLZ',
+ covenants: '1bEZN1kEZxqZLkdX0QjT0g9N7K0sXAy3Z',
+ aerials: '1eD1TUNuYMOMK7VdVJW3Pc6mHYFS02VUj',
+ permits: '1N_IpJaweqoFhbmBnYHjQJs1G1ItTQjC4'
+ };
+
+ // Configuration
+ const COLORS = {
+ eligible: '#27ae60',
+ conditional: '#f39c12',
+ notEligible: '#c0392b'
+ };
+
+ const ELIG_LABELS = {
+ 'E': 'Eligible - USD (By Right)',
+ 'ES': 'Eligible - USD (Has Secondary)',
+ 'C': 'Conditional - GSD (Overlay Required)',
+ 'CS': 'Conditional - GSD (Has Secondary)',
+ 'U': 'Check District',
+ 'US': 'Check District (Has Secondary)',
+ 'N': 'Not Eligible - Wrong Zoning'
+ };
+
+ let map;
+ let streetLayer, satelliteLayer;
+ let markerLayers = { eligible: null, conditional: null, notEligible: null };
+ let allData = { eligible: [], conditional: [], notEligible: [] };
+ let visibleResults = [];
+ let selectedProperties = new Set();
+
+ // Initialize map
+ function initMap() {
+ map = L.map('map', {
+ preferCanvas: true
+ }).setView([36.1627, -86.7816], 11);
+
+ // Street layer (default)
+ streetLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+ attribution: '&copy; OpenStreetMap &copy; CARTO',
+ maxZoom: 19
+ }).addTo(map);
+
+ // Satellite layer
+ satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+ attribution: '&copy; Esri',
+ maxZoom: 19
+ });
+
+ // Create marker cluster groups
+ markerLayers.eligible = L.markerClusterGroup({
+ maxClusterRadius: 50,
+ iconCreateFunction: function(cluster) {
+ return L.divIcon({
+ html: '<div>' + cluster.getChildCount() + '</div>',
+ className: 'marker-cluster marker-cluster-eligible',
+ iconSize: [40, 40]
+ });
+ }
+ });
+
+ markerLayers.conditional = L.markerClusterGroup({
+ maxClusterRadius: 50,
+ iconCreateFunction: function(cluster) {
+ return L.divIcon({
+ html: '<div>' + cluster.getChildCount() + '</div>',
+ className: 'marker-cluster marker-cluster-conditional',
+ iconSize: [40, 40]
+ });
+ }
+ });
+
+ markerLayers.notEligible = L.markerClusterGroup({
+ maxClusterRadius: 50,
+ iconCreateFunction: function(cluster) {
+ return L.divIcon({
+ html: '<div>' + cluster.getChildCount() + '</div>',
+ className: 'marker-cluster marker-cluster-not-eligible',
+ iconSize: [40, 40]
+ });
+ }
+ });
+
+ // Add layers to map
+ map.addLayer(markerLayers.eligible);
+ map.addLayer(markerLayers.conditional);
+ map.addLayer(markerLayers.notEligible);
+
+ // Listen for map movements to update results
+ map.on('moveend', updateVisibleResults);
+
+ // Load data
+ loadEligibilityData();
+ }
+
+ // Toggle map layer
+ function toggleMapLayer(type) {
+ if (type === 'satellite') {
+ map.removeLayer(streetLayer);
+ map.addLayer(satelliteLayer);
+ } else {
+ map.removeLayer(satelliteLayer);
+ map.addLayer(streetLayer);
+ }
+ }
+
+ // Load eligibility data
+ async function loadEligibilityData() {
+ try {
+ const [greenRes, yellowRes, redRes] = await Promise.all([
+ fetch('eligibility_green.geojson'),
+ fetch('eligibility_yellow.geojson'),
+ fetch('eligibility_red.geojson')
+ ]);
+
+ const [greenData, yellowData, redData] = await Promise.all([
+ greenRes.json(),
+ yellowRes.json(),
+ redRes.json()
+ ]);
+
+ allData.eligible = greenData.features;
+ allData.conditional = yellowData.features;
+ allData.notEligible = redData.features;
+
+ // Add markers
+ addMarkersToLayers();
+
+ // Hide loading
+ document.getElementById('loading').classList.add('hidden');
+
+ // Update results with visible data
+ updateVisibleResults();
+
+ } catch (error) {
+ console.error('Error loading data:', error);
+ document.getElementById('loading').innerHTML = '<div class="loading-text">Error loading data. Please refresh.</div>';
+ }
+ }
+
+ // Add markers to layers
+ function addMarkersToLayers() {
+ Object.values(markerLayers).forEach(layer =>layer.clearLayers());
+
+ function createMarker(feature, color, eligClass) {
+ const props = feature.properties;
+ const coords = feature.geometry.coordinates;
+
+ const marker = L.circleMarker([coords[1], coords[0]], {
+ radius: 8,
+ fillColor: color,
+ color: '#fff',
+ weight: 1,
+ opacity: 1,
+ fillOpacity: 0.85
+ });
+
+ // Store feature data on marker
+ marker.featureData = feature;
+ marker.eligClass = eligClass;
+
+ // Click handler
+ marker.on('click', function() {
+ showPropertyInResults(feature, eligClass);
+ });
+
+ return marker;
+ }
+
+ allData.eligible.forEach(feature =>{
+ const marker = createMarker(feature, COLORS.eligible, 'eligible');
+ markerLayers.eligible.addLayer(marker);
+ });
+
+ allData.conditional.forEach(feature =>{
+ const marker = createMarker(feature, COLORS.conditional, 'conditional');
+ markerLayers.conditional.addLayer(marker);
+ });
+
+ allData.notEligible.forEach(feature =>{
+ const marker = createMarker(feature, COLORS.notEligible, 'not-eligible');
+ markerLayers.notEligible.addLayer(marker);
+ });
+ }
+
+ // Update visible results based on map bounds
+ function updateVisibleResults() {
+ const bounds = map.getBounds();
+ const zoom = map.getZoom();
+ visibleResults = [];
+
+ if (zoom < 13) {
+ // Too zoomed out, show message
+ renderResults([]);
+ return;
+ }
+
+ // Get filters
+ const filters = getFilters();
+
+ // Check all data types
+ ['eligible', 'conditional', 'notEligible'].forEach(type =>{
+ allData[type].forEach(feature =>{
+ const coords = feature.geometry.coordinates;
+ const latLng = L.latLng(coords[1], coords[0]);
+
+ if (bounds.contains(latLng)) {
+ // Apply filters
+ if (passesFilters(feature, type, filters)) {
+ visibleResults.push({
+ feature: feature,
+ type: type
+ });
+ }
+ }
+ });
+ });
+
+ // Limit results for performance
+ const limitedResults = visibleResults.slice(0, 50);
+ renderResults(limitedResults);
+ }
+
+ // Get filter values
+ function getFilters() {
+ return {
+ zip: document.getElementById('filter-zip').value.trim(),
+ type: document.getElementById('filter-type').value,
+ sqftMin: parseInt(document.getElementById('filter-sqft-min').value) || 0,
+ sqftMax: parseInt(document.getElementById('filter-sqft-max').value) || Infinity,
+ lotMin: parseInt(document.getElementById('filter-lot-min').value) || 0,
+ lotMax: parseInt(document.getElementById('filter-lot-max').value) || Infinity,
+ yearMin: parseInt(document.getElementById('filter-year-min').value) || 0,
+ yearMax: parseInt(document.getElementById('filter-year-max').value) || 9999,
+ stories: document.getElementById('filter-stories').value,
+ district: document.getElementById('filter-district').value,
+ dadu: document.getElementById('filter-dadu').value,
+ costMin: parseInt(document.getElementById('filter-cost-min').value) || 0,
+ costMax: parseInt(document.getElementById('filter-cost-max').value) || Infinity,
+ daduSqftMin: parseInt(document.getElementById('filter-dadu-sqft-min').value) || 0,
+ daduSqftMax: parseInt(document.getElementById('filter-dadu-sqft-max').value) || Infinity
+ };
+ }
+
+ // Check if feature passes filters
+ function passesFilters(feature, type, filters) {
+ const props = feature.properties;
+
+ // DADU status filter
+ if (filters.dadu) {
+ const typeMap = { eligible: 'eligible', conditional: 'conditional', notEligible: 'not-eligible' };
+ if (filters.dadu !== typeMap[type]) return false;
+ }
+
+ // Lot size filter
+ const lotSize = props.l || 0;
+ if (lotSize < filters.lotMin || lotSize >filters.lotMax) return false;
+
+ // Max DADU sqft filter
+ const maxDadu = parseInt(props.m) || 0;
+ if (maxDadu < filters.daduSqftMin || maxDadu >filters.daduSqftMax) return false;
+
+ // District filter (based on eligibility)
+ if (filters.district) {
+ if (filters.district === 'USD' && type !== 'eligible') return false;
+ if (filters.district === 'GSD' && type !== 'conditional') return false;
+ }
+
+ return true;
+ }
+
+ // Render results list
+ function renderResults(results) {
+ const container = document.getElementById('results-list');
+ const countEl = document.getElementById('results-count');
+
+ countEl.textContent = `${results.length}${visibleResults.length >50 ? '+' : ''} results`;
+
+ if (results.length === 0) {
+ container.innerHTML = `
+ <div class="no-results">
+ <h4>No Properties Found</h4>
+ <p>Zoom in on the map or adjust your filters</p></div>
+ `;
+ return;
+ }
+
+ container.innerHTML = results.map((item, index) =>{
+ const props = item.feature.properties;
+ const eligClass = item.type === 'eligible' ? 'eligible' :
+ item.type === 'conditional' ? 'conditional' : 'not-eligible';
+ const eligLabel = item.type === 'eligible' ? 'Eligible (By Right)' :
+ item.type === 'conditional' ? 'Conditional (Overlay)' : 'Not Eligible';
+
+ const address = props.d || 'No Address';
+ const apn = props.a || 'N/A';
+ const zoning = props.z || 'N/A';
+ const lotSf = props.l ? props.l.toLocaleString() : 'N/A';
+ const maxDadu = props.m || 'N/A';
+
+ // Estimate DADU cost ($150-200/sqft for Nashville)
+ const estCost = props.m ? `$${(parseInt(props.m) * 175).toLocaleString()}` : 'N/A';
+
+ // Property card image URL (Google Drive thumbnail)
+ const imageUrl = `https://drive.google.com/thumbnail?id=${GDRIVE_FOLDERS.property_cards}&sz=w200`;
+
+ return `
+ <div class="property-card" data-index="${index}" onclick="selectProperty(${index})">
+ <input type="checkbox" class="property-checkbox" ${selectedProperties.has(apn) ? 'checked' : ''} onclick="event.stopPropagation(); toggleProperty('${apn}')">
+ <div class="property-image">
+ <img src="${imageUrl}" onerror="this.parentElement.innerHTML='<div class=\\'no-image\\'>No Image<br>Available</div>'" alt="Property"></div>
+ <div class="property-details">
+ <div class="property-address">${address}</div>
+ <div class="property-city">NASHVILLE TN</div>
+ <div class="property-type">Single Family Residence</div>
+ <div class="property-stats">
+ <div class="property-stat"><strong>${lotSf}</strong><span>Lot SF</span></div>
+ <div class="property-stat"><strong>${maxDadu}</strong><span>Max DADU</span></div>
+ <div class="property-stat"><strong>${zoning}</strong><span>Zoning</span></div></div>
+ <div class="property-sale">Est. DADU Cost: ${estCost}</div>
+ <span class="dadu-badge ${eligClass}">${eligLabel}</span>
+ <a href="property-report-card.html?apn=${apn}&address=${encodeURIComponent(address)}" class="view-report-btn" onclick="event.stopPropagation()">View Property Report</a></div></div>
+ `;
+ }).join('');
+ }
+
+ // Show property in results when map marker clicked
+ function showPropertyInResults(feature, eligClass) {
+ const results = [{
+ feature: feature,
+ type: eligClass === 'eligible' ? 'eligible' : eligClass === 'conditional' ? 'conditional' : 'notEligible'
+ }];
+ visibleResults = results;
+ renderResults(results);
+ }
+
+ // Select property
+ function selectProperty(index) {
+ const cards = document.querySelectorAll('.property-card');
+ cards.forEach(card =>card.classList.remove('selected'));
+ cards[index].classList.add('selected');
+
+ // Pan to property on map
+ const item = visibleResults[index];
+ if (item) {
+ const coords = item.feature.geometry.coordinates;
+ map.setView([coords[1], coords[0]], 17);
+ }
+ }
+
+ // Toggle property selection
+ function toggleProperty(apn) {
+ if (selectedProperties.has(apn)) {
+ selectedProperties.delete(apn);
+ } else {
+ selectedProperties.add(apn);
+ }
+ }
+
+ // Toggle select all
+ function toggleSelectAll() {
+ const checked = document.getElementById('select-all').checked;
+ const checkboxes = document.querySelectorAll('.property-checkbox');
+ checkboxes.forEach(cb =>{
+ cb.checked = checked;
+ });
+
+ if (checked) {
+ visibleResults.forEach(item =>{
+ selectedProperties.add(item.feature.properties.a);
+ });
+ } else {
+ selectedProperties.clear();
+ }
+ }
+
+ // Search address
+ async function searchAddress() {
+ const address = document.getElementById('address-search').value.trim();
+ if (!address) return;
+
+ // Check if it looks like an APN
+ if (/^\d+$/.test(address.replace(/[- ]/g, ''))) {
+ // Search by APN
+ const apn = address.replace(/[- ]/g, '');
+ let found = null;
+ let foundType = null;
+
+ for (const type of ['eligible', 'conditional', 'notEligible']) {
+ for (const feature of allData[type]) {
+ if (feature.properties.a && feature.properties.a.replace(/[- ]/g, '') === apn) {
+ found = feature;
+ foundType = type;
+ break;
+ }
+ }
+ if (found) break;
+ }
+
+ if (found) {
+ const coords = found.geometry.coordinates;
+ map.setView([coords[1], coords[0]], 17);
+ showPropertyInResults(found, foundType);
+ return;
+ }
+ }
+
+ // Search by address in data
+ const searchTerm = address.toUpperCase();
+ let found = null;
+ let foundType = null;
+
+ for (const type of ['eligible', 'conditional', 'notEligible']) {
+ for (const feature of allData[type]) {
+ if (feature.properties.d && feature.properties.d.toUpperCase().includes(searchTerm)) {
+ found = feature;
+ foundType = type;
+ break;
+ }
+ }
+ if (found) break;
+ }
+
+ if (found) {
+ const coords = found.geometry.coordinates;
+ map.setView([coords[1], coords[0]], 17);
+ showPropertyInResults(found, foundType);
+ } else {
+ // Fallback 1: Esri World Geocoder
+ let lat = null, lon = null;
+ try {
+ const esriUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${encodeURIComponent(address + ', Nashville, TN')}&f=json&outFields=Match_addr&maxLocations=1`;
+ const esriResp = await fetch(esriUrl);
+ const esriData = await esriResp.json();
+ if (esriData.candidates && esriData.candidates.length > 0) {
+ lat = esriData.candidates[0].location.y;
+ lon = esriData.candidates[0].location.x;
+ }
+ } catch (e) { console.log('Esri geocoder failed'); }
+
+ // Fallback 2: Nominatim
+ if (!lat || !lon) {
+ try {
+ const geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Nashville, TN')}`;
+ const response = await fetch(geocodeUrl);
+ const results = await response.json();
+ if (results && results.length > 0) {
+ lat = parseFloat(results[0].lat);
+ lon = parseFloat(results[0].lon);
+ }
+ } catch (e) { console.log('Nominatim failed'); }
+ }
+
+ if (lat && lon) {
+ map.setView([lat, lon], 17);
+ } else {
+ alert('Address not found. Try a different search term.');
+ }
+ }
+ }
+
+ // Toggle criteria form
+ function toggleCriteria() {
+ const form = document.getElementById('criteria-form');
+ form.classList.toggle('collapsed');
+ }
+
+ // Toggle filters
+ function toggleFilters() {
+ const panel = document.getElementById('right-panel');
+ panel.classList.toggle('open');
+ }
+
+ // Clear filters
+ function clearFilters() {
+ document.getElementById('filter-zip').value = '';
+ document.getElementById('filter-type').value = '';
+ document.getElementById('filter-sqft-min').value = '';
+ document.getElementById('filter-sqft-max').value = '';
+ document.getElementById('filter-lot-min').value = '';
+ document.getElementById('filter-lot-max').value = '';
+ document.getElementById('filter-year-min').value = '';
+ document.getElementById('filter-year-max').value = '';
+ document.getElementById('filter-stories').value = '';
+ document.getElementById('filter-district').value = '';
+ document.getElementById('filter-dadu').value = '';
+ document.getElementById('filter-cost-min').value = '';
+ document.getElementById('filter-cost-max').value = '';
+ document.getElementById('filter-dadu-sqft-min').value = '';
+ document.getElementById('filter-dadu-sqft-max').value = '';
+ updateVisibleResults();
+ }
+
+ // Apply filters
+ function applyFilters() {
+ updateVisibleResults();
+ }
+
+ // New search
+ function newSearch() {
+ clearFilters();
+ map.setView([36.1627, -86.7816], 11);
+ }
+
+ // Enter key handler for search
+ document.addEventListener('DOMContentLoaded', function() {
+ document.getElementById('address-search').addEventListener('keypress', function(e) {
+ if (e.key === 'Enter') {
+ searchAddress();
+ }
+ });
+ initMap();
+ });</script>
+ <script src="homebody_header.js"></script></body></html>

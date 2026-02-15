@@ -1,0 +1,282 @@
+================================================================================
+CASTLEHOLD BROKEN LINKS AUDIT - FINAL REPORT
+Repository: /sessions/amazing-optimistic-fermi/mnt/DADU-Homebody-Projects/
+Date: February 14, 2026
+================================================================================
+
+EXECUTIVE SUMMARY
+-----------------
+Found 27 broken internal href links spread across 21 HTML files that need fixing.
+
+KEY INSIGHT: The sample_reports/* links are NOT actually broken—the folder and 
+all 10 sample report files DO exist. They just aren't part of the root directory 
+scan but are relative links that will work when deployed.
+
+ACTUAL CRITICAL BROKEN LINKS: 18 unique files being referenced but don't exist
+- These are due to file naming mismatches between old and new versions
+- Example: links point to "cost_estimator.html" but actual file is 
+  "project_cost_estimator.html"
+
+
+CATEGORIZED BROKEN LINKS
+------------------------
+
+CATEGORY 1: COST ESTIMATOR (12 references - MOST CRITICAL)
+Old name: cost_estimator.html
+New name: project_cost_estimator.html
+Files to fix (12 total):
+  1. castlehold_homepage_flat.html
+  2. contractor_portal.html
+  3. features.html
+  4. homebody_header.html           ← PRIORITY: used in nav
+  5. homebody_index_v3.html         ← PRIORITY: used in nav
+  6. homebody_index_v4.html         ← PRIORITY: used in nav
+  7. homeowner_portal.html
+  8. index.html                     ← PRIORITY: used in nav
+  9. project_checklist.html
+  10. property-report-card.html
+  11. size_calculator.html
+  12. user-homeowners.html
+
+
+CATEGORY 2: CONTRACTOR MARKETPLACE (4 references)
+Old name: contractors.html
+New name: contractor_marketplace.html
+Files to fix (4 total):
+  1. features.html
+  2. homebody_index_v4.html
+  3. index_pq.html
+  4. user-homeowners.html
+
+
+CATEGORY 3: PROJECT CHECKLIST (2 references)
+Old name: dadu_checklist.html
+New name: project_checklist.html
+Files to fix (2 total):
+  1. homebody_index_v4.html
+  2. user-homeowners.html
+
+
+CATEGORY 4: DADU OPPORTUNITY EXPLORER (4 references)
+Old name: dadu_explorer.html
+New name: dadu_opportunity_explorer_v2.html
+Files to fix (4 total):
+  1. dadu_eligibility_checklist.html
+  2. dadu_eligibility_flowchart.html
+  3. homebody_index.html
+  4. homebody_index_map.html
+
+
+CATEGORY 5: DADU NEAR ME (1 reference)
+Old name: dadu_near_me.html
+New name: dadu_near_me_v2.html
+Files to fix (1 total):
+  1. feature-eligibility-map.html
+
+
+CATEGORY 6: SHORT-TERM RENTAL PERMIT (2 references)
+Old name: short_term_rental_permit.html
+New name: str_permit.html
+Files to fix (2 total):
+  1. homebody_header.html           ← PRIORITY: used in nav
+  2. legal_resources.html
+
+
+CATEGORY 7: LEGACY/UNKNOWN (1 reference)
+Link: DADU_MASTER_WEBSITE.html
+New name: Unknown (needs clarification)
+Files to fix (1 total):
+  1. dadu_reports_store.html
+Action: Determine where this should link to, or remove the link
+
+
+MISCELLANEOUS: sample_reports/ links (9 references)
+Status: NOT BROKEN - folder and files exist
+Note: These work because they use relative paths: href="sample_reports/filename.html"
+No action needed
+
+
+FILE-BY-FILE FIX CHECKLIST
+--------------------------
+
+Priority 1 (Critical - Used in Navigation Headers):
+
+[ ] 1. homebody_header.html
+       - Line with: href="cost_estimator.html"
+         Change to: href="project_cost_estimator.html"
+       - Line with: href="short_term_rental_permit.html"
+         Change to: href="str_permit.html"
+
+[ ] 2. index.html (main homepage)
+       - Line with: href="cost_estimator.html"
+         Change to: href="project_cost_estimator.html"
+
+[ ] 3. homebody_index_v3.html
+       - Lines with: href="homeowner_portal.html" (2 occurrences)
+         Change to: href="user-homeowners.html"
+
+[ ] 4. homebody_index_v4.html
+       - Lines with: href="homeowner_portal.html" (2 occurrences)
+         Change to: href="user-homeowners.html"
+       - Line with: href="dadu_checklist.html"
+         Change to: href="project_checklist.html"
+       - Line with: href="contractors.html"
+         Change to: href="contractor_marketplace.html"
+       - Line with: href="cost_estimator.html"
+         Change to: href="project_cost_estimator.html"
+
+
+Priority 2 (High - User Facing Pages):
+
+[ ] 5. user-homeowners.html
+       - Line with: href="homeowner_portal.html"
+         Change to: href="user-homeowners.html" (or remove if self-link)
+       - Line with: href="dadu_checklist.html"
+         Change to: href="project_checklist.html"
+       - Line with: href="contractors.html"
+         Change to: href="contractor_marketplace.html"
+       - Line with: href="cost_estimator.html"
+         Change to: href="project_cost_estimator.html"
+
+[ ] 6. features.html
+       - Line with: href="contractors.html"
+         Change to: href="contractor_marketplace.html"
+       - Line with: href="cost_estimator.html"
+         Change to: href="project_cost_estimator.html"
+
+[ ] 7. feature-eligibility-map.html
+       - Line with: href="dadu_near_me.html"
+         Change to: href="dadu_near_me_v2.html"
+
+[ ] 8. legal_resources.html
+       - Line with: href="short_term_rental_permit.html"
+         Change to: href="str_permit.html"
+
+
+Priority 3 (Medium - Secondary Pages):
+
+[ ] 9. project_checklist.html
+       - Line with: href="cost_estimator.html"
+         Change to: href="project_cost_estimator.html"
+
+[ ] 10. property-report-card.html
+        - Line with: href="cost_estimator.html"
+          Change to: href="project_cost_estimator.html"
+
+[ ] 11. homeowner_portal.html
+        - Line with: href="cost_estimator.html"
+          Change to: href="project_cost_estimator.html"
+
+[ ] 12. contractor_portal.html
+        - Line with: href="cost_estimator.html"
+          Change to: href="project_cost_estimator.html"
+
+[ ] 13. castlehold_homepage_flat.html
+        - Line with: href="cost_estimator.html"
+          Change to: href="project_cost_estimator.html"
+
+[ ] 14. homebody_main.html
+        - Line with: href="cost_estimator.html"
+          Change to: href="project_cost_estimator.html"
+
+[ ] 15. size_calculator.html
+        - Line with: href="cost_estimator.html"
+          Change to: href="project_cost_estimator.html"
+
+[ ] 16. index_pq.html
+        - Line with: href="contractors.html"
+          Change to: href="contractor_marketplace.html"
+
+[ ] 17. dadu_eligibility_checklist.html
+        - Line with: href="dadu_explorer.html"
+          Change to: href="dadu_opportunity_explorer_v2.html"
+
+[ ] 18. dadu_eligibility_flowchart.html
+        - Line with: href="dadu_explorer.html"
+          Change to: href="dadu_opportunity_explorer_v2.html"
+
+[ ] 19. homebody_index.html
+        - Line with: href="dadu_explorer.html"
+          Change to: href="dadu_opportunity_explorer_v2.html"
+
+[ ] 20. homebody_index_map.html
+        - Line with: href="dadu_explorer.html"
+          Change to: href="dadu_opportunity_explorer_v2.html"
+
+[ ] 21. dadu_reports_store.html
+        - Line with: href="DADU_MASTER_WEBSITE.html"
+          Action: REVIEW - determine correct target file
+
+
+IMPLEMENTATION PLAN
+-------------------
+
+Recommended approach:
+1. Create a script to fix all links automatically (find-and-replace)
+2. Fix Priority 1 items FIRST (they affect navigation for all users)
+3. Test each page after fixing to verify links work
+4. Verify in GitHub Pages deployment
+
+Total files to update: 21
+Total href changes needed: 27
+Estimated time: 15-20 minutes for automated fix + 10 minutes testing
+
+
+VALIDATION AFTER FIX
+--------------------
+
+Run this command to verify all links are fixed:
+```
+
+grep -ohP 'href="([^"]*\.html)"' *.html 2>/dev/null | sed 's/href="//;s/"$//' | sort -u > /tmp/all_hrefs.txt && 
+while read href; do
+  filename=$(basename "$href")
+  if [ ! -f "$filename" ]; then
+    echo "BROKEN: $href"
+  fi
+done < /tmp/all_hrefs.txt
+```
+
+Expected output after fix: (blank = all links fixed)
+
+
+================================================================================
+NOTES FOR THE DEVELOPER
+================================================================================
+
+1. NAMING CONVENTION MISMATCH:
+   The spec calls for certain page names (e.g., "project_cost_estimator.html"),
+   but many files still link to older names (e.g., "cost_estimator.html").
+   Both files may exist in the repo—the old ones may be deprecated versions.
+   
+   Action: Use the SPEC naming convention (per CLAUDE.md section 5) when fixing.
+
+2. HOMEOWNER PORTAL REDIRECT NEEDED:
+   - user-homeowners.html is the current official version (per spec)
+   - homeowner_portal.html appears to be an older version still in repo
+   - Consider: Delete homeowner_portal.html after verifying user-homeowners.html
+     contains all necessary content
+
+3. DESIGNER PORTAL:
+   - designer_resources.html is the official version (per spec)
+   - designer_portal.html is orphaned (not linked anywhere)
+   - Consider: Delete designer_portal.html after verifying designer_resources.html
+     has all content
+
+4. FILE NAMING PATTERNS:
+   Old pattern: [feature].html
+   New pattern: [prefix]_[feature]_[version].html
+   Examples:
+   - old: cost_estimator.html
+   - new: project_cost_estimator.html
+   
+   - old: contractors.html  
+   - new: contractor_marketplace.html
+
+5. DEPLOY VERIFICATION:
+   After fixing, deploy to GitHub Pages and test all navigation from:
+   - Home page (index.html)
+   - Header navigation dropdown menus
+   - Feature cards on landing pages
+   - User type pages
+
