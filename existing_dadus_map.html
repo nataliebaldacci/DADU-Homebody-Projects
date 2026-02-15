@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Existing DADUs | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+ <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+ <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+ <link rel="stylesheet" href="homebody_shared.css">
+ <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body {
+ font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+ background: #F0EBE1;
+ color: #3E4A4F;
+ display: flex;
+ flex-direction: column;
+}
+
+/* Stats Bar */
+.stats-bar {
+ background: #3A5566;
+ padding: 14px 24px;
+ display: flex;
+ align-items: center;
+ gap: 32px;
+ overflow-x: auto;
+ flex-shrink: 0;
+}
+.stat-item {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ min-width: 100px;
+}
+.stat-value {
+ font-size: 22px;
+ font-weight: 800;
+ color: #CBB279;
+ line-height: 1.2;
+}
+.stat-label {
+ font-size: 11px;
+ color: rgba(240,235,225,0.7);
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ font-weight: 500;
+}
+.stat-divider {
+ width: 1px;
+ height: 32px;
+ background: rgba(255,255,255,0.15);
+ flex-shrink: 0;
+}
+
+/* Filter Bar */
+.filter-bar {
+ background: white;
+ padding: 10px 20px;
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ border-bottom: 1px solid rgba(62,74,79,0.12);
+ flex-wrap: wrap;
+ flex-shrink: 0;
+}
+.filter-group {
+ display: flex;
+ align-items: center;
+ gap: 6px;
+}
+.filter-label {
+ font-size: 11px;
+ color: #3E4A4F;
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 0.3px;
+ white-space: nowrap;
+}
+.filter-select {
+ padding: 6px 10px;
+ border: 1px solid #E2E2E0;
+ border-radius: 6px;
+ font-size: 12px;
+ font-family: inherit;
+ background: white;
+ color: #3A5566;
+ min-width: 100px;
+}
+.filter-input {
+ padding: 6px 10px;
+ border: 1px solid #E2E2E0;
+ border-radius: 6px;
+ font-size: 12px;
+ font-family: inherit;
+ background: white;
+ color: #3A5566;
+ width: 140px;
+}
+.filter-input::placeholder { color: #918A83; }
+.filter-num {
+ width: 70px;
+ padding: 6px 8px;
+ border: 1px solid #E2E2E0;
+ border-radius: 6px;
+ font-size: 12px;
+ font-family: inherit;
+ color: #3A5566;
+}
+.filter-btn-reset {
+ padding: 6px 14px;
+ border: 1px solid #E2E2E0;
+ border-radius: 6px;
+ background: #F0EBE1;
+ color: #3A5566;
+ font-size: 11px;
+ font-weight: 600;
+ cursor: pointer;
+ font-family: inherit;
+}
+.filter-btn-reset:hover { background: #E2E2E0; }
+
+/* Map */
+.map-container {
+ flex: 1;
+ position: relative;
+ min-height: 0;
+}
+#map { width: 100%; height: 100%; }
+
+/* Legend */
+.legend {
+ position: absolute;
+ bottom: 20px;
+ left: 12px;
+ z-index: 1000;
+ background: white;
+ border-radius: 10px;
+ padding: 12px 16px;
+ box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+ font-size: 12px;
+}
+.legend-title {
+ font-weight: 700;
+ color: #3A5566;
+ margin-bottom: 8px;
+ font-size: 13px;
+}
+.legend-item {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ margin-bottom: 4px;
+}
+.legend-dot {
+ width: 12px;
+ height: 12px;
+ border-radius: 50%;
+ flex-shrink: 0;
+}
+.legend-rect {
+ width: 16px;
+ height: 10px;
+ border-radius: 2px;
+ border: 1.5px solid #3A5566;
+ background: rgba(58,85,102,0.15);
+ flex-shrink: 0;
+}
+.legend-label { color: #706F6C; }
+
+/* Footprint toggle in legend */
+.footprint-toggle {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ margin-top: 8px;
+ padding-top: 8px;
+ border-top: 1px solid #E2E2E0;
+}
+.footprint-toggle label {
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ cursor: pointer;
+ font-size: 12px;
+ color: #706F6C;
+}
+.footprint-toggle input {
+ width: 14px;
+ height: 14px;
+ accent-color: #3A5566;
+}
+
+/* Cluster overrides */
+.marker-cluster-small {
+ background: rgba(123,116,109,0.5) !important;
+}
+.marker-cluster-small div {
+ background: #7B746D !important;
+ color: white !important;
+ font-weight: 700 !important;
+ font-family: Inter, sans-serif !important;
+}
+.marker-cluster-medium {
+ background: rgba(58,85,102,0.5) !important;
+}
+.marker-cluster-medium div {
+ background: #3A5566 !important;
+ color: white !important;
+ font-weight: 700 !important;
+ font-family: Inter, sans-serif !important;
+}
+.marker-cluster-large {
+ background: rgba(47,58,69,0.5) !important;
+}
+.marker-cluster-large div {
+ background: #2F3A45 !important;
+ color: white !important;
+ font-weight: 700 !important;
+ font-family: Inter, sans-serif !important;
+}
+
+/* Popups */
+.leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,.06); }
+.leaflet-popup-content { margin: 0; min-width: 290px; max-width: 340px; }
+.popup-inner { border-top: 3px solid #CBB279; }
+.popup-body { padding: 14px 16px; }
+.popup-address {
+ font-size: 15px;
+ font-weight: 700;
+ color: #3A5566;
+ margin-bottom: 2px;
+}
+.popup-permit-num {
+ font-size: 11px;
+ color: #537188;
+ font-family: monospace;
+ margin-bottom: 10px;
+}
+.popup-thumb-row {
+ display: flex;
+ gap: 6px;
+ margin: 8px 0;
+}
+.popup-thumb {
+ width: 50%;
+ height: 80px;
+ border-radius: 6px;
+ overflow: hidden;
+ border: 1px solid rgba(62,74,79,0.1);
+ position: relative;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ background: #F0EBE1;
+ cursor: pointer;
+ text-decoration: none;
+}
+.popup-thumb:hover { background: #E2E2E0; }
+.popup-thumb-icon {
+ font-size: 12px;
+ font-weight: 600;
+ color: #3A5566;
+ text-align: center;
+ line-height: 1.3;
+}
+.popup-thumb-label {
+ position: absolute;
+ bottom: 0;
+ left: 0;
+ right: 0;
+ background: rgba(58,85,102,0.8);
+ color: white;
+ font-size: 8px;
+ font-weight: 700;
+ text-align: center;
+ padding: 2px;
+ text-transform: uppercase;
+}
+.popup-grid {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 8px;
+ margin-bottom: 10px;
+}
+.popup-field { font-size: 11px; }
+.popup-field-label {
+ color: #537188;
+ font-weight: 500;
+ display: block;
+}
+.popup-field-value {
+ color: #3A5566;
+ font-weight: 700;
+ font-size: 13px;
+}
+.popup-contractor {
+ font-size: 12px;
+ margin-bottom: 8px;
+}
+.popup-scope {
+ font-size: 11px;
+ color: #3E4A4F;
+ line-height: 1.5;
+ max-height: 60px;
+ overflow: hidden;
+ margin-bottom: 10px;
+ padding: 8px;
+ background: #F0EBE1;
+ border-radius: 6px;
+}
+.popup-actions {
+ display: flex;
+ gap: 6px;
+ flex-wrap: wrap;
+}
+.popup-btn {
+ padding: 6px 10px;
+ border-radius: 6px;
+ font-size: 11px;
+ font-weight: 600;
+ font-family: inherit;
+ text-decoration: none;
+ cursor: pointer;
+ border: none;
+ transition: all 0.15s;
+ text-align: center;
+}
+.popup-btn-primary {
+ background: #CBB279;
+ color: #3A5566;
+}
+.popup-btn-primary:hover { background: #b8a068; }
+.popup-btn-secondary {
+ background: transparent;
+ border: 1px solid #537188;
+ color: #3E4A4F;
+}
+.popup-btn-secondary:hover { background: #F0EBE1; }
+
+/* Loading */
+.loading-overlay {
+ position: fixed;
+ top: 0; left: 0; right: 0; bottom: 0;
+ background: rgba(255,255,255,0.95);
+ display: flex; flex-direction: column;
+ align-items: center; justify-content: center;
+ z-index: 2000;
+}
+.loading-overlay.hidden { display: none; }
+.spinner {
+ width: 50px; height: 50px;
+ border: 4px solid #e0e0e0; border-top-color: #CBB279;
+ border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 16px; font-weight: 600; color: #3A5566; }
+.loading-sub { font-size: 13px; color: #706F6C; margin-top: 8px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+ .stats-bar { gap: 16px; padding: 10px 16px; }
+ .stat-value { font-size: 18px; }
+ .filter-bar { padding: 8px 12px; gap: 8px; }
+ .filter-input { width: 100px; }
+ .filter-num { width: 55px; }
+ .legend { bottom: 10px; left: 8px; padding: 10px 12px; }
+}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+ <div class="stat-item">
+  <span class="stat-value" id="stat-count">--</span>
+  <span class="stat-label">Completed DADUs</span>
+ </div>
+ <div class="stat-divider"></div>
+ <div class="stat-item">
+  <span class="stat-value" id="stat-contractors">--</span>
+  <span class="stat-label">Unique Contractors</span>
+ </div>
+ <div class="stat-divider"></div>
+ <div class="stat-item">
+  <span class="stat-value" id="stat-years">2017 - Present</span>
+  <span class="stat-label">Permit Range</span>
+ </div>
+ <div class="stat-divider"></div>
+ <div class="stat-item">
+  <span class="stat-value" id="stat-visible">--</span>
+  <span class="stat-label">Showing on Map</span>
+ </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+ <div class="filter-group">
+  <span class="filter-label">Year</span>
+  <select class="filter-select" id="filter-year">
+   <option value="">All</option>
+  </select>
+ </div>
+ <div class="filter-group">
+  <span class="filter-label">ZIP</span>
+  <select class="filter-select" id="filter-zip">
+   <option value="">All</option>
+  </select>
+ </div>
+ <div class="filter-group">
+  <span class="filter-label">Contractor</span>
+  <input type="text" class="filter-input" id="filter-contractor" placeholder="Search contractor...">
+ </div>
+ <div class="filter-group">
+  <span class="filter-label">SqFt</span>
+  <input type="number" class="filter-num" id="filter-sqft-min" placeholder="Min">
+  <span style="color:#918A83;">-</span>
+  <input type="number" class="filter-num" id="filter-sqft-max" placeholder="Max">
+ </div>
+ <div class="filter-group">
+  <span class="filter-label">Cost</span>
+  <select class="filter-select" id="filter-cost">
+   <option value="">All</option>
+   <option value="0-100000">Under $100K</option>
+   <option value="100000-200000">$100K - $200K</option>
+   <option value="200000-300000">$200K - $300K</option>
+   <option value="300000-999999999">$300K+</option>
+  </select>
+ </div>
+ <button class="filter-btn-reset" id="btn-reset" onclick="resetFilters()">Reset</button>
+</div>
+
+<!-- Map -->
+<div class="map-container">
+ <div id="map"></div>
+
+ <!-- Legend -->
+ <div class="legend">
+  <div class="legend-title">Existing DADUs</div>
+  <div class="legend-item">
+   <span class="legend-dot" style="background:#406A64;"></span>
+   <span class="legend-label">Completed</span>
+  </div>
+  <div class="legend-item">
+   <span class="legend-dot" style="background:#CBB279;"></span>
+   <span class="legend-label">Recent (2024-25)</span>
+  </div>
+  <div class="footprint-toggle">
+   <label>
+    <input type="checkbox" id="toggle-footprints" onchange="toggleFootprints()">
+    <span class="legend-rect"></span>
+    Building Footprints
+   </label>
+  </div>
+ </div>
+</div>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loading">
+ <div class="spinner"></div>
+ <div class="loading-text">Loading Existing DADUs</div>
+ <div class="loading-sub" id="loading-status">Connecting to ArcGIS...</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+<script>
+// ====================================================================
+// CONFIGURATION
+// ====================================================================
+const PERMITS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_Final/FeatureServer/0';
+const FOOTPRINTS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Footprints_With_ParcelData_20260118_011423/FeatureServer/0';
+
+// Completed statuses (case-insensitive matching)
+const COMPLETED_STATUSES = ['DONE', 'COMPLETED', 'COMPLETE', 'CLOSED', 'FINALED', 'FINAL', 'INACTIVE'];
+
+// ====================================================================
+// STATE
+// ====================================================================
+let map;
+let clusterGroup;
+let footprintLayer;
+let footprintsVisible = false;
+let footprintsLoaded = false;
+let allPermits = []; // All loaded permit data
+let filteredMarkers = []; // Currently visible markers
+
+// ====================================================================
+// HELPERS
+// ====================================================================
+function fmtCurrency(val) {
+ if (!val && val !== 0) return 'N/A';
+ if (val >= 1000000) return '$' + (val / 1000000).toFixed(1) + 'M';
+ if (val >= 1000) return '$' + Math.round(val).toLocaleString();
+ return '$' + val;
+}
+
+function fmtNumber(val) {
+ if (!val && val !== 0) return 'N/A';
+ return Math.round(val).toLocaleString();
+}
+
+function fmtDate(epoch) {
+ if (!epoch) return 'N/A';
+ const d = new Date(epoch);
+ return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function getYear(epoch) {
+ if (!epoch) return null;
+ return new Date(epoch).getFullYear();
+}
+
+function isCompleted(status) {
+ if (!status) return false;
+ const s = status.toUpperCase().trim();
+ return COMPLETED_STATUSES.some(cs => s === cs || s.indexOf(cs) !== -1);
+}
+
+function isRecent(epoch) {
+ if (!epoch) return false;
+ const year = getYear(epoch);
+ return year >= 2024;
+}
+
+function markerColor(epoch) {
+ return isRecent(epoch) ? '#CBB279' : '#406A64';
+}
+
+// ====================================================================
+// ARCGIS QUERY
+// ====================================================================
+async function queryAllPages(serviceUrl, options = {}) {
+ let all = [];
+ let offset = 0;
+ const pageSize = options.resultRecordCount || 2000;
+
+ while (true) {
+  const params = new URLSearchParams({
+   where: options.where || '1=1',
+   outFields: options.outFields || '*',
+   returnGeometry: options.returnGeometry !== false ? 'true' : 'false',
+   outSR: options.outSR || 4326,
+   f: options.f || 'json',
+   resultOffset: offset,
+   resultRecordCount: pageSize
+  });
+
+  const url = `${serviceUrl}/query?${params.toString()}`;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  const data = await resp.json();
+
+  if (!data.features || data.features.length === 0) break;
+  all = all.concat(data.features);
+  if (data.features.length < pageSize) break;
+  offset += pageSize;
+ }
+ return all;
+}
+
+// ====================================================================
+// POPUP BUILDER
+// ====================================================================
+function buildPopup(p) {
+ const address = p.Address || 'No Address';
+ const permitNum = p.Permit_Number || 'N/A';
+ const apn = p.Parcel_ID || 'N/A';
+ const dateStr = fmtDate(p.Date_Issued);
+ const sqft = fmtNumber(p.Building_SqFt);
+ const cost = fmtCurrency(p.Construction_Cost);
+ const costPerSf = p.Cost_Per_SqFt ? '$' + Math.round(p.Cost_Per_SqFt) : 'N/A';
+ const contractor = p.Contractor || '';
+ const scope = p.Project_Scope || '';
+ const lat = p._lat;
+ const lon = p._lon;
+
+ // Street View and document links
+ const streetViewUrl = p.Street_View || (lat && lon ? 'https://www.google.com/maps?q&layer=c&cbll=' + lat + ',' + lon : '');
+ const docsUrl = p.Documents_Link || 'https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=' + encodeURIComponent(permitNum);
+ const ePermitsUrl = p.ePermits_Link || 'https://epermits.nashville.gov/?#/?searchCode=PRMT=' + encodeURIComponent(permitNum);
+
+ let html = '<div class="popup-inner"><div class="popup-body">';
+ html += '<div class="popup-address">' + escHtml(address) + '</div>';
+ html += '<div class="popup-permit-num">#' + escHtml(permitNum) + ' | APN: ' + escHtml(apn) + '</div>';
+
+ // Photo + Site Plan thumbnails
+ html += '<div class="popup-thumb-row">';
+ if (streetViewUrl) {
+  html += '<a href="' + streetViewUrl + '" target="_blank" rel="noopener" class="popup-thumb">';
+  html += '<div class="popup-thumb-icon"><img src="assets/icons/Property_Owners.svg" alt="" style="width:24px;height:24px;opacity:0.6;"><br>Street View</div>';
+  html += '<div class="popup-thumb-label">Photo</div></a>';
+ }
+ html += '<a href="' + docsUrl + '" target="_blank" rel="noopener" class="popup-thumb">';
+ html += '<div class="popup-thumb-icon"><img src="assets/icons/Permit_Site_Plans.svg" alt="" style="width:24px;height:24px;opacity:0.6;"><br>View Docs</div>';
+ html += '<div class="popup-thumb-label">Site Plan</div></a>';
+ html += '</div>';
+
+ // Data grid
+ html += '<div class="popup-grid">';
+ html += '<div class="popup-field"><span class="popup-field-label">Date</span><span class="popup-field-value">' + dateStr + '</span></div>';
+ html += '<div class="popup-field"><span class="popup-field-label">SqFt</span><span class="popup-field-value">' + sqft + '</span></div>';
+ html += '<div class="popup-field"><span class="popup-field-label">Cost</span><span class="popup-field-value">' + cost + '</span></div>';
+ html += '<div class="popup-field"><span class="popup-field-label">$/SF</span><span class="popup-field-value">' + costPerSf + '</span></div>';
+ html += '</div>';
+
+ if (contractor) {
+  html += '<div class="popup-contractor"><span style="color:#537188;">Contractor:</span> <strong style="color:#3A5566;">' + escHtml(contractor) + '</strong></div>';
+ }
+
+ // Project scope / covenant text
+ if (scope) {
+  const snippet = scope.length > 150 ? scope.substring(0, 150) + '...' : scope;
+  html += '<div class="popup-scope">' + escHtml(snippet) + '</div>';
+ }
+
+ // Action buttons
+ html += '<div class="popup-actions">';
+ html += '<a href="property-report-card.html?apn=' + encodeURIComponent(apn) + '&address=' + encodeURIComponent(address) + '" class="popup-btn popup-btn-primary">All Details</a>';
+ html += '<a href="' + ePermitsUrl + '" target="_blank" rel="noopener" class="popup-btn popup-btn-secondary">ePermits</a>';
+ if (streetViewUrl) {
+  html += '<a href="' + streetViewUrl + '" target="_blank" rel="noopener" class="popup-btn popup-btn-secondary">Street View</a>';
+ }
+ html += '</div>';
+
+ html += '</div></div>';
+ return html;
+}
+
+function escHtml(str) {
+ if (!str) return '';
+ return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ====================================================================
+// LOAD DATA
+// ====================================================================
+async function loadPermits() {
+ const statusEl = document.getElementById('loading-status');
+ statusEl.textContent = 'Querying DADU permits...';
+
+ try {
+  const features = await queryAllPages(PERMITS_SERVICE, {
+   outFields: 'Parcel_ID,Permit_Number,Address,Zip_Code,Contractor,Construction_Cost,Building_SqFt,Cost_Per_SqFt,Status,Date_Issued,Project_Scope,ADU_Type,ePermits_Link,Documents_Link,Street_View,Aerial_View',
+   returnGeometry: true,
+   outSR: 4326,
+   resultRecordCount: 2000
+  });
+
+  statusEl.textContent = 'Processing ' + features.length + ' permits...';
+
+  // Filter to completed only
+  allPermits = [];
+  const yearSet = new Set();
+  const zipSet = new Set();
+  const contractorSet = new Set();
+
+  features.forEach(function(f) {
+   const attrs = f.attributes || {};
+   const geom = f.geometry;
+   if (!geom || !geom.y || !geom.x) return;
+   if (!isCompleted(attrs.Status)) return;
+
+   attrs._lat = geom.y;
+   attrs._lon = geom.x;
+
+   const year = getYear(attrs.Date_Issued);
+   if (year) yearSet.add(year);
+   if (attrs.Zip_Code) zipSet.add(String(attrs.Zip_Code));
+   if (attrs.Contractor) contractorSet.add(attrs.Contractor);
+
+   allPermits.push(attrs);
+  });
+
+  // Update stats
+  document.getElementById('stat-count').textContent = allPermits.length.toLocaleString();
+  document.getElementById('stat-contractors').textContent = contractorSet.size.toLocaleString();
+
+  if (yearSet.size > 0) {
+   const years = Array.from(yearSet).sort();
+   document.getElementById('stat-years').textContent = years[0] + ' - ' + years[years.length - 1];
+  }
+
+  // Populate filter dropdowns
+  populateYearFilter(yearSet);
+  populateZipFilter(zipSet);
+
+  // Add markers
+  addMarkersToMap(allPermits);
+
+  // Hide loading
+  setTimeout(function() {
+   document.getElementById('loading').classList.add('hidden');
+  }, 400);
+
+ } catch (err) {
+  console.error('Error loading permits:', err);
+  statusEl.textContent = 'Error loading data. Please refresh.';
+ }
+}
+
+function populateYearFilter(yearSet) {
+ const select = document.getElementById('filter-year');
+ Array.from(yearSet).sort().reverse().forEach(function(y) {
+  const opt = document.createElement('option');
+  opt.value = y;
+  opt.textContent = y;
+  select.appendChild(opt);
+ });
+}
+
+function populateZipFilter(zipSet) {
+ const select = document.getElementById('filter-zip');
+ // Count permits per ZIP for sorting
+ const zipCounts = {};
+ allPermits.forEach(function(p) {
+  const z = String(p.Zip_Code || '');
+  if (z) zipCounts[z] = (zipCounts[z] || 0) + 1;
+ });
+ // Sort by count descending, show top 20
+ Array.from(zipSet).sort(function(a, b) {
+  return (zipCounts[b] || 0) - (zipCounts[a] || 0);
+ }).slice(0, 20).forEach(function(z) {
+  const opt = document.createElement('option');
+  opt.value = z;
+  opt.textContent = z + ' (' + (zipCounts[z] || 0) + ')';
+  select.appendChild(opt);
+ });
+}
+
+// ====================================================================
+// MAP MARKERS
+// ====================================================================
+function addMarkersToMap(permits) {
+ clusterGroup.clearLayers();
+
+ permits.forEach(function(p) {
+  const color = markerColor(p.Date_Issued);
+  const marker = L.circleMarker([p._lat, p._lon], {
+   radius: 7,
+   fillColor: color,
+   color: '#3A5566',
+   weight: 1.5,
+   opacity: 1,
+   fillOpacity: 0.85
+  });
+
+  marker.bindPopup(buildPopup(p), { maxWidth: 360, className: '' });
+  clusterGroup.addLayer(marker);
+ });
+
+ document.getElementById('stat-visible').textContent = permits.length.toLocaleString();
+}
+
+// ====================================================================
+// FILTERS
+// ====================================================================
+function applyFilters() {
+ const yearVal = document.getElementById('filter-year').value;
+ const zipVal = document.getElementById('filter-zip').value;
+ const contractorVal = document.getElementById('filter-contractor').value.trim().toUpperCase();
+ const sqftMin = parseInt(document.getElementById('filter-sqft-min').value) || 0;
+ const sqftMax = parseInt(document.getElementById('filter-sqft-max').value) || 999999;
+ const costVal = document.getElementById('filter-cost').value;
+
+ let costMin = 0, costMax = 999999999;
+ if (costVal) {
+  const parts = costVal.split('-');
+  costMin = parseInt(parts[0]) || 0;
+  costMax = parseInt(parts[1]) || 999999999;
+ }
+
+ const filtered = allPermits.filter(function(p) {
+  // Year filter
+  if (yearVal) {
+   const year = getYear(p.Date_Issued);
+   if (String(year) !== yearVal) return false;
+  }
+  // ZIP filter
+  if (zipVal && String(p.Zip_Code) !== zipVal) return false;
+  // Contractor filter
+  if (contractorVal && (!p.Contractor || p.Contractor.toUpperCase().indexOf(contractorVal) === -1)) return false;
+  // SqFt filter
+  if (p.Building_SqFt) {
+   if (p.Building_SqFt < sqftMin || p.Building_SqFt > sqftMax) return false;
+  }
+  // Cost filter
+  if (costVal && p.Construction_Cost) {
+   if (p.Construction_Cost < costMin || p.Construction_Cost > costMax) return false;
+  }
+  return true;
+ });
+
+ addMarkersToMap(filtered);
+}
+
+function resetFilters() {
+ document.getElementById('filter-year').value = '';
+ document.getElementById('filter-zip').value = '';
+ document.getElementById('filter-contractor').value = '';
+ document.getElementById('filter-sqft-min').value = '';
+ document.getElementById('filter-sqft-max').value = '';
+ document.getElementById('filter-cost').value = '';
+ addMarkersToMap(allPermits);
+}
+
+// ====================================================================
+// FOOTPRINTS
+// ====================================================================
+async function toggleFootprints() {
+ const checked = document.getElementById('toggle-footprints').checked;
+ if (checked) {
+  if (map.getZoom() < 16) {
+   map.setZoom(16);
+  }
+  await loadFootprints();
+  map.addLayer(footprintLayer);
+  footprintsVisible = true;
+ } else {
+  map.removeLayer(footprintLayer);
+  footprintsVisible = false;
+ }
+}
+
+async function loadFootprints() {
+ if (footprintsLoaded) {
+  // Reload for current viewport
+  footprintLayer.clearLayers();
+ }
+
+ const bounds = map.getBounds();
+ const geometry = JSON.stringify({
+  xmin: bounds.getWest(), ymin: bounds.getSouth(),
+  xmax: bounds.getEast(), ymax: bounds.getNorth(),
+  spatialReference: { wkid: 4326 }
+ });
+
+ const params = new URLSearchParams({
+  where: '1=1',
+  geometry: geometry,
+  geometryType: 'esriGeometryEnvelope',
+  spatialRel: 'esriSpatialRelIntersects',
+  inSR: 4326,
+  outFields: 'BldgID,Nash_BldgType,Nash_Height,Nash_Area,FEMA_Address,Height_Combined',
+  returnGeometry: true,
+  outSR: 4326,
+  f: 'geojson',
+  resultRecordCount: 2000
+ });
+
+ try {
+  const resp = await fetch(FOOTPRINTS_SERVICE + '/query?' + params.toString());
+  const data = await resp.json();
+
+  if (data.features && data.features.length > 0) {
+   data.features.forEach(function(feature) {
+    const props = feature.properties || {};
+    const isAccessory = (props.Nash_BldgType || '').toLowerCase() === 'accessory';
+
+    const layer = L.geoJSON(feature, {
+     style: {
+      fillColor: isAccessory ? '#CBB279' : 'rgba(58,85,102,0.15)',
+      color: '#3A5566',
+      weight: 1.5,
+      fillOpacity: isAccessory ? 0.5 : 0.2,
+      opacity: 0.7
+     }
+    });
+
+    const area = props.Nash_Area ? Math.round(props.Nash_Area).toLocaleString() + ' SF' : 'N/A';
+    const height = props.Height_Combined ? Math.round(props.Height_Combined) + ' ft' : (props.Nash_Height ? Math.round(props.Nash_Height) + ' ft' : 'N/A');
+
+    layer.bindPopup(
+     '<div style="font-family:Inter,sans-serif;padding:8px;">' +
+     '<div style="font-weight:700;color:#3A5566;margin-bottom:4px;">' + (props.Nash_BldgType || 'Building') + '</div>' +
+     '<div style="font-size:13px;color:#706F6C;">Address: ' + (props.FEMA_Address || 'N/A') + '</div>' +
+     '<div style="font-size:13px;color:#706F6C;">Footprint: ' + area + '</div>' +
+     '<div style="font-size:13px;color:#706F6C;">Height: ' + height + '</div></div>',
+     { maxWidth: 250 }
+    );
+
+    footprintLayer.addLayer(layer);
+   });
+  }
+
+  footprintsLoaded = true;
+ } catch (err) {
+  console.error('Error loading footprints:', err);
+ }
+}
+
+// ====================================================================
+// MAP INIT
+// ====================================================================
+function initMap() {
+ map = L.map('map', { preferCanvas: true }).setView([36.1627, -86.7816], 11);
+
+ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+  subdomains: 'abcd',
+  maxZoom: 20
+ }).addTo(map);
+
+ clusterGroup = L.markerClusterGroup({
+  maxClusterRadius: 50,
+  spiderfyOnMaxZoom: true,
+  showCoverageOnHover: false,
+  zoomToBoundsOnClick: true,
+  iconCreateFunction: function(cluster) {
+   var count = cluster.getChildCount();
+   var size = count < 10 ? 'small' : (count < 50 ? 'medium' : 'large');
+   return L.divIcon({
+    html: '<div>' + count + '</div>',
+    className: 'marker-cluster marker-cluster-' + size,
+    iconSize: L.point(40, 40)
+   });
+  }
+ });
+ map.addLayer(clusterGroup);
+
+ footprintLayer = L.layerGroup();
+
+ // Reload footprints on map move if visible
+ map.on('moveend', function() {
+  if (footprintsVisible && map.getZoom() >= 16) {
+   loadFootprints();
+  }
+ });
+
+ // Load permit data
+ loadPermits();
+}
+
+// ====================================================================
+// FILTER EVENT LISTENERS
+// ====================================================================
+document.addEventListener('DOMContentLoaded', function() {
+ // Debounced filter application
+ var filterTimeout;
+ function debouncedFilter() {
+  clearTimeout(filterTimeout);
+  filterTimeout = setTimeout(applyFilters, 300);
+ }
+
+ document.getElementById('filter-year').addEventListener('change', applyFilters);
+ document.getElementById('filter-zip').addEventListener('change', applyFilters);
+ document.getElementById('filter-contractor').addEventListener('input', debouncedFilter);
+ document.getElementById('filter-sqft-min').addEventListener('input', debouncedFilter);
+ document.getElementById('filter-sqft-max').addEventListener('input', debouncedFilter);
+ document.getElementById('filter-cost').addEventListener('change', applyFilters);
+
+ // Init map after header loads
+ function waitForHeader(cb) {
+  var nav = document.querySelector('.main-nav');
+  if (nav) { cb(); }
+  else { requestAnimationFrame(function() { waitForHeader(cb); }); }
+ }
+ waitForHeader(function() {
+  setTimeout(initMap, 50);
+ });
+});
+</script>
+<script src="homebody_header.js"></script>
+</body>
+</html>
