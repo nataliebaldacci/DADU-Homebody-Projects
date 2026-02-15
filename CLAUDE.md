@@ -443,6 +443,7 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 - ✅ Nav updated: "Advertise With Us" now links to contractor_portal.html#advertise (both header.js and header.html)
 - ✅ contractor_portal.html fully rebranded: Inter font, CSS variables, SVG icons, fixed broken link to deleted page
 - ✅ Eligibility flowchart made fully interactive: step-through wizard with YES/NO gates, collapsed summary bars with "Change Answer", progress bar, Step 5 informational with Continue button, Step 6 ends with Eligible result card + Property Report Card link, Show All toggle, Start Over, all 49 links preserved
+- ✅ Three-page styling fix: trade_permits.html (title, Montserrat→Inter, CSS var fixes incl. green --terracotta bug), overlay-districts.html (title, Montserrat→Inter, removed banned colors --yellow/--red/purple, footer branding), contractor_dashboard.html (already correct, no changes needed)
 
 ### PRIORITY 1: Delete 24 Identified Duplicate Pages
 **Status:** Identified, awaiting user confirmation to delete. (dadu_eligibility_checklist already deleted; dadu_eligibility_flowchart is now active in RESOURCES nav)
