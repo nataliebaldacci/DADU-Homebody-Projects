@@ -697,7 +697,7 @@
  if (!currentProperty) { alert('Search for a property first'); return; }
  const a = currentProperty.attributes;
  const params = new URLSearchParams({ address: a.Address || '', apn: a.STANPAR || '', lotSize: a.Lot_SF || '', zoning: a.Zoning || '', eligibility: a.Final_Eligibility || '', maxLiving: maxLivingSF, maxFootprint: maxFootprintSF, daduSize: document.getElementById('daduSize').textContent });
- window.open(`dadu_report_full.html?${params.toString()}`, '_blank');
+ window.open(`property-report-card.html?${params.toString()}`, '_blank');
  }
  
  document.addEventListener('DOMContentLoaded', initMap);</script>
