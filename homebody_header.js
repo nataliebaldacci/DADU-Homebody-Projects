@@ -73,10 +73,7 @@
                  item('dadu_near_me_v2.html', 'Neighbors.svg', 'DADUs Near Me') +
                  item('existing_dadus_map.html', 'ADU.png', 'Existing DADUs') +
                  item('dadu_opportunity_explorer_v2.html', 'Area_Maps_and_Visual_layers.svg', 'Opportunity Explorer') +
-                 item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map') +
-                 item('parcel_footprint_map.html', 'APN Maps.svg', 'Parcel Footprint Map') +
-                 item('adu_permit_map.html', 'Permit_Activity.svg', 'ADU Permit Map') +
-                 item('homebody_index_map.html', 'GIS.svg', 'Overview Map')
+                 item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map')
              ) +
              col('Permit_Activity.svg', 'Dashboards',
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
