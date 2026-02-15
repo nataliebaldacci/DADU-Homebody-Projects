@@ -506,7 +506,7 @@
    color: #B58676;
   }
 
-  /* Step 3 special: multiple options */
+  /* Multiple options */
   .answer-options {
    display: flex;
    flex-direction: column;
@@ -559,6 +559,11 @@
    color: #fff;
   }
 
+  .option-btn.idk-opt .option-tag {
+   background: #918A83;
+   color: #fff;
+  }
+
   .option-btn.selected {
    cursor: default;
   }
@@ -582,6 +587,17 @@
    border-color: #E2E2E0;
    background: #fff;
   }
+
+  /* ========== "I DON'T KNOW" LINK ========== */
+  .idk-link {
+   display: inline-block;
+   font-size: 13px;
+   color: #918A83;
+   margin-top: 4px;
+   margin-bottom: 12px;
+   transition: color 0.2s;
+  }
+  .idk-link:hover { color: #3A5566; text-decoration: underline; }
 
   /* ========== NOT ELIGIBLE RESULT ========== */
   .not-eligible-result {
@@ -732,63 +748,6 @@
    border-color: #CBB279;
   }
 
-  /* ========== CONTINUE BUTTON (Step 5) ========== */
-  .continue-btn {
-   display: inline-block;
-   padding: 14px 32px;
-   background: #CBB279;
-   color: #3A5566;
-   border-radius: 8px;
-   font-size: 14px;
-   font-weight: 700;
-   font-family: 'Inter', sans-serif;
-   border: none;
-   cursor: pointer;
-   transition: all 0.2s;
-   margin-top: 8px;
-  }
-
-  .continue-btn:hover {
-   opacity: 0.9;
-   transform: translateY(-1px);
-  }
-
-  /* ========== STEP LINKS ========== */
-  .step-links {
-   display: flex;
-   flex-wrap: wrap;
-   gap: 8px;
-  }
-
-  .step-link {
-   display: inline-flex;
-   align-items: center;
-   gap: 5px;
-   padding: 6px 14px;
-   background: #F0EBE1;
-   border: 1px solid #E2E2E0;
-   border-radius: 6px;
-   font-size: 12px;
-   font-weight: 600;
-   color: #3A5566;
-   transition: all 0.2s;
-  }
-
-  .step-link:hover {
-   background: #E1D4BB;
-   border-color: #CBB279;
-  }
-
-  .step-link img {
-   width: 16px;
-   height: 16px;
-  }
-
-  .step-link-arrow {
-   font-size: 10px;
-   margin-left: 2px;
-  }
-
   /* ========== ELIGIBLE BADGE (Step 5) ========== */
   .eligible-badge-large {
    display: inline-flex;
@@ -849,124 +808,40 @@
   .conditions-list strong { color: #3A5566; }
   .hl { color: #CBB279; font-weight: 700; }
 
-  /* ========== SPECIAL CASES BOX ========== */
-  .special-cases-box {
-   background: #3A5566;
-   border-radius: 12px;
-   padding: 28px 32px;
-  }
-
-  .special-cases-box h3 {
-   font-family: 'Inter', sans-serif;
-   font-weight: 700;
-   font-size: 17px;
-   color: #E1D4BB;
-   margin-bottom: 16px;
-  }
-
-  .special-case-item {
-   background: rgba(255,255,255,0.08);
-   border: 1px solid rgba(255,255,255,0.12);
-   border-radius: 8px;
-   padding: 16px 20px;
-   margin-bottom: 12px;
-  }
-
-  .special-case-item:last-of-type { margin-bottom: 16px; }
-
-  .special-case-item h4 {
-   font-family: 'Inter', sans-serif;
-   font-weight: 700;
-   font-size: 14px;
-   color: #CBB279;
-   margin-bottom: 4px;
-  }
-
-  .special-case-item p {
-   font-size: 13px;
-   color: rgba(255,255,255,0.85);
-   line-height: 1.6;
-  }
-
-  .special-cases-links {
+  /* ========== STEP LINKS ========== */
+  .step-links {
    display: flex;
    flex-wrap: wrap;
    gap: 8px;
   }
 
-  .special-link {
+  .step-link {
    display: inline-flex;
    align-items: center;
    gap: 5px;
    padding: 6px 14px;
-   background: rgba(255,255,255,0.1);
-   border: 1px solid rgba(255,255,255,0.15);
+   background: #F0EBE1;
+   border: 1px solid #E2E2E0;
    border-radius: 6px;
    font-size: 12px;
    font-weight: 600;
-   color: #E1D4BB;
+   color: #3A5566;
    transition: all 0.2s;
   }
 
-  .special-link:hover {
-   background: rgba(255,255,255,0.2);
-   color: #fff;
+  .step-link:hover {
+   background: #E1D4BB;
+   border-color: #CBB279;
   }
 
-  .special-link img {
+  .step-link img {
    width: 16px;
    height: 16px;
-   filter: brightness(10);
   }
 
-  /* ========== QUICK CHECKLIST ========== */
-  .quick-checklist-box {
-   background: #fff;
-   border: 1px solid #E2E2E0;
-   border-radius: 12px;
-   padding: 32px;
-  }
-
-  .quick-checklist-box h3 {
-   font-family: 'Inter', sans-serif;
-   font-weight: 700;
-   font-size: 18px;
-   color: #3A5566;
-   text-align: center;
-   margin-bottom: 24px;
-  }
-
-  .checklist-items { list-style: none; }
-
-  .checklist-items li {
-   display: flex;
-   align-items: flex-start;
-   gap: 14px;
-   padding: 14px 0;
-   border-bottom: 1px solid #E2E2E0;
-   font-size: 15px;
-   color: #333;
-   line-height: 1.5;
-  }
-
-  .checklist-items li:last-child { border-bottom: none; }
-
-  .check-circle {
-   width: 28px;
-   height: 28px;
-   border: 2px solid #406A64;
-   border-radius: 50%;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-shrink: 0;
-   margin-top: 1px;
-  }
-
-  .check-circle svg {
-   width: 16px;
-   height: 16px;
-   fill: #406A64;
+  .step-link-arrow {
+   font-size: 10px;
+   margin-left: 2px;
   }
 
   /* ========== LINKS SECTION ========== */
@@ -1089,8 +964,6 @@
    .answer-buttons { grid-template-columns: 1fr; }
    .step-links { flex-direction: column; }
    .step-link { justify-content: center; }
-   .special-cases-links { flex-direction: column; }
-   .special-link { justify-content: center; }
    .links-section { flex-direction: column; align-items: center; }
    .progress-label { font-size: 9px; }
    .footer-inner { flex-direction: column; }
@@ -1107,7 +980,6 @@
    .flow-step-inner { flex-direction: column; gap: 12px; }
    .step-num { margin: 0 auto; }
    .cta-section h2 { font-size: 26px; }
-   .special-cases-box { padding: 20px; }
   }
  </style>
 </head>
@@ -1119,10 +991,10 @@
 <!-- Hero -->
 <section class="flow-hero">
  <h1>DADU Eligibility Flowchart</h1>
- <p class="subtitle">Follow Nashville.gov's official step-by-step process to determine if your property qualifies for a Detached Accessory Dwelling Unit under BL2025-1007.</p>
+ <p class="subtitle">Answer a few simple questions to find out if your Nashville property qualifies for a Detached Accessory Dwelling Unit under BL2025-1007.</p>
  <div class="hero-badges">
   <span class="badge"><img src="assets/icons/Zoning.svg" alt=""> BL2025-1007</span>
-  <span class="badge"><img src="assets/icons/Legal.svg" alt=""> Nashville.gov Process</span>
+  <span class="badge"><img src="assets/icons/Legal.svg" alt=""> Nashville Metro Code</span>
   <span class="badge"><img src="assets/icons/Property_Owners.svg" alt=""> 67,707 Eligible Parcels</span>
  </div>
 </section>
@@ -1132,15 +1004,15 @@
  <div class="progress-bar-wrap">
   <div class="progress-step active" id="prog-1"><div class="progress-dot">1</div><div class="progress-label">Zoning</div></div>
   <div class="progress-line" id="pline-1"></div>
-  <div class="progress-step" id="prog-2"><div class="progress-dot">2</div><div class="progress-label">Lot Size</div></div>
+  <div class="progress-step" id="prog-2"><div class="progress-dot">2</div><div class="progress-label">District</div></div>
   <div class="progress-line" id="pline-2"></div>
-  <div class="progress-step" id="prog-3"><div class="progress-dot">3</div><div class="progress-label">District</div></div>
+  <div class="progress-step" id="prog-2b"><div class="progress-dot">2B</div><div class="progress-label">Overlay</div></div>
+  <div class="progress-line" id="pline-2b"></div>
+  <div class="progress-step" id="prog-3"><div class="progress-dot">3</div><div class="progress-label">Structure</div></div>
   <div class="progress-line" id="pline-3"></div>
-  <div class="progress-step" id="prog-4"><div class="progress-dot">4</div><div class="progress-label">Structure</div></div>
+  <div class="progress-step" id="prog-4"><div class="progress-dot">4</div><div class="progress-label">Lot Size</div></div>
   <div class="progress-line" id="pline-4"></div>
   <div class="progress-step" id="prog-5"><div class="progress-dot">5</div><div class="progress-label">Conditions</div></div>
-  <div class="progress-line" id="pline-5"></div>
-  <div class="progress-step" id="prog-6"><div class="progress-dot">6</div><div class="progress-label">Special</div></div>
  </div>
  <div class="flow-controls">
   <button class="start-over-btn" onclick="startOver()">Start Over</button>
@@ -1152,11 +1024,11 @@
 <div class="section-container" style="padding-top: 24px;">
  <div class="flowchart">
 
-  <!-- ========== STEP 1 ========== -->
+  <!-- ========== STEP 1: ZONING DISTRICT ========== -->
   <div class="step-summary" id="summary-1">
    <div class="step-summary-left">
     <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <div class="step-summary-text">Step 1: Land Use Table <span>-- Zoning permits DADUs</span></div>
+    <div class="step-summary-text">Step 1: Zoning District <span id="summary-1-detail">-- Qualifies</span></div>
    </div>
    <button class="change-answer-btn" onclick="changeAnswer(1)">Change Answer</button>
   </div>
@@ -1165,22 +1037,40 @@
    <div class="flow-step-inner">
     <div class="step-num">1</div>
     <div class="step-card">
-     <h3>Land Use Table Check</h3>
-     <div class="step-question">Does the Land Use Table show your parcel's zoning district permits DADUs with conditions (PC)?</div>
-     <p style="font-size: 13px; color: #706F6C; margin-bottom: 16px;">R, RS, RN, and RL zones permit DADUs with conditions per BL2025-1007.</p>
+     <h3>What is your property's zoning district?</h3>
+     <div class="step-question">DADUs are permitted with conditions (PC) in AG, AR2a, RS, R, and RM zoning districts under BL2025-1007. Select the one that matches your property.</div>
 
-     <div class="answer-buttons" id="answers-1">
-      <button class="answer-btn yes-btn" onclick="answerStep(1, true)">YES -- My zone permits DADUs</button>
-      <button class="answer-btn no-btn" onclick="answerStep(1, false)">NO -- My zone does not</button>
+     <div class="answer-options" id="answers-1">
+      <button class="option-btn eligible-opt" onclick="answerStep1('ag')">
+       <span class="option-tag">AG/AR2a</span>
+       <span><strong>AG or AR2a</strong></span>
+      </button>
+      <button class="option-btn eligible-opt" onclick="answerStep1('rs')">
+       <span class="option-tag">RS</span>
+       <span><strong>RS (any: RS80 through RS3.75-A)</strong></span>
+      </button>
+      <button class="option-btn eligible-opt" onclick="answerStep1('r')">
+       <span class="option-tag">R</span>
+       <span><strong>R (any: R80 through R6-A)</strong></span>
+      </button>
+      <button class="option-btn eligible-opt" onclick="answerStep1('rm')">
+       <span class="option-tag">RM</span>
+       <span><strong>RM (any: RM2 through RM100)</strong></span>
+      </button>
+      <button class="option-btn not-eligible-opt" onclick="answerStep1('none')">
+       <span class="option-tag">OTHER</span>
+       <span><strong>None of these / Other zoning</strong></span>
+      </button>
      </div>
 
-     <div class="answer-result eligible" id="result-1-yes">Your zoning district permits DADUs. Proceeding to Step 2.</div>
-     <div class="answer-result not-eligible" id="result-1-no">Your zoning district does not permit DADUs. Your parcel is not eligible.</div>
+     <div class="answer-result eligible" id="result-1-yes">Your zoning district permits DADUs with conditions. Proceeding to Step 2.</div>
+     <div class="answer-result not-eligible" id="result-1-no">DADUs are permitted with conditions (PC) only in AG, AR2a, RS, R, and RM zoning districts under BL2025-1007.</div>
+
+     <a href="dadu_eligibility_map.html" class="idk-link">I don't know my zoning -- look it up on the Eligibility Map &rarr;</a>
 
      <div class="step-links">
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.08LAUSDEST_17.08.030DILAUSTA" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Land Use Tables <span class="step-link-arrow">&rarr;</span></a>
       <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link"><img src="assets/icons/Zoning.svg" alt=""> Check Your Zoning <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/BaseZoning/MapServer/0" target="_blank" class="step-link"><img src="assets/icons/GIS.svg" alt=""> Base Zoning Map <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.08LAUSDEST_17.08.030DILAUSTA" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Land Use Tables <span class="step-link-arrow">&rarr;</span></a>
       <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=7639644&GUID=45E2F5DA-7D4A-4979-98DE-40BD2B8833CE" target="_blank" class="step-link"><img src="assets/icons/Legal.svg" alt=""> BL2025-1007 <span class="step-link-arrow">&rarr;</span></a>
      </div>
     </div>
@@ -1189,11 +1079,11 @@
 
   <div class="flow-connector" id="conn-1-2"></div>
 
-  <!-- ========== STEP 2 ========== -->
+  <!-- ========== STEP 2: SERVICE DISTRICT ========== -->
   <div class="step-summary" id="summary-2">
    <div class="step-summary-left">
     <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <div class="step-summary-text">Step 2: Minimum Lot Area <span>-- Meets minimum</span></div>
+    <div class="step-summary-text">Step 2: Service District <span id="summary-2-detail">-- USD (by-right)</span></div>
    </div>
    <button class="change-answer-btn" onclick="changeAnswer(2)">Change Answer</button>
   </div>
@@ -1202,33 +1092,76 @@
    <div class="flow-step-inner">
     <div class="step-num">2</div>
     <div class="step-card">
-     <h3>Minimum Lot Area</h3>
-     <div class="step-question">Does your lot meet the minimum lot area required for your zoning district?</div>
+     <h3>Is your property in the Urban Services District (USD)?</h3>
+     <div class="step-question">Properties in the USD can build a DADU by right. Properties in the General Services District (GSD) require an approved DADU overlay.</div>
 
-     <div class="answer-buttons" id="answers-2">
-      <button class="answer-btn yes-btn" onclick="answerStep(2, true)">YES -- Meets minimum area</button>
-      <button class="answer-btn no-btn" onclick="answerStep(2, false)">NO -- Below minimum</button>
+     <div class="answer-options" id="answers-2">
+      <button class="option-btn eligible-opt" onclick="answerStep2('usd')">
+       <span class="option-tag">YES</span>
+       <span><strong>Yes, I'm in the USD</strong> -- I can build by right</span>
+      </button>
+      <button class="option-btn eligible-opt" onclick="answerStep2('gsd')">
+       <span class="option-tag">GSD</span>
+       <span><strong>No, I'm in the GSD</strong> -- I need to check for an overlay</span>
+      </button>
      </div>
 
-     <div class="answer-result eligible" id="result-2-yes">Your lot meets the minimum area. Proceeding to Step 3.</div>
-     <div class="answer-result not-eligible" id="result-2-no">Your lot is below the minimum area. Your parcel is not eligible.</div>
+     <div class="answer-result eligible" id="result-2-yes">You can build by right in the USD. Proceeding to Step 3.</div>
+     <div class="answer-result eligible" id="result-2-gsd">You're in the GSD. Let's check if your property is in an approved DADU overlay district.</div>
+
+     <a href="dadu_eligibility_map.html" class="idk-link">I don't know my service district -- look it up on the Eligibility Map &rarr;</a>
 
      <div class="step-links">
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Bulk Regulations <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS_17.12.030SE" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Setback Requirements <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link"><img src="assets/icons/Parcel Search.svg" alt=""> Check Lot Size <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/webimages/MapGallery/PDFMaps/Urban%20Services%20District.pdf" target="_blank" class="step-link"><img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt=""> USD Map (PDF) <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/arcgis/rest/services/Boundaries/USD_GSD/MapServer/0" target="_blank" class="step-link"><img src="assets/icons/GIS.svg" alt=""> USD/GSD Boundary <span class="step-link-arrow">&rarr;</span></a>
      </div>
     </div>
    </div>
   </div>
 
-  <div class="flow-connector" id="conn-2-3"></div>
+  <div class="flow-connector" id="conn-2-2b"></div>
 
-  <!-- ========== STEP 3 ========== -->
+  <!-- ========== STEP 2B: OVERLAY DISTRICT (GSD ONLY) ========== -->
+  <div class="step-summary" id="summary-2b">
+   <div class="step-summary-left">
+    <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="step-summary-text">Step 2B: Overlay District <span id="summary-2b-detail">-- Has overlay</span></div>
+   </div>
+   <button class="change-answer-btn" onclick="changeAnswer('2b')">Change Answer</button>
+  </div>
+
+  <div class="flow-step" id="step-2b">
+   <div class="flow-step-inner">
+    <div class="step-num">2B</div>
+    <div class="step-card">
+     <h3>Is your property in an approved DADU overlay district?</h3>
+     <div class="step-question">Properties in the General Services District require an approved DADU overlay to build a DADU. Check if your property is in one of these overlay areas.</div>
+
+     <div class="answer-buttons" id="answers-2b">
+      <button class="answer-btn yes-btn" onclick="answerStep2b(true)">YES -- I'm in a DADU overlay</button>
+      <button class="answer-btn no-btn" onclick="answerStep2b(false)">NO -- I'm not in an overlay</button>
+     </div>
+
+     <div class="answer-result eligible" id="result-2b-yes">Your property is in an approved DADU overlay. Proceeding to Step 3.</div>
+     <div class="answer-result not-eligible" id="result-2b-no">Properties in the General Services District require an approved DADU overlay to build a DADU.</div>
+
+     <a href="dadu_eligibility_map.html" class="idk-link">I don't know -- look it up on the Eligibility Map &rarr;</a>
+
+     <div class="step-links">
+      <a href="overlay-districts.html" class="step-link"><img src="assets/icons/Zoning_Documents.svg" alt=""> DADU Overlay Districts <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Zoning_Overlay_Districts/MapServer" target="_blank" class="step-link"><img src="assets/icons/GIS.svg" alt=""> Overlay Map <span class="step-link-arrow">&rarr;</span></a>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="flow-connector" id="conn-2b-3"></div>
+
+  <!-- ========== STEP 3: PRINCIPAL STRUCTURE ========== -->
   <div class="step-summary" id="summary-3">
    <div class="step-summary-left">
     <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <div class="step-summary-text">Step 3: Service District <span id="summary-3-detail">-- Qualifies</span></div>
+    <div class="step-summary-text">Step 3: Principal Structure <span>-- One structure confirmed</span></div>
    </div>
    <button class="change-answer-btn" onclick="changeAnswer(3)">Change Answer</button>
   </div>
@@ -1237,45 +1170,20 @@
    <div class="flow-step-inner">
     <div class="step-num">3</div>
     <div class="step-card">
-     <h3>Service District / Overlay Check</h3>
-     <div class="step-question">Which of the following applies to your parcel? Select the one that best describes your property.</div>
+     <h3>Is there exactly one single-family home on your lot?</h3>
+     <div class="step-question">DADUs require exactly one single-family principal structure on the parcel. No DADU is permitted when two principal structures are present, or when no principal structure exists.</div>
 
-     <div class="answer-options" id="answers-3">
-      <button class="option-btn eligible-opt" onclick="answerStep3('a')">
-       <span class="option-tag">A</span>
-       <span><strong>In USD (Urban Services District)</strong> -- DADU permitted by-right</span>
-      </button>
-      <button class="option-btn eligible-opt" onclick="answerStep3('b')">
-       <span class="option-tag">B</span>
-       <span><strong>In DADU Overlay (GSD)</strong> -- Eligible with overlay conditions</span>
-      </button>
-      <button class="option-btn eligible-opt" onclick="answerStep3('c')">
-       <span class="option-tag">C</span>
-       <span><strong>In UDO with DADU standards</strong> -- Eligible with UDO conditions</span>
-      </button>
-      <button class="option-btn eligible-opt" onclick="answerStep3('d')">
-       <span class="option-tag">D</span>
-       <span><strong>In SP with DADU standards</strong> -- Eligible with SP conditions</span>
-      </button>
-      <button class="option-btn not-eligible-opt" onclick="answerStep3('none')">
-       <span class="option-tag">NONE</span>
-       <span><strong>None of the above</strong> -- GSD without qualifying overlay</span>
-      </button>
+     <div class="answer-buttons" id="answers-3">
+      <button class="answer-btn yes-btn" onclick="answerYesNo(3, true)">YES -- One single-family home</button>
+      <button class="answer-btn no-btn" onclick="answerYesNo(3, false)">NO -- Zero or multiple homes</button>
      </div>
 
-     <div class="answer-result eligible" id="result-3-yes">Your property qualifies under the selected service district or overlay. Proceeding to Step 4.</div>
-     <div class="answer-result not-eligible" id="result-3-no">Your parcel is in the GSD without a qualifying overlay. Your parcel is not eligible.</div>
+     <div class="answer-result eligible" id="result-3-yes">Your parcel has one principal structure. Proceeding to Step 4.</div>
+     <div class="answer-result not-eligible" id="result-3-no">DADUs require exactly one single-family principal structure on the parcel. No DADU is permitted when two principal structures are present.</div>
 
      <div class="step-links">
-      <a href="https://maps.nashville.gov/webimages/MapGallery/PDFMaps/Urban%20Services%20District.pdf" target="_blank" class="step-link"><img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt=""> USD Map (PDF) <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://maps.nashville.gov/arcgis/rest/services/Boundaries/USD_GSD/MapServer/0" target="_blank" class="step-link"><img src="assets/icons/GIS.svg" alt=""> USD/GSD Boundary <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=THCH_APCH_APXONEDEBOURSEDI" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> USD Charter <span class="step-link-arrow">&rarr;</span></a>
-      <a href="overlay-districts.html" class="step-link"><img src="assets/icons/Zoning_Documents.svg" alt=""> DADU Overlay Districts <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.36OVDI_ARTXVIIDEACDWUNDAOVDI_17.36.730DEACDWUNOVDI" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> DADU Overlay Ordinance <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.40ADPR" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> UDO <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.40ADPR_ARTIIIAMZOCOOFZOMA_17.40.105SPPLURIN" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Specific Plan <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://maps.nashville.gov/arcgis/rest/services/Zoning_Landuse/Zoning_Overlay_Districts/MapServer" target="_blank" class="step-link"><img src="assets/icons/GIS.svg" alt=""> Overlay Districts ArcGIS <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link"><img src="assets/icons/Parcel Search.svg" alt=""> Check Overlays <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.04DERU_17.04.060DEF" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> DADU Definition <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link"><img src="assets/icons/Parcel Search.svg" alt=""> Check Your Parcel <span class="step-link-arrow">&rarr;</span></a>
      </div>
     </div>
    </div>
@@ -1283,11 +1191,11 @@
 
   <div class="flow-connector" id="conn-3-4"></div>
 
-  <!-- ========== STEP 4 ========== -->
+  <!-- ========== STEP 4: LOT SIZE & MAX DADU SIZE ========== -->
   <div class="step-summary" id="summary-4">
    <div class="step-summary-left">
     <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <div class="step-summary-text">Step 4: Single Principal Structure <span>-- One structure confirmed</span></div>
+    <div class="step-summary-text">Step 4: Lot Size <span id="summary-4-detail">-- Size determined</span></div>
    </div>
    <button class="change-answer-btn" onclick="changeAnswer(4)">Change Answer</button>
   </div>
@@ -1296,20 +1204,28 @@
    <div class="flow-step-inner">
     <div class="step-num">4</div>
     <div class="step-card">
-     <h3>Single Principal Structure</h3>
-     <div class="step-question">Is there exactly ONE single-family principal structure on the parcel?</div>
+     <h3>What is your lot size?</h3>
+     <div class="step-question">Your lot size determines the maximum DADU living space and footprint allowed. Select the option that matches your lot.</div>
 
-     <div class="answer-buttons" id="answers-4">
-      <button class="answer-btn yes-btn" onclick="answerStep(4, true)">YES -- One principal structure</button>
-      <button class="answer-btn no-btn" onclick="answerStep(4, false)">NO -- Zero or multiple</button>
+     <div class="answer-options" id="answers-4">
+      <button class="option-btn eligible-opt" onclick="answerStep4('small')">
+       <span class="option-tag">SMALL</span>
+       <span><strong>Under 10,000 square feet</strong></span>
+      </button>
+      <button class="option-btn eligible-opt" onclick="answerStep4('large')">
+       <span class="option-tag">10K+</span>
+       <span><strong>10,000 square feet or more</strong></span>
+      </button>
      </div>
 
-     <div class="answer-result eligible" id="result-4-yes">Your parcel has one principal structure. You are eligible! Review the conditions below.</div>
-     <div class="answer-result not-eligible" id="result-4-no">Parcels with zero or multiple principal structures do not qualify. Not eligible.</div>
+     <div class="answer-result eligible" id="result-4-small">Your max DADU living space is <strong>850 SF</strong>. The DADU footprint cannot exceed 850 SF or 50% of your home's footprint (whichever is greater), up to 2,500 SF max.</div>
+     <div class="answer-result eligible" id="result-4-large">Your max DADU living space is <strong>1,200 SF</strong>. The DADU footprint cannot exceed 850 SF or 50% of your home's footprint (whichever is greater), up to 2,500 SF max.</div>
+
+     <a href="property-report-card.html" class="idk-link">I don't know my lot size -- look it up on your Property Report Card &rarr;</a>
 
      <div class="step-links">
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.04DERU_17.04.060DEF" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> DADU Definition <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link"><img src="assets/icons/Parcel Search.svg" alt=""> Check Building Count <span class="step-link-arrow">&rarr;</span></a>
+      <a href="size_calculator.html" class="step-link"><img src="assets/icons/ADU.png" alt=""> Size Calculator <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="step-link"><img src="assets/icons/Parcel Search.svg" alt=""> Check Lot Size <span class="step-link-arrow">&rarr;</span></a>
      </div>
     </div>
    </div>
@@ -1317,91 +1233,33 @@
 
   <div class="flow-connector" id="conn-4-5"></div>
 
-  <!-- ========== STEP 5 ========== -->
-  <div class="step-summary" id="summary-5">
-   <div class="step-summary-left">
-    <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <div class="step-summary-text">Step 5: Zoning Conditions <span>-- Reviewed</span></div>
-   </div>
-   <button class="change-answer-btn" onclick="changeAnswer(5)">Change Answer</button>
-  </div>
-
+  <!-- ========== STEP 5: IMPORTANT CONDITIONS (info card, not a question) ========== -->
   <div class="flow-step" id="step-5">
    <div class="flow-step-inner">
     <div class="step-num">5</div>
     <div class="step-card">
-     <h3>IF ELIGIBLE: Zoning Conditions</h3>
+     <h3>Important Conditions</h3>
 
      <div class="eligible-badge-large">
       <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-      Eligible -- Review Conditions Below
+      Your Property Appears Eligible
      </div>
 
-     <p style="font-size: 14px; color: #706F6C; margin-bottom: 16px;">Your DADU must comply with all conditions in Metro Code Section 17.16.030G.</p>
+     <p style="font-size: 14px; color: #706F6C; margin-bottom: 16px;">Your DADU must comply with all of the following conditions under Metro Code Section 17.16.030G:</p>
 
      <ul class="conditions-list">
-      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Owner Occupancy:</strong> The property owner must occupy either the principal dwelling or the DADU as their primary residence.</span></li>
-      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Size (Living Area):</strong> Lot under 10,000 SF: maximum <span class="hl">700 SF</span>. Lot 10,000 SF or greater: maximum <span class="hl">850 SF</span>.</span></li>
-      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Footprint:</strong> Cannot exceed the principal structure footprint. No other accessory building may exceed 200 SF.</span></li>
-      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Height:</strong> Cannot exceed principal structure height. Eave max 10 ft (1-story) or 17 ft (2-story). Ridge must be lower than primary, max 27 ft.</span></li>
-      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Setbacks:</strong> Footprint 850 SF or less placed to rear: half side setback (min 3 ft), rear min 3 ft. Over 850 SF: full setbacks.</span></li>
-      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Design:</strong> Must have similar style, materials, color, and roof form as the principal structure.</span></li>
-      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>STR Prohibition:</strong> New DADUs on RS, RN, or RL lots <strong>cannot</strong> be operated as short-term rentals.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Height:</strong> Your DADU cannot exceed the height of your principal structure. Max eave height: <span class="hl">10 ft</span> (single story) or <span class="hl">17 ft</span> (two story). Max roof ridge: <span class="hl">27 ft</span>. Measured from average finished grade.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Owner Occupancy:</strong> One of the two dwellings (principal or DADU) must be owner-occupied as a primary residence.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Location:</strong> DADU must be in the rear buildable area, behind the principal structure.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Restrictive Covenant:</strong> A restrictive covenant must be recorded before a building permit can be issued.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>No STR:</strong> Short-term rental (owner-occupied) is not permitted in a new DADU on single-family, RN, or RL zoned lots.</span></li>
+      <li><div class="cond-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span><strong>Design:</strong> DADU must match the style, materials, and color of the principal structure.</span></li>
      </ul>
 
-     <div class="step-links" style="margin-bottom: 20px;">
+     <div class="step-links">
       <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.16SPDINGS_17.16.030DINGS" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Full DADU Conditions <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO_CH17.12BUDINGS_17.12.040ACST" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Accessory Buildings <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT6BULIRE_DIVIGERE_CH6.28HORO_6.28.030SHTEREPRPE" target="_blank" class="step-link"><img src="assets/icons/Legal.svg" alt=""> STR Restrictions <span class="step-link-arrow">&rarr;</span></a>
+      <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/detached-accessory-dwelling-unit" target="_blank" class="step-link"><img src="assets/icons/Municipal.svg" alt=""> Nashville.gov DADU Page <span class="step-link-arrow">&rarr;</span></a>
       <a href="https://www.nashville.gov/departments/codes/construction-and-permits/land-use-and-zoning-information/zoning-examinations/restrictive-covenants" target="_blank" class="step-link"><img src="assets/icons/Restrictive_Covenants.svg" alt=""> Restrictive Covenants <span class="step-link-arrow">&rarr;</span></a>
-      <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO" target="_blank" class="step-link"><img src="assets/icons/Legislation.svg" alt=""> Full Title 17 <span class="step-link-arrow">&rarr;</span></a>
-     </div>
-
-     <button class="continue-btn" id="continue-step5" onclick="continueFromStep5()">Continue to Special Cases</button>
-    </div>
-   </div>
-  </div>
-
-  <div class="flow-connector" id="conn-5-6"></div>
-
-  <!-- ========== STEP 6 ========== -->
-  <div class="step-summary" id="summary-6">
-   <div class="step-summary-left">
-    <div class="step-summary-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <div class="step-summary-text">Step 6: Special Cases <span>-- Reviewed</span></div>
-   </div>
-   <button class="change-answer-btn" onclick="changeAnswer(6)">Change Answer</button>
-  </div>
-
-  <div class="flow-step" id="step-6">
-   <div class="flow-step-inner">
-    <div class="step-num">6</div>
-    <div class="step-card" style="padding: 0; border: none; background: transparent;">
-     <div class="special-cases-box">
-      <h3>Special Cases: Additional Review Required</h3>
-      <div class="special-case-item">
-       <h4>Historic Overlay District</h4>
-       <p>If your property is in a Historic Overlay, your DADU project must be reviewed and approved by the Metropolitan Historic Zoning Commission (MHZC).</p>
-      </div>
-      <div class="special-case-item">
-       <h4>Specific Plan (SP) or Urban Design Overlay (UDO)</h4>
-       <p>If your property is in an SP or UDO that includes DADU standards, you must obtain approval from the Planning Department.</p>
-      </div>
-      <div class="special-cases-links">
-       <a href="https://www.nashville.gov/departments/historic-preservation/programs/districts-and-design-guidelines" target="_blank" class="special-link"><img src="assets/icons/Zoning_Documents.svg" alt=""> Historic Districts <span class="step-link-arrow">&rarr;</span></a>
-       <a href="https://www.nashville.gov/departments/historic-preservation/programs/districts-and-design-guidelines/detached-accessory-dwelling-units" target="_blank" class="special-link"><img src="assets/icons/Zoning_Documents.svg" alt=""> Historic DADUs <span class="step-link-arrow">&rarr;</span></a>
-       <a href="https://nashville.legistar.com/LegislationDetail.aspx?ID=1025702" target="_blank" class="special-link"><img src="assets/icons/Legislation.svg" alt=""> BL2011-900 <span class="step-link-arrow">&rarr;</span></a>
-       <a href="https://www.nashville.gov/departments/codes/construction-and-permits/contact-list" target="_blank" class="special-link"><img src="assets/icons/Municipal.svg" alt=""> Planning Contact <span class="step-link-arrow">&rarr;</span></a>
-       <a href="https://www.nashville.gov/departments/county-clerk/register-of-deeds" target="_blank" class="special-link"><img src="assets/icons/Recorded_Docs.svg" alt=""> Register of Deeds <span class="step-link-arrow">&rarr;</span></a>
-       <a href="https://www.nashville.gov/departments/water/stormwater" target="_blank" class="special-link"><img src="assets/icons/Utilities.svg" alt=""> Metro Stormwater <span class="step-link-arrow">&rarr;</span></a>
-       <a href="https://www.tn811.com/" target="_blank" class="special-link"><img src="assets/icons/Utilities.svg" alt=""> Tennessee 811 <span class="step-link-arrow">&rarr;</span></a>
-       <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT16BUCO" target="_blank" class="special-link"><img src="assets/icons/Legislation.svg" alt=""> Building Code Ch. 16 <span class="step-link-arrow">&rarr;</span></a>
-       <a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permits-central/detached-accessory-dwelling-unit" target="_blank" class="special-link"><img src="assets/icons/Municipal.svg" alt=""> Nashville.gov DADU Page <span class="step-link-arrow">&rarr;</span></a>
-      </div>
-     </div>
-
-     <div style="text-align: center; margin-top: 20px;">
-      <button class="continue-btn" id="finish-step6" onclick="finishFlowchart()">View My Results</button>
      </div>
     </div>
    </div>
@@ -1416,7 +1274,10 @@
   <div class="not-eligible-box">
    <h3>Not Eligible for a DADU</h3>
    <p id="not-eligible-reason">Based on your answers, your property does not currently qualify for a DADU under BL2025-1007.</p>
-   <button class="restart-btn" onclick="startOver()">Start Over</button>
+   <div class="result-actions" style="justify-content: center; display: flex; gap: 12px; flex-wrap: wrap;">
+    <button class="restart-btn" onclick="startOver()">Start Over</button>
+    <a href="dadu_eligibility_map.html" class="result-btn-secondary" style="display:inline-block; text-decoration:none;">Explore the Eligibility Map</a>
+   </div>
   </div>
  </div>
 </div>
@@ -1429,26 +1290,13 @@
     <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
    </div>
    <h3>Your Property Appears Eligible for a DADU</h3>
-   <p>Based on your answers, your property meets the eligibility requirements under BL2025-1007. Review the zoning conditions in Step 5 carefully before beginning your project.</p>
+   <p id="eligible-detail">Based on your answers, your property meets the eligibility requirements under BL2025-1007. Review the conditions in Step 5 carefully before beginning your project.</p>
    <div class="result-actions">
-    <a href="property-report-card.html" class="result-btn-primary">View Property Report Card</a>
-    <button class="result-btn-secondary" onclick="startOver()">Check Another Property</button>
+    <a href="eligibility_report.html" class="result-btn-primary">See Your Full Eligibility Report</a>
+    <a href="dadu_eligibility_map.html" class="result-btn-secondary">Explore the Eligibility Map</a>
+    <a href="dadu_requirements_overview.html" class="result-btn-secondary">View Building Requirements</a>
    </div>
   </div>
- </div>
-</div>
-
-<!-- Quick Checklist -->
-<div class="section-container">
- <div class="quick-checklist-box">
-  <h3>Quick Eligibility Checklist</h3>
-  <ul class="checklist-items">
-   <li><div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span>Zoning district permits DADUs (Land Use Table shows PC for your district)</span></li>
-   <li><div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span>Lot meets minimum area for your zoning district</span></li>
-   <li><div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span>Property is in the USD, a DADU Overlay (GSD), a UDO with DADU standards, or an SP with DADU standards</span></li>
-   <li><div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span>Only one single-family principal structure on the parcel</span></li>
-   <li><div class="check-circle"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span>Owner will occupy either the principal dwelling or the DADU as primary residence</span></li>
-  </ul>
  </div>
 </div>
 
@@ -1499,30 +1347,142 @@
 // =============================================
 
 var showAllMode = false;
-var answers = {}; // Track user answers: { 1: true, 2: true, 3: 'a', 4: true, 5: 'continue', 6: 'continue' }
-var step3Labels = {
- a: 'In USD (by-right)',
- b: 'DADU Overlay (GSD)',
- c: 'UDO with DADU standards',
- d: 'SP with DADU standards'
+// answers tracks: { 1: 'ag'|'rs'|'r'|'rm'|'none', 2: 'usd'|'gsd', '2b': true|false, 3: true|false, 4: 'small'|'large' }
+var answers = {};
+
+// All step IDs in order (including 2b)
+var ALL_STEPS = [1, 2, '2b', 3, 4, 5];
+
+var step1Labels = {
+ ag: 'AG/AR2a',
+ rs: 'RS zone',
+ r: 'R zone',
+ rm: 'RM zone'
 };
 
 var notEligibleReasons = {
- 1: 'Your zoning district does not permit DADUs. Only R, RS, RN, and RL zones qualify under BL2025-1007.',
- 2: 'Your lot does not meet the minimum area required for your zoning district.',
- 3: 'Your parcel is in the General Services District without a qualifying DADU Overlay, UDO, or SP.',
- 4: 'Parcels with zero or multiple principal structures do not qualify for a DADU.'
+ 1: 'DADUs are permitted with conditions (PC) only in AG, AR2a, RS, R, and RM zoning districts under BL2025-1007.',
+ '2b': 'Properties in the General Services District require an approved DADU overlay to build a DADU.',
+ 3: 'DADUs require exactly one single-family principal structure on the parcel. No DADU is permitted when two principal structures are present.',
 };
 
-function answerStep(stepNum, isYes) {
+// ========== STEP 1: Zoning District ==========
+function answerStep1(option) {
  if (showAllMode) return;
+ answers[1] = option;
 
- answers[stepNum] = isYes;
+ var container = document.getElementById('answers-1');
+ var buttons = container.querySelectorAll('.option-btn');
+ var isEligible = option !== 'none';
 
- var container = document.getElementById('answers-' + stepNum);
+ buttons.forEach(function(btn) {
+  var tag = btn.querySelector('.option-tag').textContent.trim().toUpperCase();
+  var matchesOption = false;
+  if (option === 'ag' && tag === 'AG/AR2A') matchesOption = true;
+  else if (option === 'rs' && tag === 'RS') matchesOption = true;
+  else if (option === 'r' && tag === 'R') matchesOption = true;
+  else if (option === 'rm' && tag === 'RM') matchesOption = true;
+  else if (option === 'none' && tag === 'OTHER') matchesOption = true;
+
+  if (matchesOption) {
+   btn.classList.add('selected');
+  } else {
+   btn.classList.add('dimmed');
+  }
+  btn.onclick = null;
+ });
+
+ // Show result
+ document.getElementById('result-1-' + (isEligible ? 'yes' : 'no')).classList.add('visible');
+
+ // Update progress
+ var progStep = document.getElementById('prog-1');
+ progStep.classList.remove('active');
+
+ if (isEligible) {
+  progStep.classList.add('completed');
+  progStep.querySelector('.progress-dot').innerHTML = checkSvg();
+
+  var pline = document.getElementById('pline-1');
+  if (pline) pline.classList.add('filled');
+
+  // Update summary detail
+  var detailEl = document.getElementById('summary-1-detail');
+  if (detailEl && step1Labels[option]) {
+   detailEl.textContent = '-- ' + step1Labels[option];
+  }
+
+  setTimeout(function() {
+   collapseStep(1);
+   showStep(2);
+  }, 400);
+ } else {
+  showNotEligible(1, progStep);
+ }
+}
+
+// ========== STEP 2: Service District ==========
+function answerStep2(option) {
+ if (showAllMode) return;
+ answers[2] = option;
+
+ var container = document.getElementById('answers-2');
+ var buttons = container.querySelectorAll('.option-btn');
+
+ buttons.forEach(function(btn) {
+  var tag = btn.querySelector('.option-tag').textContent.trim().toUpperCase();
+  var matchesOption = (option === 'usd' && tag === 'YES') || (option === 'gsd' && tag === 'GSD');
+  if (matchesOption) {
+   btn.classList.add('selected');
+  } else {
+   btn.classList.add('dimmed');
+  }
+  btn.onclick = null;
+ });
+
+ var progStep = document.getElementById('prog-2');
+ progStep.classList.remove('active');
+ progStep.classList.add('completed');
+ progStep.querySelector('.progress-dot').innerHTML = checkSvg();
+
+ var pline = document.getElementById('pline-2');
+ if (pline) pline.classList.add('filled');
+
+ if (option === 'usd') {
+  document.getElementById('result-2-yes').classList.add('visible');
+  document.getElementById('summary-2-detail').textContent = '-- USD (by-right)';
+
+  setTimeout(function() {
+   collapseStep(2);
+   // Skip 2B, go straight to 3
+   // Also mark 2B as completed/skipped in progress
+   var prog2b = document.getElementById('prog-2b');
+   prog2b.classList.add('completed');
+   prog2b.querySelector('.progress-dot').innerHTML = checkSvg();
+   var pline2b = document.getElementById('pline-2b');
+   if (pline2b) pline2b.classList.add('filled');
+
+   showStep(3);
+  }, 400);
+ } else {
+  // GSD -- go to step 2B
+  document.getElementById('result-2-gsd').classList.add('visible');
+  document.getElementById('summary-2-detail').textContent = '-- GSD (needs overlay)';
+
+  setTimeout(function() {
+   collapseStep(2);
+   showStep('2b');
+  }, 400);
+ }
+}
+
+// ========== STEP 2B: Overlay District ==========
+function answerStep2b(isYes) {
+ if (showAllMode) return;
+ answers['2b'] = isYes;
+
+ var container = document.getElementById('answers-2b');
  var buttons = container.querySelectorAll('.answer-btn');
-
- // Mark buttons
  buttons.forEach(function(btn) {
   if ((isYes && btn.classList.contains('yes-btn')) || (!isYes && btn.classList.contains('no-btn'))) {
    btn.classList.add('selected');
@@ -1532,77 +1492,37 @@ function answerStep(stepNum, isYes) {
   btn.onclick = null;
  });
 
- // Show result
- var resultId = 'result-' + stepNum + '-' + (isYes ? 'yes' : 'no');
- var resultEl = document.getElementById(resultId);
- if (resultEl) resultEl.classList.add('visible');
+ document.getElementById('result-2b-' + (isYes ? 'yes' : 'no')).classList.add('visible');
 
- // Update progress
- var progStep = document.getElementById('prog-' + stepNum);
+ var progStep = document.getElementById('prog-2b');
  progStep.classList.remove('active');
 
  if (isYes) {
   progStep.classList.add('completed');
-  progStep.querySelector('.progress-dot').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-
-  // Fill progress line
-  var pline = document.getElementById('pline-' + stepNum);
+  progStep.querySelector('.progress-dot').innerHTML = checkSvg();
+  var pline = document.getElementById('pline-2b');
   if (pline) pline.classList.add('filled');
 
-  // Collapse current step to summary, show next
+  document.getElementById('summary-2b-detail').textContent = '-- Has overlay';
+
   setTimeout(function() {
-   collapseStep(stepNum);
-
-   var nextStep = stepNum + 1;
-   if (nextStep <= 6) {
-    var nextEl = document.getElementById('step-' + nextStep);
-    if (nextEl) nextEl.classList.add('visible');
-
-    var nextProg = document.getElementById('prog-' + nextStep);
-    if (nextProg) nextProg.classList.add('active');
-
-    setTimeout(function() {
-     nextEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 200);
-   }
+   collapseStep('2b');
+   showStep(3);
   }, 400);
  } else {
-  // Not eligible
-  progStep.classList.add('failed');
-  progStep.querySelector('.progress-dot').innerHTML = '&times;';
-
-  setTimeout(function() {
-   // Collapse to failed summary
-   var stepEl = document.getElementById('step-' + stepNum);
-   stepEl.classList.remove('visible');
-   stepEl.classList.add('answered');
-
-   var summary = document.getElementById('summary-' + stepNum);
-   summary.classList.add('visible', 'failed-summary');
-   summary.querySelector('.step-summary-text span').textContent = '-- Not eligible';
-
-   var resultBox = document.getElementById('not-eligible-result');
-   document.getElementById('not-eligible-reason').textContent = notEligibleReasons[stepNum];
-   resultBox.classList.add('visible');
-   setTimeout(function() {
-    resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-   }, 100);
-  }, 400);
+  showNotEligible('2b', progStep);
  }
 }
 
-function answerStep3(option) {
+// ========== STEP 3: Principal Structure ==========
+function answerYesNo(stepNum, isYes) {
  if (showAllMode) return;
+ answers[stepNum] = isYes;
 
- answers[3] = option;
-
- var container = document.getElementById('answers-3');
- var buttons = container.querySelectorAll('.option-btn');
- var isEligible = option !== 'none';
-
+ var container = document.getElementById('answers-' + stepNum);
+ var buttons = container.querySelectorAll('.answer-btn');
  buttons.forEach(function(btn) {
-  var btnOpt = btn.querySelector('.option-tag').textContent.trim().toLowerCase();
-  if (btnOpt === option.toUpperCase() || btnOpt === option) {
+  if ((isYes && btn.classList.contains('yes-btn')) || (!isYes && btn.classList.contains('no-btn'))) {
    btn.classList.add('selected');
   } else {
    btn.classList.add('dimmed');
@@ -1610,193 +1530,249 @@ function answerStep3(option) {
   btn.onclick = null;
  });
 
- // Show result
- var resultId = 'result-3-' + (isEligible ? 'yes' : 'no');
- document.getElementById(resultId).classList.add('visible');
+ document.getElementById('result-' + stepNum + '-' + (isYes ? 'yes' : 'no')).classList.add('visible');
 
- // Update progress
- var progStep = document.getElementById('prog-3');
+ var progStep = document.getElementById('prog-' + stepNum);
  progStep.classList.remove('active');
 
- if (isEligible) {
+ if (isYes) {
   progStep.classList.add('completed');
-  progStep.querySelector('.progress-dot').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-  var pline = document.getElementById('pline-3');
+  progStep.querySelector('.progress-dot').innerHTML = checkSvg();
+  var pline = document.getElementById('pline-' + stepNum);
   if (pline) pline.classList.add('filled');
 
-  // Update summary detail text
-  var detailEl = document.getElementById('summary-3-detail');
-  if (detailEl && step3Labels[option]) {
-   detailEl.textContent = '-- ' + step3Labels[option];
-  }
-
+  var nextStep = stepNum + 1;
   setTimeout(function() {
-   collapseStep(3);
-
-   document.getElementById('step-4').classList.add('visible');
-   document.getElementById('prog-4').classList.add('active');
-   setTimeout(function() {
-    document.getElementById('step-4').scrollIntoView({ behavior: 'smooth', block: 'center' });
-   }, 200);
+   collapseStep(stepNum);
+   showStep(nextStep);
   }, 400);
  } else {
-  progStep.classList.add('failed');
-  progStep.querySelector('.progress-dot').innerHTML = '&times;';
-
-  setTimeout(function() {
-   var stepEl = document.getElementById('step-3');
-   stepEl.classList.remove('visible');
-   stepEl.classList.add('answered');
-
-   var summary = document.getElementById('summary-3');
-   summary.classList.add('visible', 'failed-summary');
-   summary.querySelector('.step-summary-text span').textContent = '-- Not eligible';
-
-   var resultBox = document.getElementById('not-eligible-result');
-   document.getElementById('not-eligible-reason').textContent = notEligibleReasons[3];
-   resultBox.classList.add('visible');
-   setTimeout(function() {
-    resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-   }, 100);
-  }, 400);
+  showNotEligible(stepNum, progStep);
  }
 }
 
-function continueFromStep5() {
+// ========== STEP 4: Lot Size ==========
+function answerStep4(option) {
  if (showAllMode) return;
+ answers[4] = option;
 
- answers[5] = 'continue';
+ var container = document.getElementById('answers-4');
+ var buttons = container.querySelectorAll('.option-btn');
 
- // Complete Step 5
- var progStep = document.getElementById('prog-5');
+ buttons.forEach(function(btn) {
+  var tag = btn.querySelector('.option-tag').textContent.trim().toUpperCase();
+  var matchesOption = (option === 'small' && tag === 'SMALL') || (option === 'large' && tag === '10K+');
+  if (matchesOption) {
+   btn.classList.add('selected');
+  } else {
+   btn.classList.add('dimmed');
+  }
+  btn.onclick = null;
+ });
+
+ // Show appropriate result
+ document.getElementById('result-4-' + option).classList.add('visible');
+
+ var progStep = document.getElementById('prog-4');
  progStep.classList.remove('active');
  progStep.classList.add('completed');
- progStep.querySelector('.progress-dot').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+ progStep.querySelector('.progress-dot').innerHTML = checkSvg();
 
- var pline = document.getElementById('pline-5');
+ var pline = document.getElementById('pline-4');
  if (pline) pline.classList.add('filled');
 
- setTimeout(function() {
-  collapseStep(5);
+ // Update summary
+ if (option === 'small') {
+  document.getElementById('summary-4-detail').textContent = '-- Under 10K SF (850 SF max)';
+ } else {
+  document.getElementById('summary-4-detail').textContent = '-- 10K+ SF (1,200 SF max)';
+ }
 
-  document.getElementById('step-6').classList.add('visible');
-  document.getElementById('prog-6').classList.add('active');
+ setTimeout(function() {
+  collapseStep(4);
+
+  // Show Step 5 (conditions info card) + eligible result
+  document.getElementById('step-5').classList.add('visible');
+  var prog5 = document.getElementById('prog-5');
+  prog5.classList.add('active');
+
+  // Also show the eligible result below
+  var sizeText = option === 'small'
+   ? 'Your max DADU living space is 850 SF. The DADU footprint cannot exceed 850 SF or 50% of your home\'s footprint (whichever is greater), up to 2,500 SF max.'
+   : 'Your max DADU living space is 1,200 SF. The DADU footprint cannot exceed 850 SF or 50% of your home\'s footprint (whichever is greater), up to 2,500 SF max.';
+  document.getElementById('eligible-detail').textContent = sizeText + ' Review the conditions in Step 5 carefully before beginning your project.';
+
+  // Mark step 5 as completed after a short delay and show eligible result
   setTimeout(function() {
-   document.getElementById('step-6').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 200);
- }, 300);
+   prog5.classList.remove('active');
+   prog5.classList.add('completed');
+   prog5.querySelector('.progress-dot').innerHTML = checkSvg();
+
+   var resultBox = document.getElementById('eligible-result');
+   resultBox.classList.add('visible');
+   setTimeout(function() {
+    document.getElementById('step-5').scrollIntoView({ behavior: 'smooth', block: 'start' });
+   }, 100);
+  }, 800);
+ }, 400);
 }
 
-function finishFlowchart() {
- if (showAllMode) return;
+// ========== HELPERS ==========
+function checkSvg() {
+ return '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+}
 
- answers[6] = 'continue';
+function showStep(stepId) {
+ var el = document.getElementById('step-' + stepId);
+ if (el) el.classList.add('visible');
 
- // Complete Step 6
- var progStep = document.getElementById('prog-6');
- progStep.classList.remove('active');
- progStep.classList.add('completed');
- progStep.querySelector('.progress-dot').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+ var prog = document.getElementById('prog-' + stepId);
+ if (prog) prog.classList.add('active');
 
  setTimeout(function() {
-  collapseStep(6);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ }, 200);
+}
 
-  var resultBox = document.getElementById('eligible-result');
+function collapseStep(stepId) {
+ var stepEl = document.getElementById('step-' + stepId);
+ stepEl.classList.remove('visible');
+ stepEl.classList.add('answered');
+
+ var summary = document.getElementById('summary-' + stepId);
+ if (summary) {
+  summary.classList.remove('failed-summary');
+  summary.classList.add('visible');
+ }
+}
+
+function showNotEligible(stepId, progStep) {
+ progStep.classList.add('failed');
+ progStep.querySelector('.progress-dot').innerHTML = '&times;';
+
+ setTimeout(function() {
+  var stepEl = document.getElementById('step-' + stepId);
+  stepEl.classList.remove('visible');
+  stepEl.classList.add('answered');
+
+  var summary = document.getElementById('summary-' + stepId);
+  if (summary) {
+   summary.classList.add('visible', 'failed-summary');
+   var span = summary.querySelector('.step-summary-text span');
+   if (span) span.textContent = '-- Not eligible';
+  }
+
+  var resultBox = document.getElementById('not-eligible-result');
+  if (notEligibleReasons[stepId]) {
+   document.getElementById('not-eligible-reason').textContent = notEligibleReasons[stepId];
+  }
   resultBox.classList.add('visible');
   setTimeout(function() {
    resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 100);
- }, 300);
-}
-
-function collapseStep(stepNum) {
- var stepEl = document.getElementById('step-' + stepNum);
- stepEl.classList.remove('visible');
- stepEl.classList.add('answered');
-
- var summary = document.getElementById('summary-' + stepNum);
- summary.classList.remove('failed-summary');
- summary.classList.add('visible');
+ }, 400);
 }
 
 function changeAnswer(fromStep) {
  if (showAllMode) return;
 
- // Reset from this step forward
- for (var i = fromStep; i <= 6; i++) {
-  var stepEl = document.getElementById('step-' + i);
-  stepEl.classList.remove('visible', 'answered', 'show-all');
+ // Find the index of fromStep in ALL_STEPS and reset everything from there forward
+ var startIdx = ALL_STEPS.indexOf(fromStep);
+ if (startIdx === -1) {
+  // Try string version
+  startIdx = ALL_STEPS.indexOf(String(fromStep));
+ }
+ if (startIdx === -1) return;
 
-  var summary = document.getElementById('summary-' + i);
-  summary.classList.remove('visible', 'failed-summary');
+ for (var i = startIdx; i < ALL_STEPS.length; i++) {
+  var sid = ALL_STEPS[i];
+  var stepEl = document.getElementById('step-' + sid);
+  if (stepEl) stepEl.classList.remove('visible', 'answered', 'show-all');
 
-  // Reset progress
-  var progStep = document.getElementById('prog-' + i);
-  progStep.classList.remove('active', 'completed', 'failed');
-  progStep.querySelector('.progress-dot').textContent = i;
+  var summary = document.getElementById('summary-' + sid);
+  if (summary) summary.classList.remove('visible', 'failed-summary');
 
-  var pline = document.getElementById('pline-' + i);
+  var prog = document.getElementById('prog-' + sid);
+  if (prog) {
+   prog.classList.remove('active', 'completed', 'failed');
+   var dot = prog.querySelector('.progress-dot');
+   if (dot) dot.textContent = sid === '2b' ? '2B' : sid;
+  }
+
+  var pline = document.getElementById('pline-' + sid);
   if (pline) pline.classList.remove('filled');
 
-  // Reset results
-  var resYes = document.getElementById('result-' + i + '-yes');
-  var resNo = document.getElementById('result-' + i + '-no');
+  // Clear results
+  var resYes = document.getElementById('result-' + sid + '-yes');
+  var resNo = document.getElementById('result-' + sid + '-no');
+  var resGsd = document.getElementById('result-' + sid + '-gsd');
+  var resSmall = document.getElementById('result-' + sid + '-small');
+  var resLarge = document.getElementById('result-' + sid + '-large');
   if (resYes) resYes.classList.remove('visible');
   if (resNo) resNo.classList.remove('visible');
+  if (resGsd) resGsd.classList.remove('visible');
+  if (resSmall) resSmall.classList.remove('visible');
+  if (resLarge) resLarge.classList.remove('visible');
 
-  delete answers[i];
+  delete answers[sid];
  }
 
- // Reset answer buttons for affected steps
- [1, 2, 4].forEach(function(s) {
-  if (s >= fromStep) {
-   var container = document.getElementById('answers-' + s);
-   if (container) {
-    var buttons = container.querySelectorAll('.answer-btn');
-    buttons.forEach(function(btn) {
-     btn.classList.remove('selected', 'dimmed');
-     if (btn.classList.contains('yes-btn')) {
-      btn.onclick = function() { answerStep(s, true); };
-     } else {
-      btn.onclick = function() { answerStep(s, false); };
-     }
-    });
-   }
-  }
- });
+ // Reset option buttons for step 1
+ if (fromStep == 1 || startIdx === 0) {
+  resetOptionButtons('answers-1', ['ag', 'rs', 'r', 'rm', 'none'], answerStep1);
+ }
 
- // Reset step 3 options if affected
- if (fromStep <= 3) {
-  var s3container = document.getElementById('answers-3');
-  if (s3container) {
-   var opts = s3container.querySelectorAll('.option-btn');
-   var optValues = ['a', 'b', 'c', 'd', 'none'];
-   opts.forEach(function(btn, idx) {
-    btn.classList.remove('selected', 'dimmed');
-    var val = optValues[idx];
-    btn.onclick = function() { answerStep3(val); };
-   });
-  }
-  // Reset summary-3 detail text
-  var detailEl = document.getElementById('summary-3-detail');
-  if (detailEl) detailEl.textContent = '-- Qualifies';
+ // Reset option buttons for step 2
+ if (startIdx <= 1) {
+  resetOptionButtons('answers-2', ['usd', 'gsd'], answerStep2);
+ }
+
+ // Reset yes/no buttons for step 2b
+ if (startIdx <= 2) {
+  resetYesNoButtons('answers-2b', function(v) { answerStep2b(v); });
+ }
+
+ // Reset yes/no buttons for step 3
+ if (startIdx <= 3) {
+  resetYesNoButtons('answers-3', function(v) { answerYesNo(3, v); });
+ }
+
+ // Reset option buttons for step 4
+ if (startIdx <= 4) {
+  resetOptionButtons('answers-4', ['small', 'large'], answerStep4);
  }
 
  // Hide results
  document.getElementById('not-eligible-result').classList.remove('visible');
  document.getElementById('eligible-result').classList.remove('visible');
 
- // Show the step being changed
- var targetStep = document.getElementById('step-' + fromStep);
- targetStep.classList.add('visible');
+ // Show the target step
+ showStep(fromStep);
+}
 
- var targetProg = document.getElementById('prog-' + fromStep);
- targetProg.classList.add('active');
+function resetOptionButtons(containerId, values, handler) {
+ var container = document.getElementById(containerId);
+ if (!container) return;
+ var buttons = container.querySelectorAll('.option-btn');
+ buttons.forEach(function(btn, idx) {
+  btn.classList.remove('selected', 'dimmed');
+  var val = values[idx];
+  btn.onclick = function() { handler(val); };
+ });
+}
 
- // Scroll to it
- setTimeout(function() {
-  targetStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
- }, 100);
+function resetYesNoButtons(containerId, handler) {
+ var container = document.getElementById(containerId);
+ if (!container) return;
+ var buttons = container.querySelectorAll('.answer-btn');
+ buttons.forEach(function(btn) {
+  btn.classList.remove('selected', 'dimmed');
+  if (btn.classList.contains('yes-btn')) {
+   btn.onclick = function() { handler(true); };
+  } else {
+   btn.onclick = function() { handler(false); };
+  }
+ });
 }
 
 function startOver() {
@@ -1805,68 +1781,56 @@ function startOver() {
  document.getElementById('show-all-btn').classList.remove('active');
  document.getElementById('show-all-btn').textContent = 'Show All Steps';
 
- // Reset all steps
- for (var i = 1; i <= 6; i++) {
-  var stepEl = document.getElementById('step-' + i);
-  stepEl.classList.remove('visible', 'answered', 'show-all');
-  if (i === 1) stepEl.classList.add('visible');
+ ALL_STEPS.forEach(function(sid) {
+  var stepEl = document.getElementById('step-' + sid);
+  if (stepEl) {
+   stepEl.classList.remove('visible', 'answered', 'show-all');
+   if (sid === 1) stepEl.classList.add('visible');
+  }
 
-  var summary = document.getElementById('summary-' + i);
-  summary.classList.remove('visible', 'failed-summary', 'show-all');
+  var summary = document.getElementById('summary-' + sid);
+  if (summary) summary.classList.remove('visible', 'failed-summary', 'show-all');
 
-  // Reset progress
-  var progStep = document.getElementById('prog-' + i);
-  progStep.classList.remove('active', 'completed', 'failed');
-  progStep.querySelector('.progress-dot').textContent = i;
-  if (i === 1) progStep.classList.add('active');
+  var prog = document.getElementById('prog-' + sid);
+  if (prog) {
+   prog.classList.remove('active', 'completed', 'failed');
+   var dot = prog.querySelector('.progress-dot');
+   if (dot) dot.textContent = sid === '2b' ? '2B' : sid;
+   if (sid === 1) prog.classList.add('active');
+  }
 
-  var pline = document.getElementById('pline-' + i);
+  var pline = document.getElementById('pline-' + sid);
   if (pline) pline.classList.remove('filled');
 
-  // Reset results
-  var resYes = document.getElementById('result-' + i + '-yes');
-  var resNo = document.getElementById('result-' + i + '-no');
+  var resYes = document.getElementById('result-' + sid + '-yes');
+  var resNo = document.getElementById('result-' + sid + '-no');
+  var resGsd = document.getElementById('result-' + sid + '-gsd');
+  var resSmall = document.getElementById('result-' + sid + '-small');
+  var resLarge = document.getElementById('result-' + sid + '-large');
   if (resYes) resYes.classList.remove('visible');
   if (resNo) resNo.classList.remove('visible');
- }
-
- // Reset answer buttons for steps 1,2,4
- [1, 2, 4].forEach(function(s) {
-  var container = document.getElementById('answers-' + s);
-  if (container) {
-   var buttons = container.querySelectorAll('.answer-btn');
-   buttons.forEach(function(btn) {
-    btn.classList.remove('selected', 'dimmed');
-    if (btn.classList.contains('yes-btn')) {
-     btn.onclick = function() { answerStep(s, true); };
-    } else {
-     btn.onclick = function() { answerStep(s, false); };
-    }
-   });
-  }
+  if (resGsd) resGsd.classList.remove('visible');
+  if (resSmall) resSmall.classList.remove('visible');
+  if (resLarge) resLarge.classList.remove('visible');
  });
 
- // Reset step 3 options
- var s3container = document.getElementById('answers-3');
- if (s3container) {
-  var opts = s3container.querySelectorAll('.option-btn');
-  var optValues = ['a', 'b', 'c', 'd', 'none'];
-  opts.forEach(function(btn, idx) {
-   btn.classList.remove('selected', 'dimmed');
-   var val = optValues[idx];
-   btn.onclick = function() { answerStep3(val); };
-  });
- }
+ // Reset all interactive buttons
+ resetOptionButtons('answers-1', ['ag', 'rs', 'r', 'rm', 'none'], answerStep1);
+ resetOptionButtons('answers-2', ['usd', 'gsd'], answerStep2);
+ resetYesNoButtons('answers-2b', function(v) { answerStep2b(v); });
+ resetYesNoButtons('answers-3', function(v) { answerYesNo(3, v); });
+ resetOptionButtons('answers-4', ['small', 'large'], answerStep4);
 
- // Reset summary-3 detail text
- var detailEl = document.getElementById('summary-3-detail');
- if (detailEl) detailEl.textContent = '-- Qualifies';
+ // Reset summary detail text
+ document.getElementById('summary-1-detail').textContent = '-- Qualifies';
+ document.getElementById('summary-2-detail').textContent = '-- USD (by-right)';
+ document.getElementById('summary-2b-detail').textContent = '-- Has overlay';
+ document.getElementById('summary-4-detail').textContent = '-- Size determined';
 
  // Hide results
  document.getElementById('not-eligible-result').classList.remove('visible');
  document.getElementById('eligible-result').classList.remove('visible');
 
- // Scroll to top of flowchart
  document.querySelector('.progress-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -1878,37 +1842,35 @@ function toggleShowAll() {
   btn.classList.add('active');
   btn.textContent = 'Interactive Mode';
 
-  // Show all steps, hide all summaries
-  for (var i = 1; i <= 6; i++) {
-   var stepEl = document.getElementById('step-' + i);
-   stepEl.classList.add('visible', 'show-all');
-   stepEl.classList.remove('answered');
+  ALL_STEPS.forEach(function(sid) {
+   var stepEl = document.getElementById('step-' + sid);
+   if (stepEl) {
+    stepEl.classList.add('visible', 'show-all');
+    stepEl.classList.remove('answered');
+   }
 
-   var summary = document.getElementById('summary-' + i);
-   summary.classList.remove('visible');
-   summary.classList.add('show-all');
+   var summary = document.getElementById('summary-' + sid);
+   if (summary) {
+    summary.classList.remove('visible');
+    summary.classList.add('show-all');
+   }
 
-   // Reset progress to neutral
-   var progStep = document.getElementById('prog-' + i);
-   progStep.classList.remove('active', 'completed', 'failed');
-   progStep.querySelector('.progress-dot').textContent = i;
-  }
+   var prog = document.getElementById('prog-' + sid);
+   if (prog) {
+    prog.classList.remove('active', 'completed', 'failed');
+    var dot = prog.querySelector('.progress-dot');
+    if (dot) dot.textContent = sid === '2b' ? '2B' : sid;
+   }
+  });
 
-  // Hide results
   document.getElementById('not-eligible-result').classList.remove('visible');
   document.getElementById('eligible-result').classList.remove('visible');
 
-  // Hide all answer results
   document.querySelectorAll('.answer-result').forEach(function(el) {
    el.classList.remove('visible');
   });
 
-  // Reset buttons to un-interactive state
-  document.querySelectorAll('.answer-btn').forEach(function(btn) {
-   btn.classList.remove('selected', 'dimmed');
-   btn.onclick = null;
-  });
-  document.querySelectorAll('.option-btn').forEach(function(btn) {
+  document.querySelectorAll('.answer-btn, .option-btn').forEach(function(btn) {
    btn.classList.remove('selected', 'dimmed');
    btn.onclick = null;
   });
