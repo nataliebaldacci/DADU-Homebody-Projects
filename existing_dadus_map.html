@@ -341,6 +341,46 @@ body {
 }
 .popup-btn-secondary:hover { background: #F0EBE1; }
 
+/* Document images in popup */
+.popup-photo {
+ width: 100%;
+ max-height: 200px;
+ object-fit: cover;
+ border-radius: 8px;
+ margin-bottom: 6px;
+}
+.popup-sketch {
+ width: 100%;
+ max-height: 180px;
+ object-fit: contain;
+ border-radius: 8px;
+ background: #F5F5F0;
+ margin-bottom: 8px;
+}
+/* Document link buttons */
+.doc-links-row {
+ display: flex;
+ gap: 4px;
+ flex-wrap: wrap;
+ margin-bottom: 10px;
+}
+.doc-link-btn {
+ display: inline-block;
+ padding: 4px 10px;
+ font-size: 12px;
+ border-radius: 4px;
+ background: #F0EBE1;
+ color: #3A5566;
+ border: 1px solid rgba(62,74,79,0.15);
+ text-decoration: none;
+ margin: 2px;
+ font-family: inherit;
+ font-weight: 500;
+ cursor: pointer;
+ transition: background 0.15s;
+}
+.doc-link-btn:hover { background: #CBB279; color: white; }
+
 /* Loading */
 .loading-overlay {
  position: fixed;
@@ -488,6 +528,8 @@ let footprintsVisible = false;
 let footprintsLoaded = false;
 let allPermits = []; // All loaded permit data
 let filteredMarkers = []; // Currently visible markers
+let docsIndex = null; // gdrive_docs_index.json parcels lookup
+let apnToAccount = null; // apn_to_account.json lookup
 
 // ====================================================================
 // HELPERS
@@ -564,6 +606,57 @@ async function queryAllPages(serviceUrl, options = {}) {
 }
 
 // ====================================================================
+// DOCUMENT INDEX LOADER
+// ====================================================================
+async function loadDocsIndex() {
+ try {
+  const [docsResp, acctResp] = await Promise.all([
+   fetch('data/gdrive_docs_index.json'),
+   fetch('data/apn_to_account.json')
+  ]);
+  if (docsResp.ok) {
+   const docsData = await docsResp.json();
+   docsIndex = docsData.parcels || docsData;
+   console.log('Docs index loaded:', Object.keys(docsIndex).length, 'parcels');
+  }
+  if (acctResp.ok) {
+   apnToAccount = await acctResp.json();
+   console.log('APN-to-account loaded:', Object.keys(apnToAccount).length, 'entries');
+  }
+ } catch (err) {
+  console.warn('Could not load docs index:', err);
+ }
+}
+
+// APN matching: try exact, strip leading zeros, pad to 11 digits
+function lookupDocsForAPN(rawApn) {
+ if (!docsIndex || !rawApn) return null;
+ var apn = String(rawApn).trim();
+ // 1. Exact match
+ if (docsIndex[apn]) return docsIndex[apn];
+ // 2. Strip leading zeros
+ var stripped = apn.replace(/^0+/, '');
+ if (docsIndex[stripped]) return docsIndex[stripped];
+ // 3. Pad to 11 digits with leading zeros
+ var padded = apn.replace(/^0+/, '');
+ while (padded.length < 11) padded = '0' + padded;
+ if (docsIndex[padded]) return docsIndex[padded];
+ return null;
+}
+
+function getAccountNumber(rawApn) {
+ if (!apnToAccount || !rawApn) return null;
+ var apn = String(rawApn).trim();
+ if (apnToAccount[apn]) return apnToAccount[apn];
+ var stripped = apn.replace(/^0+/, '');
+ if (apnToAccount[stripped]) return apnToAccount[stripped];
+ var padded = stripped;
+ while (padded.length < 11) padded = '0' + padded;
+ if (apnToAccount[padded]) return apnToAccount[padded];
+ return null;
+}
+
+// ====================================================================
 // POPUP BUILDER
 // ====================================================================
 function buildPopup(p) {
@@ -584,20 +677,72 @@ function buildPopup(p) {
  const docsUrl = p.Documents_Link || 'https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=' + encodeURIComponent(permitNum);
  const ePermitsUrl = p.ePermits_Link || 'https://epermits.nashville.gov/?#/?searchCode=PRMT=' + encodeURIComponent(permitNum);
 
+ // Look up docs index for this APN
+ const docs = lookupDocsForAPN(apn);
+ const accountNum = getAccountNumber(apn);
+
  let html = '<div class="popup-inner"><div class="popup-body">';
  html += '<div class="popup-address">' + escHtml(address) + '</div>';
  html += '<div class="popup-permit-num">#' + escHtml(permitNum) + ' | APN: ' + escHtml(apn) + '</div>';
 
- // Photo + Site Plan thumbnails
- html += '<div class="popup-thumb-row">';
- if (streetViewUrl) {
-  html += '<a href="' + streetViewUrl + '" target="_blank" rel="noopener" class="popup-thumb">';
-  html += '<div class="popup-thumb-icon"><img src="assets/icons/Property_Owners.svg" alt="" style="width:24px;height:24px;opacity:0.6;"><br>Street View</div>';
-  html += '<div class="popup-thumb-label">Photo</div></a>';
+ // Card2 Photo (from docs index)
+ var card2 = docs && docs.assessor_cards && docs.assessor_cards.length > 0 ? docs.assessor_cards[0] : null;
+ if (card2 && card2.card2_photo_url) {
+  html += '<img src="' + escHtml(card2.card2_photo_url) + '" alt="DADU Photo" class="popup-photo" onerror="this.style.display=\'none\'">';
  }
- html += '<a href="' + docsUrl + '" target="_blank" rel="noopener" class="popup-thumb">';
- html += '<div class="popup-thumb-icon"><img src="assets/icons/Permit_Site_Plans.svg" alt="" style="width:24px;height:24px;opacity:0.6;"><br>View Docs</div>';
- html += '<div class="popup-thumb-label">Site Plan</div></a>';
+
+ // Card2 Sketch (from docs index)
+ if (card2 && card2.card2_sketch_url) {
+  html += '<img src="' + escHtml(card2.card2_sketch_url) + '" alt="Floor Plan Sketch" class="popup-sketch" onerror="this.style.display=\'none\'">';
+ }
+
+ // If no Card2 images, show the original Street View + Site Plan thumbnail row
+ if (!card2 || (!card2.card2_photo_url && !card2.card2_sketch_url)) {
+  html += '<div class="popup-thumb-row">';
+  if (streetViewUrl) {
+   html += '<a href="' + streetViewUrl + '" target="_blank" rel="noopener" class="popup-thumb">';
+   html += '<div class="popup-thumb-icon"><img src="assets/icons/Property_Owners.svg" alt="" style="width:24px;height:24px;opacity:0.6;"><br>Street View</div>';
+   html += '<div class="popup-thumb-label">Photo</div></a>';
+  }
+  html += '<a href="' + docsUrl + '" target="_blank" rel="noopener" class="popup-thumb">';
+  html += '<div class="popup-thumb-icon"><img src="assets/icons/Permit_Site_Plans.svg" alt="" style="width:24px;height:24px;opacity:0.6;"><br>View Docs</div>';
+  html += '<div class="popup-thumb-label">Site Plan</div></a>';
+  html += '</div>';
+ }
+
+ // Document link buttons row
+ html += '<div class="doc-links-row">';
+ if (docs) {
+  // Property Card PDF
+  if (docs.property_cards && docs.property_cards.length > 0 && docs.property_cards[0].gdrive_url) {
+   html += '<a href="' + escHtml(docs.property_cards[0].gdrive_url) + '" target="_blank" rel="noopener" class="doc-link-btn">Property Card</a>';
+  } else if (card2 && card2.property_card_url) {
+   html += '<a href="' + escHtml(card2.property_card_url) + '" target="_blank" rel="noopener" class="doc-link-btn">Property Card</a>';
+  }
+  // Site Plan / Permit docs
+  if (docs.permits && docs.permits.length > 0 && docs.permits[0].gdrive_url) {
+   html += '<a href="' + escHtml(docs.permits[0].gdrive_url) + '" target="_blank" rel="noopener" class="doc-link-btn">Site Plan</a>';
+  } else {
+   html += '<a href="' + docsUrl + '" target="_blank" rel="noopener" class="doc-link-btn">Permit Docs</a>';
+  }
+  // Covenant
+  if (docs.covenants && docs.covenants.length > 0 && docs.covenants[0].gdrive_url) {
+   html += '<a href="' + escHtml(docs.covenants[0].gdrive_url) + '" target="_blank" rel="noopener" class="doc-link-btn">Covenant</a>';
+  }
+  // Card 2 Details
+  if (card2 && card2.card2_summary_url) {
+   html += '<a href="' + escHtml(card2.card2_summary_url) + '" target="_blank" rel="noopener" class="doc-link-btn">Card 2 Details</a>';
+  }
+ } else {
+  // Fallback links when APN not found in docs index
+  if (accountNum) {
+   html += '<a href="https://portal.padctn.org/OFS/WP/Print/' + encodeURIComponent(accountNum) + '" target="_blank" rel="noopener" class="doc-link-btn">Property Card</a>';
+  }
+  html += '<a href="' + docsUrl + '" target="_blank" rel="noopener" class="doc-link-btn">Permit Docs</a>';
+  if (streetViewUrl) {
+   html += '<a href="' + streetViewUrl + '" target="_blank" rel="noopener" class="doc-link-btn">Street View</a>';
+  }
+ }
  html += '</div>';
 
  // Data grid
@@ -641,6 +786,11 @@ function escHtml(str) {
 // ====================================================================
 async function loadPermits() {
  const statusEl = document.getElementById('loading-status');
+ statusEl.textContent = 'Loading document index...';
+
+ // Load docs index and APN-to-account in parallel with permits
+ loadDocsIndex();
+
  statusEl.textContent = 'Querying DADU permits...';
 
  try {
