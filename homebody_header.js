@@ -127,7 +127,7 @@
              ) +
              col('Recorded_Docs.svg', 'Document Database',
                  item('site_plan_downloads.html', 'Permit_Site_Plans.svg', 'Site Plans &amp; Permits') +
-                 item('dadu_documents_portal.html', 'Recorded_Docs.svg', 'Recorded Documents') +
+                 item('dadu_resources.html', 'Recorded_Docs.svg', 'External Links') +
                  item('restrictive_covenants_v2.html', 'Restrictive_Covenants.svg', 'Restrictive Covenants') +
                  item('pdf_database_lookup.html', 'Recorded_Docs.svg', 'PDF Database')
              ) +

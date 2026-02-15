@@ -306,7 +306,7 @@ Note: `form_wizard.html` is the unified replacement for the deleted `determine_f
 | Label | Icon | File |
 |-------|------|------|
 | Site Plans & Permits | Permit_Site_Plans.svg | site_plan_downloads.html |
-| Recorded Documents | Recorded_Docs.svg | dadu_documents_portal.html |
+| External Links | Recorded_Docs.svg | dadu_resources.html |
 | Restrictive Covenants | Restrictive_Covenants.svg | restrictive_covenants_v2.html |
 | PDF Database | Recorded_Docs.svg | pdf_database_lookup.html |
 
@@ -383,9 +383,9 @@ These are the pages directly accessible from the nav dropdowns:
 | EXPLORE > Dashboards | permit_activity_dashboard.html, contractor_marketplace.html, market_trends.html, nashville_permit_analytics.html |
 | BUILD | project_planner_hub.html, dadu_calculators.html, form_wizard.html, contractor_dashboard.html |
 | DATA > Reports | eligibility_report.html, project_report.html, neighbors_report.html, dadu_reports_store.html, property-report-card.html |
-| DATA > Docs | site_plan_downloads.html, dadu_documents_portal.html, restrictive_covenants_v2.html, pdf_database_lookup.html |
+| DATA > Docs | site_plan_downloads.html, dadu_resources.html, restrictive_covenants_v2.html, pdf_database_lookup.html |
 | RESOURCES | what_is_dadu.html, dadu_requirements_overview.html, dadu_history.html, dadu_code_legislation_v5.html, owner_occupancy.html, str_permit.html, trade_permits.html, overlay-districts.html, dadu_design_standards.html |
-| Direct links | homebody_dadu_pricing.html, am_i_eligible.html |
+| Direct links | homebody_dadu_pricing.html, am_i_eligible.html, dadu_documents_portal.html (via Pricing page) |
 | Homepage | index.html |
 
 **Unlinked but Worth Keeping (17 pages):**
@@ -411,10 +411,10 @@ These have unique content not duplicated elsewhere:
 | user-types.html | User types overview |
 | zoning_documents.html | Zoning document content |
 
-**Unlinked Duplicates (26 pages, candidates for deletion):**
+**Unlinked Duplicates (25 pages, candidates for deletion):**
 These are older versions or duplicates with content covered by other pages:
 
-am_i_eligible_compact.html, castlehold_homepage_flat.html, dadu_build_explorer.html, dadu_build_explorer_v2.html, dadu_build_tool.html, dadu_build_tool_backup.html, dadu_eligibility_checklist.html, dadu_eligibility_flowchart.html, dadu_explorer_attom.html, dadu_explorer_attom_v2.html, dadu_explorer_v2.html, dadu_near_me_locator.html, dadu_near_me_v3.html, dadu_platform.html, dadu_property_report.html, dadu_property_viewer_v3.html, dadu_report_connected.html, dadu_report_full.html, dadu_resources.html, dadu_symbium_map.html, footprints_proof_of_concept.html, homebody_index.html, homebody_index_v3.html, homebody_index_v4.html, homebody_main.html, index_pq.html, nashville_permit_explorer_v3.html
+am_i_eligible_compact.html, castlehold_homepage_flat.html, dadu_build_explorer.html, dadu_build_explorer_v2.html, dadu_build_tool.html, dadu_build_tool_backup.html, dadu_eligibility_checklist.html, dadu_eligibility_flowchart.html, dadu_explorer_attom.html, dadu_explorer_attom_v2.html, dadu_explorer_v2.html, dadu_near_me_locator.html, dadu_near_me_v3.html, dadu_platform.html, dadu_property_report.html, dadu_property_viewer_v3.html, dadu_report_connected.html, dadu_report_full.html, dadu_symbium_map.html, footprints_proof_of_concept.html, homebody_index.html, homebody_index_v3.html, homebody_index_v4.html, homebody_main.html, index_pq.html, nashville_permit_explorer_v3.html
 
 **Previously Deleted (this session):**
 about.html, about_platform_infographic.html, dadu_building_requirements.html, dadu_code_legislation_v3.html, dadu_code_legislation_v4.html, dadu_legislation.html, feature-property-search.html, footprint_cards.html, legal_resources.html, municipal_dashboard.html, project_cost_estimator.html, property_tax_calculator.html, roi_calculator.html, determine_forms_required.html, legal_form_filler.html
@@ -642,7 +642,7 @@ Cards: #f5f5f0 background on dark section, or white with subtle border
 
 | Item | Link |
 |------|------|
-| Recorded Documents | dadu_documents_portal.html |
+| Document Portal | dadu_documents_portal.html (accessed via Pricing page) |
 | Permits & Site Plans | site_plan_downloads.html |
 | Direct External Links to Metro Code | (external Nashville links) |
 | Codes and Legislation | dadu_code_legislation_v5.html |
@@ -1042,7 +1042,7 @@ Combined 2+ indicators: 5,647 parcels with strong ADU signal. 98.9% detection ra
 ├── /docs/                        # PDF documents
 ├── /samples/                     # Design reference (DO NOT MODIFY)
 ├── /sample_reports/              # Sample report previews
-├── [87 HTML pages at root]       # 41 linked, 11 unlinked keepers, 26 duplicate candidates
+├── [87 HTML pages at root]       # 42 linked, 11 unlinked keepers, 25 duplicate candidates
 ├── /DADU/                        # Data folder (130GB, in .gitignore)
 │   ├── /FINAL_FINAL/             # Latest processed datasets
 │   ├── /MASTER_ADU_DATA/         # Consolidated analysis files
@@ -1197,7 +1197,7 @@ source ~/dadu_env/bin/activate
 | Unique Contractors | 393 |
 | Legal Citations in Database | 111 |
 | Parcels with Covenants | 43,000+ |
-| HTML Pages on Site | 87 (35 linked in nav, 17 unlinked worth keeping, 26 duplicate candidates for deletion) |
+| HTML Pages on Site | 87 (36 linked in nav, 17 unlinked worth keeping, 25 duplicate candidates for deletion) |
 
 ---
 
