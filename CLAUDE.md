@@ -264,10 +264,9 @@ Each dropdown item shows an SVG/PNG icon at 32-40px, clearly visible next to the
 
 | Label | Icon | File |
 |-------|------|------|
-| Planning Hub | Project_Planner.svg | project_planner_hub.html |
-| Interactive Checklist | Project_Checklist.svg | project_checklist.html |
-| Draw DADU on Parcel | Draw_on_Parcel.svg | draw_dadu_on_parcel.html |
-| Permit Process Timeline | Renewals.png | permit_process_timeline.html |
+| Project Planner | Project_Planner.svg | project_planner_hub.html |
+
+Note: project_planner_hub.html is the hub page that links to: project_checklist.html, draw_dadu_on_parcel.html, permit_process_timeline.html, and project_planner.html. Those sub-pages are no longer in the nav individually.
 
 **Column 2: Calculators** (Icon: Appraisers.svg)
 
@@ -369,7 +368,7 @@ Direct link to homebody_dadu_pricing.html#about. No dropdown.
 ### Live Pages (87 HTML files at root)
 The site is deployed at https://nataliebaldacci.github.io/DADU-Homebody-Projects/
 
-**Linked in Navigation (38 pages):**
+**Linked in Navigation (35 pages):**
 These are the pages directly accessible from the nav dropdowns:
 
 | Nav Section | Pages |
@@ -377,14 +376,14 @@ These are the pages directly accessible from the nav dropdowns:
 | WHO WE SERVE | homeowner_portal.html, contractor_portal.html, designer_portal.html, user-homeowners.html, dadu_contractors_infographic.html |
 | EXPLORE > Maps | dadu_eligibility_map.html, property_search.html, dadu_near_me_v2.html, dadu_opportunity_explorer_v2.html, permit_explorer.html, parcel_footprint_map.html, adu_permit_map.html, homebody_index_map.html |
 | EXPLORE > Dashboards | permit_activity_dashboard.html, contractor_marketplace.html, market_trends.html, contractor_dashboard.html, nashville_permit_analytics.html |
-| BUILD | project_planner_hub.html, project_checklist.html, draw_dadu_on_parcel.html, permit_process_timeline.html, dadu_calculators.html, form_wizard.html |
+| BUILD | project_planner_hub.html, dadu_calculators.html, form_wizard.html |
 | DATA > Reports | eligibility_report.html, project_report.html, neighbors_report.html, dadu_reports_store.html, property-report-card.html |
 | DATA > Docs | site_plan_downloads.html, dadu_documents_portal.html, restrictive_covenants_v2.html, pdf_database_lookup.html |
 | RESOURCES | what_is_dadu.html, dadu_requirements_overview.html, dadu_history.html, dadu_code_legislation_v5.html, owner_occupancy.html, str_permit.html, trade_permits.html, overlay-districts.html, dadu_design_standards.html |
 | Direct links | homebody_dadu_pricing.html, am_i_eligible.html |
 | Homepage | index.html |
 
-**Unlinked but Worth Keeping (14 pages):**
+**Unlinked but Worth Keeping (17 pages):**
 These have unique content not duplicated elsewhere:
 
 | File | Purpose |
@@ -394,9 +393,12 @@ These have unique content not duplicated elsewhere:
 | contractor_report.html | Unique contractor report |
 | dadu_zoning_standards.html | Zoning standards (content merged into dadu_requirements_overview.html) |
 | designer_resources.html | Designer resource content |
+| draw_dadu_on_parcel.html | Visual DADU placement tool (linked from project_planner_hub.html) |
 | feature-documents.html | Feature landing page |
 | feature-eligibility-map.html | Feature landing page |
 | features.html | Features overview |
+| permit_process_timeline.html | Step-by-step permitting guide (linked from project_planner_hub.html) |
+| project_checklist.html | Interactive project checklist (linked from project_planner_hub.html) |
 | project_planner.html | Original project planner |
 | property_intelligence_report.html | Unique intelligence report |
 | property_report.html | Original property report |
@@ -1190,7 +1192,7 @@ source ~/dadu_env/bin/activate
 | Unique Contractors | 393 |
 | Legal Citations in Database | 111 |
 | Parcels with Covenants | 43,000+ |
-| HTML Pages on Site | 87 (38 linked in nav, 14 unlinked worth keeping, 26 duplicate candidates for deletion) |
+| HTML Pages on Site | 87 (35 linked in nav, 17 unlinked worth keeping, 26 duplicate candidates for deletion) |
 
 ---
 

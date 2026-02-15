@@ -99,10 +99,7 @@
     '        </button>' +
     '        <div class="dropdown-menu mega-menu mega-menu-3" id="build-dropdown" role="menu">' +
              col('Project_Planner.svg', 'Project Planner',
-                 item('project_planner_hub.html', 'Project_Planner.svg', 'Planning Hub') +
-                 item('project_checklist.html', 'Project_Checklist.svg', 'Interactive Checklist') +
-                 item('draw_dadu_on_parcel.html', 'Draw_on_Parcel.svg', 'Draw DADU on Parcel') +
-                 item('permit_process_timeline.html', 'Renewals.png', 'Permit Process Timeline')
+                 item('project_planner_hub.html', 'Project_Planner.svg', 'Project Planner')
              ) +
              col('Appraisers.svg', 'Calculators',
                  item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators')
