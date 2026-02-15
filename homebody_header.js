@@ -161,7 +161,7 @@
     '      <a href="' + basePath + 'homebody_dadu_pricing.html" class="nav-link">PRICING</a>' +
 
     // ═══ ABOUT (direct link) ═══
-    '      <a href="' + basePath + 'homebody_dadu_pricing.html#about" class="nav-link">ABOUT</a>' +
+    '      <a href="' + basePath + 'about_platform.html" class="nav-link">ABOUT</a>' +
 
     '    </div>' +
 
