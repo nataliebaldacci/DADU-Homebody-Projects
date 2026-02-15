@@ -45,84 +45,131 @@ Homebody Projects is a DADU (Detached Accessory Dwelling Unit) eligibility and p
 
 ### Color Palette
 
-**Primary:**
+**Core Darks:**
 | Name | Hex | Role |
 |------|-----|------|
-| Deep Slate | #3A5566 | Nav background, hero overlay, dark backgrounds, primary headings |
+| True Dark Anchor | #2F3A45 | Hero gradient base, footer, overlay panels, selected footprint fill |
+| Deep Slate (Brand) | #3A5566 | Nav background, headings, brand authority color, parcel boundary stroke |
+| Gray Azure | #4C5C66 | Alternate dark, icons, active permit markers |
 | Medium Slate | #496778 | Hover states, secondary elements, step number circles |
 | Lighter Slate | #4A6B7D | Tertiary elements |
 
-**Secondary:**
+**Secondary / Mid Neutrals:**
 | Name | Hex | Role |
 |------|-----|------|
-| Warm Stone | #7B746D | Secondary text, outline pill borders |
-| Lighter Stone | #918A83 | Borders |
+| Dark Warm Gray | #706F6C | Captions, small labels |
+| Warm Stone | #7B746D | Secondary text, pill borders, hover footprint fill, small cluster markers |
+| Lighter Stone | #918A83 | Borders, conditional map status |
+| Warm Muted UI | #A59D8B | Mid-tone warm gray, muted UI, background footprint fill, in-review markers |
 
 **Accent:**
 | Name | Hex | Role |
 |------|-----|------|
-| Wheat | #CBB279 | CTA buttons, stat numbers, announcement bar, highlights |
-| Ochre | #C58B2A | Small accent moments (use sparingly) |
+| Wheat | #CBB279 | Primary CTA buttons, stat numbers, announcement bar, highlights |
+
+Wheat is the ONLY accent. No ochre, no secondary golds. One accent keeps the system disciplined.
 
 **Neutrals:**
 | Name | Hex | Role |
 |------|-----|------|
 | Cream | #E1D4BB | Body text on dark backgrounds, card light surfaces |
-| Linen | #F0EBE1 | Section backgrounds, stats bar background |
-| Light Gray | #E2E2E0 | Card borders, dividers |
-| Dark Warm Gray | #706F6C | Small labels, captions |
+| Light Gray | #E2E2E0 | Card borders, dividers, unknown/out-of-scope map status |
+| Linen | #F0EBE1 | Section backgrounds, stats bar background, icon circle backgrounds |
+| Soft Canvas | #F3EEEA | Soft panels, filter containers, cards on warm backgrounds |
 | Warm Light | #F2F0ED | Page background |
-| Off-White | #f5f5f0 | Card surfaces |
+| Off-White | #F5F5F0 | Card surfaces |
 
-**Functional (UI status only, NOT for nav or branding):**
+**Functional / Map Status (muted, architectural, NOT traffic-light colors):**
 | Name | Hex | Role |
 |------|-----|------|
-| Green | #2E6F4E | Eligibility badges only |
-| Amber | #D4A017 | Conditional status only |
-| Oxide Red | #7A2A1D | Restrictions/warnings only |
+| Eligible | #406A64 | Eligible parcels on map, eligibility badges |
+| Conditional | #918A83 | Conditional zoning (gray area = literally gray). Reuses Lighter Stone. |
+| Not Eligible | #B58676 | Restricted parcels. Muted clay/brick. Nashville-appropriate. |
+| Unknown | #E2E2E0 | Out of scope or unknown status. Reuses Light Gray. |
 
-### BANNED COLOR
+**Map Layer Hierarchy (value-shift system, same hue family, darker = selected):**
+| Layer | Fill | Opacity | Stroke | Width | Notes |
+|-------|------|---------|--------|-------|-------|
+| Background footprints | #A59D8B | 0.55 | None | — | Recedes visually |
+| Hover footprint | #7B746D | 0.75 | None | — | Slightly darker on hover |
+| Selected footprint | #2F3A45 | 0.90 | #FFFFFF | 2px | Pops clearly with white edge |
+| Parcel boundary | — | — | #2F3A45 dashed (6,4) | 2.5px | Crisp architectural line |
+| Eligible outline | — | — | #406A64 | 1.5px | Subtle status on parcel edge |
+| Conditional outline | — | — | #918A83 | 1.5px | Neutral status outline |
+| Not eligible outline | — | — | #B58676 | 1.5px | Restrictive status outline |
 
-**#003039 is BANNED.** Do NOT use this anywhere. It reads as green on screen and is not part of the palette. Find and replace every instance of #003039 with #3A5566 across the entire repo. This color was mistakenly introduced by a previous AI session and keeps reappearing. If you see #003039 in ANY file, replace it with #3A5566.
+Eligibility shows as a subtle outline on the parcel, NOT by recoloring the footprint. Footprint fill stays in the slate family and uses value shift for hierarchy.
 
-**DO NOT USE:** #003039, #2c3e50, #6b8fa3, #6b8e4e, terracotta, sage, teal, or any color not listed above.
+**Cluster Markers (no neon, no traffic colors):**
+| Size | Fill | Text |
+|------|------|------|
+| Small (2-9) | #7B746D (Warm Stone) | White |
+| Medium (10-49) | #3A5566 (Deep Slate) | White |
+| Large (50+) | #2F3A45 (True Dark) | White |
 
-### CSS Variables (for backward compatibility)
+**Permit Status Point Markers:**
+| Status | Hex | Notes |
+|--------|-----|-------|
+| Completed | #406A64 | Same as eligible |
+| Active | #4C5C66 | Gray Azure |
+| In Review | #A59D8B | Warm Muted UI |
+
+### BANNED COLORS
+
+**#003039 is BANNED.** It reads as green on screen. Replace every instance with #3A5566.
+
+**DO NOT USE:** #003039, #2E6F4E (old eligible green), #6b8fa3, #6b8e4e, #D4A017 (old amber), #C58B2A (old ochre), #7A2A1D (old oxide red), terracotta, sage, teal, or any neon/traffic-light colors.
+
+**DO NOT USE bright/saturated functional colors.** No neon green, candy red, construction-cone orange, or saturated yellow anywhere on maps or UI. All status colors must be muted and architectural.
+
+### CSS Variables
 ```css
 :root {
+  /* Core Darks */
+  --dark-anchor: #2F3A45;
   --slate: #3A5566;
+  --slate-azure: #4C5C66;
   --slate-mid: #496778;
   --slate-light: #4A6B7D;
+  /* Secondary / Mid */
+  --gray-warm: #706F6C;
   --stone: #7B746D;
   --stone-light: #918A83;
+  --stone-muted: #A59D8B;
+  /* Accent */
   --wheat: #CBB279;
-  --ochre: #C58B2A;
+  /* Neutrals */
   --cream: #E1D4BB;
-  --linen: #F0EBE1;
   --gray-light: #E2E2E0;
-  --gray-warm: #706F6C;
+  --linen: #F0EBE1;
+  --canvas: #F3EEEA;
   --background: #F2F0ED;
-  --card-bg: #f5f5f0;
-  --eligible: #2E6F4E;
-  --conditional: #D4A017;
-  --error: #7A2A1D;
+  --card-bg: #F5F5F0;
+  /* Functional / Map */
+  --eligible: #406A64;
+  --conditional: #918A83;
+  --not-eligible: #B58676;
+  --unknown: #E2E2E0;
 }
 ```
 
-**NOTE:** Some older CSS files use variable names like --navy, --teal, --terracotta. These names are wrong but kept for backward compatibility. The actual colors they map to are Slate, Stone, and Ochre. There is NO navy, teal, or terracotta in the palette.
+**NOTE:** Some older CSS files use variable names like --navy, --teal, --terracotta, --ochre, --error. These names are legacy. Map them to the correct current values. There is NO navy, teal, terracotta, or ochre in the palette.
 
 ### Old Colors to Find and Replace
 | Old Hex | Replace With | What Changed |
 |---------|-------------|-------------|
 | #003039 | #3A5566 | BANNED "Midnight" to Deep Slate |
-| #2c3e50 | #3A5566 | Old navy to Deep Slate |
+| #2E6F4E | #406A64 | Old eligible green to muted slate-teal |
 | #34495e | #4A6B7D | Nav hover to Lighter Slate |
-| #1a252f | #2E4553 | Dark backgrounds |
+| #1a252f | #2F3A45 | Dark backgrounds to True Dark Anchor |
 | #6b8fa3 | #7B746D | Old teal to Warm Stone |
 | #6b8e4e | #3A5566 | Old green accent to Slate |
 | #c9a86c | #CBB279 | Old tan to Wheat |
 | #e8e4df | #F2F0ED | Background lightened |
-| #B55A3C | #C58B2A | Old terracotta to Ochre |
+| #B55A3C | #CBB279 | Old terracotta to Wheat |
+| #C58B2A | #CBB279 | Old ochre to Wheat (accent consolidated) |
+| #D4A017 | #918A83 | Old amber to Conditional gray |
+| #7A2A1D | #B58676 | Old oxide red to Not Eligible clay |
 
 ### Typography
 - **Body font:** Inter (primary), system sans-serif fallback
@@ -171,7 +218,7 @@ Each dropdown item with an icon should show the PNG icon at 32-40px, clearly vis
 | Eligibility Map | Zoning.png | dadu_eligibility_map.html |
 | DADUs Near Me | Neighbors.png | dadu_near_me_v2.html |
 
-Eligibility Map note: Full parcel map colored by eligibility status (Yes = #2E6F4E, No = gray, Maybe = #D4A017).
+Eligibility Map note: Full parcel map colored by eligibility status (Eligible = #406A64 outline, Conditional = #918A83 outline, Not Eligible = #B58676 outline).
 
 **Section: DOCUMENT DATABASE** (Icon: Recorded_Docs.png)
 
@@ -709,7 +756,7 @@ A previous session changed basemaps without permission. Do not switch basemap st
 | Height | Cannot exceed principal structure |
 | Owner Occupancy | Required (principal or DADU) |
 
-Eligibility map coloring: Eligible (#2E6F4E green), Not Eligible (#8B8B8B gray), Conditional (#D4A017 amber).
+Eligibility map coloring: Eligible (#406A64), Not Eligible (#B58676), Conditional (#918A83).
 
 ---
 
@@ -1052,9 +1099,11 @@ source ~/dadu_env/bin/activate
 - Use emoji for icons -- NEVER. Use PNG icons from assets/icons/ or plain text.
 - Use any logo other than assets/icons/ADU.png
 - Use #003039 anywhere (BANNED)
+- Use ochre (#C58B2A), old amber (#D4A017), or old oxide red (#7A2A1D)
+- Use neon, bright, or saturated colors on maps (no traffic-light styling)
 - Use the castle logo (use ADU.png)
 - Write "CASTLEHOLD" in nav bars or page titles (use "Homebody Projects")
-- Introduce teal, green, or any non-palette colors
+- Introduce teal, green accent, terracotta, or any non-palette colors
 - Load huge GeoJSON at initial page load
 - Expose API keys in the repo
 - Delete, rename, or move existing files
