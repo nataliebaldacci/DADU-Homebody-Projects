@@ -553,6 +553,61 @@ body {
 .popup-btn.accent { background: var(--terracotta); }
 .popup-btn.accent:hover { background: var(--terracotta-hover); }
 
+/* ===== RESULT IMAGES & EXTRAS ===== */
+.result-images {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+.result-images a {
+  flex: 1;
+  display: block;
+}
+.result-images img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #e2e2e0;
+}
+.result-images .img-label {
+  font-size: 10px;
+  color: #888;
+  text-align: center;
+  margin-top: 2px;
+}
+.result-aerial {
+  margin: 8px 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e2e2e0;
+}
+.result-aerial iframe {
+  width: 100%;
+  height: 180px;
+  border: none;
+}
+.result-aerial .img-label {
+  font-size: 10px;
+  color: #888;
+  text-align: center;
+  margin-top: 2px;
+}
+.result-extra-links {
+  display: flex;
+  gap: 12px;
+  margin: 6px 0;
+  font-size: 12px;
+}
+.result-extra-links a {
+  color: #537188;
+  text-decoration: none;
+  font-weight: 600;
+}
+.result-extra-links a:hover {
+  text-decoration: underline;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .hero { padding: 20px 15px 40px; }
@@ -998,6 +1053,12 @@ async function searchNearbyPermits() {
           costPerSqft: attrs.COST_PER_SQFT || null,
           ePermitsLink: attrs.EPERMITS_LINK || null,
           docsLink: attrs.DOCUMENTS_LINK || null,
+          card2Photo: attrs.ASSESSOR_CARD2_PHOTO_URL || null,
+          card2Sketch: attrs.ASSESSOR_CARD2_SKETCH_URL || null,
+          aerialView: attrs.AERIAL_VIEW || null,
+          streetView: attrs.STREET_VIEW || null,
+          propertyCardPortal: attrs.PROPERTY_CARD_PORTAL_URL || null,
+          propertyCardGdrive: attrs.PROPERTY_CARD_GDRIVE_URL || null,
           lat: lat,
           lon: lon,
           distanceMeters: dist,
@@ -1086,6 +1147,32 @@ function renderResults() {
       html += '</div>';
     }
 
+    // Images row: Card2 photo + sketch side by side
+    if (permit.card2Photo || permit.card2Sketch) {
+      html += '<div class="result-images" onclick="event.stopPropagation()">';
+      if (permit.card2Photo) {
+        html += '<a href="' + permit.card2Photo + '" target="_blank"><img src="' + permit.card2Photo + '" alt="Building Photo" onerror="this.parentElement.style.display=\'none\'"><div class="img-label">Building Photo</div></a>';
+      }
+      if (permit.card2Sketch) {
+        html += '<a href="' + permit.card2Sketch + '" target="_blank"><img src="' + permit.card2Sketch + '" alt="Floor Plan" onerror="this.parentElement.style.display=\'none\'"><div class="img-label">Floor Plan</div></a>';
+      }
+      html += '</div>';
+    }
+
+    // Aerial view iframe
+    if (permit.aerialView) {
+      html += '<div class="result-aerial" onclick="event.stopPropagation()"><iframe src="' + permit.aerialView + '" loading="lazy"></iframe><div class="img-label">Aerial View</div></div>';
+    }
+
+    // Extra text links
+    var extraLinks = [];
+    var propCardUrl = permit.propertyCardPortal || permit.propertyCardGdrive;
+    if (propCardUrl) extraLinks.push('<a href="' + propCardUrl + '" target="_blank" onclick="event.stopPropagation()">Property Card</a>');
+    if (permit.streetView) extraLinks.push('<a href="' + permit.streetView + '" target="_blank" onclick="event.stopPropagation()">Street View</a>');
+    if (extraLinks.length > 0) {
+      html += '<div class="result-extra-links">' + extraLinks.join('') + '</div>';
+    }
+
     // Action buttons (from locator)
     html += '<div class="result-actions">';
     html += '<a href="' + reportUrl + '" class="action-btn primary" target="_blank" onclick="event.stopPropagation()">View Report</a>';
@@ -1141,10 +1228,15 @@ function renderResults() {
     var parcelMapUrl = 'https://maps.nashville.gov/ParcelViewer/?quickSearch=' + encodeURIComponent(permit.parcelId || permit.apn);
     var reportUrl = 'property-report-card.html?address=' + encodeURIComponent(permit.address) + (permit.apn ? '&apn=' + encodeURIComponent(permit.apn) : '');
 
+    var popupDocsUrl = permit.docsLink || 'https://documents.nashville.gov/Request/Form/PermitCodes?permitnumber=' + encodeURIComponent(permit.permitNumber);
+
     popupHtml += '<div class="popup-actions">';
     popupHtml += '<a href="' + reportUrl + '" class="popup-btn accent" target="_blank">View Report</a>';
     popupHtml += '<a href="' + ePermitsUrl + '" class="popup-btn" target="_blank">Permit</a>';
     popupHtml += '<a href="' + parcelMapUrl + '" class="popup-btn" target="_blank">Parcel</a>';
+    if (permit.permitNumber) {
+      popupHtml += '<a href="' + popupDocsUrl + '" class="popup-btn" target="_blank">Documents</a>';
+    }
     popupHtml += '</div>';
 
     marker.bindPopup(popupHtml);
