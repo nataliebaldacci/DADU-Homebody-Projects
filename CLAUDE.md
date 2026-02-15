@@ -502,7 +502,7 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 3. Verify contractor detail views
 
 ### PRIORITY 7: Homepage (index.html)
-**Status:** Exists but needs content refresh to match the new nav structure and current page inventory.
+**Status:** DONE. Fixed 7 broken links to deleted pages (determine_forms_required→form_wizard, municipal_dashboard→user-homeowners, legal_resources→dadu_contractors_infographic, dadu_code_legislation_v3→v5, dadu_building_requirements→dadu_requirements_overview, project_planner→project_planner_hub). Updated icons to match Section 6B spec. Fixed section background colors to #F2F0ED. All 22 links verified, all 18 icons verified.
 
 ### PRIORITY 8: Fill Placeholder Pages
 **Status:** Many pages have basic content. Some may still be stubs.
@@ -1229,7 +1229,7 @@ Step 10: ✅ DONE — Map pages audited: all 8 have proper height, CDN libs, Arc
 Step 11: PENDING — Test Property Report Card external links
 Step 12: PENDING — Test Document Portal search end-to-end
 Step 13: PENDING — Test Contractor Marketplace data display
-Step 14: PENDING — Refresh homepage content for new nav structure
+Step 14: DONE — Homepage refreshed: 7 broken links fixed, icons updated, section backgrounds corrected
 Step 15: PENDING — Fill placeholder/stub pages
 Step 16: PENDING — Final testing: all nav links render correctly on live site
 ```
