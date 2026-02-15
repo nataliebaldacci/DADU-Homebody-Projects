@@ -49,9 +49,9 @@
 
     // ═══ WHO WE SERVE (single-column flat list) ═══
     '      <div class="nav-item">' +
-    '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="who-we-serve">' +
+    '        <a href="' + basePath + 'user-types.html" class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="who-we-serve">' +
     '          WHO WE SERVE <span class="chevron">&#9660;</span>' +
-    '        </button>' +
+    '        </a>' +
     '        <div class="dropdown-menu dropdown-single" id="who-we-serve-dropdown" role="menu">' +
                  item('homeowner_portal.html', 'Property_Owners.svg', 'Homeowners') +
                  item('contractor_portal.html', 'Building_and_Construction.svg', 'Contractors') +
@@ -63,9 +63,9 @@
 
     // ═══ EXPLORE ═══
     '      <div class="nav-item">' +
-    '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="explore">' +
+    '        <a href="' + basePath + 'features.html" class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="explore">' +
     '          EXPLORE <span class="chevron">&#9660;</span>' +
-    '        </button>' +
+    '        </a>' +
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="explore-dropdown" role="menu">' +
              col('Area_Maps_and_Visual_layers.svg', 'Interactive Maps',
                  item('dadu_eligibility_map.html', 'Zoning.svg', 'Eligibility Map') +
@@ -105,9 +105,9 @@
 
     // ═══ DATA ═══
     '      <div class="nav-item">' +
-    '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="data">' +
+    '        <a href="' + basePath + 'dadu_reports_store.html" class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="data">' +
     '          DATA <span class="chevron">&#9660;</span>' +
-    '        </button>' +
+    '        </a>' +
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="data-dropdown" role="menu">' +
              col('Exports__Reports.svg', 'Reports',
                  item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator')
@@ -186,8 +186,12 @@
             var dropdown = document.getElementById(dropdownId + '-dropdown');
             if (!dropdown) return;
 
-            // Click toggle
+            // Click: if it's an <a> with href, navigate; if <button>, toggle dropdown
             button.addEventListener('click', function(e) {
+                if (button.tagName === 'A' && button.getAttribute('href')) {
+                    // Allow default navigation for clickable links
+                    return;
+                }
                 e.preventDefault();
                 e.stopPropagation();
                 toggleDropdown(button, dropdown);
