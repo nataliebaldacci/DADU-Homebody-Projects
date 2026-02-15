@@ -3,13 +3,13 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>DADU Eligibility Map | Castlehold</title>
- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <title>DADU Eligibility Map | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
  <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
- font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+ font-family: 'Inter', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
  background: #F0EBE1;
  color: #333333;
 }
@@ -30,14 +30,14 @@ body {
 }
 .hero-header h1 {
  color: #ffffff;
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-weight: 800;
  font-size: 36px;
  margin-bottom: 8px;
 }
 .hero-header .subtitle {
  color: #e2e2e0;
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-weight: 400;
  font-size: 16px;
  margin-bottom: 0;
@@ -66,17 +66,17 @@ body {
  min-width: 0;
 }
 .stat-card .stat-number {
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-weight: 800;
  font-size: 26px;
  line-height: 1.2;
  color: #3a5566;
 }
-.stat-card .stat-number.eligible { color: #2E6F4E; }
-.stat-card .stat-number.conditional { color: #D4A017; }
+.stat-card .stat-number.eligible { color: #406A64; }
+.stat-card .stat-number.conditional { color: #918A83; }
 .stat-card .stat-number.not-eligible { color: #7b746d; }
 .stat-card .stat-label {
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-weight: 600;
  font-size: 11px;
  text-transform: uppercase;
@@ -105,8 +105,8 @@ body {
  display: inline-block;
  flex-shrink: 0;
 }
-.stats-legend-dot.eligible { background-color: #2E6F4E; }
-.stats-legend-dot.conditional { background-color: #D4A017; }
+.stats-legend-dot.eligible { background-color: #406A64; }
+.stats-legend-dot.conditional { background-color: #918A83; }
 .stats-legend-dot.not-eligible { background-color: #8B8B8B; }
 .stats-legend-label {
  font-size: 13px;
@@ -136,7 +136,7 @@ body {
 }
 .announcement-bar .ann-text {
  color: #3a5566;
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-weight: 500;
  font-size: 14px;
 }
@@ -155,7 +155,7 @@ body {
  gap: 24px;
 }
 .how-to-use-bar .htu-label {
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-weight: 700;
  font-size: 13px;
  color: #3a5566;
@@ -171,7 +171,7 @@ body {
  display: flex;
  align-items: center;
  gap: 8px;
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-size: 13px;
  color: #706f6c;
 }
@@ -195,7 +195,7 @@ body {
  gap: 8px;
 }
 .quick-check-label {
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-weight: 700;
  font-size: 13px;
  color: #3a5566;
@@ -207,7 +207,7 @@ body {
  border-radius: 20px;
  font-size: 12px;
  font-weight: 600;
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  white-space: nowrap;
 }
 .qc-pill.outline {
@@ -249,7 +249,7 @@ body {
  padding: 14px 20px;
  border: none;
  outline: none;
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-size: 15px;
  color: #3a5566;
  background: transparent;
@@ -262,7 +262,7 @@ body {
  color: #ffffff;
  border: none;
  padding: 14px 28px;
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-weight: 700;
  font-size: 14px;
  cursor: pointer;
@@ -305,7 +305,7 @@ body {
  justify-content: space-between;
  align-items: center;
  border-bottom: 1px solid #f0ebe1;
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-size: 14px;
  color: #333;
  transition: background 0.1s;
@@ -386,7 +386,7 @@ body {
  border: none;
  padding: 8px 16px;
  border-radius: 8px;
- font-family: Inter, 'Montserrat', sans-serif;
+ font-family: Inter, 'Inter', sans-serif;
  font-weight: 600;
  font-size: 13px;
  cursor: pointer;
@@ -460,9 +460,9 @@ body {
 .leaflet-popup-content-wrapper { border-radius: 12px; padding: 0; }
 .leaflet-popup-content { margin: 0; min-width: 300px; }
 .popup-header { padding: 16px; border-radius: 12px 12px 0 0; }
-.popup-header.eligible { background: #2E6F4E; color: white; }
+.popup-header.eligible { background: #406A64; color: white; }
 .popup-header.not-eligible { background: #8B8B8B; color: white; }
-.popup-header.conditional { background: #D4A017; color: white; }
+.popup-header.conditional { background: #918A83; color: white; }
 .popup-status { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
 .popup-address { font-size: 16px; font-weight: 700; }
 .popup-content { padding: 16px; }
@@ -615,10 +615,10 @@ body {
   <label class="filter-label">Show Parcels</label>
   <label class="filter-checkbox">
    <input type="checkbox" id="show-eligible" checked onchange="updateFilters()">
-   <span style="color: #2E6F4E; font-weight: 600;">Eligible (By Right)</span></label>
+   <span style="color: #406A64; font-weight: 600;">Eligible (By Right)</span></label>
   <label class="filter-checkbox">
    <input type="checkbox" id="show-conditional" checked onchange="updateFilters()">
-   <span style="color: #D4A017; font-weight: 600;">Conditional (Overlay Req.)</span></label>
+   <span style="color: #918A83; font-weight: 600;">Conditional (Overlay Req.)</span></label>
   <label class="filter-checkbox">
    <input type="checkbox" id="show-not-eligible" checked onchange="updateFilters()">
    <span style="color: #8B8B8B; font-weight: 600;">Not Eligible</span></label></div>
@@ -644,7 +644,7 @@ body {
    <span style="color: #3E4A4F; font-weight: 600;">Building Footprints</span></label>
   <label class="filter-checkbox">
    <input type="checkbox" id="show-secondary" onchange="toggleOverlay('secondary')">
-   <span style="color: #C58B2A; font-weight: 600;">Existing DADUs</span></label></div>
+   <span style="color: #CBB279; font-weight: 600;">Existing DADUs</span></label></div>
  </div>
  </div>
 
@@ -678,16 +678,16 @@ body {
  // CONFIGURATION
  // ====================================================================
  const COLORS = {
- eligible: '#2E6F4E',
- conditional: '#D4A017',
+ eligible: '#406A64',
+ conditional: '#918A83',
  notEligible: '#8B8B8B'
  };
 
  const PERMIT_COLORS = {
- completed: '#2E6F4E',
+ completed: '#406A64',
  active: '#537188',
  expired: '#CBB279',
- revoked: '#7A2A1D'
+ revoked: '#B58676'
  };
 
  const ELIG_LABELS = {
@@ -1342,7 +1342,7 @@ body {
   } else return;
 
   const marker = L.circleMarker([lat, lon], {
-   radius: 6, fillColor: '#C58B2A', color: '#A8761F',
+   radius: 6, fillColor: '#CBB279', color: '#A8761F',
    weight: 1.5, opacity: 0.9, fillOpacity: 0.7
   });
 
@@ -1355,7 +1355,7 @@ body {
    <div style="font-size:13px;color:#706F6C;">Type: ${props.Secondary_Type || 'Secondary Structure'}</div>
    <div style="font-size:13px;color:#706F6C;">Size: ${sqft}</div>
    <div style="margin-top:8px;">
-    <a href="property-report-card.html?apn=${props.APN}" style="color:#C58B2A;font-weight:600;text-decoration:none;">View Property Report &rarr;</a>
+    <a href="property-report-card.html?apn=${props.APN}" style="color:#CBB279;font-weight:600;text-decoration:none;">View Property Report &rarr;</a>
    </div></div>
   `, { maxWidth: 300 });
 

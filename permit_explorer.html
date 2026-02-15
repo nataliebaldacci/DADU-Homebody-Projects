@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     /* ========================================
-       CASTLEHOLD PALETTE (LOCKED)
+       HOMEBODY PROJECTS PALETTE (LOCKED)
        ======================================== */
     :root {
       --midnight: #3A5566;
@@ -17,10 +17,10 @@
       --wheat: #CBB279;
       --cream: #E1D4BB;
       --linen: #F0EBE1;
-      --status-done: #2E6F4E;
+      --status-done: #406A64;
       --status-active: #537188;
       --status-expired: #CBB279;
-      --status-revoked: #7A2A1D;
+      --status-revoked: #B58676;
       --radius: 12px;
       --shadow: 0 10px 25px rgba(0,0,0,.06);
     }
@@ -928,10 +928,10 @@
     </div>
     <div class="map-legend">
       <div class="legend-title">Permit Status</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#2E6F4E"></div>Completed</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#406A64"></div>Completed</div>
       <div class="legend-item"><div class="legend-dot" style="background:#537188"></div>Issued / Active</div>
       <div class="legend-item"><div class="legend-dot" style="background:#CBB279"></div>Expired</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#7A2A1D"></div>Revoked</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#B58676"></div>Revoked</div>
     </div>
   </div>
 
@@ -973,10 +973,10 @@
 const PERMITS_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_MERGED_v2_20260213/FeatureServer/0';
 const PAGE_SIZE = 2000;
 const STATUS_COLORS = {
-  done: '#2E6F4E',
+  done: '#406A64',
   active: '#537188',
   expired: '#CBB279',
-  revoked: '#7A2A1D',
+  revoked: '#B58676',
   other: '#8B8B8B'
 };
 
@@ -1617,7 +1617,7 @@ function openDetailModal(objectId) {
   if (sitePlanDocs.length > 0) {
     sitePlanDocs.forEach(d => {
       body += `<a href="${d.gdrive_url}" target="_blank" class="doc-btn">
-        <div class="doc-btn-icon" style="background:#2E6F4E">SP</div>
+        <div class="doc-btn-icon" style="background:#406A64">SP</div>
         <div><div class="doc-btn-label">Site Plan PDF</div><div class="doc-btn-sub">${d.filename || 'View on Drive'}</div></div>
       </a>`;
     });
@@ -1710,7 +1710,7 @@ function openDetailModal(objectId) {
       const instrument = cov.instrument || '';
       const recDate = cov.rec_date || '';
       body += `<a href="${url}" target="_blank" class="doc-btn">
-        <div class="doc-btn-icon" style="background:#7A2A1D">⚖️</div>
+        <div class="doc-btn-icon" style="background:#B58676">⚖️</div>
         <div>
           <div class="doc-btn-label">Covenant${instrument ? ': ' + instrument : ''}</div>
           <div class="doc-btn-sub">${cov.grantor || ''}${recDate ? ' | Recorded ' + recDate : ''}</div>
@@ -1718,7 +1718,7 @@ function openDetailModal(objectId) {
       </a>`;
     });
     if (docs.covenants.length > 1) {
-      body += `<span class="doc-count-badge" style="background:#7A2A1D">${docs.covenants.length}</span>`;
+      body += `<span class="doc-count-badge" style="background:#B58676">${docs.covenants.length}</span>`;
     }
   } else if (permit.hasCovenants) {
     body += `<span class="doc-unavailable">⚖️ Covenants on file (${permit.covenantCount || '?'}) - PDFs not indexed</span>`;
