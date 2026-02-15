@@ -109,13 +109,8 @@
     '          DATA <span class="chevron">&#9660;</span>' +
     '        </button>' +
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="data-dropdown" role="menu">' +
-             col('Exports__Reports.svg', 'Report Generator',
-                 item('eligibility_report.html', 'Claims.png', 'Eligibility Report') +
-                 item('project_report.html', 'Exports__Reports.svg', 'Project Report') +
-                 item('neighbors_report.html', 'Neighbors.svg', 'Neighbors Report') +
-                 item('contractor_report.html', 'Building_and_Construction.svg', 'Contractor Report') +
-                 item('dadu_reports_store.html', 'Market Statistics Report .svg', 'Market Report') +
-                 item('property-report-card.html', 'Property Detail Report .svg', 'Property Report Card')
+             col('Exports__Reports.svg', 'Reports',
+                 item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator')
              ) +
              col('Recorded_Docs.svg', 'Document Database',
                  item('site_plan_downloads.html', 'Permit_Site_Plans.svg', 'Site Plans &amp; Permits') +
