@@ -3,12 +3,14 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Overlay Districts & Special Plans | Nashville DADU Library</title>
- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+ <title>Overlay Districts | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
  <style>
  :root {
  --navy: #3A5566;
- --navy-dark: #2E4553;
+ --dark-anchor: #2F3A45;
+ --navy-dark: #2F3A45;
  --teal: #7B746D;
  --terracotta: #CBB279;
  --terracotta-hover: #B8A068;
@@ -19,14 +21,12 @@
  --text: #333333;
  --text-light: #666666;
  --border: #e0e0e0;
- --yellow: #f1c40f;
- --red: #c0392b;
  }
 
  * { box-sizing: border-box; margin: 0; padding: 0; }
 
  body {
- font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+ font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
  background: var(--background);
  color: var(--text);
  line-height: 1.6;
@@ -87,7 +87,7 @@
 
  /* Hero */
  .hero {
- background: linear-gradient(135deg, var(--teal) 0%, #4a6d7a 100%);
+ background: linear-gradient(135deg, var(--teal) 0%, #496778 100%);
  color: white;
  padding: 60px 30px;
  text-align: center;
@@ -108,7 +108,7 @@
 
  .hero-badge {
  display: inline-block;
- background: var(--yellow);
+ background: var(--terracotta);
  color: var(--navy);
  padding: 8px 20px;
  border-radius: 20px;
@@ -143,7 +143,7 @@
  }
 
  .pathway-card.conditional {
- border: 3px solid var(--yellow);
+ border: 3px solid var(--terracotta);
  }
 
  .pathway-number {
@@ -189,13 +189,13 @@
  }
 
  .pathway-status.by-right {
- background: #e8f5e9;
+ background: #F0EBE1;
  color: var(--terracotta);
  }
 
  .pathway-status.conditional {
- background: #fff8e1;
- color: #f57c00;
+ background: #F0EBE1;
+ color: #7B746D;
  }
 
  /* Main Content */
@@ -207,8 +207,8 @@
 
  /* Info Box */
  .info-box {
- background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
- border-left: 4px solid var(--yellow);
+ background: linear-gradient(135deg, #F0EBE1 0%, #F3EEEA 100%);
+ border-left: 4px solid var(--terracotta);
  border-radius: 12px;
  padding: 25px 30px;
  margin-bottom: 40px;
@@ -363,7 +363,7 @@
  }
 
  .doc-card-header {
- background: linear-gradient(135deg, var(--navy) 0%, #3d566e 100%);
+ background: linear-gradient(135deg, var(--navy) 0%, #496778 100%);
  color: white;
  padding: 20px;
  }
@@ -373,11 +373,11 @@
  }
 
  .doc-card-header.udo {
- background: linear-gradient(135deg, var(--teal) 0%, #4a6d7a 100%);
+ background: linear-gradient(135deg, var(--teal) 0%, #496778 100%);
  }
 
  .doc-card-header.sp {
- background: linear-gradient(135deg, var(--tan) 0%, #a8874d 100%);
+ background: linear-gradient(135deg, var(--tan) 0%, #918A83 100%);
  }
 
  .doc-card-id {
@@ -444,7 +444,7 @@
  }
 
  .doc-file-name .icon {
- color: var(--red);
+ color: var(--navy);
  }
 
  .doc-file-link {
@@ -548,8 +548,8 @@
  width: 100%;
  }
  }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
-<body>
+</head>
+<body class="dark-nav">
 <!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
 
@@ -867,7 +867,7 @@
  <section class="doc-category" data-type="legislation">
  <div class="category-header">
  <div class="category-title">
- <div class="category-icon" style="background: #8e44ad;"></div>
+ <div class="category-icon" style="background: var(--dark-anchor);"></div>
  <div>
  <h2>Related Legislation</h2>
  <span>Bills establishing or amending overlay districts</span></div></div>
@@ -875,7 +875,7 @@
 
  <div class="doc-grid">
  <div class="doc-card" data-type="legislation">
- <div class="doc-card-header" style="background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%);">
+ <div class="doc-card-header" style="background: linear-gradient(135deg, #2F3A45 0%, #3A5566 100%);">
  <div class="doc-card-id">Legislation</div>
  <div class="doc-card-title">BL2021-635 / BL2020-316</div></div>
  <div class="doc-card-body">
@@ -889,7 +889,7 @@
  <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
 
  <div class="doc-card" data-type="legislation">
- <div class="doc-card-header" style="background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%);">
+ <div class="doc-card-header" style="background: linear-gradient(135deg, #2F3A45 0%, #3A5566 100%);">
  <div class="doc-card-id">Legislation</div>
  <div class="doc-card-title">BL2022-1322</div></div>
  <div class="doc-card-body">
@@ -903,7 +903,7 @@
  <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
 
  <div class="doc-card" data-type="legislation">
- <div class="doc-card-header" style="background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%);">
+ <div class="doc-card-header" style="background: linear-gradient(135deg, #2F3A45 0%, #3A5566 100%);">
  <div class="doc-card-id">Legislation</div>
  <div class="doc-card-title">BL2024-559</div></div>
  <div class="doc-card-body">
@@ -953,7 +953,7 @@
 
  <!-- Footer -->
  <footer class="footer">
- <p>© 2026 Castlehold | Nashville DADU Resource Platform</p>
+ <p>© 2026 Homebody Projects | Powered by Castlehold</p>
  <p style="margin-top: 10px;">Data sourced from Nashville-Davidson County public records. Always verify with Metro Planning.</p></footer>
 
  <script>
