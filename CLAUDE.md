@@ -320,6 +320,7 @@ Note: `form_wizard.html` is the unified replacement for the deleted `determine_f
 |-------|------|------|
 | What is a DADU? | ADU.png | what_is_dadu.html |
 | General Requirements | Building_and_Construction.svg | dadu_requirements_overview.html |
+| Eligibility Flowchart | Zoning.svg | dadu_eligibility_flowchart.html |
 | DADU History | Recorded_Docs.svg | dadu_history.html |
 | Code & Legislation | Legislation.svg | dadu_code_legislation_v5.html |
 
@@ -441,12 +442,15 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 - ✅ Contractor pricing added to homebody_dadu_pricing.html (3 tiers: $29/$79/$149)
 - ✅ Nav updated: "Advertise With Us" now links to contractor_portal.html#advertise (both header.js and header.html)
 - ✅ contractor_portal.html fully rebranded: Inter font, CSS variables, SVG icons, fixed broken link to deleted page
+- ✅ Eligibility flowchart made fully interactive: step-through wizard with YES/NO gates, collapsed summary bars with "Change Answer", progress bar, Step 5 informational with Continue button, Step 6 ends with Eligible result card + Property Report Card link, Show All toggle, Start Over, all 49 links preserved
 
-### PRIORITY 1: Delete 26 Identified Duplicate Pages
-**Status:** Identified, awaiting user confirmation to delete.
+### PRIORITY 1: Delete 24 Identified Duplicate Pages
+**Status:** Identified, awaiting user confirmation to delete. (dadu_eligibility_checklist already deleted; dadu_eligibility_flowchart is now active in RESOURCES nav)
 
 These are older versions or duplicates with content covered by active pages:
-am_i_eligible_compact, castlehold_homepage_flat, dadu_build_explorer, dadu_build_explorer_v2, dadu_build_tool, dadu_build_tool_backup, dadu_eligibility_checklist, dadu_eligibility_flowchart, dadu_explorer_attom, dadu_explorer_attom_v2, dadu_explorer_v2, dadu_near_me_locator, dadu_near_me_v3, dadu_platform, dadu_property_report, dadu_property_viewer_v3, dadu_report_connected, dadu_report_full, dadu_resources, dadu_symbium_map, footprints_proof_of_concept, homebody_index, homebody_index_v3, homebody_index_v4, homebody_main, index_pq, nashville_permit_explorer_v3
+am_i_eligible_compact, castlehold_homepage_flat, dadu_build_explorer, dadu_build_explorer_v2, dadu_build_tool, dadu_build_tool_backup, dadu_explorer_attom, dadu_explorer_attom_v2, dadu_explorer_v2, dadu_near_me_locator, dadu_near_me_v3, dadu_platform, dadu_property_report, dadu_property_viewer_v3, dadu_report_connected, dadu_report_full, dadu_symbium_map, footprints_proof_of_concept, homebody_index, homebody_index_v3, homebody_index_v4, homebody_main, index_pq, nashville_permit_explorer_v3
+
+Note: dadu_resources.html is linked in nav (DATA > External Links) so is NOT a duplicate.
 
 ### PRIORITY 2: Fix Branding Consistency Across All Pages
 **Status:** Header/nav fixed. Individual page content still has old branding in many files.
