@@ -109,8 +109,7 @@
                  item('size_calculator.html', 'ADU.png', 'Size Calculator')
              ) +
              col('Claims.png', 'Form Wizard',
-                 item('determine_forms_required.html', 'Claims.png', 'Determine Forms Needed') +
-                 item('legal_form_filler.html', 'Recordable Legal Report.svg', 'Form Filler')
+                 item('form_wizard.html', 'Claims.png', 'Form Wizard')
              ) +
     '        </div>' +
     '      </div>' +
