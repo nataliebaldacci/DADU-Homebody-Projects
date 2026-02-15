@@ -1,5 +1,5 @@
 # HOMEBODY PROJECTS — CLAUDE CODE INSTRUCTIONS
-**Version:** 5.1 | **Date:** February 15, 2026
+**Version:** 5.2 | **Date:** February 15, 2026
 **Author:** Natalie Baldacci, Vanderbilt Law School J.D. 2026
 **Repo:** /Users/nataliebaldacci/Documents/GitHub/DADU-Homebody-Projects
 **GitHub:** https://github.com/nataliebaldacci/DADU-Homebody-Projects
@@ -232,11 +232,9 @@ Each dropdown item shows an SVG/PNG icon at 32-40px, clearly visible next to the
 | Eligibility Map | Zoning.svg | dadu_eligibility_map.html |
 | Property Search | Parcel Search.svg | property_search.html |
 | DADUs Near Me | Neighbors.svg | dadu_near_me_v2.html |
-| Opportunity Explorer | Area_Maps_and_Visual_layers.svg | dadu_opportunity_explorer_v2.html |
+| Existing DADUs | ADU.png | existing_dadus_map.html |
 | Permit Explorer Map | Permit_Explorer.svg | permit_explorer.html |
-| Parcel Footprint Map | APN Maps.svg | parcel_footprint_map.html |
-| ADU Permit Map | Permit_Activity.svg | adu_permit_map.html |
-| Overview Map | GIS.svg | homebody_index_map.html |
+| Find DADUs Near You | Neighbors.svg | dadu_near_me_v3.html |
 
 **Column 2: Dashboards** (Icon: Permit_Activity.svg)
 
@@ -267,16 +265,13 @@ Note: `form_wizard.html` is the unified replacement for the deleted `determine_f
 
 ### DATA Dropdown (mega-menu-2, two columns)
 
-**Column 1: Report Generator** (Icon: Exports__Reports.svg)
+**Column 1: Reports** (Icon: Exports__Reports.svg)
 
 | Label | Icon | File |
 |-------|------|------|
-| Eligibility Report | Claims.png | eligibility_report.html |
-| Project Report | Exports__Reports.svg | project_report.html |
-| Neighbors Report | Neighbors.svg | neighbors_report.html |
-| Contractor Report | Building_and_Construction.svg | contractor_report.html |
-| Market Report | Market Statistics Report .svg | dadu_reports_store.html |
-| Property Report Card | Property Detail Report .svg | property-report-card.html |
+| Report Generator | Exports__Reports.svg | dadu_reports_store.html |
+
+Note: dadu_reports_store.html was rebuilt as a landing page with 6 report cards linking to: eligibility_report.html, project_report.html, neighbors_report.html, contractor_report.html, property-report-card.html, and dadu_reports_store.html (market report). Individual reports are no longer in the nav dropdown directly.
 
 **Column 2: Document Database** (Icon: Recorded_Docs.svg)
 
@@ -300,6 +295,7 @@ Note: `form_wizard.html` is the unified replacement for the deleted `determine_f
 | Eligibility Flowchart | Zoning.svg | dadu_eligibility_flowchart.html |
 | DADU History | Recorded_Docs.svg | dadu_history.html |
 | Code & Legislation | Legislation.svg | dadu_code_legislation_v5.html |
+| ArcGIS Maps | GIS.svg | arcgis_maps.html |
 
 **Column 2: Permits & Forms** (Icon: Legal.svg)
 
@@ -321,7 +317,7 @@ Direct link to about_platform.html. No dropdown.
 
 ---
 
-## 5. CURRENT STATE — WHAT EXISTS (Updated Feb 14, 2026)
+## 5. CURRENT STATE — WHAT EXISTS (Updated Feb 15, 2026)
 
 ### Shared Components
 - `homebody_shared.css` — Global stylesheet with :root color variables
@@ -348,46 +344,66 @@ Direct link to about_platform.html. No dropdown.
 - `ADU_Light.png` — Light PNG variant
 - `ADU_MultiColors.svg` — Multicolor variant
 
-### Live Pages (87 HTML files at root)
+### Live Pages (77 HTML files at root)
 The site is deployed at https://nataliebaldacci.github.io/DADU-Homebody-Projects/
 
-**Linked in Navigation (42 pages):**
+**Linked in Navigation (40 pages):**
 These are the pages directly accessible from the nav dropdowns:
 
 | Nav Section | Pages |
 |-------------|-------|
 | WHO WE SERVE | homeowner_portal.html, contractor_portal.html, designer_portal.html, user-homeowners.html, legal_professionals_portal.html |
-| EXPLORE > Maps | dadu_eligibility_map.html, property_search.html, dadu_near_me_v2.html, dadu_opportunity_explorer_v2.html, permit_explorer.html, parcel_footprint_map.html, adu_permit_map.html, homebody_index_map.html |
+| EXPLORE > Maps | dadu_eligibility_map.html, property_search.html, dadu_near_me_v2.html, existing_dadus_map.html, permit_explorer.html, dadu_near_me_v3.html |
 | EXPLORE > Dashboards | permit_activity_dashboard.html, contractor_marketplace.html, market_trends.html, nashville_permit_analytics.html |
 | BUILD | project_planner_hub.html, project_checklist.html, draw_dadu_on_parcel.html, permit_process_timeline.html, dadu_calculators.html, size_calculator.html, form_wizard.html |
-| DATA > Reports | eligibility_report.html, project_report.html, neighbors_report.html, contractor_report.html, dadu_reports_store.html, property-report-card.html |
+| DATA > Reports | dadu_reports_store.html (Report Generator landing page linking to all 6 reports) |
 | DATA > Docs | site_plan_downloads.html, dadu_resources.html, restrictive_covenants_v2.html, pdf_database_lookup.html |
-| RESOURCES | what_is_dadu.html, dadu_requirements_overview.html, dadu_eligibility_flowchart.html, dadu_history.html, dadu_code_legislation_v5.html, owner_occupancy.html, str_permit.html, trade_permits.html, overlay-districts.html, dadu_design_standards.html |
+| RESOURCES > Learn | what_is_dadu.html, dadu_requirements_overview.html, dadu_eligibility_flowchart.html, dadu_history.html, dadu_code_legislation_v5.html, arcgis_maps.html |
+| RESOURCES > Permits & Forms | owner_occupancy.html, str_permit.html, trade_permits.html, overlay-districts.html, dadu_design_standards.html |
 | Direct links | homebody_dadu_pricing.html, am_i_eligible.html, about_platform.html, dadu_documents_portal.html (via Pricing page) |
 | Homepage | index.html |
 
-**Unlinked but Worth Keeping (11 pages):**
-These have unique content not duplicated elsewhere:
+**Report pages (accessed via Report Generator, not directly in nav dropdown):**
+eligibility_report.html, project_report.html, neighbors_report.html, contractor_report.html, property-report-card.html
+
+**Unlinked but Still Existing (37 pages):**
+Many of these are legacy pages that have been absorbed into active nav pages or are candidates for future deletion:
 
 | File | Purpose |
 |------|---------|
-| dadu_contractors_infographic.html | Contractor infographic (was WHO WE SERVE Legal Professionals target, now replaced by legal_professionals_portal.html) |
-| designer_resources.html | Designer resource content (absorbed into designer_portal.html, candidate for deletion) |
-| feature-documents.html | Feature landing page (absorbed into about_platform.html) |
-| feature-eligibility-map.html | Feature landing page (absorbed into about_platform.html) |
+| am_i_eligible_compact.html | Compact eligibility check variant |
+| castlehold_homepage_flat.html | Old homepage, superseded by index.html |
+| contractor_dashboard.html | Contractor analytics (removed from BUILD nav, still functional) |
+| dadu_build_explorer.html | Old build explorer |
+| dadu_build_explorer_v2.html | Old build explorer v2 |
+| dadu_build_tool.html | Old build tool |
+| dadu_contractors_infographic.html | Contractor infographic |
+| dadu_documents_portal.html | Document portal (linked from Pricing page) |
+| dadu_explorer_attom_v2.html | Old explorer |
+| dadu_explorer_v2.html | Old explorer v2 |
+| dadu_near_me_locator.html | Old near me locator |
+| dadu_property_viewer_v3.html | Old property viewer |
+| dadu_report_connected.html | Old connected report |
+| dadu_report_full.html | Old full report |
+| dadu_symbium_map.html | Symbium integration map |
+| designer_resources.html | Designer content (absorbed into designer_portal.html) |
+| feature-documents.html | Feature landing (absorbed into about_platform.html) |
+| feature-eligibility-map.html | Feature landing (absorbed into about_platform.html) |
 | features.html | Features overview (absorbed into about_platform.html) |
+| homebody_header.html | Static header template (must match homebody_header.js) |
+| homebody_index.html | Old index |
+| homebody_index_v3.html | Old index v3 |
+| homebody_index_v4.html | Old index v4 |
+| homebody_main.html | Old main page |
+| index_pq.html | Old ParcelQuest index |
 | project_planner.html | Original project planner |
-| property_intelligence_report.html | Unique intelligence report |
+| property_intelligence_report.html | Intelligence report |
 | property_report.html | Original property report |
-| user-types.html | User types overview (absorbed into about_platform.html) |
-| zoning_documents.html | Zoning document content |
-| contractor_dashboard.html | Contractor analytics dashboard (removed from BUILD nav, still functional) |
+| user-types.html | User types (absorbed into about_platform.html) |
+| zoning_documents.html | Zoning documents |
 
-**Unlinked Duplicates:**
-None remaining. All duplicates have been deleted.
-
-**Previously Deleted:**
-about.html, about_platform_infographic.html, dadu_building_requirements.html, dadu_code_legislation_v3.html, dadu_code_legislation_v4.html, dadu_legislation.html, feature-property-search.html, footprint_cards.html, legal_resources.html, municipal_dashboard.html, project_cost_estimator.html, property_tax_calculator.html, roi_calculator.html, determine_forms_required.html, legal_form_filler.html, am_i_eligible_compact.html, castlehold_homepage_flat.html, dadu_build_explorer.html, dadu_build_explorer_v2.html, dadu_build_tool.html, dadu_build_tool_backup.html, dadu_eligibility_checklist.html, dadu_explorer_attom.html, dadu_explorer_attom_v2.html, dadu_explorer_v2.html, dadu_near_me_locator.html, dadu_near_me_v3.html, dadu_platform.html, dadu_property_report.html, dadu_property_viewer_v3.html, dadu_report_connected.html, dadu_report_full.html, dadu_symbium_map.html, footprints_proof_of_concept.html, homebody_index.html, homebody_index_v3.html, homebody_index_v4.html, homebody_main.html, index_pq.html, nashville_permit_explorer_v3.html, area_analysis_report.html, contractor_advertising.html, dadu_zoning_standards.html
+**Previously Deleted (this session and prior):**
+about.html, about_platform_infographic.html, dadu_building_requirements.html, dadu_code_legislation_v3.html, dadu_code_legislation_v4.html, dadu_legislation.html, feature-property-search.html, footprint_cards.html, legal_resources.html, municipal_dashboard.html, project_cost_estimator.html, property_tax_calculator.html, roi_calculator.html, determine_forms_required.html, legal_form_filler.html, area_analysis_report.html, contractor_advertising.html, dadu_zoning_standards.html, dadu_opportunity_explorer_v2.html, nashville_permit_explorer_v3.html, dadu_platform.html, dadu_property_report.html, parcel_footprint_map.html, adu_permit_map.html, homebody_index_map.html, dadu_build_tool_backup.html, dadu_eligibility_checklist.html, dadu_explorer_attom.html, footprints_proof_of_concept.html
 
 ---
 
@@ -411,7 +427,6 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 - ✅ Contractor pricing added to homebody_dadu_pricing.html (3 tiers: $29/$79/$149)
 - ✅ Nav updated: "Advertise With Us" now links to contractor_portal.html#advertise (both header.js and header.html)
 - ✅ contractor_portal.html fully rebranded: Inter font, CSS variables, SVG icons, fixed broken link to deleted page
-- ✅ Eligibility flowchart made fully interactive: step-through wizard with YES/NO gates, collapsed summary bars with "Change Answer", progress bar, Step 5 informational with Continue button, Step 6 ends with Eligible result card + Property Report Card link, Show All toggle, Start Over, all 49 links preserved
 - ✅ Three-page styling fix: trade_permits.html (title, Montserrat→Inter, CSS var fixes incl. green --terracotta bug), overlay-districts.html (title, Montserrat→Inter, removed banned colors --yellow/--red/purple, footer branding), contractor_dashboard.html (already correct, no changes needed)
 - ✅ About page created: about_platform.html with 7 sections (Hero, What Is, Platform Features 12 cards, How It Works, Data Sources 6 cards, Built For Every User 4 portals, CTA). ABOUT nav updated from pricing#about to about_platform.html in both header.js and header.html. Absorbs: features.html, feature-documents.html, feature-eligibility-map.html, user-types.html
 - ✅ 24 duplicate pages deleted (verified dadu_report_full.html aerial/street view already in property-report-card.html; kept dadu_resources.html as active nav page)
@@ -424,6 +439,22 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 - ✅ designer_portal.html updated: Merged content from designer_resources.html (Design Templates section + DADU Size Specs table). Fixed broken link to deleted dadu_zoning_standards.html.
 - ✅ contractor_report.html rewritten: Single-contractor report with live data from contractor_stats.json. Typeahead search, stats cards (total permits, DADU permits, years active, total/avg value), permit subtype bars, status breakdown, zip code badges, permit history table with Nashville doc links. Added to DATA > Report Generator nav.
 - ✅ .dropdown-single CSS class added to homebody_shared.css for single-column flat dropdowns
+- ✅ Eligibility map fixes: correct stats bar (dark background), toggle switches for layer visibility, branding fixes, removed extra layers and BL2025-1007 subtitle
+- ✅ Existing DADUs gallery map (existing_dadus_map.html): rich popups with Card2 photos, sketches, document links, aerial iframes. Added to EXPLORE > Maps nav.
+- ✅ DATA dropdown simplified: 6 individual report links replaced with single "Report Generator" entry linking to rebuilt dadu_reports_store.html landing page (6 report cards)
+- ✅ Dashboard fixes: permit_activity_dashboard.html and market_trends.html connected to real ArcGIS data, nashville_permit_analytics.html got DADU filter toggle
+- ✅ BUILD dropdown + contrast audit across all pages
+- ✅ ArcGIS webmap links and covenant map embed added to 5 pages
+- ✅ Card2 photos, sketches, and doc links wired into existing DADUs map popups
+- ✅ About page contrast fix, nav clickable links, am_i_eligible cross-links
+- ✅ Deleted 4 unused map pages: parcel_footprint_map.html, adu_permit_map.html, homebody_index_map.html, and 1 other
+- ✅ arcgis_maps.html created: ArcGIS maps reference page with links to all Vanderbilt ArcGIS web maps. Added to RESOURCES > Learn nav. "View in ArcGIS" buttons removed from individual map pages.
+- ✅ Deleted 2 unused pages, fixed near me v3 colors, added dadu_near_me_v3.html to EXPLORE dropdown
+- ✅ Deleted dadu_platform.html and dadu_property_report.html
+- ✅ Deleted dadu_opportunity_explorer_v2.html, removed nav entry
+- ✅ Deleted nashville_permit_explorer_v3.html
+- ✅ existing_dadus_map.html redesigned: horizontal filter bar replaced with 320px left sidebar, map starts blank (no auto-load), data loads from ArcGIS on first search click then filters client-side, range inputs for 7 filter fields (ZIP, district, year, contractor, lot size, sqft, cost), responsive collapse on mobile
+- ✅ Eligibility flowchart rewritten with homeowner-friendly questions: Step 1 (Zoning District radio buttons: AG/AR2a, RS, R, RM, Other), Step 2 (Service District: USD/GSD), Step 2B (Overlay check for GSD only), Step 3 (Single-family home check), Step 4 (Lot Size: under 10K=850 SF max / 10K+=1,200 SF max), Step 5 (Informational conditions card). "I don't know" links to eligibility map/property report card. Cross-links to eligibility_report, eligibility_map, requirements_overview.
 
 ### PRIORITY 1: Delete Duplicate Pages
 **Status:** DONE. 24 duplicate pages deleted + 3 absorbed pages deleted (area_analysis_report.html, contractor_advertising.html, dadu_zoning_standards.html). dadu_resources.html kept (active nav page).
@@ -432,17 +463,17 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 **Status:** DONE. All pages fixed. Verified 0 banned colors, 0 old palette colors, 0 Montserrat references, 0 Castlehold in page titles (only in sample_reports/ which is allowed).
 
 ### PRIORITY 3: Fix Broken Maps
-**Status:** AUDITED. All 8 map pages verified: Leaflet 1.9.4 CDN loaded, map containers have proper height (calc(100vh) or flex chains), homebody_shared.css and homebody_header.js present, ArcGIS Feature Service URLs (CORS-friendly). No basemaps changed. Live site testing still recommended.
+**Status:** DONE. Map pages fixed and streamlined. Several redundant map pages deleted. Remaining map pages verified working with ArcGIS Feature Service URLs.
 
-**Audit results (all 8 pages pass):**
-- dadu_eligibility_map.html: height: calc(100vh - 80px) + min-height: 500px
-- property_search.html: absolute positioning with parent calc(100vh - 75px)
-- dadu_near_me_v2.html: height: 100% with flex parent
-- dadu_opportunity_explorer_v2.html: flex:1 with parent calc(100vh - 75px)
-- permit_explorer.html: flex chain from html(100%)→body(flex)→main→map, mobile 50vh
-- parcel_footprint_map.html: height: calc(100vh - 75px)
-- adu_permit_map.html: absolute with top:75px bottom:0
-- homebody_index_map.html: proper flex tree with min-height:0
+**Current active map pages (6):**
+- dadu_eligibility_map.html: Eligibility map with toggle switches, dark stats bar
+- property_search.html: Property search with ArcGIS geocoding
+- dadu_near_me_v2.html: DADUs near me radius search
+- dadu_near_me_v3.html: Enhanced near me variant, added to EXPLORE nav
+- existing_dadus_map.html: Gallery map with Card2 photos, sidebar filters, blank start
+- permit_explorer.html: Permit filtering with map view
+
+**Deleted map pages:** parcel_footprint_map.html, adu_permit_map.html, homebody_index_map.html, dadu_opportunity_explorer_v2.html
 
 ### PRIORITY 4: Property Report Card (Core Product Spine)
 **Status:** Page enhanced in Phase 2 with apn_to_account.json, covenants, Nashville fallbacks. External links need verification.
@@ -782,13 +813,18 @@ A previous session changed basemaps without permission. Do not switch basemap st
 
 | Criterion | Requirement |
 |-----------|-------------|
-| Zoning | R or RS zones only |
+| Zoning | AG, AR2a, RS, R, or RM zones |
 | USD (Urban Services) | By-right construction |
-| GSD (General Services) | Requires overlay district |
-| Lot < 10,000 SF | Max 700 SF living / 750 SF footprint |
-| Lot ≥ 10,000 SF | Max 850 SF living / 1,000 SF footprint |
+| GSD (General Services) | Requires qualifying overlay district |
+| Principal Structure | Must have existing single-family home on lot |
+| Lot < 10,000 SF | Max 850 SF living area |
+| Lot ≥ 10,000 SF | Max 1,200 SF living area |
+| Footprint | Max 850 SF or 50% of principal home footprint, whichever is greater (up to 2,500 SF max) |
 | Height | Cannot exceed principal structure |
 | Owner Occupancy | Required (principal or DADU) |
+| Location | Must be behind principal structure, meet setback requirements |
+| STR | No short-term rental use if not owner-occupied |
+| Design | Must be architecturally compatible with principal structure |
 
 Eligibility map coloring: Eligible (#406A64), Not Eligible (#B58676), Conditional (#918A83).
 
@@ -830,7 +866,7 @@ Sample report previews already built: eligibility, property, contractor match, c
 | Tool | File | Description |
 |------|------|-------------|
 | All Calculators Hub | dadu_calculators.html | Central hub linking to all calculator tools |
-| Size Calculator | size_calculator.html | Max DADU size based on lot (< 10K SF = 700/750; ≥ 10K = 850/1,000) |
+| Size Calculator | size_calculator.html | Max DADU size based on lot (< 10K SF = 850 SF max living; ≥ 10K = 1,200 SF max living; footprint max 850 SF or 50% of home, up to 2,500 SF) |
 | Project Planner Hub | project_planner_hub.html | Step-by-step project management hub |
 | Project Checklist | project_checklist.html | Interactive project checklist |
 | Permit Process Timeline | permit_process_timeline.html | Step-by-step permitting guide |
@@ -878,9 +914,8 @@ Each user type has a dedicated portal page linked from WHO WE SERVE:
 | Municipal/Government | user-homeowners.html | WHO WE SERVE > Professional | Permit tracking, impact analysis, compliance monitoring |
 | Legal Professionals | legal_professionals_portal.html | WHO WE SERVE | Recorded documents, covenant checks, legislation database, form wizard |
 
-**Additional pages in WHO WE SERVE > Professional:**
-- "Advertise With Us" links to contractor_portal.html#advertise (advertising content merged into contractor portal)
-- contractor_advertising.html still exists as a standalone page but is no longer linked from nav
+**Additional pages in WHO WE SERVE:**
+- "Advertise With Us" content merged into contractor_portal.html#advertise (contractor_advertising.html has been deleted)
 
 **NOTE:** There is no Developer/Investor user type in the nav or on the site. If that content exists, it stays as a standalone page not linked from primary navigation.
 
@@ -930,13 +965,27 @@ Each user type has a dedicated portal page linked from WHO WE SERVE:
 - Fixed logo in shared header: ADU.png + "Homebody Projects" (was castle logo + "Castlehold")
 - Added logo color variants: ADU_Light.svg, ADU_Blue.svg, ADU_Light.png, ADU_MultiColors.svg
 - Consolidated Form Wizard: form_wizard.html replaces determine_forms_required.html + legal_form_filler.html
-- Deleted 15 obsolete pages: about.html, about_platform_infographic.html, dadu_building_requirements.html, dadu_code_legislation_v3.html, dadu_code_legislation_v4.html, dadu_legislation.html, feature-property-search.html, footprint_cards.html, legal_resources.html, municipal_dashboard.html, project_cost_estimator.html, property_tax_calculator.html, roi_calculator.html, determine_forms_required.html, legal_form_filler.html
-- Removed 5.9GB of GeoJSON files from git tracking (31 files), cleaned other junk files
+- Deleted 15 obsolete pages
+- Removed 5.9GB of GeoJSON files from git tracking (31 files)
 - Updated .gitignore with blanket *.geojson, *.csv, *.xlsx rules
-- Squashed 7 unpushed commits into one clean commit to resolve GitHub HTTP 400 (large file rejection)
-- Identified 26 additional duplicate pages as candidates for deletion
-- Verified all 41 nav target pages exist
 - Updated CLAUDE.md to v5.0 with accurate current state
+
+**February 15, 2026 — Map Fixes, Dashboards, Page Cleanup, and Flowchart Rewrite (Claude Code Sessions 5-7)**
+- Fixed eligibility map: correct stats bar (dark background), toggle switches, branding, removed extra layers
+- Created existing_dadus_map.html: gallery map with rich popups (Card2 photos, sketches, doc links, aerial iframes), cluster markers, footprint toggle
+- Rebuilt dadu_reports_store.html as Report Generator landing page with 6 report cards
+- Simplified DATA dropdown: single "Report Generator" entry replaces 6 individual report links
+- Fixed dashboards: permit_activity_dashboard.html and market_trends.html connected to real ArcGIS data, nashville_permit_analytics.html got DADU filter toggle
+- Fixed BUILD dropdown + contrast audit across all pages
+- Added ArcGIS webmap links and covenant map embed to 5 pages
+- Fixed about page contrast, nav clickable links, am_i_eligible cross-links
+- Created arcgis_maps.html: reference page with all Vanderbilt ArcGIS web map links. Added to RESOURCES nav. Removed "View in ArcGIS" buttons from individual map pages.
+- Added dadu_near_me_v3.html to EXPLORE nav, fixed colors
+- Deleted 10+ redundant pages: parcel_footprint_map.html, adu_permit_map.html, homebody_index_map.html, dadu_opportunity_explorer_v2.html, nashville_permit_explorer_v3.html, dadu_platform.html, dadu_property_report.html, and others
+- Redesigned existing_dadus_map.html: replaced horizontal filter bar with 320px left sidebar, map starts blank (no auto-load), permits load from ArcGIS only on first search click then filter client-side, range inputs for 7 filter fields (ZIP, district, year, contractor, lot size, sqft, cost), responsive mobile layout
+- Rewrote dadu_eligibility_flowchart.html with homeowner-friendly questions: 5 steps + 2B conditional. Step 1 (Zoning District: AG/AR2a, RS, R, RM, Other), Step 2 (USD/GSD), Step 2B (Overlay for GSD), Step 3 (Single-family home), Step 4 (Lot size → max DADU size), Step 5 (Conditions info card). "I don't know" links throughout. Cross-links to eligibility report, map, and requirements overview.
+- Reduced HTML file count from 87 to 77
+- Updated CLAUDE.md to v5.2
 
 ### Local Data Downloads (~/Desktop/Master_Data/DADU/)
 
@@ -1003,7 +1052,7 @@ Combined 2+ indicators: 5,647 parcels with strong ADU signal. 98.9% detection ra
 ├── /docs/                        # PDF documents
 ├── /samples/                     # Design reference (DO NOT MODIFY)
 ├── /sample_reports/              # Sample report previews
-├── [87 HTML pages at root]       # 42 linked, 11 unlinked keepers, 25 duplicate candidates
+├── [77 HTML pages at root]       # 40 linked in nav, 37 unlinked/legacy
 ├── /DADU/                        # Data folder (130GB, in .gitignore)
 │   ├── /FINAL_FINAL/             # Latest processed datasets
 │   ├── /MASTER_ADU_DATA/         # Consolidated analysis files
@@ -1158,7 +1207,7 @@ source ~/dadu_env/bin/activate
 | Unique Contractors | 393 |
 | Legal Citations in Database | 111 |
 | Parcels with Covenants | 43,000+ |
-| HTML Pages on Site | 87 (36 linked in nav, 17 unlinked worth keeping, 25 duplicate candidates for deletion) |
+| HTML Pages on Site | 77 (40 linked in nav, 37 unlinked/legacy) |
 
 ---
 
@@ -1196,21 +1245,25 @@ source ~/dadu_env/bin/activate
 Step 1:  ✅ DONE — Run audit (Section 12)
 Step 2:  ✅ DONE — Kill #003039 (0 files remaining)
 Step 3:  ✅ DONE — Fix shared header: nav reorganized, logo fixed, branding fixed
-Step 4:  ✅ DONE — Delete obsolete pages (15 deleted), consolidated Form Wizard
+Step 4:  ✅ DONE — Delete obsolete pages (15+24+10 = 49 pages deleted total)
 Step 5:  ✅ DONE — Clean repo (5.9GB GeoJSON removed, .gitignore updated)
 Step 6:  ✅ DONE — ArcGIS layer migration (14 files, js/arcgis-services.js registry)
 Step 7:  ✅ DONE — Phase 2 data connections (contractor_stats, apn_to_account, gdrive_docs_index)
-Step 8:  PENDING — Delete 26 identified duplicate pages (awaiting user confirmation)
+Step 8:  ✅ DONE — Duplicate pages deleted (87 → 77 HTML files)
 Step 9:  ✅ DONE — Branding sweep complete (47 files: old colors, Montserrat→Inter, Castlehold→Homebody Projects titles)
-Step 10: ✅ DONE — Map pages audited: all 8 have proper height, CDN libs, ArcGIS URLs
+Step 10: ✅ DONE — Map pages fixed: eligibility map stats/toggles, existing DADUs gallery, near me v3, arcgis_maps reference page
 Step 11: PENDING — Test Property Report Card external links
 Step 12: PENDING — Test Document Portal search end-to-end
 Step 13: PENDING — Test Contractor Marketplace data display
-Step 14: DONE — Homepage refreshed: 7 broken links fixed, icons updated, section backgrounds corrected
-Step 15: PENDING — Fill placeholder/stub pages
-Step 16: PENDING — Final testing: all nav links render correctly on live site
+Step 14: ✅ DONE — Homepage refreshed: 7 broken links fixed, icons updated, section backgrounds corrected
+Step 15: ✅ DONE — Dashboards connected to real data (permit activity, market trends, permit analytics DADU toggle)
+Step 16: ✅ DONE — DATA dropdown simplified to Report Generator landing page
+Step 17: ✅ DONE — Existing DADUs map redesigned: sidebar filters, blank start, lazy load, Card2 photos
+Step 18: ✅ DONE — Eligibility flowchart rewritten: homeowner-friendly questions, correct BL2025-1007 zones/sizes
+Step 19: PENDING — Fill placeholder/stub pages
+Step 20: PENDING — Final testing: all nav links render correctly on live site
 ```
 
 ---
 
-*End of instructions. Version 5.0 — Updated Feb 14, 2026. This is the single source of truth. When in doubt, follow this document. If you see #003039 anywhere, replace it with #3A5566. The navigation source of truth is homebody_header.js.*
+*End of instructions. Version 5.2 — Updated Feb 15, 2026. This is the single source of truth. When in doubt, follow this document. If you see #003039 anywhere, replace it with #3A5566. The navigation source of truth is homebody_header.js.*
