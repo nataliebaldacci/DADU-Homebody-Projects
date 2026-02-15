@@ -555,7 +555,7 @@
  footprintLayer = L.geoJSON(null, {
  style: {
  fillColor: COLORS.buildingFill,
- fillOpacity: 0.9,
+ fillOpacity: 1.0,
  color: '#4b5563',
  weight: 0.5
  }
@@ -840,6 +840,7 @@
  parcelLayer.addData(parcels);
  }
  if (footprints.features) {
+ selectedFootprintLayer.clearLayers();
  footprintLayer.clearLayers();
  footprintLayer.addData(footprints);
  }
