@@ -45,7 +45,7 @@ body {
 
 /* ELEMENT 2: Stats Bar */
 .stats-bar {
- background-color: #f0ebe1;
+ background-color: #3a5566;
  padding: 16px 24px;
  display: flex;
  align-items: center;
@@ -57,8 +57,8 @@ body {
  flex: 1;
 }
 .stat-card {
- background-color: #ffffff;
- border: 1px solid #e2e2e0;
+ background-color: rgba(255,255,255,0.1);
+ border: 1px solid rgba(255,255,255,0.15);
  border-radius: 10px;
  padding: 12px 20px;
  text-align: center;
@@ -70,18 +70,18 @@ body {
  font-weight: 800;
  font-size: 26px;
  line-height: 1.2;
- color: #3a5566;
+ color: #ffffff;
 }
-.stat-card .stat-number.eligible { color: #406A64; }
-.stat-card .stat-number.conditional { color: #918A83; }
-.stat-card .stat-number.not-eligible { color: #B58676; }
+.stat-card .stat-number.eligible { color: #CBB279; }
+.stat-card .stat-number.conditional { color: #E1D4BB; }
+.stat-card .stat-number.not-eligible { color: #E1D4BB; }
 .stat-card .stat-label {
  font-family: Inter, 'Inter', sans-serif;
  font-weight: 600;
  font-size: 11px;
  text-transform: uppercase;
  letter-spacing: 0.05em;
- color: #706f6c;
+ color: #E1D4BB;
  margin-top: 2px;
 }
 .stats-legend {
@@ -89,7 +89,7 @@ body {
  align-items: center;
  gap: 16px;
  font-size: 13px;
- color: #706f6c;
+ color: #E1D4BB;
  white-space: nowrap;
  flex-shrink: 0;
 }
@@ -110,7 +110,7 @@ body {
 .stats-legend-dot.not-eligible { background-color: #B58676; }
 .stats-legend-label {
  font-size: 13px;
- color: #706f6c;
+ color: #E1D4BB;
 }
 
 /* ELEMENT 3: Announcement Banner */
@@ -623,7 +623,7 @@ body {
   <span class="stats-legend-label">Not Eligible</span></div>
  </div>
  </div>
- <div style="text-align:center;padding:4px 24px 0;font-size:11px;color:#918A83;">Based on BL2025-1007 eligibility analysis of all Nashville-Davidson County parcels.</div>
+ <div style="text-align:center;padding:4px 24px 0;font-size:11px;color:#E1D4BB;background-color:#3a5566;">Based on BL2025-1007 eligibility analysis of all Nashville-Davidson County parcels.</div>
 
  <!-- ELEMENT 3: Announcement Banner -->
  <div class="announcement-bar">
@@ -652,7 +652,7 @@ body {
  <div class="search-row">
  <div class="search-container">
   <div class="autocomplete-wrapper">
-   <input type="text" id="address-search" placeholder="Enter a Nashville address (e.g., 100 Broadway)" autocomplete="off">
+   <input type="text" id="address-search" placeholder="Enter a Nashville address (e.g., 123 Main Street)" autocomplete="off">
    <div class="autocomplete-dropdown" id="ac-dropdown"></div>
   </div>
   <button class="search-btn" id="search-btn" onclick="searchAddress()">Search</button>
@@ -706,74 +706,10 @@ body {
    </div>
   </div>
 
-  <hr class="filter-divider">
-
-  <div class="layer-toggle">
-   <label class="toggle-switch">
-    <input type="checkbox" id="show-permits" onchange="toggleOverlay('permits')">
-    <span class="toggle-slider"></span>
-   </label>
-   <div class="layer-info">
-    <span class="layer-name">DADU Permits</span>
-    <span class="layer-desc">827 historic DADU building permits</span>
-   </div>
-  </div>
-
-  <div class="layer-toggle">
-   <label class="toggle-switch">
-    <input type="checkbox" id="show-covenants" onchange="toggleOverlay('covenants')">
-    <span class="toggle-slider"></span>
-   </label>
-   <div class="layer-info">
-    <span class="layer-name">Restrictive Covenants</span>
-    <span class="layer-desc">43,000+ parcels with recorded covenants</span>
-   </div>
-  </div>
-
-  <div class="layer-toggle">
-   <label class="toggle-switch">
-    <input type="checkbox" id="show-footprints" onchange="toggleOverlay('footprints')">
-    <span class="toggle-slider"></span>
-   </label>
-   <div class="layer-info">
-    <span class="layer-name">Building Footprints</span>
-    <span class="layer-desc">327,000+ structures with height data</span>
-   </div>
-  </div>
-
-  <div class="layer-toggle">
-   <label class="toggle-switch">
-    <input type="checkbox" id="show-secondary" onchange="toggleOverlay('secondary')">
-    <span class="toggle-slider"></span>
-   </label>
-   <div class="layer-info">
-    <span class="layer-name">Existing DADUs</span>
-    <span class="layer-desc">Properties with confirmed secondary structures</span>
-   </div>
-  </div>
-
-  <hr class="filter-divider">
-
-  <div class="filter-group">
-  <label class="filter-label">Filter by Zoning</label>
-  <select class="filter-select" id="filter-zoning" onchange="updateFilters()">
-   <option value="">All Eligible Zones</option>
-   <option value="RS">RS - Single Family</option>
-   <option value="R">R - Residential</option>
-   <option value="RM">RM - Multi-Family</option>
-   <option value="AR">AR - Agricultural Res.</option>
-   <option value="SP">SP - Specific Plan</option></select></div>
  </div>
  </div>
 
 </div><!-- end page-wrapper -->
-
-<!-- Hidden counters (used by overlay toggle callbacks) -->
-<div style="display:none;">
- <span id="count-permits">0</span>
- <span id="count-covenants">0</span>
- <span id="count-footprints">0</span>
-</div>
 
 <!-- Zoom Message -->
 <div class="zoom-message" id="zoom-message">Zoom in to see individual parcels</div>
@@ -798,13 +734,6 @@ body {
  notEligible: '#B58676'
  };
 
- const PERMIT_COLORS = {
- completed: '#406A64',
- active: '#537188',
- expired: '#CBB279',
- revoked: '#B58676'
- };
-
  const ELIG_LABELS = {
  'eligible': 'Eligible (By Right)',
  'conditional': 'Conditional (Overlay Required)',
@@ -818,23 +747,8 @@ body {
  // PRIMARY: Eligibility polygons with all parcel + eligibility data (285,194 records)
  const ELIGIBILITY_POLYGONS = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Eligibility_Enhanced_Polygons_20260213_065606/FeatureServer/0';
 
- // OVERLAY: DADU Permits with point geometry (4,117 records)
- const PERMITS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_All_Permits_MERGED_v2_20260213/FeatureServer/0';
-
- // OVERLAY: Restrictive Covenants with point geometry
- const COVENANTS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Parcels_with_Restrictive_Covenants_ohoMJQ/FeatureServer/0';
-
- // OVERLAY: Building footprint polygons (227,880 records) — for viewport display
- const FOOTPRINTS_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Footprints_Trimmed_20260213_060215/FeatureServer/0';
-
  // SEARCH: Footprints with parcel data (has APN field) — for APN-based search
  const FOOTPRINTS_WITH_PARCEL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/ArcGIS/rest/services/Footprints_Trimmed_20260213_060215/FeatureServer/0';
-
- // OVERLAY: Existing DADUs / Secondary structures on single-family parcels
- const SECONDARY_SERVICE = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Secondary_SFH_Merged_SHP_20251231_0015/FeatureServer/0';
-
- // DATA: Parcels with building info (zoning, dwelling units, appraised values)
- const PARCELS_BUILDING_INFO = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Parcels_Building_Info_20260213_070754/FeatureServer/0';
 
  // GEOCODING: Esri World Geocoder (public, CORS-friendly)
  const GEOCODE_URL = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates';
@@ -844,24 +758,15 @@ body {
  // ====================================================================
  let map;
  let parcelLayer;        // GeoJSON layer for colored eligibility polygons
- let permitLayer;        // LayerGroup for permit circle markers
- let covenantLayer;      // LayerGroup for covenant circle markers
- let footprintLayer;     // GeoJSON layer for building footprint polygons
- let secondaryLayer;     // LayerGroup for existing DADU markers
  let searchMarker = null;
 
  let loadedBounds = null;
  let isLoading = false;
- let permitsLoaded = false;
- let covenantsLoaded = false;
- let footprintsLoaded = false;
- let secondaryLoaded = false;
 
  let currentFilters = {
  showEligible: true,
  showConditional: true,
- showNotEligible: true,
- zoning: ''
+ showNotEligible: true
  };
 
  // ====================================================================
@@ -1022,12 +927,6 @@ body {
   }
  });
 
- // Overlay layers
- permitLayer = L.layerGroup();
- covenantLayer = L.layerGroup();
- footprintLayer = L.layerGroup();
- secondaryLayer = L.layerGroup();
-
  // Add base parcel layer to map
  map.addLayer(parcelLayer);
 
@@ -1099,18 +998,12 @@ body {
  isLoading = true;
 
  try {
-  // Build zoning filter if active
-  let extraWhere = null;
-  if (currentFilters.zoning) {
-  extraWhere = `Zoning_Code LIKE '${currentFilters.zoning}%'`;
-  }
-
   const geojsonData = await queryEligibilityPolygons({
   south: bounds.getSouth(),
   north: bounds.getNorth(),
   west: bounds.getWest(),
   east: bounds.getEast()
-  }, extraWhere);
+  });
 
   if (!geojsonData.features || geojsonData.features.length === 0) {
   isLoading = false;
@@ -1147,312 +1040,6 @@ body {
  }
 
  // ====================================================================
- // OVERLAY: PERMITS
- // ====================================================================
- async function loadPermitMarkers() {
- try {
-  console.log('Loading DADU permit markers...');
-  const allPermits = await queryAllPages(PERMITS_SERVICE, {
-  outFields: 'APN,PERMIT_NUMBER,STREET,CONTRACTOR_BIZ_NAME_ORIGINAL,CONSTRUCTION_COST,BUILDING_SQFT,STATUS_NORMALIZED,PERMIT_DATE,COST_PER_SQFT',
-  returnGeometry: true,
-  outSR: 4326,
-  resultRecordCount: 2000
-  });
-
-  console.log(`Loaded ${allPermits.length} permits`);
-
-  allPermits.forEach(feature => {
-  const props = feature.attributes || feature;
-  const geom = feature.geometry;
-  if (!geom || !geom.y || !geom.x) return;
-
-  const status = (props.STATUS_NORMALIZED || '').toUpperCase();
-  let color = PERMIT_COLORS.active;
-  if (status === 'INACTIVE' || status === 'DONE' || status === 'COMPLETED' || status === 'FINALED' || status === 'FINAL') {
-   color = PERMIT_COLORS.completed;
-  } else if (status === 'IN REVIEW' || status === 'EXPIRED') {
-   color = PERMIT_COLORS.expired;
-  } else if (status === 'REVOKED' || status === 'CANCELLED') {
-   color = PERMIT_COLORS.revoked;
-  }
-
-  const marker = L.circleMarker([geom.y, geom.x], {
-   radius: 7, fillColor: color, color: '#3A5566',
-   weight: 2, opacity: 1, fillOpacity: 0.9
-  });
-
-  const dateStr = props.PERMIT_DATE ? new Date(props.PERMIT_DATE).toLocaleDateString() : 'N/A';
-  const cost = props.CONSTRUCTION_COST ? '$' + Number(props.CONSTRUCTION_COST).toLocaleString() : 'N/A';
-  const sqft = props.BUILDING_SQFT ? Number(props.BUILDING_SQFT).toLocaleString() + ' SF' : 'N/A';
-
-  marker.bindPopup(`
-   <div class="popup-header" style="background: ${color};">
-   <div class="popup-status">DADU Permit - ${props.STATUS_NORMALIZED || 'Unknown'}</div>
-   <div class="popup-address">${props.STREET || 'No Address'}</div></div>
-   <div class="popup-content">
-   <div class="popup-row"><span class="popup-label">Permit #</span><span class="popup-value">${props.PERMIT_NUMBER || 'N/A'}</span></div>
-   <div class="popup-row"><span class="popup-label">Contractor</span><span class="popup-value">${props.CONTRACTOR_BIZ_NAME_ORIGINAL || 'N/A'}</span></div>
-   <div class="popup-row"><span class="popup-label">Cost</span><span class="popup-value">${cost}</span></div>
-   <div class="popup-row"><span class="popup-label">Size</span><span class="popup-value">${sqft}</span></div>
-   <div class="popup-row"><span class="popup-label">Date</span><span class="popup-value">${dateStr}</span></div></div>
-   <div class="popup-actions">
-   <a href="permit_explorer.html?permit=${props.PERMIT_NUMBER}" class="popup-btn popup-btn-primary">Permit Details</a>
-   <a href="property-report-card.html?apn=${props.APN}" class="popup-btn popup-btn-secondary">Property Report</a></div>
-  `, { maxWidth: 320 });
-
-  permitLayer.addLayer(marker);
-  });
-
-  permitsLoaded = true;
-  document.getElementById('count-permits').textContent = allPermits.length.toLocaleString();
-
- } catch (err) {
-  console.error('Error loading permits:', err);
- }
- }
-
- // ====================================================================
- // OVERLAY: COVENANTS
- // ====================================================================
- async function loadCovenantMarkers() {
- try {
-  console.log('Loading covenant markers...');
-  const allCovenants = await queryAllPages(COVENANTS_SERVICE, {
-  outFields: '*',
-  returnGeometry: true,
-  outSR: 4326,
-  resultRecordCount: 2000
-  });
-
-  console.log(`Loaded ${allCovenants.length} covenants`);
-
-  allCovenants.forEach(feature => {
-  const props = feature.attributes || feature;
-  const geom = feature.geometry;
-  if (!geom || !geom.y || !geom.x) return;
-
-  // Try known field patterns (obfuscated or real)
-  const apn = props.FIELD_NAME_D || props.FIELD_NAME_K || props.APN || 'N/A';
-  const address = props.FIELD_NAME_A || props.FIELD_NAME_B || props.Address || 'No Address';
-  const covenantNum = props.FIELD_NAME_L || props.FIELD_NAME_O || props.Instrument || 'N/A';
-  const covenantUrl = props.FIELD_NAME_F || props.FIELD_NAME_P || props.URL || '';
-
-  const marker = L.circleMarker([geom.y, geom.x], {
-   radius: 7, fillColor: '#CBB279', color: '#3A5566',
-   weight: 2, opacity: 1, fillOpacity: 0.8
-  });
-
-  let docLink = '';
-  if (covenantUrl) {
-   docLink = `<div class="popup-row"><a href="${covenantUrl}" target="_blank" style="color: #537188; font-weight: 600; text-decoration: underline;">View Covenant Document</a></div>`;
-  }
-
-  marker.bindPopup(`
-   <div class="popup-header" style="background: #CBB279;">
-   <div class="popup-status">Restrictive Covenant on File</div>
-   <div class="popup-address">${address}</div></div>
-   <div class="popup-content">
-   <div class="popup-row"><span class="popup-label">APN</span><span class="popup-value">${apn}</span></div>
-   <div class="popup-row"><span class="popup-label">Instrument #</span><span class="popup-value">${covenantNum}</span></div>
-   ${docLink}</div>
-   <div class="popup-actions">
-   <a href="property-report-card.html?apn=${apn}" class="popup-btn popup-btn-primary">Property Report</a>
-   <a href="restrictive_covenants_v2.html" class="popup-btn popup-btn-secondary">Learn More</a></div>
-  `, { maxWidth: 320 });
-
-  covenantLayer.addLayer(marker);
-  });
-
-  covenantsLoaded = true;
-  document.getElementById('count-covenants').textContent = allCovenants.length.toLocaleString();
-
- } catch (err) {
-  console.error('Error loading covenants:', err);
- }
- }
-
- // ====================================================================
- // OVERLAY: BUILDING FOOTPRINTS (polygon layer, loaded in viewport)
- // ====================================================================
- async function loadFootprints() {
- try {
-  console.log('Loading building footprints from ArcGIS...');
-
-  // Query footprints in current viewport
-  const bounds = map.getBounds();
-  const geometry = JSON.stringify({
-  xmin: bounds.getWest(), ymin: bounds.getSouth(),
-  xmax: bounds.getEast(), ymax: bounds.getNorth(),
-  spatialReference: { wkid: 4326 }
-  });
-
-  const params = new URLSearchParams({
-  where: '1=1',
-  geometry: geometry,
-  geometryType: 'esriGeometryEnvelope',
-  spatialRel: 'esriSpatialRelIntersects',
-  inSR: 4326,
-  outFields: 'BldgID,Nash_BldgType,Nash_Height,Nash_Area,FEMA_SqFt,FEMA_Address,Height_Combined',
-  returnGeometry: true,
-  outSR: 4326,
-  f: 'geojson',
-  resultRecordCount: 2000
-  });
-
-  const url = `${FOOTPRINTS_SERVICE}/query?${params.toString()}`;
-  const resp = await fetch(url);
-  const data = await resp.json();
-
-  if (!data.features || data.features.length === 0) {
-  console.warn('No footprints in viewport');
-  footprintsLoaded = true;
-  return;
-  }
-
-  console.log(`Loaded ${data.features.length} footprints`);
-
-  data.features.forEach(feature => {
-  const props = feature.properties || {};
-  const isAccessory = (props.Nash_BldgType || '').toLowerCase() === 'accessory';
-
-  const layer = L.geoJSON(feature, {
-   style: {
-   fillColor: isAccessory ? '#CBB279' : '#3E4A4F',
-   color: '#3A5566',
-   weight: 1.5,
-   fillOpacity: 0.6,
-   opacity: 0.8
-   }
-  });
-
-  const area = props.Nash_Area ? Math.round(props.Nash_Area).toLocaleString() + ' SF' : 'N/A';
-  const height = props.Height_Combined ? props.Height_Combined + ' ft' : (props.Nash_Height ? props.Nash_Height + ' ft' : 'N/A');
-
-  layer.bindPopup(`
-   <div class="popup-header" style="background: ${isAccessory ? '#CBB279' : '#3E4A4F'};">
-   <div class="popup-status">${props.Nash_BldgType || 'Building'}</div>
-   <div class="popup-address">${props.FEMA_Address || ''}</div></div>
-   <div class="popup-content">
-   <div class="popup-row"><span class="popup-label">Footprint</span><span class="popup-value">${area}</span></div>
-   <div class="popup-row"><span class="popup-label">Height</span><span class="popup-value">${height}</span></div></div>
-  `, { maxWidth: 300 });
-
-  footprintLayer.addLayer(layer);
-  });
-
-  footprintsLoaded = true;
-  document.getElementById('count-footprints').textContent = data.features.length.toLocaleString();
-
- } catch (err) {
-  console.error('Error loading footprints:', err);
- }
- }
-
- // ====================================================================
- // OVERLAY TOGGLE
- // ====================================================================
- async function toggleOverlay(type) {
- if (type === 'permits') {
-  const checked = document.getElementById('show-permits').checked;
-  if (checked) {
-  if (!permitsLoaded) await loadPermitMarkers();
-  map.addLayer(permitLayer);
-  } else {
-  map.removeLayer(permitLayer);
-  }
- } else if (type === 'covenants') {
-  const checked = document.getElementById('show-covenants').checked;
-  if (checked) {
-  if (!covenantsLoaded) await loadCovenantMarkers();
-  map.addLayer(covenantLayer);
-  } else {
-  map.removeLayer(covenantLayer);
-  }
- } else if (type === 'footprints') {
-  const checked = document.getElementById('show-footprints').checked;
-  if (checked) {
-  if (!footprintsLoaded) await loadFootprints();
-  map.addLayer(footprintLayer);
-  } else {
-  map.removeLayer(footprintLayer);
-  }
- } else if (type === 'secondary') {
-  const checked = document.getElementById('show-secondary').checked;
-  if (checked) {
-  if (!secondaryLoaded) await loadSecondaryStructures();
-  map.addLayer(secondaryLayer);
-  } else {
-  map.removeLayer(secondaryLayer);
-  }
- }
- }
-
- // Load existing DADU / secondary structure markers
- async function loadSecondaryStructures() {
- try {
-  const bounds = map.getBounds();
-  const envelope = {
-  xmin: bounds.getWest(), ymin: bounds.getSouth(),
-  xmax: bounds.getEast(), ymax: bounds.getNorth(),
-  spatialReference: { wkid: 4326 }
-  };
-  const data = await queryService(SECONDARY_SERVICE, {
-  geometry: JSON.stringify(envelope),
-  geometryType: 'esriGeometryEnvelope',
-  spatialRel: 'esriSpatialRelIntersects',
-  outFields: 'APN,Property_Address,Secondary_Type,Year_Built,SqFt,OBJECTID',
-  returnGeometry: true,
-  resultRecordCount: 2000,
-  f: 'geojson'
-  });
-
-  if (!data.features) return;
-
-  data.features.forEach(feature => {
-  const coords = feature.geometry?.coordinates;
-  if (!coords) return;
-
-  const props = feature.properties || {};
-  let lat, lon;
-  if (feature.geometry.type === 'Point') {
-   lon = coords[0]; lat = coords[1];
-  } else if (feature.geometry.type === 'Polygon') {
-   // Use centroid for polygon features
-   const ring = coords[0];
-   lat = ring.reduce((s, c) => s + c[1], 0) / ring.length;
-   lon = ring.reduce((s, c) => s + c[0], 0) / ring.length;
-  } else return;
-
-  const marker = L.circleMarker([lat, lon], {
-   radius: 6, fillColor: '#CBB279', color: '#A8761F',
-   weight: 1.5, opacity: 0.9, fillOpacity: 0.7
-  });
-
-  const address = props.Property_Address || 'Unknown';
-  const sqft = props.SqFt ? `${Number(props.SqFt).toLocaleString()} SF` : 'N/A';
-  marker.bindPopup(`
-   <div style="font-family:Inter,sans-serif;padding:8px;">
-   <div style="font-weight:700;color:#3A5566;margin-bottom:6px;">${address}</div>
-   <div style="font-size:13px;color:#706F6C;">APN: ${props.APN || 'N/A'}</div>
-   <div style="font-size:13px;color:#706F6C;">Type: ${props.Secondary_Type || 'Secondary Structure'}</div>
-   <div style="font-size:13px;color:#706F6C;">Size: ${sqft}</div>
-   <div style="margin-top:8px;">
-    <a href="property-report-card.html?apn=${props.APN}" style="color:#CBB279;font-weight:600;text-decoration:none;">View Property Report &rarr;</a>
-   </div></div>
-  `, { maxWidth: 300 });
-
-  secondaryLayer.addLayer(marker);
-  });
-
-  secondaryLoaded = true;
-  console.log(`Loaded ${data.features.length} existing DADU markers`);
-
- } catch (err) {
-  console.error('Error loading secondary structures:', err);
- }
- }
-
- // ====================================================================
  // FILTER CONTROLS
  // ====================================================================
  function toggleFilterPanel() {
@@ -1472,7 +1059,6 @@ body {
  currentFilters.showEligible = document.getElementById('show-eligible').checked;
  currentFilters.showConditional = document.getElementById('show-conditional').checked;
  currentFilters.showNotEligible = document.getElementById('show-not-eligible').checked;
- currentFilters.zoning = document.getElementById('filter-zoning').value;
 
  // Force reload
  parcelLayer.clearLayers();
