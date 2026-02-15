@@ -74,7 +74,7 @@ body {
 }
 .stat-card .stat-number.eligible { color: #406A64; }
 .stat-card .stat-number.conditional { color: #918A83; }
-.stat-card .stat-number.not-eligible { color: #7b746d; }
+.stat-card .stat-number.not-eligible { color: #B58676; }
 .stat-card .stat-label {
  font-family: Inter, 'Inter', sans-serif;
  font-weight: 600;
@@ -107,7 +107,7 @@ body {
 }
 .stats-legend-dot.eligible { background-color: #406A64; }
 .stats-legend-dot.conditional { background-color: #918A83; }
-.stats-legend-dot.not-eligible { background-color: #8B8B8B; }
+.stats-legend-dot.not-eligible { background-color: #B58676; }
 .stats-legend-label {
  font-size: 13px;
  color: #706f6c;
@@ -456,12 +456,74 @@ body {
  font-family: inherit;
 }
 
+/* Toggle Switches for Layer Panel */
+.layer-toggle {
+ display: flex;
+ align-items: flex-start;
+ gap: 10px;
+ padding: 8px 0;
+ border-bottom: 1px solid #e2e2e0;
+}
+.layer-toggle:last-of-type { border-bottom: none; }
+.toggle-switch {
+ position: relative;
+ width: 40px;
+ min-width: 40px;
+ height: 22px;
+ flex-shrink: 0;
+ margin-top: 2px;
+}
+.toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-slider {
+ position: absolute;
+ cursor: pointer;
+ top: 0; left: 0; right: 0; bottom: 0;
+ background-color: #e2e2e0;
+ border-radius: 22px;
+ transition: 0.2s;
+}
+.toggle-slider:before {
+ content: "";
+ position: absolute;
+ height: 16px;
+ width: 16px;
+ left: 3px;
+ bottom: 3px;
+ background-color: white;
+ border-radius: 50%;
+ transition: 0.2s;
+}
+.toggle-switch input:checked + .toggle-slider {
+ background-color: #3a5566;
+}
+.toggle-switch input:checked + .toggle-slider:before {
+ transform: translateX(18px);
+}
+.layer-info { flex: 1; min-width: 0; }
+.layer-name {
+ display: block;
+ font-size: 13px;
+ font-weight: 600;
+ color: #3a5566;
+}
+.layer-desc {
+ display: block;
+ font-size: 11px;
+ color: #7b746d;
+ margin-top: 2px;
+}
+.filter-divider {
+ border: none;
+ border-top: 1px solid #e2e2e0;
+ margin: 12px 0;
+}
+
 /* Info Popup */
 .leaflet-popup-content-wrapper { border-radius: 12px; padding: 0; }
 .leaflet-popup-content { margin: 0; min-width: 300px; }
 .popup-header { padding: 16px; border-radius: 12px 12px 0 0; }
 .popup-header.eligible { background: #406A64; color: white; }
-.popup-header.not-eligible { background: #8B8B8B; color: white; }
+.popup-header.not-eligible { background: #B58676; color: white; }
 .popup-header.conditional { background: #918A83; color: white; }
 .popup-status { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
 .popup-address { font-size: 16px; font-weight: 700; }
@@ -537,20 +599,17 @@ body {
  <div class="stats-bar">
  <div class="stats-cards">
  <div class="stat-card">
-  <div class="stat-number" id="stat-total">285,194</div>
-  <div class="stat-label">Total Parcels</div></div>
+  <div class="stat-number">285,512</div>
+  <div class="stat-label">Total Parcels Analyzed</div></div>
  <div class="stat-card">
-  <div class="stat-number eligible" id="stat-eligible">--</div>
-  <div class="stat-label">Eligible (By Right)</div></div>
+  <div class="stat-number eligible">67,707</div>
+  <div class="stat-label">Eligible (USD By-Right)</div></div>
  <div class="stat-card">
-  <div class="stat-number conditional" id="stat-conditional">--</div>
-  <div class="stat-label">Conditional (GSD)</div></div>
+  <div class="stat-number conditional">~94,000</div>
+  <div class="stat-label">Conditional (GSD + Overlay)</div></div>
  <div class="stat-card">
-  <div class="stat-number not-eligible" id="stat-not">--</div>
+  <div class="stat-number not-eligible">~123,810</div>
   <div class="stat-label">Not Eligible</div></div>
- <div class="stat-card">
-  <div class="stat-number" id="stat-rate">--</div>
-  <div class="stat-label">Eligibility Rate</div></div>
  </div>
  <div class="stats-legend">
  <div class="stats-legend-item">
@@ -564,6 +623,7 @@ body {
   <span class="stats-legend-label">Not Eligible</span></div>
  </div>
  </div>
+ <div style="text-align:center;padding:4px 24px 0;font-size:11px;color:#918A83;">Based on BL2025-1007 eligibility analysis of all Nashville-Davidson County parcels.</div>
 
  <!-- ELEMENT 3: Announcement Banner -->
  <div class="announcement-bar">
@@ -584,7 +644,7 @@ body {
   <span class="qc-pill outline">In USD?</span>
   <span class="qc-pill outline">R/RS Zone?</span>
   <span class="qc-pill filled">Eligible</span>
-  <a href="dadu_zoning_standards.html" class="qc-link">Full chart</a>
+  <a href="dadu_requirements_overview.html" class="qc-link">Full chart</a>
  </div>
  </div>
 
@@ -592,7 +652,7 @@ body {
  <div class="search-row">
  <div class="search-container">
   <div class="autocomplete-wrapper">
-   <input type="text" id="address-search" placeholder="Type a Nashville address (e.g. 4936 Salem Dr)" autocomplete="off">
+   <input type="text" id="address-search" placeholder="Enter a Nashville address (e.g., 100 Broadway)" autocomplete="off">
    <div class="autocomplete-dropdown" id="ac-dropdown"></div>
   </div>
   <button class="search-btn" id="search-btn" onclick="searchAddress()">Search</button>
@@ -610,54 +670,109 @@ body {
 
  <!-- ELEMENT 7: Filter Panel (inside map) -->
  <div class="filter-panel" id="filter-panel">
-  <h3 class="filter-title">Filter Parcels <button class="filter-close" onclick="toggleFilterPanel()" title="Close">&times;</button></h3>
+  <h3 class="filter-title">Map Layers <button class="filter-close" onclick="toggleFilterPanel()" title="Close">&times;</button></h3>
+  <p style="color: #7b746d; font-size: 12px; margin-bottom: 12px;">Toggle data layers on the map</p>
+
+  <div class="layer-toggle">
+   <label class="toggle-switch">
+    <input type="checkbox" id="show-eligible" checked onchange="updateFilters()">
+    <span class="toggle-slider"></span>
+   </label>
+   <div class="layer-info">
+    <span class="layer-name" style="color:#406A64;">Eligible (By Right)</span>
+    <span class="layer-desc">67,707 parcels in USD zones</span>
+   </div>
+  </div>
+
+  <div class="layer-toggle">
+   <label class="toggle-switch">
+    <input type="checkbox" id="show-conditional" checked onchange="updateFilters()">
+    <span class="toggle-slider"></span>
+   </label>
+   <div class="layer-info">
+    <span class="layer-name" style="color:#918A83;">Conditional (Overlay Req.)</span>
+    <span class="layer-desc">~94,000 parcels needing overlay approval</span>
+   </div>
+  </div>
+
+  <div class="layer-toggle">
+   <label class="toggle-switch">
+    <input type="checkbox" id="show-not-eligible" checked onchange="updateFilters()">
+    <span class="toggle-slider"></span>
+   </label>
+   <div class="layer-info">
+    <span class="layer-name" style="color:#B58676;">Not Eligible</span>
+    <span class="layer-desc">~123,810 parcels outside eligible zones</span>
+   </div>
+  </div>
+
+  <hr class="filter-divider">
+
+  <div class="layer-toggle">
+   <label class="toggle-switch">
+    <input type="checkbox" id="show-permits" onchange="toggleOverlay('permits')">
+    <span class="toggle-slider"></span>
+   </label>
+   <div class="layer-info">
+    <span class="layer-name">DADU Permits</span>
+    <span class="layer-desc">827 historic DADU building permits</span>
+   </div>
+  </div>
+
+  <div class="layer-toggle">
+   <label class="toggle-switch">
+    <input type="checkbox" id="show-covenants" onchange="toggleOverlay('covenants')">
+    <span class="toggle-slider"></span>
+   </label>
+   <div class="layer-info">
+    <span class="layer-name">Restrictive Covenants</span>
+    <span class="layer-desc">43,000+ parcels with recorded covenants</span>
+   </div>
+  </div>
+
+  <div class="layer-toggle">
+   <label class="toggle-switch">
+    <input type="checkbox" id="show-footprints" onchange="toggleOverlay('footprints')">
+    <span class="toggle-slider"></span>
+   </label>
+   <div class="layer-info">
+    <span class="layer-name">Building Footprints</span>
+    <span class="layer-desc">327,000+ structures with height data</span>
+   </div>
+  </div>
+
+  <div class="layer-toggle">
+   <label class="toggle-switch">
+    <input type="checkbox" id="show-secondary" onchange="toggleOverlay('secondary')">
+    <span class="toggle-slider"></span>
+   </label>
+   <div class="layer-info">
+    <span class="layer-name">Existing DADUs</span>
+    <span class="layer-desc">Properties with confirmed secondary structures</span>
+   </div>
+  </div>
+
+  <hr class="filter-divider">
+
   <div class="filter-group">
-  <label class="filter-label">Show Parcels</label>
-  <label class="filter-checkbox">
-   <input type="checkbox" id="show-eligible" checked onchange="updateFilters()">
-   <span style="color: #406A64; font-weight: 600;">Eligible (By Right)</span></label>
-  <label class="filter-checkbox">
-   <input type="checkbox" id="show-conditional" checked onchange="updateFilters()">
-   <span style="color: #918A83; font-weight: 600;">Conditional (Overlay Req.)</span></label>
-  <label class="filter-checkbox">
-   <input type="checkbox" id="show-not-eligible" checked onchange="updateFilters()">
-   <span style="color: #8B8B8B; font-weight: 600;">Not Eligible</span></label></div>
-  <div class="filter-group">
-  <label class="filter-label">Zoning District</label>
+  <label class="filter-label">Filter by Zoning</label>
   <select class="filter-select" id="filter-zoning" onchange="updateFilters()">
-   <option value="">All Zoning</option>
+   <option value="">All Eligible Zones</option>
    <option value="RS">RS - Single Family</option>
    <option value="R">R - Residential</option>
    <option value="RM">RM - Multi-Family</option>
    <option value="AR">AR - Agricultural Res.</option>
    <option value="SP">SP - Specific Plan</option></select></div>
-  <div class="filter-group">
-  <label class="filter-label">Overlay Layers</label>
-  <label class="filter-checkbox">
-   <input type="checkbox" id="show-permits" onchange="toggleOverlay('permits')">
-   <span style="color: #537188; font-weight: 600;">DADU Permits</span></label>
-  <label class="filter-checkbox">
-   <input type="checkbox" id="show-covenants" onchange="toggleOverlay('covenants')">
-   <span style="color: #CBB279; font-weight: 600;">Restrictive Covenants</span></label>
-  <label class="filter-checkbox">
-   <input type="checkbox" id="show-footprints" onchange="toggleOverlay('footprints')">
-   <span style="color: #3E4A4F; font-weight: 600;">Building Footprints</span></label>
-  <label class="filter-checkbox">
-   <input type="checkbox" id="show-secondary" onchange="toggleOverlay('secondary')">
-   <span style="color: #CBB279; font-weight: 600;">Existing DADUs</span></label></div>
  </div>
  </div>
 
 </div><!-- end page-wrapper -->
 
-<!-- Hidden Legacy Counters (used by overlay toggles) -->
+<!-- Hidden counters (used by overlay toggle callbacks) -->
 <div style="display:none;">
  <span id="count-permits">0</span>
  <span id="count-covenants">0</span>
  <span id="count-footprints">0</span>
- <span id="count-eligible">0</span>
- <span id="count-conditional">0</span>
- <span id="count-not">0</span>
 </div>
 
 <!-- Zoom Message -->
@@ -680,7 +795,7 @@ body {
  const COLORS = {
  eligible: '#406A64',
  conditional: '#918A83',
- notEligible: '#8B8B8B'
+ notEligible: '#B58676'
  };
 
  const PERMIT_COLORS = {
@@ -950,55 +1065,22 @@ body {
  const statusEl = document.getElementById('loading-status');
  const progressBar = document.getElementById('progress-bar');
 
- try {
-  statusEl.textContent = 'Connecting to Vanderbilt ArcGIS...';
-  progressBar.style.width = '10%';
+ // Stats are hardcoded from verified BL2025-1007 analysis — no dynamic queries needed
+ statusEl.textContent = 'Connecting to Vanderbilt ArcGIS...';
+ progressBar.style.width = '30%';
 
-  // Get counts for each eligibility category
-  // Actual Final_Eligibility values: ELIGIBLE_BY_RIGHT, CHECK_SP, ELIGIBLE_GSD_UDO, GSD_POTENTIAL, NOT_ELIGIBLE
-  const [eligResult, condResult, notResult] = await Promise.all([
-  queryService(ELIGIBILITY_POLYGONS, {
-   where: "Final_Eligibility = 'ELIGIBLE_BY_RIGHT' OR Final_Eligibility = 'CHECK_SP'",
-   returnCountOnly: true, returnGeometry: false, f: 'json'
-  }),
-  queryService(ELIGIBILITY_POLYGONS, {
-   where: "Final_Eligibility = 'GSD_POTENTIAL' OR Final_Eligibility = 'ELIGIBLE_GSD_UDO'",
-   returnCountOnly: true, returnGeometry: false, f: 'json'
-  }),
-  queryService(ELIGIBILITY_POLYGONS, {
-   where: "Final_Eligibility = 'NOT_ELIGIBLE'",
-   returnCountOnly: true, returnGeometry: false, f: 'json'
-  })
-  ]);
-
-  const eligCount = eligResult.count || 0;
-  const condCount = condResult.count || 0;
-  const notCount = notResult.count || 0;
-  const total = eligCount + condCount + notCount;
-  const rate = total > 0 ? ((eligCount + condCount) / total * 100).toFixed(1) : '0.0';
-
-  document.getElementById('stat-eligible').textContent = eligCount.toLocaleString();
-  document.getElementById('stat-conditional').textContent = condCount.toLocaleString();
-  document.getElementById('stat-not').textContent = notCount.toLocaleString();
-  document.getElementById('stat-total').textContent = total.toLocaleString();
-  document.getElementById('stat-rate').textContent = rate + '%';
-
-  progressBar.style.width = '60%';
+ setTimeout(() => {
+  progressBar.style.width = '80%';
   statusEl.textContent = 'Map ready. Zoom in to see parcels.';
+ }, 300);
+
+ setTimeout(() => {
   progressBar.style.width = '100%';
+ }, 500);
 
-  setTimeout(() => {
+ setTimeout(() => {
   document.getElementById('loading').classList.add('hidden');
-  }, 600);
-
- } catch (error) {
-  console.error('Error loading initial data:', error);
-  statusEl.textContent = 'Connected. Zoom in to load parcels.';
-  // Still show the map even if counts fail
-  setTimeout(() => {
-  document.getElementById('loading').classList.add('hidden');
-  }, 1000);
- }
+ }, 800);
  }
 
  // ====================================================================
