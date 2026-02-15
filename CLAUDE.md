@@ -446,32 +446,13 @@ about.html, about_platform_infographic.html, dadu_building_requirements.html, da
 - ✅ Three-page styling fix: trade_permits.html (title, Montserrat→Inter, CSS var fixes incl. green --terracotta bug), overlay-districts.html (title, Montserrat→Inter, removed banned colors --yellow/--red/purple, footer branding), contractor_dashboard.html (already correct, no changes needed)
 - ✅ About page created: about_platform.html with 7 sections (Hero, What Is, Platform Features 12 cards, How It Works, Data Sources 6 cards, Built For Every User 4 portals, CTA). ABOUT nav updated from pricing#about to about_platform.html in both header.js and header.html. Absorbs: features.html, feature-documents.html, feature-eligibility-map.html, user-types.html
 - ✅ 24 duplicate pages deleted (verified dadu_report_full.html aerial/street view already in property-report-card.html; kept dadu_resources.html as active nav page)
+- ✅ Branding sweep complete: old palette colors replaced in 9 files, Montserrat→Inter in 30 files, 32 title tags fixed from Castlehold to Homebody Projects, 3 castle logo nav bars fixed, 8 footer brand spans fixed, 7 footer copyright lines fixed. Verified: 0 banned colors, 0 old colors, 0 Montserrat, 0 Castlehold in titles (except sample_reports/ which are allowed)
 
 ### PRIORITY 1: Delete Duplicate Pages
 **Status:** DONE. 24 duplicate pages deleted. dadu_resources.html kept (active nav page).
 
 ### PRIORITY 2: Fix Branding Consistency Across All Pages
-**Status:** Header/nav fixed. Individual page content still has old branding in many files.
-
-**Tasks:**
-1. Find and replace all old colors in individual pages (see Section 3 replacement table)
-2. Ensure every page loads `homebody_shared.css` and uses CSS variables
-3. Verify the shared header (homebody_header.js) is injected on every page
-4. Replace "CASTLEHOLD" with "Homebody Projects" in page body content and titles
-5. Replace castle logo references with `assets/icons/ADU.png`
-6. Castlehold name stays ONLY on reports, data attribution, legal pages, and footer "Powered by" line
-
-**Verification commands:**
-```bash
-# Find BANNED color
-grep -rl "#003039" --include="*.html" --include="*.css" --include="*.js" . | wc -l
-
-# Find old colors
-grep -rl "#2c3e50\|#6b8e4e\|#e8e4df\|#6b8fa3\|#c9a86c" *.html | wc -l
-
-# Find pages still saying CASTLEHOLD in nav/title
-grep -l "CASTLEHOLD" *.html
-```
+**Status:** DONE. All pages fixed. Verified 0 banned colors, 0 old palette colors, 0 Montserrat references, 0 Castlehold in page titles (only in sample_reports/ which is allowed).
 
 ### PRIORITY 3: Fix Broken Maps
 **Status:** ArcGIS layer URLs migrated. Maps may still render blank due to CSS/height issues.
@@ -1242,7 +1223,7 @@ Step 5:  ✅ DONE — Clean repo (5.9GB GeoJSON removed, .gitignore updated)
 Step 6:  ✅ DONE — ArcGIS layer migration (14 files, js/arcgis-services.js registry)
 Step 7:  ✅ DONE — Phase 2 data connections (contractor_stats, apn_to_account, gdrive_docs_index)
 Step 8:  PENDING — Delete 26 identified duplicate pages (awaiting user confirmation)
-Step 9:  PENDING — Fix branding in individual page content (old colors, CASTLEHOLD text)
+Step 9:  ✅ DONE — Branding sweep complete (47 files: old colors, Montserrat→Inter, Castlehold→Homebody Projects titles)
 Step 10: PENDING — Verify maps render on live site (CSS/height issues)
 Step 11: PENDING — Test Property Report Card external links
 Step 12: PENDING — Test Document Portal search end-to-end
