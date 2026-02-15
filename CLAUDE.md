@@ -318,7 +318,6 @@ Note: `form_wizard.html` is the unified replacement for the deleted `determine_f
 | General Requirements | Building_and_Construction.svg | dadu_requirements_overview.html |
 | DADU History | Recorded_Docs.svg | dadu_history.html |
 | Code & Legislation | Legislation.svg | dadu_code_legislation_v5.html |
-| Zoning Standards | Zoning.svg | dadu_zoning_standards.html |
 
 **Column 2: Permits & Forms** (Icon: Legal.svg)
 
@@ -370,7 +369,7 @@ Direct link to homebody_dadu_pricing.html#about. No dropdown.
 ### Live Pages (87 HTML files at root)
 The site is deployed at https://nataliebaldacci.github.io/DADU-Homebody-Projects/
 
-**Linked in Navigation (39 pages):**
+**Linked in Navigation (38 pages):**
 These are the pages directly accessible from the nav dropdowns:
 
 | Nav Section | Pages |
@@ -381,11 +380,11 @@ These are the pages directly accessible from the nav dropdowns:
 | BUILD | project_planner_hub.html, project_checklist.html, draw_dadu_on_parcel.html, permit_process_timeline.html, dadu_calculators.html, form_wizard.html |
 | DATA > Reports | eligibility_report.html, project_report.html, neighbors_report.html, dadu_reports_store.html, property-report-card.html |
 | DATA > Docs | site_plan_downloads.html, dadu_documents_portal.html, restrictive_covenants_v2.html, pdf_database_lookup.html |
-| RESOURCES | what_is_dadu.html, dadu_requirements_overview.html, dadu_history.html, dadu_code_legislation_v5.html, dadu_zoning_standards.html, owner_occupancy.html, str_permit.html, trade_permits.html, overlay-districts.html, dadu_design_standards.html |
+| RESOURCES | what_is_dadu.html, dadu_requirements_overview.html, dadu_history.html, dadu_code_legislation_v5.html, owner_occupancy.html, str_permit.html, trade_permits.html, overlay-districts.html, dadu_design_standards.html |
 | Direct links | homebody_dadu_pricing.html, am_i_eligible.html |
 | Homepage | index.html |
 
-**Unlinked but Worth Keeping (13 pages):**
+**Unlinked but Worth Keeping (14 pages):**
 These have unique content not duplicated elsewhere:
 
 | File | Purpose |
@@ -393,6 +392,7 @@ These have unique content not duplicated elsewhere:
 | area_analysis_report.html | Unique area analysis report |
 | contractor_advertising.html | Original advertising page (content merged into contractor_portal.html#advertise) |
 | contractor_report.html | Unique contractor report |
+| dadu_zoning_standards.html | Zoning standards (content merged into dadu_requirements_overview.html) |
 | designer_resources.html | Designer resource content |
 | feature-documents.html | Feature landing page |
 | feature-eligibility-map.html | Feature landing page |
@@ -875,10 +875,9 @@ Sample report previews already built: eligibility, property, contractor match, c
 | Page | File | Content |
 |------|------|---------|
 | What is a DADU? | what_is_dadu.html | Educational introduction |
-| General Requirements | dadu_requirements_overview.html | Setbacks, height, lot coverage |
+| General Requirements | dadu_requirements_overview.html | Setbacks, height, lot coverage, zoning standards (merged from dadu_zoning_standards.html) |
 | DADU History | dadu_history.html | Legislative history |
 | Code & Legislation | dadu_code_legislation_v5.html | 111+ legal citations, Bluebook format |
-| Zoning Standards | dadu_zoning_standards.html | R, RS, SP zone rules |
 | Design Standards | dadu_design_standards.html | Overlay design requirements |
 | Overlay Districts | overlay-districts.html | UDO, DADU, SP overlays with ordinance links |
 | Owner Occupancy | owner_occupancy.html | Requirement explanation and forms |
@@ -1191,7 +1190,7 @@ source ~/dadu_env/bin/activate
 | Unique Contractors | 393 |
 | Legal Citations in Database | 111 |
 | Parcels with Covenants | 43,000+ |
-| HTML Pages on Site | 87 (39 linked in nav, 13 unlinked worth keeping, 26 duplicate candidates for deletion) |
+| HTML Pages on Site | 87 (38 linked in nav, 14 unlinked worth keeping, 26 duplicate candidates for deletion) |
 
 ---
 

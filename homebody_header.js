@@ -145,8 +145,7 @@
                  item('what_is_dadu.html', 'ADU.png', 'What is a DADU?') +
                  item('dadu_requirements_overview.html', 'Building_and_Construction.svg', 'General Requirements') +
                  item('dadu_history.html', 'Recorded_Docs.svg', 'DADU History') +
-                 item('dadu_code_legislation_v5.html', 'Legislation.svg', 'Code &amp; Legislation') +
-                 item('dadu_zoning_standards.html', 'Zoning.svg', 'Zoning Standards')
+                 item('dadu_code_legislation_v5.html', 'Legislation.svg', 'Code &amp; Legislation')
              ) +
              col('Legal.svg', 'Permits &amp; Forms',
                  item('owner_occupancy.html', 'Owner_Occupancy.svg', 'Owner Occupancy') +
