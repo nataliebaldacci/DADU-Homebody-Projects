@@ -42,7 +42,7 @@
     '<nav class="main-nav" role="navigation" aria-label="Main navigation">' +
     '  <div class="nav-container">' +
     '    <a href="' + basePath + 'index.html" class="nav-logo">' +
-    '      <img src="' + basePath + 'assets/icons/ADU_Light2.svg" alt="Homebody Projects" class="nav-logo-img" style="height:42px;width:auto;">' +
+    '      <img src="' + basePath + 'assets/icons/ADU_MultiColors.svg" alt="Homebody Projects" class="nav-logo-img" style="height:42px;width:auto;">' +
     '      <span class="nav-logo-brand">Homebody Projects</span>' +
     '    </a>' +
     '    <div class="nav-links">' +
