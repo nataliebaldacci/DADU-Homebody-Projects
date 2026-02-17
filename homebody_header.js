@@ -74,7 +74,7 @@
                  item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map') +
                 item('dadu_near_me_v3.html', 'Neighbors.svg', 'DADUs Near Me')
              ) +
-             col('Permit_Activity.svg', 'Dashboards',
+             col('Dashboard.svg', 'Dashboards',
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
                  item('contractor_marketplace.html', 'Building_and_Construction.svg', 'Contractor Marketplace') +
                  item('market_trends.html', 'Cost_Market.svg', 'Market Trends') +
@@ -90,7 +90,7 @@
     '        </button>' +
     '        <div class="dropdown-menu dropdown-single" id="build-dropdown" role="menu">' +
                  item('dadu_build_tool_v2.html', 'Building_and_Construction.svg', 'Build My DADU') +
-                 item('project_planner_hub.html', 'Project_Planner.svg', 'Planning Hub') +
+                 item('project_planner_hub.html', 'Checklist_.svg', 'Planning Hub') +
                  item('project_checklist.html', 'Project_Checklist.svg', 'Interactive Checklist') +
                  item('draw_dadu_on_parcel.html', 'Draw_on_Parcel.svg', 'Draw DADU on Parcel') +
                  item('permit_process_timeline.html', 'Renewals.png', 'Permit Process Timeline') +
