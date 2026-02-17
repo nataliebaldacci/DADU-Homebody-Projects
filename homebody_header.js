@@ -77,7 +77,7 @@
              col('Permit_Activity.svg', 'Dashboards',
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
                  item('contractor_marketplace.html', 'Building_and_Construction.svg', 'Contractor Marketplace') +
-                 item('market_trends.html', 'Investments.png', 'Market Trends') +
+                 item('market_trends.html', 'Cost_Market.svg', 'Market Trends') +
                  item('nashville_permit_analytics.html', 'Enhanced Transaction History Report .svg', 'Permit Analytics')
              ) +
     '        </div>' +
