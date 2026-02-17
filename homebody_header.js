@@ -93,7 +93,7 @@
                  item('project_planner_hub.html', 'Checklist_.svg', 'Planning Hub') +
                  item('project_checklist.html', 'Project_Checklist.svg', 'Interactive Checklist') +
                  item('draw_dadu_on_parcel.html', 'Draw_on_Parcel.svg', 'Draw DADU on Parcel') +
-                 item('permit_process_timeline.html', 'Renewals.png', 'Permit Process Timeline') +
+                 item('permit_process_timeline.html', 'Permit_Approval.svg', 'Permit Process Timeline') +
                  item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans') +
                  item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
                  item('size_calculator.html', 'ADU.png', 'Size Calculator') +
