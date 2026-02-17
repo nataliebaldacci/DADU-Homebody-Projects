@@ -91,7 +91,6 @@
     '        <div class="dropdown-menu dropdown-single" id="build-dropdown" role="menu">' +
                  item('dadu_build_tool_v2.html', 'Building_and_Construction.svg', 'Build My DADU') +
                  item('project_planner_hub.html', 'Checklist_.svg', 'Planning Hub') +
-                 item('project_checklist.html', 'Project_Checklist.svg', 'Interactive Checklist') +
                  item('draw_dadu_on_parcel.html', 'Draw_on_Parcel.svg', 'Draw DADU on Parcel') +
                  item('permit_process_timeline.html', 'Permit_Approval.svg', 'Permit Process Timeline') +
                  item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans') +
