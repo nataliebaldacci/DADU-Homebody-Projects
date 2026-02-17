@@ -1054,5 +1054,13 @@
  });
 </script>
 <script src="homebody_header.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var navLogo = document.querySelector('.nav-logo-img');
+    if (navLogo && navLogo.src.includes('ADU_MultiColors')) {
+      navLogo.src = 'assets/icons/ADU_Light2.svg';
+    }
+  });
+</script>
 </body>
 </html>
