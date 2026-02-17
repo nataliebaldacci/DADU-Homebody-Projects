@@ -107,16 +107,12 @@
     '        <a href="' + basePath + 'dadu_reports_store.html" class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="data">' +
     '          DATA <span class="chevron">&#9660;</span>' +
     '        </a>' +
-    '        <div class="dropdown-menu mega-menu mega-menu-2" id="data-dropdown" role="menu">' +
-             col('Exports__Reports.svg', 'Reports',
-                 item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator')
-             ) +
-             col('Recorded_Docs.svg', 'Document Database',
+    '        <div class="dropdown-menu dropdown-single" id="data-dropdown" role="menu">' +
+                 item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator') +
                  item('site_plan_downloads.html', 'Permit_Site_Plans.svg', 'Site Plans &amp; Permits') +
                  item('dadu_resources.html', 'Recorded_Docs.svg', 'External Links') +
                  item('restrictive_covenants_v2.html', 'Restrictive_Covenants.svg', 'Restrictive Covenants') +
-                 item('pdf_database_lookup.html', 'Recorded_Docs.svg', 'PDF Database')
-             ) +
+                 item('pdf_database_lookup.html', 'Recorded_Docs.svg', 'PDF Database') +
     '        </div>' +
     '      </div>' +
 
