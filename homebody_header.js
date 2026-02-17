@@ -96,7 +96,7 @@
                  item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans') +
                  item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
                  item('size_calculator.html', 'ADU.png', 'Size Calculator') +
-                 item('form_wizard.html', 'Claims.png', 'Form Wizard') +
+                 item('form_wizard.html', 'Eligibility_Check.svg', 'Form Wizard') +
                  item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Hire a Contractor') +
                  item('contractor_marketplace.html', 'Building_and_Construction.svg', 'Contractor Marketplace') +
     '        </div>' +
