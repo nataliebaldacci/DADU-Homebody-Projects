@@ -6,6 +6,7 @@
  <title>Homebody Projects | Nashville DADU Intelligence</title>
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
  <style>
  /* ========== PAGE-SPECIFIC: Homepage ========== */
 
@@ -632,6 +633,118 @@
 
  .footer-bottom a:hover { color: rgba(225, 212, 187, 0.8); }
 
+ /* ========== MAP PREVIEW ========== */
+ .map-preview-section {
+  position: relative;
+  overflow: hidden;
+ }
+
+ .map-preview-container {
+  position: relative;
+  height: 480px;
+ }
+
+ #preview-map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+ }
+
+ /* Disable all map interaction — preview only */
+ #preview-map .leaflet-control-zoom,
+ #preview-map .leaflet-control-attribution {
+  display: none !important;
+ }
+
+ .map-preview-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px;
+  cursor: pointer;
+  background: radial-gradient(ellipse at center, rgba(58,85,102,0.08) 0%, rgba(58,85,102,0.35) 70%, rgba(58,85,102,0.65) 100%);
+  transition: background 0.3s;
+ }
+
+ .map-preview-overlay:hover {
+  background: radial-gradient(ellipse at center, rgba(58,85,102,0.04) 0%, rgba(58,85,102,0.25) 70%, rgba(58,85,102,0.55) 100%);
+ }
+
+ .map-preview-overlay h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 36px;
+  color: #ffffff;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 12px rgba(47,58,69,0.5);
+ }
+
+ .map-preview-overlay p {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: rgba(255,255,255,0.9);
+  max-width: 520px;
+  line-height: 1.5;
+  margin-bottom: 28px;
+  text-shadow: 0 1px 6px rgba(47,58,69,0.4);
+ }
+
+ .map-preview-btn {
+  display: inline-block;
+  padding: 16px 40px;
+  background: #CBB279;
+  color: #3A5566;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+ }
+
+ .map-preview-btn:hover {
+  background: #D4A54E;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(203,178,121,0.4);
+ }
+
+ .map-preview-legend {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 12;
+  background: rgba(255,255,255,0.92);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #3A5566;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  pointer-events: none;
+ }
+
+ .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+ }
+
+ .legend-item:last-child { margin-bottom: 0; }
+
+ .legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+ }
+
  /* ========== RESPONSIVE ========== */
  @media (max-width: 900px) {
   .features-grid { grid-template-columns: repeat(2, 1fr); }
@@ -643,6 +756,10 @@
  }
 
  @media (max-width: 600px) {
+  .map-preview-container { height: 360px; }
+  .map-preview-overlay h2 { font-size: 26px; }
+  .map-preview-overlay p { font-size: 14px; }
+  .map-preview-legend { display: none; }
   .hero { padding: 60px 20px 50px; }
   .hero h1 { font-size: 32px; }
   .hero .subtitle { font-size: 15px; }
@@ -718,6 +835,32 @@
   <div class="stat-item">
    <div class="number">393</div>
    <div class="label">Active Contractors</div>
+  </div>
+ </section>
+
+ <!-- Map Preview -->
+ <section class="map-preview-section">
+  <div class="map-preview-container">
+   <div id="preview-map"></div>
+   <a href="dadu_eligibility_map.html" class="map-preview-overlay" aria-label="Open the full eligibility map">
+    <h2>Explore 67,707 Eligible Parcels</h2>
+    <p>See every Nashville property's DADU eligibility on our interactive map. Search by address, filter by zoning, and check your lot in seconds.</p>
+    <span class="map-preview-btn">Open the Full Map</span>
+   </a>
+   <div class="map-preview-legend">
+    <div class="legend-item">
+     <div class="legend-swatch" style="background:#406A64;"></div>
+     <span>Eligible (By Right)</span>
+    </div>
+    <div class="legend-item">
+     <div class="legend-swatch" style="background:#918A83;"></div>
+     <span>Conditional (Overlay Required)</span>
+    </div>
+    <div class="legend-item">
+     <div class="legend-swatch" style="background:#B58676;"></div>
+     <span>Not Eligible</span>
+    </div>
+   </div>
   </div>
  </section>
 
@@ -1052,6 +1195,89 @@
    });
   }
  });
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ========================================
+// HOMEPAGE MAP PREVIEW — loads real eligibility data
+// ========================================
+(function() {
+ var map = L.map('preview-map', {
+  center: [36.1627, -86.7816],
+  zoom: 11,
+  zoomControl: false,
+  attributionControl: false,
+  dragging: false,
+  scrollWheelZoom: false,
+  doubleClickZoom: false,
+  boxZoom: false,
+  keyboard: false,
+  touchZoom: false
+ });
+
+ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  subdomains: 'abcd',
+  maxZoom: 20
+ }).addTo(map);
+
+ var TN_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Tennessee_Counties/FeatureServer/0/query?';
+ var ELIG_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Eligibility_ENHANCED_20260119_042533/FeatureServer/0/query?';
+
+ // Davidson County boundary (two-layer)
+ fetch(TN_URL + new URLSearchParams({ where: "NAME<>'Davidson'", outFields: 'NAME', returnGeometry: true, outSR: 4326, f: 'geojson' }))
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+   if (data.features && data.features.length > 0) {
+    L.geoJSON(data, { style: { color: 'rgba(74,107,125,0.56)', weight: 0.75, fillColor: '#4C5C66', fillOpacity: 0.85 }, interactive: false }).addTo(map).bringToBack();
+   }
+  }).catch(function() {});
+
+ fetch(TN_URL + new URLSearchParams({ where: "NAME='Davidson'", outFields: 'NAME', returnGeometry: true, outSR: 4326, f: 'geojson' }))
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+   if (data.features && data.features.length > 0) {
+    L.geoJSON(data, { style: { color: 'rgba(76,92,102,0.81)', weight: 2.25, fillColor: 'transparent', fillOpacity: 0 }, interactive: false }).addTo(map);
+   }
+  }).catch(function() {});
+
+ // Load eligibility points as colored circle markers (sample for visual density)
+ function eligColor(status) {
+  if (!status) return '#E2E2E0';
+  var s = status.toUpperCase();
+  if (s.indexOf('ELIGIBLE') >= 0 && s.indexOf('NOT') < 0) return '#406A64';
+  if (s.indexOf('CONDITIONAL') >= 0) return '#918A83';
+  if (s.indexOf('NOT') >= 0) return '#B58676';
+  return '#E2E2E0';
+ }
+
+ // Load a sample of eligibility points for visual impact
+ var bbox = '-87.05,35.95,-86.50,36.42';
+ fetch(ELIG_URL + new URLSearchParams({
+  where: '1=1',
+  outFields: 'Eligibility_Status',
+  returnGeometry: true,
+  outSR: 4326,
+  f: 'geojson',
+  resultRecordCount: 2000,
+  geometry: JSON.stringify({xmin:-87.05,ymin:35.95,xmax:-86.50,ymax:36.42,spatialReference:{wkid:4326}}),
+  geometryType: 'esriGeometryEnvelope',
+  inSR: 4326
+ })).then(function(r) { return r.json(); })
+ .then(function(data) {
+  if (!data.features) return;
+  L.geoJSON(data, {
+   pointToLayer: function(feature, latlng) {
+    return L.circleMarker(latlng, {
+     radius: 2.5,
+     fillColor: eligColor(feature.properties.Eligibility_Status),
+     color: 'transparent',
+     fillOpacity: 0.7
+    });
+   },
+   interactive: false
+  }).addTo(map);
+ }).catch(function() {});
+})();
 </script>
 <script src="homebody_header.js"></script>
 <script>
