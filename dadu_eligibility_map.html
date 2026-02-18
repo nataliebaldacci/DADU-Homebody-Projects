@@ -673,6 +673,19 @@ body {
 
   <div class="layer-toggle">
    <label class="toggle-switch">
+    <input type="checkbox" id="show-boundary" checked onchange="toggleBoundary()">
+    <span class="toggle-slider"></span>
+   </label>
+   <div class="layer-info">
+    <span class="layer-name" style="color:#3A5566;">Davidson County Boundary</span>
+    <span class="layer-desc">Nashville-Davidson County limits</span>
+   </div>
+  </div>
+
+  <hr class="filter-divider">
+
+  <div class="layer-toggle">
+   <label class="toggle-switch">
     <input type="checkbox" id="show-eligible" checked onchange="updateFilters()">
     <span class="toggle-slider"></span>
    </label>
@@ -757,6 +770,7 @@ body {
  let map;
  let parcelLayer;        // GeoJSON layer for colored eligibility polygons
  let searchMarker = null;
+ let davidsonBoundaryLayer = null; // Davidson County boundary
 
  let loadedBounds = null;
  let isLoading = false;
@@ -896,6 +910,48 @@ body {
  }
 
  // ====================================================================
+ // DAVIDSON COUNTY BOUNDARY (from ArcGIS Tennessee Counties layer)
+ // ====================================================================
+ const TN_COUNTIES_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Tennessee_Counties/FeatureServer/0';
+
+ async function loadDavidsonBoundary() {
+  try {
+  const params = new URLSearchParams({
+   where: "NAME='Davidson'",
+   outFields: 'NAME',
+   returnGeometry: true,
+   outSR: 4326,
+   f: 'geojson'
+  });
+
+  const resp = await fetch(`${TN_COUNTIES_URL}/query?${params.toString()}`);
+  const data = await resp.json();
+
+  if (!data.features || data.features.length === 0) {
+   console.warn('Davidson County not found in Tennessee Counties layer');
+   return;
+  }
+
+  davidsonBoundaryLayer = L.geoJSON(data, {
+   style: {
+   color: '#3A5566',
+   weight: 2.5,
+   fillColor: '#3A5566',
+   fillOpacity: 0.04,
+   dashArray: null
+   },
+   interactive: false
+  }).addTo(map);
+
+  // Keep boundary behind parcel polygons
+  davidsonBoundaryLayer.bringToBack();
+  console.log('Davidson County boundary loaded from ArcGIS');
+  } catch (err) {
+  console.warn('Could not load Davidson County boundary:', err);
+  }
+ }
+
+ // ====================================================================
  // MAP INITIALIZATION
  // ====================================================================
  function initMap() {
@@ -907,6 +963,9 @@ body {
   subdomains: 'abcd',
   maxZoom: 20
  }).addTo(map);
+
+ // Davidson County boundary layer
+ loadDavidsonBoundary();
 
  // Parcel polygon layer (GeoJSON features added dynamically)
  parcelLayer = L.geoJSON(null, {
@@ -1051,6 +1110,17 @@ body {
   panel.classList.add('collapsed');
   toggle.classList.add('visible');
  }
+ }
+
+ function toggleBoundary() {
+  if (!davidsonBoundaryLayer) return;
+  const show = document.getElementById('show-boundary').checked;
+  if (show) {
+  map.addLayer(davidsonBoundaryLayer);
+  davidsonBoundaryLayer.bringToBack();
+  } else {
+  map.removeLayer(davidsonBoundaryLayer);
+  }
  }
 
  function updateFilters() {

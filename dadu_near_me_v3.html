@@ -781,6 +781,19 @@ function initMap() {
     attribution: '&copy; OpenStreetMap, &copy; CartoDB',
     maxZoom: 19
   }).addTo(map);
+
+  // Davidson County boundary
+  (async function() {
+   try {
+   const bParams = new URLSearchParams({ where: "NAME='Davidson'", outFields: 'NAME', returnGeometry: true, outSR: 4326, f: 'geojson' });
+   const bResp = await fetch('https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Tennessee_Counties/FeatureServer/0/query?' + bParams.toString());
+   const bData = await bResp.json();
+   if (bData.features && bData.features.length > 0) {
+    L.geoJSON(bData, { style: { color: '#3A5566', weight: 2.5, fillColor: '#3A5566', fillOpacity: 0.04 }, interactive: false }).addTo(map).bringToBack();
+   }
+   } catch(e) { console.warn('Boundary load failed:', e); }
+  })();
+
   permitMarkers.addTo(map);
 
   // Enter key triggers search
