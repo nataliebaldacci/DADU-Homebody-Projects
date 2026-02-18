@@ -456,14 +456,19 @@
  attribution: ''
  }).addTo(map);
 
- // Davidson County boundary
+ // Davidson County boundary (two-layer: surrounding counties fill + Davidson outline)
  (async function() {
   try {
-  const bParams = new URLSearchParams({ where: "NAME='Davidson'", outFields: 'NAME', returnGeometry: true, outSR: 4326, f: 'geojson' });
-  const bResp = await fetch('https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Tennessee_Counties/FeatureServer/0/query?' + bParams.toString());
-  const bData = await bResp.json();
-  if (bData.features && bData.features.length > 0) {
-   L.geoJSON(bData, { style: { color: '#3A5566', weight: 2.5, fillColor: '#3A5566', fillOpacity: 0.04 }, interactive: false }).addTo(map).bringToBack();
+  const tnUrl = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Tennessee_Counties/FeatureServer/0/query?';
+  const sResp = await fetch(tnUrl + new URLSearchParams({ where: "NAME<>'Davidson'", outFields: 'NAME', returnGeometry: true, outSR: 4326, f: 'geojson' }));
+  const sData = await sResp.json();
+  if (sData.features && sData.features.length > 0) {
+   L.geoJSON(sData, { style: { color: 'rgba(74,107,125,0.56)', weight: 0.75, fillColor: '#4C5C66', fillOpacity: 0.85 }, interactive: false }).addTo(map).bringToBack();
+  }
+  const dResp = await fetch(tnUrl + new URLSearchParams({ where: "NAME='Davidson'", outFields: 'NAME', returnGeometry: true, outSR: 4326, f: 'geojson' }));
+  const dData = await dResp.json();
+  if (dData.features && dData.features.length > 0) {
+   L.geoJSON(dData, { style: { color: 'rgba(76,92,102,0.81)', weight: 2.25, fillColor: 'transparent', fillOpacity: 0 }, interactive: false }).addTo(map);
   }
   } catch(e) { console.warn('Boundary load failed:', e); }
  })();
