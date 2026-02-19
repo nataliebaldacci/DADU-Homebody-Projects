@@ -3,8 +3,8 @@
  * Single source of truth for site navigation.
  * Usage: Add <div id="site-header"></div> to any page, then include this script.
  *
- * NAV STRUCTURE (Feb 14, 2026):
- * WHO WE SERVE | EXPLORE | BUILD | DATA | RESOURCES | PRICING | ABOUT | [Am I Eligible?]
+ * NAV STRUCTURE (Feb 18, 2026):
+ * WHO WE SERVE | EXPLORE | BUILD | RESOURCES | PRICING | ABOUT | [Am I Eligible?]
  */
 
 (function() {
@@ -83,33 +83,28 @@
     '        </div>' +
     '      </div>' +
 
-    // ═══ BUILD (single-column flat list) ═══
+    // ═══ BUILD (mega-menu-2: Plan My Project + Research) ═══
     '      <div class="nav-item">' +
     '        <button class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="build">' +
     '          BUILD <span class="chevron">&#9660;</span>' +
     '        </button>' +
-    '        <div class="dropdown-menu dropdown-single" id="build-dropdown" role="menu">' +
+    '        <div class="dropdown-menu mega-menu mega-menu-2" id="build-dropdown" role="menu">' +
+             col('Project_Planner.svg', 'Plan My Project',
                  item('dadu_build_tool_v2.html', 'Building_and_Construction.svg', 'Build My DADU') +
                  item('project_planner_hub.html', 'Checklist_.svg', 'Planning Hub') +
                  item('draw_dadu_on_parcel.html', 'Draw_DADU.svg', 'Draw DADU on Parcel') +
                  item('permit_process_timeline.html', 'Permit_Approval.svg', 'Permit Process Timeline') +
-                 item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans') +
                  item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
-                 item('form_wizard.html', 'Eligibility_Check.svg', 'Form Wizard') +
-                 item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Find a Contractor') +
-    '        </div>' +
-    '      </div>' +
-
-    // ═══ DATA ═══
-    '      <div class="nav-item">' +
-    '        <a href="' + basePath + 'dadu_reports_store.html" class="nav-link" aria-expanded="false" aria-haspopup="true" data-dropdown="data">' +
-    '          DATA <span class="chevron">&#9660;</span>' +
-    '        </a>' +
-    '        <div class="dropdown-menu dropdown-single" id="data-dropdown" role="menu">' +
+                 item('form_wizard.html', 'Eligibility_Check.svg', 'Form Wizard')
+             ) +
+             col('Exports__Reports.svg', 'Research',
                  item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator') +
                  item('site_plan_downloads.html', 'Permit_Site_Plans.svg', 'Site Plans &amp; Permits') +
                  item('dadu_resources.html', 'Recorded_Docs.svg', 'External Links') +
                  item('pdf_database_lookup.html', 'Recorded_Docs.svg', 'PDF Database') +
+                 item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans') +
+                 item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Find a Contractor')
+             ) +
     '        </div>' +
     '      </div>' +
 
