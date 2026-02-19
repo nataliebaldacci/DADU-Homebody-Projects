@@ -95,7 +95,6 @@
                  item('permit_process_timeline.html', 'Permit_Approval.svg', 'Permit Process Timeline') +
                  item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans') +
                  item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
-                 item('size_calculator.html', 'ADU.png', 'Size Calculator') +
                  item('form_wizard.html', 'Eligibility_Check.svg', 'Form Wizard') +
                  item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Find a Contractor') +
     '        </div>' +
