@@ -789,7 +789,7 @@ function initMap() {
    const sResp = await fetch(tnUrl + new URLSearchParams({ where: "NAME<>'Davidson'", outFields: 'NAME', returnGeometry: true, outSR: 4326, f: 'geojson' }));
    const sData = await sResp.json();
    if (sData.features && sData.features.length > 0) {
-    L.geoJSON(sData, { style: { color: 'rgba(74,107,125,0.56)', weight: 0.75, fillColor: '#4C5C66', fillOpacity: 0.85 }, interactive: false }).addTo(map).bringToBack();
+    L.geoJSON(sData, { style: { color: '#E2E2E0', weight: 0.75, fillColor: '#E2E2E0', fillOpacity: 0.45 }, interactive: false }).addTo(map).bringToBack();
    }
    const dResp = await fetch(tnUrl + new URLSearchParams({ where: "NAME='Davidson'", outFields: 'NAME', returnGeometry: true, outSR: 4326, f: 'geojson' }));
    const dData = await dResp.json();

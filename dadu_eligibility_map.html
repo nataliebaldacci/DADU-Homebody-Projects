@@ -933,13 +933,13 @@ body {
   const surroundingData = await surroundingResp.json();
 
   if (surroundingData.features && surroundingData.features.length > 0) {
-   // Other TN counties: filled slate wash — rgba(76,92,102,0.85)
+   // Other TN counties: linen wash to mask surrounding area
    surroundingCountiesLayer = L.geoJSON(surroundingData, {
    style: {
-    color: 'rgba(74,107,125,0.56)',   // #4A6B7D at 56% opacity
+    color: '#E2E2E0',
     weight: 0.75,
-    fillColor: '#4C5C66',
-    fillOpacity: 0.85
+    fillColor: '#E2E2E0',
+    fillOpacity: 0.45
    },
    interactive: false
    }).addTo(map);

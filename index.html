@@ -838,32 +838,6 @@
   </div>
  </section>
 
- <!-- Map Preview -->
- <section class="map-preview-section">
-  <div class="map-preview-container">
-   <div id="preview-map"></div>
-   <a href="dadu_eligibility_map.html" class="map-preview-overlay" aria-label="Open the full eligibility map">
-    <h2>Explore 67,707 Eligible Parcels</h2>
-    <p>See every Nashville property's DADU eligibility on our interactive map. Search by address, filter by zoning, and check your lot in seconds.</p>
-    <span class="map-preview-btn">Open the Full Map</span>
-   </a>
-   <div class="map-preview-legend">
-    <div class="legend-item">
-     <div class="legend-swatch" style="background:#406A64;"></div>
-     <span>Eligible (By Right)</span>
-    </div>
-    <div class="legend-item">
-     <div class="legend-swatch" style="background:#918A83;"></div>
-     <span>Conditional (Overlay Required)</span>
-    </div>
-    <div class="legend-item">
-     <div class="legend-swatch" style="background:#B58676;"></div>
-     <span>Not Eligible</span>
-    </div>
-   </div>
-  </div>
- </section>
-
  <!-- Feature Cards -->
  <section class="features-section">
   <h2 class="section-heading">Everything You Need for Your DADU Project</h2>
@@ -904,6 +878,32 @@
     <p>Connect to vetted builders specializing in ADUs on your sized lot.</p>
     <span class="learn-more">Learn More &rarr;</span>
    </a>
+  </div>
+ </section>
+
+<!-- Map Preview -->
+ <section class="map-preview-section">
+  <div class="map-preview-container">
+   <div id="preview-map"></div>
+   <a href="dadu_eligibility_map.html" class="map-preview-overlay" aria-label="Open the full eligibility map">
+    <h2>Explore 67,707 Eligible Parcels</h2>
+    <p>See every Nashville property's DADU eligibility on our interactive map. Search by address, filter by zoning, and check your lot in seconds.</p>
+    <span class="map-preview-btn">Open the Full Map</span>
+   </a>
+   <div class="map-preview-legend">
+    <div class="legend-item">
+     <div class="legend-swatch" style="background:#406A64;"></div>
+     <span>Eligible (By Right)</span>
+    </div>
+    <div class="legend-item">
+     <div class="legend-swatch" style="background:#918A83;"></div>
+     <span>Conditional (Overlay Required)</span>
+    </div>
+    <div class="legend-item">
+     <div class="legend-swatch" style="background:#B58676;"></div>
+     <span>Not Eligible</span>
+    </div>
+   </div>
   </div>
  </section>
 
@@ -1228,7 +1228,7 @@
   .then(function(r) { return r.json(); })
   .then(function(data) {
    if (data.features && data.features.length > 0) {
-    L.geoJSON(data, { style: { color: 'rgba(74,107,125,0.56)', weight: 0.75, fillColor: '#4C5C66', fillOpacity: 0.85 }, interactive: false }).addTo(map).bringToBack();
+    L.geoJSON(data, { style: { color: '#E2E2E0', weight: 0.75, fillColor: '#E2E2E0', fillOpacity: 0.45 }, interactive: false }).addTo(map).bringToBack();
    }
   }).catch(function() {});
 
