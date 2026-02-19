@@ -683,11 +683,10 @@ a.text-link:hover {
     display: block;
     width: 22px;
     height: 2px;
-    background: var(--navy, #3A5566);
+    background: #E1D4BB;
     border-radius: 2px;
     transition: transform 0.3s, opacity 0.3s;
 }
-.dark-nav .hamburger-line { background: #E1D4BB; }
 
 /* Animate to X when open */
 .mobile-menu-btn.active .hamburger-line:nth-child(1) {
