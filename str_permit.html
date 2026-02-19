@@ -6,6 +6,7 @@
  <title>Short-Term Rental Permits for DADUs | Homebody Projects</title>
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
  <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -740,6 +741,179 @@
    color: #CBB279;
   }
 
+  /* ========== STATS BAR ========== */
+  .str-stats {
+   background: #2F3A45;
+   padding: 28px 24px;
+   display: flex;
+   justify-content: center;
+   gap: 48px;
+   flex-wrap: wrap;
+  }
+
+  .str-stat {
+   text-align: center;
+  }
+
+  .str-stat .num {
+   font-size: 28px;
+   font-weight: 800;
+   color: #CBB279;
+   display: block;
+   line-height: 1.2;
+  }
+
+  .str-stat .lbl {
+   font-size: 11px;
+   font-weight: 700;
+   color: #E1D4BB;
+   text-transform: uppercase;
+   letter-spacing: 1.5px;
+  }
+
+  /* ========== MAP SECTION ========== */
+  .str-map-section {
+   max-width: 960px;
+   margin: 0 auto;
+   padding: 48px 24px 0;
+  }
+
+  .str-map-container {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   overflow: hidden;
+  }
+
+  .str-map-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 16px 24px;
+   border-bottom: 1px solid #E2E2E0;
+  }
+
+  .str-map-header h3 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-size: 16px;
+   color: #3A5566;
+   margin: 0;
+  }
+
+  .str-map-toggle {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   font-size: 13px;
+   color: #706F6C;
+   cursor: pointer;
+   user-select: none;
+  }
+
+  .str-map-toggle input[type="checkbox"] {
+   accent-color: #3A5566;
+  }
+
+  #str-map {
+   height: 500px;
+   width: 100%;
+  }
+
+  .str-map-legend {
+   display: flex;
+   gap: 20px;
+   padding: 12px 24px;
+   border-top: 1px solid #E2E2E0;
+   flex-wrap: wrap;
+  }
+
+  .legend-dot {
+   display: flex;
+   align-items: center;
+   gap: 6px;
+   font-size: 12px;
+   color: #706F6C;
+  }
+
+  .legend-dot .dot {
+   width: 12px;
+   height: 12px;
+   border-radius: 3px;
+   flex-shrink: 0;
+  }
+
+  /* ========== DATA SUMMARY ========== */
+  .str-data-section {
+   max-width: 960px;
+   margin: 0 auto;
+   padding: 32px 24px 0;
+  }
+
+  .str-data-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 16px;
+  }
+
+  .str-data-card {
+   background: #fff;
+   border: 1px solid #E2E2E0;
+   border-radius: 12px;
+   padding: 24px;
+  }
+
+  .str-data-card h4 {
+   font-family: 'Inter', sans-serif;
+   font-weight: 700;
+   font-size: 13px;
+   color: #706F6C;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   margin-bottom: 12px;
+  }
+
+  .str-data-card .data-row {
+   display: flex;
+   justify-content: space-between;
+   padding: 6px 0;
+   font-size: 14px;
+   border-bottom: 1px solid #F0EBE1;
+  }
+
+  .str-data-card .data-row:last-child {
+   border-bottom: none;
+  }
+
+  .str-data-card .data-row .data-label {
+   color: #706F6C;
+  }
+
+  .str-data-card .data-row .data-value {
+   font-weight: 700;
+   color: #3A5566;
+  }
+
+  .str-webmap-link {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   margin-top: 16px;
+   padding: 14px 28px;
+   background: #3A5566;
+   color: #E1D4BB;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 700;
+   transition: background 0.2s;
+  }
+
+  .str-webmap-link:hover {
+   background: #496778;
+   color: #fff;
+  }
+
   /* ========== RESPONSIVE ========== */
   @media (max-width: 768px) {
    .str-hero h1 { font-size: 28px; }
@@ -748,6 +922,9 @@
    .permit-grid { grid-template-columns: 1fr; }
    .forms-grid { grid-template-columns: 1fr; }
    .section-heading { font-size: 24px; }
+   .str-stats { gap: 24px; }
+   .str-data-grid { grid-template-columns: 1fr; }
+   #str-map { height: 400px; }
    .links-section { flex-direction: column; align-items: center; }
    .footer-inner { flex-direction: column; }
    .footer-links { flex-direction: column; gap: 24px; }
@@ -789,6 +966,26 @@
   </span>
  </div>
 </section>
+
+<!-- Stats Bar -->
+<div class="str-stats">
+ <div class="str-stat">
+  <span class="num" id="stat-total">--</span>
+  <span class="lbl">Total STR Permits</span>
+ </div>
+ <div class="str-stat">
+  <span class="num" id="stat-active">--</span>
+  <span class="lbl">Currently Active</span>
+ </div>
+ <div class="str-stat">
+  <span class="num" id="stat-dadu">--</span>
+  <span class="lbl">On DADU Properties</span>
+ </div>
+ <div class="str-stat">
+  <span class="num" id="stat-owner">--</span>
+  <span class="lbl">Owner-Occupied</span>
+ </div>
+</div>
 
 <!-- Core Rule -->
 <div class="core-rule">
@@ -875,6 +1072,56 @@
    </div>
   </div>
  </div>
+</div>
+
+<!-- Interactive Map: STR Permits on DADU Properties -->
+<div class="str-map-section">
+ <h2 class="section-heading">STR Permits on DADU Properties</h2>
+ <div class="str-map-container">
+  <div class="str-map-header">
+   <h3>1,244 Parcels with DADU + STR Permits</h3>
+   <label class="str-map-toggle">
+    <input type="checkbox" id="toggle-all-str"> Show all 17K STR permits
+   </label>
+  </div>
+  <div id="str-map"></div>
+  <div class="str-map-legend">
+   <div class="legend-dot"><div class="dot" style="background:#406A64;"></div> Active (Issued)</div>
+   <div class="legend-dot"><div class="dot" style="background:#918A83;"></div> Expired</div>
+   <div class="legend-dot"><div class="dot" style="background:#B58676;"></div> Cancelled / Revoked</div>
+   <div class="legend-dot"><div class="dot" style="background:#CBB279; border-radius:50%;"></div> All STR Permits (toggle)</div>
+  </div>
+ </div>
+</div>
+
+<!-- DADU STR Data Summary -->
+<div class="str-data-section">
+ <div class="str-data-grid">
+  <div class="str-data-card">
+   <h4>Permit Status</h4>
+   <div class="data-row"><span class="data-label">Active (Issued)</span><span class="data-value" id="data-active">--</span></div>
+   <div class="data-row"><span class="data-label">Expired</span><span class="data-value" id="data-expired">--</span></div>
+   <div class="data-row"><span class="data-label">Cancelled</span><span class="data-value" id="data-cancelled">--</span></div>
+   <div class="data-row"><span class="data-label">Revoked</span><span class="data-value" id="data-revoked">--</span></div>
+  </div>
+  <div class="str-data-card">
+   <h4>STR Type</h4>
+   <div class="data-row"><span class="data-label">Owner-Occupied</span><span class="data-value" id="data-oo">--</span></div>
+   <div class="data-row"><span class="data-label">Non-Owner-Occupied</span><span class="data-value" id="data-noo">--</span></div>
+   <div class="data-row"><span class="data-label">Multifamily</span><span class="data-value" id="data-mf">--</span></div>
+   <div class="data-row"><span class="data-label">Confirmed ADU</span><span class="data-value" id="data-adu">--</span></div>
+  </div>
+  <div class="str-data-card">
+   <h4>Top ZIP Codes</h4>
+   <div id="data-zips">
+    <div class="data-row"><span class="data-label">Loading...</span><span class="data-value"></span></div>
+   </div>
+  </div>
+ </div>
+ <a href="https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=4c36ac6517ed41b6b8dc3723367461d1" target="_blank" class="str-webmap-link">
+  <img src="assets/icons/GIS.svg" alt="" style="width:20px; height:20px; filter: brightness(2);">
+  Explore Full STR Map in ArcGIS
+ </a>
 </div>
 
 <!-- Requirements -->
@@ -1070,6 +1317,10 @@
    <img src="assets/icons/Appraisers.svg" alt="">
    ROI Calculator
   </a>
+  <a href="https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=4c36ac6517ed41b6b8dc3723367461d1" target="_blank" class="link-pill">
+   <img src="assets/icons/GIS.svg" alt="">
+   STR Map (ArcGIS)
+  </a>
  </div>
 </div>
 
@@ -1115,5 +1366,275 @@
 </footer>
 
 <script src="homebody_header.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function() {
+ // ========================================
+ // ArcGIS URLs
+ // ========================================
+ var DADU_STR_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Short_Term_Rental/FeatureServer/0';
+ var ALL_STR_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Short_Term_Rental_and_Parcels_/FeatureServer/0';
+ var TN_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Tennessee_Counties/FeatureServer/0/query?';
+
+ // ========================================
+ // STATS BAR
+ // ========================================
+ function loadStats() {
+  // Total STR permits
+  fetch(ALL_STR_URL + '/query?where=1%3D1&returnCountOnly=true&f=json')
+   .then(function(r) { return r.json(); })
+   .then(function(d) {
+    document.getElementById('stat-total').textContent = (d.count || 0).toLocaleString();
+   }).catch(function() { document.getElementById('stat-total').textContent = '17,126'; });
+
+  // Active STR permits
+  fetch(ALL_STR_URL + '/query?where=' + encodeURIComponent("STR_Permit_Status='ISSUED'") + '&returnCountOnly=true&f=json')
+   .then(function(r) { return r.json(); })
+   .then(function(d) {
+    document.getElementById('stat-active').textContent = (d.count || 0).toLocaleString();
+   }).catch(function() { document.getElementById('stat-active').textContent = '7,200+'; });
+
+  // DADU STR parcels
+  fetch(DADU_STR_URL + '/query?where=1%3D1&returnCountOnly=true&f=json')
+   .then(function(r) { return r.json(); })
+   .then(function(d) {
+    document.getElementById('stat-dadu').textContent = (d.count || 0).toLocaleString();
+   }).catch(function() { document.getElementById('stat-dadu').textContent = '1,244'; });
+
+  // Owner-occupied percentage
+  fetch(ALL_STR_URL + '/query?where=' + encodeURIComponent("STR_Permit_Subtype_Description LIKE '%Owner Occupied%'") + '&returnCountOnly=true&f=json')
+   .then(function(r) { return r.json(); })
+   .then(function(d) {
+    var pct = Math.round(((d.count || 0) / 17126) * 100);
+    document.getElementById('stat-owner').textContent = pct + '%';
+   }).catch(function() { document.getElementById('stat-owner').textContent = '36%'; });
+ }
+
+ loadStats();
+
+ // ========================================
+ // MAP INIT
+ // ========================================
+ var map = L.map('str-map').setView([36.16, -86.78], 11);
+
+ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap, &copy; CartoDB',
+  maxZoom: 19,
+  subdomains: 'abcd'
+ }).addTo(map);
+
+ // Davidson County boundary (two-layer)
+ fetch(TN_URL + new URLSearchParams({ where: "NAME<>'Davidson'", outFields: 'NAME', returnGeometry: true, outSR: 4326, f: 'geojson' }))
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+   if (data.features && data.features.length > 0) {
+    L.geoJSON(data, { style: { color: '#E2E2E0', weight: 0.75, fillColor: '#E2E2E0', fillOpacity: 0.45 }, interactive: false }).addTo(map).bringToBack();
+   }
+  }).catch(function() {});
+
+ fetch(TN_URL + new URLSearchParams({ where: "NAME='Davidson'", outFields: 'NAME', returnGeometry: true, outSR: 4326, f: 'geojson' }))
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+   if (data.features && data.features.length > 0) {
+    L.geoJSON(data, { style: { color: 'rgba(76,92,102,0.81)', weight: 2.25, fillColor: 'transparent', fillOpacity: 0 }, interactive: false }).addTo(map);
+   }
+  }).catch(function() {});
+
+ // ========================================
+ // DADU STR POLYGONS (1,244)
+ // ========================================
+ var daduStrLayer = null;
+ var statusCounts = { ISSUED: 0, EXPIRED: 0, CANCELLED: 0, REVOKED: 0, OTHER: 0 };
+ var typeCounts = { oo: 0, noo: 0, mf: 0 };
+ var aduConfirmed = 0;
+ var zipCounts = {};
+
+ function getStatusColor(status) {
+  if (status === 'ISSUED') return '#406A64';
+  if (status === 'EXPIRED' || status === 'EXPIREEXT') return '#918A83';
+  return '#B58676';
+ }
+
+ function loadDaduStrLayer() {
+  var url = DADU_STR_URL + '/query?' + new URLSearchParams({
+   where: '1=1',
+   outFields: 'STR_Address,STR_Type,STR_Status,STR_Owner,STR_Purpose,STR_ZIP,APN,Parcel_Land_Use,Parcel_Acres,Parcel_Zoning,Parcel_Year_Built,Parcel_Bedrooms,Parcel_Bathrooms,ADU_Status,DADU_Score,DADU_Signals,Bldg1_SqFt,Bldg2_SqFt,Bldg2_Type,Council_District',
+   outSR: 4326,
+   f: 'geojson'
+  });
+
+  fetch(url)
+   .then(function(r) { return r.json(); })
+   .then(function(data) {
+    if (!data.features) return;
+
+    // Compute summary stats
+    data.features.forEach(function(f) {
+     var p = f.properties;
+     var st = p.STR_Status || '';
+     if (st === 'ISSUED') statusCounts.ISSUED++;
+     else if (st === 'EXPIRED' || st === 'EXPIREEXT') statusCounts.EXPIRED++;
+     else if (st === 'CANCELLED') statusCounts.CANCELLED++;
+     else if (st === 'REVOKED') statusCounts.REVOKED++;
+     else statusCounts.OTHER++;
+
+     var tp = p.STR_Type || '';
+     if (tp.indexOf('Owner') >= 0 && tp.indexOf('Non') < 0) typeCounts.oo++;
+     else if (tp.indexOf('Non') >= 0) typeCounts.noo++;
+     else typeCounts.mf++;
+
+     if (p.ADU_Status === 'Confirmed' || p.ADU_Status === 'Strong') aduConfirmed++;
+
+     var z = p.STR_ZIP;
+     if (z) { zipCounts[z] = (zipCounts[z] || 0) + 1; }
+    });
+
+    // Update data cards
+    document.getElementById('data-active').textContent = statusCounts.ISSUED.toLocaleString();
+    document.getElementById('data-expired').textContent = statusCounts.EXPIRED.toLocaleString();
+    document.getElementById('data-cancelled').textContent = statusCounts.CANCELLED.toLocaleString();
+    document.getElementById('data-revoked').textContent = (statusCounts.REVOKED + statusCounts.OTHER).toLocaleString();
+    document.getElementById('data-oo').textContent = typeCounts.oo.toLocaleString();
+    document.getElementById('data-noo').textContent = typeCounts.noo.toLocaleString();
+    document.getElementById('data-mf').textContent = typeCounts.mf.toLocaleString();
+    document.getElementById('data-adu').textContent = aduConfirmed.toLocaleString();
+
+    // Top ZIPs
+    var sortedZips = Object.entries(zipCounts).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 5);
+    var zipsHtml = '';
+    sortedZips.forEach(function(z) {
+     zipsHtml += '<div class="data-row"><span class="data-label">' + z[0] + '</span><span class="data-value">' + z[1] + '</span></div>';
+    });
+    document.getElementById('data-zips').innerHTML = zipsHtml;
+
+    // Render polygons on map
+    daduStrLayer = L.geoJSON(data, {
+     style: function(feature) {
+      var color = getStatusColor(feature.properties.STR_Status);
+      return {
+       color: color,
+       weight: 1.5,
+       fillColor: color,
+       fillOpacity: 0.45
+      };
+     },
+     onEachFeature: function(feature, layer) {
+      var p = feature.properties;
+      var status = p.STR_Status || 'Unknown';
+      var statusClass = status === 'ISSUED' ? 'color:#406A64' : status === 'EXPIRED' ? 'color:#918A83' : 'color:#B58676';
+
+      var html = '<div style="font-family:Inter,sans-serif; min-width:260px;">';
+      html += '<div style="font-size:15px; font-weight:700; color:#3A5566; margin-bottom:4px;">' + (p.STR_Address || 'Unknown Address') + '</div>';
+      html += '<div style="display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:700; ' + statusClass + '; background:rgba(0,0,0,0.06); margin-bottom:8px;">' + status + '</div>';
+      html += '<table style="font-size:13px; color:#706F6C; border-collapse:collapse; width:100%;">';
+
+      var rows = [
+       ['Type', p.STR_Type || ''],
+       ['Owner', p.STR_Owner || ''],
+       ['APN', p.APN || ''],
+       ['Zoning', p.Parcel_Zoning || ''],
+       ['Land Use', p.Parcel_Land_Use || ''],
+       ['Lot', p.Parcel_Acres ? p.Parcel_Acres.toFixed(2) + ' acres' : ''],
+       ['Main House', p.Bldg1_SqFt ? p.Bldg1_SqFt.toLocaleString() + ' sqft' : ''],
+       ['2nd Building', p.Bldg2_SqFt ? p.Bldg2_SqFt.toLocaleString() + ' sqft (' + (p.Bldg2_Type || '') + ')' : ''],
+       ['ADU Status', p.ADU_Status || ''],
+       ['DADU Score', p.DADU_Score || '']
+      ];
+
+      rows.forEach(function(r) {
+       if (r[1]) {
+        html += '<tr><td style="padding:3px 8px 3px 0; color:#918A83; white-space:nowrap;">' + r[0] + '</td><td style="padding:3px 0; font-weight:600; color:#3A5566;">' + r[1] + '</td></tr>';
+       }
+      });
+
+      html += '</table></div>';
+      layer.bindPopup(html, { maxWidth: 320 });
+     }
+    }).addTo(map);
+   }).catch(function(e) { console.warn('DADU STR load failed:', e); });
+ }
+
+ loadDaduStrLayer();
+
+ // ========================================
+ // ALL STR PERMITS TOGGLE (17K points)
+ // ========================================
+ var allStrLayer = null;
+ var allStrLoaded = false;
+
+ document.getElementById('toggle-all-str').addEventListener('change', function() {
+  if (this.checked) {
+   if (allStrLoaded && allStrLayer) {
+    map.addLayer(allStrLayer);
+    return;
+   }
+   loadAllStr();
+  } else {
+   if (allStrLayer) map.removeLayer(allStrLayer);
+  }
+ });
+
+ function loadAllStr() {
+  var PAGE_SIZE = 2000;
+  var offset = 0;
+  var allFeatures = [];
+  allStrLayer = L.layerGroup().addTo(map);
+
+  function fetchPage() {
+   var url = ALL_STR_URL + '/query?' + new URLSearchParams({
+    where: '1=1',
+    outFields: 'STR_Permit__,STR_Permit_Subtype_Description,STR_Address,STR_Permit_Status,STR_Permit_Owner_Name',
+    outSR: 4326,
+    resultOffset: offset,
+    resultRecordCount: PAGE_SIZE,
+    f: 'json'
+   });
+
+   fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+     if (!data.features || data.features.length === 0) {
+      allStrLoaded = true;
+      return;
+     }
+
+     data.features.forEach(function(f) {
+      if (f.geometry && f.geometry.x && f.geometry.y) {
+       var a = f.attributes;
+       var m = L.circleMarker([f.geometry.y, f.geometry.x], {
+        radius: 3,
+        color: '#CBB279',
+        fillColor: '#CBB279',
+        fillOpacity: 0.6,
+        weight: 0.5
+       });
+       m.bindPopup(
+        '<div style="font-family:Inter,sans-serif;">' +
+        '<div style="font-weight:700; color:#3A5566;">' + (a.STR_Address || '') + '</div>' +
+        '<div style="font-size:12px; color:#706F6C;">' + (a.STR_Permit_Subtype_Description || '') + '</div>' +
+        '<div style="font-size:12px; color:#706F6C;">Status: <strong>' + (a.STR_Permit_Status || '') + '</strong></div>' +
+        '</div>'
+       );
+       allStrLayer.addLayer(m);
+      }
+     });
+
+     offset += PAGE_SIZE;
+     if (data.features.length === PAGE_SIZE) {
+      fetchPage();
+     } else {
+      allStrLoaded = true;
+     }
+    }).catch(function(e) {
+     console.warn('All STR load error:', e);
+     allStrLoaded = true;
+    });
+  }
+
+  fetchPage();
+ }
+
+})();
+</script>
 </body>
 </html>
