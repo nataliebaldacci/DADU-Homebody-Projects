@@ -68,7 +68,7 @@
     '        </a>' +
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="explore-dropdown" role="menu">' +
              col('Area_Maps_and_Visual_layers.svg', 'Interactive Maps',
-                 item('dadu_eligibility_map.html', 'Zoning.svg', 'Eligibility Map') +
+                 item('dadu_eligibility_map.html', 'Area Maps and Visual layers.svg', 'Eligibility Map') +
                  item('property_search.html', 'Parcel Search.svg', 'Property Search') +
                  item('existing_dadus_map.html', 'ADU.png', 'Existing DADUs') +
                  item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map') +
@@ -99,10 +99,9 @@
              ) +
              col('Exports__Reports.svg', 'Research',
                  item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator') +
-                 item('site_plan_downloads.html', 'Permit_Site_Plans.svg', 'Site Plans &amp; Permits') +
+                 item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Site Plans &amp; Documents') +
                  item('dadu_resources.html', 'Recorded_Docs.svg', 'External Links') +
                  item('pdf_database_lookup.html', 'Recorded_Docs.svg', 'PDF Database') +
-                 item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans') +
                  item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Find a Contractor')
              ) +
     '        </div>' +

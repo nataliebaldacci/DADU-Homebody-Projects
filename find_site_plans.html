@@ -3,7 +3,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Find Site Plans | Homebody Projects</title>
+ <title>Site Plans &amp; Documents | Homebody Projects</title>
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
  <style>
@@ -23,24 +23,83 @@
    color: #E1D4BB; margin-bottom: 8px;
   }
   .page-header .subtitle {
-   color: #F0EBE1; font-size: 15px; max-width: 600px; margin: 0 auto;
+   color: #F0EBE1; font-size: 15px; max-width: 680px; margin: 0 auto 16px;
   }
+  .hero-badges {
+   display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  }
+  .hero-badges .badge {
+   display: inline-flex; align-items: center; gap: 6px;
+   background: rgba(255,255,255,0.12); border: 1px solid rgba(225,212,187,0.3);
+   border-radius: 20px; padding: 6px 16px; font-size: 13px;
+   color: #E1D4BB; font-weight: 600;
+  }
+  .hero-badges .badge img { width: 18px; height: 18px; }
+  .hero-badges .badge-count { color: #CBB279; font-weight: 800; }
 
   /* ========== MAIN LAYOUT ========== */
   .main-content {
-   display: flex; min-height: calc(100vh - 180px);
+   display: flex; min-height: calc(100vh - 220px);
   }
 
   /* ========== SIDEBAR ========== */
   .sidebar {
    width: 320px; min-width: 320px; background: #F2F0ED;
    border-right: 1px solid #E2E2E0; padding: 20px;
-   overflow-y: auto; max-height: calc(100vh - 160px);
+   overflow-y: auto; max-height: calc(100vh - 200px);
   }
   .sidebar h3 {
    font-size: 13px; font-weight: 700; text-transform: uppercase;
    letter-spacing: 1px; color: #3A5566; margin-bottom: 16px;
   }
+
+  /* Mode toggle tabs */
+  .mode-tabs {
+   display: flex; gap: 0; margin-bottom: 16px; border-radius: 8px; overflow: hidden;
+   border: 1px solid #E2E2E0;
+  }
+  .mode-tab {
+   flex: 1; padding: 10px 8px; font-size: 12px; font-weight: 700;
+   text-align: center; cursor: pointer; border: none;
+   font-family: 'Inter', sans-serif; transition: all 0.2s;
+   background: #fff; color: #7B746D;
+  }
+  .mode-tab.active {
+   background: #3A5566; color: #E1D4BB;
+  }
+  .mode-tab:hover:not(.active) {
+   background: #F0EBE1; color: #3A5566;
+  }
+
+  /* Mode panels */
+  .mode-panel { display: none; }
+  .mode-panel.active { display: block; }
+
+  /* APN/Address search */
+  .apn-search-input {
+   width: 100%; height: 40px; border: 2px solid #E2E2E0;
+   border-radius: 8px; padding: 0 12px; font-size: 14px;
+   font-family: 'Inter', sans-serif; background: #fff;
+   margin-bottom: 12px;
+  }
+  .apn-search-input:focus {
+   outline: none; border-color: #CBB279;
+  }
+  .apn-search-input::placeholder { color: #918A83; }
+
+  /* Doc type filter tabs */
+  .doc-filter-tabs {
+   display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
+  }
+  .doc-filter-tab {
+   padding: 6px 12px; background: #F0EBE1; border: 1px solid #E2E2E0;
+   border-radius: 16px; font-size: 11px; font-weight: 600;
+   color: #706F6C; cursor: pointer; font-family: 'Inter', sans-serif;
+   transition: all 0.2s;
+  }
+  .doc-filter-tab:hover { border-color: #CBB279; color: #3A5566; }
+  .doc-filter-tab.active { background: #3A5566; color: #E1D4BB; border-color: #3A5566; }
+
   .filter-group { margin-bottom: 16px; }
   .filter-group label {
    display: block; font-size: 11px; font-weight: 600;
@@ -99,7 +158,7 @@
   /* ========== RESULTS AREA ========== */
   .results-area {
    flex: 1; background: #fff; padding: 24px;
-   overflow-y: auto; max-height: calc(100vh - 160px);
+   overflow-y: auto; max-height: calc(100vh - 200px);
   }
 
   /* Results header bar */
@@ -159,7 +218,7 @@
    font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif;
   }
 
-  /* ========== RESULT CARDS ========== */
+  /* ========== RESULT CARDS (Permit mode) ========== */
   .results-list { display: flex; flex-direction: column; gap: 16px; }
   .result-card {
    background: #fff; border: 1px solid #E2E2E0; border-radius: 8px;
@@ -228,33 +287,171 @@
   }
   .btn-load-more:hover { background: #F0EBE1; }
 
-  /* ========== GDRIVE FOOTER ========== */
-  .gdrive-footer {
-   background: #F2F0ED; padding: 32px 24px; border-top: 1px solid #E2E2E0;
+  /* ========== DOC CARDS (APN mode) ========== */
+  .doc-results-grid {
+   display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
   }
-  .gdrive-footer h3 {
+  .doc-card {
+   background: #fff; border: 1px solid #E2E2E0; border-radius: 12px;
+   padding: 20px; transition: all 0.2s;
+  }
+  .doc-card:hover {
+   border-color: #CBB279; box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+   transform: translateY(-2px);
+  }
+  .doc-card-header {
+   display: flex; align-items: center; justify-content: space-between;
+   margin-bottom: 12px;
+  }
+  .doc-type-badge {
+   display: inline-block; padding: 4px 10px; border-radius: 6px;
+   font-size: 11px; font-weight: 700; text-transform: uppercase;
+   letter-spacing: 0.5px;
+  }
+  .doc-type-badge.permit { background: rgba(58,85,102,0.1); color: #3A5566; }
+  .doc-type-badge.property-card { background: rgba(203,178,121,0.15); color: #8a7235; }
+  .doc-type-badge.covenant { background: rgba(181,134,118,0.15); color: #B58676; }
+  .doc-type-badge.aerial { background: rgba(64,106,100,0.12); color: #406A64; }
+  .doc-type-badge.assessor { background: rgba(123,116,109,0.12); color: #7B746D; }
+  .doc-card-apn {
+   font-size: 12px; color: #918A83; font-weight: 600; font-family: monospace;
+  }
+  .doc-card-title {
+   font-weight: 700; font-size: 14px; color: #3A5566; margin-bottom: 4px;
+  }
+  .doc-card-meta {
+   font-size: 12px; color: #706F6C; margin-bottom: 14px; line-height: 1.5;
+  }
+  .doc-card-actions { display: flex; gap: 8px; }
+  .doc-btn {
+   display: inline-flex; align-items: center; gap: 6px;
+   padding: 8px 16px; border-radius: 6px; font-size: 12px;
+   font-weight: 700; font-family: 'Inter', sans-serif;
+   transition: all 0.2s; cursor: pointer; border: none;
+  }
+  .doc-btn-primary { background: #3A5566; color: #E1D4BB; }
+  .doc-btn-primary:hover { background: #496778; }
+  .doc-btn-secondary { background: #F0EBE1; color: #3A5566; }
+  .doc-btn-secondary:hover { background: #E2E2E0; }
+
+  /* ========== BROWSE BY CATEGORY ========== */
+  .section-container {
+   max-width: 1100px; margin: 0 auto; padding: 48px 24px 0;
+  }
+  .section-heading {
    font-family: 'Source Serif 4', Georgia, serif;
-   font-weight: 700; font-style: italic; font-size: 20px;
-   color: #3A5566; text-align: center; margin-bottom: 16px;
+   font-weight: 700; font-style: italic; font-size: 28px;
+   color: #3A5566; text-align: center; margin-bottom: 32px;
   }
-  .gdrive-cards {
+  .browse-grid {
+   display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  .browse-card {
+   background: #fff; border: 1px solid #E2E2E0; border-radius: 12px;
+   padding: 24px; text-align: center; transition: all 0.2s;
+   display: flex; flex-direction: column; align-items: center;
+  }
+  .browse-card:hover {
+   border-color: #CBB279; box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+   transform: translateY(-2px);
+  }
+  .browse-card-icon {
+   width: 56px; height: 56px; background: #F0EBE1; border-radius: 50%;
+   display: flex; align-items: center; justify-content: center;
+   margin-bottom: 14px;
+  }
+  .browse-card:hover .browse-card-icon { background: #CBB279; }
+  .browse-card-icon img { width: 28px; height: 28px; transition: filter 0.2s; }
+  .browse-card:hover .browse-card-icon img { filter: brightness(0) invert(1); }
+  .browse-card h3 {
+   font-weight: 700; font-size: 15px; color: #3A5566; margin-bottom: 4px;
+  }
+  .browse-card .doc-count {
+   font-size: 13px; color: #CBB279; font-weight: 700; margin-bottom: 8px;
+  }
+  .browse-card p { font-size: 12px; color: #706F6C; line-height: 1.5; }
+
+  /* ========== EXTERNAL PORTALS ========== */
+  .portals-section {
+   max-width: 1100px; margin: 0 auto; padding: 48px 24px 0;
+  }
+  .portals-grid {
+   display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+  }
+  .portal-card {
+   display: flex; align-items: flex-start; gap: 14px;
+   background: #fff; border: 1px solid #E2E2E0; border-radius: 12px;
+   padding: 20px 22px; transition: all 0.2s;
+  }
+  .portal-card:hover {
+   border-color: #CBB279; box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+   transform: translateY(-2px);
+  }
+  .portal-card-icon {
+   width: 40px; height: 40px; background: #F0EBE1; border-radius: 50%;
+   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .portal-card-icon img { width: 22px; height: 22px; }
+  .portal-card-text h4 { font-weight: 700; font-size: 14px; color: #3A5566; margin-bottom: 4px; }
+  .portal-card-text p { font-size: 12px; color: #706F6C; line-height: 1.5; }
+  .portal-card-arrow {
+   margin-left: auto; color: #918A83; font-size: 18px;
+   align-self: center; flex-shrink: 0; transition: color 0.2s;
+  }
+  .portal-card:hover .portal-card-arrow { color: #CBB279; }
+
+  /* ========== CTA ========== */
+  .cta-section {
+   background: #3A5566; padding: 64px 24px; text-align: center;
+   margin-top: 48px;
+  }
+  .cta-section h2 {
+   font-family: 'Source Serif 4', Georgia, serif;
+   font-weight: 700; font-style: italic; font-size: 32px;
+   color: #E1D4BB; margin-bottom: 12px;
+  }
+  .cta-section p {
+   color: #F0EBE1; font-size: 15px; max-width: 520px; margin: 0 auto 28px;
+  }
+  .cta-btns {
    display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
   }
-  .gdrive-card {
-   display: flex; align-items: center; gap: 10px;
-   background: #fff; border: 1px solid #E2E2E0; border-radius: 8px;
-   padding: 14px 20px; font-size: 14px; font-weight: 600;
-   color: #3A5566; text-decoration: none; transition: box-shadow 0.2s;
+  .cta-btn {
+   display: inline-block; padding: 16px 44px; background: #CBB279;
+   color: #3A5566; border-radius: 8px; font-size: 16px; font-weight: 700;
+   font-family: 'Inter', sans-serif; transition: all 0.2s;
   }
-  .gdrive-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-  .gdrive-card img { width: 28px; height: 28px; }
+  .cta-btn:hover { background: #b9a068; transform: translateY(-2px); }
+  .cta-btn-outline {
+   display: inline-block; padding: 16px 44px; background: transparent;
+   color: #E1D4BB; border: 2px solid rgba(225,212,187,0.4);
+   border-radius: 8px; font-size: 16px; font-weight: 700;
+   font-family: 'Inter', sans-serif; transition: all 0.2s;
+  }
+  .cta-btn-outline:hover { border-color: #E1D4BB; background: rgba(255,255,255,0.05); }
 
   /* ========== FOOTER ========== */
-  .site-footer {
-   background: #3A5566; color: #E1D4BB; padding: 24px;
-   text-align: center; font-size: 13px;
+  .page-footer {
+   background: #3A5566; border-top: 1px solid #496778;
+   padding: 48px 24px 24px; color: #E1D4BB;
   }
-  .site-footer a { color: #918A83; }
+  .footer-inner {
+   max-width: 1100px; margin: 0 auto; display: flex;
+   justify-content: space-between; align-items: flex-start; gap: 40px;
+  }
+  .footer-links { display: flex; gap: 60px; }
+  .footer-col { display: flex; flex-direction: column; gap: 8px; }
+  .footer-col h4 { font-size: 14px; font-weight: 700; color: #E1D4BB; margin-bottom: 4px; }
+  .footer-col a { font-size: 13px; color: #918A83; transition: color 0.2s; }
+  .footer-col a:hover { color: #E1D4BB; }
+  .footer-bottom {
+   max-width: 1100px; margin: 32px auto 0; padding-top: 20px;
+   border-top: 1px solid rgba(255,255,255,0.1);
+   display: flex; justify-content: space-between;
+   font-size: 12px; color: #918A83;
+  }
+  .footer-bottom a { color: #918A83; transition: color 0.2s; }
+  .footer-bottom a:hover { color: rgba(225,212,187,0.8); }
 
   /* ========== RESPONSIVE ========== */
   @media (max-width: 900px) {
@@ -267,6 +464,14 @@
    .filter-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
    }
+   .doc-results-grid { grid-template-columns: 1fr; }
+   .browse-grid { grid-template-columns: 1fr; }
+   .portals-grid { grid-template-columns: 1fr; }
+   .footer-inner { flex-direction: column; }
+   .footer-links { flex-direction: column; gap: 24px; }
+   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+   .cta-btns { flex-direction: column; align-items: center; }
+   .hero-badges .badge { font-size: 12px; padding: 5px 12px; }
   }
  </style>
 </head>
@@ -277,123 +482,169 @@
 
 <!-- Page Header -->
 <div class="page-header">
- <h1>Find Site Plans</h1>
- <p class="subtitle">Search approved DADU site plans, permit documents, and construction details by project criteria.</p>
+ <h1>Site Plans &amp; Documents</h1>
+ <p class="subtitle">Search approved DADU site plans, permit documents, property cards, and restrictive covenants</p>
+ <div class="hero-badges">
+  <span class="badge">
+   <img src="assets/icons/Permit_Site_Plans.svg" alt="">
+   <span class="badge-count" id="badge-permits">6,936</span> Permit PDFs
+  </span>
+  <span class="badge">
+   <img src="assets/icons/Recorded_Docs.svg" alt="">
+   <span class="badge-count" id="badge-cards">3,303</span> Property Cards
+  </span>
+  <span class="badge">
+   <img src="assets/icons/Restrictive_Covenants.svg" alt="">
+   <span class="badge-count" id="badge-covenants">4,305</span> Covenants
+  </span>
+ </div>
 </div>
 
 <!-- Main Layout -->
 <div class="main-content">
 
- <!-- LEFT SIDEBAR: Filters -->
+ <!-- LEFT SIDEBAR -->
  <div class="sidebar">
-  <h3>Search Filters</h3>
 
-  <div class="filter-grid">
-   <div class="filter-group">
-    <label for="f-zip">Zip Code</label>
-    <input type="text" id="f-zip" placeholder="e.g. 37206, 37209">
-   </div>
+  <!-- Mode toggle -->
+  <div class="mode-tabs">
+   <button class="mode-tab active" data-mode="permits" onclick="switchMode('permits')">Search Permits</button>
+   <button class="mode-tab" data-mode="apn" onclick="switchMode('apn')">Search by APN/Address</button>
+  </div>
 
-   <div class="filter-group">
-    <label for="f-zone">Zoning District</label>
-    <select id="f-zone">
-     <option value="">All</option>
-     <option value="RS">RS (any)</option>
-     <option value="R">R (any)</option>
-     <option value="RM">RM (any)</option>
-     <option value="AG">AG / AR2a</option>
-     <option value="SP">SP</option>
-    </select>
-   </div>
+  <!-- ═══ MODE 1: Permit Filters ═══ -->
+  <div class="mode-panel active" id="panel-permits">
+   <h3>Permit Filters</h3>
+   <div class="filter-grid">
+    <div class="filter-group">
+     <label for="f-zip">Zip Code</label>
+     <input type="text" id="f-zip" placeholder="e.g. 37206, 37209">
+    </div>
 
-   <div class="filter-group">
-    <label for="f-district">Service District</label>
-    <select id="f-district">
-     <option value="">All</option>
-     <option value="USD">USD</option>
-     <option value="GSD">GSD</option>
-    </select>
-   </div>
+    <div class="filter-group">
+     <label for="f-zone">Zoning District</label>
+     <select id="f-zone">
+      <option value="">All</option>
+      <option value="RS">RS (any)</option>
+      <option value="R">R (any)</option>
+      <option value="RM">RM (any)</option>
+      <option value="AG">AG / AR2a</option>
+      <option value="SP">SP</option>
+     </select>
+    </div>
 
-   <div class="filter-group">
-    <label>Lot Size (SF)</label>
-    <div class="range-row">
-     <input type="number" id="f-lot-min" placeholder="Min">
-     <span class="range-sep">to</span>
-     <input type="number" id="f-lot-max" placeholder="Max">
+    <div class="filter-group">
+     <label for="f-district">Service District</label>
+     <select id="f-district">
+      <option value="">All</option>
+      <option value="USD">USD</option>
+      <option value="GSD">GSD</option>
+     </select>
+    </div>
+
+    <div class="filter-group">
+     <label>Lot Size (SF)</label>
+     <div class="range-row">
+      <input type="number" id="f-lot-min" placeholder="Min">
+      <span class="range-sep">to</span>
+      <input type="number" id="f-lot-max" placeholder="Max">
+     </div>
+    </div>
+
+    <div class="filter-group">
+     <label>DADU Size (SF)</label>
+     <div class="range-row">
+      <input type="number" id="f-sqft-min" placeholder="Min">
+      <span class="range-sep">to</span>
+      <input type="number" id="f-sqft-max" placeholder="Max">
+     </div>
+    </div>
+
+    <div class="filter-group">
+     <label>Construction Cost ($)</label>
+     <div class="range-row">
+      <input type="number" id="f-cost-min" placeholder="Min">
+      <span class="range-sep">to</span>
+      <input type="number" id="f-cost-max" placeholder="Max">
+     </div>
+    </div>
+
+    <div class="filter-group">
+     <label>Cost Per SF ($)</label>
+     <div class="range-row">
+      <input type="number" id="f-cpsf-min" placeholder="Min">
+      <span class="range-sep">to</span>
+      <input type="number" id="f-cpsf-max" placeholder="Max">
+     </div>
+    </div>
+
+    <div class="filter-group">
+     <label for="f-contractor">Contractor</label>
+     <input type="text" id="f-contractor" placeholder="Search contractor name">
+    </div>
+
+    <div class="filter-group">
+     <label>Year</label>
+     <div class="range-row">
+      <input type="number" id="f-year-min" placeholder="From">
+      <span class="range-sep">to</span>
+      <input type="number" id="f-year-max" placeholder="To">
+     </div>
+    </div>
+
+    <div class="filter-group">
+     <label for="f-status">Status</label>
+     <select id="f-status">
+      <option value="">All</option>
+      <option value="Completed">Completed</option>
+      <option value="Active">Active</option>
+      <option value="In Review">In Review</option>
+      <option value="Expired">Expired</option>
+     </select>
+    </div>
+
+    <div class="filter-group">
+     <label>Type</label>
+     <div class="radio-group">
+      <label><input type="radio" name="f-type" value="" checked> All</label>
+      <label><input type="radio" name="f-type" value="detached"> Detached</label>
+      <label><input type="radio" name="f-type" value="attached"> Attached</label>
+     </div>
+    </div>
+
+    <div class="filter-group">
+     <div class="checkbox-group">
+      <label><input type="checkbox" id="f-has-pdf" checked> Only show results with downloadable documents</label>
+     </div>
     </div>
    </div>
 
-   <div class="filter-group">
-    <label>DADU Size (SF)</label>
-    <div class="range-row">
-     <input type="number" id="f-sqft-min" placeholder="Min">
-     <span class="range-sep">to</span>
-     <input type="number" id="f-sqft-max" placeholder="Max">
-    </div>
+   <button class="btn-search" onclick="doSearch()">Search Site Plans</button>
+   <button class="btn-reset" onclick="resetFilters()">Reset All Filters</button>
+  </div>
+
+  <!-- ═══ MODE 2: APN/Address Search ═══ -->
+  <div class="mode-panel" id="panel-apn">
+   <h3>Property Document Search</h3>
+
+   <input type="text" class="apn-search-input" id="apn-input" placeholder="Enter APN (e.g. 11805013000) or address...">
+
+   <div class="doc-filter-tabs" id="docFilterTabs">
+    <button class="doc-filter-tab active" data-filter="all">All</button>
+    <button class="doc-filter-tab" data-filter="permits">Permits</button>
+    <button class="doc-filter-tab" data-filter="property_cards">Property Cards</button>
+    <button class="doc-filter-tab" data-filter="covenants">Covenants</button>
+    <button class="doc-filter-tab" data-filter="assessor_cards">Assessor Cards</button>
    </div>
 
-   <div class="filter-group">
-    <label>Construction Cost ($)</label>
-    <div class="range-row">
-     <input type="number" id="f-cost-min" placeholder="Min">
-     <span class="range-sep">to</span>
-     <input type="number" id="f-cost-max" placeholder="Max">
-    </div>
-   </div>
+   <button class="btn-search" onclick="doApnSearch()">Search Documents</button>
+   <button class="btn-reset" onclick="clearApnSearch()">Clear</button>
 
-   <div class="filter-group">
-    <label>Cost Per SF ($)</label>
-    <div class="range-row">
-     <input type="number" id="f-cpsf-min" placeholder="Min">
-     <span class="range-sep">to</span>
-     <input type="number" id="f-cpsf-max" placeholder="Max">
-    </div>
-   </div>
-
-   <div class="filter-group">
-    <label for="f-contractor">Contractor</label>
-    <input type="text" id="f-contractor" placeholder="Search contractor name">
-   </div>
-
-   <div class="filter-group">
-    <label>Year</label>
-    <div class="range-row">
-     <input type="number" id="f-year-min" placeholder="From">
-     <span class="range-sep">to</span>
-     <input type="number" id="f-year-max" placeholder="To">
-    </div>
-   </div>
-
-   <div class="filter-group">
-    <label for="f-status">Status</label>
-    <select id="f-status">
-     <option value="">All</option>
-     <option value="Completed">Completed</option>
-     <option value="Active">Active</option>
-     <option value="In Review">In Review</option>
-     <option value="Expired">Expired</option>
-    </select>
-   </div>
-
-   <div class="filter-group">
-    <label>Type</label>
-    <div class="radio-group">
-     <label><input type="radio" name="f-type" value="" checked> All</label>
-     <label><input type="radio" name="f-type" value="detached"> Detached</label>
-     <label><input type="radio" name="f-type" value="attached"> Attached</label>
-    </div>
-   </div>
-
-   <div class="filter-group">
-    <div class="checkbox-group">
-     <label><input type="checkbox" id="f-has-pdf" checked> Only show results with downloadable documents</label>
-    </div>
+   <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #E2E2E0;">
+    <p style="font-size: 12px; color: #918A83; line-height: 1.5;">Search by APN (11-digit parcel number) or address keyword to find permit PDFs, property cards, restrictive covenants, and assessor records from our database of 18,782 documents across 8,804 parcels.</p>
    </div>
   </div>
 
-  <button class="btn-search" onclick="doSearch()">Search Site Plans</button>
-  <button class="btn-reset" onclick="resetFilters()">Reset All Filters</button>
  </div>
 
  <!-- RIGHT: Results Area -->
@@ -402,8 +653,8 @@
   <!-- Empty state (before search) -->
   <div class="empty-state" id="empty-state">
    <img src="assets/icons/Permit_Site_Plans.svg" alt="">
-   <h2>Search DADU Site Plans</h2>
-   <p>Enter your criteria to find approved site plans, permit documents, and construction details from 4,117 permit records across Nashville.</p>
+   <h2>Search DADU Site Plans &amp; Documents</h2>
+   <p>Use the filters to search 4,117 permit records by project criteria, or switch to APN/Address mode to look up documents for a specific property.</p>
    <div class="example-chips">
     <span class="example-chip" onclick="exampleSearch('small')">Small lot DADUs under 700 SF</span>
     <span class="example-chip" onclick="exampleSearch('expensive')">DADUs over $100K</span>
@@ -414,16 +665,16 @@
   <!-- Loading state -->
   <div class="loading-state" id="loading-state">
    <div class="spinner"></div>
-   <p style="color:#7B746D;">Searching permit records...</p>
+   <p style="color:#7B746D;" id="loading-text">Searching permit records...</p>
   </div>
 
   <!-- Error state -->
   <div class="error-state" id="error-state">
-   <p>Failed to load permit data. The server may be temporarily unavailable.</p>
+   <p>Failed to load data. The server may be temporarily unavailable.</p>
    <button class="btn-retry" onclick="doSearch()">Try Again</button>
   </div>
 
-  <!-- Results header + list -->
+  <!-- Permit results (Mode 1) -->
   <div id="results-container" style="display:none;">
    <div class="results-header">
     <div class="results-count"><span id="result-count">0</span> site plans found</div>
@@ -443,31 +694,138 @@
    </div>
   </div>
 
+  <!-- APN doc results (Mode 2) -->
+  <div id="apn-results-container" style="display:none;">
+   <div class="results-header">
+    <div class="results-count" id="apn-results-status"></div>
+    <button style="color:#3A5566;font-weight:600;cursor:pointer;border:none;background:none;font-family:'Inter',sans-serif;font-size:13px;" onclick="clearApnSearch()">Clear search</button>
+   </div>
+   <div class="doc-results-grid" id="apn-results-grid"></div>
+  </div>
+
  </div><!-- /results-area -->
 </div><!-- /main-content -->
 
-<!-- Google Drive Browse Footer -->
-<div class="gdrive-footer">
- <h3>Browse Google Drive Document Folders</h3>
- <div class="gdrive-cards">
-  <a href="https://drive.google.com/drive/folders/1N_IpJaweqoFhbmBnYHjQJs1G1ItTQjC4" target="_blank" class="gdrive-card">
-   <img src="assets/icons/Permit_Site_Plans.svg" alt=""> Permits &amp; Site Plans
+<!-- Browse by Category -->
+<div class="section-container">
+ <h2 class="section-heading">Browse by Category</h2>
+ <div class="browse-grid">
+  <a href="https://drive.google.com/drive/folders/1N_IpJaweqoFhbmBnYHjQJs1G1ItTQjC4" target="_blank" class="browse-card">
+   <div class="browse-card-icon"><img src="assets/icons/Permit_Site_Plans.svg" alt=""></div>
+   <h3>Site Plans &amp; Permits</h3>
+   <div class="doc-count">630 documents</div>
+   <p>Approved DADU site plans, building permits, and construction documents</p>
   </a>
-  <a href="https://drive.google.com/drive/folders/1UGNXAbDE1RuXfzMc6Vk3YL2r1AlZMwLZ" target="_blank" class="gdrive-card">
-   <img src="assets/icons/Recorded_Docs.svg" alt=""> Property Cards
+  <a href="https://drive.google.com/drive/folders/1UGNXAbDE1RuXfzMc6Vk3YL2r1AlZMwLZ" target="_blank" class="browse-card">
+   <div class="browse-card-icon"><img src="assets/icons/Recorded_Docs.svg" alt=""></div>
+   <h3>Property Cards</h3>
+   <div class="doc-count">3,358 documents</div>
+   <p>Davidson County property assessment cards with building details and values</p>
   </a>
-  <a href="https://drive.google.com/drive/folders/1bEZN1kEZxqZLkdX0QjT0g9N7K0sXAy3Z" target="_blank" class="gdrive-card">
-   <img src="assets/icons/Restrictive_Covenants.svg" alt=""> Restrictive Covenants
+  <a href="https://drive.google.com/drive/folders/1bEZN1kEZxqZLkdX0QjT0g9N7K0sXAy3Z" target="_blank" class="browse-card">
+   <div class="browse-card-icon"><img src="assets/icons/Restrictive_Covenants.svg" alt=""></div>
+   <h3>Restrictive Covenants</h3>
+   <div class="doc-count">8,514 documents</div>
+   <p>Recorded covenant documents that may affect DADU construction eligibility</p>
   </a>
-  <a href="https://drive.google.com/drive/folders/1eD1TUNuYMOMK7VdVJW3Pc6mHYFS02VUj" target="_blank" class="gdrive-card">
-   <img src="assets/icons/Exports__Reports.svg" alt=""> Assessor Cards
+  <a href="https://drive.google.com/drive/folders/1eD1TUNuYMOMK7VdVJW3Pc6mHYFS02VUj" target="_blank" class="browse-card">
+   <div class="browse-card-icon"><img src="assets/icons/Area_Analysis.svg" alt=""></div>
+   <h3>Aerial Photos</h3>
+   <div class="doc-count">698 documents</div>
+   <p>Aerial property screenshots showing lot boundaries and existing structures</p>
+  </a>
+  <a href="https://drive.google.com/drive/folders/1evPTz2SvAIDS74lwzgxjGF85kl2nDsrh" target="_blank" class="browse-card">
+   <div class="browse-card-icon"><img src="assets/icons/Overlay_Design_Standards.svg" alt=""></div>
+   <h3>UDO Overlay Standards</h3>
+   <div class="doc-count">Reference</div>
+   <p>Urban Design Overlay district standards and design guidelines</p>
+  </a>
+  <a href="https://drive.google.com/drive/folders/1KDQe3WhWz1H1ukTIlAfxtbDFmvX50kYu" target="_blank" class="browse-card">
+   <div class="browse-card-icon"><img src="assets/icons/Zoning_Documents.svg" alt=""></div>
+   <h3>DADU Overlay Standards</h3>
+   <div class="doc-count">Reference</div>
+   <p>DADU-specific overlay district design standards and requirements</p>
   </a>
  </div>
 </div>
 
+<!-- External Portals -->
+<div class="portals-section">
+ <h2 class="section-heading">Nashville Government Portals</h2>
+ <div class="portals-grid">
+  <a href="https://documents.nashville.gov/Request/Form/PermitCodes" target="_blank" class="portal-card">
+   <div class="portal-card-icon"><img src="assets/icons/Permit_Explorer.svg" alt=""></div>
+   <div class="portal-card-text">
+    <h4>Metro Nashville Document Search</h4>
+    <p>Official permit documents, site plans, and inspection records by permit number or parcel number.</p>
+   </div>
+   <span class="portal-card-arrow">&rarr;</span>
+  </a>
+  <a href="https://portal.padctn.org" target="_blank" class="portal-card">
+   <div class="portal-card-icon"><img src="assets/icons/Recorded_Docs.svg" alt=""></div>
+   <div class="portal-card-text">
+    <h4>Property Assessor Portal</h4>
+    <p>Davidson County property assessor cards, building details, and property values.</p>
+   </div>
+   <span class="portal-card-arrow">&rarr;</span>
+  </a>
+  <a href="https://epermits.nashville.gov" target="_blank" class="portal-card">
+   <div class="portal-card-icon"><img src="assets/icons/Permit_Activity.svg" alt=""></div>
+   <div class="portal-card-text">
+    <h4>Nashville ePermits</h4>
+    <p>Electronic permitting portal for active permits, inspections, and case details.</p>
+   </div>
+   <span class="portal-card-arrow">&rarr;</span>
+  </a>
+  <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="portal-card">
+   <div class="portal-card-icon"><img src="assets/icons/Parcel Search.svg" alt=""></div>
+   <div class="portal-card-text">
+    <h4>Nashville Parcel Viewer</h4>
+    <p>Interactive map for parcel boundaries, zoning, and ownership information.</p>
+   </div>
+   <span class="portal-card-arrow">&rarr;</span>
+  </a>
+ </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+ <h2>Ready to Check Your Property?</h2>
+ <p>Find out if your parcel qualifies for a DADU under BL2025-1007 and review the full building requirements.</p>
+ <div class="cta-btns">
+  <a href="am_i_eligible.html" class="cta-btn">Check Eligibility Now</a>
+  <a href="dadu_requirements_overview.html" class="cta-btn-outline">View Requirements</a>
+ </div>
+</section>
+
 <!-- Footer -->
-<footer class="site-footer">
- <p>Powered by <strong>Castlehold</strong> | Data from Nashville Metro &amp; Vanderbilt ArcGIS</p>
+<footer class="page-footer">
+ <div class="footer-inner">
+  <div class="footer-links">
+   <div class="footer-col">
+    <h4>Learn</h4>
+    <a href="am_i_eligible.html">Am I Eligible?</a>
+    <a href="size_calculator.html">Size Calculator</a>
+    <a href="dadu_calculators.html">Cost Estimator</a>
+   </div>
+   <div class="footer-col">
+    <h4>Features</h4>
+    <a href="contractor_marketplace.html">Contractor Directory</a>
+    <a href="dadu_requirements_overview.html">Planning Resources</a>
+    <a href="homebody_dadu_pricing.html">Pricing</a>
+   </div>
+   <div class="footer-col">
+    <h4>Get in Touch</h4>
+    <a href="mailto:hello@homebodyprojects.com">hello@homebodyprojects.com</a>
+    <a href="mailto:hello@homebodyprojects.com">Contact</a>
+    <a href="#">Sign in</a>
+   </div>
+  </div>
+ </div>
+ <div class="footer-bottom">
+  <span>&copy; 2026 Homebody Projects. Powered by Castlehold. All rights reserved.</span>
+  <span><a href="#">Privacy Policy</a> | <a href="#">Terms</a></span>
+ </div>
 </footer>
 
 <script src="homebody_header.js"></script>
@@ -483,20 +841,33 @@
  var PAGE_SIZE = 2000;
  var DISPLAY_LIMIT = 100;
 
+ // Google Drive folder URLs
+ var GDRIVE_FOLDERS = {
+  permits: 'https://drive.google.com/drive/folders/1N_IpJaweqoFhbmBnYHjQJs1G1ItTQjC4',
+  property_cards: 'https://drive.google.com/drive/folders/1UGNXAbDE1RuXfzMc6Vk3YL2r1AlZMwLZ',
+  covenants: 'https://drive.google.com/drive/folders/1bEZN1kEZxqZLkdX0QjT0g9N7K0sXAy3Z',
+  aerials: 'https://drive.google.com/drive/folders/1eD1TUNuYMOMK7VdVJW3Pc6mHYFS02VUj'
+ };
+
  // State
- var permitToDocs = {};  // permit_number -> {gdrive_url, download_url, file_id}
- var apnToDocs = {};     // apn -> {permits: [...]}
+ var permitToDocs = {};
+ var apnToDocs = {};
+ var docsIndex = null;
  var docsLoaded = false;
  var allResults = [];
  var displayedCount = 0;
+ var currentMode = 'permits';
+ var currentDocFilter = 'all';
 
  // ══════════════════════════════════════
  //  LOAD GDRIVE DOCS INDEX
  // ══════════════════════════════════════
- function loadDocsIndex() {
+ function loadDocsIndex(callback) {
+  if (docsIndex) { if (callback) callback(); return; }
   fetch('data/gdrive_docs_index.json')
    .then(function(r) { return r.json(); })
    .then(function(data) {
+    docsIndex = data;
     var parcels = data.parcels || data;
     Object.keys(parcels).forEach(function(apn) {
      var p = parcels[apn];
@@ -514,11 +885,23 @@
      }
     });
     docsLoaded = true;
+
+    // Update badge counts
+    var counts = data._document_counts || {};
+    var bp = document.getElementById('badge-permits');
+    var bc = document.getElementById('badge-cards');
+    var bv = document.getElementById('badge-covenants');
+    if (bp && counts.permits) bp.textContent = Number(counts.permits).toLocaleString();
+    if (bc && counts.property_cards) bc.textContent = Number(counts.property_cards).toLocaleString();
+    if (bv && counts.covenants) bv.textContent = Number(counts.covenants).toLocaleString();
+
     console.log('GDrive docs index loaded:', Object.keys(permitToDocs).length, 'permits,', Object.keys(apnToDocs).length, 'parcels');
+    if (callback) callback();
    })
    .catch(function(err) {
     console.warn('Failed to load gdrive_docs_index.json:', err);
     docsLoaded = false;
+    if (callback) callback();
    });
  }
 
@@ -526,7 +909,37 @@
  loadDocsIndex();
 
  // ══════════════════════════════════════
- //  BUILD WHERE CLAUSE
+ //  MODE SWITCHING
+ // ══════════════════════════════════════
+ window.switchMode = function(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(function(t) {
+   t.classList.toggle('active', t.getAttribute('data-mode') === mode);
+  });
+  document.getElementById('panel-permits').classList.toggle('active', mode === 'permits');
+  document.getElementById('panel-apn').classList.toggle('active', mode === 'apn');
+
+  // Reset results area
+  document.getElementById('results-container').style.display = 'none';
+  document.getElementById('apn-results-container').style.display = 'none';
+  showState('empty');
+
+  // Update empty state text
+  var es = document.getElementById('empty-state');
+  var chips = es.querySelector('.example-chips');
+  if (mode === 'permits') {
+   es.querySelector('h2').textContent = 'Search DADU Site Plans & Documents';
+   es.querySelector('p').textContent = 'Use the filters to search 4,117 permit records by project criteria, or switch to APN/Address mode to look up documents for a specific property.';
+   chips.style.display = 'flex';
+  } else {
+   es.querySelector('h2').textContent = 'Search by APN or Address';
+   es.querySelector('p').textContent = 'Enter an APN (11-digit parcel number) or address keyword to find all associated documents from our database of 18,782 documents across 8,804 parcels.';
+   chips.style.display = 'none';
+  }
+ };
+
+ // ══════════════════════════════════════
+ //  BUILD WHERE CLAUSE (Permit mode)
  // ══════════════════════════════════════
  function buildWhere() {
   var clauses = [];
@@ -618,17 +1031,16 @@
  }
 
  // ══════════════════════════════════════
- //  SEARCH
+ //  PERMIT SEARCH (Mode 1)
  // ══════════════════════════════════════
  window.doSearch = function() {
   showState('loading');
+  document.getElementById('loading-text').textContent = 'Searching permit records...';
   var where = buildWhere();
-  console.log('Querying ArcGIS:', where);
 
   queryArcGIS(where)
    .then(function(features) {
     allResults = features.map(function(f) { return f.attributes || f; });
-    // Attach geometry
     features.forEach(function(f, i) {
      if (f.geometry) {
       allResults[i]._lat = f.geometry.y;
@@ -650,7 +1062,7 @@
  };
 
  // ══════════════════════════════════════
- //  SORT + RENDER
+ //  SORT + RENDER (Permit mode)
  // ══════════════════════════════════════
  window.sortAndRender = function() {
   var sortVal = document.getElementById('sort-select').value;
@@ -676,7 +1088,7 @@
   var list = document.getElementById('results-list');
   var end = Math.min(displayedCount + DISPLAY_LIMIT, allResults.length);
   for (var i = displayedCount; i < end; i++) {
-   list.appendChild(buildCard(allResults[i]));
+   list.appendChild(buildPermitCard(allResults[i]));
   }
   displayedCount = end;
   var loadMoreRow = document.getElementById('load-more-row');
@@ -684,9 +1096,9 @@
  };
 
  // ══════════════════════════════════════
- //  BUILD RESULT CARD
+ //  BUILD PERMIT RESULT CARD
  // ══════════════════════════════════════
- function buildCard(r) {
+ function buildPermitCard(r) {
   var card = document.createElement('div');
   card.className = 'result-card';
 
@@ -701,14 +1113,13 @@
   var permitDate = r.PERMIT_DATE ? formatDate(r.PERMIT_DATE) : '';
   var googleMaps = r.GOOGLE_MAPS || '';
 
-  // PDF lookup
   var gdriveInfo = null;
   if (permitNum && permitToDocs[permitNum]) {
    gdriveInfo = permitToDocs[permitNum];
   } else if (r.APN && apnToDocs[r.APN]) {
-   var apnDocs = apnToDocs[r.APN];
-   if (apnDocs.permits && apnDocs.permits.length) {
-    var match = apnDocs.permits[0];
+   var apnDocsData = apnToDocs[r.APN];
+   if (apnDocsData.permits && apnDocsData.permits.length) {
+    var match = apnDocsData.permits[0];
     if (match.gdrive_url) {
      gdriveInfo = { gdrive_url: match.gdrive_url, download_url: match.download_url || '' };
     }
@@ -717,7 +1128,6 @@
 
   var html = '';
 
-  // Address
   html += '<div class="result-address">';
   if (googleMaps) {
    html += '<a href="' + googleMaps + '" target="_blank">' + esc(address) + '</a>';
@@ -726,7 +1136,6 @@
   }
   html += '</div>';
 
-  // Meta line
   html += '<div class="result-meta">';
   if (zone) html += '<span><strong>' + esc(zone) + '</strong></span>';
   if (lotSqft) html += '<span>' + lotSqft + '</span>';
@@ -735,19 +1144,16 @@
   if (cpsf) html += '<span>' + cpsf + '</span>';
   html += '</div>';
 
-  // Contractor
   if (contractor) {
    html += '<div class="result-contractor">Contractor: ' + esc(contractor) + '</div>';
   }
 
-  // Permit line
   html += '<div class="result-permit">';
   if (permitNum) html += 'Permit: ' + esc(permitNum);
   if (permitDate) html += ' | ' + permitDate;
   if (r.STATUS_NORMALIZED) html += ' | ' + esc(r.STATUS_NORMALIZED);
   html += '</div>';
 
-  // Thumbnails
   var photoUrl = r.ASSESSOR_CARD2_PHOTO_URL;
   var sketchUrl = r.ASSESSOR_CARD2_SKETCH_URL;
   if (photoUrl || sketchUrl) {
@@ -757,9 +1163,7 @@
    html += '</div>';
   }
 
-  // Action buttons
   html += '<div class="result-actions">';
-
   if (gdriveInfo && gdriveInfo.gdrive_url) {
    html += '<a href="' + gdriveInfo.gdrive_url + '" target="_blank" class="action-btn action-btn-primary">View PDF</a>';
    if (gdriveInfo.download_url) {
@@ -768,7 +1172,6 @@
   } else {
    html += '<span class="action-btn action-btn-disabled">View PDF</span>';
   }
-
   if (r.DOCUMENTS_LINK) {
    html += '<a href="' + r.DOCUMENTS_LINK + '" target="_blank" class="action-btn action-btn-secondary">Nashville Docs</a>';
   }
@@ -781,12 +1184,222 @@
   if (r.AERIAL_VIEW) {
    html += '<a href="' + r.AERIAL_VIEW + '" target="_blank" class="action-btn action-btn-secondary">Aerial</a>';
   }
-
   html += '</div>';
 
   card.innerHTML = html;
   return card;
  }
+
+ // ══════════════════════════════════════
+ //  APN/ADDRESS SEARCH (Mode 2)
+ // ══════════════════════════════════════
+ window.doApnSearch = function() {
+  var query = document.getElementById('apn-input').value.trim();
+  if (!query) return;
+
+  showState('loading');
+  document.getElementById('loading-text').textContent = 'Loading document index...';
+
+  loadDocsIndex(function() {
+   var parcels = (docsIndex && docsIndex.parcels) ? docsIndex.parcels : {};
+   var results = [];
+
+   var qNorm = query.replace(/[\s\-\.]/g, '').toUpperCase();
+   var apnPadded = qNorm.replace(/[^0-9]/g, '');
+   while (apnPadded.length > 0 && apnPadded.length < 11) apnPadded = '0' + apnPadded;
+
+   if (parcels[apnPadded]) {
+    results.push({ apn: apnPadded, data: parcels[apnPadded] });
+   }
+
+   var apnRaw = query.replace(/[^0-9]/g, '');
+   if (apnRaw && parcels[apnRaw] && apnRaw !== apnPadded) {
+    results.push({ apn: apnRaw, data: parcels[apnRaw] });
+   }
+
+   if (results.length === 0 && query.length >= 3) {
+    var qUpper = query.toUpperCase();
+    var matchCount = 0;
+    for (var apn in parcels) {
+     if (matchCount >= 50) break;
+     var pdata = parcels[apn];
+     var permits = pdata.permits || [];
+     var found = false;
+     for (var i = 0; i < permits.length; i++) {
+      if (permits[i].address && permits[i].address.toUpperCase().indexOf(qUpper) !== -1) {
+       found = true;
+       break;
+      }
+     }
+     if (found) {
+      results.push({ apn: apn, data: pdata });
+      matchCount++;
+     }
+    }
+   }
+
+   displayApnResults(results, query);
+  });
+ };
+
+ function displayApnResults(results, query) {
+  var grid = document.getElementById('apn-results-grid');
+  var statusEl = document.getElementById('apn-results-status');
+  grid.innerHTML = '';
+
+  if (results.length === 0) {
+   showState('empty-no-results');
+   return;
+  }
+
+  // Collect all docs across matched parcels
+  var allDocs = [];
+  results.forEach(function(r) {
+   var apn = r.apn;
+   var d = r.data;
+   var address = '';
+   if (d.permits && d.permits.length > 0 && d.permits[0].address) {
+    address = d.permits[0].address;
+   }
+
+   if (currentDocFilter === 'all' || currentDocFilter === 'property_cards') {
+    (d.property_cards || []).forEach(function(doc) {
+     allDocs.push({ type: 'property-card', typeName: 'Property Card', apn: apn, address: address, doc: doc });
+    });
+   }
+   if (currentDocFilter === 'all' || currentDocFilter === 'permits') {
+    (d.permits || []).forEach(function(doc) {
+     allDocs.push({ type: 'permit', typeName: doc.permit_subtype || doc.permit_type || 'Permit', apn: apn, address: doc.address || address, doc: doc });
+    });
+   }
+   if (currentDocFilter === 'all' || currentDocFilter === 'covenants') {
+    (d.covenants || []).forEach(function(doc) {
+     allDocs.push({ type: 'covenant', typeName: 'Restrictive Covenant', apn: apn, address: address, doc: doc });
+    });
+   }
+   if (currentDocFilter === 'all' || currentDocFilter === 'assessor_cards') {
+    (d.assessor_cards || []).forEach(function(doc) {
+     allDocs.push({ type: 'assessor', typeName: 'Assessor Card', apn: apn, address: address, doc: doc });
+    });
+   }
+   if (currentDocFilter === 'all') {
+    (d.aerials || []).forEach(function(doc) {
+     allDocs.push({ type: 'aerial', typeName: 'Aerial Photo', apn: apn, address: address, doc: doc });
+    });
+   }
+  });
+
+  if (allDocs.length === 0) {
+   statusEl.innerHTML = 'Found parcel <strong>' + esc(results[0].apn) + '</strong> but no documents match the selected filter.';
+   document.getElementById('apn-results-container').style.display = 'block';
+   document.getElementById('empty-state').style.display = 'none';
+   document.getElementById('loading-state').style.display = 'none';
+   document.getElementById('error-state').style.display = 'none';
+   document.getElementById('results-container').style.display = 'none';
+   return;
+  }
+
+  var parcelWord = results.length === 1 ? 'parcel' : 'parcels';
+  var docWord = allDocs.length === 1 ? 'document' : 'documents';
+  statusEl.innerHTML = '<span style="color:#CBB279;font-weight:800;">' + allDocs.length + '</span> ' + docWord + ' across <strong>' + results.length + '</strong> ' + parcelWord + ' for "<strong>' + esc(query) + '</strong>"';
+
+  var limit = Math.min(allDocs.length, 40);
+  for (var i = 0; i < limit; i++) {
+   grid.appendChild(createDocCard(allDocs[i]));
+  }
+
+  if (allDocs.length > 40) {
+   var moreDiv = document.createElement('div');
+   moreDiv.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 16px; color: #706F6C; font-size: 14px;';
+   moreDiv.textContent = 'Showing first 40 of ' + allDocs.length + ' documents. Refine your search for more specific results.';
+   grid.appendChild(moreDiv);
+  }
+
+  document.getElementById('apn-results-container').style.display = 'block';
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('loading-state').style.display = 'none';
+  document.getElementById('error-state').style.display = 'none';
+  document.getElementById('results-container').style.display = 'none';
+ }
+
+ function createDocCard(item) {
+  var card = document.createElement('div');
+  card.className = 'doc-card';
+
+  var badgeClass = item.type;
+  if (item.type === 'property-card') badgeClass = 'property-card';
+
+  var meta = '';
+  var viewUrl = '';
+  var viewLabel = 'View';
+  var fallbackUrl = '';
+  var fallbackLabel = '';
+
+  if (item.type === 'permit') {
+   var doc = item.doc;
+   if (doc.date) meta += 'Date: ' + doc.date;
+   if (doc.value) meta += (meta ? ' | ' : '') + 'Value: $' + Number(doc.value).toLocaleString(undefined, {maximumFractionDigits: 0});
+   if (doc.sqft) meta += (meta ? ' | ' : '') + doc.sqft + ' SF';
+   if (doc.status) meta += (meta ? ' | ' : '') + 'Status: ' + doc.status;
+   viewUrl = doc.gdrive_url || '';
+   fallbackUrl = doc.docs_url || '';
+   fallbackLabel = 'Metro Docs';
+  } else if (item.type === 'property-card') {
+   var doc = item.doc;
+   meta = doc.filename || '';
+   viewUrl = doc.gdrive_url || '';
+  } else if (item.type === 'covenant') {
+   var doc = item.doc;
+   if (doc.rec_date) meta += 'Recorded: ' + doc.rec_date;
+   if (doc.grantor) meta += (meta ? ' | ' : '') + doc.grantor;
+   if (doc.instrument) meta += (meta ? ' | ' : '') + 'Inst: ' + doc.instrument;
+   viewUrl = doc.gdrive_url || '';
+  } else if (item.type === 'assessor') {
+   var doc = item.doc;
+   if (doc.structure_type) meta += doc.structure_type;
+   if (doc.finished_area) meta += (meta ? ' | ' : '') + doc.finished_area + ' SF';
+   viewUrl = doc.property_card_url || doc.card2_summary_url || '';
+   viewLabel = 'Assessor Portal';
+  } else if (item.type === 'aerial') {
+   var doc = item.doc;
+   meta = doc.filename || 'Aerial photograph';
+   viewUrl = doc.gdrive_url || '';
+  }
+
+  if (!viewUrl && GDRIVE_FOLDERS[item.type === 'permit' ? 'permits' : item.type + 's']) {
+   viewUrl = GDRIVE_FOLDERS[item.type === 'permit' ? 'permits' : item.type + 's'];
+   viewLabel = 'Browse Folder';
+  }
+
+  var addressLine = item.address ? esc(item.address) : 'APN: ' + item.apn;
+  if (addressLine.length > 50) addressLine = addressLine.substring(0, 50) + '...';
+
+  var actionsHtml = '';
+  if (viewUrl) {
+   actionsHtml += '<a href="' + viewUrl + '" target="_blank" class="doc-btn doc-btn-primary">' + viewLabel + '</a>';
+  }
+  if (fallbackUrl) {
+   actionsHtml += '<a href="' + fallbackUrl + '" target="_blank" class="doc-btn doc-btn-secondary">' + fallbackLabel + '</a>';
+  }
+
+  card.innerHTML =
+   '<div class="doc-card-header">' +
+    '<span class="doc-type-badge ' + badgeClass + '">' + esc(item.typeName) + '</span>' +
+    '<span class="doc-card-apn">' + item.apn + '</span>' +
+   '</div>' +
+   '<div class="doc-card-title">' + addressLine + '</div>' +
+   (meta ? '<div class="doc-card-meta">' + esc(meta) + '</div>' : '<div class="doc-card-meta" style="height:14px;"></div>') +
+   '<div class="doc-card-actions">' + actionsHtml + '</div>';
+
+  return card;
+ }
+
+ window.clearApnSearch = function() {
+  document.getElementById('apn-input').value = '';
+  document.getElementById('apn-results-container').style.display = 'none';
+  showState('empty');
+  switchMode('apn');
+ };
 
  // ══════════════════════════════════════
  //  UI STATES
@@ -796,6 +1409,7 @@
   document.getElementById('loading-state').style.display = 'none';
   document.getElementById('error-state').style.display = 'none';
   document.getElementById('results-container').style.display = 'none';
+  document.getElementById('apn-results-container').style.display = 'none';
 
   if (state === 'empty') {
    document.getElementById('empty-state').style.display = 'flex';
@@ -806,10 +1420,11 @@
   } else if (state === 'results') {
    document.getElementById('results-container').style.display = 'block';
   } else if (state === 'empty-no-results') {
-   // Reuse empty state with different message
    var es = document.getElementById('empty-state');
    es.querySelector('h2').textContent = 'No Results Found';
-   es.querySelector('p').textContent = 'No site plans match your criteria. Try broadening your search.';
+   es.querySelector('p').textContent = currentMode === 'permits'
+    ? 'No site plans match your criteria. Try broadening your search.'
+    : 'No documents found. Try a different APN or address keyword.';
    es.querySelector('.example-chips').style.display = 'none';
    es.style.display = 'flex';
   }
@@ -819,6 +1434,7 @@
  //  EXAMPLE SEARCHES
  // ══════════════════════════════════════
  window.exampleSearch = function(type) {
+  switchMode('permits');
   resetFiltersQuiet();
   if (type === 'small') {
    document.getElementById('f-lot-max').value = '10000';
@@ -833,7 +1449,7 @@
  };
 
  // ══════════════════════════════════════
- //  RESET
+ //  RESET (Permit mode)
  // ══════════════════════════════════════
  function resetFiltersQuiet() {
   document.getElementById('f-zip').value = '';
@@ -859,13 +1475,26 @@
   resetFiltersQuiet();
   allResults = [];
   displayedCount = 0;
-  // Restore empty state
   var es = document.getElementById('empty-state');
-  es.querySelector('h2').textContent = 'Search DADU Site Plans';
-  es.querySelector('p').textContent = 'Enter your criteria to find approved site plans, permit documents, and construction details from 4,117 permit records across Nashville.';
+  es.querySelector('h2').textContent = 'Search DADU Site Plans & Documents';
+  es.querySelector('p').textContent = 'Use the filters to search 4,117 permit records by project criteria, or switch to APN/Address mode to look up documents for a specific property.';
   es.querySelector('.example-chips').style.display = 'flex';
   showState('empty');
  };
+
+ // ══════════════════════════════════════
+ //  DOC FILTER TABS (APN mode)
+ // ══════════════════════════════════════
+ document.querySelectorAll('.doc-filter-tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+   document.querySelectorAll('.doc-filter-tab').forEach(function(t) { t.classList.remove('active'); });
+   tab.classList.add('active');
+   currentDocFilter = tab.getAttribute('data-filter');
+   if (document.getElementById('apn-input').value.trim()) {
+    doApnSearch();
+   }
+  });
+ });
 
  // ══════════════════════════════════════
  //  HELPERS
@@ -887,8 +1516,12 @@
 
  // Enter key triggers search
  document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && e.target.closest('.sidebar')) {
-   doSearch();
+  if (e.key === 'Enter') {
+   if (e.target.closest('#panel-permits')) {
+    doSearch();
+   } else if (e.target.closest('#panel-apn')) {
+    doApnSearch();
+   }
   }
  });
 
