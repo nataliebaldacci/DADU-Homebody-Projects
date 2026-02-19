@@ -117,8 +117,8 @@
                  item('what_is_dadu.html', 'ADU.png', 'What is a DADU?') +
                  item('dadu_requirements_overview.html', 'Building_and_Construction.svg', 'General Requirements') +
                  item('dadu_eligibility_flowchart.html', 'Eligibility_Check.svg', 'Eligibility Flowchart') +
-                 item('dadu_history.html', 'Recorded_Docs.svg', 'DADU History') +
-                 item('dadu_code_legislation_v5.html', 'Legislation.svg', 'Code &amp; Legislation') +
+                 item('dadu_history.html', 'Timeline.svg', 'DADU History') +
+                 item('dadu_code_legislation_v5.html', 'Legal.svg', 'Code &amp; Legislation') +
                 item('arcgis_maps.html', 'GIS.svg', 'ArcGIS Maps')
              ) +
              col('Legal.svg', 'Permits &amp; Forms',
