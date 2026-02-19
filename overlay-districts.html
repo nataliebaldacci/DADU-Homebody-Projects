@@ -6,6 +6,7 @@
  <title>Overlay Districts | Homebody Projects</title>
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
  <style>
  :root {
  --navy: #3A5566;
@@ -547,6 +548,128 @@
  .search-input {
  width: 100%;
  }
+ }
+
+ /* Stats Bar */
+ .overlay-stats {
+  background: var(--navy);
+  padding: 24px 30px;
+ }
+ .overlay-stats-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 16px;
+ }
+ .overlay-stat {
+  text-align: center;
+ }
+ .overlay-stat .num {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--terracotta);
+  line-height: 1.2;
+ }
+ .overlay-stat .lbl {
+  font-size: 11px;
+  color: #E1D4BB;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+ }
+
+ /* Map Section */
+ .overlay-map-section {
+  max-width: 1400px;
+  margin: 30px auto;
+  padding: 0 30px;
+ }
+ .overlay-map-wrap {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+ }
+ .overlay-map-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+ }
+ .overlay-map-header h2 {
+  font-size: 20px;
+  color: var(--navy);
+  margin: 0;
+ }
+ .overlay-map-header p {
+  font-size: 13px;
+  color: var(--text-light);
+  margin: 0;
+ }
+ #overlay-map {
+  width: 100%;
+  height: 520px;
+ }
+ .overlay-legend {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+ }
+ .overlay-legend-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+ }
+ .overlay-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-light);
+ }
+ .overlay-legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.15);
+ }
+ .map-filter-btns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+ }
+ .map-filter-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text);
+ }
+ .map-filter-btn:hover, .map-filter-btn.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: white;
+ }
+
+ @media (max-width: 768px) {
+  .overlay-stats-inner { flex-direction: column; align-items: center; }
+  #overlay-map { height: 380px; }
+  .overlay-legend { justify-content: center; }
  }</style>
 </head>
 <body class="dark-nav">
@@ -564,6 +687,16 @@
  <h1>Overlay Districts & Special Plans</h1>
  <p>Not every parcel is eligible for a DADU by-right. But your property might qualify through a DADU Overlay, Urban Design Overlay (UDO), or Specific Plan (SP) with DADU development standards.</p>
  <span class="hero-badge">Conditional Eligibility Pathway</span></section>
+
+ <!-- Stats Bar -->
+ <div class="overlay-stats">
+  <div class="overlay-stats-inner">
+   <div class="overlay-stat"><div class="num" id="stat-total">--</div><div class="lbl">Total Overlays</div></div>
+   <div class="overlay-stat"><div class="num" id="stat-ddu">--</div><div class="lbl">DADU Districts</div></div>
+   <div class="overlay-stat"><div class="num" id="stat-udo">--</div><div class="lbl">Urban Design Overlays</div></div>
+   <div class="overlay-stat"><div class="num" id="stat-types">--</div><div class="lbl">Overlay Types</div></div>
+  </div>
+ </div>
 
  <!-- Eligibility Pathways -->
  <section class="pathways-section">
@@ -592,6 +725,34 @@
  <h3>Specific Plan</h3>
  <p>Some SPs include DADU development standards allowing construction.</p>
  <span class="pathway-status conditional">Conditional</span></div></div></section>
+
+ <!-- Interactive Overlay Map -->
+ <section class="overlay-map-section">
+  <div class="overlay-map-wrap">
+   <div class="overlay-map-header">
+    <div>
+     <h2>Overlay Districts Map</h2>
+     <p>324 overlay districts across Davidson County, color-coded by type</p>
+    </div>
+    <div class="map-filter-btns">
+     <button class="map-filter-btn active" onclick="filterMap('all',event)">All Overlays</button>
+     <button class="map-filter-btn" onclick="filterMap('ddu',event)">DADU Districts</button>
+     <button class="map-filter-btn" onclick="filterMap('udo',event)">UDO</button>
+     <button class="map-filter-btn" onclick="filterMap('historic',event)">Historic</button>
+    </div>
+   </div>
+   <div id="overlay-map"></div>
+   <div class="overlay-legend">
+    <span class="overlay-legend-title">Legend:</span>
+    <div class="overlay-legend-item"><div class="overlay-legend-swatch" style="background:#CBB279;"></div>DADU Overlay (DDU)</div>
+    <div class="overlay-legend-item"><div class="overlay-legend-swatch" style="background:#3A5566;"></div>Urban Design Overlay</div>
+    <div class="overlay-legend-item"><div class="overlay-legend-swatch" style="background:#496778;"></div>Specific Plan</div>
+    <div class="overlay-legend-item"><div class="overlay-legend-swatch" style="background:#7B746D;"></div>Historic Preservation</div>
+    <div class="overlay-legend-item"><div class="overlay-legend-swatch" style="background:#918A83;"></div>Neighborhood Conservation</div>
+    <div class="overlay-legend-item"><div class="overlay-legend-swatch" style="background:#A59D8B;"></div>Other Overlays</div>
+   </div>
+  </div>
+ </section>
 
  <!-- Main Content -->
  <main class="main-content">
@@ -945,7 +1106,7 @@
  <div class="resource-content">
  <h4>ePermits Portal</h4>
  <p>Apply for building permits online</p></div></a>
- <a href="dadu_building_requirements.html" class="resource-card">
+ <a href="dadu_requirements_overview.html" class="resource-card">
  <div class="resource-icon"></div>
  <div class="resource-content">
  <h4>DADU Building Requirements</h4>
@@ -956,36 +1117,197 @@
  <p>© 2026 Homebody Projects | Powered by Castlehold</p>
  <p style="margin-top: 10px;">Data sourced from Nashville-Davidson County public records. Always verify with Metro Planning.</p></footer>
 
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
  <script>
- // Filter functionality
+ // ── Filter functionality (card list) ──
  function filterDocs(type) {
- // Update button states
- document.querySelectorAll('.filter-btn').forEach(btn =>{
- btn.classList.remove('active');
- });
- event.target.classList.add('active');
-
- // Filter categories
- document.querySelectorAll('.doc-category').forEach(cat =>{
- if (type === 'all' || cat.dataset.type === type) {
- cat.style.display = 'block';
- } else {
- cat.style.display = 'none';
- }
- });
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.doc-category').forEach(cat => {
+   cat.style.display = (type === 'all' || cat.dataset.type === type) ? 'block' : 'none';
+  });
  }
 
- // Search functionality
  document.getElementById('searchInput').addEventListener('input', function(e) {
- const query = e.target.value.toLowerCase();
-
- document.querySelectorAll('.doc-card').forEach(card =>{
- const text = card.textContent.toLowerCase();
- if (query === '' || text.includes(query)) {
- card.style.display = 'block';
- } else {
- card.style.display = 'none';
- }
+  const query = e.target.value.toLowerCase();
+  document.querySelectorAll('.doc-card').forEach(card => {
+   card.style.display = (query === '' || card.textContent.toLowerCase().includes(query)) ? 'block' : 'none';
+  });
  });
- });</script>
+
+ // ── Overlay color map ──
+ const OVERLAY_COLORS = {
+  'Detached Accessory Dwelling Unit Overlay District': '#CBB279',
+  'Urban Design Overlay': '#3A5566',
+  'Urban Zoning Overlay': '#496778',
+  'Historic Preservation District': '#7B746D',
+  'Historic Preservation Landmark': '#7B746D',
+  'Historic Landmark Interior Overlay': '#7B746D',
+  'Historic Bed and Breakfast Homestay': '#7B746D',
+  'Neighborhood Conservation': '#918A83',
+  'Neighborhood Landmark': '#918A83',
+  'Contextual Overlay District': '#A59D8B',
+  'Corridor Design Overlay': '#A59D8B',
+  'Residential Accessory Structure Overlay': '#A59D8B',
+  'Two Story Overlay District': '#A59D8B',
+  'Institutional Overlay': '#A59D8B',
+  'Bed and Breakfast': '#A59D8B',
+  'Airport Impact': '#A59D8B',
+  'I-440 Impact': '#A59D8B',
+  'Adult Entertainment': '#A59D8B'
+ };
+
+ function getOverlayColor(zoneDesc) {
+  return OVERLAY_COLORS[zoneDesc] || '#A59D8B';
+ }
+
+ // ── Map filter groups ──
+ const FILTER_GROUPS = {
+  all: null,
+  ddu: ['Detached Accessory Dwelling Unit Overlay District'],
+  udo: ['Urban Design Overlay', 'Urban Zoning Overlay', 'Corridor Design Overlay', 'Contextual Overlay District'],
+  historic: ['Historic Preservation District', 'Historic Preservation Landmark', 'Historic Landmark Interior Overlay', 'Historic Bed and Breakfast Homestay', 'Neighborhood Conservation', 'Neighborhood Landmark']
+ };
+
+ let overlayLayer = null;
+ let allOverlayData = null;
+ let overlayMap = null;
+
+ function filterMap(group, evt) {
+  document.querySelectorAll('.map-filter-btn').forEach(b => b.classList.remove('active'));
+  if (evt && evt.target) evt.target.classList.add('active');
+  if (!allOverlayData || !overlayMap) return;
+  if (overlayLayer) overlayMap.removeLayer(overlayLayer);
+
+  const allowed = FILTER_GROUPS[group];
+  const filtered = {
+   type: 'FeatureCollection',
+   features: allowed ? allOverlayData.features.filter(f => allowed.includes(f.properties.ZONE_DESC)) : allOverlayData.features
+  };
+
+  overlayLayer = L.geoJSON(filtered, {
+   style: function(feature) {
+    const c = getOverlayColor(feature.properties.ZONE_DESC);
+    const isDDU = feature.properties.ZONE_DESC === 'Detached Accessory Dwelling Unit Overlay District';
+    return {
+     fillColor: c,
+     fillOpacity: isDDU ? 0.45 : 0.3,
+     color: c,
+     weight: isDDU ? 2.5 : 1.5,
+     opacity: 0.85
+    };
+   },
+   onEachFeature: function(feature, layer) {
+    const p = feature.properties;
+    const date = p.ORD_DATE ? new Date(p.ORD_DATE).toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}) : 'N/A';
+    layer.bindPopup(
+     '<div style="font-family:Inter,sans-serif;min-width:220px;">' +
+     '<div style="font-size:15px;font-weight:700;color:#3A5566;margin-bottom:6px;">' + (p.ZONE_DESC || 'Overlay District') + '</div>' +
+     '<div style="font-size:13px;color:#706F6C;line-height:1.7;">' +
+     '<strong>Case:</strong> ' + (p.CASE_NO || 'N/A').trim() + '<br>' +
+     '<strong>Ordinance:</strong> ' + (p.ORDINANCE || 'N/A').trim() + '<br>' +
+     '<strong>Date:</strong> ' + date + '<br>' +
+     (p.NAME ? '<strong>Name:</strong> ' + p.NAME + '<br>' : '') +
+     (p.SUBDISTRICT && p.SUBDISTRICT.trim() ? '<strong>Subdistrict:</strong> ' + p.SUBDISTRICT.trim() + '<br>' : '') +
+     (p.IMPACT_ZONE && p.IMPACT_ZONE.trim() ? '<strong>Impact Zone:</strong> ' + p.IMPACT_ZONE.trim() + '<br>' : '') +
+     '</div></div>',
+     { maxWidth: 300 }
+    );
+   }
+  }).addTo(overlayMap);
+
+  if (filtered.features.length > 0) overlayMap.fitBounds(overlayLayer.getBounds(), { padding: [30, 30] });
+ }
+
+ // ── Load stats ──
+ const OVERLAY_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Overlays_zoning/FeatureServer/0';
+
+ async function loadStats() {
+  try {
+   const [totalRes, dduRes, udoRes, typesRes] = await Promise.all([
+    fetch(OVERLAY_URL + '/query?where=1%3D1&returnCountOnly=true&f=json').then(r => r.json()),
+    fetch(OVERLAY_URL + '/query?where=' + encodeURIComponent("ZONE_DESC='Detached Accessory Dwelling Unit Overlay District'") + '&returnCountOnly=true&f=json').then(r => r.json()),
+    fetch(OVERLAY_URL + '/query?where=' + encodeURIComponent("ZONE_DESC='Urban Design Overlay'") + '&returnCountOnly=true&f=json').then(r => r.json()),
+    fetch(OVERLAY_URL + '/query?where=1%3D1&outFields=ZONE_DESC&returnDistinctValues=true&returnGeometry=false&f=json').then(r => r.json())
+   ]);
+   document.getElementById('stat-total').textContent = (totalRes.count || 0).toLocaleString();
+   document.getElementById('stat-ddu').textContent = (dduRes.count || 0).toLocaleString();
+   document.getElementById('stat-udo').textContent = (udoRes.count || 0).toLocaleString();
+   document.getElementById('stat-types').textContent = typesRes.features ? typesRes.features.length : '--';
+  } catch(e) {
+   console.warn('Stats load error:', e);
+  }
+ }
+
+ // ── Initialize map ──
+ async function initOverlayMap() {
+  overlayMap = L.map('overlay-map').setView([36.16, -86.78], 11);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+   attribution: '&copy; OpenStreetMap &copy; CARTO',
+   maxZoom: 19
+  }).addTo(overlayMap);
+
+  // Davidson County boundary
+  try {
+   const countyUrl = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Tennessee_Counties/FeatureServer/0';
+   const surrounding = await fetch(countyUrl + '/query?where=' + encodeURIComponent("NAME<>'Davidson'") + '&outFields=NAME&f=geojson').then(r => r.json());
+   if (surrounding.features) {
+    L.geoJSON(surrounding, {
+     style: { fillColor: '#E2E2E0', fillOpacity: 0.45, color: '#E2E2E0', weight: 1 }
+    }).addTo(overlayMap);
+   }
+   const davidson = await fetch(countyUrl + '/query?where=' + encodeURIComponent("NAME='Davidson'") + '&outFields=NAME&f=geojson').then(r => r.json());
+   if (davidson.features) {
+    L.geoJSON(davidson, {
+     style: { fillColor: 'transparent', fillOpacity: 0, color: '#3A5566', weight: 2, dashArray: '6,4' }
+    }).addTo(overlayMap);
+   }
+  } catch(e) { console.warn('County boundary error:', e); }
+
+  // Load all overlay polygons (324 records, well under 2000 max)
+  try {
+   const overlayData = await fetch(OVERLAY_URL + '/query?where=1%3D1&outFields=ZONE_DESC,CASE_NO,ORDINANCE,ORD_DATE,NAME,IMPACT_ZONE,SUBDISTRICT&f=geojson').then(r => r.json());
+   allOverlayData = overlayData;
+
+   overlayLayer = L.geoJSON(overlayData, {
+    style: function(feature) {
+     const c = getOverlayColor(feature.properties.ZONE_DESC);
+     const isDDU = feature.properties.ZONE_DESC === 'Detached Accessory Dwelling Unit Overlay District';
+     return {
+      fillColor: c,
+      fillOpacity: isDDU ? 0.45 : 0.3,
+      color: c,
+      weight: isDDU ? 2.5 : 1.5,
+      opacity: 0.85
+     };
+    },
+    onEachFeature: function(feature, layer) {
+     const p = feature.properties;
+     const date = p.ORD_DATE ? new Date(p.ORD_DATE).toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}) : 'N/A';
+     layer.bindPopup(
+      '<div style="font-family:Inter,sans-serif;min-width:220px;">' +
+      '<div style="font-size:15px;font-weight:700;color:#3A5566;margin-bottom:6px;">' + (p.ZONE_DESC || 'Overlay District') + '</div>' +
+      '<div style="font-size:13px;color:#706F6C;line-height:1.7;">' +
+      '<strong>Case:</strong> ' + (p.CASE_NO || 'N/A').trim() + '<br>' +
+      '<strong>Ordinance:</strong> ' + (p.ORDINANCE || 'N/A').trim() + '<br>' +
+      '<strong>Date:</strong> ' + date + '<br>' +
+      (p.NAME ? '<strong>Name:</strong> ' + p.NAME + '<br>' : '') +
+      (p.SUBDISTRICT && p.SUBDISTRICT.trim() ? '<strong>Subdistrict:</strong> ' + p.SUBDISTRICT.trim() + '<br>' : '') +
+      (p.IMPACT_ZONE && p.IMPACT_ZONE.trim() ? '<strong>Impact Zone:</strong> ' + p.IMPACT_ZONE.trim() + '<br>' : '') +
+      '</div></div>',
+      { maxWidth: 300 }
+     );
+    }
+   }).addTo(overlayMap);
+  } catch(e) { console.warn('Overlay load error:', e); }
+ }
+
+ // ── Init ──
+ document.addEventListener('DOMContentLoaded', function() {
+  loadStats();
+  initOverlayMap().then(function() {
+   setTimeout(function() { if (overlayMap) overlayMap.invalidateSize(); }, 200);
+  });
+ });
+ </script>
  <script src="homebody_header.js"></script></body></html>

@@ -111,7 +111,6 @@
                  item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator') +
                  item('site_plan_downloads.html', 'Permit_Site_Plans.svg', 'Site Plans &amp; Permits') +
                  item('dadu_resources.html', 'Recorded_Docs.svg', 'External Links') +
-                 item('restrictive_covenants_v2.html', 'Restrictive_Covenants.svg', 'Restrictive Covenants') +
                  item('pdf_database_lookup.html', 'Recorded_Docs.svg', 'PDF Database') +
     '        </div>' +
     '      </div>' +
@@ -135,6 +134,7 @@
                  item('str_permit.html', 'STR_Permit.svg', 'STR Permit') +
                  item('trade_permits.html', 'Renewals.png', 'Required Trade Permits') +
                  item('overlay-districts.html', 'Zoning_Documents.svg', 'Overlay Districts') +
+                 item('restrictive_covenants_v2.html', 'Restrictive_Covenants.svg', 'Restrictive Covenants') +
                  item('dadu_design_standards.html', 'Overlay_Design_Standards.svg', 'Design Standards')
              ) +
     '        </div>' +
