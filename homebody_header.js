@@ -99,7 +99,7 @@
              ) +
              col('Exports__Reports.svg', 'Research',
                  item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator') +
-                 item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Site Plans &amp; Documents') +
+                 item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans &amp; Permit Docs') +
                  item('dadu_resources.html', 'Recorded_Docs.svg', 'External Links') +
                  item('pdf_database_lookup.html', 'Recorded_Docs.svg', 'PDF Database') +
                  item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Find a Contractor')
