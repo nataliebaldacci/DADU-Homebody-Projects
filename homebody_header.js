@@ -128,7 +128,7 @@
                 item('arcgis_maps.html', 'GIS.svg', 'ArcGIS Maps')
              ) +
              col('Legal.svg', 'Permits &amp; Forms',
-                 item('owner_occupancy.html', 'Owner_Occupancy.svg', 'Owner Occupancy') +
+                 item('owner_occupancy.html', 'homeowner.svg', 'Owner Occupancy') +
                  item('str_permit.html', 'STR_Permit.svg', 'STR Permit') +
                  item('trade_permits.html', 'Renewals.png', 'Required Trade Permits') +
                  item('overlay-districts.html', 'Zoning_Documents.svg', 'Overlay Districts') +
