@@ -141,15 +141,21 @@
 
     '    </div>' +
 
-    // Right side: CTA button
+    // Right side: hamburger + CTA
     '    <div style="display:flex;align-items:center;gap:12px;">' +
     '      <a href="' + basePath + 'am_i_eligible.html" class="nav-search-btn">' +
     '        <span>Am I Eligible?</span>' +
     '        <span>&rarr;</span>' +
     '      </a>' +
+    '      <button class="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">' +
+    '        <span class="hamburger-line"></span>' +
+    '        <span class="hamburger-line"></span>' +
+    '        <span class="hamburger-line"></span>' +
+    '      </button>' +
     '    </div>' +
     '  </div>' +
-    '</nav>';
+    '</nav>' +
+    '<div class="mobile-overlay" aria-hidden="true"></div>';
 
 
     // ══════════════════════════════════════
@@ -162,6 +168,7 @@
             target.innerHTML = HEADER_HTML;
         }
         initDropdowns();
+        initMobileMenu();
         highlightCurrentPage();
     });
 
@@ -275,6 +282,85 @@
         document.querySelectorAll('.nav-link[data-dropdown]').forEach(function(btn) {
             var dd = document.getElementById(btn.getAttribute('data-dropdown') + '-dropdown');
             if (dd) closeDropdown(btn, dd);
+        });
+    }
+
+    // ══════════════════════════════════════
+    //  MOBILE MENU
+    // ══════════════════════════════════════
+    function initMobileMenu() {
+        var btn = document.querySelector('.mobile-menu-btn');
+        var navLinks = document.querySelector('.nav-links');
+        var overlay = document.querySelector('.mobile-overlay');
+        if (!btn || !navLinks) return;
+
+        function openMobile() {
+            btn.classList.add('active');
+            btn.setAttribute('aria-expanded', 'true');
+            navLinks.classList.add('mobile-open');
+            if (overlay) { overlay.classList.add('visible'); overlay.setAttribute('aria-hidden', 'false'); }
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobile() {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-expanded', 'false');
+            navLinks.classList.remove('mobile-open');
+            if (overlay) { overlay.classList.remove('visible'); overlay.setAttribute('aria-hidden', 'true'); }
+            document.body.style.overflow = '';
+            closeAllDropdowns();
+        }
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (navLinks.classList.contains('mobile-open')) { closeMobile(); } else { openMobile(); }
+        });
+
+        if (overlay) {
+            overlay.addEventListener('click', closeMobile);
+        }
+
+        // On mobile, make nav-link buttons toggle their dropdown accordion-style
+        navLinks.addEventListener('click', function(e) {
+            if (window.innerWidth > 1024) return;
+            var navLink = e.target.closest('.nav-link[data-dropdown]');
+            if (!navLink) return;
+            e.preventDefault();
+            e.stopPropagation();
+            var ddId = navLink.getAttribute('data-dropdown');
+            var dd = document.getElementById(ddId + '-dropdown');
+            if (!dd) return;
+            var isOpen = navLink.getAttribute('aria-expanded') === 'true';
+            // Close all other dropdowns first
+            document.querySelectorAll('.nav-links .nav-link[data-dropdown]').forEach(function(other) {
+                if (other !== navLink) {
+                    other.setAttribute('aria-expanded', 'false');
+                    var otherDd = document.getElementById(other.getAttribute('data-dropdown') + '-dropdown');
+                    if (otherDd) otherDd.classList.remove('open');
+                }
+            });
+            if (isOpen) {
+                navLink.setAttribute('aria-expanded', 'false');
+                dd.classList.remove('open');
+            } else {
+                navLink.setAttribute('aria-expanded', 'true');
+                dd.classList.add('open');
+            }
+        });
+
+        // Close mobile menu when a dropdown-item link is clicked
+        navLinks.addEventListener('click', function(e) {
+            if (window.innerWidth > 1024) return;
+            if (e.target.closest('.dropdown-item')) {
+                closeMobile();
+            }
+        });
+
+        // Close on resize to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1024 && navLinks.classList.contains('mobile-open')) {
+                closeMobile();
+            }
         });
     }
 

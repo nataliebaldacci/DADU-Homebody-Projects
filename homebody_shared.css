@@ -659,6 +659,63 @@ a.text-link:hover {
 }
 
 /* ========================================
+   HAMBURGER BUTTON (hidden on desktop)
+   ======================================== */
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    gap: 5px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+.mobile-menu-btn:hover { background: rgba(0,0,0,0.06); }
+.dark-nav .mobile-menu-btn:hover { background: rgba(255,255,255,0.1); }
+
+.hamburger-line {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--navy, #3A5566);
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+}
+.dark-nav .hamburger-line { background: #E1D4BB; }
+
+/* Animate to X when open */
+.mobile-menu-btn.active .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.mobile-menu-btn.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+.mobile-menu-btn.active .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Overlay behind mobile drawer */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.mobile-overlay.visible {
+    display: block;
+    opacity: 1;
+}
+
+/* ========================================
    MOBILE RESPONSIVE
    ======================================== */
 @media (max-width: 1024px) {
@@ -666,12 +723,111 @@ a.text-link:hover {
         padding: 0 16px;
     }
 
-    .nav-links {
-        display: none;
-    }
-
     .mobile-menu-btn {
         display: flex;
+    }
+
+    /* Mobile drawer */
+    .nav-links {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 320px;
+        max-width: 85vw;
+        height: 100vh;
+        background: #FFFFFF;
+        z-index: 999;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 72px 0 24px;
+        overflow-y: auto;
+        box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+    .nav-links.mobile-open {
+        display: flex;
+        transform: translateX(0);
+    }
+
+    /* Nav items stack vertically */
+    .nav-item {
+        position: relative;
+        border-bottom: 1px solid #F0EBE1;
+    }
+    .nav-link {
+        width: 100%;
+        justify-content: space-between;
+        padding: 14px 20px;
+        font-size: 15px;
+        border-radius: 0;
+    }
+    .nav-link:hover,
+    .nav-link:focus {
+        background: #F0EBE1;
+    }
+
+    /* Direct links (Pricing, About) */
+    .nav-links > a.nav-link {
+        border-bottom: 1px solid #F0EBE1;
+    }
+
+    /* Dropdown opens inline (accordion) instead of absolute */
+    .dropdown-menu {
+        position: static !important;
+        transform: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+        opacity: 1 !important;
+        visibility: hidden !important;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, visibility 0s 0.3s;
+        background: #F5F5F0 !important;
+    }
+    .dropdown-menu.open {
+        visibility: visible !important;
+        max-height: 2000px;
+        transition: max-height 0.5s ease, visibility 0s;
+    }
+
+    /* Mega-menu columns stack vertically on mobile */
+    .dropdown-menu.mega-menu {
+        display: block !important;
+    }
+    .mega-menu-column {
+        border-right: none;
+        padding: 4px 0;
+        border-bottom: 1px solid #E2E2E0;
+    }
+    .mega-menu-column:last-child {
+        border-bottom: none;
+    }
+    .mega-menu-column-title {
+        padding: 10px 20px 6px;
+    }
+
+    /* Dropdown items */
+    .dropdown-item {
+        padding: 10px 24px;
+        border-radius: 0;
+    }
+    .mega-menu .dropdown-item {
+        padding: 10px 24px;
+    }
+
+    /* Single-column dropdowns */
+    .dropdown-menu.dropdown-single {
+        position: static !important;
+        min-width: 0 !important;
+    }
+    .dropdown-menu.dropdown-single.open {
+        display: block;
     }
 }
 
@@ -687,12 +843,23 @@ a.text-link:hover {
         gap: 12px;
     }
 
-    .nav-logo-title {
-        font-size: 18px;
+    .nav-logo-brand {
+        font-size: 16px;
     }
 
-    .nav-search-btn span {
+    .nav-search-btn span:first-child {
         display: none;
+    }
+
+    .nav-links {
+        width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-search-btn {
+        padding: 8px 12px;
+        font-size: 11px;
     }
 }
 
