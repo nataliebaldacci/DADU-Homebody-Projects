@@ -78,7 +78,7 @@
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
                  item('contractor_marketplace.html', 'Building_and_Construction.svg', 'Contractor Marketplace') +
                  item('market_trends.html', 'Cost_Market.svg', 'Market Trends') +
-                 item('nashville_permit_analytics.html', 'Enhanced Transaction History Report .svg', 'Permit Analytics')
+                 item('nashville_permit_analytics.html', 'Permit_Analytics.svg', 'Permit Analytics')
              ) +
     '        </div>' +
     '      </div>' +
@@ -117,14 +117,14 @@
                  item('what_is_dadu.html', 'ADU.png', 'What is a DADU?') +
                  item('dadu_requirements_overview.html', 'Building_and_Construction.svg', 'General Requirements') +
                  item('dadu_eligibility_flowchart.html', 'Eligibility_Check.svg', 'Eligibility Flowchart') +
-                 item('dadu_history.html', 'Timeline.svg', 'DADU History') +
+                 item('dadu_history.html', 'DADU_History.svg', 'DADU History') +
                  item('dadu_code_legislation_v5.html', 'Legal.svg', 'Code &amp; Legislation') +
                 item('arcgis_maps.html', 'GIS.svg', 'ArcGIS Maps')
              ) +
              col('Legal.svg', 'Permits &amp; Forms',
-                 item('owner_occupancy.html', 'homeowner.svg', 'Owner Occupancy') +
+                 item('owner_occupancy.html', 'Owner_Occupancy.svg', 'Owner Occupancy') +
                  item('str_permit.html', 'STR_Permit.svg', 'STR Permit') +
-                 item('trade_permits.html', 'Renewals.png', 'Required Trade Permits') +
+                 item('trade_permits.html', 'Renewals.svg', 'Required Trade Permits') +
                  item('overlay-districts.html', 'Zoning_Documents.svg', 'Overlay Districts') +
                  item('restrictive_covenants_v2.html', 'Restrictive_Covenants.svg', 'Restrictive Covenants') +
                  item('dadu_design_standards.html', 'Overlay_Design_Standards.svg', 'Design Standards')
