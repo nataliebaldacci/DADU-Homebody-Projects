@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Feature Directory | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
+ <style>
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+ body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #F2F0ED;
+  color: #3A5566;
+  line-height: 1.6;
+ }
+ a { text-decoration: none; color: inherit; }
+
+ /* Hero */
+ .dir-hero {
+  background: #3A5566;
+  padding: 100px 24px 56px;
+  text-align: center;
+ }
+ .dir-hero h1 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 42px;
+  color: #E1D4BB;
+  margin-bottom: 12px;
+ }
+ .dir-hero p {
+  font-size: 17px;
+  color: #F0EBE1;
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.5;
+ }
+
+ /* Stats strip */
+ .dir-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  padding: 28px 24px;
+  background: #2F3A45;
+  flex-wrap: wrap;
+ }
+ .dir-stat .num {
+  font-weight: 800;
+  font-size: 28px;
+  color: #CBB279;
+ }
+ .dir-stat .lbl {
+  font-size: 11px;
+  color: #E1D4BB;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 2px;
+ }
+
+ /* Category section */
+ .cat-section {
+  padding: 56px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+ }
+ .cat-section:nth-child(even) {
+  background: transparent;
+ }
+ .cat-section-bg-alt {
+  background: #ffffff;
+ }
+ .cat-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #E2E2E0;
+ }
+ .cat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #F0EBE1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+ }
+ .cat-icon img {
+  width: 28px;
+  height: 28px;
+ }
+ .cat-header h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 28px;
+  color: #3A5566;
+ }
+ .cat-header .cat-count {
+  font-size: 13px;
+  color: #7B746D;
+  font-weight: 500;
+  margin-left: auto;
+ }
+
+ /* Feature cards grid */
+ .dir-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+ }
+ .dir-card {
+  background: #F5F5F0;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 24px 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: box-shadow 0.2s, transform 0.2s;
+ }
+ .dir-card:hover {
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+ }
+ .dir-card .card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #F0EBE1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+ }
+ .dir-card .card-icon img {
+  width: 26px;
+  height: 26px;
+ }
+ .dir-card-text h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3A5566;
+  margin-bottom: 4px;
+ }
+ .dir-card-text p {
+  font-size: 13px;
+  color: #706F6C;
+  line-height: 1.45;
+  margin-bottom: 8px;
+ }
+ .dir-card-text .dir-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #496778;
+  transition: color 0.2s;
+ }
+ .dir-card:hover .dir-link {
+  color: #3A5566;
+  text-decoration: underline;
+ }
+
+ /* CTA */
+ .dir-cta {
+  background: #3A5566;
+  padding: 64px 24px;
+  text-align: center;
+ }
+ .dir-cta h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 32px;
+  color: #E1D4BB;
+  margin-bottom: 12px;
+ }
+ .dir-cta p {
+  color: #F0EBE1;
+  font-size: 16px;
+  margin-bottom: 28px;
+ }
+ .dir-cta-btn {
+  display: inline-block;
+  padding: 16px 44px;
+  background: #CBB279;
+  color: #3A5566;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.2s;
+ }
+ .dir-cta-btn:hover {
+  background: #D4A54E;
+  transform: translateY(-2px);
+ }
+
+ /* Footer */
+ .page-footer {
+  background: #3A5566;
+  color: #E1D4BB;
+  padding: 32px 24px 20px;
+  text-align: center;
+  font-size: 13px;
+ }
+ .page-footer a { color: rgba(225,212,187,0.6); }
+ .page-footer a:hover { color: #E1D4BB; }
+
+ /* Responsive */
+ @media (max-width: 900px) {
+  .dir-grid { grid-template-columns: repeat(2, 1fr); }
+  .dir-hero h1 { font-size: 32px; }
+  .dir-stats { gap: 32px; }
+ }
+ @media (max-width: 600px) {
+  .dir-grid { grid-template-columns: 1fr; }
+  .dir-hero { padding: 80px 16px 40px; }
+  .dir-hero h1 { font-size: 26px; }
+  .cat-section { padding: 40px 16px; }
+  .cat-header h2 { font-size: 22px; }
+  .dir-stats .dir-stat .num { font-size: 22px; }
+ }
+ </style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+
+ <!-- Hero -->
+ <section class="dir-hero">
+  <h1>Feature Directory</h1>
+  <p>Every tool, map, report, and resource available on the Homebody Projects platform. 40+ features built for homeowners, contractors, designers, and legal professionals.</p>
+ </section>
+
+ <!-- Stats -->
+ <section class="dir-stats">
+  <div class="dir-stat" style="text-align:center">
+   <div class="num">40+</div>
+   <div class="lbl">Features</div>
+  </div>
+  <div class="dir-stat" style="text-align:center">
+   <div class="num">6</div>
+   <div class="lbl">Interactive Maps</div>
+  </div>
+  <div class="dir-stat" style="text-align:center">
+   <div class="num">6</div>
+   <div class="lbl">Professional Reports</div>
+  </div>
+  <div class="dir-stat" style="text-align:center">
+   <div class="num">7</div>
+   <div class="lbl">Planning Tools</div>
+  </div>
+ </section>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- CATEGORY 1: Interactive Maps -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="cat-section">
+  <div class="cat-header">
+   <div class="cat-icon"><img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt=""></div>
+   <h2>Interactive Maps</h2>
+   <span class="cat-count">5 tools</span>
+  </div>
+  <div class="dir-grid">
+   <a href="dadu_eligibility_map.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Zoning.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Eligibility Map</h3>
+     <p>Color-coded map of all 285,512 Nashville parcels showing DADU eligibility status. Filter by zoning, lot size, and service district.</p>
+     <span class="dir-link">Open Map &rarr;</span>
+    </div>
+   </a>
+   <a href="property_search.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Parcel Search.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Property Search</h3>
+     <p>Search any Nashville address or APN to view parcel details, zoning info, and building footprints on an interactive map.</p>
+     <span class="dir-link">Search &rarr;</span>
+    </div>
+   </a>
+   <a href="existing_dadus_map.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/ADU.png" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Existing DADUs</h3>
+     <p>Gallery map of completed DADUs with photos, sketches, site plans, and permit documents. Filter by ZIP, contractor, and size.</p>
+     <span class="dir-link">Browse &rarr;</span>
+    </div>
+   </a>
+   <a href="permit_explorer.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Permit_Explorer.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Permit Explorer</h3>
+     <p>Filter all Nashville building permits by type, date, status, contractor, cost, and square footage on an interactive map.</p>
+     <span class="dir-link">Explore &rarr;</span>
+    </div>
+   </a>
+   <a href="dadu_near_me_v3.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Neighbors.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>DADUs Near Me</h3>
+     <p>Enter your address and search radius to find completed and permitted DADUs nearby with details on each project.</p>
+     <span class="dir-link">Find Nearby &rarr;</span>
+    </div>
+   </a>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- CATEGORY 2: Dashboards & Analytics -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="cat-section-bg-alt">
+ <div class="cat-section">
+  <div class="cat-header">
+   <div class="cat-icon"><img src="assets/icons/Dashboard.svg" alt=""></div>
+   <h2>Dashboards &amp; Analytics</h2>
+   <span class="cat-count">4 tools</span>
+  </div>
+  <div class="dir-grid">
+   <a href="permit_activity_dashboard.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Permit_Activity.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Permit Activity Dashboard</h3>
+     <p>Real-time tracking of DADU permit activity, approval timelines, and construction trends across Nashville.</p>
+     <span class="dir-link">View Dashboard &rarr;</span>
+    </div>
+   </a>
+   <a href="contractor_marketplace.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Contractor_Marketplace.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Contractor Marketplace</h3>
+     <p>393 contractors ranked by permit volume, average cost per square foot, project locations, and customer data.</p>
+     <span class="dir-link">Browse Contractors &rarr;</span>
+    </div>
+   </a>
+   <a href="market_trends.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Cost_Market.png" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Market Trends</h3>
+     <p>Cost trends over time, demand by ZIP code, construction cost benchmarks, and market analytics.</p>
+     <span class="dir-link">Analyze &rarr;</span>
+    </div>
+   </a>
+   <a href="nashville_permit_analytics.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Permit_Analytics.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Permit Analytics</h3>
+     <p>Deep-dive analytics on Nashville permit data with DADU-specific filters, cost distributions, and trend analysis.</p>
+     <span class="dir-link">Analyze &rarr;</span>
+    </div>
+   </a>
+  </div>
+ </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- CATEGORY 3: Planning & Build Tools -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="cat-section">
+  <div class="cat-header">
+   <div class="cat-icon"><img src="assets/icons/Project_Planner.svg" alt=""></div>
+   <h2>Planning &amp; Build Tools</h2>
+   <span class="cat-count">7 tools</span>
+  </div>
+  <div class="dir-grid">
+   <a href="am_i_eligible.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Eligibility_Check.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Am I Eligible?</h3>
+     <p>Instant DADU eligibility check based on Nashville's BL2025-1007 zoning requirements. Enter your address to find out.</p>
+     <span class="dir-link">Check Now &rarr;</span>
+    </div>
+   </a>
+   <a href="dadu_build_tool_v2.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Build_DADU.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Build My DADU</h3>
+     <p>Step-by-step guided builder that walks you through the entire DADU planning and construction process.</p>
+     <span class="dir-link">Start Building &rarr;</span>
+    </div>
+   </a>
+   <a href="project_planner_hub.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Checklist_.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Planning Hub</h3>
+     <p>Central project management dashboard with checklists, milestones, and timeline tracking for your DADU project.</p>
+     <span class="dir-link">Plan &rarr;</span>
+    </div>
+   </a>
+   <a href="draw_dadu_on_parcel.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Draw_DADU.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Draw DADU on Parcel</h3>
+     <p>Visual placement tool to draw and position your DADU footprint on your parcel with setback validation.</p>
+     <span class="dir-link">Draw &rarr;</span>
+    </div>
+   </a>
+   <a href="size_calculator.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Appraisers.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Size Calculator</h3>
+     <p>Calculate your maximum DADU size based on lot dimensions, zoning rules, and BL2025-1007 requirements.</p>
+     <span class="dir-link">Calculate &rarr;</span>
+    </div>
+   </a>
+   <a href="dadu_calculators.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Appraisers.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>All Calculators</h3>
+     <p>Hub for all DADU calculators including cost estimator, size calculator, ROI projections, and setback tools.</p>
+     <span class="dir-link">Calculate &rarr;</span>
+    </div>
+   </a>
+   <a href="dadu_eligibility_flowchart.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Eligibility_Check.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Eligibility Flowchart</h3>
+     <p>Interactive step-by-step questionnaire to determine your DADU eligibility based on zoning, lot size, and service district.</p>
+     <span class="dir-link">Start Flowchart &rarr;</span>
+    </div>
+   </a>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- CATEGORY 4: Permits & Forms -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="cat-section-bg-alt">
+ <div class="cat-section">
+  <div class="cat-header">
+   <div class="cat-icon"><img src="assets/icons/Permit_Approval.svg" alt=""></div>
+   <h2>Permits &amp; Forms</h2>
+   <span class="cat-count">6 tools</span>
+  </div>
+  <div class="dir-grid">
+   <a href="form_wizard.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Form_Wizard.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Form Wizard</h3>
+     <p>Determine which forms you need and auto-fill them based on your property and project details.</p>
+     <span class="dir-link">Start Wizard &rarr;</span>
+    </div>
+   </a>
+   <a href="permit_process_timeline.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Permit_Timeline.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Permit Process Timeline</h3>
+     <p>Step-by-step guide through Nashville's DADU permitting process with estimated timelines and requirements.</p>
+     <span class="dir-link">View Timeline &rarr;</span>
+    </div>
+   </a>
+   <a href="owner_occupancy.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Owner_Occupancy.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Owner Occupancy</h3>
+     <p>Understanding Nashville's owner occupancy requirement for DADUs and the required affidavit forms.</p>
+     <span class="dir-link">Learn More &rarr;</span>
+    </div>
+   </a>
+   <a href="str_permit.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/STR_Permit.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Short Term Rental Permit</h3>
+     <p>STR eligibility rules for DADUs, permit application process, and owner-occupied rental requirements.</p>
+     <span class="dir-link">Learn More &rarr;</span>
+    </div>
+   </a>
+   <a href="trade_permits.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Trade_Permits.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Required Trade Permits</h3>
+     <p>Complete list of trade permits needed for DADU construction: electrical, plumbing, mechanical, and more.</p>
+     <span class="dir-link">View Permits &rarr;</span>
+    </div>
+   </a>
+   <a href="overlay-districts.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Zoning_Documents.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Overlay Districts</h3>
+     <p>UDO, DADU, and SP overlay districts with ordinance links, design standards, and compliance requirements.</p>
+     <span class="dir-link">View Overlays &rarr;</span>
+    </div>
+   </a>
+  </div>
+ </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- CATEGORY 5: Reports -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="cat-section">
+  <div class="cat-header">
+   <div class="cat-icon"><img src="assets/icons/Exports__Reports.svg" alt=""></div>
+   <h2>Professional Reports</h2>
+   <span class="cat-count">6 reports</span>
+  </div>
+  <div class="dir-grid">
+   <a href="dadu_reports_store.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Exports__Reports.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Report Generator</h3>
+     <p>Central hub to generate any of our 6 professional reports. Enter an address and choose your report type.</p>
+     <span class="dir-link">Generate &rarr;</span>
+    </div>
+   </a>
+   <a href="eligibility_report.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Eligibility_Check.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Eligibility Report</h3>
+     <p>Complete zoning analysis with lot dimensions, setbacks, regulatory compliance, and maximum DADU size.</p>
+     <span class="dir-link">View Report &rarr;</span>
+    </div>
+   </a>
+   <a href="project_report.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Project_Report.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Project Report</h3>
+     <p>Full project plan with cost estimates, timeline, permit requirements, and contractor recommendations.</p>
+     <span class="dir-link">View Report &rarr;</span>
+    </div>
+   </a>
+   <a href="neighbors_report.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Neighbors.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Neighbors Report</h3>
+     <p>Nearby DADU activity, comparable projects, construction costs, and contractor data in your area.</p>
+     <span class="dir-link">View Report &rarr;</span>
+    </div>
+   </a>
+   <a href="contractor_report.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Find_Contractor.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Contractor Report</h3>
+     <p>Single-contractor deep dive with total permits, DADU experience, average cost, project history, and ZIP coverage.</p>
+     <span class="dir-link">View Report &rarr;</span>
+    </div>
+   </a>
+   <a href="property-report-card.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Property_Owners.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Property Report Card</h3>
+     <p>Comprehensive property analysis: eligibility, permits, covenants, documents, and links to Nashville portals.</p>
+     <span class="dir-link">View Report &rarr;</span>
+    </div>
+   </a>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- CATEGORY 6: Data & Documents -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="cat-section-bg-alt">
+ <div class="cat-section">
+  <div class="cat-header">
+   <div class="cat-icon"><img src="assets/icons/Document_Database.svg" alt=""></div>
+   <h2>Data &amp; Documents</h2>
+   <span class="cat-count">5 tools</span>
+  </div>
+  <div class="dir-grid">
+   <a href="dadu_documents_portal.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Recorded_Docs.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Document Portal</h3>
+     <p>Search 18,782 recorded documents including permits, site plans, covenants, and property cards by APN or address.</p>
+     <span class="dir-link">Search Documents &rarr;</span>
+    </div>
+   </a>
+   <a href="find_site_plans.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Permit_Site_Plans.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Site Plans &amp; Permit Docs</h3>
+     <p>Download approved site plans, architectural drawings, and permit documents for DADU projects.</p>
+     <span class="dir-link">Find Plans &rarr;</span>
+    </div>
+   </a>
+   <a href="pdf_database_lookup.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Document_Database.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>PDF Database</h3>
+     <p>Direct access to 73,375+ indexed PDF documents organized by APN, including property cards and permit files.</p>
+     <span class="dir-link">Search PDFs &rarr;</span>
+    </div>
+   </a>
+   <a href="restrictive_covenants_v2.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Restrictive_Covenants.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Restrictive Covenants</h3>
+     <p>Search 43,000+ parcels with restrictive covenants. View covenant PDFs and check DADU restrictions.</p>
+     <span class="dir-link">Search Covenants &rarr;</span>
+    </div>
+   </a>
+   <a href="dadu_resources.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/External_Links.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>External Links</h3>
+     <p>Curated links to Nashville Metro services, zoning portals, permit systems, and government resources.</p>
+     <span class="dir-link">View Links &rarr;</span>
+    </div>
+   </a>
+  </div>
+ </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- CATEGORY 7: Learn & Reference -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="cat-section">
+  <div class="cat-header">
+   <div class="cat-icon"><img src="assets/icons/What_is_DADU.svg" alt=""></div>
+   <h2>Learn &amp; Reference</h2>
+   <span class="cat-count">6 resources</span>
+  </div>
+  <div class="dir-grid">
+   <a href="what_is_dadu.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/What_is_DADU.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>What is a DADU?</h3>
+     <p>Complete guide to Detached Accessory Dwelling Units: what they are, how they work, and why Nashville expanded them.</p>
+     <span class="dir-link">Read Guide &rarr;</span>
+    </div>
+   </a>
+   <a href="dadu_requirements_overview.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/General_Requirements.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>General Requirements</h3>
+     <p>Setbacks, height limits, lot coverage, maximum sizes, and all zoning standards for Nashville DADUs.</p>
+     <span class="dir-link">View Requirements &rarr;</span>
+    </div>
+   </a>
+   <a href="dadu_code_legislation_v5.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Legislation.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Code &amp; Legislation</h3>
+     <p>111+ legal citations in Bluebook format covering BL2025-1007, Metro Code, and DADU-specific regulations.</p>
+     <span class="dir-link">View Citations &rarr;</span>
+    </div>
+   </a>
+   <a href="dadu_history.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/DADU_History.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>DADU History</h3>
+     <p>Nashville's legislative history of accessory dwelling units from early zoning through BL2025-1007.</p>
+     <span class="dir-link">Read History &rarr;</span>
+    </div>
+   </a>
+   <a href="dadu_design_standards.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Overlay_Design_Standards.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Design Standards</h3>
+     <p>Architectural compatibility requirements, material matching, and overlay-specific design rules for DADUs.</p>
+     <span class="dir-link">View Standards &rarr;</span>
+    </div>
+   </a>
+   <a href="arcgis_maps.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/GIS.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>ArcGIS Maps</h3>
+     <p>Direct links to all Vanderbilt ArcGIS Online web maps for eligibility, permits, footprints, and covenants.</p>
+     <span class="dir-link">View Maps &rarr;</span>
+    </div>
+   </a>
+  </div>
+ </div>
+
+ <!-- ═══════════════════════════════════════ -->
+ <!-- CATEGORY 8: User Portals -->
+ <!-- ═══════════════════════════════════════ -->
+ <div class="cat-section-bg-alt">
+ <div class="cat-section">
+  <div class="cat-header">
+   <div class="cat-icon"><img src="assets/icons/Property_Owners.svg" alt=""></div>
+   <h2>User Portals</h2>
+   <span class="cat-count">5 portals</span>
+  </div>
+  <div class="dir-grid">
+   <a href="homeowner_portal.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Property_Owners.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Homeowner Portal</h3>
+     <p>Your hub for eligibility checks, cost estimates, contractor search, and project planning tools.</p>
+     <span class="dir-link">Enter Portal &rarr;</span>
+    </div>
+   </a>
+   <a href="contractor_portal.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Contractor Portal</h3>
+     <p>Leads, market insights, permit analytics, and advertising opportunities for DADU builders.</p>
+     <span class="dir-link">Enter Portal &rarr;</span>
+    </div>
+   </a>
+   <a href="designer_portal.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Surveyors_and_Engineers.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Designer &amp; Architect Portal</h3>
+     <p>Building requirements, design templates, DADU size specs, site analysis tools, and precedent projects.</p>
+     <span class="dir-link">Enter Portal &rarr;</span>
+    </div>
+   </a>
+   <a href="user-homeowners.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Municipal.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Municipal &amp; Agencies</h3>
+     <p>Permit tracking, policy analysis, compliance monitoring, and impact assessment tools for government staff.</p>
+     <span class="dir-link">Enter Portal &rarr;</span>
+    </div>
+   </a>
+   <a href="legal_professionals_portal.html" class="dir-card">
+    <div class="card-icon"><img src="assets/icons/Legal.svg" alt=""></div>
+    <div class="dir-card-text">
+     <h3>Legal Professionals</h3>
+     <p>Covenant research, title analysis, zoning compliance tools, form wizard, and 111+ legal citations database.</p>
+     <span class="dir-link">Enter Portal &rarr;</span>
+    </div>
+   </a>
+  </div>
+ </div>
+ </div>
+
+ <!-- CTA -->
+ <section class="dir-cta">
+  <h2>Ready to Start Your DADU Project?</h2>
+  <p>Check your property's eligibility in seconds. 67,707 Nashville parcels qualify under BL2025-1007.</p>
+  <a href="am_i_eligible.html" class="dir-cta-btn">Check Eligibility Now</a>
+ </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="page-footer">
+ <p>&copy; 2026 Homebody Projects. Powered by Castlehold. All rights reserved.</p>
+ <p style="margin-top:8px;"><a href="homebody_dadu_pricing.html">Pricing</a> &middot; <a href="about_platform.html">About</a> &middot; <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a></p>
+</footer>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>
