@@ -5,571 +5,70 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Overlay Districts | Homebody Projects</title>
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@1,700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
  <style>
- :root {
- --navy: #3A5566;
- --dark-anchor: #2F3A45;
- --navy-dark: #2F3A45;
- --teal: #7B746D;
- --terracotta: #CBB279;
- --terracotta-hover: #B8A068;
- --tan: #7B746D;
- --background: #F2F0ED;
- --card-bg: #F0EBE1;
- --white: #ffffff;
- --text: #333333;
- --text-light: #666666;
- --border: #e0e0e0;
- }
-
  * { box-sizing: border-box; margin: 0; padding: 0; }
 
  body {
- font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
- background: var(--background);
- color: var(--text);
- line-height: 1.6;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #F2F0ED;
+  color: #3A5566;
+  line-height: 1.6;
  }
 
  a { text-decoration: none; color: inherit; }
 
- /* Header */
- .header {
- background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
- color: white;
- padding: 20px 30px;
- }
-
- .header-content {
- max-width: 1400px;
- margin: 0 auto;
- display: flex;
- align-items: center;
- justify-content: space-between;
- }
-
- .logo {
- display: flex;
- align-items: center;
- gap: 12px;
- color: white;
- }
-
- .logo-icon {
- width: 44px;
- height: 44px;
- background: var(--terracotta);
- border-radius: 10px;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 24px;
- }
-
- .logo-text {
- font-size: 22px;
- font-weight: 800;
- }
-
- .nav-links {
- display: flex;
- gap: 25px;
- }
-
- .nav-links a {
- color: rgba(255,255,255,0.9);
- font-weight: 500;
- transition: color 0.2s;
- }
-
- .nav-links a:hover { color: var(--tan); }
-
  /* Hero */
  .hero {
- background: linear-gradient(135deg, var(--teal) 0%, #496778 100%);
- color: white;
- padding: 60px 30px;
- text-align: center;
+  background: #3A5566;
+  color: white;
+  padding: 64px 24px;
+  text-align: center;
  }
-
  .hero h1 {
- font-size: 42px;
- font-weight: 800;
- margin-bottom: 15px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 34px;
+  color: #E1D4BB;
+  margin-bottom: 12px;
  }
-
  .hero p {
- font-size: 18px;
- opacity: 0.95;
- max-width: 800px;
- margin: 0 auto 30px;
+  font-size: 16px;
+  color: rgba(225, 212, 187, 0.8);
+  max-width: 700px;
+  margin: 0 auto 20px;
  }
-
  .hero-badge {
- display: inline-block;
- background: var(--terracotta);
- color: var(--navy);
- padding: 8px 20px;
- border-radius: 20px;
- font-weight: 700;
- font-size: 14px;
- }
-
- /* Eligibility Pathways */
- .pathways-section {
- max-width: 1400px;
- margin: -40px auto 40px;
- padding: 0 30px;
- }
-
- .pathways-grid {
- display: grid;
- grid-template-columns: repeat(4, 1fr);
- gap: 20px;
- }
-
- .pathway-card {
- background: white;
- border-radius: 16px;
- padding: 25px;
- box-shadow: 0 4px 20px rgba(0,0,0,0.1);
- text-align: center;
- position: relative;
- }
-
- .pathway-card.primary {
- border: 3px solid var(--terracotta);
- }
-
- .pathway-card.conditional {
- border: 3px solid var(--terracotta);
- }
-
- .pathway-number {
- position: absolute;
- top: -15px;
- left: 50%;
- transform: translateX(-50%);
- width: 30px;
- height: 30px;
- background: var(--navy);
- color: white;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- font-weight: 700;
- font-size: 14px;
- }
-
- .pathway-icon {
- font-size: 36px;
- margin-bottom: 15px;
- }
-
- .pathway-card h3 {
- font-size: 16px;
- color: var(--navy);
- margin-bottom: 10px;
- }
-
- .pathway-card p {
- font-size: 13px;
- color: var(--text-light);
- }
-
- .pathway-status {
- display: inline-block;
- padding: 4px 12px;
- border-radius: 12px;
- font-size: 11px;
- font-weight: 700;
- margin-top: 15px;
- }
-
- .pathway-status.by-right {
- background: #F0EBE1;
- color: var(--terracotta);
- }
-
- .pathway-status.conditional {
- background: #F0EBE1;
- color: #7B746D;
- }
-
- /* Main Content */
- .main-content {
- max-width: 1400px;
- margin: 0 auto;
- padding: 0 30px 60px;
- }
-
- /* Info Box */
- .info-box {
- background: linear-gradient(135deg, #F0EBE1 0%, #F3EEEA 100%);
- border-left: 4px solid var(--terracotta);
- border-radius: 12px;
- padding: 25px 30px;
- margin-bottom: 40px;
- }
-
- .info-box h3 {
- color: var(--navy);
- margin-bottom: 10px;
- display: flex;
- align-items: center;
- gap: 10px;
- }
-
- .info-box p {
- color: var(--text);
- font-size: 14px;
- margin-bottom: 15px;
- }
-
- .info-box ul {
- margin-left: 20px;
- font-size: 14px;
- }
-
- .info-box li {
- margin-bottom: 8px;
- }
-
- .info-box a {
- color: var(--teal);
- font-weight: 600;
- }
-
- /* Search/Filter */
- .filter-section {
- background: white;
- border-radius: 16px;
- padding: 25px;
- margin-bottom: 30px;
- box-shadow: 0 2px 10px rgba(0,0,0,0.05);
- }
-
- .filter-row {
- display: flex;
- gap: 15px;
- flex-wrap: wrap;
- align-items: center;
- }
-
- .search-input {
- flex: 1;
- min-width: 250px;
- padding: 12px 16px;
- border: 2px solid var(--border);
- border-radius: 8px;
- font-family: inherit;
- font-size: 14px;
- }
-
- .search-input:focus {
- outline: none;
- border-color: var(--teal);
- }
-
- .filter-btn {
- padding: 12px 20px;
- border: 2px solid var(--border);
- background: white;
- border-radius: 8px;
- font-family: inherit;
- font-size: 13px;
- font-weight: 600;
- cursor: pointer;
- transition: all 0.2s;
- }
-
- .filter-btn:hover, .filter-btn.active {
- background: var(--navy);
- border-color: var(--navy);
- color: white;
- }
-
- /* Document Category */
- .doc-category {
- margin-bottom: 50px;
- }
-
- .category-header {
- display: flex;
- align-items: center;
- justify-content: space-between;
- margin-bottom: 20px;
- padding-bottom: 15px;
- border-bottom: 2px solid var(--border);
- }
-
- .category-title {
- display: flex;
- align-items: center;
- gap: 15px;
- }
-
- .category-icon {
- width: 50px;
- height: 50px;
- background: var(--navy);
- border-radius: 12px;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 24px;
- }
-
- .category-title h2 {
- font-size: 24px;
- color: var(--navy);
- }
-
- .category-title span {
- font-size: 14px;
- color: var(--text-light);
- font-weight: 400;
- }
-
- .category-count {
- background: var(--tan);
- color: white;
- padding: 6px 16px;
- border-radius: 20px;
- font-weight: 700;
- font-size: 14px;
- }
-
- /* Document Grid */
- .doc-grid {
- display: grid;
- grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
- gap: 20px;
- }
-
- .doc-card {
- background: white;
- border-radius: 12px;
- overflow: hidden;
- box-shadow: 0 2px 10px rgba(0,0,0,0.05);
- transition: transform 0.2s, box-shadow 0.2s;
- }
-
- .doc-card:hover {
- transform: translateY(-3px);
- box-shadow: 0 8px 25px rgba(0,0,0,0.12);
- }
-
- .doc-card-header {
- background: linear-gradient(135deg, var(--navy) 0%, #496778 100%);
- color: white;
- padding: 20px;
- }
-
- .doc-card-header.ddu {
- background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-hover) 100%);
- }
-
- .doc-card-header.udo {
- background: linear-gradient(135deg, var(--teal) 0%, #496778 100%);
- }
-
- .doc-card-header.sp {
- background: linear-gradient(135deg, var(--tan) 0%, #918A83 100%);
- }
-
- .doc-card-id {
- font-size: 11px;
- text-transform: uppercase;
- letter-spacing: 1px;
- opacity: 0.9;
- margin-bottom: 5px;
- }
-
- .doc-card-title {
- font-size: 18px;
- font-weight: 700;
- }
-
- .doc-card-body {
- padding: 20px;
- }
-
- .doc-card-meta {
- display: flex;
- flex-wrap: wrap;
- gap: 10px;
- margin-bottom: 15px;
- }
-
- .doc-meta-tag {
- font-size: 11px;
- padding: 4px 10px;
- background: var(--card-bg);
- border-radius: 4px;
- color: var(--text-light);
- }
-
- .doc-card-desc {
- font-size: 13px;
- color: var(--text-light);
- margin-bottom: 15px;
- }
-
- .doc-card-files {
- border-top: 1px solid var(--border);
- padding-top: 15px;
- }
-
- .doc-file {
- display: flex;
- align-items: center;
- justify-content: space-between;
- padding: 8px 0;
- border-bottom: 1px solid #f0f0f0;
- }
-
- .doc-file:last-child {
- border-bottom: none;
- }
-
- .doc-file-name {
- font-size: 12px;
- color: var(--text);
- display: flex;
- align-items: center;
- gap: 8px;
- }
-
- .doc-file-name .icon {
- color: var(--navy);
- }
-
- .doc-file-link {
- font-size: 12px;
- color: var(--teal);
- font-weight: 600;
- }
-
- .doc-file-link:hover {
- color: var(--navy);
- }
-
- /* External Resources */
- .resources-section {
- background: white;
- border-radius: 16px;
- padding: 30px;
- margin-top: 40px;
- }
-
- .resources-section h2 {
- font-size: 22px;
- color: var(--navy);
- margin-bottom: 20px;
- }
-
- .resources-grid {
- display: grid;
- grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
- gap: 20px;
- }
-
- .resource-card {
- display: flex;
- align-items: flex-start;
- gap: 15px;
- padding: 20px;
- background: var(--card-bg);
- border-radius: 12px;
- transition: background 0.2s;
- }
-
- .resource-card:hover {
- background: #F2F0ED;
- }
-
- .resource-icon {
- width: 40px;
- height: 40px;
- background: var(--navy);
- border-radius: 8px;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 18px;
- flex-shrink: 0;
- }
-
- .resource-content h4 {
- font-size: 14px;
- color: var(--navy);
- margin-bottom: 5px;
- }
-
- .resource-content p {
- font-size: 12px;
- color: var(--text-light);
- }
-
- /* Footer */
- .footer {
- background: var(--navy-dark);
- color: white;
- padding: 40px 30px;
- text-align: center;
- }
-
- .footer p {
- opacity: 0.7;
- font-size: 13px;
- }
-
- /* Responsive */
- @media (max-width: 1024px) {
- .pathways-grid {
- grid-template-columns: repeat(2, 1fr);
- }
- }
-
- @media (max-width: 768px) {
- .pathways-grid {
- grid-template-columns: 1fr;
- }
- .hero h1 {
- font-size: 28px;
- }
- .filter-row {
- flex-direction: column;
- }
- .search-input {
- width: 100%;
- }
+  display: inline-block;
+  background: #CBB279;
+  color: #3A5566;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
  }
 
  /* Stats Bar */
  .overlay-stats {
-  background: var(--navy);
+  background: #2F3A45;
   padding: 24px 30px;
  }
  .overlay-stats-inner {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
   gap: 16px;
  }
- .overlay-stat {
-  text-align: center;
- }
+ .overlay-stat { text-align: center; }
  .overlay-stat .num {
   font-size: 32px;
   font-weight: 800;
-  color: var(--terracotta);
+  color: #CBB279;
   line-height: 1.2;
  }
  .overlay-stat .lbl {
@@ -580,21 +79,113 @@
   margin-top: 4px;
  }
 
+ /* Eligibility Pathways */
+ .pathways-section {
+  max-width: 1200px;
+  margin: -40px auto 40px;
+  padding: 0 24px;
+ }
+ .pathways-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+ }
+ .pathway-card {
+  background: #F5F5F0;
+  border-radius: 12px;
+  padding: 28px 20px;
+  border: 1px solid #E2E2E0;
+  text-align: center;
+  position: relative;
+ }
+ .pathway-card.primary {
+  border: 2px solid #CBB279;
+ }
+ .pathway-card.conditional {
+  border: 2px solid #918A83;
+ }
+ .pathway-number {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  background: #3A5566;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+ }
+ .pathway-icon {
+  width: 48px;
+  height: 48px;
+  background: #F0EBE1;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+ }
+ .pathway-icon img {
+  width: 26px;
+  height: 26px;
+ }
+ .pathway-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3A5566;
+  margin-bottom: 8px;
+ }
+ .pathway-card p {
+  font-size: 13px;
+  color: #706F6C;
+ }
+ .pathway-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 12px;
+ }
+ .pathway-status.by-right {
+  background: rgba(203, 178, 121, 0.15);
+  color: #CBB279;
+ }
+ .pathway-status.conditional {
+  background: rgba(123, 116, 109, 0.12);
+  color: #7B746D;
+ }
+
+ /* Section Title */
+ .section-title {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 24px;
+  color: #3A5566;
+  margin-bottom: 20px;
+ }
+
  /* Map Section */
  .overlay-map-section {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 30px auto;
-  padding: 0 30px;
+  padding: 0 24px;
  }
  .overlay-map-wrap {
-  background: white;
-  border-radius: 16px;
+  background: #F5F5F0;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border: 1px solid #E2E2E0;
  }
  .overlay-map-header {
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #E2E2E0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -602,13 +193,16 @@
   gap: 12px;
  }
  .overlay-map-header h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
   font-size: 20px;
-  color: var(--navy);
+  color: #3A5566;
   margin: 0;
  }
  .overlay-map-header p {
   font-size: 13px;
-  color: var(--text-light);
+  color: #706F6C;
   margin: 0;
  }
  #overlay-map {
@@ -617,7 +211,7 @@
  }
  .overlay-legend {
   padding: 16px 24px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #E2E2E0;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
@@ -626,7 +220,7 @@
  .overlay-legend-title {
   font-size: 12px;
   font-weight: 700;
-  color: var(--navy);
+  color: #3A5566;
   text-transform: uppercase;
   letter-spacing: 1px;
  }
@@ -635,7 +229,7 @@
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: var(--text-light);
+  color: #706F6C;
  }
  .overlay-legend-swatch {
   width: 14px;
@@ -650,7 +244,7 @@
  }
  .map-filter-btn {
   padding: 6px 14px;
-  border: 1px solid var(--border);
+  border: 1px solid #E2E2E0;
   background: white;
   border-radius: 6px;
   font-family: inherit;
@@ -658,35 +252,360 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  color: var(--text);
+  color: #3A5566;
  }
  .map-filter-btn:hover, .map-filter-btn.active {
-  background: var(--navy);
-  border-color: var(--navy);
+  background: #3A5566;
+  border-color: #3A5566;
   color: white;
  }
 
+ /* Main Content */
+ .main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+ }
+
+ /* Info Box */
+ .info-box {
+  background: #F5F5F0;
+  border-left: 4px solid #CBB279;
+  border-radius: 12px;
+  padding: 25px 30px;
+  margin-bottom: 40px;
+  border-right: 1px solid #E2E2E0;
+  border-top: 1px solid #E2E2E0;
+  border-bottom: 1px solid #E2E2E0;
+ }
+ .info-box h3 {
+  color: #3A5566;
+  font-size: 16px;
+  margin-bottom: 10px;
+ }
+ .info-box p {
+  color: #706F6C;
+  font-size: 14px;
+  margin-bottom: 15px;
+ }
+ .info-box ul {
+  margin-left: 20px;
+  font-size: 14px;
+  color: #706F6C;
+ }
+ .info-box li {
+  margin-bottom: 8px;
+ }
+ .info-box li strong {
+  color: #3A5566;
+ }
+ .info-box a {
+  color: #CBB279;
+  font-weight: 600;
+ }
+ .info-box a:hover {
+  color: #3A5566;
+ }
+
+ /* Search/Filter */
+ .filter-section {
+  background: #F5F5F0;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  border: 1px solid #E2E2E0;
+ }
+ .filter-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+ }
+ .search-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 12px 16px;
+  border: 1px solid #E2E2E0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  background: white;
+  color: #3A5566;
+ }
+ .search-input:focus {
+  outline: none;
+  border-color: #3A5566;
+ }
+ .filter-btn {
+  padding: 10px 18px;
+  border: 1px solid #E2E2E0;
+  background: white;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #3A5566;
+ }
+ .filter-btn:hover, .filter-btn.active {
+  background: #3A5566;
+  border-color: #3A5566;
+  color: white;
+ }
+
+ /* Document Category */
+ .doc-category { margin-bottom: 48px; }
+ .category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #E2E2E0;
+ }
+ .category-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+ }
+ .category-icon {
+  width: 48px;
+  height: 48px;
+  background: #F0EBE1;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ }
+ .category-icon img {
+  width: 26px;
+  height: 26px;
+ }
+ .category-title h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 22px;
+  color: #3A5566;
+ }
+ .category-title span {
+  font-size: 13px;
+  color: #706F6C;
+  font-weight: 400;
+ }
+ .category-count {
+  background: #3A5566;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 13px;
+ }
+
+ /* Document Grid */
+ .doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+ }
+ .doc-card {
+  background: #F5F5F0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #E2E2E0;
+  transition: transform 0.2s, box-shadow 0.2s;
+ }
+ .doc-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+ }
+ .doc-card-header {
+  background: #3A5566;
+  color: white;
+  padding: 20px;
+ }
+ .doc-card-header.ddu {
+  background: #CBB279;
+  color: #3A5566;
+ }
+ .doc-card-header.udo {
+  background: #496778;
+ }
+ .doc-card-header.sp {
+  background: #7B746D;
+ }
+ .doc-card-id {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.85;
+  margin-bottom: 5px;
+ }
+ .doc-card-title {
+  font-size: 18px;
+  font-weight: 700;
+ }
+ .doc-card-body { padding: 20px; }
+ .doc-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+ }
+ .doc-meta-tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  background: #F0EBE1;
+  border-radius: 4px;
+  color: #706F6C;
+  font-weight: 500;
+ }
+ .doc-card-desc {
+  font-size: 13px;
+  color: #706F6C;
+  margin-bottom: 15px;
+ }
+ .doc-card-files {
+  border-top: 1px solid #E2E2E0;
+  padding-top: 15px;
+ }
+ .doc-file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #E2E2E0;
+ }
+ .doc-file:last-child { border-bottom: none; }
+ .doc-file-name {
+  font-size: 12px;
+  color: #3A5566;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+ }
+ .doc-file-name .icon { color: #3A5566; }
+ .doc-file-link {
+  font-size: 12px;
+  color: #CBB279;
+  font-weight: 600;
+ }
+ .doc-file-link:hover { color: #3A5566; }
+
+ /* External Resources */
+ .resources-section {
+  background: #F5F5F0;
+  border-radius: 12px;
+  padding: 32px;
+  margin-top: 40px;
+  border: 1px solid #E2E2E0;
+ }
+ .resources-section h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 22px;
+  color: #3A5566;
+  margin-bottom: 20px;
+ }
+ .resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+ }
+ .resource-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 20px;
+  background: #F0EBE1;
+  border-radius: 12px;
+  transition: background 0.2s;
+ }
+ .resource-card:hover { background: #E1D4BB; }
+ .resource-icon {
+  width: 44px;
+  height: 44px;
+  background: #F5F5F0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+ }
+ .resource-icon img {
+  width: 24px;
+  height: 24px;
+ }
+ .resource-content h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #3A5566;
+  margin-bottom: 4px;
+ }
+ .resource-content p {
+  font-size: 12px;
+  color: #706F6C;
+ }
+
+ /* CTA Section */
+ .cta-section {
+  background: #3A5566;
+  border-radius: 16px;
+  padding: 40px 32px;
+  text-align: center;
+  margin-top: 48px;
+ }
+ .cta-section h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 24px;
+  color: #E1D4BB;
+  margin-bottom: 12px;
+ }
+ .cta-section p {
+  color: rgba(225, 212, 187, 0.75);
+  font-size: 14px;
+  max-width: 500px;
+  margin: 0 auto 24px;
+ }
+ .cta-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #CBB279;
+  color: #3A5566;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+ }
+ .cta-btn:hover { background: #B8A068; }
+
+ /* Responsive */
+ @media (max-width: 1024px) {
+  .pathways-grid { grid-template-columns: repeat(2, 1fr); }
+ }
  @media (max-width: 768px) {
+  .pathways-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 26px; }
+  .filter-row { flex-direction: column; }
+  .search-input { width: 100%; }
   .overlay-stats-inner { flex-direction: column; align-items: center; }
   #overlay-map { height: 380px; }
   .overlay-legend { justify-content: center; }
- }</style>
+ }
+ </style>
 </head>
 <body class="dark-nav">
-<!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
-
-<!-- End Shared Header -->
-
-
- <!-- Header -->
- 
 
  <!-- Hero -->
  <section class="hero">
- <h1>Overlay Districts & Special Plans</h1>
- <p>Not every parcel is eligible for a DADU by-right. But your property might qualify through a DADU Overlay, Urban Design Overlay (UDO), or Specific Plan (SP) with DADU development standards.</p>
- <span class="hero-badge">Conditional Eligibility Pathway</span></section>
+  <h1>Overlay Districts & Special Plans</h1>
+  <p>Not every parcel is eligible for a DADU by-right. But your property might qualify through a DADU Overlay, Urban Design Overlay (UDO), or Specific Plan (SP) with DADU development standards.</p>
+  <span class="hero-badge">Conditional Eligibility Pathway</span>
+ </section>
 
  <!-- Stats Bar -->
  <div class="overlay-stats">
@@ -700,31 +619,37 @@
 
  <!-- Eligibility Pathways -->
  <section class="pathways-section">
- <div class="pathways-grid">
- <div class="pathway-card primary">
- <div class="pathway-number">1</div>
- <div class="pathway-icon"></div>
- <h3>Urban Services District</h3>
- <p>Parcels in the USD with qualifying zoning are eligible by-right.</p>
- <span class="pathway-status by-right">By-Right</span></div>
- <div class="pathway-card conditional">
- <div class="pathway-number">2</div>
- <div class="pathway-icon"></div>
- <h3>DADU Design District</h3>
- <p>Parcels in GSD within a DADU Overlay (DDU) may qualify.</p>
- <span class="pathway-status conditional">Conditional</span></div>
- <div class="pathway-card conditional">
- <div class="pathway-number">3</div>
- <div class="pathway-icon"></div>
- <h3>Urban Design Overlay</h3>
- <p>UDOs with specific DADU development standards may permit DADUs.</p>
- <span class="pathway-status conditional">Conditional</span></div>
- <div class="pathway-card conditional">
- <div class="pathway-number">4</div>
- <div class="pathway-icon"></div>
- <h3>Specific Plan</h3>
- <p>Some SPs include DADU development standards allowing construction.</p>
- <span class="pathway-status conditional">Conditional</span></div></div></section>
+  <div class="pathways-grid">
+   <div class="pathway-card primary">
+    <div class="pathway-number">1</div>
+    <div class="pathway-icon"><img src="assets/icons/Zoning.svg" alt=""></div>
+    <h3>Urban Services District</h3>
+    <p>Parcels in the USD with qualifying zoning are eligible by-right.</p>
+    <span class="pathway-status by-right">By-Right</span>
+   </div>
+   <div class="pathway-card conditional">
+    <div class="pathway-number">2</div>
+    <div class="pathway-icon"><img src="assets/icons/ADU.png" alt=""></div>
+    <h3>DADU Design District</h3>
+    <p>Parcels in GSD within a DADU Overlay (DDU) may qualify.</p>
+    <span class="pathway-status conditional">Conditional</span>
+   </div>
+   <div class="pathway-card conditional">
+    <div class="pathway-number">3</div>
+    <div class="pathway-icon"><img src="assets/icons/Overlay_Design_Standards.svg" alt=""></div>
+    <h3>Urban Design Overlay</h3>
+    <p>UDOs with specific DADU development standards may permit DADUs.</p>
+    <span class="pathway-status conditional">Conditional</span>
+   </div>
+   <div class="pathway-card conditional">
+    <div class="pathway-number">4</div>
+    <div class="pathway-icon"><img src="assets/icons/Zoning_Documents.svg" alt=""></div>
+    <h3>Specific Plan</h3>
+    <p>Some SPs include DADU development standards allowing construction.</p>
+    <span class="pathway-status conditional">Conditional</span>
+   </div>
+  </div>
+ </section>
 
  <!-- Interactive Overlay Map -->
  <section class="overlay-map-section">
@@ -756,366 +681,517 @@
 
  <!-- Main Content -->
  <main class="main-content">
- <!-- Info Box -->
- <div class="info-box">
- <h3>How to Check Your Property</h3>
- <p>Use <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank">Nashville Parcel Viewer</a>to see if your parcel is in an overlay district. The base zoning and any overlays will be listed under the Zoning tab.</p>
- <ul>
- <li><strong>DDU (DADU Design District):</strong>Check for "DDU" in the zoning description</li>
- <li><strong>UDO (Urban Design Overlay):</strong>Look for "UD" overlay codes (e.g., 2021UD-001)</li>
- <li><strong>SP (Specific Plan):</strong>Look for "SP" codes (e.g., 2022SP-030)</li></ul>
- <p style="margin-top:15px;">Contact <a href="https://www.nashville.gov/departments/planning" target="_blank">Metro Planning</a>to confirm if your overlay includes DADU development standards.</p></div>
+  <!-- Info Box -->
+  <div class="info-box">
+   <h3>How to Check Your Property</h3>
+   <p>Use <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank">Nashville Parcel Viewer</a> to see if your parcel is in an overlay district. The base zoning and any overlays will be listed under the Zoning tab.</p>
+   <ul>
+    <li><strong>DDU (DADU Design District):</strong> Check for "DDU" in the zoning description</li>
+    <li><strong>UDO (Urban Design Overlay):</strong> Look for "UD" overlay codes (e.g., 2021UD-001)</li>
+    <li><strong>SP (Specific Plan):</strong> Look for "SP" codes (e.g., 2022SP-030)</li>
+   </ul>
+   <p style="margin-top:15px;">Contact <a href="https://www.nashville.gov/departments/planning" target="_blank">Metro Planning</a> to confirm if your overlay includes DADU development standards.</p>
+  </div>
 
- <!-- Search/Filter -->
- <div class="filter-section">
- <div class="filter-row">
- <input type="text" class="search-input" id="searchInput" placeholder="Search by district name, number, or location...">
- <button class="filter-btn active" onclick="filterDocs('all')">All</button>
- <button class="filter-btn" onclick="filterDocs('ddu')">DDU Districts</button>
- <button class="filter-btn" onclick="filterDocs('udo')">UDO Districts</button>
- <button class="filter-btn" onclick="filterDocs('sp')">Specific Plans</button></div></div>
+  <!-- Search/Filter -->
+  <div class="filter-section">
+   <div class="filter-row">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search by district name, number, or location...">
+    <button class="filter-btn active" onclick="filterDocs('all')">All</button>
+    <button class="filter-btn" onclick="filterDocs('ddu')">DDU Districts</button>
+    <button class="filter-btn" onclick="filterDocs('udo')">UDO Districts</button>
+    <button class="filter-btn" onclick="filterDocs('sp')">Specific Plans</button>
+   </div>
+  </div>
 
- <!-- DADU Design Districts -->
- <section class="doc-category" data-type="ddu">
- <div class="category-header">
- <div class="category-title">
- <div class="category-icon"></div>
- <div>
- <h2>DADU Design Districts (DDU)</h2>
- <span>Overlay districts specifically allowing DADUs in GSD</span></div></div>
- <span class="category-count">6 Districts</span></div>
+  <!-- DADU Design Districts -->
+  <section class="doc-category" data-type="ddu">
+   <div class="category-header">
+    <div class="category-title">
+     <div class="category-icon"><img src="assets/icons/ADU.png" alt=""></div>
+     <div>
+      <h2>DADU Design Districts (DDU)</h2>
+      <span>Overlay districts specifically allowing DADUs in GSD</span>
+     </div>
+    </div>
+    <span class="category-count">6 Districts</span>
+   </div>
 
- <div class="doc-grid">
- <div class="doc-card" data-type="ddu">
- <div class="doc-card-header ddu">
- <div class="doc-card-id">DADU Design District</div>
- <div class="doc-card-title">2021DDU-001-001</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2021</span>
- <span class="doc-meta-tag">GSD</span></div>
- <p class="doc-card-desc">First DADU Design District overlay establishing DADU standards for parcels in the General Services District.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>District Plan</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+   <div class="doc-grid">
+    <div class="doc-card" data-type="ddu">
+     <div class="doc-card-header ddu">
+      <div class="doc-card-id">DADU Design District</div>
+      <div class="doc-card-title">2021DDU-001-001</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2021</span>
+       <span class="doc-meta-tag">GSD</span>
+      </div>
+      <p class="doc-card-desc">First DADU Design District overlay establishing DADU standards for parcels in the General Services District.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>District Plan</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="ddu">
- <div class="doc-card-header ddu">
- <div class="doc-card-id">DADU Design District</div>
- <div class="doc-card-title">2022DDU-001-001</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2022</span>
- <span class="doc-meta-tag">GSD</span></div>
- <p class="doc-card-desc">2022 DADU Design District overlay with updated development standards.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>District Plan</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+    <div class="doc-card" data-type="ddu">
+     <div class="doc-card-header ddu">
+      <div class="doc-card-id">DADU Design District</div>
+      <div class="doc-card-title">2022DDU-001-001</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2022</span>
+       <span class="doc-meta-tag">GSD</span>
+      </div>
+      <p class="doc-card-desc">2022 DADU Design District overlay with updated development standards.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>District Plan</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="ddu">
- <div class="doc-card-header ddu">
- <div class="doc-card-id">DADU Design District</div>
- <div class="doc-card-title">2023DDU-001-001</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2023</span>
- <span class="doc-meta-tag">GSD</span></div>
- <p class="doc-card-desc">2023 DADU Design District overlay.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>District Plan</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+    <div class="doc-card" data-type="ddu">
+     <div class="doc-card-header ddu">
+      <div class="doc-card-id">DADU Design District</div>
+      <div class="doc-card-title">2023DDU-001-001</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2023</span>
+       <span class="doc-meta-tag">GSD</span>
+      </div>
+      <p class="doc-card-desc">2023 DADU Design District overlay.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>District Plan</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="ddu">
- <div class="doc-card-header ddu">
- <div class="doc-card-id">DADU Design District</div>
- <div class="doc-card-title">2023DDU-002-001</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2023</span>
- <span class="doc-meta-tag">GSD</span></div>
- <p class="doc-card-desc">Second 2023 DADU Design District overlay.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>District Plan</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+    <div class="doc-card" data-type="ddu">
+     <div class="doc-card-header ddu">
+      <div class="doc-card-id">DADU Design District</div>
+      <div class="doc-card-title">2023DDU-002-001</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2023</span>
+       <span class="doc-meta-tag">GSD</span>
+      </div>
+      <p class="doc-card-desc">Second 2023 DADU Design District overlay.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>District Plan</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="ddu">
- <div class="doc-card-header ddu">
- <div class="doc-card-id">DADU Design District</div>
- <div class="doc-card-title">2024DDU-001-001</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2024</span>
- <span class="doc-meta-tag">GSD</span></div>
- <p class="doc-card-desc">Most recent DADU Design District overlay.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>District Plan</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div></div></section>
+    <div class="doc-card" data-type="ddu">
+     <div class="doc-card-header ddu">
+      <div class="doc-card-id">DADU Design District</div>
+      <div class="doc-card-title">2024DDU-001-001</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2024</span>
+       <span class="doc-meta-tag">GSD</span>
+      </div>
+      <p class="doc-card-desc">Most recent DADU Design District overlay.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>District Plan</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
 
- <!-- Urban Design Overlays -->
- <section class="doc-category" data-type="udo">
- <div class="category-header">
- <div class="category-title">
- <div class="category-icon" style="background: var(--teal);"></div>
- <div>
- <h2>Urban Design Overlays (UDO)</h2>
- <span>UDOs that may include DADU development standards</span></div></div>
- <span class="category-count">40+ Districts</span></div>
+  <!-- Urban Design Overlays -->
+  <section class="doc-category" data-type="udo">
+   <div class="category-header">
+    <div class="category-title">
+     <div class="category-icon"><img src="assets/icons/Overlay_Design_Standards.svg" alt=""></div>
+     <div>
+      <h2>Urban Design Overlays (UDO)</h2>
+      <span>UDOs that may include DADU development standards</span>
+     </div>
+    </div>
+    <span class="category-count">40+ Districts</span>
+   </div>
 
- <div class="doc-grid" id="udoGrid">
- <div class="doc-card" data-type="udo">
- <div class="doc-card-header udo">
- <div class="doc-card-id">Urban Design Overlay</div>
- <div class="doc-card-title">2001UD-002-012</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2001</span>
- <span class="doc-meta-tag">Multiple Files</span></div>
- <p class="doc-card-desc">Urban Design Overlay with associated Specific Plan documents.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>District Plan</span>
- <a href="#" class="doc-file-link">View PDF</a></div>
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>Urban Zoning District</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+   <div class="doc-grid" id="udoGrid">
+    <div class="doc-card" data-type="udo">
+     <div class="doc-card-header udo">
+      <div class="doc-card-id">Urban Design Overlay</div>
+      <div class="doc-card-title">2001UD-002-012</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2001</span>
+       <span class="doc-meta-tag">Multiple Files</span>
+      </div>
+      <p class="doc-card-desc">Urban Design Overlay with associated Specific Plan documents.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>District Plan</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>Urban Zoning District</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="udo">
- <div class="doc-card-header udo">
- <div class="doc-card-id">Urban Design Overlay</div>
- <div class="doc-card-title">2002UD-001U-10</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2002</span>
- <span class="doc-meta-tag">Multiple Files</span></div>
- <p class="doc-card-desc">Urban Design Overlay with site plans and related legislation.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>District Plan</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+    <div class="doc-card" data-type="udo">
+     <div class="doc-card-header udo">
+      <div class="doc-card-id">Urban Design Overlay</div>
+      <div class="doc-card-title">2002UD-001U-10</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2002</span>
+       <span class="doc-meta-tag">Multiple Files</span>
+      </div>
+      <p class="doc-card-desc">Urban Design Overlay with site plans and related legislation.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>District Plan</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="udo">
- <div class="doc-card-header udo">
- <div class="doc-card-id">Urban Design Overlay</div>
- <div class="doc-card-title">2005UD-001U-10</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2005</span>
- <span class="doc-meta-tag">District 16</span></div>
- <p class="doc-card-desc">Urban Design Overlay covering District 16 area.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>District 16 Guide</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+    <div class="doc-card" data-type="udo">
+     <div class="doc-card-header udo">
+      <div class="doc-card-id">Urban Design Overlay</div>
+      <div class="doc-card-title">2005UD-001U-10</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2005</span>
+       <span class="doc-meta-tag">District 16</span>
+      </div>
+      <p class="doc-card-desc">Urban Design Overlay covering District 16 area.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>District 16 Guide</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="udo">
- <div class="doc-card-header udo">
- <div class="doc-card-id">Urban Design Overlay</div>
- <div class="doc-card-title">2008UD-001U-05</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2008</span>
- <span class="doc-meta-tag">Dickerson North</span></div>
- <p class="doc-card-desc">Dickerson North Community overlay with development standards.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>Community Assessment</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+    <div class="doc-card" data-type="udo">
+     <div class="doc-card-header udo">
+      <div class="doc-card-id">Urban Design Overlay</div>
+      <div class="doc-card-title">2008UD-001U-05</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2008</span>
+       <span class="doc-meta-tag">Dickerson North</span>
+      </div>
+      <p class="doc-card-desc">Dickerson North Community overlay with development standards.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>Community Assessment</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="udo">
- <div class="doc-card-header udo">
- <div class="doc-card-id">Urban Design Overlay</div>
- <div class="doc-card-title">2009UD-001-011</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2009</span>
- <span class="doc-meta-tag">Multiple SPs</span></div>
- <p class="doc-card-desc">Urban Design Overlay with associated Specific Plans.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>District Plan</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+    <div class="doc-card" data-type="udo">
+     <div class="doc-card-header udo">
+      <div class="doc-card-id">Urban Design Overlay</div>
+      <div class="doc-card-title">2009UD-001-011</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2009</span>
+       <span class="doc-meta-tag">Multiple SPs</span>
+      </div>
+      <p class="doc-card-desc">Urban Design Overlay with associated Specific Plans.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>District Plan</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="udo">
- <div class="doc-card-header udo">
- <div class="doc-card-id">Urban Design Overlay</div>
- <div class="doc-card-title">2025UD-002-001</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2025</span>
- <span class="doc-meta-tag">Latest</span></div>
- <p class="doc-card-desc">Most recent Urban Design Overlay district.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>District Plan</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div></div>
+    <div class="doc-card" data-type="udo">
+     <div class="doc-card-header udo">
+      <div class="doc-card-id">Urban Design Overlay</div>
+      <div class="doc-card-title">2025UD-002-001</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2025</span>
+       <span class="doc-meta-tag">Latest</span>
+      </div>
+      <p class="doc-card-desc">Most recent Urban Design Overlay district.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>District Plan</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
 
- <p style="text-align: center; margin-top: 20px; color: var(--text-light);">
- <em>Over 140 additional UDO documents available. <a href="#" style="color: var(--teal); font-weight: 600;">View complete UDO library</a></em></p></section>
+   <p style="text-align: center; margin-top: 20px; color: #706F6C;">
+    <em>Over 140 additional UDO documents available. <a href="#" style="color: #CBB279; font-weight: 600;">View complete UDO library</a></em>
+   </p>
+  </section>
 
- <!-- Specific Plans -->
- <section class="doc-category" data-type="sp">
- <div class="category-header">
- <div class="category-title">
- <div class="category-icon" style="background: var(--tan);"></div>
- <div>
- <h2>Specific Plans (SP)</h2>
- <span>Specific Plans that may include DADU provisions</span></div></div>
- <span class="category-count">20+ Plans</span></div>
+  <!-- Specific Plans -->
+  <section class="doc-category" data-type="sp">
+   <div class="category-header">
+    <div class="category-title">
+     <div class="category-icon"><img src="assets/icons/Zoning_Documents.svg" alt=""></div>
+     <div>
+      <h2>Specific Plans (SP)</h2>
+      <span>Specific Plans that may include DADU provisions</span>
+     </div>
+    </div>
+    <span class="category-count">20+ Plans</span>
+   </div>
 
- <div class="doc-grid">
- <div class="doc-card" data-type="sp">
- <div class="doc-card-header sp">
- <div class="doc-card-id">Specific Plan</div>
- <div class="doc-card-title">2017SP-034</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2017</span>
- <span class="doc-meta-tag">Full Plan</span></div>
- <p class="doc-card-desc">Specific Plan with detailed development standards.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>SP Plan Document</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+   <div class="doc-grid">
+    <div class="doc-card" data-type="sp">
+     <div class="doc-card-header sp">
+      <div class="doc-card-id">Specific Plan</div>
+      <div class="doc-card-title">2017SP-034</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2017</span>
+       <span class="doc-meta-tag">Full Plan</span>
+      </div>
+      <p class="doc-card-desc">Specific Plan with detailed development standards.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>SP Plan Document</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="sp">
- <div class="doc-card-header sp">
- <div class="doc-card-id">Specific Plan</div>
- <div class="doc-card-title">2015SP-013</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2015</span>
- <span class="doc-meta-tag">Full Plan</span></div>
- <p class="doc-card-desc">2015 Specific Plan with development standards.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>SP Plan Document</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+    <div class="doc-card" data-type="sp">
+     <div class="doc-card-header sp">
+      <div class="doc-card-id">Specific Plan</div>
+      <div class="doc-card-title">2015SP-013</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2015</span>
+       <span class="doc-meta-tag">Full Plan</span>
+      </div>
+      <p class="doc-card-desc">2015 Specific Plan with development standards.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>SP Plan Document</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="sp">
- <div class="doc-card-header sp">
- <div class="doc-card-id">Specific Plan</div>
- <div class="doc-card-title">2022SP-030</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2022</span>
- <span class="doc-meta-tag">PC Minutes</span></div>
- <p class="doc-card-desc">2022 Specific Plan with Planning Commission minutes.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>PC Minutes</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+    <div class="doc-card" data-type="sp">
+     <div class="doc-card-header sp">
+      <div class="doc-card-id">Specific Plan</div>
+      <div class="doc-card-title">2022SP-030</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2022</span>
+       <span class="doc-meta-tag">PC Minutes</span>
+      </div>
+      <p class="doc-card-desc">2022 Specific Plan with Planning Commission minutes.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>PC Minutes</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="sp">
- <div class="doc-card-header sp">
- <div class="doc-card-id">Specific Plan</div>
- <div class="doc-card-title">2006SP-081</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2006</span>
- <span class="doc-meta-tag">Full Plan</span></div>
- <p class="doc-card-desc">2006 Specific Plan document.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>SP Plan Document</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div></div></section>
+    <div class="doc-card" data-type="sp">
+     <div class="doc-card-header sp">
+      <div class="doc-card-id">Specific Plan</div>
+      <div class="doc-card-title">2006SP-081</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2006</span>
+       <span class="doc-meta-tag">Full Plan</span>
+      </div>
+      <p class="doc-card-desc">2006 Specific Plan document.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>SP Plan Document</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
 
- <!-- Related Legislation -->
- <section class="doc-category" data-type="legislation">
- <div class="category-header">
- <div class="category-title">
- <div class="category-icon" style="background: var(--dark-anchor);"></div>
- <div>
- <h2>Related Legislation</h2>
- <span>Bills establishing or amending overlay districts</span></div></div>
- <span class="category-count">6 Bills</span></div>
+  <!-- Related Legislation -->
+  <section class="doc-category" data-type="legislation">
+   <div class="category-header">
+    <div class="category-title">
+     <div class="category-icon"><img src="assets/icons/Legislation.svg" alt=""></div>
+     <div>
+      <h2>Related Legislation</h2>
+      <span>Bills establishing or amending overlay districts</span>
+     </div>
+    </div>
+    <span class="category-count">6 Bills</span>
+   </div>
 
- <div class="doc-grid">
- <div class="doc-card" data-type="legislation">
- <div class="doc-card-header" style="background: linear-gradient(135deg, #2F3A45 0%, #3A5566 100%);">
- <div class="doc-card-id">Legislation</div>
- <div class="doc-card-title">BL2021-635 / BL2020-316</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2021</span>
- <span class="doc-meta-tag">DADU Overlay</span></div>
- <p class="doc-card-desc">Legislation establishing DADU overlay provisions.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>Bill Document</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+   <div class="doc-grid">
+    <div class="doc-card" data-type="legislation">
+     <div class="doc-card-header" style="background: #2F3A45;">
+      <div class="doc-card-id">Legislation</div>
+      <div class="doc-card-title">BL2021-635 / BL2020-316</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2021</span>
+       <span class="doc-meta-tag">DADU Overlay</span>
+      </div>
+      <p class="doc-card-desc">Legislation establishing DADU overlay provisions.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>Bill Document</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="legislation">
- <div class="doc-card-header" style="background: linear-gradient(135deg, #2F3A45 0%, #3A5566 100%);">
- <div class="doc-card-id">Legislation</div>
- <div class="doc-card-title">BL2022-1322</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2022</span>
- <span class="doc-meta-tag">Amendment</span></div>
- <p class="doc-card-desc">2022 amendment to DADU overlay provisions.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>Bill Document</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div>
+    <div class="doc-card" data-type="legislation">
+     <div class="doc-card-header" style="background: #2F3A45;">
+      <div class="doc-card-id">Legislation</div>
+      <div class="doc-card-title">BL2022-1322</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2022</span>
+       <span class="doc-meta-tag">Amendment</span>
+      </div>
+      <p class="doc-card-desc">2022 amendment to DADU overlay provisions.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>Bill Document</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
 
- <div class="doc-card" data-type="legislation">
- <div class="doc-card-header" style="background: linear-gradient(135deg, #2F3A45 0%, #3A5566 100%);">
- <div class="doc-card-id">Legislation</div>
- <div class="doc-card-title">BL2024-559</div></div>
- <div class="doc-card-body">
- <div class="doc-card-meta">
- <span class="doc-meta-tag">2024</span>
- <span class="doc-meta-tag">Latest</span></div>
- <p class="doc-card-desc">Most recent DADU-related legislation.</p>
- <div class="doc-card-files">
- <div class="doc-file">
- <span class="doc-file-name"><span class="icon"></span>Bill Document</span>
- <a href="#" class="doc-file-link">View PDF</a></div></div></div></div></div></section>
+    <div class="doc-card" data-type="legislation">
+     <div class="doc-card-header" style="background: #2F3A45;">
+      <div class="doc-card-id">Legislation</div>
+      <div class="doc-card-title">BL2024-559</div>
+     </div>
+     <div class="doc-card-body">
+      <div class="doc-card-meta">
+       <span class="doc-meta-tag">2024</span>
+       <span class="doc-meta-tag">Latest</span>
+      </div>
+      <p class="doc-card-desc">Most recent DADU-related legislation.</p>
+      <div class="doc-card-files">
+       <div class="doc-file">
+        <span class="doc-file-name"><span class="icon"></span>Bill Document</span>
+        <a href="#" class="doc-file-link">View PDF</a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
 
- <!-- External Resources -->
- <section class="resources-section">
- <h2>Official Resources</h2>
- <div class="resources-grid">
- <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="resource-card">
- <div class="resource-icon"></div>
- <div class="resource-content">
- <h4>Nashville Parcel Viewer</h4>
- <p>Check if your property is in an overlay district</p></div></a>
- <a href="https://www.nashville.gov/departments/planning" target="_blank" class="resource-card">
- <div class="resource-icon"></div>
- <div class="resource-content">
- <h4>Metro Planning Department</h4>
- <p>Contact for overlay district requirements</p></div></a>
- <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO" target="_blank" class="resource-card">
- <div class="resource-icon"></div>
- <div class="resource-content">
- <h4>Metro Zoning Code</h4>
- <p>Title 17 - Complete zoning regulations</p></div></a>
- <a href="https://www.nashville.gov/departments/codes/services/zoning" target="_blank" class="resource-card">
- <div class="resource-icon"></div>
- <div class="resource-content">
- <h4>Zoning Help Desk</h4>
- <p>Questions about zoning code and permits</p></div></a>
- <a href="https://epermits.nashville.gov/" target="_blank" class="resource-card">
- <div class="resource-icon"></div>
- <div class="resource-content">
- <h4>ePermits Portal</h4>
- <p>Apply for building permits online</p></div></a>
- <a href="dadu_requirements_overview.html" class="resource-card">
- <div class="resource-icon"></div>
- <div class="resource-content">
- <h4>DADU Building Requirements</h4>
- <p>Size, setback, and design standards</p></div></a></div></section></main>
+  <!-- External Resources -->
+  <section class="resources-section">
+   <h2>Official Resources</h2>
+   <div class="resources-grid">
+    <a href="https://maps.nashville.gov/ParcelViewer/" target="_blank" class="resource-card">
+     <div class="resource-icon"><img src="assets/icons/Parcel Search.svg" alt=""></div>
+     <div class="resource-content">
+      <h4>Nashville Parcel Viewer</h4>
+      <p>Check if your property is in an overlay district</p>
+     </div>
+    </a>
+    <a href="https://www.nashville.gov/departments/planning" target="_blank" class="resource-card">
+     <div class="resource-icon"><img src="assets/icons/Municipal.svg" alt=""></div>
+     <div class="resource-content">
+      <h4>Metro Planning Department</h4>
+      <p>Contact for overlay district requirements</p>
+     </div>
+    </a>
+    <a href="https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT17ZO" target="_blank" class="resource-card">
+     <div class="resource-icon"><img src="assets/icons/Legislation.svg" alt=""></div>
+     <div class="resource-content">
+      <h4>Metro Zoning Code</h4>
+      <p>Title 17 - Complete zoning regulations</p>
+     </div>
+    </a>
+    <a href="https://www.nashville.gov/departments/codes/services/zoning" target="_blank" class="resource-card">
+     <div class="resource-icon"><img src="assets/icons/Zoning.svg" alt=""></div>
+     <div class="resource-content">
+      <h4>Zoning Help Desk</h4>
+      <p>Questions about zoning code and permits</p>
+     </div>
+    </a>
+    <a href="https://epermits.nashville.gov/" target="_blank" class="resource-card">
+     <div class="resource-icon"><img src="assets/icons/Permit_Activity.svg" alt=""></div>
+     <div class="resource-content">
+      <h4>ePermits Portal</h4>
+      <p>Apply for building permits online</p>
+     </div>
+    </a>
+    <a href="dadu_requirements_overview.html" class="resource-card">
+     <div class="resource-icon"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
+     <div class="resource-content">
+      <h4>DADU Building Requirements</h4>
+      <p>Size, setback, and design standards</p>
+     </div>
+    </a>
+   </div>
+  </section>
 
- <!-- Footer -->
- <footer class="footer">
- <p>© 2026 Homebody Projects | Powered by Castlehold</p>
- <p style="margin-top: 10px;">Data sourced from Nashville-Davidson County public records. Always verify with Metro Planning.</p></footer>
+  <!-- CTA -->
+  <div class="cta-section">
+   <h2>Not Sure About Your Property?</h2>
+   <p>Check your parcel's eligibility status, overlay districts, and zoning requirements instantly.</p>
+   <a href="am_i_eligible.html" class="cta-btn">Check Eligibility</a>
+  </div>
+ </main>
 
  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
  <script>
@@ -1310,4 +1386,6 @@
   });
  });
  </script>
- <script src="homebody_header.js"></script></body></html>
+ <script src="homebody_header.js"></script>
+</body>
+</html>

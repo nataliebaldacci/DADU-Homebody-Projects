@@ -4,445 +4,508 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Restrictive Covenants | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
  <style>
- * {
- margin: 0;
- padding: 0;
- box-sizing: border-box;
- }
+ * { margin: 0; padding: 0; box-sizing: border-box; }
 
  body {
- font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
- background-color: #F2F0ED;
- color: #333333;
- line-height: 1.6;
+  font-family: 'Inter', sans-serif;
+  background: #F2F0ED;
+  color: #3A5566;
+  line-height: 1.6;
  }
 
- .container {
- max-width: 900px;
- margin: 0 auto;
- padding: 30px 30px;
+ a { text-decoration: none; color: #3A5566; }
+
+ /* Hero */
+ .rc-hero {
+  background: #3A5566;
+  padding: 48px 24px;
+  text-align: center;
+ }
+ .rc-hero h1 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-size: 36px;
+  color: #E1D4BB;
+  margin-bottom: 12px;
+ }
+ .rc-hero .subtitle {
+  color: #F0EBE1;
+  font-size: 16px;
+  max-width: 640px;
+  margin: 0 auto 24px;
+ }
+ .rc-hero .hero-badges {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+ }
+ .rc-hero .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(225,212,187,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 13px;
+  color: #E1D4BB;
+  font-weight: 600;
  }
 
- /* Page Title */
- .page-title {
- text-align: center;
- margin-bottom: 25px;
+ /* Core Rule */
+ .core-rule {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px 0;
+ }
+ .core-rule-box {
+  background: #3A5566;
+  border-radius: 12px;
+  padding: 28px 32px;
+  text-align: center;
+ }
+ .core-rule-box h2 {
+  font-weight: 700;
+  font-size: 18px;
+  color: #E1D4BB;
+  margin-bottom: 10px;
+ }
+ .core-rule-box p {
+  font-size: 15px;
+  color: #F0EBE1;
+  line-height: 1.7;
+  max-width: 620px;
+  margin: 0 auto;
+ }
+ .core-rule-box .hl {
+  color: #CBB279;
+  font-weight: 700;
  }
 
- .page-title h1 {
- font-size: 32px;
- font-weight: 700;
- color: #3A5566;
- text-transform: uppercase;
- letter-spacing: 2px;
+ /* What Is Section */
+ .section-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 24px 0;
  }
 
- /* Did You Know Banner */
- .did-you-know {
- background-color: #7B746D;
- border-radius: 8px;
- padding: 25px;
- text-align: center;
- margin-bottom: 20px;
- position: relative;
+ .section-heading {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #3A5566;
+  text-align: center;
+  margin-bottom: 32px;
  }
 
- .did-you-know h2 {
- font-size: 24px;
- font-weight: 700;
- color: white;
- text-transform: uppercase;
- letter-spacing: 2px;
- margin-bottom: 5px;
+ .info-box {
+  background: #fff;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+ }
+ .info-box h3 {
+  font-weight: 700;
+  font-size: 16px;
+  color: #3A5566;
+  margin-bottom: 10px;
+ }
+ .info-box p {
+  font-size: 14px;
+  color: #706F6C;
+  line-height: 1.7;
  }
 
- .question-marks {
- font-size: 32px;
- color: rgba(255,255,255,0.3);
- position: absolute;
- top: 10px;
- right: 20px;
+ /* Steps */
+ .steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+ }
+ .step-card {
+  background: #F5F5F0;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 24px 16px;
+  text-align: center;
+  position: relative;
+ }
+ .step-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #3A5566;
+  background: #CBB279;
+ }
+ .step-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #3A5566;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+ }
+ .step-card p {
+  font-size: 12px;
+  color: #706F6C;
+  line-height: 1.5;
  }
 
- .lightbulb {
- width: 45px;
- height: 45px;
- background-color: #7B746D;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- margin: 0 auto 12px;
+ /* Key Points Grid */
+ .key-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
  }
-
- .lightbulb svg {
- width: 24px;
- height: 24px;
- fill: white;
+ .key-card {
+  background: #fff;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
  }
-
- /* Main Fact Box */
- .main-fact {
- background-color: #3A5566;
- border-radius: 8px;
- padding: 22px 28px;
- margin-bottom: 20px;
- }
-
- .main-fact p {
- font-size: 16px;
- color: #F0EBE1;
- text-align: center;
- line-height: 1.7;
- }
-
- .main-fact .highlight {
- color: #CBB279;
- font-weight: 700;
- }
-
- .main-fact .highlight-green {
- color: #CBB279;
- font-weight: 700;
- }
-
- /* What is a Covenant */
- .what-is-section {
- background-color: #F0EBE1;
- border-radius: 8px;
- padding: 22px 28px;
- margin-bottom: 20px;
- }
-
- .what-is-section h2 {
- font-size: 15px;
- font-weight: 700;
- color: #3A5566;
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 10px;
- text-align: center;
- }
-
- .what-is-section p {
- font-size: 14px;
- color: #333333;
- text-align: center;
- }
-
- /* Steps Section */
- .steps-section {
- margin-bottom: 20px;
- }
-
- .steps-section h2 {
- font-size: 15px;
- font-weight: 700;
- color: #3A5566;
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 15px;
- text-align: center;
- }
-
- .steps-container {
- display: flex;
- gap: 12px;
- }
-
- .step {
- flex: 1;
- background-color: #F0EBE1;
- border-radius: 8px;
- padding: 18px 12px;
- text-align: center;
- position: relative;
- }
-
- .step-number {
- width: 32px;
- height: 32px;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- margin: 0 auto 10px;
- font-size: 15px;
- font-weight: 700;
- color: white;
- }
-
- .step:nth-child(1) .step-number { background-color: #CBB279; }
- .step:nth-child(2) .step-number { background-color: #7B746D; }
- .step:nth-child(3) .step-number { background-color: #7B746D; }
- .step:nth-child(4) .step-number { background-color: #3A5566; }
-
- .step h3 {
- font-size: 11px;
- font-weight: 700;
- color: #3A5566;
- text-transform: uppercase;
- margin-bottom: 6px;
- }
-
- .step p {
- font-size: 11px;
- color: #666666;
- line-height: 1.4;
- }
-
- .arrow {
- position: absolute;
- right: -10px;
- top: 50%;
- transform: translateY(-50%);
- color: #999;
- font-size: 16px;
- z-index: 1;
- }
-
- .step:last-child .arrow {
- display: none;
- }
-
- /* Key Points */
- .key-points {
- display: grid;
- grid-template-columns: repeat(2, 1fr);
- gap: 12px;
- margin-bottom: 20px;
- }
-
- .key-point {
- background-color: #F0EBE1;
- border-radius: 8px;
- padding: 16px;
- display: flex;
- align-items: flex-start;
- gap: 12px;
- }
-
  .key-icon {
- width: 34px;
- height: 34px;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- flex-shrink: 0;
- background-color: #CBB279;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #F0EBE1;
+ }
+ .key-icon img {
+  width: 24px;
+  height: 24px;
+ }
+ .key-text h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #3A5566;
+  margin-bottom: 4px;
+ }
+ .key-text p {
+  font-size: 13px;
+  color: #706F6C;
+  line-height: 1.5;
  }
 
- .key-icon svg {
- width: 16px;
- height: 16px;
- fill: white;
+ /* Warning Box */
+ .warning-box {
+  background: #fff;
+  border: 1px solid #E2E2E0;
+  border-left: 4px solid #CBB279;
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 32px;
+ }
+ .warning-box h3 {
+  font-weight: 700;
+  font-size: 16px;
+  color: #3A5566;
+  margin-bottom: 8px;
+ }
+ .warning-box p {
+  font-size: 14px;
+  color: #706F6C;
+  line-height: 1.6;
+ }
+ .warning-box .hl {
+  color: #CBB279;
+  font-weight: 700;
  }
 
- .key-point:nth-child(2) .key-icon { background-color: #7B746D; }
- .key-point:nth-child(3) .key-icon { background-color: #7B746D; }
- .key-point:nth-child(4) .key-icon { background-color: #3A5566; }
-
- .key-content h4 {
- font-size: 12px;
- font-weight: 700;
- color: #3A5566;
- margin-bottom: 3px;
+ /* Form Links */
+ .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+ }
+ .form-card {
+  background: #F5F5F0;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: transform 0.2s, box-shadow 0.2s;
+ }
+ .form-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+ }
+ .form-icon {
+  width: 44px;
+  height: 44px;
+  background: #F0EBE1;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+ }
+ .form-icon img { width: 24px; height: 24px; }
+ .form-card h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #3A5566;
+  margin-bottom: 4px;
+ }
+ .form-card p {
+  font-size: 12px;
+  color: #706F6C;
+ }
+ .form-tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  margin-top: 8px;
+  background: rgba(64, 106, 100, 0.12);
+  color: #406A64;
+ }
+ .form-tag.pdf {
+  background: rgba(203, 178, 121, 0.15);
+  color: #7B746D;
  }
 
- .key-content p {
- font-size: 11px;
- color: #666666;
- }
-
- /* CTA Section */
+ /* CTA */
  .cta-section {
- background-color: #CBB279;
- border-radius: 8px;
- padding: 22px 28px;
- text-align: center;
- margin-bottom: 20px;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
  }
-
- .cta-section h3 {
- font-size: 13px;
- font-weight: 700;
- color: white;
- text-transform: uppercase;
- letter-spacing: 1px;
- margin-bottom: 8px;
+ .cta-box {
+  background: #3A5566;
+  border-radius: 16px;
+  padding: 40px 32px;
+  text-align: center;
  }
-
- .cta-section p {
- font-size: 13px;
- color: rgba(255,255,255,0.9);
- margin-bottom: 12px;
+ .cta-box h3 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #E1D4BB;
+  margin-bottom: 12px;
  }
-
- .cta-button {
- display: inline-block;
- background-color: white;
- color: #CBB279;
- padding: 10px 22px;
- border-radius: 6px;
- text-decoration: none;
- font-weight: 700;
- font-size: 12px;
- text-transform: uppercase;
- letter-spacing: 1px;
- transition: background-color 0.2s;
+ .cta-box p {
+  color: rgba(225, 212, 187, 0.75);
+  font-size: 15px;
+  margin-bottom: 24px;
  }
-
- .cta-button:hover {
- background-color: #F0EBE1;
+ .cta-box .btn-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
  }
-
- /* Explore Section */
- .explore-section {
- background-color: #3A5566;
- border-radius: 8px;
- padding: 18px 22px;
- text-align: center;
+ .cta-btn {
+  display: inline-block;
+  padding: 14px 28px;
+  background: #CBB279;
+  color: #3A5566;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: transform 0.2s;
  }
-
- .explore-section p {
- font-size: 14px;
- color: #F0EBE1;
- margin-bottom: 4px;
- }
-
- .explore-section .arrow-down {
- font-size: 22px;
- color: #7B746D;
+ .cta-btn:hover { transform: scale(1.05); }
+ .cta-btn.secondary {
+  background: rgba(255,255,255,0.12);
+  color: #E1D4BB;
+  border: 1px solid rgba(225,212,187,0.3);
  }
 
  /* Footer */
  .footer {
- text-align: center;
- margin-top: 20px;
- padding-top: 15px;
- border-top: 1px dashed #666666;
+  text-align: center;
+  padding: 32px 24px;
+  color: #918A83;
+  font-size: 13px;
  }
+ .footer .brand { font-weight: 700; color: #3A5566; }
 
- .footer p {
- font-size: 11px;
- color: #888888;
+ @media (max-width: 768px) {
+  .steps-grid { grid-template-columns: repeat(2, 1fr); }
+  .key-grid, .form-grid { grid-template-columns: 1fr; }
  }
-
- .brand {
- font-weight: 700;
- color: #7B746D;
- letter-spacing: 1px;
- }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
+ @media (max-width: 480px) {
+  .steps-grid { grid-template-columns: 1fr; }
+ }
+ </style>
+</head>
 <body>
-<!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
-
-<!-- Restrictive Covenants Map Embed -->
-<section style="padding:32px 24px; background:var(--background,#F2F0ED);">
- <h2 style="color:var(--slate,#3A5566); font-family:Inter,sans-serif; font-weight:700; margin-bottom:8px;">
-  Restrictive Covenants Map
- </h2>
- <p style="color:#3E4A4F; font-size:14px; margin-bottom:16px;">
-  Explore parcels with recorded restrictive covenants across Nashville-Davidson County. Click any parcel for covenant details and document links.
- </p>
- <iframe src="https://vanderbilt.maps.arcgis.com/apps/mapviewer/index.html?webmap=168e16cf3b08411296759cf39f22dc6d"
-  width="100%" height="600" frameborder="0"
-  style="border-radius:8px; border:1px solid rgba(62,74,79,.12);"
-  title="Nashville Restrictive Covenants Map" loading="lazy">
- </iframe>
+<section class="rc-hero">
+ <h1>Restrictive Covenants</h1>
+ <p class="subtitle">Required legal filing before your DADU building permit can be issued in Nashville-Davidson County</p>
+ <div class="hero-badges">
+  <span class="badge">Required Before Permit</span>
+  <span class="badge">43,000+ Parcels on File</span>
+  <span class="badge">$12 Filing Fee</span>
+ </div>
 </section>
 
-<div class="container">
- <!-- Page Title -->
- <div class="page-title">
- <h1>Restrictive Covenant Requirements</h1></div>
+<!-- Core Rule -->
+<div class="core-rule">
+ <div class="core-rule-box">
+  <h2>Required for All Detached Structures</h2>
+  <p><span class="hl">Restrictive covenants</span> must be filed with Davidson County <span class="hl">before building any detached structure</span> in Nashville. This includes DADUs, garages, sheds, and any accessory building with plumbing, HVAC, or electrical permits.</p>
+ </div>
+</div>
 
- <!-- Did You Know Banner -->
- <div class="did-you-know">
- <div class="question-marks">???</div>
- <div class="lightbulb">
- <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 017 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg></div>
- <h2>Did You Know?</h2></div>
+<!-- What Is -->
+<div class="section-container">
+ <h2 class="section-heading">What is a Restrictive Covenant?</h2>
+ <div class="info-box">
+  <p>A restrictive covenant is a legal document recorded with your property deed that limits how a structure can be used. For detached structures, it ensures the building remains accessory to your primary residence and cannot be converted into an independent dwelling without proper permits. The covenant stays with the property and transfers to future owners.</p>
+ </div>
+</div>
 
- <!-- Main Fact -->
- <div class="main-fact">
- <p>
- <span class="highlight">Restrictive covenants</span>are required to be filed with Davidson County <span class="highlight-green">before building any detached structure</span>in Nashville. This includes DADUs, garages, sheds, and any accessory building with plumbing, HVAC, or electrical permits.</p></div>
+<!-- Filing Steps -->
+<div class="section-container">
+ <h2 class="section-heading">How to File</h2>
+ <div class="steps-grid">
+  <div class="step-card">
+   <div class="step-num">1</div>
+   <h4>Download Form</h4>
+   <p>Get the correct restrictive covenant form from the Nashville.gov Codes website</p>
+  </div>
+  <div class="step-card">
+   <div class="step-num">2</div>
+   <h4>Notarize</h4>
+   <p>Complete the form with your property info and have it notarized</p>
+  </div>
+  <div class="step-card">
+   <div class="step-num">3</div>
+   <h4>Record</h4>
+   <p>File with Register of Deeds at 501 Broadway, Suite 501 ($12 fee)</p>
+  </div>
+  <div class="step-card">
+   <div class="step-num">4</div>
+   <h4>Submit to Codes</h4>
+   <p>Email recorded covenant to permitissuance@nashville.gov</p>
+  </div>
+ </div>
+</div>
 
- <!-- What is a Covenant -->
- <div class="what-is-section">
- <h2>What is a Restrictive Covenant?</h2>
- <p>A restrictive covenant is a legal document recorded with your property deed that limits how a structure can be used. For detached structures, it ensures the building remains accessory to your primary residence and cannot be converted into an independent dwelling without proper permits.</p></div>
+<!-- Key Points -->
+<div class="section-container">
+ <h2 class="section-heading">Key Facts</h2>
+ <div class="key-grid">
+  <div class="key-card">
+   <div class="key-icon"><img src="assets/icons/Renewals.png" alt=""></div>
+   <div class="key-text">
+    <h4>File Before Permit</h4>
+    <p>The covenant must be recorded with the Register of Deeds before your building permit can be issued by Metro Codes.</p>
+   </div>
+  </div>
+  <div class="key-card">
+   <div class="key-icon"><img src="assets/icons/Restrictive_Covenants.svg" alt=""></div>
+   <div class="key-text">
+    <h4>Stays with Property</h4>
+    <p>The covenant is permanently attached to your deed and automatically transfers to any future property owners.</p>
+   </div>
+  </div>
+  <div class="key-card">
+   <div class="key-icon"><img src="assets/icons/Recorded_Docs.svg" alt=""></div>
+   <div class="key-text">
+    <h4>Register of Deeds</h4>
+    <p>File at 501 Broadway, Suite 501, Nashville, TN 37203. The recording fee is $12 for standard documents.</p>
+   </div>
+  </div>
+  <div class="key-card">
+   <div class="key-icon"><img src="assets/icons/Municipal.svg" alt=""></div>
+   <div class="key-text">
+    <h4>Email to Codes</h4>
+    <p>After recording, email the stamped copy to permitissuance@nashville.gov to release your building permit.</p>
+   </div>
+  </div>
+ </div>
+</div>
 
- <!-- Filing Steps -->
- <div class="steps-section">
- <h2>How to File a Restrictive Covenant</h2>
- <div class="steps-container">
- <div class="step">
- <div class="step-number">1</div>
- <h3>Download Form</h3>
- <p>Get the correct form from Nashville.gov Codes website</p>
- <span class="arrow"></span></div>
- <div class="step">
- <div class="step-number">2</div>
- <h3>Notarize</h3>
- <p>Complete and have the document notarized</p>
- <span class="arrow"></span></div>
- <div class="step">
- <div class="step-number">3</div>
- <h3>Record</h3>
- <p>File with Register of Deeds ($12 fee)</p>
- <span class="arrow"></span></div>
- <div class="step">
- <div class="step-number">4</div>
- <h3>Submit</h3>
- <p>Email recorded covenant to Codes for permit</p></div></div></div>
+<!-- Warning -->
+<div class="section-container">
+ <div class="warning-box">
+  <h3>What Does the Covenant Restrict?</h3>
+  <p>The restrictive covenant ensures the DADU remains <span class="hl">accessory to the primary dwelling</span>. It cannot be subdivided or sold separately from the main property. If the primary dwelling is demolished, the DADU cannot be used as the sole dwelling on the lot without additional permits and zoning approval.</p>
+ </div>
+</div>
 
- <!-- Key Points -->
- <div class="key-points">
- <div class="key-point">
- <div class="key-icon">
- <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg></div>
- <div class="key-content">
- <h4>File BEFORE Permit</h4>
- <p>Covenant must be recorded before your building permit can be issued</p></div></div>
- <div class="key-point">
- <div class="key-icon">
- <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
- <div class="key-content">
- <h4>Stays with Property</h4>
- <p>The covenant is attached to your deed and transfers with the property</p></div></div>
- <div class="key-point">
- <div class="key-icon">
- <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
- <div class="key-content">
- <h4>Register of Deeds</h4>
- <p>501 Broadway, Suite 501, Nashville, TN 37203</p></div></div>
- <div class="key-point">
- <div class="key-icon">
- <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
- <div class="key-content">
- <h4>Email to Codes</h4>
- <p>permitissuance@nashville.gov</p></div></div></div>
+<!-- Official Forms -->
+<div class="section-container">
+ <h2 class="section-heading">Official Forms & Links</h2>
+ <div class="form-grid">
+  <a href="https://www.nashville.gov/sites/default/files/2023-03/Restrictive-Covenant-for-Accessory-Dwelling-Detached-Structure.pdf" target="_blank" class="form-card">
+   <div class="form-icon"><img src="assets/icons/Recorded_Docs.svg" alt=""></div>
+   <div>
+    <h4>Restrictive Covenant for DADU</h4>
+    <p>Required form for detached accessory dwelling units</p>
+    <span class="form-tag">Required Form</span>
+   </div>
+  </a>
+  <a href="https://www.nashville.gov/sites/default/files/2025-10/Res-Covenant-for-Det-Structure.pdf" target="_blank" class="form-card">
+   <div class="form-icon"><img src="assets/icons/Recorded_Docs.svg" alt=""></div>
+   <div>
+    <h4>Covenant for Detached Structure</h4>
+    <p>Alternative form (updated 2025)</p>
+    <span class="form-tag pdf">PDF Download</span>
+   </div>
+  </a>
+  <a href="https://www.nashville.gov/departments/codes/construction-and-permits/land-use-and-zoning-information/zoning-examinations/restrictive-covenants" target="_blank" class="form-card">
+   <div class="form-icon"><img src="assets/icons/Legal.svg" alt=""></div>
+   <div>
+    <h4>Metro Nashville Covenant Guide</h4>
+    <p>Official filing instructions and requirements</p>
+    <span class="form-tag">External Link</span>
+   </div>
+  </a>
+  <a href="https://www.registerofdeeds.nashville.gov/" target="_blank" class="form-card">
+   <div class="form-icon"><img src="assets/icons/Legislation.svg" alt=""></div>
+   <div>
+    <h4>Register of Deeds</h4>
+    <p>Where to record your covenant document</p>
+    <span class="form-tag">External Link</span>
+   </div>
+  </a>
+ </div>
+</div>
 
- <!-- CTA -->
- <div class="cta-section">
- <h3>Get the Official Forms and Instructions</h3>
- <p>Visit Metro Nashville Codes for the restrictive covenant forms and complete filing instructions</p>
- <a href="https://www.nashville.gov/departments/codes/construction-and-permits/land-use-and-zoning-information/zoning-examinations/restrictive-covenants" target="_blank" class="cta-button">Visit Nashville.gov</a></div>
+<!-- CTA -->
+<div class="cta-section">
+ <div class="cta-box">
+  <h3>Check Your Property</h3>
+  <p>See if your parcel already has a restrictive covenant on file, or check your DADU eligibility.</p>
+  <div class="btn-row">
+   <a href="property-report-card.html" class="cta-btn">Property Report Card</a>
+   <a href="am_i_eligible.html" class="cta-btn secondary">Check Eligibility</a>
+  </div>
+ </div>
+</div>
 
- <!-- Explore Section -->
- <div class="explore-section">
- <p>Explore restrictive covenants already on file in Davidson County</p>
- <p>Use the map and table below to search by address or APN</p>
- <div class="arrow-down"></div></div>
+<div class="footer">
+ <p><span class="brand">HOMEBODY PROJECTS</span> &middot; Powered by Castlehold &middot; Nashville-Davidson County &middot; 2026</p>
+</div>
 
- <!-- Footer -->
- <div class="footer">
- <p><span class="brand">HOMEBODY PROJECTS</span>· Nashville, Tennessee · 2025</p></div></div>
- <script src="homebody_header.js"></script></body></html>
+<script src="homebody_header.js"></script>
+</body>
+</html>
