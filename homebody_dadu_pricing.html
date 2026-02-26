@@ -4,819 +4,991 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Pricing | Homebody Projects</title>
- <link href="https://fonts.googleapis.com/css2?family=Avenir+Next:wght@400;500;600;700&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
  <style>
  * { margin: 0; padding: 0; box-sizing: border-box; }
- 
- :root {
- --navy: #3A5566;
- --dusty-teal: #7B746D;
- --olive-green: #CBB279;
- --warm-tan: #7B746D;
- --light-bg: #f8f9fa;
- --white: #ffffff;
- }
- 
+
  body {
- font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif;
- background: var(--light-bg);
- color: var(--navy);
- line-height: 1.6;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #F2F0ED;
+  color: #3A5566;
+  line-height: 1.6;
  }
- 
- /* Header */
- .header {
- background: var(--navy);
- padding: 15px 0;
- position: sticky;
- top: 0;
- z-index: 1000;
- }
- 
- .header-inner {
- max-width: 1200px;
- margin: 0 auto;
- padding: 0 20px;
- display: flex;
- justify-content: space-between;
- align-items: center;
- }
- 
- .logo {
- display: flex;
- align-items: center;
- gap: 12px;
- text-decoration: none;
- color: white;
- }
- 
- .logo-icon {
- width: 40px;
- height: 40px;
- background: var(--olive-green);
- border-radius: 8px;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 20px;
- }
- 
- .logo-text {
- font-weight: 600;
- font-size: 18px;
- }
- 
- .nav {
- display: flex;
- gap: 25px;
- align-items: center;
- }
- 
- .nav a {
- color: rgba(255,255,255,0.8);
- text-decoration: none;
- font-size: 14px;
- transition: color 0.2s;
- }
- 
- .nav a:hover, .nav a.active {
- color: white;
- }
- 
- .nav-btn {
- background: var(--olive-green);
- padding: 8px 20px;
- border-radius: 6px;
- color: white !important;
- }
- 
+
+ a { text-decoration: none; color: inherit; }
+
  /* Hero */
  .hero {
- background: linear-gradient(135deg, var(--navy) 0%, #2E4553 100%);
- color: white;
- padding: 60px 20px;
- text-align: center;
+  background: #3A5566;
+  color: white;
+  padding: 100px 20px 56px;
+  text-align: center;
  }
- 
+
  .hero h1 {
- font-size: 42px;
- font-weight: 700;
- margin-bottom: 15px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 42px;
+  color: #E1D4BB;
+  margin-bottom: 14px;
  }
- 
+
  .hero p {
- font-size: 18px;
- opacity: 0.9;
- max-width: 600px;
- margin: 0 auto;
+  font-size: 17px;
+  color: #F0EBE1;
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.5;
  }
- 
+
  /* Main Content */
  .main {
- max-width: 1200px;
- margin: 0 auto;
- padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
  }
- 
+
  /* Section Headers */
  .section-header {
- text-align: center;
- margin-bottom: 40px;
+  text-align: center;
+  margin-bottom: 40px;
  }
- 
+
  .section-header h2 {
- font-size: 28px;
- color: var(--navy);
- margin-bottom: 10px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 28px;
+  color: #3A5566;
+  margin-bottom: 10px;
  }
- 
+
  .section-header p {
- color: #666;
- font-size: 16px;
+  color: #706F6C;
+  font-size: 16px;
  }
- 
+
  /* Free Tools Banner */
  .free-banner {
- background: linear-gradient(135deg, var(--olive-green), #496778);
- color: white;
- padding: 30px;
- border-radius: 16px;
- margin-bottom: 50px;
- display: flex;
- justify-content: space-between;
- align-items: center;
- flex-wrap: wrap;
- gap: 20px;
+  background: #3A5566;
+  color: white;
+  padding: 32px 36px;
+  border-radius: 16px;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
  }
- 
+
  .free-banner h3 {
- font-size: 24px;
- margin-bottom: 8px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 24px;
+  color: #E1D4BB;
+  margin-bottom: 8px;
  }
- 
+
  .free-banner p {
- opacity: 0.9;
+  color: rgba(240, 235, 225, 0.85);
+  font-size: 15px;
  }
- 
+
  .free-tools-list {
- display: flex;
- gap: 15px;
- flex-wrap: wrap;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
  }
- 
+
  .free-tool {
- background: rgba(255,255,255,0.2);
- padding: 8px 16px;
- border-radius: 20px;
- font-size: 14px;
+  background: rgba(203, 178, 121, 0.2);
+  border: 1px solid rgba(203, 178, 121, 0.4);
+  color: #E1D4BB;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
  }
- 
+
  /* Reports Grid */
  .reports-grid {
- display: grid;
- grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
- gap: 25px;
- margin-bottom: 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  margin-bottom: 60px;
  }
- 
+
  .report-card {
- background: white;
- border-radius: 12px;
- padding: 25px;
- box-shadow: 0 2px 15px rgba(0,0,0,0.08);
- display: flex;
- justify-content: space-between;
- align-items: flex-start;
- transition: transform 0.2s, box-shadow 0.2s;
+  background: #F5F5F0;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: transform 0.2s, box-shadow 0.2s;
  }
- 
+
  .report-card:hover {
- transform: translateY(-3px);
- box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
  }
- 
+
  .report-card.featured {
- border: 2px solid var(--olive-green);
- position: relative;
+  border: 2px solid #CBB279;
+  position: relative;
  }
- 
+
  .report-card.featured::before {
- content: 'MOST POPULAR';
- position: absolute;
- top: -12px;
- left: 20px;
- background: var(--olive-green);
- color: white;
- padding: 4px 12px;
- border-radius: 4px;
- font-size: 11px;
- font-weight: 600;
+  content: 'MOST POPULAR';
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  background: #CBB279;
+  color: #3A5566;
+  padding: 4px 14px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
  }
- 
+
  .report-info h4 {
- font-size: 18px;
- color: var(--navy);
- margin-bottom: 8px;
+  font-size: 17px;
+  color: #3A5566;
+  margin-bottom: 8px;
+  font-weight: 700;
  }
- 
+
  .report-info p {
- color: #666;
- font-size: 14px;
- line-height: 1.5;
+  color: #706F6C;
+  font-size: 14px;
+  line-height: 1.5;
  }
- 
+
  .report-price {
- text-align: right;
- flex-shrink: 0;
- margin-left: 20px;
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 20px;
  }
- 
+
  .price {
- font-size: 28px;
- font-weight: 700;
- color: var(--navy);
+  font-size: 28px;
+  font-weight: 800;
+  color: #3A5566;
  }
- 
+
  .price-label {
- font-size: 12px;
- color: #999;
+  font-size: 12px;
+  color: #918A83;
  }
- 
+
+ /* Document Portal */
+ .doc-portal-card {
+  background: #F5F5F0;
+  border: 1px solid #E2E2E0;
+  border-radius: 16px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+ }
+
+ .doc-portal-card .doc-icon-box {
+  width: 56px;
+  height: 56px;
+  background: #F0EBE1;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ }
+
+ .doc-portal-card .doc-icon-box img {
+  width: 32px;
+  height: 32px;
+ }
+
+ .doc-portal-card h3 {
+  font-size: 22px;
+  color: #3A5566;
+  font-weight: 700;
+ }
+
+ .doc-portal-card p {
+  color: #706F6C;
+  font-size: 15px;
+  line-height: 1.7;
+ }
+
+ .doc-portal-card ul {
+  list-style: none;
+ }
+
+ .doc-portal-card ul li {
+  padding: 8px 0;
+  font-size: 14px;
+  color: #706F6C;
+  border-bottom: 1px solid #E2E2E0;
+  padding-left: 20px;
+  position: relative;
+ }
+
+ .doc-portal-card ul li::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: #CBB279;
+  font-weight: 700;
+ }
+
+ .doc-portal-card ul li:last-child {
+  border-bottom: none;
+ }
+
+ .doc-stat-num {
+  font-size: 48px;
+  font-weight: 800;
+  color: #CBB279;
+ }
+
+ .doc-stat-label {
+  font-size: 14px;
+  color: #706F6C;
+  margin-bottom: 8px;
+ }
+
+ .btn-wheat {
+  display: inline-block;
+  background: #CBB279;
+  color: #3A5566;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.2s;
+ }
+
+ .btn-wheat:hover {
+  background: #D4A54E;
+  transform: translateY(-2px);
+ }
+
  /* Subscriptions */
  .subscriptions {
- margin-bottom: 60px;
+  margin-bottom: 60px;
  }
- 
+
  .sub-grid {
- display: grid;
- grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
- gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
  }
- 
+
  .sub-card {
- background: white;
- border-radius: 16px;
- padding: 35px 30px;
- box-shadow: 0 2px 15px rgba(0,0,0,0.08);
- text-align: center;
- transition: transform 0.2s;
+  background: #F5F5F0;
+  border: 1px solid #E2E2E0;
+  border-radius: 16px;
+  padding: 36px 28px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
  }
- 
+
  .sub-card:hover {
- transform: translateY(-5px);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
  }
- 
+
  .sub-card.featured {
- background: var(--navy);
- color: white;
- transform: scale(1.05);
+  background: #3A5566;
+  color: white;
+  border-color: #3A5566;
+  transform: scale(1.04);
  }
- 
+
  .sub-card.featured:hover {
- transform: scale(1.08);
+  transform: scale(1.06);
  }
- 
+
  .sub-tier {
- font-size: 14px;
- text-transform: uppercase;
- letter-spacing: 1px;
- color: var(--dusty-teal);
- margin-bottom: 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #7B746D;
+  margin-bottom: 10px;
+  font-weight: 600;
  }
- 
+
  .sub-card.featured .sub-tier {
- color: #CBB279;
+  color: #CBB279;
  }
- 
+
  .sub-card h3 {
- font-size: 24px;
- margin-bottom: 15px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 24px;
+  margin-bottom: 16px;
  }
- 
+
  .sub-price {
- font-size: 42px;
- font-weight: 700;
- margin-bottom: 5px;
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 5px;
  }
- 
+
  .sub-price span {
- font-size: 16px;
- font-weight: 400;
- opacity: 0.7;
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 0.6;
  }
- 
+
  .sub-desc {
- font-size: 14px;
- opacity: 0.8;
- margin-bottom: 25px;
+  font-size: 14px;
+  color: #706F6C;
+  margin-bottom: 24px;
  }
- 
+
+ .sub-card.featured .sub-desc {
+  color: rgba(240, 235, 225, 0.8);
+ }
+
  .sub-features {
- text-align: left;
- margin-bottom: 25px;
+  text-align: left;
+  margin-bottom: 24px;
  }
- 
+
  .sub-features li {
- list-style: none;
- padding: 8px 0;
- font-size: 14px;
- border-bottom: 1px solid rgba(0,0,0,0.08);
+  list-style: none;
+  padding: 8px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #E2E2E0;
  }
- 
+
  .sub-card.featured .sub-features li {
- border-bottom-color: rgba(255,255,255,0.15);
+  border-bottom-color: rgba(255,255,255,0.12);
  }
- 
+
  .sub-features li::before {
- content: '';
- color: var(--olive-green);
- margin-right: 10px;
- font-weight: bold;
+  content: '';
+  color: #CBB279;
+  margin-right: 10px;
+  font-weight: bold;
  }
- 
- .sub-card.featured .sub-features li::before {
- color: #CBB279;
- }
- 
+
  .sub-btn {
- display: block;
- width: 100%;
- padding: 14px;
- border: none;
- border-radius: 8px;
- font-size: 16px;
- font-weight: 600;
- cursor: pointer;
- transition: all 0.2s;
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
  }
- 
+
  .sub-card .sub-btn {
- background: var(--navy);
- color: white;
+  background: #3A5566;
+  color: #E1D4BB;
  }
- 
+
  .sub-card.featured .sub-btn {
- background: var(--olive-green);
- color: white;
+  background: #CBB279;
+  color: #3A5566;
  }
- 
+
  .sub-btn:hover {
- opacity: 0.9;
- transform: translateY(-2px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
  }
- 
+
  /* Contractor Section */
  .contractor-section {
- background: linear-gradient(135deg, var(--dusty-teal), #5a7d8f);
- color: white;
- padding: 50px;
- border-radius: 20px;
- margin-bottom: 60px;
+  background: #3A5566;
+  color: white;
+  padding: 48px;
+  border-radius: 20px;
+  margin-bottom: 60px;
  }
- 
+
  .contractor-section h2 {
- font-size: 32px;
- margin-bottom: 15px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 32px;
+  color: #E1D4BB;
+  margin-bottom: 8px;
  }
- 
- .contractor-section >p {
- font-size: 18px;
- opacity: 0.9;
- margin-bottom: 35px;
- max-width: 700px;
+
+ .contractor-section > p {
+  font-size: 17px;
+  color: rgba(240, 235, 225, 0.85);
+  margin-bottom: 36px;
+  max-width: 700px;
+  line-height: 1.6;
  }
- 
+
  .contractor-grid {
- display: grid;
- grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
- gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
  }
- 
+
  .contractor-card {
- background: rgba(255,255,255,0.15);
- backdrop-filter: blur(10px);
- border-radius: 12px;
- padding: 25px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 28px;
  }
- 
+
  .contractor-card h4 {
- font-size: 18px;
- margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
  }
- 
+
  .contractor-card p {
- font-size: 14px;
- opacity: 0.85;
- margin-bottom: 15px;
+  font-size: 14px;
+  color: rgba(240, 235, 225, 0.8);
+  margin-bottom: 14px;
+  line-height: 1.5;
  }
- 
+
  .contractor-price {
- font-size: 24px;
- font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 4px;
  }
- 
+
+ .contractor-price span {
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.6;
+ }
+
+ .contractor-card.featured-tier {
+  border-color: #CBB279;
+  background: rgba(203, 178, 121, 0.1);
+ }
+
+ .contractor-card .card-btn {
+  display: inline-block;
+  background: #CBB279;
+  color: #3A5566;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 8px;
+  transition: background 0.2s;
+ }
+
+ .contractor-card .card-btn:hover {
+  background: #D4A54E;
+ }
+
  /* Data Downloads */
  .data-section {
- margin-bottom: 60px;
+  margin-bottom: 60px;
  }
- 
+
  .data-grid {
- display: grid;
- grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
- gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
  }
- 
+
  .data-card {
- background: white;
- border-radius: 12px;
- padding: 30px;
- box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+  background: #F5F5F0;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  padding: 28px;
  }
- 
+
  .data-card h4 {
- font-size: 20px;
- color: var(--navy);
- margin-bottom: 10px;
+  font-size: 20px;
+  color: #3A5566;
+  margin-bottom: 10px;
+  font-weight: 700;
  }
- 
+
  .data-card p {
- color: #666;
- font-size: 14px;
- margin-bottom: 20px;
+  color: #706F6C;
+  font-size: 14px;
+  margin-bottom: 20px;
+  line-height: 1.5;
  }
- 
+
  .data-price {
- display: flex;
- align-items: baseline;
- gap: 5px;
- margin-bottom: 15px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 16px;
  }
- 
+
  .data-price .amount {
- font-size: 32px;
- font-weight: 700;
- color: var(--navy);
+  font-size: 32px;
+  font-weight: 800;
+  color: #3A5566;
  }
- 
+
  .data-price .unit {
- color: #666;
- font-size: 14px;
+  color: #7B746D;
+  font-size: 14px;
  }
- 
+
  .data-features {
- font-size: 13px;
- color: #666;
+  font-size: 13px;
+  color: #706F6C;
  }
- 
+
  .data-features li {
- list-style: none;
- padding: 5px 0;
+  list-style: none;
+  padding: 6px 0;
  }
- 
+
  .data-features li::before {
- content: '•';
- color: var(--olive-green);
- margin-right: 8px;
+  content: '\2022';
+  color: #CBB279;
+  margin-right: 8px;
+  font-weight: 700;
  }
- 
+
  /* FAQ */
  .faq-section {
- background: white;
- border-radius: 16px;
- padding: 40px;
- box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+  background: #F5F5F0;
+  border: 1px solid #E2E2E0;
+  border-radius: 16px;
+  padding: 40px;
  }
- 
+
  .faq-section h2 {
- text-align: center;
- margin-bottom: 30px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 32px;
+  color: #3A5566;
+  font-size: 28px;
  }
- 
+
  .faq-item {
- border-bottom: 1px solid #eee;
- padding: 20px 0;
+  border-bottom: 1px solid #E2E2E0;
+  padding: 20px 0;
  }
- 
+
  .faq-item:last-child {
- border-bottom: none;
+  border-bottom: none;
  }
- 
+
  .faq-q {
- font-weight: 600;
- color: var(--navy);
- margin-bottom: 10px;
+  font-weight: 700;
+  color: #3A5566;
+  margin-bottom: 10px;
+  font-size: 16px;
  }
- 
+
  .faq-a {
- color: #666;
- font-size: 15px;
+  color: #706F6C;
+  font-size: 15px;
+  line-height: 1.6;
  }
- 
+
  /* Footer */
- .footer {
- background: var(--navy);
- color: white;
- padding: 40px 20px;
- margin-top: 60px;
- text-align: center;
+ .page-footer {
+  background: #3A5566;
+  color: #E1D4BB;
+  padding: 40px 20px;
+  margin-top: 60px;
+  text-align: center;
  }
- 
- .footer-brand {
- font-weight: 600;
- font-size: 18px;
- margin-bottom: 10px;
+
+ .page-footer .footer-brand {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 8px;
  }
- 
- .footer p {
- opacity: 0.7;
- font-size: 14px;
+
+ .page-footer p {
+  color: rgba(225, 212, 187, 0.65);
+  font-size: 14px;
  }
- 
+
+ .page-footer a {
+  color: rgba(225, 212, 187, 0.5);
+  transition: color 0.2s;
+ }
+
+ .page-footer a:hover {
+  color: #E1D4BB;
+ }
+
  /* Responsive */
  @media (max-width: 768px) {
- .header-inner { flex-direction: column; gap: 15px; }
- .nav { flex-wrap: wrap; justify-content: center; }
- .hero h1 { font-size: 32px; }
- .free-banner { flex-direction: column; text-align: center; }
- .reports-grid { grid-template-columns: 1fr; }
- .sub-card.featured { transform: none; }
- .contractor-section { padding: 30px 20px; }
- }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
+  .hero h1 { font-size: 32px; }
+  .hero { padding: 80px 16px 40px; }
+  .free-banner { flex-direction: column; text-align: center; }
+  .reports-grid { grid-template-columns: 1fr; }
+  .sub-card.featured { transform: none; }
+  .contractor-section { padding: 28px 20px; }
+  .doc-portal-card { flex-direction: column; }
+ }
+ </style>
+</head>
 <body>
-<!-- Shared Header - Castlehold -->
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
-
-
- <!-- Header -->
- 
- 
  <!-- Hero -->
  <section class="hero">
- <h1>Simple, Transparent Pricing</h1>
- <p>Access Nashville's most comprehensive DADU data platform. Property reports, permit histories, contractor insights, and more.</p></section>
- 
+  <h1>Simple, Transparent Pricing</h1>
+  <p>Access Nashville's most comprehensive DADU data platform. Property reports, permit histories, contractor insights, and more.</p>
+ </section>
+
  <!-- Main Content -->
  <main class="main">
- 
+
  <!-- Free Tools Banner -->
  <div class="free-banner">
- <div>
- <h3>Free Tools Available</h3>
- <p>Get started with our free DADU eligibility checker and permit explorer.</p></div>
- <div class="free-tools-list">
- <span class="free-tool">Eligibility Checker</span>
- <span class="free-tool">Permit Map</span>
- <span class="free-tool">Analytics Dashboard</span>
- <span class="free-tool">Zoning Lookup</span></div></div>
- 
+  <div>
+   <h3>Free Tools Available</h3>
+   <p>Get started with our free DADU eligibility checker and permit explorer.</p>
+  </div>
+  <div class="free-tools-list">
+   <span class="free-tool">Eligibility Checker</span>
+   <span class="free-tool">Permit Map</span>
+   <span class="free-tool">Analytics Dashboard</span>
+   <span class="free-tool">Zoning Lookup</span>
+  </div>
+ </div>
+
  <!-- Individual Reports -->
  <section class="section-header">
- <h2>Property Reports</h2>
- <p>Purchase individual reports for any Nashville-Davidson County property</p></section>
- 
+  <h2>Property Reports</h2>
+  <p>Purchase individual reports for any Nashville-Davidson County property</p>
+ </section>
+
  <div class="reports-grid">
- <div class="report-card featured">
- <div class="report-info">
- <h4>DADU Eligibility Report</h4>
- <p>Complete eligibility analysis including zoning, setbacks, height limits, lot coverage, overlay districts, and maximum buildable DADU size for your property.</p></div>
- <div class="report-price">
- <div class="price">$19</div>
- <div class="price-label">per report</div></div></div>
- 
- <div class="report-card">
- <div class="report-info">
- <h4>Property Detail Report</h4>
- <p>Comprehensive property information including owner, zoning, tax assessment, lot dimensions, building characteristics, and parcel history.</p></div>
- <div class="report-price">
- <div class="price">$6</div>
- <div class="price-label">per report</div></div></div>
- 
- <div class="report-card">
- <div class="report-info">
- <h4>Permit History Report</h4>
- <p>Complete permit history from 1978 to present, including contractors, costs, inspection results, and project descriptions.</p></div>
- <div class="report-price">
- <div class="price">$12</div>
- <div class="price-label">per report</div></div></div>
- 
- <div class="report-card">
- <div class="report-info">
- <h4>DADU Permit Site Plans</h4>
- <p>Download actual site plans and construction documents from permitted DADU projects. See what others have built.</p></div>
- <div class="report-price">
- <div class="price">$15</div>
- <div class="price-label">per permit</div></div></div>
- 
- <div class="report-card">
- <div class="report-info">
- <h4>Nearby Contractors Report</h4>
- <p>Top-rated DADU contractors who have completed projects within 2 miles of your property, with permit counts and average costs.</p></div>
- <div class="report-price">
- <div class="price">$9</div>
- <div class="price-label">per report</div></div></div>
- 
- <div class="report-card">
- <div class="report-info">
- <h4>Nearby DADUs Report</h4>
- <p>All permitted DADUs within your neighborhood, including sizes, costs, contractors, and years built.</p></div>
- <div class="report-price">
- <div class="price">$9</div>
- <div class="price-label">per report</div></div></div>
- 
- <div class="report-card">
- <div class="report-info">
- <h4>Restrictive Covenant Check</h4>
- <p>Verify if your property has restrictive covenants on file and access direct links to recorded documents.</p></div>
- <div class="report-price">
- <div class="price">$6</div>
- <div class="price-label">per report</div></div></div>
- 
- <div class="report-card">
- <div class="report-info">
- <h4>DADU ROI Analysis</h4>
- <p>Rental income projections, property value impact, tax estimates, and payback period calculations for your DADU investment.</p></div>
- <div class="report-price">
- <div class="price">$25</div>
- <div class="price-label">per report</div></div></div>
- 
- <div class="report-card">
- <div class="report-info">
- <h4>Complete DADU Package</h4>
- <p>All reports combined: Eligibility, Property Detail, Permit History, Nearby DADUs, Contractors, Covenant Check, and ROI Analysis.</p></div>
- <div class="report-price">
- <div class="price">$59</div>
- <div class="price-label">$91 value</div></div></div></div>
- 
+  <div class="report-card featured">
+   <div class="report-info">
+    <h4>DADU Eligibility Report</h4>
+    <p>Complete eligibility analysis including zoning, setbacks, height limits, lot coverage, overlay districts, and maximum buildable DADU size for your property.</p>
+   </div>
+   <div class="report-price">
+    <div class="price">$19</div>
+    <div class="price-label">per report</div>
+   </div>
+  </div>
+
+  <div class="report-card">
+   <div class="report-info">
+    <h4>Property Detail Report</h4>
+    <p>Comprehensive property information including owner, zoning, tax assessment, lot dimensions, building characteristics, and parcel history.</p>
+   </div>
+   <div class="report-price">
+    <div class="price">$6</div>
+    <div class="price-label">per report</div>
+   </div>
+  </div>
+
+  <div class="report-card">
+   <div class="report-info">
+    <h4>Permit History Report</h4>
+    <p>Complete permit history from 1978 to present, including contractors, costs, inspection results, and project descriptions.</p>
+   </div>
+   <div class="report-price">
+    <div class="price">$12</div>
+    <div class="price-label">per report</div>
+   </div>
+  </div>
+
+  <div class="report-card">
+   <div class="report-info">
+    <h4>DADU Permit Site Plans</h4>
+    <p>Download actual site plans and construction documents from permitted DADU projects. See what others have built.</p>
+   </div>
+   <div class="report-price">
+    <div class="price">$15</div>
+    <div class="price-label">per permit</div>
+   </div>
+  </div>
+
+  <div class="report-card">
+   <div class="report-info">
+    <h4>Nearby Contractors Report</h4>
+    <p>Top-rated DADU contractors who have completed projects within 2 miles of your property, with permit counts and average costs.</p>
+   </div>
+   <div class="report-price">
+    <div class="price">$9</div>
+    <div class="price-label">per report</div>
+   </div>
+  </div>
+
+  <div class="report-card">
+   <div class="report-info">
+    <h4>Nearby DADUs Report</h4>
+    <p>All permitted DADUs within your neighborhood, including sizes, costs, contractors, and years built.</p>
+   </div>
+   <div class="report-price">
+    <div class="price">$9</div>
+    <div class="price-label">per report</div>
+   </div>
+  </div>
+
+  <div class="report-card">
+   <div class="report-info">
+    <h4>Restrictive Covenant Check</h4>
+    <p>Verify if your property has restrictive covenants on file and access direct links to recorded documents.</p>
+   </div>
+   <div class="report-price">
+    <div class="price">$6</div>
+    <div class="price-label">per report</div>
+   </div>
+  </div>
+
+  <div class="report-card">
+   <div class="report-info">
+    <h4>DADU ROI Analysis</h4>
+    <p>Rental income projections, property value impact, tax estimates, and payback period calculations for your DADU investment.</p>
+   </div>
+   <div class="report-price">
+    <div class="price">$25</div>
+    <div class="price-label">per report</div>
+   </div>
+  </div>
+
+  <div class="report-card">
+   <div class="report-info">
+    <h4>Complete DADU Package</h4>
+    <p>All reports combined: Eligibility, Property Detail, Permit History, Nearby DADUs, Contractors, Covenant Check, and ROI Analysis.</p>
+   </div>
+   <div class="report-price">
+    <div class="price">$59</div>
+    <div class="price-label">$91 value</div>
+   </div>
+  </div>
+ </div>
+
  <!-- Document Portal -->
- <section style="margin-bottom: 60px;">
- <div class="section-header">
- <h2>Document Portal</h2>
- <p>Search Nashville's most comprehensive DADU document database</p></div>
- <div style="background: white; border-radius: 16px; padding: 40px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 40px; flex-wrap: wrap;">
- <div style="flex: 1; min-width: 280px;">
- <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
- <div style="width: 56px; height: 56px; background: #F0EBE1; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
- <img src="assets/icons/Recorded_Docs.svg" alt="" style="width: 32px; height: 32px;"></div>
- <h3 style="font-size: 22px; color: var(--navy);">Recorded Documents Access</h3></div>
- <p style="color: #666; font-size: 15px; line-height: 1.7; margin-bottom: 20px;">Search 18,782 indexed documents across 8,804 parcels. Find permits, site plans, property cards, and restrictive covenants by address, APN, or permit number.</p>
- <ul style="list-style: none; margin-bottom: 24px;">
- <li style="padding: 8px 0; font-size: 14px; color: #555; border-bottom: 1px solid #f0f0f0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--olive-green); font-weight: 700;">&#8226;</span> Property assessment cards and aerials</li>
- <li style="padding: 8px 0; font-size: 14px; color: #555; border-bottom: 1px solid #f0f0f0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--olive-green); font-weight: 700;">&#8226;</span> Building permit PDFs and site plans</li>
- <li style="padding: 8px 0; font-size: 14px; color: #555; border-bottom: 1px solid #f0f0f0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--olive-green); font-weight: 700;">&#8226;</span> Restrictive covenant documents</li>
- <li style="padding: 8px 0; font-size: 14px; color: #555; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--olive-green); font-weight: 700;">&#8226;</span> Multi-type search: address, APN, or permit #</li></ul>
- <a href="dadu_documents_portal.html" style="display: inline-block; background: var(--olive-green); color: white; padding: 14px 32px; border-radius: 8px; font-size: 16px; font-weight: 600; text-decoration: none; transition: opacity 0.2s;">Access Document Portal</a></div>
- <div style="flex-shrink: 0; text-align: center; min-width: 200px;">
- <div style="font-size: 48px; font-weight: 700; color: var(--navy);">18,782</div>
- <div style="font-size: 14px; color: #666; margin-bottom: 8px;">Documents Indexed</div>
- <div style="font-size: 32px; font-weight: 700; color: var(--navy);">8,804</div>
- <div style="font-size: 14px; color: #666;">Parcels Covered</div></div></div></section>
+ <section>
+  <div class="section-header">
+   <h2>Document Portal</h2>
+   <p>Search Nashville's most comprehensive DADU document database</p>
+  </div>
+  <div class="doc-portal-card">
+   <div style="flex: 1; min-width: 280px;">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+     <div class="doc-icon-box">
+      <img src="assets/icons/Recorded_Docs.svg" alt="">
+     </div>
+     <h3>Recorded Documents Access</h3>
+    </div>
+    <p style="margin-bottom: 20px;">Search 18,782 indexed documents across 8,804 parcels. Find permits, site plans, property cards, and restrictive covenants by address, APN, or permit number.</p>
+    <ul style="margin-bottom: 24px;">
+     <li>Property assessment cards and aerials</li>
+     <li>Building permit PDFs and site plans</li>
+     <li>Restrictive covenant documents</li>
+     <li>Multi-type search: address, APN, or permit #</li>
+    </ul>
+    <a href="dadu_documents_portal.html" class="btn-wheat">Access Document Portal</a>
+   </div>
+   <div style="flex-shrink: 0; text-align: center; min-width: 200px;">
+    <div class="doc-stat-num">18,782</div>
+    <div class="doc-stat-label">Documents Indexed</div>
+    <div class="doc-stat-num" style="font-size: 36px;">8,804</div>
+    <div class="doc-stat-label">Parcels Covered</div>
+   </div>
+  </div>
+ </section>
 
  <!-- Subscriptions -->
  <section class="subscriptions">
- <div class="section-header">
- <h2>Subscription Plans</h2>
- <p>For homeowners planning a project or professionals needing regular access</p></div>
- 
- <div class="sub-grid">
- <div class="sub-card">
- <div class="sub-tier">Homeowner</div>
- <h3>Basic</h3>
- <div class="sub-price">$19<span>/mo</span></div>
- <div class="sub-desc">Perfect for planning your DADU project</div>
- <ul class="sub-features">
- <li>3 Property Reports per month</li>
- <li>Unlimited eligibility checks</li>
- <li>Permit map access</li>
- <li>Save properties to watchlist</li>
- <li>Email support</li></ul>
- <button class="sub-btn">Get Started</button></div>
- 
- <div class="sub-card featured">
- <div class="sub-tier">Professional</div>
- <h3>Pro</h3>
- <div class="sub-price">$49<span>/mo</span></div>
- <div class="sub-desc">For contractors and real estate pros</div>
- <ul class="sub-features">
- <li>15 Property Reports per month</li>
- <li>Contractor analytics dashboard</li>
- <li>Lead notifications</li>
- <li>Bulk property lookup</li>
- <li>Priority support</li>
- <li>20% off additional reports</li></ul>
- <button class="sub-btn">Start Free Trial</button></div>
- 
- <div class="sub-card">
- <div class="sub-tier">Enterprise</div>
- <h3>Team</h3>
- <div class="sub-price">$149<span>/mo</span></div>
- <div class="sub-desc">For agencies and development teams</div>
- <ul class="sub-features">
- <li>Unlimited reports</li>
- <li>API access</li>
- <li>5 team member seats</li>
- <li>Custom data exports</li>
- <li>White-label reports</li>
- <li>Dedicated account manager</li></ul>
- <button class="sub-btn">Contact Sales</button></div></div></section>
- 
+  <div class="section-header">
+   <h2>Subscription Plans</h2>
+   <p>For homeowners planning a project or professionals needing regular access</p>
+  </div>
+
+  <div class="sub-grid">
+   <div class="sub-card">
+    <div class="sub-tier">Homeowner</div>
+    <h3>Basic</h3>
+    <div class="sub-price">$19<span>/mo</span></div>
+    <div class="sub-desc">Perfect for planning your DADU project</div>
+    <ul class="sub-features">
+     <li>3 Property Reports per month</li>
+     <li>Unlimited eligibility checks</li>
+     <li>Permit map access</li>
+     <li>Save properties to watchlist</li>
+     <li>Email support</li>
+    </ul>
+    <button class="sub-btn">Get Started</button>
+   </div>
+
+   <div class="sub-card featured">
+    <div class="sub-tier">Professional</div>
+    <h3>Pro</h3>
+    <div class="sub-price">$49<span>/mo</span></div>
+    <div class="sub-desc">For contractors and real estate pros</div>
+    <ul class="sub-features">
+     <li>15 Property Reports per month</li>
+     <li>Contractor analytics dashboard</li>
+     <li>Lead notifications</li>
+     <li>Bulk property lookup</li>
+     <li>Priority support</li>
+     <li>20% off additional reports</li>
+    </ul>
+    <button class="sub-btn">Start Free Trial</button>
+   </div>
+
+   <div class="sub-card">
+    <div class="sub-tier">Enterprise</div>
+    <h3>Team</h3>
+    <div class="sub-price">$149<span>/mo</span></div>
+    <div class="sub-desc">For agencies and development teams</div>
+    <ul class="sub-features">
+     <li>Unlimited reports</li>
+     <li>API access</li>
+     <li>5 team member seats</li>
+     <li>Custom data exports</li>
+     <li>White-label reports</li>
+     <li>Dedicated account manager</li>
+    </ul>
+    <button class="sub-btn">Contact Sales</button>
+   </div>
+  </div>
+ </section>
+
  <!-- Contractor Advertising Section -->
- <section class="contractor-section" id="contractor-pricing" style="background: linear-gradient(135deg, var(--slate, #3A5566), var(--slate-mid, #496778)); color: white; padding: 50px; border-radius: 20px; margin-bottom: 60px;">
- <h2 style="font-size: 32px; margin-bottom: 8px;">For Contractors</h2>
- <p style="font-size: 18px; opacity: 0.9; margin-bottom: 35px; max-width: 700px;">Promote your business to homeowners actively researching DADU projects in Nashville. All packages include a verified permit history badge and listing in the Homebody Projects contractor directory.</p>
+ <section class="contractor-section" id="contractor-pricing">
+  <h2>For Contractors</h2>
+  <p>Promote your business to homeowners actively researching DADU projects in Nashville. All packages include a verified permit history badge and listing in the Homebody Projects contractor directory.</p>
 
- <div class="contractor-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;">
- <div class="contractor-card" style="background: rgba(255,255,255,0.12); backdrop-filter: blur(10px); border-radius: 12px; padding: 28px;">
- <h4 style="font-size: 18px; margin-bottom: 8px;">Featured Listing</h4>
- <p style="font-size: 14px; opacity: 0.85; margin-bottom: 12px;">Highlighted placement in contractor directory, badge on profile, priority in search results.</p>
- <div style="font-size: 28px; font-weight: 800; margin-bottom: 4px;">$29<span style="font-size: 14px; font-weight: 400; opacity: 0.7;">/mo</span></div>
- <div style="font-size: 12px; opacity: 0.7; margin-bottom: 16px;">Starting at</div>
- <a href="mailto:hello@castlehold.com?subject=Featured Listing Inquiry" style="display: inline-block; background: var(--wheat, #CBB279); color: var(--slate, #3A5566); padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none;">Contact Us</a></div>
+  <div class="contractor-grid">
+   <div class="contractor-card">
+    <h4>Featured Listing</h4>
+    <p>Highlighted placement in contractor directory, badge on profile, priority in search results.</p>
+    <div class="contractor-price">$29<span>/mo</span></div>
+    <div style="font-size: 12px; color: rgba(240,235,225,0.6); margin-bottom: 12px;">Starting at</div>
+    <a href="mailto:hello@castlehold.com?subject=Featured Listing Inquiry" class="card-btn">Contact Us</a>
+   </div>
 
- <div class="contractor-card" style="background: rgba(255,255,255,0.18); backdrop-filter: blur(10px); border-radius: 12px; padding: 28px; border: 2px solid var(--wheat, #CBB279);">
- <h4 style="font-size: 18px; margin-bottom: 8px;">Sponsored Results</h4>
- <p style="font-size: 14px; opacity: 0.85; margin-bottom: 12px;">Appear at top of contractor searches for selected ZIP codes, project photos, lead notifications.</p>
- <div style="font-size: 28px; font-weight: 800; color: var(--wheat, #CBB279); margin-bottom: 4px;">$79<span style="font-size: 14px; font-weight: 400; opacity: 0.7; color: white;">/mo</span></div>
- <div style="font-size: 12px; opacity: 0.7; margin-bottom: 16px;">Starting at</div>
- <a href="mailto:hello@castlehold.com?subject=Sponsored Results Inquiry" style="display: inline-block; background: var(--wheat, #CBB279); color: var(--slate, #3A5566); padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none;">Contact Us</a></div>
+   <div class="contractor-card featured-tier">
+    <h4>Sponsored Results</h4>
+    <p>Appear at top of contractor searches for selected ZIP codes, project photos, lead notifications.</p>
+    <div class="contractor-price" style="color: #CBB279;">$79<span style="color: rgba(255,255,255,0.6);">/mo</span></div>
+    <div style="font-size: 12px; color: rgba(240,235,225,0.6); margin-bottom: 12px;">Starting at</div>
+    <a href="mailto:hello@castlehold.com?subject=Sponsored Results Inquiry" class="card-btn">Contact Us</a>
+   </div>
 
- <div class="contractor-card" style="background: rgba(255,255,255,0.12); backdrop-filter: blur(10px); border-radius: 12px; padding: 28px;">
- <h4 style="font-size: 18px; margin-bottom: 8px;">Lead Generation</h4>
- <p style="font-size: 14px; opacity: 0.85; margin-bottom: 12px;">Direct inquiry form, homeowner contact routing, project match notifications, exclusive leads.</p>
- <div style="font-size: 28px; font-weight: 800; margin-bottom: 4px;">$149<span style="font-size: 14px; font-weight: 400; opacity: 0.7;">/mo</span></div>
- <div style="font-size: 12px; opacity: 0.7; margin-bottom: 16px;">Starting at</div>
- <a href="mailto:hello@castlehold.com?subject=Lead Generation Inquiry" style="display: inline-block; background: var(--wheat, #CBB279); color: var(--slate, #3A5566); padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none;">Contact Us</a></div></div>
- <p style="text-align: center; margin-top: 24px; font-size: 13px; opacity: 0.7;">All contractor advertising packages include a verified permit history badge and listing in the Homebody Projects contractor directory. <a href="contractor_portal.html#advertise" style="color: var(--wheat, #CBB279); text-decoration: underline;">Learn more</a></p></section>
- 
+   <div class="contractor-card">
+    <h4>Lead Generation</h4>
+    <p>Direct inquiry form, homeowner contact routing, project match notifications, exclusive leads.</p>
+    <div class="contractor-price">$149<span>/mo</span></div>
+    <div style="font-size: 12px; color: rgba(240,235,225,0.6); margin-bottom: 12px;">Starting at</div>
+    <a href="mailto:hello@castlehold.com?subject=Lead Generation Inquiry" class="card-btn">Contact Us</a>
+   </div>
+  </div>
+  <p style="text-align: center; margin-top: 24px; font-size: 13px; color: rgba(240,235,225,0.6);">All contractor advertising packages include a verified permit history badge and listing in the Homebody Projects contractor directory. <a href="contractor_portal.html#advertise" style="color: #CBB279; text-decoration: underline;">Learn more</a></p>
+ </section>
+
  <!-- Data Downloads -->
  <section class="data-section">
- <div class="section-header">
- <h2>Bulk Data Downloads</h2>
- <p>For researchers, analysts, and developers</p></div>
- 
- <div class="data-grid">
- <div class="data-card">
- <h4>DADU Permit Dataset</h4>
- <p>Complete dataset of all 4,100+ DADU permits in Nashville with locations, costs, contractors, and dates.</p>
- <div class="data-price">
- <span class="amount">$199</span>
- <span class="unit">one-time</span></div>
- <ul class="data-features">
- <li>CSV and GeoJSON formats</li>
- <li>Quarterly updates included</li>
- <li>Commercial use allowed</li></ul></div>
- 
- <div class="data-card">
- <h4>Eligible Parcels Dataset</h4>
- <p>All 178,000+ DADU-eligible parcels with zoning, max sizes, setbacks, and overlay status.</p>
- <div class="data-price">
- <span class="amount">$299</span>
- <span class="unit">one-time</span></div>
- <ul class="data-features">
- <li>Shapefile and CSV formats</li>
- <li>Monthly updates included</li>
- <li>Full parcel attributes</li></ul></div>
- 
- <div class="data-card">
- <h4>API Access</h4>
- <p>Integrate DADU eligibility data directly into your applications.</p>
- <div class="data-price">
- <span class="amount">$0.10</span>
- <span class="unit">per query</span></div>
- <ul class="data-features">
- <li>REST API with JSON responses</li>
- <li>Rate limit: 1,000/day</li>
- <li>Documentation included</li></ul></div></div></section>
- 
+  <div class="section-header">
+   <h2>Bulk Data Downloads</h2>
+   <p>For researchers, analysts, and developers</p>
+  </div>
+
+  <div class="data-grid">
+   <div class="data-card">
+    <h4>DADU Permit Dataset</h4>
+    <p>Complete dataset of all 4,100+ DADU permits in Nashville with locations, costs, contractors, and dates.</p>
+    <div class="data-price">
+     <span class="amount">$199</span>
+     <span class="unit">one-time</span>
+    </div>
+    <ul class="data-features">
+     <li>CSV and GeoJSON formats</li>
+     <li>Quarterly updates included</li>
+     <li>Commercial use allowed</li>
+    </ul>
+   </div>
+
+   <div class="data-card">
+    <h4>Eligible Parcels Dataset</h4>
+    <p>All 178,000+ DADU-eligible parcels with zoning, max sizes, setbacks, and overlay status.</p>
+    <div class="data-price">
+     <span class="amount">$299</span>
+     <span class="unit">one-time</span>
+    </div>
+    <ul class="data-features">
+     <li>Shapefile and CSV formats</li>
+     <li>Monthly updates included</li>
+     <li>Full parcel attributes</li>
+    </ul>
+   </div>
+
+   <div class="data-card">
+    <h4>API Access</h4>
+    <p>Integrate DADU eligibility data directly into your applications.</p>
+    <div class="data-price">
+     <span class="amount">$0.10</span>
+     <span class="unit">per query</span>
+    </div>
+    <ul class="data-features">
+     <li>REST API with JSON responses</li>
+     <li>Rate limit: 1,000/day</li>
+     <li>Documentation included</li>
+    </ul>
+   </div>
+  </div>
+ </section>
+
  <!-- FAQ -->
  <section class="faq-section">
- <h2>Frequently Asked Questions</h2>
- 
- <div class="faq-item">
- <div class="faq-q">What's included in the free tier?</div>
- <div class="faq-a">Free users can check DADU eligibility for any property, explore the permit map, view the analytics dashboard, and look up basic zoning information. Detailed reports and historical data require purchase.</div></div>
- 
- <div class="faq-item">
- <div class="faq-q">How current is your data?</div>
- <div class="faq-a">Our permit data is updated weekly from Metro Nashville's official records. Parcel and zoning data is refreshed monthly. Property card information syncs directly with the Davidson County Property Assessor.</div></div>
- 
- <div class="faq-item">
- <div class="faq-q">Can I get a refund if a report doesn't have the data I need?</div>
- <div class="faq-a">Yes! If a report is missing critical information, contact us within 7 days for a full refund or credit toward another report.</div></div>
- 
- <div class="faq-item">
- <div class="faq-q">What payment methods do you accept?</div>
- <div class="faq-a">We accept all major credit cards (Visa, Mastercard, American Express) and PayPal. Enterprise customers can pay by invoice.</div></div>
- 
- <div class="faq-item">
- <div class="faq-q">Do subscriptions auto-renew?</div>
- <div class="faq-a">Yes, subscriptions renew automatically each month. You can cancel anytime from your account settings with no cancellation fees.</div></div></section></main>
- 
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+   <div class="faq-q">What's included in the free tier?</div>
+   <div class="faq-a">Free users can check DADU eligibility for any property, explore the permit map, view the analytics dashboard, and look up basic zoning information. Detailed reports and historical data require purchase.</div>
+  </div>
+
+  <div class="faq-item">
+   <div class="faq-q">How current is your data?</div>
+   <div class="faq-a">Our permit data is updated weekly from Metro Nashville's official records. Parcel and zoning data is refreshed monthly. Property card information syncs directly with the Davidson County Property Assessor.</div>
+  </div>
+
+  <div class="faq-item">
+   <div class="faq-q">Can I get a refund if a report doesn't have the data I need?</div>
+   <div class="faq-a">Yes! If a report is missing critical information, contact us within 7 days for a full refund or credit toward another report.</div>
+  </div>
+
+  <div class="faq-item">
+   <div class="faq-q">What payment methods do you accept?</div>
+   <div class="faq-a">We accept all major credit cards (Visa, Mastercard, American Express) and PayPal. Enterprise customers can pay by invoice.</div>
+  </div>
+
+  <div class="faq-item">
+   <div class="faq-q">Do subscriptions auto-renew?</div>
+   <div class="faq-a">Yes, subscriptions renew automatically each month. You can cancel anytime from your account settings with no cancellation fees.</div>
+  </div>
+ </section>
+
+ </main>
+
  <!-- Footer -->
- <footer class="footer">
- <div class="footer-brand">HOMEBODY PROJECTS</div>
- <p>Nashville's Premier DADU Information Platform</p>
- <p style="margin-top: 15px; font-size: 12px;">&copy; 2026 Homebody Projects · Powered by Castlehold · Nashville, Tennessee</p></footer>
- <script src="homebody_header.js"></script></body></html>
+ <footer class="page-footer">
+  <div class="footer-brand">HOMEBODY PROJECTS</div>
+  <p>Nashville's Premier DADU Information Platform</p>
+  <p style="margin-top: 16px; font-size: 12px;">&copy; 2026 Homebody Projects. Powered by Castlehold. Nashville, Tennessee.</p>
+ </footer>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>
