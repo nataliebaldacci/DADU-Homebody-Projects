@@ -97,26 +97,24 @@ The full site palette is documented in CLAUDE.md Section 3.
 
 ---
 
-## Remaining Icon Work
+## Duplicate Resolution (Completed)
 
-### Still Needs Unique Icons (from nav audit)
+All nav icon duplicates resolved. Every item now has a unique icon.
 
-These items still share icons with other nav items:
+| Nav Item | Old (Duplicate) | New (Unique) |
+|----------|----------------|-------------|
+| Build My DADU | `Building_and_Construction.svg` (5x) | `Build_DADU.svg` — house frame under construction |
+| Contractor Marketplace | `Building_and_Construction.svg` | `Contractor_Marketplace.svg` — monitor with bar chart |
+| Find a Contractor | `Building_and_Construction.svg` | `Find_Contractor.svg` — magnifying glass + hardhat |
+| General Requirements | `Building_and_Construction.svg` | `General_Requirements.svg` — doc with ruler + checklist |
+| Permit Process Timeline | `Permit_Approval.svg` (2x) | `Permit_Timeline.svg` — vertical timeline with milestones |
+| Form Wizard | `Eligibility_Check.svg` (2x) | `Form_Wizard.svg` — form with field boxes + wand |
+| External Links | `Recorded_Docs.svg` (3x) | `External_Links.svg` — doc with outward arrow |
+| Zoning Documents | V4 (user flagged) | Reworked — zone district map with dot labels |
 
-| Nav Item | Currently Uses | Shared With |
-|----------|---------------|-------------|
-| Build My DADU | `Building_and_Construction.svg` | Contractors, Contractor Marketplace, Find a Contractor, General Requirements |
-| Contractor Marketplace | `Building_and_Construction.svg` | (5 items share this icon) |
-| Find a Contractor | `Building_and_Construction.svg` | |
-| General Requirements | `Building_and_Construction.svg` | |
-| Form Wizard | `Eligibility_Check.svg` | Eligibility Flowchart |
-| External Links | `Recorded_Docs.svg` | Learn column header |
-| Permit Process Timeline | `Permit_Approval.svg` | Permits & Forms column header |
-
-`Building_and_Construction.svg` is the worst offender — used 5 times. Dashboard V1/V2 are saved at `_saved/Dashboard_v1.svg` and `_saved/Dashboard_v2.svg` for potential Contractor Marketplace use.
+`Building_and_Construction.svg` went from 5x → 1x (Contractors only).
 
 ### Icons User May Revisit
-- **Zoning_Documents** — User said "needs work, can we use a PQ one?" Using V4 for now.
 - **Draw_on_Parcel** — Reworked with V1's arrows but user hasn't confirmed the new version yet.
 - **Valuations** — Hand-coded version; user preferred Canva design. May need PNG export replacement.
 - **Investments** — Still using original PNG, no custom SVG version created yet.
@@ -144,5 +142,6 @@ assets/icons/
 - `icon_preview.html` — Full icon inventory with status
 
 ## Git Commits (this session)
+- `1f20caf` — Create unique icons for all duplicate nav items, eliminate icon sharing
 - `499247c` — Finalize PQ-style icons: apply user-selected versions, fix nav duplicates
 - `16a0363` — (Prior session) Update nav icons: Permit_Analytics.svg, DADU_History.svg
