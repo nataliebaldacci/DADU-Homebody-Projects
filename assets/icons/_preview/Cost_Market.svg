@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Dollar/cost circle -->
+    <g>
+      <circle fill="#3A5566" cx="10" cy="10" r="8.5"/>
+      <circle fill="#F5F5F0" cx="10" cy="10" r="7"/>
+    </g>
+    <!-- Dollar sign S-curve (correct orientation) -->
+    <g>
+      <rect fill="#3A5566" x="9.2" y="4.5" width="1.6" height="11" rx="0.4"/>
+      <path fill="none" stroke="#3A5566" stroke-width="1.4" stroke-linecap="round" d="M12.5,7 C12.5,5.8 11.5,5.2 10,5.2 C8.5,5.2 7.5,6 7.5,7.2 C7.5,8.5 8.5,9 10,9.5 C11.5,10 12.5,10.5 12.5,12 C12.5,13.2 11.5,14 10,14 C8.5,14 7.5,13.2 7.5,12"/>
+    </g>
+    <!-- Trend arrow up -->
+    <g>
+      <line stroke="#3A5566" stroke-width="2" stroke-linecap="round" x1="6" y1="24" x2="16" y2="18"/>
+      <path fill="#3A5566" d="M14,16 L18,17.5 L16,20 Z"/>
+    </g>
+    <!-- Diminishing dots -->
+    <g><circle fill="#7B746D" cx="24" cy="3.5" r="1.05"/></g>
+    <g><circle fill="#7B746D" cx="24" cy="6.6" r="0.87"/></g>
+    <g><circle fill="#7B746D" cx="24" cy="9.3" r="0.69"/></g>
+    <g><circle fill="#7B746D" cx="24" cy="11.6" r="0.51"/></g>
+    <!-- Second dot column -->
+    <g><circle fill="#7B746D" cx="27" cy="5.2" r="0.87"/></g>
+    <g><circle fill="#7B746D" cx="27" cy="7.9" r="0.69"/></g>
+    <g><circle fill="#7B746D" cx="27" cy="10.2" r="0.51"/></g>
+    <g><circle fill="#7B746D" cx="27" cy="12.2" r="0.38"/></g>
+  </g>
+</svg>

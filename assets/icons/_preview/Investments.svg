@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Axis lines -->
+    <g>
+      <rect fill="#3A5566" x="2" y="2" width="1.2" height="20" rx="0.3"/>
+      <rect fill="#3A5566" x="2" y="20.8" width="17" height="1.2" rx="0.3"/>
+    </g>
+    <!-- Area fill under the line -->
+    <g>
+      <path fill="#3A5566" opacity="0.15" d="M5,18 L8,13 L11,15 L15,7 L18,4 L18,20.8 L5,20.8 Z"/>
+    </g>
+    <!-- Smooth trend line going up (single polyline) -->
+    <g>
+      <polyline fill="none" stroke="#3A5566" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="5,18 8,13 11,15 15,7 18,4"/>
+    </g>
+    <!-- Data points -->
+    <g>
+      <circle fill="#3A5566" cx="5" cy="18" r="1.3"/>
+      <circle fill="#3A5566" cx="8" cy="13" r="1.3"/>
+      <circle fill="#3A5566" cx="11" cy="15" r="1.3"/>
+      <circle fill="#3A5566" cx="15" cy="7" r="1.3"/>
+      <circle fill="#F5F5F0" cx="18" cy="4" r="1.5"/>
+      <circle fill="#3A5566" cx="18" cy="4" r="1.5" stroke="#3A5566" stroke-width="1"/>
+    </g>
+    <!-- Diminishing dots -->
+    <g><circle fill="#7B746D" cx="24" cy="6" r="1.05"/></g>
+    <g><circle fill="#7B746D" cx="24" cy="9.1" r="0.87"/></g>
+    <g><circle fill="#7B746D" cx="24" cy="11.8" r="0.69"/></g>
+    <g><circle fill="#7B746D" cx="24" cy="14.1" r="0.51"/></g>
+    <!-- Second dot column -->
+    <g><circle fill="#7B746D" cx="27" cy="7.8" r="0.87"/></g>
+    <g><circle fill="#7B746D" cx="27" cy="10.5" r="0.69"/></g>
+    <g><circle fill="#7B746D" cx="27" cy="12.8" r="0.51"/></g>
+    <g><circle fill="#7B746D" cx="27" cy="14.8" r="0.38"/></g>
+  </g>
+</svg>

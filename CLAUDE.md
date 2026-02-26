@@ -1104,6 +1104,39 @@ ADU.png (primary), ADU_Light.svg, ADU_Blue.svg, ADU_Light.png, ADU_MultiColors.s
 
 Note: Some SVGs have both spaced names ("Property Owners.svg") and underscored names ("Property_Owners.svg"). The nav uses underscored versions.
 
+### Icon Color Scales (6 Approved Combinations)
+
+All icons use the same shapes but can be rendered in different color scales depending on context. The full style guide is at `assets/icons/ICON_STYLE_GUIDE.md`.
+
+**Scale 1: Standard (ParcelQuest)**
+- `#3A5566` Deep Slate — structural fills
+- `#7B746D` Warm Stone — dots
+- Best for: Nav dropdowns, light card backgrounds
+
+**Scale 2: Light + Slate Outline**
+- `#A59D8B` Warm Muted — fills
+- `#3A5566` Deep Slate — outlines only
+- Best for: Secondary icons, softer sections, paired next to Standard
+
+**Scale 3: Warm Monochrome**
+- `#A59D8B` Warm Muted — everything
+- Best for: Decorative, watermark-style, background elements
+
+**Scale 4: Stone Duo**
+- `#7B746D` Warm Stone — fills
+- `#918A83` Lighter Stone — dots
+- Best for: Mid-tone backgrounds, neutral contexts
+
+**Scale 5: Cream on Dark**
+- `#E1D4BB` Cream — fills
+- `#A59D8B` Warm Muted — dots
+- Best for: Dark sections (#3A5566 bg), hero areas, footer
+
+**Scale 6: Wheat on Dark (accent)**
+- `#CBB279` Wheat — fills (sparingly)
+- `#E1D4BB` Cream — dots
+- Best for: Highlighted/featured icons on dark backgrounds. Use sparingly (accent).
+
 ---
 
 ## 12. AUDIT COMMANDS — RUN THESE FIRST

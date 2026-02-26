@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Top arrow (clockwise, right half) -->
+    <g>
+      <path fill="none" stroke="#3A5566" stroke-width="2.2" stroke-linecap="round" d="M14,4.5 A7.5,7.5 0 0,1 17.5,17"/>
+      <!-- Arrow head pointing down-left -->
+      <path fill="#3A5566" d="M15,14.5 L18,18.5 L20,15.5 Z"/>
+    </g>
+    <!-- Bottom arrow (counter-clockwise, left half) -->
+    <g>
+      <path fill="none" stroke="#3A5566" stroke-width="2.2" stroke-linecap="round" d="M6,17 A7.5,7.5 0 0,1 10,4.5"/>
+      <!-- Arrow head pointing up-right -->
+      <path fill="#3A5566" d="M12.5,7 L9.5,3 L7.5,6 Z"/>
+    </g>
+    <!-- Calendar/document in center -->
+    <g>
+      <rect fill="#3A5566" x="7.5" y="8.5" width="7" height="7" rx="0.8"/>
+      <rect fill="#F5F5F0" x="8.5" y="10" width="5" height="4.5" rx="0.3"/>
+      <!-- Calendar top bar -->
+      <rect fill="#3A5566" x="7.5" y="8.5" width="7" height="2" rx="0.8"/>
+      <!-- Mini grid dots -->
+      <circle fill="#3A5566" cx="9.8" cy="11.5" r="0.5"/>
+      <circle fill="#3A5566" cx="11" cy="11.5" r="0.5"/>
+      <circle fill="#3A5566" cx="12.2" cy="11.5" r="0.5"/>
+      <circle fill="#3A5566" cx="9.8" cy="13" r="0.5"/>
+      <circle fill="#3A5566" cx="11" cy="13" r="0.5"/>
+    </g>
+    <!-- Diminishing dots -->
+    <g><circle fill="#7B746D" cx="24" cy="4" r="1.05"/></g>
+    <g><circle fill="#7B746D" cx="24" cy="7.1" r="0.87"/></g>
+    <g><circle fill="#7B746D" cx="24" cy="9.8" r="0.69"/></g>
+    <g><circle fill="#7B746D" cx="24" cy="12.1" r="0.51"/></g>
+    <!-- Second dot column -->
+    <g><circle fill="#7B746D" cx="27" cy="5.8" r="0.87"/></g>
+    <g><circle fill="#7B746D" cx="27" cy="8.5" r="0.69"/></g>
+    <g><circle fill="#7B746D" cx="27" cy="10.8" r="0.51"/></g>
+    <g><circle fill="#7B746D" cx="27" cy="12.8" r="0.38"/></g>
+  </g>
+</svg>

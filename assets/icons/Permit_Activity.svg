@@ -1,15 +1,47 @@
-<!-- @license lucide-static v0.564.0 - ISC -->
-<svg
-  class="lucide lucide-activity"
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="#3A5566"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="24" viewBox="0 0 28 24">
+  <g>
+    <!-- Bar chart bars (ascending) -->
+    <g>
+      <rect fill="#3A5566" x="1" y="14" width="3.5" height="9" rx="0.4"/>
+    </g>
+    <g>
+      <rect fill="#3A5566" x="5.5" y="10" width="3.5" height="13" rx="0.4"/>
+    </g>
+    <g>
+      <rect fill="#3A5566" x="10" y="6" width="3.5" height="17" rx="0.4"/>
+    </g>
+    <g>
+      <rect fill="#3A5566" x="14.5" y="2" width="3.5" height="21" rx="0.4"/>
+    </g>
+    <!-- Baseline -->
+    <g>
+      <rect fill="#3A5566" x="0" y="22.5" width="19" height="1.2" rx="0.3"/>
+    </g>
+    <!-- Diminishing dots column -->
+    <g>
+      <circle fill="#7B746D" cx="22.5" cy="9.5" r="1.05"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="22.5" cy="12.8" r="0.87"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="22.5" cy="15.7" r="0.69"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="22.5" cy="18.2" r="0.51"/>
+    </g>
+    <!-- Second dot column -->
+    <g>
+      <circle fill="#7B746D" cx="25.8" cy="11.2" r="0.87"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="25.8" cy="14.1" r="0.69"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="25.8" cy="16.6" r="0.51"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="25.8" cy="18.8" r="0.38"/>
+    </g>
+  </g>
 </svg>
