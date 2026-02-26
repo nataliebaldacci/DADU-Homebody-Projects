@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Calendar body -->
+    <g>
+      <rect fill="#3A5566" x="2" y="4" width="24" height="22" rx="1.5"/>
+      <rect fill="#F5F5F0" x="4" y="9" width="20" height="15.5" rx="0.5"/>
+    </g>
+    <!-- Calendar header -->
+    <rect fill="#3A5566" x="2" y="4" width="24" height="5.5" rx="1.5"/>
+    <!-- Clips -->
+    <g>
+      <rect fill="#3A5566" x="8" y="2" width="2" height="4.5" rx="0.8"/>
+      <rect fill="#3A5566" x="18" y="2" width="2" height="4.5" rx="0.8"/>
+    </g>
+    <!-- Calendar cells (some solid, some dots) -->
+    <g>
+      <rect fill="#3A5566" x="5.5" y="10.5" width="3.5" height="3" rx="0.3"/>
+      <rect fill="#3A5566" x="10.5" y="10.5" width="3.5" height="3" rx="0.3"/>
+      <rect fill="#3A5566" x="15.5" y="10.5" width="3.5" height="3" rx="0.3"/>
+    </g>
+    <!-- Dot rows replacing remaining date cells -->
+    <g>
+      <circle fill="#7B746D" cx="7.3" cy="16.5" r="0.65"/>
+      <circle fill="#7B746D" cx="12.3" cy="16.5" r="0.6"/>
+      <circle fill="#7B746D" cx="17.3" cy="16.5" r="0.5"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="7.3" cy="20" r="0.55"/>
+      <circle fill="#7B746D" cx="12.3" cy="20" r="0.5"/>
+      <circle fill="#7B746D" cx="17.3" cy="20" r="0.4"/>
+    </g>
+  </g>
+</svg>

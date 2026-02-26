@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Document -->
+    <g>
+      <rect fill="#3A5566" x="2" y="1" width="24" height="26" rx="1"/>
+      <rect fill="#F5F5F0" x="3.5" y="2.5" width="21" height="23" rx="0.4"/>
+    </g>
+    <!-- Pie chart -->
+    <g>
+      <circle fill="#3A5566" cx="14" cy="9.5" r="5"/>
+      <path fill="#F5F5F0" d="M14,4.5 L14,9.5 L19,9.5 A5,5 0 0,0 14,4.5 Z"/>
+    </g>
+    <!-- Dot rows replacing legend/labels below pie -->
+    <g>
+      <circle fill="#7B746D" cx="6" cy="17" r="0.65"/>
+      <circle fill="#7B746D" cx="8" cy="17" r="0.55"/>
+      <circle fill="#7B746D" cx="9.8" cy="17" r="0.45"/>
+      <circle fill="#7B746D" cx="11.3" cy="17" r="0.35"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="6" cy="19.5" r="0.65"/>
+      <circle fill="#7B746D" cx="8" cy="19.5" r="0.55"/>
+      <circle fill="#7B746D" cx="9.8" cy="19.5" r="0.45"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="6" cy="22" r="0.65"/>
+      <circle fill="#7B746D" cx="8" cy="22" r="0.55"/>
+    </g>
+    <!-- Small bar chart on right side -->
+    <g>
+      <rect fill="#3A5566" x="16" y="18" width="2" height="5" rx="0.2"/>
+      <rect fill="#3A5566" x="19" y="16" width="2" height="7" rx="0.2"/>
+      <rect fill="#3A5566" x="22" y="19.5" width="2" height="3.5" rx="0.2"/>
+    </g>
+  </g>
+</svg>

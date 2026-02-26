@@ -68,7 +68,7 @@
     '        </a>' +
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="explore-dropdown" role="menu">' +
              col('Area_Maps_and_Visual_layers.svg', 'Interactive Maps',
-                 item('dadu_eligibility_map.html', 'Area Maps and Visual layers.svg', 'Eligibility Map') +
+                 item('dadu_eligibility_map.html', 'Zoning.svg', 'Eligibility Map') +
                  item('property_search.html', 'Parcel Search.svg', 'Property Search') +
                  item('existing_dadus_map.html', 'ADU.png', 'Existing DADUs') +
                  item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map') +
@@ -101,7 +101,7 @@
                  item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator') +
                  item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans &amp; Permit Docs') +
                  item('dadu_resources.html', 'Recorded_Docs.svg', 'External Links') +
-                 item('pdf_database_lookup.html', 'Recorded_Docs.svg', 'PDF Database') +
+                 item('pdf_database_lookup.html', 'Document_Database.svg', 'PDF Database') +
                  item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Find a Contractor')
              ) +
     '        </div>' +
@@ -113,17 +113,17 @@
     '          RESOURCES <span class="chevron">&#9660;</span>' +
     '        </button>' +
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="resources-dropdown" role="menu">' +
-             col('ADU.png', 'Learn',
-                 item('what_is_dadu.html', 'ADU.png', 'What is a DADU?') +
+             col('Recorded_Docs.svg', 'Learn',
+                 item('what_is_dadu.html', 'What_is_DADU.svg', 'What is a DADU?') +
                  item('dadu_requirements_overview.html', 'Building_and_Construction.svg', 'General Requirements') +
                  item('dadu_eligibility_flowchart.html', 'Eligibility_Check.svg', 'Eligibility Flowchart') +
                  item('dadu_history.html', 'DADU_History.svg', 'DADU History') +
-                 item('dadu_code_legislation_v5.html', 'Legal.svg', 'Code &amp; Legislation') +
+                 item('dadu_code_legislation_v5.html', 'Legislation.svg', 'Code &amp; Legislation') +
                 item('arcgis_maps.html', 'GIS.svg', 'ArcGIS Maps')
              ) +
-             col('Legal.svg', 'Permits &amp; Forms',
+             col('Permit_Approval.svg', 'Permits &amp; Forms',
                  item('owner_occupancy.html', 'Owner_Occupancy.svg', 'Owner Occupancy') +
-                 item('str_permit.html', 'STR_Permit.svg', 'STR Permit') +
+                 item('str_permit.html', 'STR_Permit.svg', 'Short Term Rental Permit') +
                  item('trade_permits.html', 'Renewals.svg', 'Required Trade Permits') +
                  item('overlay-districts.html', 'Zoning_Documents.svg', 'Overlay Districts') +
                  item('restrictive_covenants_v2.html', 'Restrictive_Covenants.svg', 'Restrictive Covenants') +

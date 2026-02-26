@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="24" viewBox="0 0 28 24">
+  <g>
+    <!-- Blueprint document outline -->
+    <g>
+      <rect fill="#3A5566" x="1" y="1" width="18" height="22" rx="1"/>
+      <rect fill="#F5F5F0" x="2.8" y="2.8" width="14.4" height="18.4" rx="0.4"/>
+    </g>
+    <!-- Floor plan lines inside -->
+    <g>
+      <!-- Outer walls -->
+      <rect fill="none" stroke="#3A5566" stroke-width="0.9" x="4.5" y="4.5" width="10" height="14.8"/>
+      <!-- Interior wall horizontal -->
+      <line stroke="#3A5566" stroke-width="0.9" x1="4.5" y1="11" x2="11.5" y2="11"/>
+      <!-- Interior wall vertical -->
+      <line stroke="#3A5566" stroke-width="0.9" x1="9.5" y1="11" x2="9.5" y2="19.3"/>
+      <!-- Door opening -->
+      <line stroke="#3A5566" stroke-width="0.6" x1="6.5" y1="4.5" x2="6.5" y2="7" stroke-dasharray="0.8,0.6"/>
+      <!-- Small room division -->
+      <line stroke="#3A5566" stroke-width="0.7" x1="11.5" y1="8" x2="14.5" y2="8"/>
+    </g>
+    <!-- Dots (subtle, top-right) -->
+    <g>
+      <circle fill="#7B746D" cx="22" cy="2" r="0.9"/>
+      <circle fill="#7B746D" cx="25" cy="2" r="0.7"/>
+      <circle fill="#7B746D" cx="22" cy="5" r="0.7"/>
+      <circle fill="#7B746D" cx="25" cy="5" r="0.5"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Drawing canvas/paper -->
+    <g>
+      <rect fill="#3A5566" x="1" y="4" width="18" height="18" rx="0.8"/>
+      <rect fill="#F5F5F0" x="2.5" y="5.5" width="15" height="15" rx="0.3"/>
+    </g>
+    <!-- Small house sketch on canvas -->
+    <g>
+      <path fill="none" stroke="#3A5566" stroke-width="1.2" d="M7,17 L7,12 L10,9.5 L13,12 L13,17 Z"/>
+      <rect fill="none" stroke="#3A5566" stroke-width="0.8" x="9" y="14" width="2" height="3"/>
+    </g>
+    <!-- Pencil -->
+    <g>
+      <rect fill="#3A5566" x="16" y="1" width="2.2" height="10" rx="0.4" transform="rotate(25,17.1,6)"/>
+      <path fill="#3A5566" d="M20.5,12 L22,14.5 L19,14.5 Z" transform="rotate(25,20.5,13.25)"/>
+    </g>
+    <!-- Grid lines on canvas -->
+    <g>
+      <rect fill="#3A5566" x="2.5" y="10.5" width="15" height="0.4" opacity="0.2"/>
+      <rect fill="#3A5566" x="2.5" y="15" width="15" height="0.4" opacity="0.2"/>
+      <rect fill="#3A5566" x="7" y="5.5" width="0.4" height="15" opacity="0.2"/>
+      <rect fill="#3A5566" x="13" y="5.5" width="0.4" height="15" opacity="0.2"/>
+    </g>
+    <!-- Dots (subtle, bottom-right) -->
+    <g>
+      <circle fill="#7B746D" cx="22" cy="22" r="0.9"/>
+      <circle fill="#7B746D" cx="25" cy="22" r="0.7"/>
+      <circle fill="#7B746D" cx="22" cy="25" r="0.7"/>
+      <circle fill="#7B746D" cx="25" cy="25" r="0.5"/>
+    </g>
+  </g>
+</svg>

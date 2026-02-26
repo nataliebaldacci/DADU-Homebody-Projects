@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Monitor frame -->
+    <g>
+      <rect fill="#3A5566" x="1" y="2" width="20" height="16" rx="1.2"/>
+      <rect fill="#F5F5F0" x="2.5" y="3.5" width="17" height="13" rx="0.4"/>
+    </g>
+    <!-- Monitor stand -->
+    <g>
+      <rect fill="#3A5566" x="9" y="18" width="4" height="3" rx="0.3"/>
+      <rect fill="#3A5566" x="6" y="20.5" width="10" height="1.5" rx="0.5"/>
+    </g>
+    <!-- Mini bar chart on screen -->
+    <g>
+      <rect fill="#3A5566" x="4" y="12" width="2.5" height="3" rx="0.3"/>
+      <rect fill="#3A5566" x="7.5" y="9.5" width="2.5" height="5.5" rx="0.3"/>
+      <rect fill="#3A5566" x="11" y="7" width="2.5" height="8" rx="0.3"/>
+      <rect fill="#3A5566" x="14.5" y="5" width="2.5" height="10" rx="0.3"/>
+    </g>
+    <!-- Trend line on screen -->
+    <g>
+      <line stroke="#3A5566" stroke-width="0.8" x1="4" y1="10" x2="8" y2="8" stroke-linecap="round"/>
+      <line stroke="#3A5566" stroke-width="0.8" x1="8" y1="8" x2="12" y2="6" stroke-linecap="round"/>
+      <line stroke="#3A5566" stroke-width="0.8" x1="12" y1="6" x2="17" y2="4.5" stroke-linecap="round"/>
+    </g>
+    <!-- Dots (subtle, top-right) -->
+    <g>
+      <circle fill="#7B746D" cx="22" cy="2" r="0.9"/>
+      <circle fill="#7B746D" cx="25" cy="2" r="0.7"/>
+      <circle fill="#7B746D" cx="22" cy="5" r="0.7"/>
+      <circle fill="#7B746D" cx="25" cy="5" r="0.5"/>
+    </g>
+  </g>
+</svg>

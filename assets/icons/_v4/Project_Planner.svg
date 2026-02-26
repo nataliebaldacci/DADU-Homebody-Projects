@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Frame -->
+    <g>
+      <rect fill="#3A5566" x="1" y="1" width="26" height="26" rx="1.5"/>
+      <rect fill="#F5F5F0" x="3" y="3" width="22" height="22" rx="0.5"/>
+    </g>
+    <!-- Gantt bars -->
+    <rect fill="#3A5566" x="9" y="5.5" width="12" height="3" rx="0.5"/>
+    <rect fill="#3A5566" x="9" y="10.5" width="8" height="3" rx="0.5"/>
+    <rect fill="#3A5566" x="9" y="15.5" width="14" height="3" rx="0.5"/>
+    <!-- Dot rows replacing left-side labels -->
+    <g>
+      <circle fill="#7B746D" cx="5" cy="7" r="0.6"/>
+      <circle fill="#7B746D" cx="7" cy="7" r="0.45"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="5" cy="12" r="0.6"/>
+      <circle fill="#7B746D" cx="7" cy="12" r="0.45"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="5" cy="17" r="0.6"/>
+      <circle fill="#7B746D" cx="7" cy="17" r="0.45"/>
+    </g>
+    <!-- Dot row replacing footer -->
+    <g>
+      <circle fill="#7B746D" cx="5" cy="21.5" r="0.5"/>
+      <circle fill="#7B746D" cx="7.5" cy="21.5" r="0.45"/>
+      <circle fill="#7B746D" cx="9.8" cy="21.5" r="0.4"/>
+      <circle fill="#7B746D" cx="11.8" cy="21.5" r="0.35"/>
+    </g>
+  </g>
+</svg>

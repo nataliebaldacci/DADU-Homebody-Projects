@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Blueprint -->
+    <g>
+      <rect fill="#3A5566" x="2" y="1" width="24" height="26" rx="1.2"/>
+      <rect fill="#F5F5F0" x="4" y="3" width="20" height="22" rx="0.5"/>
+    </g>
+    <!-- Building outline -->
+    <rect fill="none" stroke="#3A5566" stroke-width="1.2" x="7" y="6" width="10" height="8" rx="0.3"/>
+    <rect fill="none" stroke="#3A5566" stroke-width="0.8" x="9.5" y="8.5" width="4" height="4"/>
+    <!-- Dimension line -->
+    <g>
+      <line stroke="#3A5566" stroke-width="0.6" x1="7" y1="17" x2="17" y2="17"/>
+      <line stroke="#3A5566" stroke-width="0.6" x1="7" y1="16" x2="7" y2="18"/>
+      <line stroke="#3A5566" stroke-width="0.6" x1="17" y1="16" x2="17" y2="18"/>
+    </g>
+    <!-- Dot rows replacing dimension labels -->
+    <g>
+      <circle fill="#7B746D" cx="6.5" cy="20" r="0.6"/>
+      <circle fill="#7B746D" cx="8.5" cy="20" r="0.5"/>
+      <circle fill="#7B746D" cx="10.2" cy="20" r="0.4"/>
+      <circle fill="#7B746D" cx="11.6" cy="20" r="0.35"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="6.5" cy="22.5" r="0.55"/>
+      <circle fill="#7B746D" cx="8.5" cy="22.5" r="0.45"/>
+      <circle fill="#7B746D" cx="10.2" cy="22.5" r="0.35"/>
+    </g>
+    <!-- Corner survey dots -->
+    <g>
+      <circle fill="#7B746D" cx="20" cy="7" r="0.5"/>
+      <circle fill="#7B746D" cx="20" cy="10" r="0.45"/>
+      <circle fill="#7B746D" cx="20" cy="13" r="0.4"/>
+    </g>
+  </g>
+</svg>

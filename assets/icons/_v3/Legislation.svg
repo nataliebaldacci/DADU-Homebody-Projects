@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Scale post -->
+    <g>
+      <rect fill="#3A5566" x="13" y="3" width="2" height="18" rx="0.5"/>
+      <rect fill="#3A5566" x="9" y="21" width="10" height="2.5" rx="0.8"/>
+    </g>
+    <!-- Scale beam -->
+    <g>
+      <rect fill="#3A5566" x="4" y="4" width="20" height="2" rx="0.5"/>
+    </g>
+    <!-- Left pan -->
+    <g>
+      <line stroke="#3A5566" stroke-width="1" x1="7" y1="6" x2="5" y2="12"/>
+      <line stroke="#3A5566" stroke-width="1" x1="7" y1="6" x2="9" y2="12"/>
+      <path fill="#3A5566" d="M3.5,12 Q7,15 10.5,12 Z"/>
+    </g>
+    <!-- Right pan -->
+    <g>
+      <line stroke="#3A5566" stroke-width="1" x1="21" y1="6" x2="19" y2="14"/>
+      <line stroke="#3A5566" stroke-width="1" x1="21" y1="6" x2="23" y2="14"/>
+      <path fill="#3A5566" d="M17.5,14 Q21,17 24.5,14 Z"/>
+    </g>
+    <!-- Dots inside the pans as weight -->
+    <g>
+      <circle fill="#7B746D" cx="6" cy="12.5" r="0.5"/>
+      <circle fill="#7B746D" cx="7.5" cy="12.5" r="0.5"/>
+      <circle fill="#7B746D" cx="6.75" cy="11.5" r="0.4"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="20" cy="14.5" r="0.5"/>
+      <circle fill="#7B746D" cx="21.5" cy="14.5" r="0.5"/>
+      <circle fill="#7B746D" cx="20.75" cy="13.5" r="0.4"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Radar circle -->
+    <g>
+      <circle fill="#3A5566" cx="14" cy="14" r="13"/>
+      <circle fill="#F5F5F0" cx="14" cy="14" r="11"/>
+      <circle fill="none" stroke="#3A5566" stroke-width="0.6" cx="14" cy="14" r="7.5" opacity="0.3"/>
+      <circle fill="none" stroke="#3A5566" stroke-width="0.6" cx="14" cy="14" r="4" opacity="0.3"/>
+    </g>
+    <!-- Crosshairs -->
+    <rect fill="#3A5566" x="13.5" y="3.5" width="1" height="21" rx="0.2" opacity="0.3"/>
+    <rect fill="#3A5566" x="3.5" y="13.5" width="21" height="1" rx="0.2" opacity="0.3"/>
+    <!-- Center -->
+    <circle fill="#3A5566" cx="14" cy="14" r="1.5"/>
+    <!-- Dot rows replacing tick labels at edges -->
+    <g>
+      <circle fill="#7B746D" cx="14" cy="4.5" r="0.5"/>
+      <circle fill="#7B746D" cx="15.8" cy="4.5" r="0.4"/>
+      <circle fill="#7B746D" cx="17.2" cy="4.5" r="0.35"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="23" cy="14" r="0.5"/>
+      <circle fill="#7B746D" cx="23" cy="15.8" r="0.4"/>
+      <circle fill="#7B746D" cx="23" cy="17.2" r="0.35"/>
+    </g>
+    <g>
+      <circle fill="#7B746D" cx="5" cy="14" r="0.5"/>
+      <circle fill="#7B746D" cx="5" cy="12.2" r="0.4"/>
+    </g>
+  </g>
+</svg>
