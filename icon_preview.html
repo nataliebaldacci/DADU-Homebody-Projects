@@ -2,21 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Icon Preview — All Icons</title>
+<title>Icon Index — Committed vs Pending</title>
 <style>
   body { font-family: Inter, sans-serif; background: #F2F0ED; padding: 40px; max-width: 1200px; margin: 0 auto; }
   h1 { color: #3A5566; font-family: Georgia, serif; font-style: italic; }
   h2 { color: #3A5566; margin-top: 50px; border-bottom: 2px solid #E2E2E0; padding-bottom: 8px; }
-  h3 { color: #706F6C; font-size: 14px; margin-top: 30px; margin-bottom: 15px; }
   p.desc { color: #706F6C; margin-bottom: 20px; }
+  .count { color: #918A83; font-size: 14px; font-weight: 400; }
 
   .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  @media (max-width: 800px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
   .card {
     background: #F5F5F0;
     border: 1px solid #E2E2E0;
     border-radius: 12px;
     padding: 20px;
     text-align: center;
+    position: relative;
   }
   .icon-circle {
     width: 72px; height: 72px;
@@ -27,667 +30,362 @@
   }
   .icon-circle img { width: 40px; height: 40px; object-fit: contain; }
   .card .label { color: #3A5566; font-weight: 600; font-size: 13px; margin-bottom: 4px; }
-  .card .old-label { color: #918A83; font-size: 11px; }
-
-  /* Side-by-side comparison */
-  .compare-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .compare-card {
-    background: #fff;
-    border: 1px solid #E2E2E0;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-  }
-  .compare-card .label { color: #3A5566; font-weight: 600; font-size: 13px; margin-top: 8px; }
-  .compare-card .sublabel { color: #918A83; font-size: 11px; margin-top: 2px; }
-  .compare-row {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-    justify-content: center;
-    margin-top: 8px;
-  }
-  .compare-col { text-align: center; }
-  .compare-col .tag {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
-  .compare-col .tag.current { color: #B58676; }
-  .compare-col .tag.new { color: #406A64; }
-  .vs { color: #918A83; font-size: 11px; font-weight: 600; }
-
-  /* Size test */
-  .sizes { display: flex; gap: 16px; align-items: center; justify-content: center; margin-top: 8px; }
-  .sizes img { object-fit: contain; }
+  .card .sublabel { color: #918A83; font-size: 11px; }
 
   .badge {
     display: inline-block;
-    padding: 2px 8px;
+    padding: 3px 10px;
     border-radius: 4px;
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  .badge-pq { background: #406A64; color: #fff; }
-  .badge-replaced { background: #3A5566; color: #fff; }
-  .badge-new { background: #CBB279; color: #3A5566; }
-  .badge-png { background: #B58676; color: #fff; }
+  .badge-live { background: #406A64; color: #fff; }
+  .badge-pending { background: #CBB279; color: #3A5566; }
+  .badge-variant { background: #918A83; color: #fff; }
+
+  .status-dot {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .status-dot.live { background: #406A64; }
+  .status-dot.pending { background: #CBB279; }
+
+  .summary-bar {
+    display: flex;
+    gap: 24px;
+    padding: 16px 24px;
+    background: #3A5566;
+    border-radius: 10px;
+    margin-bottom: 30px;
+  }
+  .summary-item { text-align: center; }
+  .summary-num { color: #CBB279; font-size: 28px; font-weight: 800; }
+  .summary-label { color: #E1D4BB; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .pending-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+  @media (max-width: 800px) { .pending-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
 
-<h1>Homebody Projects Icon Library</h1>
-<p class="desc">Complete icon set using the ParcelQuest two-color system: <span style="color:#3A5566; font-weight:700;">#3A5566</span> (Deep Slate) structural shapes + <span style="color:#7B746D; font-weight:700;">#7B746D</span> (Warm Stone) diminishing dots</p>
+<h1>Icon Index</h1>
+<p class="desc">Complete status of all Homebody Projects icons: what's live on the site vs what still needs review.</p>
+
+<div class="summary-bar">
+  <div class="summary-item">
+    <div class="summary-num">12</div>
+    <div class="summary-label">ParcelQuest Originals</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-num">22</div>
+    <div class="summary-label">New Icons Committed</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-num">34</div>
+    <div class="summary-label">Total Live</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-num">5</div>
+    <div class="summary-label">Still Pending</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-num">6</div>
+    <div class="summary-label">Color Variants</div>
+  </div>
+</div>
 
 <!-- ========================================== -->
-<h2>Original ParcelQuest Icons <span class="badge badge-pq">Original Set</span></h2>
-<p class="desc">These came from the ParcelQuest source files. They set the style standard.</p>
+<h2>Committed &amp; Live <span class="badge badge-live">On GitHub</span> <span class="count">-- 34 icons</span></h2>
+<p class="desc">These are all pushed to the repo and live on the site.</p>
+
+<h3 style="color:#706F6C; font-size:13px; margin-top:30px;">Original ParcelQuest Icons (12)</h3>
 <div class="grid">
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Property_Owners.svg" alt=""></div>
     <div class="label">Property Owners</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Legal.svg" alt=""></div>
     <div class="label">Legal</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Municipal.svg" alt=""></div>
     <div class="label">Municipal</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
     <div class="label">Building & Construction</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Zoning.svg" alt=""></div>
     <div class="label">Zoning</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Exports__Reports.svg" alt=""></div>
     <div class="label">Exports & Reports</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Neighbors.svg" alt=""></div>
     <div class="label">Neighbors</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Surveyors_and_Engineers.svg" alt=""></div>
     <div class="label">Surveyors & Engineers</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/GIS.svg" alt=""></div>
     <div class="label">GIS</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Recorded_Docs.svg" alt=""></div>
     <div class="label">Recorded Docs</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Parcel Search.svg" alt=""></div>
     <div class="label">Parcel Search</div>
+    <div class="sublabel">Original PQ</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Area_Maps_and_Visual_layers.svg" alt=""></div>
     <div class="label">Area Maps</div>
+    <div class="sublabel">Original PQ</div>
   </div>
 </div>
 
-<!-- ========================================== -->
-<h2>Session 1: Lucide Replacements <span class="badge badge-replaced">Replaced</span></h2>
-<p class="desc">12 thin-stroke Lucide icons replaced with hand-coded ParcelQuest-style SVGs. These are now live in assets/icons/.</p>
+<h3 style="color:#706F6C; font-size:13px; margin-top:30px;">Lucide Replacements -- Session 1 (12)</h3>
 <div class="grid">
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Permit_Activity.svg" alt=""></div>
     <div class="label">Permit Activity</div>
-    <div class="old-label">was: lucide-activity</div>
+    <div class="sublabel">was: lucide-activity</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Permit_Site_Plans.svg" alt=""></div>
     <div class="label">Site Plans</div>
-    <div class="old-label">was: lucide-file-text</div>
+    <div class="sublabel">was: lucide-file-text</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Project_Planner.svg" alt=""></div>
     <div class="label">Project Planner</div>
-    <div class="old-label">was: lucide-gantt-chart</div>
+    <div class="sublabel">was: lucide-gantt-chart</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Project_Checklist.svg" alt=""></div>
     <div class="label">Project Checklist</div>
-    <div class="old-label">was: lucide-list-checks</div>
+    <div class="sublabel">was: lucide-list-checks</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Restrictive_Covenants.svg" alt=""></div>
     <div class="label">Restrictive Covenants</div>
-    <div class="old-label">was: lucide-file-lock</div>
+    <div class="sublabel">was: lucide-file-lock</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/STR_Permit.svg" alt=""></div>
     <div class="label">STR Permit</div>
-    <div class="old-label">was: lucide-calendar-range</div>
+    <div class="sublabel">was: lucide-calendar-range</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Owner_Occupancy.svg" alt=""></div>
     <div class="label">Owner Occupancy</div>
-    <div class="old-label">was: lucide-key-round</div>
+    <div class="sublabel">was: lucide-key-round</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Overlay_Design_Standards.svg" alt=""></div>
     <div class="label">Design Standards</div>
-    <div class="old-label">was: lucide-layers</div>
+    <div class="sublabel">was: lucide-layers</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Legislation.svg" alt=""></div>
     <div class="label">Legislation</div>
-    <div class="old-label">was: lucide-gavel</div>
+    <div class="sublabel">was: lucide-gavel</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Zoning_Documents.svg" alt=""></div>
     <div class="label">Zoning Documents</div>
-    <div class="old-label">was: lucide-layout-grid</div>
+    <div class="sublabel">was: lucide-layout-grid</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Area_Analysis.svg" alt=""></div>
     <div class="label">Area Analysis</div>
-    <div class="old-label">was: lucide-radar</div>
+    <div class="sublabel">was: lucide-radar</div>
   </div>
   <div class="card">
+    <span class="status-dot live"></span>
     <div class="icon-circle"><img src="assets/icons/Draw_on_Parcel.svg" alt=""></div>
     <div class="label">Draw on Parcel</div>
-    <div class="old-label">was: lucide-pencil-ruler</div>
+    <div class="sublabel">was: lucide-pencil-ruler</div>
   </div>
 </div>
 
-<!-- ========================================== -->
-<h2>Session 2: New Alternatives (Preview Only) <span class="badge badge-new">Preview</span></h2>
-<p class="desc">14 new ParcelQuest-style alternatives for remaining non-matching icons. These are in _preview/ and have NOT replaced the originals yet. Compare side-by-side below.</p>
-
-<div class="compare-grid">
-  <!-- Checklist -->
-  <div class="compare-card">
+<h3 style="color:#706F6C; font-size:13px; margin-top:30px;">Custom Replacements -- Session 2 (10)</h3>
+<div class="grid">
+  <div class="card">
+    <span class="status-dot live"></span>
+    <div class="icon-circle"><img src="assets/icons/Checklist_.svg" alt=""></div>
     <div class="label">Checklist</div>
-    <div class="sublabel">Current: 288KB complex SVG</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">Current</div>
-        <div class="icon-circle"><img src="Checklist_.svg" alt="" onerror="this.parentElement.innerHTML='<span style=color:#918A83>288KB - too large</span>'"></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">New</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Checklist_.svg" alt=""></div>
-      </div>
-    </div>
+    <div class="sublabel">was: 288KB oversized SVG</div>
   </div>
-
-  <!-- Dashboard -->
-  <div class="compare-card">
+  <div class="card">
+    <span class="status-dot live"></span>
+    <div class="icon-circle"><img src="assets/icons/Dashboard.svg" alt=""></div>
     <div class="label">Dashboard</div>
-    <div class="sublabel">Current: 10KB, 960x960</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">Current</div>
-        <div class="icon-circle"><img src="Dashboard.svg" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">New</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Dashboard.svg" alt=""></div>
-      </div>
-    </div>
+    <div class="sublabel">was: 10KB complex SVG</div>
   </div>
-
-  <!-- Cost / Market -->
-  <div class="compare-card">
-    <div class="label">Cost / Market</div>
-    <div class="sublabel">Current: 7.7KB, 768x768</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">Current</div>
-        <div class="icon-circle"><img src="Cost_Market.svg" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">New</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Cost_Market.svg" alt=""></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Eligibility Check -->
-  <div class="compare-card">
+  <div class="card">
+    <span class="status-dot live"></span>
+    <div class="icon-circle"><img src="assets/icons/Eligibility_Check.svg" alt=""></div>
     <div class="label">Eligibility Check</div>
-    <div class="sublabel">Current: 16KB, 960x960</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">Current</div>
-        <div class="icon-circle"><img src="Eligibility_Check.svg" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">New</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Eligibility_Check.svg" alt=""></div>
-      </div>
-    </div>
+    <div class="sublabel">was: 16KB complex SVG</div>
   </div>
-
-  <!-- Draw DADU -->
-  <div class="compare-card">
+  <div class="card">
+    <span class="status-dot live"></span>
+    <div class="icon-circle"><img src="assets/icons/Draw_DADU.svg" alt=""></div>
     <div class="label">Draw DADU</div>
-    <div class="sublabel">Current: 9.3KB, 960x960</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">Current</div>
-        <div class="icon-circle"><img src="Draw_DADU.svg" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">New</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Draw_DADU.svg" alt=""></div>
-      </div>
-    </div>
+    <div class="sublabel">was: 9KB complex SVG</div>
   </div>
-
-  <!-- Homeowner -->
-  <div class="compare-card">
+  <div class="card">
+    <span class="status-dot live"></span>
+    <div class="icon-circle"><img src="assets/icons/homeowner.svg" alt=""></div>
     <div class="label">Homeowner</div>
-    <div class="sublabel">Current: 8.7KB, 720x720</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">Current</div>
-        <div class="icon-circle"><img src="homeowner.svg" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">New</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/homeowner.svg" alt=""></div>
-      </div>
-    </div>
+    <div class="sublabel">was: 9KB complex SVG</div>
   </div>
-
-  <!-- Permit Approval -->
-  <div class="compare-card">
+  <div class="card">
+    <span class="status-dot live"></span>
+    <div class="icon-circle"><img src="assets/icons/Permit_Approval.svg" alt=""></div>
     <div class="label">Permit Approval</div>
-    <div class="sublabel">Current: 6.4KB, 768x768</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">Current</div>
-        <div class="icon-circle"><img src="Permit_Approval.svg" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">New</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Permit_Approval.svg" alt=""></div>
-      </div>
-    </div>
+    <div class="sublabel">was: 6KB complex SVG</div>
   </div>
-
-  <!-- Permit Explorer -->
-  <div class="compare-card">
+  <div class="card">
+    <span class="status-dot live"></span>
+    <div class="icon-circle"><img src="assets/icons/Permit_Explorer.svg" alt=""></div>
     <div class="label">Permit Explorer</div>
-    <div class="sublabel">Current: 8.1KB, 960x960</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">Current</div>
-        <div class="icon-circle"><img src="assets/icons/Permit_Explorer.svg" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">New</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Permit_Explorer.svg" alt=""></div>
-      </div>
-    </div>
+    <div class="sublabel">was: 8KB complex SVG</div>
   </div>
-
-  <!-- Project Report -->
-  <div class="compare-card">
+  <div class="card">
+    <span class="status-dot live"></span>
+    <div class="icon-circle"><img src="assets/icons/Project_Report.svg" alt=""></div>
     <div class="label">Project Report</div>
-    <div class="sublabel">Current: 7.7KB, 960x960</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">Current</div>
-        <div class="icon-circle"><img src="Project_Report.svg" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">New</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Project_Report.svg" alt=""></div>
-      </div>
-    </div>
+    <div class="sublabel">was: 8KB complex SVG</div>
   </div>
-
-  <!-- Document Database -->
-  <div class="compare-card">
+  <div class="card">
+    <span class="status-dot live"></span>
+    <div class="icon-circle"><img src="assets/icons/Document_Database.svg" alt=""></div>
     <div class="label">Document Database</div>
-    <div class="sublabel">Current: complex custom SVG</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">Current</div>
-        <div class="icon-circle"><img src="assets/icons/Document_Database.svg" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">New</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Document_Database.svg" alt=""></div>
-      </div>
-    </div>
+    <div class="sublabel">new SVG (no previous)</div>
   </div>
-
-  <!-- Claims (PNG to SVG) -->
-  <div class="compare-card">
+  <div class="card">
+    <span class="status-dot live"></span>
+    <div class="icon-circle"><img src="assets/icons/Claims.svg" alt=""></div>
     <div class="label">Claims</div>
-    <div class="sublabel">Current: PNG (7.5KB)</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">PNG</div>
-        <div class="icon-circle"><img src="assets/icons/Claims.png" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">SVG</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Claims.svg" alt=""></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Renewals (PNG to SVG) -->
-  <div class="compare-card">
-    <div class="label">Renewals</div>
-    <div class="sublabel">Current: PNG (12.2KB)</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">PNG</div>
-        <div class="icon-circle"><img src="assets/icons/Renewals.png" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">SVG</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Renewals.svg" alt=""></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Investments (PNG to SVG) -->
-  <div class="compare-card">
-    <div class="label">Investments</div>
-    <div class="sublabel">Current: PNG (11.5KB)</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">PNG</div>
-        <div class="icon-circle"><img src="assets/icons/Investments.png" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">SVG</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Investments.svg" alt=""></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Valuations (PNG to SVG) -->
-  <div class="compare-card">
-    <div class="label">Valuations</div>
-    <div class="sublabel">Current: PNG (12.7KB)</div>
-    <div class="compare-row">
-      <div class="compare-col">
-        <div class="tag current">PNG</div>
-        <div class="icon-circle"><img src="assets/icons/Valuations.png" alt=""></div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="compare-col">
-        <div class="tag new">SVG</div>
-        <div class="icon-circle"><img src="assets/icons/_preview/Valuations.svg" alt=""></div>
-      </div>
-    </div>
+    <div class="sublabel">was: PNG only</div>
   </div>
 </div>
 
 <!-- ========================================== -->
-<h2>Size Test — New Preview Icons</h2>
-<p class="desc">Each preview icon at 24px, 32px, 48px, and 64px</p>
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-  <div class="compare-card">
-    <div class="label">Dashboard</div>
-    <div class="sizes">
-      <img src="assets/icons/_preview/Dashboard.svg" width="24" height="24">
-      <img src="assets/icons/_preview/Dashboard.svg" width="32" height="32">
-      <img src="assets/icons/_preview/Dashboard.svg" width="48" height="48">
-      <img src="assets/icons/_preview/Dashboard.svg" width="64" height="64">
-    </div>
-  </div>
-  <div class="compare-card">
-    <div class="label">Eligibility Check</div>
-    <div class="sizes">
-      <img src="assets/icons/_preview/Eligibility_Check.svg" width="24" height="24">
-      <img src="assets/icons/_preview/Eligibility_Check.svg" width="32" height="32">
-      <img src="assets/icons/_preview/Eligibility_Check.svg" width="48" height="48">
-      <img src="assets/icons/_preview/Eligibility_Check.svg" width="64" height="64">
-    </div>
-  </div>
-  <div class="compare-card">
-    <div class="label">Homeowner</div>
-    <div class="sizes">
-      <img src="assets/icons/_preview/homeowner.svg" width="24" height="24">
-      <img src="assets/icons/_preview/homeowner.svg" width="32" height="32">
-      <img src="assets/icons/_preview/homeowner.svg" width="48" height="48">
-      <img src="assets/icons/_preview/homeowner.svg" width="64" height="64">
-    </div>
-  </div>
-  <div class="compare-card">
+<h2>Not Yet Committed <span class="badge badge-pending">Needs Review</span> <span class="count">-- 5 icons in _preview/</span></h2>
+<p class="desc">These are in assets/icons/_preview/ only. They need refinement or your approval before replacing the originals.</p>
+
+<div class="pending-grid">
+  <div class="card" style="border: 2px solid #CBB279;">
+    <span class="status-dot pending"></span>
+    <div class="icon-circle"><img src="assets/icons/_preview/Cost_Market.svg" alt=""></div>
     <div class="label">Cost / Market</div>
-    <div class="sizes">
-      <img src="assets/icons/_preview/Cost_Market.svg" width="24" height="24">
-      <img src="assets/icons/_preview/Cost_Market.svg" width="32" height="32">
-      <img src="assets/icons/_preview/Cost_Market.svg" width="48" height="48">
-      <img src="assets/icons/_preview/Cost_Market.svg" width="64" height="64">
-    </div>
+    <div class="sublabel">$ sign fixed, needs review</div>
   </div>
-  <div class="compare-card">
-    <div class="label">Permit Approval</div>
-    <div class="sizes">
-      <img src="assets/icons/_preview/Permit_Approval.svg" width="24" height="24">
-      <img src="assets/icons/_preview/Permit_Approval.svg" width="32" height="32">
-      <img src="assets/icons/_preview/Permit_Approval.svg" width="48" height="48">
-      <img src="assets/icons/_preview/Permit_Approval.svg" width="64" height="64">
-    </div>
-  </div>
-  <div class="compare-card">
+  <div class="card" style="border: 2px solid #CBB279;">
+    <span class="status-dot pending"></span>
+    <div class="icon-circle"><img src="assets/icons/_preview/Renewals.svg" alt=""></div>
     <div class="label">Renewals</div>
-    <div class="sizes">
-      <img src="assets/icons/_preview/Renewals.svg" width="24" height="24">
-      <img src="assets/icons/_preview/Renewals.svg" width="32" height="32">
-      <img src="assets/icons/_preview/Renewals.svg" width="48" height="48">
-      <img src="assets/icons/_preview/Renewals.svg" width="64" height="64">
-    </div>
+    <div class="sublabel">Arrows redrawn, needs review</div>
   </div>
-  <div class="compare-card">
-    <div class="label">Document Database</div>
-    <div class="sizes">
-      <img src="assets/icons/_preview/Document_Database.svg" width="24" height="24">
-      <img src="assets/icons/_preview/Document_Database.svg" width="32" height="32">
-      <img src="assets/icons/_preview/Document_Database.svg" width="48" height="48">
-      <img src="assets/icons/_preview/Document_Database.svg" width="64" height="64">
-    </div>
-  </div>
-  <div class="compare-card">
+  <div class="card" style="border: 2px solid #CBB279;">
+    <span class="status-dot pending"></span>
+    <div class="icon-circle"><img src="assets/icons/_preview/Investments.svg" alt=""></div>
     <div class="label">Investments</div>
-    <div class="sizes">
-      <img src="assets/icons/_preview/Investments.svg" width="24" height="24">
-      <img src="assets/icons/_preview/Investments.svg" width="32" height="32">
-      <img src="assets/icons/_preview/Investments.svg" width="48" height="48">
-      <img src="assets/icons/_preview/Investments.svg" width="64" height="64">
-    </div>
+    <div class="sublabel">Line fixed, needs review</div>
   </div>
-  <div class="compare-card">
+  <div class="card" style="border: 2px solid #CBB279;">
+    <span class="status-dot pending"></span>
+    <div class="icon-circle"><img src="assets/icons/_preview/Valuations.svg" alt=""></div>
     <div class="label">Valuations</div>
-    <div class="sizes">
-      <img src="assets/icons/_preview/Valuations.svg" width="24" height="24">
-      <img src="assets/icons/_preview/Valuations.svg" width="32" height="32">
-      <img src="assets/icons/_preview/Valuations.svg" width="48" height="48">
-      <img src="assets/icons/_preview/Valuations.svg" width="64" height="64">
-    </div>
+    <div class="sublabel">$ + house fixed, needs review</div>
   </div>
 </div>
+
+<p class="desc" style="margin-top: 20px;">PNG originals still in assets/icons/ for reference: Renewals.png, Investments.png, Valuations.png</p>
 
 <!-- ========================================== -->
-<h2>Color Variant Options</h2>
-<p class="desc">Same icon shapes in different color scales from your palette. These show how icons can shift tone depending on where they appear.</p>
+<h2>Color Variants <span class="badge badge-variant">Exploration</span> <span class="count">-- 6 in _preview/</span></h2>
+<p class="desc">Same shapes in alternate color scales. These are for reference, not meant to replace anything.</p>
 
-<h3>Permit Activity — 5 Color Scales</h3>
-<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 40px;">
-  <div class="compare-card">
-    <div class="icon-circle"><img src="assets/icons/Permit_Activity.svg" alt=""></div>
-    <div class="label">Standard</div>
-    <div class="sublabel">#3A5566 + #7B746D dots</div>
-    <div style="display:flex; gap:4px; justify-content:center; margin-top:8px;">
-      <span style="width:20px;height:20px;background:#3A5566;border-radius:4px;display:inline-block;"></span>
-      <span style="width:20px;height:20px;background:#7B746D;border-radius:4px;display:inline-block;"></span>
-    </div>
-  </div>
-  <div class="compare-card">
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+  <div class="card">
     <div class="icon-circle"><img src="assets/icons/_preview/Permit_Activity_light.svg" alt=""></div>
-    <div class="label">Light + Outline</div>
+    <div class="label">Permit Activity -- Light + Outline</div>
     <div class="sublabel">#A59D8B fill + #3A5566 stroke</div>
-    <div style="display:flex; gap:4px; justify-content:center; margin-top:8px;">
-      <span style="width:20px;height:20px;background:#A59D8B;border-radius:4px;display:inline-block;"></span>
-      <span style="width:20px;height:20px;background:#3A5566;border-radius:4px;display:inline-block;border:1px solid #3A5566;"></span>
-    </div>
   </div>
-  <div class="compare-card">
+  <div class="card">
     <div class="icon-circle"><img src="assets/icons/_preview/Permit_Activity_warm.svg" alt=""></div>
-    <div class="label">Warm Mono</div>
-    <div class="sublabel">All #A59D8B (like your Canva)</div>
-    <div style="display:flex; gap:4px; justify-content:center; margin-top:8px;">
-      <span style="width:20px;height:20px;background:#A59D8B;border-radius:4px;display:inline-block;"></span>
-    </div>
-  </div>
-  <div class="compare-card">
-    <div class="icon-circle"><img src="assets/icons/_preview/Permit_Activity_stone.svg" alt=""></div>
-    <div class="label">Stone</div>
-    <div class="sublabel">#7B746D + #918A83 dots</div>
-    <div style="display:flex; gap:4px; justify-content:center; margin-top:8px;">
-      <span style="width:20px;height:20px;background:#7B746D;border-radius:4px;display:inline-block;"></span>
-      <span style="width:20px;height:20px;background:#918A83;border-radius:4px;display:inline-block;"></span>
-    </div>
-  </div>
-  <div class="compare-card" style="background:#3A5566;">
-    <div class="icon-circle" style="background:#496778;"><img src="assets/icons/_preview/Permit_Activity_cream_on_dark.svg" alt=""></div>
-    <div class="label" style="color:#E1D4BB;">Cream on Dark</div>
-    <div class="sublabel" style="color:#918A83;">#E1D4BB + #A59D8B dots</div>
-    <div style="display:flex; gap:4px; justify-content:center; margin-top:8px;">
-      <span style="width:20px;height:20px;background:#E1D4BB;border-radius:4px;display:inline-block;"></span>
-      <span style="width:20px;height:20px;background:#A59D8B;border-radius:4px;display:inline-block;"></span>
-    </div>
-  </div>
-</div>
-
-<h3>Legislation — 3 Color Scales</h3>
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px;">
-  <div class="compare-card">
-    <div class="icon-circle"><img src="assets/icons/Legislation.svg" alt=""></div>
-    <div class="label">Standard</div>
-    <div class="sublabel">#3A5566 + #7B746D dots</div>
-  </div>
-  <div class="compare-card">
-    <div class="icon-circle"><img src="assets/icons/_preview/Legislation_light.svg" alt=""></div>
-    <div class="label">Light + Outline</div>
-    <div class="sublabel">#A59D8B fill + #3A5566 stroke</div>
-  </div>
-  <div class="compare-card">
-    <div class="icon-circle"><img src="assets/icons/_preview/Legislation_warm.svg" alt=""></div>
-    <div class="label">Warm Mono</div>
+    <div class="label">Permit Activity -- Warm Mono</div>
     <div class="sublabel">All #A59D8B</div>
   </div>
-</div>
-
-<!-- ========================================== -->
-<h2>Color Scale Reference</h2>
-<p class="desc">All approved icon color combinations from the Homebody palette</p>
-
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 900px;">
-  <!-- Scale 1 -->
-  <div class="compare-card" style="text-align:left; padding:24px;">
-    <div class="label" style="margin-bottom:12px;">Scale 1: Standard (ParcelQuest)</div>
-    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
-      <span style="width:32px;height:32px;background:#3A5566;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#706F6C;font-size:12px;"><strong>#3A5566</strong> Deep Slate — structural fills</span>
-    </div>
-    <div style="display:flex; gap:8px; align-items:center;">
-      <span style="width:32px;height:32px;background:#7B746D;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#706F6C;font-size:12px;"><strong>#7B746D</strong> Warm Stone — dots</span>
-    </div>
-    <div style="color:#918A83;font-size:11px;margin-top:8px;">Best for: Nav dropdowns, light card backgrounds</div>
+  <div class="card">
+    <div class="icon-circle"><img src="assets/icons/_preview/Permit_Activity_stone.svg" alt=""></div>
+    <div class="label">Permit Activity -- Stone Duo</div>
+    <div class="sublabel">#7B746D + #918A83</div>
   </div>
-
-  <!-- Scale 2 -->
-  <div class="compare-card" style="text-align:left; padding:24px;">
-    <div class="label" style="margin-bottom:12px;">Scale 2: Light + Slate Outline</div>
-    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
-      <span style="width:32px;height:32px;background:#A59D8B;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#706F6C;font-size:12px;"><strong>#A59D8B</strong> Warm Muted — fills</span>
-    </div>
-    <div style="display:flex; gap:8px; align-items:center;">
-      <span style="width:32px;height:32px;background:#3A5566;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#706F6C;font-size:12px;"><strong>#3A5566</strong> Deep Slate — outlines only</span>
-    </div>
-    <div style="color:#918A83;font-size:11px;margin-top:8px;">Best for: Secondary icons, softer sections, paired next to Standard</div>
+  <div class="card" style="background:#3A5566;">
+    <div class="icon-circle" style="background:#496778;"><img src="assets/icons/_preview/Permit_Activity_cream_on_dark.svg" alt=""></div>
+    <div class="label" style="color:#E1D4BB;">Permit Activity -- Cream on Dark</div>
+    <div class="sublabel" style="color:#918A83;">#E1D4BB + #A59D8B</div>
   </div>
-
-  <!-- Scale 3 -->
-  <div class="compare-card" style="text-align:left; padding:24px;">
-    <div class="label" style="margin-bottom:12px;">Scale 3: Warm Monochrome</div>
-    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
-      <span style="width:32px;height:32px;background:#A59D8B;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#706F6C;font-size:12px;"><strong>#A59D8B</strong> Warm Muted — everything</span>
-    </div>
-    <div style="color:#918A83;font-size:11px;margin-top:8px;">Best for: Decorative, watermark-style, background elements. This matches your Canva icon.</div>
+  <div class="card">
+    <div class="icon-circle"><img src="assets/icons/_preview/Legislation_light.svg" alt=""></div>
+    <div class="label">Legislation -- Light + Outline</div>
+    <div class="sublabel">#A59D8B fill + #3A5566 stroke</div>
   </div>
-
-  <!-- Scale 4 -->
-  <div class="compare-card" style="text-align:left; padding:24px;">
-    <div class="label" style="margin-bottom:12px;">Scale 4: Stone Duo</div>
-    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
-      <span style="width:32px;height:32px;background:#7B746D;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#706F6C;font-size:12px;"><strong>#7B746D</strong> Warm Stone — fills</span>
-    </div>
-    <div style="display:flex; gap:8px; align-items:center;">
-      <span style="width:32px;height:32px;background:#918A83;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#706F6C;font-size:12px;"><strong>#918A83</strong> Lighter Stone — dots</span>
-    </div>
-    <div style="color:#918A83;font-size:11px;margin-top:8px;">Best for: Mid-tone backgrounds, neutral contexts</div>
-  </div>
-
-  <!-- Scale 5 -->
-  <div class="compare-card" style="text-align:left; padding:24px; background:#3A5566;">
-    <div class="label" style="margin-bottom:12px; color:#E1D4BB;">Scale 5: Cream on Dark</div>
-    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
-      <span style="width:32px;height:32px;background:#E1D4BB;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#918A83;font-size:12px;"><strong>#E1D4BB</strong> Cream — fills</span>
-    </div>
-    <div style="display:flex; gap:8px; align-items:center;">
-      <span style="width:32px;height:32px;background:#A59D8B;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#918A83;font-size:12px;"><strong>#A59D8B</strong> Warm Muted — dots</span>
-    </div>
-    <div style="color:#706F6C;font-size:11px;margin-top:8px;">Best for: Dark sections (#3A5566 bg), hero areas, footer</div>
-  </div>
-
-  <!-- Scale 6 -->
-  <div class="compare-card" style="text-align:left; padding:24px; background:#2F3A45;">
-    <div class="label" style="margin-bottom:12px; color:#CBB279;">Scale 6: Wheat on Dark (accent)</div>
-    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
-      <span style="width:32px;height:32px;background:#CBB279;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#918A83;font-size:12px;"><strong>#CBB279</strong> Wheat — fills (sparingly)</span>
-    </div>
-    <div style="display:flex; gap:8px; align-items:center;">
-      <span style="width:32px;height:32px;background:#E1D4BB;border-radius:6px;display:inline-block;"></span>
-      <span style="color:#918A83;font-size:12px;"><strong>#E1D4BB</strong> Cream — dots</span>
-    </div>
-    <div style="color:#706F6C;font-size:11px;margin-top:8px;">Best for: Highlighted/featured icons on dark backgrounds. Use sparingly (accent).</div>
+  <div class="card">
+    <div class="icon-circle"><img src="assets/icons/_preview/Legislation_warm.svg" alt=""></div>
+    <div class="label">Legislation -- Warm Mono</div>
+    <div class="sublabel">All #A59D8B</div>
   </div>
 </div>
 
