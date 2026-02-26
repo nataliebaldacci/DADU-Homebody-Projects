@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Linen background circle -->
+    <circle fill="#F0EBE1" cx="14" cy="14" r="14"/>
+    <!-- Top curved arrow (clockwise, right side) -->
+    <g>
+      <path fill="none" stroke="#3A5566" stroke-width="2" stroke-linecap="round" d="M19,9 A8,8 0 0,0 7,7"/>
+      <polygon fill="#3A5566" points="5.5,5 8,8.5 4.5,8.5"/>
+    </g>
+    <!-- Bottom curved arrow (counter-clockwise, left side) -->
+    <g>
+      <path fill="none" stroke="#3A5566" stroke-width="2" stroke-linecap="round" d="M5,19 A8,8 0 0,0 17,21"/>
+      <polygon fill="#3A5566" points="18.5,23 16,19.5 19.5,19.5"/>
+    </g>
+    <!-- Calendar body -->
+    <g>
+      <rect fill="#3A5566" x="7" y="9" width="11" height="10" rx="1.5"/>
+      <rect fill="#F5F5F0" x="8.5" y="11.5" width="8" height="6" rx="0.5"/>
+    </g>
+    <!-- Calendar top bar -->
+    <g>
+      <rect fill="#3A5566" x="7" y="9" width="11" height="3" rx="1.5"/>
+    </g>
+    <!-- Calendar grid (2x3) -->
+    <g>
+      <rect fill="#3A5566" x="9" y="12.2" width="1.8" height="1.5" rx="0.3"/>
+      <rect fill="#3A5566" x="11.6" y="12.2" width="1.8" height="1.5" rx="0.3"/>
+      <rect fill="#3A5566" x="14.2" y="12.2" width="1.8" height="1.5" rx="0.3"/>
+      <rect fill="#3A5566" x="9" y="14.5" width="1.8" height="1.5" rx="0.3"/>
+      <rect fill="#3A5566" x="11.6" y="14.5" width="1.8" height="1.5" rx="0.3"/>
+      <rect fill="#3A5566" x="14.2" y="14.5" width="1.8" height="1.5" rx="0.3"/>
+    </g>
+    <!-- Diminishing dots (single column) -->
+    <g>
+      <circle fill="#7B746D" cx="22" cy="12" r="0.95"/>
+      <circle fill="#7B746D" cx="22" cy="14.5" r="0.85"/>
+      <circle fill="#7B746D" cx="22" cy="16.8" r="0.75"/>
+      <circle fill="#7B746D" cx="22" cy="18.8" r="0.65"/>
+    </g>
+  </g>
+</svg>
