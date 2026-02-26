@@ -12,16 +12,15 @@
  body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--background);
-  color: #333;
+  color: #3A5566;
   line-height: 1.6;
  }
 
  /* ═══ SECTION 1: HERO ═══ */
  .about-hero {
-  background: var(--slate);
-  padding: 64px 24px 56px;
+  background: #F2F0ED;
+  padding: 100px 24px 56px;
   text-align: center;
-  color: white;
  }
 
  .about-hero-inner {
@@ -40,12 +39,12 @@
   font-weight: 700;
   font-style: italic;
   font-size: 2.4rem;
-  color: var(--cream, #E1D4BB);
+  color: #3A5566;
   margin-bottom: 14px;
  }
 
  .about-hero p {
-  color: var(--linen, #F0EBE1);
+  color: #706F6C;
   font-size: 1.05rem;
   max-width: 700px;
   margin: 0 auto 36px;
@@ -72,7 +71,7 @@
 
  .hero-stat-label {
   font-size: 0.7rem;
-  color: var(--cream, #E1D4BB);
+  color: #7B746D;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: 600;
@@ -103,7 +102,7 @@
  }
 
  .what-text p {
-  color: #3E4A4F;
+  color: #706F6C;
   font-size: 0.95rem;
   line-height: 1.75;
   margin-bottom: 16px;
@@ -125,7 +124,7 @@
  }
 
  .vanderbilt-card p {
-  color: #3E4A4F;
+  color: #706F6C;
   font-size: 0.85rem;
   line-height: 1.6;
   margin-bottom: 6px;
@@ -149,7 +148,7 @@
  }
 
  .features-subtitle {
-  color: #3E4A4F;
+  color: #706F6C;
   font-size: 1rem;
   margin-bottom: 40px;
  }
@@ -196,12 +195,12 @@
  }
 
  .feature-card {
-  background: var(--card-bg);
-  border: 1px solid var(--gray-light);
+  background: #3A5566;
+  border: 1px solid #496778;
   border-radius: 12px;
   padding: 24px;
   text-decoration: none;
-  color: inherit;
+  color: #E1D4BB;
   transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
@@ -209,13 +208,14 @@
 
  .feature-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  background: #496778;
  }
 
  .feature-card-icon {
   width: 44px;
   height: 44px;
-  background: var(--linen);
+  background: rgba(203, 178, 121, 0.15);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -226,18 +226,19 @@
  .feature-card-icon img {
   width: 24px;
   height: 24px;
+  filter: brightness(0) invert(0.9) sepia(0.15) saturate(0.3) hue-rotate(10deg);
  }
 
  .feature-card h4 {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--slate, #3A5566);
+  color: #F0EBE1;
   margin-bottom: 8px;
  }
 
  .feature-card p {
   font-size: 0.82rem;
-  color: #3E4A4F;
+  color: rgba(225, 212, 187, 0.75);
   line-height: 1.55;
   margin-bottom: 10px;
   flex: 1;
@@ -245,15 +246,15 @@
 
  .feature-card .stat {
   font-size: 0.72rem;
-  color: #706F6C;
-  font-weight: 500;
+  color: #CBB279;
+  font-weight: 600;
   margin-bottom: 10px;
  }
 
  .feature-card .card-link {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--slate, #3A5566);
+  color: #CBB279;
   margin-top: auto;
  }
 
@@ -302,7 +303,7 @@
 
  .how-step p {
   font-size: 0.82rem;
-  color: #3E4A4F;
+  color: #706F6C;
   line-height: 1.55;
  }
 
@@ -340,7 +341,7 @@
   background: var(--card-bg);
   border-radius: 12px;
   padding: 24px;
-  color: #333;
+  color: #3A5566;
  }
 
  .data-card-icon {
@@ -368,7 +369,7 @@
 
  .data-card p {
   font-size: 0.82rem;
-  color: #3E4A4F;
+  color: #706F6C;
   line-height: 1.55;
   margin-bottom: 10px;
  }
@@ -395,7 +396,7 @@
  }
 
  .users-subtitle {
-  color: #3E4A4F;
+  color: #706F6C;
   font-size: 0.95rem;
   margin-bottom: 36px;
  }
@@ -447,7 +448,7 @@
 
  .user-card p {
   font-size: 0.82rem;
-  color: #3E4A4F;
+  color: #706F6C;
   line-height: 1.5;
   margin-bottom: 16px;
  }
