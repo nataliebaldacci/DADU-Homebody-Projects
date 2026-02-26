@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Document -->
+    <g>
+      <rect fill="#3A5566" x="2" y="1" width="20" height="26" rx="1"/>
+      <rect fill="#F5F5F0" x="3.5" y="2.5" width="17" height="23" rx="0.4"/>
+    </g>
+    <!-- Ruler along right edge (specifications/measurements) -->
+    <g>
+      <rect fill="#3A5566" x="17" y="2.5" width="3.5" height="23" rx="0.4"/>
+      <!-- Ruler tick marks -->
+      <rect fill="#F5F5F0" x="17" y="5" width="2" height="0.5"/>
+      <rect fill="#F5F5F0" x="17" y="8.5" width="2" height="0.5"/>
+      <rect fill="#F5F5F0" x="17" y="12" width="2" height="0.5"/>
+      <rect fill="#F5F5F0" x="17" y="15.5" width="2" height="0.5"/>
+      <rect fill="#F5F5F0" x="17" y="19" width="2" height="0.5"/>
+      <rect fill="#F5F5F0" x="17" y="22.5" width="2" height="0.5"/>
+      <!-- Short ticks -->
+      <rect fill="#F5F5F0" x="17" y="6.75" width="1.2" height="0.4"/>
+      <rect fill="#F5F5F0" x="17" y="10.25" width="1.2" height="0.4"/>
+      <rect fill="#F5F5F0" x="17" y="13.75" width="1.2" height="0.4"/>
+      <rect fill="#F5F5F0" x="17" y="17.25" width="1.2" height="0.4"/>
+      <rect fill="#F5F5F0" x="17" y="20.75" width="1.2" height="0.4"/>
+    </g>
+    <!-- Checkmark items (requirements list) -->
+    <g>
+      <!-- Check 1 -->
+      <polyline fill="none" stroke="#3A5566" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="5.5,6.5 6.5,7.5 8.5,5.5"/>
+      <circle fill="#7B746D" cx="10.5" cy="6.5" r="0.5"/>
+      <circle fill="#7B746D" cx="12.3" cy="6.5" r="0.42"/>
+      <circle fill="#7B746D" cx="13.8" cy="6.5" r="0.35"/>
+      <!-- Check 2 -->
+      <polyline fill="none" stroke="#3A5566" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="5.5,11 6.5,12 8.5,10"/>
+      <circle fill="#7B746D" cx="10.5" cy="11" r="0.5"/>
+      <circle fill="#7B746D" cx="12.3" cy="11" r="0.42"/>
+      <circle fill="#7B746D" cx="13.8" cy="11" r="0.35"/>
+      <!-- Check 3 -->
+      <polyline fill="none" stroke="#3A5566" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="5.5,15.5 6.5,16.5 8.5,14.5"/>
+      <circle fill="#7B746D" cx="10.5" cy="15.5" r="0.5"/>
+      <circle fill="#7B746D" cx="12.3" cy="15.5" r="0.42"/>
+      <!-- Unchecked item 4 (empty box) -->
+      <rect fill="none" stroke="#3A5566" stroke-width="1" x="5.5" y="19" width="3" height="3" rx="0.3"/>
+      <circle fill="#7B746D" cx="10.5" cy="20.5" r="0.5"/>
+      <circle fill="#7B746D" cx="12.3" cy="20.5" r="0.42"/>
+      <circle fill="#7B746D" cx="13.8" cy="20.5" r="0.35"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Vertical timeline line -->
+    <rect fill="#3A5566" x="8.5" y="2" width="1.5" height="24" rx="0.5"/>
+    <!-- Milestone 1 (completed — filled circle) -->
+    <g>
+      <circle fill="#3A5566" cx="9.25" cy="5" r="3"/>
+      <polyline fill="none" stroke="#F5F5F0" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="7.8,5 8.7,6 10.7,4"/>
+    </g>
+    <!-- Label dots for milestone 1 -->
+    <g>
+      <circle fill="#7B746D" cx="15" cy="4.5" r="0.55"/>
+      <circle fill="#7B746D" cx="17" cy="4.5" r="0.48"/>
+      <circle fill="#7B746D" cx="18.8" cy="4.5" r="0.4"/>
+    </g>
+    <!-- Milestone 2 (completed — filled circle) -->
+    <g>
+      <circle fill="#3A5566" cx="9.25" cy="12" r="3"/>
+      <polyline fill="none" stroke="#F5F5F0" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="7.8,12 8.7,13 10.7,11"/>
+    </g>
+    <!-- Label dots for milestone 2 -->
+    <g>
+      <circle fill="#7B746D" cx="15" cy="11.5" r="0.55"/>
+      <circle fill="#7B746D" cx="17" cy="11.5" r="0.48"/>
+      <circle fill="#7B746D" cx="18.8" cy="11.5" r="0.4"/>
+      <circle fill="#7B746D" cx="20.4" cy="11.5" r="0.35"/>
+    </g>
+    <!-- Milestone 3 (in progress — ring) -->
+    <g>
+      <circle fill="#F5F5F0" cx="9.25" cy="19" r="3" stroke="#3A5566" stroke-width="1.5"/>
+    </g>
+    <!-- Label dots for milestone 3 -->
+    <g>
+      <circle fill="#7B746D" cx="15" cy="18.5" r="0.55"/>
+      <circle fill="#7B746D" cx="17" cy="18.5" r="0.48"/>
+    </g>
+    <!-- Future dot (pending) -->
+    <circle fill="#7B746D" cx="9.25" cy="24.5" r="1.2"/>
+  </g>
+</svg>

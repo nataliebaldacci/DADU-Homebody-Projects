@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Monitor frame -->
+    <g>
+      <rect fill="#3A5566" x="2" y="2" width="24" height="17" rx="1.2"/>
+      <rect fill="#F5F5F0" x="3.5" y="3.5" width="21" height="14" rx="0.5"/>
+    </g>
+    <!-- Monitor stand -->
+    <g>
+      <rect fill="#3A5566" x="11" y="19" width="6" height="2.5" rx="0.3"/>
+      <rect fill="#3A5566" x="8" y="21" width="12" height="1.5" rx="0.5"/>
+    </g>
+    <!-- Bar chart on screen -->
+    <g>
+      <rect fill="#3A5566" x="5.5" y="12.5" width="3" height="3.5" rx="0.3"/>
+      <rect fill="#3A5566" x="9.5" y="10" width="3" height="6" rx="0.3"/>
+      <rect fill="#3A5566" x="13.5" y="7.5" width="3" height="8.5" rx="0.3"/>
+      <rect fill="#3A5566" x="17.5" y="5.5" width="3" height="10.5" rx="0.3"/>
+    </g>
+    <!-- Trend line -->
+    <polyline fill="none" stroke="#3A5566" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" points="5.5,11 9.5,9 13.5,6.5 19,4.5"/>
+    <!-- Dot labels below bars -->
+    <g>
+      <circle fill="#7B746D" cx="7" cy="24.5" r="0.5"/>
+      <circle fill="#7B746D" cx="11" cy="24.5" r="0.45"/>
+      <circle fill="#7B746D" cx="15" cy="24.5" r="0.4"/>
+      <circle fill="#7B746D" cx="19" cy="24.5" r="0.35"/>
+    </g>
+  </g>
+</svg>

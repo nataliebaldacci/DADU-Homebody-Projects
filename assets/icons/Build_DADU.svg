@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- House frame under construction -->
+    <g>
+      <!-- Roof frame (open, not solid — under construction) -->
+      <polygon fill="none" stroke="#3A5566" stroke-width="1.8" stroke-linejoin="round" points="3,14 14,4 25,14"/>
+      <!-- Wall studs -->
+      <rect fill="#3A5566" x="5" y="14" width="1.8" height="11" rx="0.2"/>
+      <rect fill="#3A5566" x="21.2" y="14" width="1.8" height="11" rx="0.2"/>
+      <rect fill="#3A5566" x="13" y="14" width="1.8" height="11" rx="0.2"/>
+      <!-- Top plate -->
+      <rect fill="#3A5566" x="5" y="13.5" width="18" height="1.5" rx="0.2"/>
+      <!-- Bottom plate -->
+      <rect fill="#3A5566" x="5" y="24" width="18" height="1.5" rx="0.2"/>
+    </g>
+    <!-- Dot texture inside frame (where walls would be) -->
+    <g>
+      <circle fill="#7B746D" cx="8.5" cy="17" r="0.5"/>
+      <circle fill="#7B746D" cx="11" cy="17" r="0.45"/>
+      <circle fill="#7B746D" cx="8.5" cy="19.5" r="0.45"/>
+      <circle fill="#7B746D" cx="11" cy="19.5" r="0.4"/>
+      <circle fill="#7B746D" cx="8.5" cy="22" r="0.4"/>
+      <circle fill="#7B746D" cx="17" cy="17" r="0.5"/>
+      <circle fill="#7B746D" cx="19.5" cy="17" r="0.45"/>
+      <circle fill="#7B746D" cx="17" cy="19.5" r="0.45"/>
+      <circle fill="#7B746D" cx="19.5" cy="19.5" r="0.4"/>
+      <circle fill="#7B746D" cx="17" cy="22" r="0.4"/>
+    </g>
+  </g>
+</svg>

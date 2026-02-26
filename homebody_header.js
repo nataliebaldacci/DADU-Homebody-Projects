@@ -76,7 +76,7 @@
              ) +
              col('Dashboard.svg', 'Dashboards',
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
-                 item('contractor_marketplace.html', 'Building_and_Construction.svg', 'Contractor Marketplace') +
+                 item('contractor_marketplace.html', 'Contractor_Marketplace.svg', 'Contractor Marketplace') +
                  item('market_trends.html', 'Cost_Market.svg', 'Market Trends') +
                  item('nashville_permit_analytics.html', 'Permit_Analytics.svg', 'Permit Analytics')
              ) +
@@ -90,19 +90,19 @@
     '        </button>' +
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="build-dropdown" role="menu">' +
              col('Project_Planner.svg', 'Plan My Project',
-                 item('dadu_build_tool_v2.html', 'Building_and_Construction.svg', 'Build My DADU') +
+                 item('dadu_build_tool_v2.html', 'Build_DADU.svg', 'Build My DADU') +
                  item('project_planner_hub.html', 'Checklist_.svg', 'Planning Hub') +
                  item('draw_dadu_on_parcel.html', 'Draw_DADU.svg', 'Draw DADU on Parcel') +
-                 item('permit_process_timeline.html', 'Permit_Approval.svg', 'Permit Process Timeline') +
+                 item('permit_process_timeline.html', 'Permit_Timeline.svg', 'Permit Process Timeline') +
                  item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
-                 item('form_wizard.html', 'Eligibility_Check.svg', 'Form Wizard')
+                 item('form_wizard.html', 'Form_Wizard.svg', 'Form Wizard')
              ) +
              col('Exports__Reports.svg', 'Research',
                  item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator') +
                  item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans &amp; Permit Docs') +
-                 item('dadu_resources.html', 'Recorded_Docs.svg', 'External Links') +
+                 item('dadu_resources.html', 'External_Links.svg', 'External Links') +
                  item('pdf_database_lookup.html', 'Document_Database.svg', 'PDF Database') +
-                 item('contractor_dashboard.html', 'Building_and_Construction.svg', 'Find a Contractor')
+                 item('contractor_dashboard.html', 'Find_Contractor.svg', 'Find a Contractor')
              ) +
     '        </div>' +
     '      </div>' +
@@ -115,7 +115,7 @@
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="resources-dropdown" role="menu">' +
              col('Recorded_Docs.svg', 'Learn',
                  item('what_is_dadu.html', 'What_is_DADU.svg', 'What is a DADU?') +
-                 item('dadu_requirements_overview.html', 'Building_and_Construction.svg', 'General Requirements') +
+                 item('dadu_requirements_overview.html', 'General_Requirements.svg', 'General Requirements') +
                  item('dadu_eligibility_flowchart.html', 'Eligibility_Check.svg', 'Eligibility Flowchart') +
                  item('dadu_history.html', 'DADU_History.svg', 'DADU History') +
                  item('dadu_code_legislation_v5.html', 'Legislation.svg', 'Code &amp; Legislation') +

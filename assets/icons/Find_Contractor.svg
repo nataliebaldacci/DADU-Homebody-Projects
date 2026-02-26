@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <g>
+    <!-- Magnifying glass -->
+    <g>
+      <circle fill="#3A5566" cx="12" cy="12" r="9"/>
+      <circle fill="#F5F5F0" cx="12" cy="12" r="7"/>
+      <!-- Handle -->
+      <rect fill="#3A5566" x="19" y="18.5" width="3" height="8" rx="1" transform="rotate(-45,20.5,22.5)"/>
+    </g>
+    <!-- Hardhat inside magnifying glass -->
+    <g>
+      <!-- Hat dome -->
+      <path fill="#3A5566" d="M7.5,12.5 Q7.5,8 12,8 Q16.5,8 16.5,12.5 Z"/>
+      <!-- Brim -->
+      <rect fill="#3A5566" x="6.5" y="12" width="11" height="1.8" rx="0.5"/>
+    </g>
+    <!-- Dot texture below hardhat (worker silhouette implied) -->
+    <g>
+      <circle fill="#7B746D" cx="10" cy="15.5" r="0.45"/>
+      <circle fill="#7B746D" cx="12" cy="15.5" r="0.4"/>
+      <circle fill="#7B746D" cx="14" cy="15.5" r="0.35"/>
+    </g>
+  </g>
+</svg>
