@@ -587,6 +587,33 @@ body {
 .legend-item:last-child { margin-bottom: 0; }
 .legend-color { width: 16px; height: 16px; border-radius: 3px; }
 
+/* Measure Tool */
+.map-measure {
+  position: absolute;
+  bottom: 220px;
+  right: 16px;
+  z-index: 500;
+}
+
+/* Compass */
+.map-compass {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 500;
+  background: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Measure line */
+.measure-line { stroke: var(--slate); stroke-width: 2; stroke-dasharray: 6,4; }
+
 /* Loading Overlay */
 .loading-overlay {
   position: absolute;
@@ -944,6 +971,18 @@ body {
       </div>
     </div>
 
+    <div class="control-section">
+      <h4>Rotate</h4>
+      <div class="slider-container">
+        <input type="range" class="slider" id="rotateSlider" min="0" max="360" value="0" step="1" oninput="updateRotation()">
+        <div class="slider-labels">
+          <span>0&deg;</span>
+          <span id="rotateLabel" style="font-weight:600;">0&deg;</span>
+          <span>360&deg;</span>
+        </div>
+      </div>
+    </div>
+
     <div class="validation" id="validationBox">
       <div class="validation-item valid">
         <span></span>
@@ -1022,7 +1061,7 @@ body {
   <div class="map-legend">
     <div class="legend-title">Map Legend</div>
     <div class="legend-item">
-      <div class="legend-color" style="background: rgba(44,62,80,0.3); border: 2px solid #3A5566;"></div>
+      <div class="legend-color" style="background: rgba(58,85,102,0.08); border: 2px dashed #3A5566;"></div>
       <span>Property Boundary</span>
     </div>
     <div class="legend-item">
@@ -1041,6 +1080,24 @@ body {
       <div class="legend-color" style="background: #CBB279; border-radius: 50%; width: 12px; height: 12px;"></div>
       <span>Nearby Permits</span>
     </div>
+  </div>
+
+  <!-- Measure Tool -->
+  <div class="map-measure" id="measureTool">
+    <button class="map-btn" id="measureBtn" onclick="toggleMeasure()" title="Measure Distance" style="width:auto;padding:6px 12px;font-size:11px;display:flex;align-items:center;gap:5px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 22L22 2M15 2h7v7M9 22H2v-7"/></svg>
+      <span id="measureLabel">Measure</span>
+    </button>
+    <div id="measureResult" style="display:none;background:white;border-radius:8px;padding:6px 10px;font-size:11px;color:var(--slate);font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.15);margin-top:4px;"></div>
+  </div>
+
+  <!-- Compass / North Arrow -->
+  <div class="map-compass" title="North">
+    <svg width="32" height="32" viewBox="0 0 40 40">
+      <polygon points="20,2 25,18 20,14 15,18" fill="#3A5566"/>
+      <polygon points="20,38 15,22 20,26 25,22" fill="#918A83"/>
+      <text x="20" y="12" text-anchor="middle" font-size="8" font-weight="700" fill="white">N</text>
+    </svg>
   </div>
 
   <!-- Instructions Pill -->
@@ -1550,8 +1607,6 @@ async function loadParcelPolygon(lat, lon) {
         }
       });
     }
-    // Draw setbacks now that parcel polygon is loaded
-    try { drawSetbacks(); } catch(e) { console.log('Setback draw error:', e); }
   } catch (err) {
     console.log('[BUILD V2] Parcel polygon load error:', err.message);
   }
@@ -1621,6 +1676,10 @@ function normalizeAttrs(a) {
 
 function displayProperty(a) {
   a = normalizeAttrs(a);
+  // Reset DADU position and rotation for new property
+  daduCenterLat = null;
+  daduCenterLon = null;
+  daduRotation = 0;
   // Clear map layers
   parcelLayer.clearLayers();
   buildingLayer.clearLayers();
@@ -2049,54 +2108,80 @@ function updateDisplay(sqft, width, depth) {
 }
 
 // ========== DRAW DADU ==========
+var daduCenterLat = null, daduCenterLon = null;
+var daduRotation = 0;
+
 function drawDadu() {
   daduLayer.clearLayers();
 
   if (!currentProperty || !currentProperty.Lat || !currentProperty.Lon) return;
 
-  var lat = currentProperty.Lat;
-  var lon = currentProperty.Lon;
-
   var ftToLat = 1 / 364000;
-  var ftToLon = ftToLat / Math.cos(lat * Math.PI / 180);
+  var ftToLon = ftToLat / Math.cos(currentProperty.Lat * Math.PI / 180);
 
   var halfW = (daduWidth / 2) * ftToLon;
   var halfD = (daduDepth / 2) * ftToLat;
 
-  // Place DADU inside the parcel polygon (rear portion)
-  var centerLat = lat;
-  var centerLon = lon;
-  var parcelBounds = selectedParcelLayer.getBounds();
-  if (parcelBounds && parcelBounds.isValid()) {
-    var south = parcelBounds.getSouth();
-    var north = parcelBounds.getNorth();
-    var west = parcelBounds.getWest();
-    var east = parcelBounds.getEast();
-    // Place in rear third of the parcel (south side), centered east-west
-    centerLat = south + (north - south) * 0.25;
-    centerLon = (west + east) / 2;
+  // Use saved position or calculate default (rear of parcel)
+  if (!daduCenterLat || !daduCenterLon) {
+    daduCenterLat = currentProperty.Lat;
+    daduCenterLon = currentProperty.Lon;
+    try {
+      var parcelBounds = selectedParcelLayer.getBounds();
+      if (parcelBounds && parcelBounds.isValid()) {
+        var south = parcelBounds.getSouth();
+        var north = parcelBounds.getNorth();
+        daduCenterLat = south + (north - south) * 0.25;
+        daduCenterLon = (parcelBounds.getWest() + parcelBounds.getEast()) / 2;
+      }
+    } catch(e) {}
   }
 
-  var bounds = [
-    [centerLat - halfD, centerLon - halfW],
-    [centerLat + halfD, centerLon + halfW]
+  // Build rectangle corners then rotate with turf
+  var corners = [
+    [daduCenterLon - halfW, daduCenterLat - halfD],
+    [daduCenterLon + halfW, daduCenterLat - halfD],
+    [daduCenterLon + halfW, daduCenterLat + halfD],
+    [daduCenterLon - halfW, daduCenterLat + halfD],
+    [daduCenterLon - halfW, daduCenterLat - halfD]
   ];
+  var poly = turf.polygon([corners]);
 
-  daduMarker = L.rectangle(bounds, {
-    color: COLORS.dadu,
-    fillColor: COLORS.dadu,
-    fillOpacity: 0.6,
-    weight: 3
+  if (daduRotation !== 0) {
+    poly = turf.transformRotate(poly, daduRotation, { pivot: [daduCenterLon, daduCenterLat] });
+  }
+
+  var daduShape = L.geoJSON(poly, {
+    style: {
+      color: COLORS.dadu,
+      fillColor: COLORS.dadu,
+      fillOpacity: 0.6,
+      weight: 3
+    }
   }).addTo(daduLayer);
 
-  L.marker([centerLat, centerLon], {
+  // Draggable handle at center
+  var dragHandle = L.marker([daduCenterLat, daduCenterLon], {
+    draggable: true,
     icon: L.divIcon({
       className: 'dadu-label',
-      html: '<div style="background:' + COLORS.dadu + ';color:white;padding:3px 7px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap;">' + (daduWidth * daduDepth) + ' SF</div>',
-      iconSize: [60, 18],
-      iconAnchor: [30, 9]
+      html: '<div style="background:' + COLORS.dadu + ';color:white;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:600;white-space:nowrap;cursor:grab;box-shadow:0 2px 6px rgba(0,0,0,0.3);">' + (daduWidth * daduDepth) + ' SF</div>',
+      iconSize: [70, 22],
+      iconAnchor: [35, 11]
     })
   }).addTo(daduLayer);
+
+  dragHandle.on('dragend', function(e) {
+    daduCenterLat = e.target.getLatLng().lat;
+    daduCenterLon = e.target.getLatLng().lng;
+    drawDadu();
+  });
+}
+
+function updateRotation() {
+  daduRotation = parseInt(document.getElementById('rotateSlider').value) || 0;
+  document.getElementById('rotateLabel').textContent = daduRotation + '\u00B0';
+  drawDadu();
 }
 
 // ========== DRAW SETBACKS & BUILDABLE AREA ==========
@@ -2104,76 +2189,65 @@ function drawSetbacks() {
   setbackLayer.clearLayers();
   if (!currentProperty) return;
 
-  // Get parcel bounds - try selectedParcelLayer first, fall back to map bounds around property
-  var parcelBounds = null;
-  try { parcelBounds = selectedParcelLayer.getBounds(); } catch(e) {}
-  if (!parcelBounds || !parcelBounds.isValid()) {
-    // Fall back: create bounds from property lat/lon with approximate lot size
-    var lat = currentProperty.Lat, lon = currentProperty.Lon;
-    if (!lat || !lon) return;
-    var lotSf = currentProperty.Lot_SF || 7000;
-    var side = Math.sqrt(lotSf);
-    var halfFt = side / 2;
-    var ftLat = 1 / 364000;
-    var ftLon = ftLat / Math.cos(lat * Math.PI / 180);
-    parcelBounds = L.latLngBounds(
-      [lat - halfFt * ftLat, lon - halfFt * ftLon],
-      [lat + halfFt * ftLat, lon + halfFt * ftLon]
-    );
-  }
-  if (!parcelBounds.isValid()) return;
-
-  var south = parcelBounds.getSouth();
-  var north = parcelBounds.getNorth();
-  var west = parcelBounds.getWest();
-  var east = parcelBounds.getEast();
-
-  var ftToLat = 1 / 364000;
-  var ftToLon = ftToLat / Math.cos(((north + south) / 2) * Math.PI / 180);
-
-  // Nashville DADU setbacks: front=20ft typical, side=3ft, rear=3ft
-  var frontFt = currentProperty.DADU_Front_Setback_Ft || 20;
-  var rearFt = currentProperty.DADU_Rear_Setback_Ft || 3;
-  var sideFt = currentProperty.DADU_Side_Setback_Ft || 3;
-
-  var front = frontFt * ftToLat;
-  var rear = rearFt * ftToLat;
-  var sideOff = sideFt * ftToLon;
-
-  // Buildable area (inset from parcel by setbacks)
-  var bSouth = south + rear;
-  var bNorth = north - front;
-  var bWest = west + sideOff;
-  var bEast = east - sideOff;
-
-  if (bSouth >= bNorth || bWest >= bEast) return;
-
-  // Draw buildable area as dashed rectangle
-  L.rectangle([[bSouth, bWest], [bNorth, bEast]], {
-    color: COLORS.dadu,
-    weight: 2,
-    dashArray: '6,4',
-    fillColor: COLORS.dadu,
-    fillOpacity: 0.06,
-    interactive: false
-  }).addTo(setbackLayer);
-
-  // Draw setback zones as red-tinted strips
-  var strips = [
-    [[south, west], [south + rear, east]],          // rear
-    [[north - front, west], [north, east]],          // front
-    [[south + rear, west], [north - front, west + sideOff]],  // left side
-    [[south + rear, east - sideOff], [north - front, east]]   // right side
-  ];
-  strips.forEach(function(s) {
-    L.rectangle(s, {
-      color: COLORS.setback,
-      weight: 0.5,
-      fillColor: COLORS.setback,
-      fillOpacity: 0.15,
-      interactive: false
-    }).addTo(setbackLayer);
+  // Get actual parcel polygon GeoJSON from selectedParcelLayer
+  var parcelGeoJson = null;
+  selectedParcelLayer.eachLayer(function(layer) {
+    if (layer.feature) parcelGeoJson = layer.feature;
+    else if (layer.toGeoJSON) parcelGeoJson = layer.toGeoJSON();
   });
+  if (!parcelGeoJson) return;
+
+  // Use the minimum setback (side=3ft, rear=3ft) to create buildable area
+  // Nashville DADU: side=3ft, rear=3ft, front=same as principal (~20ft)
+  var sideFt = parseFloat(currentProperty.DADU_Side_Setback_Ft);
+  if (isNaN(sideFt)) sideFt = 3;
+  var rearFt = parseFloat(currentProperty.DADU_Rear_Setback_Ft);
+  if (isNaN(rearFt)) rearFt = 3;
+
+  // Use turf.js to inset the parcel polygon by the setback distance
+  // Use the smaller setback (side/rear = 3ft) for the buildable area outline
+  var minSetback = Math.min(sideFt, rearFt);
+  var bufferMeters = minSetback * 0.3048; // feet to meters
+  var buffered = null;
+  try {
+    buffered = turf.buffer(parcelGeoJson, -bufferMeters / 1000, { units: 'kilometers' });
+  } catch(e) {
+    console.log('Turf buffer error:', e);
+    return;
+  }
+  if (!buffered || !buffered.geometry || !buffered.geometry.coordinates || buffered.geometry.coordinates.length === 0) return;
+
+  // Draw the setback zone (area between parcel edge and buildable area)
+  // Use turf.difference to get the strip
+  try {
+    var setbackZone = turf.difference(parcelGeoJson, buffered);
+    if (setbackZone) {
+      L.geoJSON(setbackZone, {
+        style: {
+          color: COLORS.setback,
+          weight: 1,
+          fillColor: COLORS.setback,
+          fillOpacity: 0.18,
+          dashArray: '4,3',
+          interactive: false
+        }
+      }).addTo(setbackLayer);
+    }
+  } catch(e) {
+    console.log('Setback difference error:', e);
+  }
+
+  // Draw buildable area outline
+  L.geoJSON(buffered, {
+    style: {
+      color: COLORS.dadu,
+      weight: 2,
+      dashArray: '6,4',
+      fillColor: COLORS.dadu,
+      fillOpacity: 0.05,
+      interactive: false
+    }
+  }).addTo(setbackLayer);
 }
 
 // ========== TABS ==========
@@ -2191,10 +2265,6 @@ function switchTab(name) {
     document.getElementById('mapOverlay').style.display = 'block';
     try { drawSetbacks(); } catch(e) { console.log('Setback error:', e); }
     try { drawDadu(); } catch(e) { console.log('DADU draw error:', e); }
-  } else if (name === 'property' && currentProperty) {
-    document.getElementById('mapOverlay').style.display = 'none';
-    daduLayer.clearLayers();
-    try { drawSetbacks(); } catch(e) { console.log('Setback error:', e); }
   } else {
     document.getElementById('mapOverlay').style.display = 'none';
     daduLayer.clearLayers();
@@ -2268,6 +2338,76 @@ function moveDadu(e) {
       iconAnchor: [30, 9]
     })
   }).addTo(daduLayer);
+}
+
+// ========== MEASURE TOOL ==========
+var measureActive = false;
+var measurePoints = [];
+var measureLayer = L.layerGroup();
+
+function toggleMeasure() {
+  measureActive = !measureActive;
+  var btn = document.getElementById('measureBtn');
+  var result = document.getElementById('measureResult');
+  btn.classList.toggle('active', measureActive);
+  document.getElementById('measureLabel').textContent = measureActive ? 'Click 2 points' : 'Measure';
+
+  if (measureActive) {
+    measurePoints = [];
+    measureLayer.clearLayers();
+    measureLayer.addTo(map);
+    result.style.display = 'none';
+    map.getContainer().style.cursor = 'crosshair';
+    map.on('click', measureClick);
+  } else {
+    map.off('click', measureClick);
+    map.getContainer().style.cursor = '';
+    measureLayer.clearLayers();
+    result.style.display = 'none';
+  }
+}
+
+function measureClick(e) {
+  measurePoints.push(e.latlng);
+
+  L.circleMarker(e.latlng, {
+    radius: 4, color: '#3A5566', fillColor: '#3A5566', fillOpacity: 1, weight: 1
+  }).addTo(measureLayer);
+
+  if (measurePoints.length === 2) {
+    var p1 = measurePoints[0], p2 = measurePoints[1];
+    L.polyline([p1, p2], { color: '#3A5566', weight: 2, dashArray: '6,4' }).addTo(measureLayer);
+
+    // Calculate distance in feet
+    var from = turf.point([p1.lng, p1.lat]);
+    var to = turf.point([p2.lng, p2.lat]);
+    var distKm = turf.distance(from, to, { units: 'kilometers' });
+    var distFt = Math.round(distKm * 3280.84);
+
+    var result = document.getElementById('measureResult');
+    result.textContent = distFt + ' ft (' + (distFt / 3.281).toFixed(1) + ' m)';
+    result.style.display = 'block';
+
+    // Add label at midpoint
+    var midLat = (p1.lat + p2.lat) / 2;
+    var midLng = (p1.lng + p2.lng) / 2;
+    L.marker([midLat, midLng], {
+      icon: L.divIcon({
+        className: 'dadu-label',
+        html: '<div style="background:white;color:#3A5566;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,0.2);">' + distFt + ' ft</div>',
+        iconSize: [60, 16],
+        iconAnchor: [30, 8]
+      })
+    }).addTo(measureLayer);
+
+    // Reset for next measurement
+    map.off('click', measureClick);
+    map.getContainer().style.cursor = '';
+    document.getElementById('measureLabel').textContent = 'Measure';
+    document.getElementById('measureBtn').classList.remove('active');
+    measureActive = false;
+    measurePoints = [];
+  }
 }
 
 // ========== UTILITIES ==========
