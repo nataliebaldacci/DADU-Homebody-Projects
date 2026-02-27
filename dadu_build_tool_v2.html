@@ -1728,9 +1728,14 @@ function displayProperty(a) {
     document.getElementById('instructions').innerHTML = '<span>Use the Build tab to design your DADU</span>';
   }
 
-  // Update presets
+  // Update presets (set defaults without drawing on map)
   updatePresets();
-  applyPreset(600, 24, 25);
+  daduWidth = 24;
+  daduDepth = 25;
+  document.getElementById('sizeSlider').value = 600;
+  document.getElementById('widthInput').value = 24;
+  document.getElementById('depthInput').value = 25;
+  updateDisplay(600, 24, 25);
 
   // Query nearby permits
   if (lat && lon) {
@@ -2092,22 +2097,103 @@ function drawDadu() {
   }).addTo(daduLayer);
 }
 
+// ========== DRAW SETBACKS & BUILDABLE AREA ==========
+function drawSetbacks() {
+  setbackLayer.clearLayers();
+  if (!currentProperty) return;
+
+  // Get parcel bounds - try selectedParcelLayer first, fall back to map bounds around property
+  var parcelBounds = null;
+  try { parcelBounds = selectedParcelLayer.getBounds(); } catch(e) {}
+  if (!parcelBounds || !parcelBounds.isValid()) {
+    // Fall back: create bounds from property lat/lon with approximate lot size
+    var lat = currentProperty.Lat, lon = currentProperty.Lon;
+    if (!lat || !lon) return;
+    var lotSf = currentProperty.Lot_SF || 7000;
+    var side = Math.sqrt(lotSf);
+    var halfFt = side / 2;
+    var ftLat = 1 / 364000;
+    var ftLon = ftLat / Math.cos(lat * Math.PI / 180);
+    parcelBounds = L.latLngBounds(
+      [lat - halfFt * ftLat, lon - halfFt * ftLon],
+      [lat + halfFt * ftLat, lon + halfFt * ftLon]
+    );
+  }
+  if (!parcelBounds.isValid()) return;
+
+  var south = parcelBounds.getSouth();
+  var north = parcelBounds.getNorth();
+  var west = parcelBounds.getWest();
+  var east = parcelBounds.getEast();
+
+  var ftToLat = 1 / 364000;
+  var ftToLon = ftToLat / Math.cos(((north + south) / 2) * Math.PI / 180);
+
+  // Nashville DADU setbacks: front=20ft typical, side=3ft, rear=3ft
+  var frontFt = currentProperty.DADU_Front_Setback_Ft || 20;
+  var rearFt = currentProperty.DADU_Rear_Setback_Ft || 3;
+  var sideFt = currentProperty.DADU_Side_Setback_Ft || 3;
+
+  var front = frontFt * ftToLat;
+  var rear = rearFt * ftToLat;
+  var sideOff = sideFt * ftToLon;
+
+  // Buildable area (inset from parcel by setbacks)
+  var bSouth = south + rear;
+  var bNorth = north - front;
+  var bWest = west + sideOff;
+  var bEast = east - sideOff;
+
+  if (bSouth >= bNorth || bWest >= bEast) return;
+
+  // Draw buildable area as dashed rectangle
+  L.rectangle([[bSouth, bWest], [bNorth, bEast]], {
+    color: COLORS.dadu,
+    weight: 2,
+    dashArray: '6,4',
+    fillColor: COLORS.dadu,
+    fillOpacity: 0.06,
+    interactive: false
+  }).addTo(setbackLayer);
+
+  // Draw setback zones as red-tinted strips
+  var strips = [
+    [[south, west], [south + rear, east]],          // rear
+    [[north - front, west], [north, east]],          // front
+    [[south + rear, west], [north - front, west + sideOff]],  // left side
+    [[south + rear, east - sideOff], [north - front, east]]   // right side
+  ];
+  strips.forEach(function(s) {
+    L.rectangle(s, {
+      color: COLORS.setback,
+      weight: 0.5,
+      fillColor: COLORS.setback,
+      fillOpacity: 0.15,
+      interactive: false
+    }).addTo(setbackLayer);
+  });
+}
+
 // ========== TABS ==========
 function switchTab(name) {
-  // Show DADU overlay and rectangle only on Build tab
-  if (name === 'build' && currentProperty) {
-    document.getElementById('mapOverlay').style.display = 'block';
-    drawDadu();
-  } else {
-    document.getElementById('mapOverlay').style.display = 'none';
-    daduLayer.clearLayers();
-  }
+  // Switch tab content first
   document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
   document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
 
   var idx = name === 'property' ? 0 : name === 'build' ? 1 : 2;
   document.querySelectorAll('.tab')[idx].classList.add('active');
   document.getElementById('tab-' + name).classList.add('active');
+
+  // Show DADU overlay, setbacks, and rectangle only on Build tab
+  if (name === 'build' && currentProperty) {
+    document.getElementById('mapOverlay').style.display = 'block';
+    try { drawSetbacks(); } catch(e) { console.log('Setback error:', e); }
+    try { drawDadu(); } catch(e) { console.log('DADU draw error:', e); }
+  } else {
+    document.getElementById('mapOverlay').style.display = 'none';
+    daduLayer.clearLayers();
+    setbackLayer.clearLayers();
+  }
 }
 
 // ========== MAP CONTROLS ==========
