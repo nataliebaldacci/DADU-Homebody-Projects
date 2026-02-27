@@ -1095,6 +1095,92 @@ var permitToDocs = {};
 var apnToDocs = {};
 var apnToAccount = {};
 
+// ========== ADDRESS INDEX (local, same as eligibility map) ==========
+var addrIndexCache = {};
+var addrManifest = null;
+var selectedAddrResult = null;
+var indexFullyLoaded = false;
+var indexLoadingPromise = null;
+
+async function loadAddrManifest() {
+  try {
+    var resp = await fetch('data/addr_index/manifest.json');
+    addrManifest = await resp.json();
+    console.log('[BUILD V2] Address manifest loaded:', Object.keys(addrManifest).length, 'zip codes');
+  } catch (err) {
+    console.warn('[BUILD V2] Could not load address manifest:', err);
+  }
+}
+
+async function loadZipChunk(zipCode) {
+  if (addrIndexCache[zipCode]) return addrIndexCache[zipCode];
+  if (!addrManifest || !addrManifest[zipCode]) return [];
+  try {
+    var resp = await fetch(addrManifest[zipCode].file);
+    var data = await resp.json();
+    addrIndexCache[zipCode] = data;
+    return data;
+  } catch (err) { return []; }
+}
+
+async function preloadAllChunks() {
+  if (indexFullyLoaded || indexLoadingPromise) return indexLoadingPromise;
+  indexLoadingPromise = (async function() {
+    if (!addrManifest) { await loadAddrManifest(); if (!addrManifest) return; }
+    var allZips = Object.keys(addrManifest);
+    allZips.sort(function(a, b) { return (addrManifest[a].size || 0) - (addrManifest[b].size || 0); });
+    var unloaded = allZips.filter(function(z) { return !addrIndexCache[z]; });
+    var batchSize = 4;
+    for (var i = 0; i < unloaded.length; i += batchSize) {
+      var batch = unloaded.slice(i, i + batchSize);
+      await Promise.all(batch.map(function(z) { return loadZipChunk(z); }));
+    }
+    indexFullyLoaded = true;
+    console.log('[BUILD V2] All address index chunks loaded');
+  })();
+  return indexLoadingPromise;
+}
+
+async function searchAddrIndex(query) {
+  var q = query.toUpperCase().trim();
+  if (q.length < 2) return [];
+  // Wait for all chunks to load before searching
+  if (!indexFullyLoaded) {
+    await preloadAllChunks();
+  }
+  var allZips = Object.keys(addrManifest || {});
+  var results = [];
+  var maxResults = 8;
+
+  for (var zi = 0; zi < allZips.length; zi++) {
+    var chunk = addrIndexCache[allZips[zi]] || [];
+    // Binary search for prefix match
+    var lo = 0, hi = chunk.length - 1;
+    while (lo <= hi) { var mid = (lo + hi) >> 1; if (chunk[mid].a < q) lo = mid + 1; else hi = mid - 1; }
+    for (var i = lo; i < chunk.length && results.length < maxResults; i++) {
+      if (chunk[i].a.startsWith(q)) results.push(chunk[i]);
+      else if (chunk[i].a > q + '\uffff') break;
+    }
+    if (results.length >= maxResults) break;
+  }
+
+  // Substring match on street name if too few results
+  if (results.length < 4) {
+    for (var zi2 = 0; zi2 < allZips.length; zi2++) {
+      var chunk2 = addrIndexCache[allZips[zi2]] || [];
+      for (var j = 0; j < chunk2.length && results.length < maxResults; j++) {
+        var parts = chunk2[j].a.split(' ');
+        var street = parts.length > 1 ? parts.slice(1).join(' ') : chunk2[j].a;
+        if (street.startsWith(q) && !results.some(function(r) { return r.n === chunk2[j].n; })) {
+          results.push(chunk2[j]);
+        }
+      }
+      if (results.length >= maxResults) break;
+    }
+  }
+  return results;
+}
+
 // ========== INIT ==========
 function initMap() {
   map = L.map('map', {
@@ -1110,16 +1196,16 @@ function initMap() {
 
   // Layer groups
   parcelGeoJsonLayer = L.geoJSON(null, {
-    style: { fillColor: 'rgba(44,62,80,0.15)', fillOpacity: 1, color: '#c5cada', weight: 1 }
+    style: { fillColor: 'transparent', fillOpacity: 0, color: 'transparent', weight: 0 }
   }).addTo(map);
   footprintLayer = L.geoJSON(null, {
-    style: { fillColor: COLORS.buildingFill, fillOpacity: 0.9, color: '#4b5563', weight: 0.5 }
+    style: { fillColor: '#A59D8B', fillOpacity: 0.4, color: '#918A83', weight: 0.5 }
   }).addTo(map);
   selectedParcelLayer = L.geoJSON(null, {
-    style: { fillColor: COLORS.parcelFill, fillOpacity: 1, color: COLORS.parcelStroke, weight: 2.5, dashArray: '8, 6' }
+    style: { color: '#3A5566', weight: 3, fillColor: '#3A5566', fillOpacity: 0.08, dashArray: '8,6' }
   }).addTo(map);
   selectedFootprintLayer = L.geoJSON(null, {
-    style: { fillColor: COLORS.buildingSelected, fillOpacity: 0.95, color: '#1f2937', weight: 1 }
+    style: { fillColor: '#2F3A45', fillOpacity: 0.9, color: '#ffffff', weight: 2 }
   }).addTo(map);
   parcelLayer = L.layerGroup().addTo(map);
   buildingLayer = L.layerGroup().addTo(map);
@@ -1127,7 +1213,7 @@ function initMap() {
   daduLayer = L.layerGroup().addTo(map);
   nearbyLayer = L.layerGroup().addTo(map);
 
-  // Input listeners
+  // Input listeners — local address index autocomplete
   var addrInput = document.getElementById('addressInput');
   if (addrInput) {
     addrInput.addEventListener('keypress', function(e) {
@@ -1136,8 +1222,8 @@ function initMap() {
     addrInput.addEventListener('input', function() {
       clearTimeout(autocompleteTimeout);
       var val = addrInput.value.trim();
-      if (val.length < 3) { hideAutocomplete(); return; }
-      autocompleteTimeout = setTimeout(function() { fetchAutocomplete(val); }, 300);
+      if (val.length < 2) { hideAutocomplete(); return; }
+      autocompleteTimeout = setTimeout(function() { fetchAutocomplete(val); }, 200);
     });
     addrInput.addEventListener('blur', function() { setTimeout(hideAutocomplete, 200); });
   }
@@ -1155,6 +1241,7 @@ function initMap() {
   }
 
   // Load data files
+  loadAddrManifest().then(function() { preloadAllChunks(); });
   loadGdriveIndex();
   loadApnToAccount();
 }
@@ -1212,39 +1299,28 @@ function lookupDocs(apn) {
   return null;
 }
 
-// ========== AUTOCOMPLETE ==========
+// ========== AUTOCOMPLETE (local address index) ==========
 async function fetchAutocomplete(text) {
   try {
-    var params = new URLSearchParams({
-      SingleLine: text,
-      outSR: '4326',
-      maxLocations: '5',
-      outFields: 'Match_addr,Addr_type',
-      f: 'json'
-    });
-    var url = ENDPOINTS.nashvilleGeocoder + '?' + params.toString();
-    var response = await fetch(url);
-    var data = await response.json();
-
+    var results = await searchAddrIndex(text);
     var list = document.getElementById('autocompleteList');
     list.innerHTML = '';
 
-    if (data.candidates && data.candidates.length > 0) {
-      data.candidates.forEach(function(c) {
-        if (c.score < 60) return;
+    if (results.length > 0) {
+      results.forEach(function(r) {
         var item = document.createElement('div');
         item.className = 'autocomplete-item';
-        item.innerHTML = c.address + '<span class="match-type">Score: ' + c.score + '</span>';
+        item.innerHTML = r.a + '<span class="match-type">' + (r.z || '') + '</span>';
         item.addEventListener('mousedown', function(e) {
           e.preventDefault();
-          document.getElementById('addressInput').value = c.address;
+          selectedAddrResult = r;
+          document.getElementById('addressInput').value = r.a;
           hideAutocomplete();
           searchAddress();
         });
         list.appendChild(item);
       });
-      if (list.children.length > 0) list.classList.add('visible');
-      else list.classList.remove('visible');
+      list.classList.add('visible');
     } else {
       list.classList.remove('visible');
     }
@@ -1258,7 +1334,7 @@ function hideAutocomplete() {
   if (list) { list.classList.remove('visible'); list.innerHTML = ''; }
 }
 
-// ========== SEARCH (4-step, from dadu_build_tool.html) ==========
+// ========== SEARCH (local index + APN-based ArcGIS query) ==========
 async function searchAddress() {
   var addrInput = document.getElementById('addressInput');
   var address = addrInput ? addrInput.value.trim() : '';
@@ -1268,131 +1344,106 @@ async function searchAddress() {
   closeWelcome();
   hideAutocomplete();
   var searchBtn = document.getElementById('searchBtn');
-  if (searchBtn) searchBtn.disabled = true;
+  if (searchBtn) { searchBtn.disabled = true; searchBtn.textContent = 'Searching...'; }
 
   try {
-    // Step 1: Text search on Building Specs
+    // Step 1: Check if we have a selected result from autocomplete (has APN)
+    var apnToSearch = null;
+    var coordLat = null, coordLng = null;
+
+    if (selectedAddrResult && selectedAddrResult.a === address.toUpperCase()) {
+      apnToSearch = selectedAddrResult.s || selectedAddrResult.n;
+      coordLat = selectedAddrResult.y;
+      coordLng = selectedAddrResult.x;
+      selectedAddrResult = null;
+    } else {
+      // Step 2: Search local address index for a match
+      selectedAddrResult = null;
+      var q = address.toUpperCase().trim();
+      var results = await searchAddrIndex(q);
+
+      // Exact match
+      var exact = results.find(function(r) { return r.a === q; });
+      if (exact) {
+        apnToSearch = exact.s || exact.n;
+        coordLat = exact.y;
+        coordLng = exact.x;
+      } else if (results.length > 0) {
+        // Use best match
+        apnToSearch = results[0].s || results[0].n;
+        coordLat = results[0].y;
+        coordLng = results[0].x;
+        if (addrInput) addrInput.value = results[0].a;
+      }
+    }
+
+    // Step 3: Query Building Specs by APN (direct, no geocoding needed)
+    if (apnToSearch) {
+      var apnClean = String(apnToSearch).replace(/'/g, "''");
+      var apnParams = new URLSearchParams({
+        f: 'json',
+        where: "Standard_Parcel_Number='" + apnClean + "'",
+        outFields: '*',
+        returnGeometry: 'true',
+        outSR: '4326'
+      });
+      var apnResponse = await fetch(ENDPOINTS.buildingSpecs + '?' + apnParams.toString());
+      var apnData = await apnResponse.json();
+
+      if (apnData.features && apnData.features.length > 0) {
+        currentProperty = normalizeAttrs(apnData.features[0].attributes);
+        displayProperty(currentProperty);
+        showLoading(false);
+        if (searchBtn) { searchBtn.disabled = false; searchBtn.textContent = 'Search'; }
+        return;
+      }
+    }
+
+    // Step 4: Fallback — spatial query using coordinates from index
+    if (coordLat && coordLng) {
+      var spatialParams = new URLSearchParams({
+        f: 'json',
+        geometry: coordLng + ',' + coordLat,
+        geometryType: 'esriGeometryPoint',
+        inSR: '4326',
+        spatialRel: 'esriSpatialRelIntersects',
+        outFields: '*',
+        returnGeometry: 'true',
+        outSR: '4326'
+      });
+      var spatialResponse = await fetch(ENDPOINTS.buildingSpecs + '?' + spatialParams.toString());
+      var spatialData = await spatialResponse.json();
+
+      if (spatialData.features && spatialData.features.length > 0) {
+        currentProperty = normalizeAttrs(spatialData.features[0].attributes);
+        displayProperty(currentProperty);
+        showLoading(false);
+        if (searchBtn) { searchBtn.disabled = false; searchBtn.textContent = 'Search'; }
+        return;
+      }
+    }
+
+    // Step 5: Last resort — text search on Building Specs
     var cleanAddress = address.toUpperCase().replace(/'/g, "''").replace(/,.*$/, '').trim();
-    var step1Params = new URLSearchParams({
+    var textParams = new URLSearchParams({
       f: 'json',
       where: "UPPER(Address) LIKE '%" + cleanAddress + "%'",
       outFields: '*',
       returnGeometry: 'true',
       outSR: '4326'
     });
-    var response = await fetch(ENDPOINTS.buildingSpecs + '?' + step1Params.toString());
-    var data = await response.json();
+    var textResponse = await fetch(ENDPOINTS.buildingSpecs + '?' + textParams.toString());
+    var textData = await textResponse.json();
 
-    if (data.features && data.features.length > 0) {
-      currentProperty = data.features[0].attributes;
+    if (textData.features && textData.features.length > 0) {
+      currentProperty = normalizeAttrs(textData.features[0].attributes);
       displayProperty(currentProperty);
       showLoading(false);
-      if (searchBtn) searchBtn.disabled = false;
+      if (searchBtn) { searchBtn.disabled = false; searchBtn.textContent = 'Search'; }
       return;
     }
 
-    // Step 2: Nashville geocoder
-    var nashGeoParams = new URLSearchParams({
-      SingleLine: address,
-      outSR: '4326',
-      maxLocations: '1',
-      outFields: 'Match_addr,Addr_type',
-      f: 'json'
-    });
-    var nashGeoResponse = await fetch(ENDPOINTS.nashvilleGeocoder + '?' + nashGeoParams.toString());
-    var nashGeoData = await nashGeoResponse.json();
-    var nashCandidate = (nashGeoData.candidates && nashGeoData.candidates.length > 0) ? nashGeoData.candidates[0] : null;
-
-    var geocodedLat = null, geocodedLng = null;
-
-    if (nashCandidate && nashCandidate.score >= 80) {
-      geocodedLng = nashCandidate.location.x;
-      geocodedLat = nashCandidate.location.y;
-    } else {
-      // Step 2b: World Geocoder fallback
-      var worldGeoParams = new URLSearchParams({
-        f: 'json',
-        singleLine: address + ', Nashville, TN',
-        maxLocations: '1',
-        outFields: 'Match_addr,Addr_type',
-        searchExtent: '-87.1,35.9,-86.5,36.5'
-      });
-      var worldGeoResponse = await fetch(ENDPOINTS.worldGeocoder + '?' + worldGeoParams.toString());
-      var worldGeoData = await worldGeoResponse.json();
-      var worldCandidate = (worldGeoData.candidates && worldGeoData.candidates.length > 0) ? worldGeoData.candidates[0] : null;
-
-      if (worldCandidate && worldCandidate.score >= 70) {
-        geocodedLng = worldCandidate.location.x;
-        geocodedLat = worldCandidate.location.y;
-      }
-    }
-
-    if (!geocodedLat) {
-      alert('Address not found. Please enter a valid Nashville address.');
-      showLoading(false);
-      if (searchBtn) searchBtn.disabled = false;
-      return;
-    }
-
-    // Step 3: Spatial query on Building Specs
-    var step3Params = new URLSearchParams({
-      f: 'json',
-      geometry: geocodedLng + ',' + geocodedLat,
-      geometryType: 'esriGeometryPoint',
-      inSR: '4326',
-      spatialRel: 'esriSpatialRelIntersects',
-      outFields: '*',
-      returnGeometry: 'true',
-      outSR: '4326'
-    });
-    var spatialResponse = await fetch(ENDPOINTS.buildingSpecs + '?' + step3Params.toString());
-    var spatialData = await spatialResponse.json();
-
-    if (spatialData.features && spatialData.features.length > 0) {
-      currentProperty = spatialData.features[0].attributes;
-      displayProperty(currentProperty);
-      showLoading(false);
-      if (searchBtn) searchBtn.disabled = false;
-      return;
-    }
-
-    // Step 4: Parcels_view fallback
-    var parcelParams = new URLSearchParams({
-      f: 'json',
-      geometry: geocodedLng + ',' + geocodedLat,
-      geometryType: 'esriGeometryPoint',
-      inSR: '4326',
-      spatialRel: 'esriSpatialRelIntersects',
-      outFields: 'STANPAR,ACRES,Shape__Area',
-      returnGeometry: 'false'
-    });
-    var parcelResponse = await fetch(ENDPOINTS.parcelsView + '?' + parcelParams.toString());
-    var parcelData = await parcelResponse.json();
-
-    if (parcelData.features && parcelData.features.length > 0) {
-      var apn = parcelData.features[0].attributes.STANPAR;
-      if (apn) {
-        var apnParams = new URLSearchParams({
-          f: 'json',
-          where: "STANPAR='" + apn + "'",
-          outFields: '*',
-          returnGeometry: 'true',
-          outSR: '4326'
-        });
-        var apnResponse = await fetch(ENDPOINTS.buildingSpecs + '?' + apnParams.toString());
-        var apnData = await apnResponse.json();
-
-        if (apnData.features && apnData.features.length > 0) {
-          currentProperty = apnData.features[0].attributes;
-          displayProperty(currentProperty);
-          showLoading(false);
-          if (searchBtn) searchBtn.disabled = false;
-          return;
-        }
-      }
-    }
-
-    alert('Property not found in DADU database. It may not be a single-family residential parcel.');
+    alert('Property not found. Try searching with a full Nashville address (e.g., 123 Main St).');
 
   } catch (error) {
     console.error('[BUILD V2] Search error:', error);
@@ -1400,12 +1451,36 @@ async function searchAddress() {
   }
 
   showLoading(false);
-  if (searchBtn) searchBtn.disabled = false;
+  if (searchBtn) { searchBtn.disabled = false; searchBtn.textContent = 'Search'; }
 }
 
 // ========== LOAD PARCEL POLYGONS ==========
 async function loadParcelPolygon(lat, lon) {
   try {
+    var apn = currentProperty ? currentProperty.STANPAR : null;
+    selectedParcelLayer.clearLayers();
+    parcelGeoJsonLayer.clearLayers();
+
+    // Step 1: Query selected parcel directly by APN (reliable)
+    if (apn) {
+      var apnParams = new URLSearchParams({
+        where: "STANPAR='" + apn + "'",
+        outFields: 'STANPAR,ACRES',
+        returnGeometry: 'true',
+        outSR: '4326',
+        f: 'geojson'
+      });
+      var apnUrl = ENDPOINTS.parcelsView + '?' + apnParams.toString();
+      var apnResp = await fetch(apnUrl);
+      var apnData = await apnResp.json();
+      if (apnData.features && apnData.features.length > 0) {
+        selectedParcelLayer.addData(apnData.features[0]);
+        var bounds = L.geoJSON(apnData.features[0]).getBounds();
+        map.fitBounds(bounds, { padding: [80, 80], maxZoom: 19 });
+      }
+    }
+
+    // Step 2: Load neighboring parcels via spatial query (context)
     var buffer = 0.002;
     var geometry = JSON.stringify({
       xmin: lon - buffer, ymin: lat - buffer,
@@ -1417,31 +1492,22 @@ async function loadParcelPolygon(lat, lon) {
       geometry: geometry,
       geometryType: 'esriGeometryEnvelope',
       spatialRel: 'esriSpatialRelIntersects',
-      outFields: 'STANPAR,PropAddr,Acres',
+      outFields: 'STANPAR,ACRES',
       returnGeometry: 'true',
       outSR: '4326',
       f: 'geojson',
       resultRecordCount: '100'
     });
-    var url = ENDPOINTS.cadastralParcels + '?' + params.toString();
+    var url = ENDPOINTS.parcelsView + '?' + params.toString();
     var response = await fetch(url);
     var data = await response.json();
-
-    parcelGeoJsonLayer.clearLayers();
     if (data.features && data.features.length > 0) {
-      parcelGeoJsonLayer.addData(data);
-
-      var apn = currentProperty ? currentProperty.STANPAR : null;
-      selectedParcelLayer.clearLayers();
-      if (apn) {
-        data.features.forEach(function(f) {
-          if (f.properties && f.properties.STANPAR === apn) {
-            selectedParcelLayer.addData(f);
-            var bounds = L.geoJSON(f).getBounds();
-            map.fitBounds(bounds, { padding: [80, 80], maxZoom: 19 });
-          }
-        });
-      }
+      // Add neighbors but skip the selected parcel (already drawn)
+      data.features.forEach(function(f) {
+        if (!apn || !f.properties || f.properties.STANPAR !== apn) {
+          parcelGeoJsonLayer.addData(f);
+        }
+      });
     }
   } catch (err) {
     console.log('[BUILD V2] Parcel polygon load error:', err.message);
@@ -1481,7 +1547,7 @@ async function loadBuildingFootprints(lat, lon) {
       var apn = currentProperty ? currentProperty.STANPAR : null;
       if (apn) {
         data.features.forEach(function(f) {
-          var fApn = f.properties ? (f.properties.STANPAR || f.properties.APN || '') : '';
+          var fApn = f.properties ? (f.properties.APN || f.properties.STANPAR || '') : '';
           if (fApn === apn) {
             selectedFootprintLayer.addData(f);
           }
@@ -1494,7 +1560,24 @@ async function loadBuildingFootprints(lat, lon) {
 }
 
 // ========== DISPLAY PROPERTY ==========
+// Normalize Building Specs field names to what the UI code expects
+function normalizeAttrs(a) {
+  if (!a) return a;
+  if (!a.STANPAR && a.Standard_Parcel_Number) a.STANPAR = a.Standard_Parcel_Number;
+  if (!a.Address && a.Property_Address) a.Address = a.Property_Address;
+  if (!a.Lat && a.Latitude) a.Lat = a.Latitude;
+  if (!a.Lon && a.Longitude) a.Lon = a.Longitude;
+  if (!a.Zoning && a.Zoning_Code) a.Zoning = a.Zoning_Code;
+  if (a.In_USD === undefined && a.In_Urban_Services !== undefined) a.In_USD = a.In_Urban_Services;
+  if (!a.Lot_SF && a.Lot_SqFt) a.Lot_SF = a.Lot_SqFt;
+  if (!a.Owner && a.Owner_Name) a.Owner = a.Owner_Name;
+  if (!a.Appraised_Value && a.Total_Value) a.Appraised_Value = a.Total_Value;
+  if (!a.Regrid_Bldg_Count && a.Regrid_Building_Count) a.Regrid_Bldg_Count = a.Regrid_Building_Count;
+  return a;
+}
+
 function displayProperty(a) {
+  a = normalizeAttrs(a);
   // Clear map layers
   parcelLayer.clearLayers();
   buildingLayer.clearLayers();
