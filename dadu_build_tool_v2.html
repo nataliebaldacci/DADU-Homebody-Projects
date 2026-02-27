@@ -4,11 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Build My DADU | Homebody Projects</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 <style>
+/* Override nav to dark slate (same as homepage) */
+.main-nav {
+  background: #3A5566 !important;
+  border-bottom: 1px solid rgba(225, 212, 187, 0.15) !important;
+}
+.nav-link {
+  color: #E1D4BB !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+}
+.nav-link:hover, .nav-link:focus, .nav-link[aria-expanded="true"] {
+  background: #496778 !important;
+  color: #ffffff !important;
+}
+.nav-search-btn {
+  background: #CBB279 !important;
+  color: #3A5566 !important;
+  font-weight: 700 !important;
+}
+.nav-search-btn:hover { background: #D4A54E !important; }
+.nav-logo-brand { color: #ffffff !important; }
+.nav-container a[title="Search"] { color: #E1D4BB !important; }
+.nav-container a[title="Search"]:hover { color: #ffffff !important; }
+
 :root {
   --dark-anchor: #2F3A45;
   --slate: #3A5566;
@@ -35,21 +59,35 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html, body {
+  height: 100%;
+}
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--background);
+  background: var(--slate);
   color: #333;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ===== SEARCH ROW ===== */
+/* ===== HERO / SEARCH ROW ===== */
 .search-row {
-  background-color: var(--slate);
-  padding: 12px 24px;
+  background: linear-gradient(rgba(58, 85, 102, 0.85), rgba(47, 58, 69, 0.92)), url('ChatGPT Image Feb 12, 2026, 06_17_37 AM.png') center/cover no-repeat;
+  padding: 32px 24px 24px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   flex-shrink: 0;
-  margin-top: 75px;
+}
+.search-row h1 {
+  font-family: 'Source Serif 4', 'Georgia', serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 26px;
+  color: var(--cream);
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
 }
 .search-container {
   max-width: 700px;
@@ -122,7 +160,9 @@ body {
 /* ===== MAIN LAYOUT ===== */
 .main {
   display: flex;
-  height: calc(100vh - 75px - 50px);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* ===== PANEL (Left Sidebar) ===== */
@@ -139,12 +179,12 @@ body {
 /* ===== PROPERTY HEADER ===== */
 .property-header {
   padding: 14px 18px;
-  background: linear-gradient(135deg, var(--stone), var(--slate-mid));
-  color: white;
+  background: var(--linen);
+  color: var(--slate);
   flex-shrink: 0;
 }
 .property-address { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-.property-meta { display: flex; gap: 16px; font-size: 12px; opacity: 0.9; }
+.property-meta { display: flex; gap: 16px; font-size: 12px; color: var(--stone); }
 
 /* ===== ELIGIBILITY BADGE ===== */
 .eligibility-badge {
@@ -679,6 +719,7 @@ body {
 
 <!-- ===== SEARCH ROW ===== -->
 <div class="search-row">
+  <h1>Build My DADU</h1>
   <div class="search-container">
     <input type="text" id="addressInput" placeholder="Search address or APN..." autocomplete="off">
     <button class="search-btn" id="searchBtn" onclick="searchAddress()">Search</button>
@@ -1780,7 +1821,30 @@ async function queryNearbyPermits(lat, lon) {
 
     permits.sort(function(a, b) { return a.distance - b.distance; });
 
-    // Stats
+    // Group permits by normalized address (strip "B", "UNIT B", etc.)
+    function normalizeAddr(addr) {
+      return (addr || '').replace(/\s+(B|UNIT\s*[A-Z]|APT\s*[A-Z0-9]+|#\s*[A-Z0-9]+)\s*$/i, '').trim();
+    }
+
+    var grouped = {};
+    var groupOrder = [];
+    permits.forEach(function(p) {
+      var a = p.attributes;
+      var rawAddr = a.STREET || a.Address || 'Unknown';
+      var key = normalizeAddr(rawAddr);
+      if (!grouped[key]) {
+        grouped[key] = { address: key, permits: [], distance: p.distance, geometry: p.geometry, photo: '' };
+        groupOrder.push(key);
+      }
+      grouped[key].permits.push(p);
+      // Use closest distance and first available photo
+      if (p.distance < grouped[key].distance) { grouped[key].distance = p.distance; grouped[key].geometry = p.geometry; }
+      if (!grouped[key].photo && (a.ASSESSOR_CARD2_PHOTO_URL || '')) grouped[key].photo = a.ASSESSOR_CARD2_PHOTO_URL;
+    });
+
+    groupOrder.sort(function(a, b) { return grouped[a].distance - grouped[b].distance; });
+
+    // Stats (unique addresses)
     var totalCost = 0, costCount = 0, totalSize = 0, sizeCount = 0;
     permits.forEach(function(p) {
       if (p.attributes.CONSTRUCTION_COST && p.attributes.CONSTRUCTION_COST > 0) { totalCost += p.attributes.CONSTRUCTION_COST; costCount++; }
@@ -1788,51 +1852,64 @@ async function queryNearbyPermits(lat, lon) {
     });
 
     document.getElementById('nearbyStatsContainer').style.display = 'block';
-    document.getElementById('nearbyCount').textContent = permits.length;
+    document.getElementById('nearbyCount').textContent = groupOrder.length;
     document.getElementById('nearbyAvgCost').textContent = costCount > 0 ? '$' + Math.round(totalCost / costCount / 1000) + 'K' : '--';
     document.getElementById('nearbyAvgSize').textContent = sizeCount > 0 ? Math.round(totalSize / sizeCount) + ' SF' : '--';
 
-    // Render cards and markers
-    permits.forEach(function(p, idx) {
-      var a = p.attributes;
-      var dist = p.distance;
-      var distStr = dist < 0.1 ? Math.round(dist * 5280) + ' ft' : dist.toFixed(1) + ' mi';
-      var address = a.STREET || a.Address || 'Unknown';
-      var contractor = a.CONTRACTOR_BIZ_NAME_ORIGINAL || a.CONTRACTOR || '';
-      var sqft = a.BUILDING_SQFT ? a.BUILDING_SQFT + ' SF' : '';
-      var cost = a.CONSTRUCTION_COST ? '$' + Math.round(a.CONSTRUCTION_COST).toLocaleString() : '';
-      var costPerSf = (a.CONSTRUCTION_COST && a.BUILDING_SQFT) ? '$' + Math.round(a.CONSTRUCTION_COST / a.BUILDING_SQFT) + '/SF' : '';
-      var permitDate = a.PERMIT_ISSUANCE_DATE ? new Date(a.PERMIT_ISSUANCE_DATE).toLocaleDateString() : '';
-      var photo = a.ASSESSOR_CARD2_PHOTO_URL || '';
-      var permitApn = a.APN || a.STANPAR || '';
+    // Render grouped cards and markers
+    groupOrder.forEach(function(key) {
+      var g = grouped[key];
+      var distStr = g.distance < 0.1 ? Math.round(g.distance * 5280) + ' ft' : g.distance.toFixed(1) + ' mi';
+      var permitApn = g.permits[0].attributes.APN || g.permits[0].attributes.STANPAR || '';
+
+      // Summary line from best permit data
+      var bestSqft = '', bestCost = '';
+      g.permits.forEach(function(p) {
+        if (!bestSqft && p.attributes.BUILDING_SQFT) bestSqft = p.attributes.BUILDING_SQFT + ' SF';
+        if (!bestCost && p.attributes.CONSTRUCTION_COST) bestCost = '$' + Math.round(p.attributes.CONSTRUCTION_COST).toLocaleString();
+      });
+      var summary = [bestSqft, bestCost].filter(Boolean).join(' | ');
+
+      // Build permit rows for expanded view
+      var permitRows = '';
+      g.permits.forEach(function(p) {
+        var a = p.attributes;
+        var permitNum = a.PERMIT_NUMBER || a.PermitNum || '';
+        var permitDate = a.PERMIT_ISSUANCE_DATE ? new Date(a.PERMIT_ISSUANCE_DATE).toLocaleDateString() : '';
+        var contractor = a.CONTRACTOR_BIZ_NAME_ORIGINAL || a.CONTRACTOR || '';
+        var sqft = a.BUILDING_SQFT ? a.BUILDING_SQFT + ' SF' : '';
+        var cost = a.CONSTRUCTION_COST ? '$' + Math.round(a.CONSTRUCTION_COST).toLocaleString() : '';
+        var rawAddr = a.STREET || a.Address || '';
+        var gdriveUrl = '';
+        if (permitNum && permitToDocs[permitNum] && permitToDocs[permitNum].length > 0) {
+          gdriveUrl = permitToDocs[permitNum][0].gdrive_url || permitToDocs[permitNum][0].download_url || '';
+        }
+        permitRows += '<div style="padding:6px 0;border-top:1px solid #eee;font-size:11px;">' +
+          (rawAddr !== key ? '<div style="color:var(--slate);font-weight:600;">' + rawAddr + '</div>' : '') +
+          (permitNum ? '<span style="color:var(--stone);">Permit: ' + permitNum + '</span> ' : '') +
+          (permitDate ? '<span style="color:#666;">' + permitDate + '</span>' : '') +
+          (sqft || cost ? '<div>' + [sqft, cost].filter(Boolean).join(' | ') + '</div>' : '') +
+          (contractor ? '<div style="color:var(--stone);">' + contractor + '</div>' : '') +
+          (gdriveUrl ? '<a href="' + gdriveUrl + '" target="_blank" class="nearby-card-link" style="font-size:10px;">View PDF</a>' : '') +
+        '</div>';
+      });
+
       var docsLink = 'https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber=' + permitApn;
-      var epermitsLink = a.EPERMITS_LINK || ('https://epermits.nashville.gov/#/search?searchCode=APN&searchText=' + permitApn);
-      var svLink = (p.geometry && p.geometry.y) ? 'https://www.google.com/maps/@' + p.geometry.y + ',' + p.geometry.x + ',3a,75y,90t/data=!3m6!1e1!3m4!1s' : '#';
-
-      // Check gdrive for PDF
-      var gdriveUrl = '';
-      var permitNum = a.PERMIT_NUMBER || a.PermitNum || '';
-      if (permitNum && permitToDocs[permitNum] && permitToDocs[permitNum].length > 0) {
-        gdriveUrl = permitToDocs[permitNum][0].gdrive_url || permitToDocs[permitNum][0].download_url || '';
-      }
-
-      var details = [sqft, cost, costPerSf].filter(Boolean).join(' | ');
+      var svLink = (g.geometry && g.geometry.y) ? 'https://www.google.com/maps/@' + g.geometry.y + ',' + g.geometry.x + ',3a,75y,90t/data=!3m6!1e1!3m4!1s' : '#';
 
       var card = document.createElement('div');
       card.className = 'nearby-card';
       card.innerHTML = '' +
-        (photo ? '<img src="' + photo + '" class="nearby-card-thumb" onerror="this.style.display=\'none\'">' : '') +
+        (g.photo ? '<img src="' + g.photo + '" class="nearby-card-thumb" onerror="this.style.display=\'none\'">' : '') +
         '<div class="nearby-card-body">' +
-          '<div class="nearby-card-address">' + address + '</div>' +
-          '<div class="nearby-card-distance">' + distStr + '</div>' +
-          (details ? '<div class="nearby-card-details">' + details + '</div>' : '') +
-          (contractor ? '<div class="nearby-card-contractor">' + contractor + '</div>' : '') +
+          '<div class="nearby-card-address">' + g.address + '</div>' +
+          '<div class="nearby-card-distance">' + distStr +
+            (g.permits.length > 1 ? ' &middot; ' + g.permits.length + ' permits' : '') + '</div>' +
+          (summary ? '<div class="nearby-card-details">' + summary + '</div>' : '') +
           '<div class="nearby-card-expanded">' +
-            (permitDate ? '<div style="font-size:11px;color:#666;margin-bottom:4px;">Permit: ' + permitDate + '</div>' : '') +
-            '<div class="nearby-card-links">' +
-              (gdriveUrl ? '<a href="' + gdriveUrl + '" target="_blank" class="nearby-card-link">View PDF</a>' : '') +
+            permitRows +
+            '<div class="nearby-card-links" style="margin-top:6px;">' +
               '<a href="' + docsLink + '" target="_blank" class="nearby-card-link">Nashville Docs</a>' +
-              '<a href="' + epermitsLink + '" target="_blank" class="nearby-card-link">ePermits</a>' +
               '<a href="' + svLink + '" target="_blank" class="nearby-card-link">Street View</a>' +
             '</div>' +
           '</div>' +
@@ -1840,31 +1917,30 @@ async function queryNearbyPermits(lat, lon) {
 
       card.addEventListener('click', function() {
         card.classList.toggle('expanded');
-        if (p.geometry && p.geometry.y) {
-          map.setView([p.geometry.y, p.geometry.x], 17);
+        if (g.geometry && g.geometry.y) {
+          map.setView([g.geometry.y, g.geometry.x], 17);
         }
       });
 
       list.appendChild(card);
 
-      // Map marker
-      if (p.geometry && p.geometry.y && p.geometry.x) {
-        L.circleMarker([p.geometry.y, p.geometry.x], {
+      // Map marker (one per address)
+      if (g.geometry && g.geometry.y && g.geometry.x) {
+        L.circleMarker([g.geometry.y, g.geometry.x], {
           radius: 6,
           color: COLORS.nearby,
           fillColor: COLORS.nearby,
           fillOpacity: 0.8,
           weight: 1.5
         }).bindPopup(
-          '<strong>' + address + '</strong>' +
-          (details ? '<br>' + details : '') +
-          (contractor ? '<br><em>' + contractor + '</em>' : '') +
-          (gdriveUrl ? '<br><a href="' + gdriveUrl + '" target="_blank">View PDF</a>' : '')
+          '<strong>' + g.address + '</strong>' +
+          (summary ? '<br>' + summary : '') +
+          (g.permits.length > 1 ? '<br>' + g.permits.length + ' permits' : '')
         ).addTo(nearbyLayer);
       }
     });
 
-    list.innerHTML += '<p style="color:#666;font-size:11px;margin-top:12px;">Found ' + permits.length + ' permits within 1 mile. Click to expand details.</p>';
+    list.innerHTML += '<p style="color:#666;font-size:11px;margin-top:12px;">Found ' + groupOrder.length + ' properties (' + permits.length + ' permits) within 1 mile. Click to expand.</p>';
 
   } catch (e) {
     console.error('[BUILD V2] Nearby error:', e);
@@ -2215,5 +2291,12 @@ document.addEventListener('click', function(e) {
 document.addEventListener('DOMContentLoaded', initMap);
 </script>
 <script src="homebody_header.js"></script>
+<script>
+// Swap logo to light version for dark nav
+document.addEventListener('DOMContentLoaded', function() {
+  var img = document.querySelector('.nav-logo-img');
+  if (img) img.src = 'assets/icons/ADU_Light2.svg';
+});
+</script>
 </body>
 </html>
