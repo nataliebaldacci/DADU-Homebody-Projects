@@ -999,7 +999,7 @@ body {
   <!-- Map Overlay -->
   <div class="map-overlay" id="mapOverlay">
     <div class="overlay-card">
-      <div class="overlay-title">YOUR DADU</div>
+      <div class="overlay-title">PROPOSED DADU</div>
       <div class="overlay-value" id="overlaySize">0 SF</div>
       <div class="overlay-sub" id="overlayDims">0' x 0'</div>
     </div>
@@ -1031,7 +1031,7 @@ body {
     </div>
     <div class="legend-item">
       <div class="legend-color" style="background: rgba(203,178,121,0.6); border: 2px solid #CBB279;"></div>
-      <span>Your DADU</span>
+      <span>Proposed DADU</span>
     </div>
     <div class="legend-item">
       <div class="legend-color" style="background: rgba(239,68,68,0.3); border: 2px solid #ef4444;"></div>
@@ -1724,7 +1724,7 @@ function displayProperty(a) {
     map.setView([lat, lon], 18);
     loadParcelPolygon(lat, lon);
     loadBuildingFootprints(lat, lon);
-    document.getElementById('mapOverlay').style.display = 'block';
+    document.getElementById('mapOverlay').style.display = 'none';
     document.getElementById('instructions').innerHTML = '<span>Use the Build tab to design your DADU</span>';
   }
 
@@ -2056,11 +2056,23 @@ function drawDadu() {
   var halfW = (daduWidth / 2) * ftToLon;
   var halfD = (daduDepth / 2) * ftToLat;
 
-  var centerLat = lat - 0.0003;
+  // Place DADU inside the parcel polygon (rear portion)
+  var centerLat = lat;
+  var centerLon = lon;
+  var parcelBounds = selectedParcelLayer.getBounds();
+  if (parcelBounds && parcelBounds.isValid()) {
+    var south = parcelBounds.getSouth();
+    var north = parcelBounds.getNorth();
+    var west = parcelBounds.getWest();
+    var east = parcelBounds.getEast();
+    // Place in rear third of the parcel (south side), centered east-west
+    centerLat = south + (north - south) * 0.25;
+    centerLon = (west + east) / 2;
+  }
 
   var bounds = [
-    [centerLat - halfD, lon - halfW],
-    [centerLat + halfD, lon + halfW]
+    [centerLat - halfD, centerLon - halfW],
+    [centerLat + halfD, centerLon + halfW]
   ];
 
   daduMarker = L.rectangle(bounds, {
@@ -2070,7 +2082,7 @@ function drawDadu() {
     weight: 3
   }).addTo(daduLayer);
 
-  L.marker([centerLat, lon], {
+  L.marker([centerLat, centerLon], {
     icon: L.divIcon({
       className: 'dadu-label',
       html: '<div style="background:' + COLORS.dadu + ';color:white;padding:3px 7px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap;">' + (daduWidth * daduDepth) + ' SF</div>',
@@ -2082,6 +2094,14 @@ function drawDadu() {
 
 // ========== TABS ==========
 function switchTab(name) {
+  // Show DADU overlay and rectangle only on Build tab
+  if (name === 'build' && currentProperty) {
+    document.getElementById('mapOverlay').style.display = 'block';
+    drawDadu();
+  } else {
+    document.getElementById('mapOverlay').style.display = 'none';
+    daduLayer.clearLayers();
+  }
   document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
   document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
 
