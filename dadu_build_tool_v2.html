@@ -497,6 +497,17 @@ body {
   flex-shrink: 0;
   background: #e0e0e0;
 }
+.nearby-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--linen);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nearby-card-icon svg { width: 18px; height: 18px; color: var(--stone); }
 .nearby-card-expanded {
   display: none;
   margin-top: 8px;
@@ -1887,9 +1898,16 @@ async function queryNearbyPermits(lat, lon) {
 
     permits.sort(function(a, b) { return a.distance - b.distance; });
 
-    // Group permits by normalized address (strip "B", "UNIT B", etc.)
+    // Group permits by normalized address (strip unit designators like "B", "UNIT B", etc.)
+    // Nashville format: "1807 B Fatherland St" (unit before street name)
     function normalizeAddr(addr) {
-      return (addr || '').replace(/\s+(B|UNIT\s*[A-Z]|APT\s*[A-Z0-9]+|#\s*[A-Z0-9]+)\s*$/i, '').trim();
+      var s = (addr || '').toUpperCase().trim();
+      s = s.replace(/^(\d+)\s+[A-Z]\s+/, '$1 ');              // "1807 B FATHERLAND" → "1807 FATHERLAND"
+      s = s.replace(/^(\d+)\s+UNIT\s*[A-Z0-9]+\s+/, '$1 ');   // "1807 UNIT B FATHERLAND" → "1807 FATHERLAND"
+      s = s.replace(/^(\d+)\s+APT\s*[A-Z0-9]+\s+/, '$1 ');
+      s = s.replace(/^(\d+)\s+#\s*[A-Z0-9]+\s+/, '$1 ');
+      s = s.replace(/\s+(B|UNIT\s*[A-Z]|APT\s*[A-Z0-9]+|#\s*[A-Z0-9]+)\s*$/, '');  // trailing unit
+      return s.trim();
     }
 
     var grouped = {};
@@ -1899,13 +1917,17 @@ async function queryNearbyPermits(lat, lon) {
       var rawAddr = a.STREET || a.Address || 'Unknown';
       var key = normalizeAddr(rawAddr);
       if (!grouped[key]) {
-        grouped[key] = { address: key, permits: [], distance: p.distance, geometry: p.geometry, photo: '' };
+        // Use shortest raw address as display name (e.g. "1807 Fatherland St" not "1807 B Fatherland St")
+        grouped[key] = { address: rawAddr, displayAddr: rawAddr, permits: [], distance: p.distance, geometry: p.geometry, photo: '' };
         groupOrder.push(key);
       }
       grouped[key].permits.push(p);
       // Use closest distance and first available photo
       if (p.distance < grouped[key].distance) { grouped[key].distance = p.distance; grouped[key].geometry = p.geometry; }
-      if (!grouped[key].photo && (a.ASSESSOR_CARD2_PHOTO_URL || '')) grouped[key].photo = a.ASSESSOR_CARD2_PHOTO_URL;
+      // Use the shorter address variant as display name
+      if (rawAddr.length < grouped[key].displayAddr.length) grouped[key].displayAddr = rawAddr;
+      var photoUrl = a.ASSESSOR_CARD2_PHOTO_URL || a.Card2_Photo || '';
+      if (!grouped[key].photo && photoUrl && photoUrl !== 'None' && photoUrl !== 'null') grouped[key].photo = photoUrl;
     });
 
     groupOrder.sort(function(a, b) { return grouped[a].distance - grouped[b].distance; });
@@ -1965,10 +1987,13 @@ async function queryNearbyPermits(lat, lon) {
 
       var card = document.createElement('div');
       card.className = 'nearby-card';
+      var thumbHtml = g.photo
+        ? '<img src="' + g.photo + '" class="nearby-card-thumb" onerror="this.outerHTML=\'<div class=nearby-card-icon><svg viewBox=0,0,24,24 fill=none stroke=currentColor stroke-width=2><path d=M21,10c0,7-9,13-9,13s-9-6-9-13a9,9,0,0,1,18,0z /><circle cx=12 cy=10 r=3 /></svg></div>\'">'
+        : '<div class="nearby-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>';
       card.innerHTML = '' +
-        (g.photo ? '<img src="' + g.photo + '" class="nearby-card-thumb" onerror="this.style.display=\'none\'">' : '') +
+        thumbHtml +
         '<div class="nearby-card-body">' +
-          '<div class="nearby-card-address">' + g.address + '</div>' +
+          '<div class="nearby-card-address">' + g.displayAddr + '</div>' +
           '<div class="nearby-card-distance">' + distStr +
             (g.permits.length > 1 ? ' &middot; ' + g.permits.length + ' permits' : '') + '</div>' +
           (summary ? '<div class="nearby-card-details">' + summary + '</div>' : '') +
@@ -1999,7 +2024,7 @@ async function queryNearbyPermits(lat, lon) {
           fillOpacity: 0.8,
           weight: 1.5
         }).bindPopup(
-          '<strong>' + g.address + '</strong>' +
+          '<strong>' + g.displayAddr + '</strong>' +
           (summary ? '<br>' + summary : '') +
           (g.permits.length > 1 ? '<br>' + g.permits.length + ' permits' : '')
         ).addTo(nearbyLayer);
