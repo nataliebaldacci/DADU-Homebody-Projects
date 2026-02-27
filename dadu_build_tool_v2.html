@@ -1550,6 +1550,8 @@ async function loadParcelPolygon(lat, lon) {
         }
       });
     }
+    // Draw setbacks now that parcel polygon is loaded
+    try { drawSetbacks(); } catch(e) { console.log('Setback draw error:', e); }
   } catch (err) {
     console.log('[BUILD V2] Parcel polygon load error:', err.message);
   }
@@ -2184,11 +2186,15 @@ function switchTab(name) {
   document.querySelectorAll('.tab')[idx].classList.add('active');
   document.getElementById('tab-' + name).classList.add('active');
 
-  // Show DADU overlay, setbacks, and rectangle only on Build tab
+  // Setbacks show on Property + Build tabs; DADU only on Build
   if (name === 'build' && currentProperty) {
     document.getElementById('mapOverlay').style.display = 'block';
     try { drawSetbacks(); } catch(e) { console.log('Setback error:', e); }
     try { drawDadu(); } catch(e) { console.log('DADU draw error:', e); }
+  } else if (name === 'property' && currentProperty) {
+    document.getElementById('mapOverlay').style.display = 'none';
+    daduLayer.clearLayers();
+    try { drawSetbacks(); } catch(e) { console.log('Setback error:', e); }
   } else {
     document.getElementById('mapOverlay').style.display = 'none';
     daduLayer.clearLayers();
