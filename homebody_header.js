@@ -69,9 +69,9 @@
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="explore-dropdown" role="menu">' +
              col('Area_Maps_and_Visual_layers.svg', 'Interactive Maps',
                  item('dadu_eligibility_map.html', 'Zoning.svg', 'Eligibility Map') +
-                 item('existing_dadus_map.html', 'ADU.png', 'Existing DADUs') +
+                 item('dadu_near_me_v3.html', 'Neighbors.svg', 'DADUs Near Me') +
                  item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map') +
-                item('dadu_near_me_v3.html', 'Neighbors.svg', 'DADUs Near Me')
+                 item('existing_dadus_map.html', 'ADU.png', 'Existing DADUs')
              ) +
              col('Dashboard.svg', 'Dashboards',
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
@@ -115,7 +115,7 @@
                  item('dadu_eligibility_flowchart.html', 'Eligibility_Check.svg', 'Eligibility Flowchart') +
                  item('dadu_history.html', 'DADU_History.svg', 'DADU History') +
                  item('dadu_code_legislation_v5.html', 'Legislation.svg', 'Code &amp; Legislation') +
-                item('arcgis_maps.html', 'GIS.svg', 'ArcGIS Maps')
+                item('dadu_resources.html', 'External_Links.svg', 'Metro Links')
              ) +
              col('Permit_Approval.svg', 'Metro Rules &amp; Compliance',
                  item('owner_occupancy.html', 'Owner_Occupancy.svg', 'Owner Occupancy') +
