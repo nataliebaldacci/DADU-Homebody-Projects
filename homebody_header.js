@@ -90,13 +90,13 @@
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="build-dropdown" role="menu">' +
              col('Project_Planner.svg', 'Plan My Project',
                  item('dadu_build_tool_v2.html', 'Draw_DADU.svg', 'Build My DADU') +
-                 item('project_planner_hub.html', 'Checklist_.svg', 'Planning Hub') +
+                 item('project_planner_hub.html', 'Project_Checklist_v4.svg', 'Planning Hub') +
                  item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
                  item('form_wizard.html', 'Form_Wizard.svg', 'Form Wizard')
              ) +
              col('Exports__Reports.svg', 'Research',
                  item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator') +
-                 item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans &amp; Permit Docs') +
+                 item('find_site_plans.html', 'Parcel Search.svg', 'Find Site Plans &amp; Permit Docs') +
                  item('dadu_resources.html', 'External_Links.svg', 'External Links') +
                  item('contractor_dashboard.html', 'Find_Contractor.svg', 'Find a Contractor')
              ) +
