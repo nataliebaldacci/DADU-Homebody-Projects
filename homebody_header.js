@@ -120,7 +120,7 @@
              col('Permit_Approval.svg', 'Metro Rules &amp; Compliance',
                  item('owner_occupancy.html', 'Owner_Occupancy.svg', 'Owner Occupancy') +
                  item('str_permit.html', 'STR_Permit.svg', 'Short Term Rental Permit') +
-                 item('trade_permits.html', 'Trade_Permits.svg', 'Required Permit Types') +
+                 item('trade_permits.html', 'Permit_Approval.svg', 'Required Permit Types') +
                  item('overlay-districts.html', 'Zoning_Documents.svg', 'Overlay Districts') +
                  item('restrictive_covenants_v2.html', 'Restrictive_Covenants.svg', 'Restrictive Covenants') +
                  item('dadu_design_standards.html', 'Overlay_Design_Standards.svg', 'Design Standards')
