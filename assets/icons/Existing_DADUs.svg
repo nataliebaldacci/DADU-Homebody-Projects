@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="56" viewBox="0 0 64 56" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .s{fill:#3A5566;}
+    .d{fill:#7B746D;}
+  </style>
+  <!-- Map/parcel boundary -->
+  <path class="s" d="M4,8 L18,2 L58,6 L60,44 L46,52 L6,48 Z" fill="none" stroke="#3A5566" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- Parcel division lines -->
+  <line x1="18" y1="2" x2="16" y2="48" stroke="#3A5566" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+  <line x1="38" y1="4" x2="36" y2="50" stroke="#3A5566" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+  <!-- Main house (larger) -->
+  <g transform="translate(20,14)">
+    <polygon class="s" points="8,0 16,6 16,16 0,16 0,6" />
+    <rect class="s" x="2" y="8" width="4" height="4" rx="0.5" opacity="0.3" fill="#F5F5F0"/>
+    <rect class="s" x="10" y="8" width="4" height="4" rx="0.5" opacity="0.3" fill="#F5F5F0"/>
+    <rect x="6" y="11" width="4" height="5" rx="0.5" fill="#F5F5F0" opacity="0.4"/>
+  </g>
+  <!-- DADU (smaller, offset behind) -->
+  <g transform="translate(40,22)">
+    <polygon class="s" points="5,0 10,4 10,11 0,11 0,4" />
+    <rect x="2" y="5.5" width="2.5" height="2.5" rx="0.3" fill="#F5F5F0" opacity="0.4"/>
+    <rect x="6" y="5.5" width="2.5" height="2.5" rx="0.3" fill="#F5F5F0" opacity="0.4"/>
+  </g>
+  <!-- Location dots (data points on map) -->
+  <circle class="d" cx="10" cy="16" r="1.2"/>
+  <circle class="d" cx="12" cy="24" r="1.5"/>
+  <circle class="d" cx="8" cy="32" r="1.3"/>
+  <circle class="d" cx="14" cy="38" r="1.6"/>
+  <circle class="d" cx="10" cy="42" r="1.1"/>
+  <circle class="d" cx="48" cy="12" r="1.0"/>
+  <circle class="d" cx="52" cy="18" r="1.3"/>
+  <circle class="d" cx="54" cy="26" r="1.5"/>
+  <circle class="d" cx="50" cy="38" r="1.4"/>
+  <circle class="d" cx="44" cy="42" r="1.2"/>
+  <circle class="d" cx="22" cy="36" r="1.4"/>
+  <circle class="d" cx="28" cy="40" r="1.6"/>
+  <circle class="d" cx="34" cy="42" r="1.3"/>
+  <circle class="d" cx="40" cy="46" r="1.1"/>
+  <circle class="d" cx="56" cy="34" r="1.2"/>
+  <circle class="d" cx="16" cy="10" r="0.9"/>
+  <circle class="d" cx="46" cy="8" r="0.8"/>
+</svg>
