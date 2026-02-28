@@ -726,6 +726,201 @@ body {
 }
 .instructions.hidden { display: none; }
 
+/* ===== PREMIUM BANNER ===== */
+.premium-banner {
+  background: linear-gradient(135deg, var(--slate) 0%, var(--dark-anchor) 100%);
+  color: white;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.premium-banner-text { font-size: 11px; flex: 1; }
+.premium-banner-text strong { color: var(--wheat); }
+.premium-banner .btn-sm {
+  padding: 6px 12px;
+  font-size: 10px;
+  background: var(--wheat);
+  color: var(--slate);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+/* ===== PREMIUM LOCK ===== */
+.premium-section { position: relative; }
+.premium-section.locked .premium-content {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+.premium-lock-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+.premium-section:not(.locked) .premium-lock-overlay { display: none; }
+.lock-icon {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--slate), var(--dark-anchor));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px;
+}
+.lock-icon svg { width: 22px; height: 22px; color: white; }
+.lock-title { font-size: 13px; font-weight: 700; color: var(--slate); margin-bottom: 4px; }
+.lock-desc { font-size: 11px; color: #666; margin-bottom: 10px; max-width: 200px; }
+.lock-price { font-size: 10px; color: var(--wheat); font-weight: 600; margin-bottom: 8px; }
+.btn-unlock {
+  background: var(--wheat);
+  color: var(--slate);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-unlock:hover { filter: brightness(1.05); }
+.btn-unlock svg { width: 13px; height: 13px; }
+
+/* Tab lock badge */
+.tab .lock-badge {
+  background: var(--stone);
+  color: white;
+  font-size: 7px;
+  padding: 1px 3px;
+  border-radius: 3px;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+.tab { position: relative; }
+
+/* ===== CONTRACTOR LIST ===== */
+.contractor-card {
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.contractor-rank {
+  width: 28px; height: 28px;
+  background: var(--wheat);
+  color: var(--slate);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.contractor-info { flex: 1; min-width: 0; }
+.contractor-name { font-size: 13px; font-weight: 600; color: var(--slate); }
+.contractor-meta { font-size: 11px; color: #666; }
+
+/* ===== LEGAL CHECKLIST ===== */
+.checklist { list-style: none; padding: 0; }
+.checklist-item {
+  display: flex; gap: 8px; padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 12px;
+}
+.checklist-item:last-child { border-bottom: none; }
+.checklist-icon {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.checklist-icon svg { width: 14px; height: 14px; }
+.checklist-icon.check { background: #e8f5e9; color: var(--eligible); }
+.checklist-icon.warning { background: #fff3e0; color: #e65100; }
+.checklist-icon.info { background: #e3f2fd; color: var(--slate); }
+.checklist-title { font-weight: 600; color: var(--slate); margin-bottom: 2px; }
+.checklist-desc { color: #666; font-size: 11px; }
+.checklist-link { color: var(--wheat); text-decoration: underline; }
+
+/* ===== TAX / ROI CARDS ===== */
+.tax-card {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.tax-card-title { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.tax-amount { font-size: 22px; font-weight: 700; color: var(--wheat); }
+.tax-amount-label { font-size: 11px; color: #888; }
+.tax-comparison {
+  display: flex; gap: 12px; margin-top: 10px;
+  padding-top: 10px; border-top: 1px solid #e0e0e0;
+}
+.tax-compare-item { flex: 1; }
+.tax-compare-label { font-size: 10px; color: #888; }
+.tax-compare-value { font-size: 15px; font-weight: 700; color: var(--slate); }
+.tax-compare-value.increase { color: var(--not-eligible); }
+
+.roi-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.roi-input-group { }
+.roi-label { font-size: 10px; color: #888; display: block; margin-bottom: 3px; }
+.roi-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  text-align: center;
+}
+.roi-input:focus { border-color: var(--wheat); outline: none; }
+.roi-result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+}
+.roi-result-row:last-child { border-bottom: none; }
+.roi-result-label { color: #666; }
+.roi-result-value { font-weight: 700; color: var(--slate); }
+.roi-result-value.highlight { color: var(--wheat); }
+
+.info-callout {
+  background: #f8f9fa;
+  border-left: 3px solid var(--wheat);
+  padding: 10px 12px;
+  margin: 12px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 11px;
+  color: #666;
+}
+.info-callout-title { font-weight: 700; color: var(--slate); margin-bottom: 4px; font-size: 12px; }
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .panel { width: 100%; height: 50%; }
@@ -763,7 +958,13 @@ body {
     <span id="eligibilityText">Enter an address to check eligibility</span>
   </div>
 
-  <!-- Tabs with SVG icons + text labels (property_viewer_v3 style) -->
+  <!-- Premium Banner -->
+  <div class="premium-banner" id="premiumBanner">
+    <div class="premium-banner-text"><strong>3 sections locked</strong> · Unlock full property report</div>
+    <button class="btn-sm" onclick="unlockAll()">Unlock $19</button>
+  </div>
+
+  <!-- Tabs with SVG icons + text labels -->
   <div class="tabs">
     <div class="tab active" onclick="switchTab('property')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -776,6 +977,20 @@ body {
     <div class="tab" onclick="switchTab('nearby')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
       Nearby
+    </div>
+    <div class="tab" onclick="switchTab('contractors')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Contractors
+    </div>
+    <div class="tab" onclick="switchTab('taxes')">
+      <span class="lock-badge">PRO</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Taxes
+    </div>
+    <div class="tab" onclick="switchTab('roi')">
+      <span class="lock-badge">PRO</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      ROI
     </div>
   </div>
 
@@ -1011,6 +1226,138 @@ body {
     </div>
     <div id="nearbyList">
       <p style="color: #666; font-size: 13px;">Search for a property to see completed DADUs nearby.</p>
+    </div>
+  </div>
+
+  <!-- ===================== CONTRACTORS TAB ===================== -->
+  <div class="tab-content" id="tab-contractors">
+    <div class="section-header-label">Top DADU Contractors</div>
+    <p style="font-size: 11px; color: #888; margin-bottom: 12px;">Ranked by Nashville DADU permits completed</p>
+    <div id="contractorList">
+      <p style="color: #666; font-size: 13px;">Loading contractors...</p>
+    </div>
+    <div class="info-callout" style="margin-top: 16px;">
+      <div class="info-callout-title">How We Rank Contractors</div>
+      <p>Rankings based on DADU building permits filed in Davidson County. We track permit count, average project cost, and completion rate.</p>
+    </div>
+    <a href="contractor_marketplace.html" class="action-btn primary" style="text-align:center;text-decoration:none;display:block;margin-top:12px;">View Full Marketplace</a>
+  </div>
+
+  <!-- ===================== TAXES & LEGAL TAB (LOCKED) ===================== -->
+  <div class="tab-content" id="tab-taxes">
+    <div class="premium-section locked" id="taxesSection">
+      <div class="premium-lock-overlay">
+        <div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div class="lock-title">Taxes & Legal</div>
+        <div class="lock-desc">Tax estimates, legal checklist, owner-occupancy, covenants & STR rules</div>
+        <div class="lock-price">Included in $19 full report</div>
+        <button class="btn-unlock" onclick="unlockAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Unlock Full Report</button>
+      </div>
+      <div class="premium-content">
+        <!-- Tax Estimator -->
+        <div class="section-header-label">Property Tax Estimator</div>
+        <div class="tax-card">
+          <div class="tax-card-title">Estimated Annual Tax Increase</div>
+          <div class="tax-amount" id="taxIncrease">+$0</div>
+          <div class="tax-amount-label">per year after adding DADU</div>
+          <div class="tax-comparison">
+            <div class="tax-compare-item">
+              <div class="tax-compare-label">Current Tax</div>
+              <div class="tax-compare-value" id="currentTax">$0</div>
+            </div>
+            <div class="tax-compare-item">
+              <div class="tax-compare-label">Projected Tax</div>
+              <div class="tax-compare-value increase" id="projectedTax">$0</div>
+            </div>
+          </div>
+        </div>
+        <div class="info-callout">
+          <div class="info-callout-title">Davidson County Tax Formula</div>
+          <p>25% assessment ratio x $3.254 per $100 assessed value. DADU construction cost adds directly to your property's appraised value.</p>
+        </div>
+
+        <!-- Legal Checklist -->
+        <div class="section-header-label" style="margin-top: 18px;">Legal Checklist</div>
+        <ul class="checklist">
+          <li class="checklist-item">
+            <div class="checklist-icon info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+            <div><div class="checklist-title">Owner-Occupancy Required</div><div class="checklist-desc">You must live in either the main house or DADU</div></div>
+          </li>
+          <li class="checklist-item">
+            <div class="checklist-icon warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <div><div class="checklist-title">Restrictive Covenants</div><div class="checklist-desc">Check deed for restrictions. <a href="restrictive_covenants_v2.html" class="checklist-link">Search Covenants</a></div></div>
+          </li>
+          <li class="checklist-item">
+            <div class="checklist-icon check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><div class="checklist-title">Short-Term Rentals</div><div class="checklist-desc">Allowed with owner on-site + STR permit</div></div>
+          </li>
+          <li class="checklist-item">
+            <div class="checklist-icon info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+            <div><div class="checklist-title">Floodplain Status</div><div class="checklist-desc"><a href="https://maps.nashville.gov/stormwater" class="checklist-link" target="_blank">Check Flood Map</a></div></div>
+          </li>
+          <li class="checklist-item">
+            <div class="checklist-icon check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><div class="checklist-title">Utility Connections</div><div class="checklist-desc">Separate meters required (NES + Metro Water)</div></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ROI TAB (LOCKED) ===================== -->
+  <div class="tab-content" id="tab-roi">
+    <div class="premium-section locked" id="roiSection">
+      <div class="premium-lock-overlay">
+        <div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div class="lock-title">Investment Calculator</div>
+        <div class="lock-desc">Calculate ROI, cash-on-cash return & break-even timeline</div>
+        <div class="lock-price">Included in $19 full report</div>
+        <button class="btn-unlock" onclick="unlockAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Unlock Full Report</button>
+      </div>
+      <div class="premium-content">
+        <div class="section-header-label">ROI Calculator</div>
+        <div class="roi-inputs">
+          <div class="roi-input-group">
+            <label class="roi-label">Construction ($)</label>
+            <input type="number" class="roi-input" id="roiConstructionCost" value="200000">
+          </div>
+          <div class="roi-input-group">
+            <label class="roi-label">Monthly Rent ($)</label>
+            <input type="number" class="roi-input" id="roiMonthlyRent" value="1400">
+          </div>
+          <div class="roi-input-group">
+            <label class="roi-label">Vacancy (%)</label>
+            <input type="number" class="roi-input" id="roiVacancyRate" value="5">
+          </div>
+          <div class="roi-input-group">
+            <label class="roi-label">Annual Costs ($)</label>
+            <input type="number" class="roi-input" id="roiOperatingCosts" value="2400">
+          </div>
+        </div>
+        <button class="action-btn primary" onclick="calculateROI()">Calculate</button>
+        <div class="roi-results" style="margin-top: 12px;">
+          <div class="roi-result-row">
+            <span class="roi-result-label">Net Operating Income</span>
+            <span class="roi-result-value" id="roiNOI">--</span>
+          </div>
+          <div class="roi-result-row">
+            <span class="roi-result-label">Cash-on-Cash Return</span>
+            <span class="roi-result-value highlight" id="roiCashReturn">--%</span>
+          </div>
+          <div class="roi-result-row">
+            <span class="roi-result-label">Break-Even</span>
+            <span class="roi-result-value" id="roiBreakEven">-- years</span>
+          </div>
+          <div class="roi-result-row">
+            <span class="roi-result-label">Annual Revenue</span>
+            <span class="roi-result-value" id="roiRevenue">--</span>
+          </div>
+        </div>
+        <div class="info-callout" style="margin-top: 12px;">
+          <div class="info-callout-title">About This Calculator</div>
+          <p>Estimates based on your inputs. Actual returns depend on market conditions, financing, maintenance, and occupancy rates.</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2256,14 +2603,18 @@ function drawSetbacks() {
 }
 
 // ========== TABS ==========
+var TAB_NAMES = ['property', 'build', 'nearby', 'contractors', 'taxes', 'roi'];
 function switchTab(name) {
-  // Switch tab content first
   document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
   document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
 
-  var idx = name === 'property' ? 0 : name === 'build' ? 1 : 2;
+  var idx = TAB_NAMES.indexOf(name);
+  if (idx < 0) idx = 0;
   document.querySelectorAll('.tab')[idx].classList.add('active');
   document.getElementById('tab-' + name).classList.add('active');
+
+  // Load contractors on first visit
+  if (name === 'contractors' && !contractorsLoaded) loadContractors();
 
   // Setbacks show on Property + Build tabs; DADU only on Build
   if (name === 'build' && currentProperty) {
@@ -2275,6 +2626,63 @@ function switchTab(name) {
     daduLayer.clearLayers();
     setbackLayer.clearLayers();
   }
+}
+
+// ========== CONTRACTORS ==========
+var contractorsLoaded = false;
+function loadContractors() {
+  contractorsLoaded = true;
+  var listEl = document.getElementById('contractorList');
+  listEl.innerHTML = '<p style="color:#888;font-size:12px;">Loading...</p>';
+  fetch('data/contractor_stats.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var contractors = data.contractors || [];
+      contractors.sort(function(a, b) { return (b.permit_count || 0) - (a.permit_count || 0); });
+      var top = contractors.slice(0, 15);
+      var html = '';
+      top.forEach(function(c, i) {
+        var avgVal = c.avg_value ? '$' + Math.round(c.avg_value / 1000) + 'K' : '--';
+        html += '<div class="contractor-card">' +
+          '<div class="contractor-rank">' + (i + 1) + '</div>' +
+          '<div class="contractor-info">' +
+          '<div class="contractor-name">' + (c.name || c.contractor || 'Unknown') + '</div>' +
+          '<div class="contractor-meta">' + (c.permit_count || 0) + ' permits · Avg ' + avgVal + '</div>' +
+          '</div></div>';
+      });
+      listEl.innerHTML = html || '<p style="color:#888;font-size:12px;">No contractor data available.</p>';
+    })
+    .catch(function() {
+      listEl.innerHTML = '<p style="color:#888;font-size:12px;">Could not load contractor data.</p>';
+    });
+}
+
+// ========== UNLOCK ==========
+function unlockAll() {
+  if (confirm('Purchase Full DADU Report for $19?\n\nIncludes:\n- Tax estimates\n- Legal checklist\n- ROI calculator\n- PDF export\n\nIn production, this would open Stripe checkout.')) {
+    document.querySelectorAll('.premium-section.locked').forEach(function(s) {
+      s.classList.remove('locked');
+    });
+    var banner = document.getElementById('premiumBanner');
+    if (banner) banner.style.display = 'none';
+    document.querySelectorAll('.lock-badge').forEach(function(b) { b.style.display = 'none'; });
+  }
+}
+
+// ========== ROI CALCULATOR ==========
+function calculateROI() {
+  var cost = parseInt(document.getElementById('roiConstructionCost').value) || 200000;
+  var rent = parseInt(document.getElementById('roiMonthlyRent').value) || 1400;
+  var vacancy = (parseInt(document.getElementById('roiVacancyRate').value) || 5) / 100;
+  var operating = parseInt(document.getElementById('roiOperatingCosts').value) || 2400;
+  var annualRent = rent * 12 * (1 - vacancy);
+  var noi = annualRent - operating;
+  var cashReturn = (noi / cost) * 100;
+  var breakEven = cost / noi;
+  document.getElementById('roiNOI').textContent = '$' + noi.toLocaleString();
+  document.getElementById('roiCashReturn').textContent = cashReturn.toFixed(1) + '%';
+  document.getElementById('roiBreakEven').textContent = breakEven.toFixed(1) + ' years';
+  document.getElementById('roiRevenue').textContent = '$' + Math.round(annualRent).toLocaleString();
 }
 
 // ========== MAP CONTROLS ==========
