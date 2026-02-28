@@ -71,56 +71,40 @@ body {
   flex-direction: column;
 }
 
-/* ===== HERO / SEARCH ROW ===== */
-.search-row {
-  background: linear-gradient(rgba(58, 85, 102, 0.85), rgba(47, 58, 69, 0.92)), url('ChatGPT Image Feb 12, 2026, 06_17_37 AM.png') center/cover no-repeat;
-  padding: 32px 24px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-shrink: 0;
-}
-.search-row h1 {
-  font-family: 'Source Serif 4', 'Georgia', serif;
-  font-weight: 700;
-  font-style: italic;
-  font-size: 26px;
-  color: var(--cream);
-  margin-bottom: 12px;
-  letter-spacing: 0.5px;
-}
+/* ===== SEARCH BAR ===== */
 .search-container {
-  max-width: 700px;
   width: 100%;
   display: flex;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: visible;
   position: relative;
-  background-color: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
 }
 .search-container input {
   flex: 1;
-  padding: 13px 18px;
+  padding: 11px 14px;
   border: none;
-  font-size: 15px;
+  font-size: 14px;
   font-family: inherit;
   color: var(--slate);
   background: transparent;
   outline: none;
+  min-width: 0;
 }
-.search-container input::placeholder { color: var(--stone); }
+.search-container input::placeholder { color: var(--stone-light); }
 .search-container .search-btn {
   background-color: var(--wheat);
   color: var(--slate);
   border: none;
-  padding: 13px 26px;
+  padding: 11px 18px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   font-family: inherit;
   cursor: pointer;
   transition: background 0.2s;
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 7px 7px 0;
+  white-space: nowrap;
 }
 .search-container .search-btn:hover { filter: brightness(1.05); }
 .search-container .search-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -131,12 +115,14 @@ body {
   top: 100%;
   left: 0; right: 0;
   background: white;
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 8px 8px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  max-height: 240px;
+  max-height: 220px;
   overflow-y: auto;
   z-index: 1100;
   display: none;
+  border: 1px solid #e0e0e0;
+  border-top: none;
 }
 .autocomplete-list.visible { display: block; }
 .autocomplete-item {
@@ -745,7 +731,6 @@ body {
   .panel { width: 100%; height: 50%; }
   .main { flex-direction: column-reverse; }
   .map-container { height: 50vh; }
-  .search-container { max-width: 100%; }
 }
 </style>
 <link rel="stylesheet" href="homebody_shared.css">
@@ -755,25 +740,20 @@ body {
 <!-- Shared Header -->
 <div id="site-header"></div>
 
-<!-- ===== SEARCH ROW ===== -->
-<div class="search-row">
-  <h1>Build My DADU</h1>
-  <div class="search-container">
-    <input type="text" id="addressInput" placeholder="Search address or APN..." autocomplete="off">
-    <button class="search-btn" id="searchBtn" onclick="searchAddress()">Search</button>
-    <div class="autocomplete-list" id="autocompleteList"></div>
-  </div>
-</div>
-
 <main class="main">
 <aside class="panel">
 
-  <!-- Property Header -->
+  <!-- Property Header with Search -->
   <div class="property-header">
     <div class="property-address" id="propertyAddress">Search for a property</div>
     <div class="property-meta">
       <span id="propertyAPN">APN: --</span>
       <span id="propertyZone">Zone: --</span>
+    </div>
+    <div class="search-container" style="margin-top:12px;">
+      <input type="text" id="addressInput" placeholder="Search address or APN..." autocomplete="off">
+      <button class="search-btn" id="searchBtn" onclick="searchAddress()">Search</button>
+      <div class="autocomplete-list" id="autocompleteList"></div>
     </div>
   </div>
 

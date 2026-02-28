@@ -7,6 +7,7 @@
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@1,700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
  <style>
  * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -316,11 +317,189 @@
   padding: 3px 0;
  }
 
+ /* Historic Preservation Section */
+ .hp-section {
+  background: #3A5566;
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 48px;
+  color: #E1D4BB;
+ }
+ .hp-section .section-title { color: #E1D4BB; margin-bottom: 8px; }
+ .hp-section .hp-subtitle {
+  color: rgba(225,212,187,0.75);
+  font-size: 14px;
+  margin-bottom: 24px;
+ }
+ .hp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+ }
+ .hp-card {
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid rgba(225,212,187,0.15);
+ }
+ .hp-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #CBB279;
+  margin-bottom: 10px;
+ }
+ .hp-card p, .hp-card li {
+  font-size: 13px;
+  color: #E1D4BB;
+  line-height: 1.6;
+ }
+ .hp-card ul {
+  list-style: none;
+  padding: 0;
+ }
+ .hp-card li {
+  padding: 4px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+ }
+ .hp-card li::before {
+  content: "\2022";
+  color: #CBB279;
+  font-weight: bold;
+  flex-shrink: 0;
+ }
+ .hp-comparison {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(225,212,187,0.15);
+ }
+ .hp-compare-col {
+  padding: 16px;
+  font-size: 13px;
+ }
+ .hp-compare-col:first-child {
+  background: rgba(255,255,255,0.05);
+  border-right: 1px solid rgba(225,212,187,0.15);
+ }
+ .hp-compare-col:last-child {
+  background: rgba(203,178,121,0.1);
+ }
+ .hp-compare-col h5 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+ }
+ .hp-compare-col:first-child h5 { color: #E1D4BB; }
+ .hp-compare-col:last-child h5 { color: #CBB279; }
+ .hp-compare-col p {
+  font-size: 12px;
+  color: rgba(225,212,187,0.8);
+  line-height: 1.5;
+  margin-bottom: 4px;
+ }
+ .hp-links {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+ }
+ .hp-links a {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #CBB279;
+  color: #3A5566;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+ }
+ .hp-links a:hover { opacity: 0.9; }
+ .hp-links a.outline {
+  background: transparent;
+  border: 1px solid #CBB279;
+  color: #CBB279;
+ }
+
+ /* Permit Map Section */
+ .map-section {
+  margin-bottom: 48px;
+ }
+ .map-wrap {
+  background: #fff;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  overflow: hidden;
+ }
+ #permit-map {
+  height: 480px;
+  width: 100%;
+ }
+ .map-legend {
+  padding: 12px 20px;
+  border-top: 1px solid #E2E2E0;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #706F6C;
+ }
+ .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+ }
+ .legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+ }
+ .map-controls {
+  padding: 12px 20px;
+  border-bottom: 1px solid #E2E2E0;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+ }
+ .layer-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #E2E2E0;
+  background: #F5F5F0;
+  color: #3A5566;
+  transition: all 0.15s;
+ }
+ .layer-toggle.active {
+  background: #3A5566;
+  color: #E1D4BB;
+  border-color: #3A5566;
+ }
+ .layer-toggle .toggle-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+ }
+
  @media (max-width: 1024px) {
   .trades-grid { grid-template-columns: repeat(2, 1fr); }
   .info-grid { grid-template-columns: 1fr; }
   .timeline { flex-direction: column; gap: 24px; }
   .timeline::before { display: none; }
+  .hp-grid { grid-template-columns: 1fr; }
+  .hp-comparison { grid-template-columns: 1fr; }
+  .hp-compare-col:first-child { border-right: none; border-bottom: 1px solid rgba(225,212,187,0.15); }
  }
  @media (max-width: 640px) {
   .trades-grid { grid-template-columns: 1fr; }
@@ -556,6 +735,106 @@
    </div>
   </div>
 
+  <!-- Historic Preservation Permits -->
+  <section class="hp-section">
+   <h2 class="section-title">Historic Preservation Permits</h2>
+   <p class="hp-subtitle">Additional permits required for DADUs in Nashville's historic overlay districts. The Metro Historic Zoning Commission (MHZC) must approve your project before a building permit can be issued.</p>
+
+   <div class="hp-grid">
+    <div class="hp-card">
+     <h4>When Is It Required?</h4>
+     <ul>
+      <li>Property is in a Historic Preservation Zoning Overlay (HPZO) such as Edgefield, Germantown, Salemtown, or Lockeland Springs</li>
+      <li>Property is in a Neighborhood Conservation Zoning Overlay (NCZO) such as Waverly-Belmont, Richland-West End, or Eastwood</li>
+      <li>Property is an individually designated historic landmark</li>
+      <li>Check your overlay status at Nashville Parcel Viewer or the Eligibility Map</li>
+     </ul>
+    </div>
+    <div class="hp-card">
+     <h4>Design Standards</h4>
+     <ul>
+      <li>Must match the style, materials, and roof form of the principal structure</li>
+      <li>Windows and doors must complement the principal structure's proportions</li>
+      <li>Dormers permitted if they match the principal structure's window style</li>
+      <li>Corner lots are held to a higher standard (visible from public street)</li>
+      <li>Must follow district-specific design guidelines adopted by MHZC</li>
+     </ul>
+    </div>
+    <div class="hp-card">
+     <h4>Review Process</h4>
+     <ul>
+      <li>Record restrictive covenant with Register of Deeds first</li>
+      <li>Submit preservation permit application to MHZC</li>
+      <li>Staff review (approx. 4 business days) or full Commission review</li>
+      <li>MHZC meets 2:00 PM on the 3rd Wednesday of each month</li>
+      <li>Preservation permit valid for 6 months after approval</li>
+      <li>Then apply for Codes building permit separately</li>
+     </ul>
+    </div>
+    <div class="hp-card">
+     <h4>Dimensional Limits (Historic Overlay)</h4>
+     <ul>
+      <li>Maximum living space: 700 SF (all lots)</li>
+      <li>1-story footprint: 700 SF or 50% of principal, whichever is less</li>
+      <li>2-story footprint: 550 SF or 40% of principal, whichever is less</li>
+      <li>Max eave height: 10 ft (1-story) / 17 ft (2-story)</li>
+      <li>Min 20 ft separation from principal structure</li>
+      <li>2-story requires interior enclosed stairs</li>
+     </ul>
+    </div>
+   </div>
+
+   <div class="hp-comparison">
+    <div class="hp-compare-col">
+     <h5>Standard DADU (BL2025-1007)</h5>
+     <p>Max living: 850 SF (lot &lt;10K) / 1,200 SF (lot &ge;10K)</p>
+     <p>Footprint: 850 SF or 50% of principal (up to 2,500 SF)</p>
+     <p>Review: Codes Department only</p>
+    </div>
+    <div class="hp-compare-col">
+     <h5>Historic Overlay DADU (BL2011-900)</h5>
+     <p>Max living: 700 SF (all lots)</p>
+     <p>Footprint: 700 SF or 50% of principal (whichever is less)</p>
+     <p>Review: MHZC + Codes Department</p>
+    </div>
+   </div>
+
+   <div class="hp-links">
+    <a href="https://www.nashville.gov/departments/historic-preservation/programs/districts-and-design-guidelines/detached-accessory-dwelling-units" target="_blank" rel="noopener">MHZC DADU Guidelines</a>
+    <a href="https://www.nashville.gov/departments/planning/historic-zoning-information/districts-and-design-guidelines" target="_blank" rel="noopener" class="outline">District Design Guidelines</a>
+    <a href="https://www.nashville.gov/departments/planning/historic-zoning-information/apply-preservation-permit" target="_blank" rel="noopener" class="outline">Apply for Preservation Permit</a>
+   </div>
+  </section>
+
+  <!-- Permit Types Map -->
+  <section class="map-section">
+   <h2 class="section-title">DADU Permit Types Map</h2>
+   <p style="color:#7B746D;font-size:14px;margin-top:-16px;margin-bottom:16px;">Explore issued DADU permits by type across Nashville-Davidson County</p>
+   <div class="map-wrap">
+    <div class="map-controls">
+     <button class="layer-toggle active" data-layer="building" onclick="toggleLayer(this)">
+      <span class="toggle-dot" style="background:#3A5566;"></span> Building Permits
+     </button>
+     <button class="layer-toggle active" data-layer="trade" onclick="toggleLayer(this)">
+      <span class="toggle-dot" style="background:#406A64;"></span> Trade Permits
+     </button>
+     <button class="layer-toggle active" data-layer="hp" onclick="toggleLayer(this)">
+      <span class="toggle-dot" style="background:#CBB279;"></span> Historic Preservation
+     </button>
+     <button class="layer-toggle active" data-layer="other" onclick="toggleLayer(this)">
+      <span class="toggle-dot" style="background:#918A83;"></span> Other Building
+     </button>
+    </div>
+    <div id="permit-map"></div>
+    <div class="map-legend">
+     <div class="legend-item"><span class="legend-dot" style="background:#3A5566;"></span> Building Permit (DADU Subtype)</div>
+     <div class="legend-item"><span class="legend-dot" style="background:#406A64;"></span> Trade Permit (Electrical, Plumbing, Gas)</div>
+     <div class="legend-item"><span class="legend-dot" style="background:#CBB279;"></span> Historic Preservation</div>
+     <div class="legend-item"><span class="legend-dot" style="background:#918A83;"></span> Other Building Permit</div>
+    </div>
+   </div>
+  </section>
+
   <!-- Requirements Info -->
   <section class="info-section">
    <h2 class="section-title">Permit Requirements</h2>
@@ -640,6 +919,132 @@
   </div>
  </main>
 
-<script src="homebody_header.js?v=2"></script>
+<script src="homebody_header.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function() {
+ var LAYERS = {
+  building: {
+   url: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/DADU_Permit_Type_1bUTSV/FeatureServer/0',
+   color: '#3A5566',
+   fields: 'FIELD_NAME_A,FIELD_NAME_B,FIELD_NAME_C,FIELD_NAME_D,FIELD_NAME_F,FIELD_NAME_H,FIELD_NAME_J,FIELD_NAME_M,FIELD_NAME_P,FIELD_NAME_Q,FIELD_NAME_R',
+   latField: 'FIELD_NAME_Y', lngField: 'FIELD_NAME_X',
+   label: 'Building Permit'
+  },
+  trade: {
+   url: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/_TP_DADU__A1_U2007_9uHxa0/FeatureServer/0',
+   color: '#406A64',
+   fields: 'FIELD_NAME_A,FIELD_NAME_B,FIELD_NAME_C,FIELD_NAME_D,FIELD_NAME_F,FIELD_NAME_H,FIELD_NAME_K,FIELD_NAME_N,FIELD_NAME_O,FIELD_NAME_P',
+   latField: 'FIELD_NAME_U', lngField: 'FIELD_NAME_T',
+   label: 'Trade Permit'
+  },
+  hp: {
+   url: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/_HP_DADU__A1_U2748_mOEE0d/FeatureServer/0',
+   color: '#CBB279',
+   fields: 'FIELD_NAME_A,FIELD_NAME_B,FIELD_NAME_C,FIELD_NAME_D,FIELD_NAME_F,FIELD_NAME_H,FIELD_NAME_K,FIELD_NAME_N,FIELD_NAME_O,FIELD_NAME_P',
+   latField: 'FIELD_NAME_T', lngField: 'FIELD_NAME_U',
+   label: 'Historic Preservation'
+  },
+  other: {
+   url: 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/__BP_DADU__A1_S2300_lTD4wr/FeatureServer/0',
+   color: '#918A83',
+   fields: 'FIELD_NAME_A,FIELD_NAME_B,FIELD_NAME_C,FIELD_NAME_D,FIELD_NAME_F,FIELD_NAME_G,FIELD_NAME_K,FIELD_NAME_L,FIELD_NAME_M',
+   latField: 'FIELD_NAME_S', lngField: 'FIELD_NAME_R',
+   label: 'Other Building'
+  }
+ };
+
+ var map = L.map('permit-map').setView([36.16, -86.78], 11);
+ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  maxZoom: 19
+ }).addTo(map);
+
+ var layerGroups = {};
+ var layerVisible = {};
+ Object.keys(LAYERS).forEach(function(key) {
+  layerGroups[key] = L.layerGroup().addTo(map);
+  layerVisible[key] = true;
+ });
+
+ function loadLayer(key) {
+  var cfg = LAYERS[key];
+  var group = layerGroups[key];
+  group.clearLayers();
+  if (!layerVisible[key]) return;
+
+  var b = map.getBounds();
+  var env = b.getWest() + ',' + b.getSouth() + ',' + b.getEast() + ',' + b.getNorth();
+
+  fetch(cfg.url + '/query?' + new URLSearchParams({
+   geometry: env, geometryType: 'esriGeometryEnvelope', inSR: '4326',
+   spatialRel: 'esriSpatialRelIntersects',
+   outFields: cfg.fields,
+   returnGeometry: 'true', outSR: '4326', f: 'geojson', resultRecordCount: '500'
+  }).toString())
+   .then(function(r) { return r.json(); })
+   .then(function(data) {
+    if (!data.features || !data.features.length) return;
+    data.features.forEach(function(feat) {
+     var coords = feat.geometry.coordinates;
+     var p = feat.properties;
+     var marker = L.circleMarker([coords[1], coords[0]], {
+      radius: 5, color: '#fff', weight: 1, fillColor: cfg.color, fillOpacity: 0.85
+     });
+
+     var addr = p.FIELD_NAME_F || '';
+     var permitNum = p.FIELD_NAME_B || '';
+     var permitType = p.FIELD_NAME_C || '';
+     var subtype = p.FIELD_NAME_D || '';
+     var status = p.FIELD_NAME_K || p.FIELD_NAME_M || '';
+
+     var popup = '<div style="font-family:Inter,sans-serif;font-size:13px;min-width:200px;">' +
+      '<strong style="color:#3A5566;font-size:14px;">' + (addr || 'DADU Permit') + '</strong>' +
+      '<br><span style="color:#7B746D;">' + cfg.label + '</span>' +
+      (permitNum ? '<br>Permit: ' + permitNum : '') +
+      (subtype ? '<br><span style="color:#7B746D;">' + subtype + '</span>' : '') +
+      (status ? '<br><span style="color:#7B746D;">Status: ' + status + '</span>' : '');
+
+     // Add document links based on layer type
+     var epermitUrl = p.FIELD_NAME_O || p.FIELD_NAME_Q || p.FIELD_NAME_L || '';
+     var docsUrl = p.FIELD_NAME_P || p.FIELD_NAME_R || p.FIELD_NAME_M || '';
+     if (key === 'building') {
+      epermitUrl = p.FIELD_NAME_Q || '';
+      docsUrl = p.FIELD_NAME_R || '';
+     }
+     if (epermitUrl && epermitUrl.indexOf('http') === 0) {
+      popup += '<br><a href="' + epermitUrl + '" target="_blank" style="color:#3A5566;font-weight:600;">View in ePermits</a>';
+     }
+     if (docsUrl && docsUrl.indexOf('http') === 0) {
+      popup += '<br><a href="' + docsUrl + '" target="_blank" style="color:#3A5566;font-weight:600;">View Permit Documents</a>';
+     }
+     popup += '</div>';
+
+     marker.bindPopup(popup);
+     marker.addTo(group);
+    });
+   }).catch(function() {});
+ }
+
+ function loadAllLayers() {
+  Object.keys(LAYERS).forEach(loadLayer);
+ }
+
+ map.on('moveend', loadAllLayers);
+ loadAllLayers();
+
+ window.toggleLayer = function(btn) {
+  var key = btn.getAttribute('data-layer');
+  layerVisible[key] = !layerVisible[key];
+  btn.classList.toggle('active');
+  if (layerVisible[key]) {
+   layerGroups[key].addTo(map);
+   loadLayer(key);
+  } else {
+   map.removeLayer(layerGroups[key]);
+  }
+ };
+})();
+</script>
 </body>
 </html>
