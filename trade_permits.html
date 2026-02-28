@@ -3,7 +3,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Required Permits | Homebody Projects</title>
+ <title>Required Permit Types | Homebody Projects</title>
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@1,700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
@@ -285,6 +285,37 @@
   transform: scale(1.05);
  }
 
+ .source-bar {
+  background: #F5F5F0;
+  border: 1px solid #E2E2E0;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-top: 40px;
+  font-size: 13px;
+  color: #7B746D;
+  line-height: 1.7;
+ }
+ .source-bar strong {
+  color: #3A5566;
+  font-weight: 700;
+ }
+ .source-bar a {
+  color: #3A5566;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+ }
+ .source-bar a:hover {
+  color: #CBB279;
+ }
+ .source-list {
+  margin-top: 8px;
+  padding-left: 0;
+  list-style: none;
+ }
+ .source-list li {
+  padding: 3px 0;
+ }
+
  @media (max-width: 1024px) {
   .trades-grid { grid-template-columns: repeat(2, 1fr); }
   .info-grid { grid-template-columns: 1fr; }
@@ -315,22 +346,30 @@
      <div class="trade-icon"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
      <div>
       <div class="trade-title">DADU Building Permit</div>
-      <div class="trade-subtitle">Primary construction permit</div>
+      <div class="trade-subtitle">Valuation-based (Metro Code 16.28.110)</div>
      </div>
     </div>
     <div class="trade-content">
      <div class="permit-list">
       <div class="permit-item">
-       <span>New DADU Construction</span>
-       <span class="permit-fee">$500+</span>
+       <span>Residential base fee</span>
+       <span class="permit-fee">$28.25+</span>
       </div>
       <div class="permit-item">
-       <span>Garage Conversion to DADU</span>
-       <span class="permit-fee">$350+</span>
+       <span>$50K-$100K valuation</span>
+       <span class="permit-fee">$372.71+</span>
+      </div>
+      <div class="permit-item">
+       <span>Zoning Examination Fee</span>
+       <span class="permit-fee">$25.00</span>
+      </div>
+      <div class="permit-item">
+       <span>Codes Tech Fee</span>
+       <span class="permit-fee">10% of permit</span>
       </div>
       <div class="permit-item">
        <span>Plan Review Fee</span>
-       <span class="permit-fee">Varies</span>
+       <span class="permit-fee">50% of permit</span>
       </div>
      </div>
     </div>
@@ -348,15 +387,15 @@
      <div class="permit-list">
       <div class="permit-item">
        <span>Grading Permit</span>
-       <span class="permit-fee">$200</span>
+       <span class="permit-fee">See fee schedule</span>
       </div>
       <div class="permit-item">
        <span>Stormwater (if required)</span>
-       <span class="permit-fee">$150+</span>
+       <span class="permit-fee">See fee schedule</span>
       </div>
       <div class="permit-item">
        <span>Driveway / Curb Cut</span>
-       <span class="permit-fee">$100</span>
+       <span class="permit-fee">See NDOT</span>
       </div>
      </div>
     </div>
@@ -374,7 +413,7 @@
      <div class="permit-list">
       <div class="permit-item">
        <span>Demo Permit (accessory)</span>
-       <span class="permit-fee">$150</span>
+       <span class="permit-fee">$50.00</span>
       </div>
       <div class="permit-item">
        <span>Asbestos Survey</span>
@@ -397,22 +436,26 @@
      <div class="trade-icon"><img src="assets/icons/Utilities.svg" alt=""></div>
      <div>
       <div class="trade-title">Electrical</div>
-      <div class="trade-subtitle">Required for all new circuits</div>
+      <div class="trade-subtitle">Metro Code 16.20.250</div>
      </div>
     </div>
     <div class="trade-content">
      <div class="permit-list">
       <div class="permit-item">
-       <span>New Service (100A)</span>
-       <span class="permit-fee">$125</span>
+       <span>Service Riser (1-2 family)</span>
+       <span class="permit-fee">$75.00</span>
       </div>
       <div class="permit-item">
-       <span>New Service (200A)</span>
-       <span class="permit-fee">$175</span>
+       <span>Service Install / Relocate</span>
+       <span class="permit-fee">$12.00/meter</span>
       </div>
       <div class="permit-item">
-       <span>Branch Circuits</span>
-       <span class="permit-fee">$75</span>
+       <span>Lighting Circuits</span>
+       <span class="permit-fee">$20.00 each</span>
+      </div>
+      <div class="permit-item">
+       <span>Residential Outlets</span>
+       <span class="permit-fee">$15.00 each</span>
       </div>
      </div>
     </div>
@@ -423,74 +466,30 @@
      <div class="trade-icon"><img src="assets/icons/Utilities.svg" alt=""></div>
      <div>
       <div class="trade-title">Plumbing</div>
-      <div class="trade-subtitle">Water, sewer, fixtures</div>
+      <div class="trade-subtitle">Metro Code 16.12.220</div>
      </div>
     </div>
     <div class="trade-content">
      <div class="permit-list">
       <div class="permit-item">
-       <span>Water Service</span>
-       <span class="permit-fee">$150</span>
+       <span>Minimum Permit Fee</span>
+       <span class="permit-fee">$75.00</span>
+      </div>
+      <div class="permit-item">
+       <span>Water Service Connection</span>
+       <span class="permit-fee">$80.00</span>
       </div>
       <div class="permit-item">
        <span>Sewer Connection</span>
-       <span class="permit-fee">$150</span>
+       <span class="permit-fee">$80.00</span>
       </div>
       <div class="permit-item">
-       <span>Fixture Set (5+)</span>
-       <span class="permit-fee">$100</span>
-      </div>
-     </div>
-    </div>
-   </div>
-
-   <div class="trade-card">
-    <div class="trade-header">
-     <div class="trade-icon"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
-     <div>
-      <div class="trade-title">Mechanical / HVAC</div>
-      <div class="trade-subtitle">Heating and cooling systems</div>
-     </div>
-    </div>
-    <div class="trade-content">
-     <div class="permit-list">
-      <div class="permit-item">
-       <span>HVAC System</span>
-       <span class="permit-fee">$125</span>
+       <span>Hot Water Heater</span>
+       <span class="permit-fee">$43.00</span>
       </div>
       <div class="permit-item">
-       <span>Ductwork</span>
-       <span class="permit-fee">$75</span>
-      </div>
-      <div class="permit-item">
-       <span>Mini-Split</span>
-       <span class="permit-fee">$100</span>
-      </div>
-     </div>
-    </div>
-   </div>
-
-   <div class="trade-card">
-    <div class="trade-header">
-     <div class="trade-icon"><img src="assets/icons/Utilities.svg" alt=""></div>
-     <div>
-      <div class="trade-title">Gas</div>
-      <div class="trade-subtitle">Natural gas lines and appliances</div>
-     </div>
-    </div>
-    <div class="trade-content">
-     <div class="permit-list">
-      <div class="permit-item">
-       <span>Gas Service Line</span>
-       <span class="permit-fee">$100</span>
-      </div>
-      <div class="permit-item">
-       <span>Gas Appliance</span>
-       <span class="permit-fee">$50</span>
-      </div>
-      <div class="permit-item">
-       <span>Gas Water Heater</span>
-       <span class="permit-fee">$75</span>
+       <span>Each Add'l Drain</span>
+       <span class="permit-fee">$32.00</span>
       </div>
      </div>
     </div>
@@ -500,23 +499,27 @@
     <div class="trade-header">
      <div class="trade-icon"><img src="assets/icons/Building_and_Construction.svg" alt=""></div>
      <div>
-      <div class="trade-title">Fire Protection</div>
-      <div class="trade-subtitle">Smoke and CO detection</div>
+      <div class="trade-title">Gas / Mechanical</div>
+      <div class="trade-subtitle">Metro Code 16.16</div>
      </div>
     </div>
     <div class="trade-content">
      <div class="permit-list">
       <div class="permit-item">
-       <span>Fire Alarm System</span>
-       <span class="permit-fee">$100</span>
+       <span>Minimum Permit Fee</span>
+       <span class="permit-fee">$75.00</span>
       </div>
       <div class="permit-item">
-       <span>Smoke Detectors</span>
-       <span class="permit-fee">$50</span>
+       <span>Each Add'l Appliance</span>
+       <span class="permit-fee">$11.00</span>
       </div>
       <div class="permit-item">
-       <span>CO Detectors</span>
-       <span class="permit-fee">$50</span>
+       <span>HVAC (per 100K BTU)</span>
+       <span class="permit-fee">$32.00</span>
+      </div>
+      <div class="permit-item">
+       <span>Reinspection Fee</span>
+       <span class="permit-fee">$50.00</span>
       </div>
      </div>
     </div>
@@ -527,22 +530,26 @@
      <div class="trade-icon"><img src="assets/icons/Appraisers.svg" alt=""></div>
      <div>
       <div class="trade-title">Utility Connections</div>
-      <div class="trade-subtitle">Water, sewer, electric tap</div>
+      <div class="trade-subtitle">Metro Water Services</div>
      </div>
     </div>
     <div class="trade-content">
      <div class="permit-list">
       <div class="permit-item">
-       <span>Water Tap Fee</span>
-       <span class="permit-fee">$1,500+</span>
+       <span>Water Tap (5/8")</span>
+       <span class="permit-fee">$500.00</span>
       </div>
       <div class="permit-item">
-       <span>Sewer Tap Fee</span>
-       <span class="permit-fee">$1,500+</span>
+       <span>Water Capacity Fee</span>
+       <span class="permit-fee">$1,375.00</span>
       </div>
       <div class="permit-item">
-       <span>Electric Meter</span>
-       <span class="permit-fee">Varies</span>
+       <span>Sewer Capacity Fee</span>
+       <span class="permit-fee">$2,300.00</span>
+      </div>
+      <div class="permit-item">
+       <span>Electric Meter Setup</span>
+       <span class="permit-fee">See NES</span>
       </div>
      </div>
     </div>
@@ -620,6 +627,16 @@
     <a href="contractor_marketplace.html" class="cta-btn">Find Contractors</a>
     <a href="form_wizard.html" class="cta-btn" style="background: white; color: #3A5566;">Form Wizard</a>
    </div>
+  </div>
+
+  <!-- Source Attribution -->
+  <div class="source-bar">
+   <strong>Fee Sources</strong> -- All fees shown are from official Metro Nashville-Davidson County sources and are subject to change. Verify current amounts before applying.
+   <ul class="source-list">
+    <li><a href="https://www.nashville.gov/sites/default/files/2025-12/Building-Permit-Fee-Scheudle-2025.pdf" target="_blank" rel="noopener">Metro Nashville Building Permit Fee Schedule (2025)</a> -- Building, electrical, plumbing, and gas/mechanical permit fees</li>
+    <li><a href="https://www.nashville.gov/sites/default/files/2025-01/DS-Fee-Schedule-012825.pdf" target="_blank" rel="noopener">Metro Water Services Development Fee Schedule (Jan 2025)</a> -- Water and sewer tap and capacity fees</li>
+    <li><a href="https://www.nashville.gov/departments/codes/construction-and-permits/building-permit-process" target="_blank" rel="noopener">Nashville.gov Building Permit Process</a> -- Fee calculation method and contact information</li>
+   </ul>
   </div>
  </main>
 
