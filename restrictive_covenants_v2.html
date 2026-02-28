@@ -6,6 +6,7 @@
  <title>Restrictive Covenants | Homebody Projects</title>
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="homebody_shared.css">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
  <style>
  * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -343,6 +344,114 @@
  }
  .footer .brand { font-weight: 700; color: #3A5566; }
 
+ /* Map Section */
+ .map-section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 24px 0;
+ }
+ .map-wrap {
+  background: #fff;
+  border: 1px solid #E2E2E0;
+  border-radius: 12px;
+  overflow: hidden;
+ }
+ .map-toolbar {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #E2E2E0;
+  flex-wrap: wrap;
+ }
+ .map-toolbar input {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 14px;
+  border: 1px solid #E2E2E0;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  background: #F5F5F0;
+  color: #3A5566;
+ }
+ .map-toolbar input:focus {
+  outline: none;
+  border-color: #CBB279;
+ }
+ .map-toolbar button {
+  padding: 10px 20px;
+  background: #CBB279;
+  color: #3A5566;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+ }
+ .map-toolbar button:hover { opacity: 0.9; }
+ #covenant-map {
+  height: 480px;
+  width: 100%;
+ }
+ .map-result {
+  padding: 16px 20px;
+  border-top: 1px solid #E2E2E0;
+  font-size: 14px;
+  color: #706F6C;
+  display: none;
+ }
+ .map-result.show { display: block; }
+ .map-result .result-title {
+  font-weight: 700;
+  color: #3A5566;
+  margin-bottom: 6px;
+ }
+ .map-result .result-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+ }
+ .map-result .result-status.has-covenant {
+  background: rgba(64, 106, 100, 0.12);
+  color: #406A64;
+ }
+ .map-result .result-status.no-covenant {
+  background: rgba(181, 134, 118, 0.15);
+  color: #B58676;
+ }
+ .map-result a {
+  color: #3A5566;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+ }
+ .map-result a:hover { color: #CBB279; }
+ .map-legend {
+  padding: 12px 20px;
+  border-top: 1px solid #E2E2E0;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #7B746D;
+ }
+ .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+ }
+ .legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+ }
+
  @media (max-width: 768px) {
   .steps-grid { grid-template-columns: repeat(2, 1fr); }
   .key-grid, .form-grid { grid-template-columns: 1fr; }
@@ -443,6 +552,25 @@
  </div>
 </div>
 
+<!-- Covenant Map -->
+<div class="map-section">
+ <h2 class="section-heading">Covenant Map</h2>
+ <p style="text-align:center;color:#7B746D;font-size:14px;margin-top:-8px;margin-bottom:16px;">Zoom in to see parcels with covenants</p>
+ <div class="map-wrap">
+  <div class="map-toolbar">
+   <input type="text" id="covenant-search" placeholder="Search by address or APN (e.g. 09305012300)">
+   <button onclick="searchCovenant()">Search</button>
+  </div>
+  <div id="covenant-map"></div>
+  <div class="map-result" id="map-result"></div>
+  <div class="map-legend">
+   <div class="legend-item"><div class="legend-swatch" style="background: #406A64;"></div> Parcel with covenant</div>
+   <div class="legend-item"><div class="legend-swatch" style="background: #CBB279; border-radius: 50%;"></div> Covenant document link</div>
+   <div class="legend-item"><div class="legend-swatch" style="background: #CBB279; opacity: 0.4;"></div> Searched parcel</div>
+  </div>
+ </div>
+</div>
+
 <!-- Warning -->
 <div class="section-container">
  <div class="warning-box">
@@ -506,6 +634,251 @@
  <p><span class="brand">HOMEBODY PROJECTS</span> &middot; Powered by Castlehold &middot; Nashville-Davidson County &middot; 2026</p>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/esri-leaflet@3.0.12/dist/esri-leaflet.js"></script>
 <script src="homebody_header.js"></script>
+<script>
+(function() {
+ // Parcels with covenants (43K polygons): FIELD_NAME_D=APN, FIELD_NAME_G=Address, FIELD_NAME_L=Instrument, FIELD_NAME_Y=Owner, FIELD_NAME_AK=docs URL
+ var COVENANTS_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/Parcels_with_Restrictive_Covenants_ohoMJQ/FeatureServer/0';
+ // Covenant links (2,978 points): FIELD_NAME_K=APN, FIELD_NAME_L=Address, FIELD_NAME_O=Instrument#, FIELD_NAME_P=Document URL, FIELD_NAME_N=Permit docs URL
+ var COVENANT_LINKS_URL = 'https://services3.arcgis.com/58WV6GqBWodG9Kll/arcgis/rest/services/_Restrictive_Covenant_Links__A1_R2978_QuLdfD/FeatureServer/0';
+
+ var map = L.map('covenant-map', { zoomControl: true }).setView([36.16, -86.78], 11);
+
+ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap &copy; CARTO',
+  maxZoom: 20
+ }).addTo(map);
+
+ var searchLayer = L.layerGroup().addTo(map);
+ var covenantLayer = L.layerGroup().addTo(map);
+ var linksLayer = L.layerGroup().addTo(map);
+
+ // Load covenant parcel polygons in view (zoom >= 14)
+ function loadCovenantsInView() {
+  if (map.getZoom() < 14) { covenantLayer.clearLayers(); return; }
+  var b = map.getBounds();
+  var env = b.getWest() + ',' + b.getSouth() + ',' + b.getEast() + ',' + b.getNorth();
+  fetch(COVENANTS_URL + '/query?' + new URLSearchParams({
+   geometry: env, geometryType: 'esriGeometryEnvelope', inSR: '4326',
+   spatialRel: 'esriSpatialRelIntersects',
+   outFields: 'FIELD_NAME_D,FIELD_NAME_G,FIELD_NAME_L,FIELD_NAME_Y,FIELD_NAME_AK,FIELD_NAME_C',
+   returnGeometry: 'true', outSR: '4326', f: 'geojson', resultRecordCount: '500'
+  }).toString())
+   .then(function(r) { return r.json(); })
+   .then(function(data) {
+    covenantLayer.clearLayers();
+    if (!data.features || !data.features.length) return;
+    L.geoJSON(data, {
+     style: { color: '#406A64', fillColor: '#406A64', fillOpacity: 0.25, weight: 1.5 },
+     onEachFeature: function(feature, layer) {
+      var p = feature.properties;
+      var apn = p.FIELD_NAME_D || '';
+      var addr = p.FIELD_NAME_G || '';
+      var inst = p.FIELD_NAME_L || '';
+      var subtype = p.FIELD_NAME_C || '';
+      // Show loading popup, then fetch actual covenant doc link
+      layer.bindPopup('<div style="font-family:Inter,sans-serif;font-size:13px;min-width:200px;">' +
+       '<strong style="color:#3A5566;font-size:14px;">' + (addr || 'Covenant Parcel') + '</strong><br>' +
+       'APN: ' + apn +
+       (subtype ? '<br><span style="color:#7B746D;">' + subtype + '</span>' : '') +
+       (inst ? '<br><span style="color:#7B746D;">Instrument: ' + inst + '</span>' : '') +
+       '<br><span style="color:#7B746D;">Loading document links...</span></div>');
+      layer.on('popupopen', function() {
+       fetch(COVENANT_LINKS_URL + '/query?' + new URLSearchParams({
+        where: "FIELD_NAME_K='" + apn + "'",
+        outFields: 'FIELD_NAME_O,FIELD_NAME_P,FIELD_NAME_N,FIELD_NAME_C',
+        returnGeometry: 'false', f: 'json', resultRecordCount: '1'
+       }).toString())
+        .then(function(r) { return r.json(); })
+        .then(function(linkData) {
+         var docUrl = '';
+         var permitUrl = '';
+         var docInst = '';
+         var linkSubtype = '';
+         if (linkData.features && linkData.features.length > 0) {
+          var a = linkData.features[0].attributes;
+          docUrl = a.FIELD_NAME_P || '';
+          permitUrl = a.FIELD_NAME_N || '';
+          docInst = a.FIELD_NAME_O || inst;
+          linkSubtype = a.FIELD_NAME_C || subtype;
+         }
+         var displaySubtype = linkSubtype || subtype;
+         var displayInst = docInst || inst;
+         var html = '<div style="font-family:Inter,sans-serif;font-size:13px;min-width:200px;">' +
+          '<strong style="color:#3A5566;font-size:14px;">' + (addr || 'Covenant Parcel') + '</strong><br>' +
+          'APN: ' + apn;
+         if (displaySubtype) html += '<br><span style="color:#7B746D;">' + displaySubtype + '</span>';
+         if (displayInst) html += '<br><span style="color:#7B746D;">Instrument: ' + displayInst + '</span>';
+         if (docUrl) {
+          html += '<br><a href="' + docUrl + '" target="_blank" style="color:#3A5566;font-weight:600;">View Covenant Document</a>';
+         }
+         if (permitUrl) {
+          html += '<br><a href="' + permitUrl + '" target="_blank" style="color:#3A5566;font-weight:600;">View Permit Documents</a>';
+         }
+         if (!docUrl && !permitUrl) {
+          html += '<br><span style="color:#7B746D;font-size:12px;">No document link available</span>';
+         }
+         html += '</div>';
+         layer.setPopupContent(html);
+        })
+        .catch(function() {
+         layer.setPopupContent('<div style="font-family:Inter,sans-serif;font-size:13px;min-width:200px;">' +
+          '<strong style="color:#3A5566;font-size:14px;">' + (addr || 'Covenant Parcel') + '</strong><br>' +
+          'APN: ' + apn +
+          (subtype ? '<br><span style="color:#7B746D;">' + subtype + '</span>' : '') +
+          (inst ? '<br><span style="color:#7B746D;">Instrument: ' + inst + '</span>' : '') +
+          '<br><span style="color:#7B746D;font-size:12px;">Could not load document link</span></div>');
+        });
+      });
+     }
+    }).addTo(covenantLayer);
+   }).catch(function() {});
+ }
+
+ // Load covenant LINKS points in view (zoom >= 13) -- these have document URLs
+ function loadLinksInView() {
+  if (map.getZoom() < 13) { linksLayer.clearLayers(); return; }
+  var b = map.getBounds();
+  var env = b.getWest() + ',' + b.getSouth() + ',' + b.getEast() + ',' + b.getNorth();
+  fetch(COVENANT_LINKS_URL + '/query?' + new URLSearchParams({
+   geometry: env, geometryType: 'esriGeometryEnvelope', inSR: '4326',
+   spatialRel: 'esriSpatialRelIntersects',
+   outFields: 'FIELD_NAME_K,FIELD_NAME_L,FIELD_NAME_M,FIELD_NAME_O,FIELD_NAME_P,FIELD_NAME_N,FIELD_NAME_C',
+   returnGeometry: 'true', outSR: '4326', f: 'geojson', resultRecordCount: '500'
+  }).toString())
+   .then(function(r) { return r.json(); })
+   .then(function(data) {
+    linksLayer.clearLayers();
+    if (!data.features || !data.features.length) return;
+    data.features.forEach(function(feat) {
+     var p = feat.properties;
+     var coords = feat.geometry.coordinates;
+     var apn = p.FIELD_NAME_K || '';
+     var addr = p.FIELD_NAME_L || '';
+     var contractor = p.FIELD_NAME_M || '';
+     var inst = p.FIELD_NAME_O || '';
+     var docUrl = p.FIELD_NAME_P || '';
+     var permitUrl = p.FIELD_NAME_N || '';
+     var subtype = p.FIELD_NAME_C || '';
+
+     var marker = L.circleMarker([coords[1], coords[0]], {
+      radius: 6, color: '#3A5566', fillColor: '#CBB279', fillOpacity: 0.9, weight: 1.5
+     });
+
+     var popup = '<div style="font-family:Inter,sans-serif;font-size:13px;">' +
+      '<strong style="color:#3A5566;">' + (addr || 'Covenant Record') + '</strong><br>' +
+      'APN: ' + apn +
+      (subtype ? '<br><span style="color:#7B746D;">' + subtype + '</span>' : '') +
+      (inst ? '<br><span style="color:#7B746D;font-size:12px;">Instrument: ' + inst + '</span>' : '') +
+      (docUrl ? '<br><a href="' + docUrl + '" target="_blank" style="color:#3A5566;font-weight:600;">View Covenant Document</a>' : '') +
+      (permitUrl ? '<br><a href="' + permitUrl + '" target="_blank" style="color:#3A5566;font-weight:600;">View Permit Documents</a>' : '') +
+      '</div>';
+     marker.bindPopup(popup);
+     marker.addTo(linksLayer);
+    });
+   }).catch(function() {});
+ }
+
+ map.on('moveend', function() {
+  loadCovenantsInView();
+  loadLinksInView();
+ });
+
+ // Search: query covenant layer directly (has polygon geometry)
+ window.searchCovenant = function() {
+  var query = document.getElementById('covenant-search').value.trim();
+  if (!query) return;
+  var resultDiv = document.getElementById('map-result');
+  resultDiv.className = 'map-result show';
+  resultDiv.innerHTML = '<div class="result-title">Searching...</div>';
+  searchLayer.clearLayers();
+
+  var digits = query.replace(/[^0-9]/g, '');
+  var isAPN = digits.length >= 8 && /^\d+$/.test(digits);
+
+  var where = isAPN
+   ? "FIELD_NAME_D='" + digits + "'"
+   : "FIELD_NAME_G LIKE '%" + query.toUpperCase().replace(/[^A-Z0-9 ]/g, '').trim() + "%'";
+
+  // Query covenants layer (has polygon geometry for parcel outline)
+  fetch(COVENANTS_URL + '/query?' + new URLSearchParams({
+   where: where, outFields: '*', returnGeometry: 'true', outSR: '4326', f: 'geojson', resultRecordCount: '1'
+  }).toString())
+   .then(function(r) { return r.json(); })
+   .then(function(covData) {
+    var hasCovenant = covData.features && covData.features.length > 0;
+
+    if (!hasCovenant) {
+     resultDiv.innerHTML = '<div class="result-title">No Covenant Found</div>' +
+      '<div class="result-status no-covenant">No Covenant on File</div>' +
+      '<p>No restrictive covenant was found for this search. A covenant must be filed before a DADU building permit can be issued.</p>' +
+      '<p style="margin-top:8px;"><a href="https://www.nashville.gov/sites/default/files/2025-10/Res-Covenant-for-Det-Structure.pdf" target="_blank" rel="noopener">Download Covenant Form (PDF)</a></p>';
+     return;
+    }
+
+    var feat = covData.features[0];
+    var p = feat.properties;
+    var apn = p.FIELD_NAME_D || '';
+    var address = p.FIELD_NAME_G || '';
+    var owner = p.FIELD_NAME_Y || '';
+    var instrument = p.FIELD_NAME_L || '';
+    var recordDate = p.FIELD_NAME_M || '';
+    var docsUrl = p.FIELD_NAME_AK || '';
+    var epermitsUrl = p.FIELD_NAME_AL || '';
+
+    // Draw parcel on map
+    L.geoJSON(feat, {
+     style: { color: '#CBB279', fillColor: '#CBB279', fillOpacity: 0.3, weight: 2.5 }
+    }).addTo(searchLayer);
+    map.fitBounds(L.geoJSON(feat).getBounds(), { padding: [60, 60], maxZoom: 18 });
+
+    var html = '<div class="result-title">' + (address || apn) + '</div>';
+    html += '<div class="result-status has-covenant">Covenant on File</div>';
+    html += '<p style="margin-bottom:4px;">APN: ' + apn + '</p>';
+    if (owner) html += '<p style="margin-bottom:4px;color:#7B746D;">Owner: ' + owner + '</p>';
+    if (instrument) html += '<p style="margin-bottom:4px;color:#7B746D;">Recording: ' + instrument + '</p>';
+    if (recordDate) html += '<p style="margin-bottom:8px;color:#7B746D;">Date: ' + recordDate + '</p>';
+
+    html += '<p style="margin-top:10px;font-weight:700;color:#3A5566;">Documents:</p>';
+    if (docsUrl) html += '<p style="margin:4px 0;"><a href="' + docsUrl + '" target="_blank" rel="noopener">Search Parcel Documents (Nashville.gov)</a></p>';
+    if (epermitsUrl) html += '<p style="margin:4px 0;"><a href="' + epermitsUrl + '" target="_blank" rel="noopener">View Permits (ePermits)</a></p>';
+
+    // Also check links layer for covenant document PDFs
+    fetch(COVENANT_LINKS_URL + '/query?' + new URLSearchParams({
+     where: "FIELD_NAME_K='" + apn + "'",
+     outFields: 'FIELD_NAME_O,FIELD_NAME_P,FIELD_NAME_N,FIELD_NAME_D',
+     returnGeometry: 'false', f: 'json', resultRecordCount: '10'
+    }).toString())
+     .then(function(r) { return r.json(); })
+     .then(function(linkData) {
+      if (linkData.features && linkData.features.length > 0) {
+       linkData.features.forEach(function(f) {
+        var a = f.attributes;
+        var docUrl = a.FIELD_NAME_P || '';
+        var inst = a.FIELD_NAME_O || '';
+        var permitUrl = a.FIELD_NAME_N || '';
+        if (docUrl) {
+         html += '<p style="margin:4px 0;"><a href="' + docUrl + '" target="_blank" rel="noopener">';
+         html += inst ? ('View Covenant Recording (' + inst + ')') : 'View Covenant Recording';
+         html += '</a></p>';
+        }
+       });
+      }
+      resultDiv.innerHTML = html;
+     })
+     .catch(function() { resultDiv.innerHTML = html; });
+   })
+   .catch(function() {
+    resultDiv.innerHTML = '<div class="result-title">Search Error</div><p>Could not query the covenant database. Please try again.</p>';
+   });
+ };
+
+ document.getElementById('covenant-search').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') searchCovenant();
+ });
+})();
+</script>
 </body>
 </html>
