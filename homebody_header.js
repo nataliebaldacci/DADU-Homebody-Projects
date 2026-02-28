@@ -99,7 +99,6 @@
                  item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator') +
                  item('find_site_plans.html', 'Permit_Site_Plans.svg', 'Find Site Plans &amp; Permit Docs') +
                  item('dadu_resources.html', 'External_Links.svg', 'External Links') +
-                 item('pdf_database_lookup.html', 'Document_Database.svg', 'PDF Database') +
                  item('contractor_dashboard.html', 'Find_Contractor.svg', 'Find a Contractor')
              ) +
     '        </div>' +
