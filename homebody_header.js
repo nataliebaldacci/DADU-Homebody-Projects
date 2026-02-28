@@ -113,7 +113,7 @@
     '          RESOURCES <span class="chevron">&#9660;</span>' +
     '        </button>' +
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="resources-dropdown" role="menu">' +
-             col('Recorded_Docs.svg', 'Learn',
+             col('Recorded_Docs.svg', 'DADU Basics',
                  item('what_is_dadu.html', 'What_is_DADU.svg', 'What is a DADU?') +
                  item('dadu_requirements_overview.html', 'General_Requirements.svg', 'General Requirements') +
                  item('dadu_eligibility_flowchart.html', 'Eligibility_Check.svg', 'Eligibility Flowchart') +
@@ -121,7 +121,7 @@
                  item('dadu_code_legislation_v5.html', 'Legislation.svg', 'Code &amp; Legislation') +
                 item('arcgis_maps.html', 'GIS.svg', 'ArcGIS Maps')
              ) +
-             col('Permit_Approval.svg', 'Permits &amp; Forms',
+             col('Permit_Approval.svg', 'Metro Rules &amp; Compliance',
                  item('owner_occupancy.html', 'Owner_Occupancy.svg', 'Owner Occupancy') +
                  item('str_permit.html', 'STR_Permit.svg', 'Short Term Rental Permit') +
                  item('trade_permits.html', 'Trade_Permits.svg', 'Required Permit Types') +
