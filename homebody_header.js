@@ -71,7 +71,7 @@
                  item('dadu_eligibility_map.html', 'Parcel Search.svg', 'Eligibility Map') +
                  item('dadu_near_me_v3.html', 'Neighbors.svg', 'DADUs Near Me') +
                  item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map') +
-                 item('existing_dadus_map.html', 'Zoning.svg', 'Existing DADUs')
+                 item('existing_dadus_map.html', 'Area_Maps_and_Visual_layers.svg', 'Existing DADUs')
              ) +
              col('Dashboard.svg', 'Dashboards',
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
@@ -96,7 +96,7 @@
              ) +
              col('Exports__Reports.svg', 'Research',
                  item('dadu_reports_store.html', 'Exports__Reports.svg', 'Report Generator') +
-                 item('find_site_plans.html', 'Parcel Search.svg', 'Find Site Plans &amp; Permit Docs') +
+                 item('find_site_plans.html', 'Permit_Explorer.svg', 'Find Site Plans &amp; Permit Docs') +
                  item('dadu_resources.html', 'External_Links.svg', 'External Links') +
                  item('contractor_dashboard.html', 'Find_Contractor.svg', 'Find a Contractor')
              ) +
