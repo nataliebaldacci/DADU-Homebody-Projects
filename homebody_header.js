@@ -138,7 +138,7 @@
 
     // Right side: hamburger + CTA
     '    <div style="display:flex;align-items:center;gap:12px;">' +
-    '      <a href="' + basePath + 'am_i_eligible.html" class="nav-search-btn">' +
+    '      <a href="' + basePath + 'dadu_eligibility_map.html" class="nav-search-btn">' +
     '        <span>Am I Eligible?</span>' +
     '        <span>&rarr;</span>' +
     '      </a>' +
