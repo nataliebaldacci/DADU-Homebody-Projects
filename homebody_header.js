@@ -92,7 +92,6 @@
              col('Project_Planner.svg', 'Plan My Project',
                  item('dadu_build_tool_v2.html', 'Draw_DADU.svg', 'Build My DADU') +
                  item('project_planner_hub.html', 'Checklist_.svg', 'Planning Hub') +
-                 item('permit_process_timeline.html', 'Permit_Timeline.svg', 'Permit Process Timeline') +
                  item('dadu_calculators.html', 'Appraisers.svg', 'All Calculators') +
                  item('form_wizard.html', 'Form_Wizard.svg', 'Form Wizard')
              ) +
