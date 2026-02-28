@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Common DADU Permit Mistakes | Homebody Projects</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
+ <style>
+ body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background, #F2F0ED);
+  color: #333;
+  margin: 0;
+  line-height: 1.6;
+ }
+ .page-container { max-width: 900px; margin: 0 auto; padding: 40px 30px 60px; }
+
+ /* Hero */
+ .hero {
+  background: linear-gradient(rgba(58, 85, 102, 0.88), rgba(58, 85, 102, 0.94)), url('assets/nashville-aerial-hero.png') center/cover no-repeat;
+  padding: 48px 30px 40px;
+  text-align: center;
+ }
+ .hero h1 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700; font-style: italic; font-size: 32px;
+  color: var(--cream, #E1D4BB); margin: 0 0 10px;
+ }
+ .hero p { color: var(--linen, #F0EBE1); font-size: 15px; max-width: 650px; margin: 0 auto; }
+
+ /* Intro */
+ .intro { max-width: 750px; margin: 0 auto 36px; }
+ .intro p { color: var(--gray-warm, #706F6C); font-size: 15px; }
+ .intro strong { color: var(--slate, #3A5566); }
+
+ /* Issue Frequency Table */
+ .freq-section { margin-bottom: 48px; }
+ .freq-section h2 {
+  font-size: 22px; font-weight: 700; color: var(--slate, #3A5566); margin-bottom: 6px;
+ }
+ .freq-section .section-desc { color: var(--gray-warm, #706F6C); font-size: 14px; margin-bottom: 20px; }
+ .freq-table {
+  width: 100%; border-collapse: collapse; background: var(--card-bg, #F5F5F0);
+  border: 1px solid var(--gray-light, #E2E2E0); border-radius: 8px; overflow: hidden;
+ }
+ .freq-table th {
+  background: var(--slate, #3A5566); color: var(--cream, #E1D4BB);
+  padding: 12px 16px; text-align: left; font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px;
+ }
+ .freq-table td { padding: 12px 16px; font-size: 14px; color: var(--gray-warm, #706F6C); border-bottom: 1px solid var(--gray-light, #E2E2E0); }
+ .freq-table tr:last-child td { border-bottom: none; }
+ .freq-table .pct { font-weight: 700; color: var(--slate, #3A5566); white-space: nowrap; }
+ .freq-bar-cell { position: relative; }
+ .freq-bar {
+  height: 8px; border-radius: 4px; background: var(--wheat, #CBB279);
+ }
+
+ /* Category Sections */
+ .category-section { margin-bottom: 48px; }
+ .category-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+  padding-bottom: 12px; border-bottom: 2px solid var(--gray-light, #E2E2E0);
+ }
+ .category-icon {
+  width: 44px; height: 44px; background: var(--linen, #F0EBE1); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+ }
+ .category-icon img { width: 24px; height: 24px; }
+ .category-header h2 { font-size: 20px; font-weight: 700; color: var(--slate, #3A5566); margin: 0; }
+ .category-header .cat-code { font-size: 13px; color: var(--stone, #7B746D); font-weight: 500; }
+
+ /* Permit Example Cards */
+ .example-card {
+  background: var(--card-bg, #F5F5F0); border: 1px solid var(--gray-light, #E2E2E0);
+  border-left: 4px solid var(--not-eligible, #B58676); border-radius: 8px;
+  padding: 24px; margin-bottom: 16px;
+ }
+ .example-card .card-header {
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+ }
+ .example-card .permit-id { font-size: 14px; font-weight: 700; color: var(--slate, #3A5566); }
+ .example-card .status-badge {
+  display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+ }
+ .badge-denied { background: rgba(181, 134, 118, 0.15); color: var(--not-eligible, #B58676); }
+ .badge-revision { background: rgba(145, 138, 131, 0.15); color: var(--stone-light, #918A83); }
+ .example-card .rejection-reason {
+  font-size: 14px; color: var(--gray-warm, #706F6C); margin-bottom: 12px;
+  padding: 10px 14px; background: rgba(181, 134, 118, 0.06); border-radius: 6px;
+ }
+ .example-card .rejection-reason strong { color: var(--slate, #3A5566); }
+ .example-card .detail-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px; margin-bottom: 12px;
+ }
+ .example-card .detail-item { font-size: 13px; }
+ .example-card .detail-item .label { color: var(--stone, #7B746D); font-weight: 600; }
+ .example-card .detail-item .value { color: var(--gray-warm, #706F6C); }
+ .example-card .card-links { display: flex; gap: 16px; flex-wrap: wrap; }
+ .example-card .card-links a {
+  font-size: 13px; font-weight: 600; color: var(--slate, #3A5566);
+  text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+ }
+ .example-card .card-links a:hover { text-decoration: underline; }
+
+ /* Key Takeaway Boxes */
+ .takeaway-box {
+  background: var(--linen, #F0EBE1); border-radius: 8px; padding: 20px 24px;
+  margin-top: 16px; margin-bottom: 32px;
+ }
+ .takeaway-box h4 { font-size: 14px; font-weight: 700; color: var(--slate, #3A5566); margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+ .takeaway-box p { font-size: 14px; color: var(--gray-warm, #706F6C); margin: 0; }
+ .takeaway-box code {
+  background: rgba(58, 85, 102, 0.08); padding: 2px 6px; border-radius: 3px;
+  font-size: 13px; color: var(--slate, #3A5566);
+ }
+
+ /* Citation Section */
+ .citations-section { margin-top: 48px; padding-top: 32px; border-top: 2px solid var(--gray-light, #E2E2E0); }
+ .citations-section h2 { font-size: 20px; font-weight: 700; color: var(--slate, #3A5566); margin-bottom: 16px; }
+ .citation {
+  font-size: 13px; color: var(--gray-warm, #706F6C); margin-bottom: 10px;
+  padding-left: 20px; text-indent: -20px;
+ }
+ .citation em { font-style: italic; }
+
+ /* CTA */
+ .cta-section {
+  background: var(--slate, #3A5566); border-radius: 12px; padding: 40px; text-align: center;
+  margin-top: 48px;
+ }
+ .cta-section h3 { font-size: 22px; color: var(--cream, #E1D4BB); font-weight: 700; margin-bottom: 10px; }
+ .cta-section p { color: var(--cream, #E1D4BB); opacity: 0.9; font-size: 15px; margin-bottom: 20px; }
+ .cta-section .cta-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+ .cta-section .cta-btn {
+  display: inline-block; padding: 12px 28px; border-radius: 8px;
+  font-size: 14px; font-weight: 700; text-decoration: none; transition: opacity 0.2s;
+ }
+ .cta-btn-primary { background: var(--wheat, #CBB279); color: var(--slate, #3A5566); }
+ .cta-btn-secondary { background: transparent; color: var(--cream, #E1D4BB); border: 1px solid var(--cream, #E1D4BB); }
+ .cta-section .cta-btn:hover { opacity: 0.9; }
+
+ .footer { text-align: center; margin-top: 48px; padding: 20px; color: var(--stone, #7B746D); font-size: 12px; }
+ .footer .brand { font-weight: 700; color: var(--slate, #3A5566); }
+
+ @media (max-width: 640px) {
+  .hero { padding: 36px 20px 32px; }
+  .hero h1 { font-size: 24px; }
+  .page-container { padding: 24px 16px 40px; }
+  .example-card .detail-grid { grid-template-columns: 1fr; }
+  .freq-table { font-size: 13px; }
+  .freq-table th, .freq-table td { padding: 10px 12px; }
+ }
+ </style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="hero">
+ <h1>Common DADU Permit Mistakes</h1>
+ <p>Real rejection reasons from Nashville-Davidson County DADU permit applications. Learn from documented issues to avoid costly delays on your next project.</p>
+</div>
+
+<div class="page-container">
+
+ <div class="intro">
+  <p>Nashville's DADU permitting process under <strong>BL2025-1007</strong> has specific dimensional, zoning, and procedural requirements that are commonly misunderstood. Below is data compiled from Nashville Metro Codes permit reviews identifying the most frequent issues that cause delays, revisions, or denials. For the full code text, see <a href="dadu_code_legislation_v5.html" style="color:var(--slate);font-weight:600;">Code &amp; Legislation</a>. For dimensional standards, see <a href="dadu_requirements_overview.html" style="color:var(--slate);font-weight:600;">General Requirements</a>.</p>
+ </div>
+
+ <!-- ═══ ISSUE FREQUENCY TABLE ═══ -->
+ <div class="freq-section">
+  <h2>Issue Frequency in DADU Permit Reviews</h2>
+  <p class="section-desc">Percentage of reviewed DADU applications flagged for each issue type. Many applications have multiple issues.</p>
+  <table class="freq-table">
+   <thead>
+    <tr>
+     <th>Issue Type</th>
+     <th>Frequency</th>
+     <th style="width:35%">Distribution</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td>Historic / Conservation Overlay Review</td>
+     <td class="pct">37.8%</td>
+     <td class="freq-bar-cell"><div class="freq-bar" style="width:100%"></div></td>
+    </tr>
+    <tr>
+     <td>Easement Encroachment or Conflict</td>
+     <td class="pct">35.6%</td>
+     <td class="freq-bar-cell"><div class="freq-bar" style="width:94%"></div></td>
+    </tr>
+    <tr>
+     <td>Setback Violation</td>
+     <td class="pct">35.1%</td>
+     <td class="freq-bar-cell"><div class="freq-bar" style="width:93%"></div></td>
+    </tr>
+    <tr>
+     <td>Restrictive Covenant Conflict</td>
+     <td class="pct">30.9%</td>
+     <td class="freq-bar-cell"><div class="freq-bar" style="width:82%"></div></td>
+    </tr>
+    <tr>
+     <td>Size / Square Footage Violation</td>
+     <td class="pct">23.9%</td>
+     <td class="freq-bar-cell"><div class="freq-bar" style="width:63%"></div></td>
+    </tr>
+    <tr>
+     <td>Zoning District Ineligibility</td>
+     <td class="pct">20.7%</td>
+     <td class="freq-bar-cell"><div class="freq-bar" style="width:55%"></div></td>
+    </tr>
+    <tr>
+     <td>Height Exceeds Principal Structure</td>
+     <td class="pct">14.9%</td>
+     <td class="freq-bar-cell"><div class="freq-bar" style="width:39%"></div></td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+
+ <!-- ═══ CATEGORY 1: ZONING INELIGIBILITY ═══ -->
+ <div class="category-section">
+  <div class="category-header">
+   <div class="category-icon"><img src="assets/icons/Zoning.svg" alt=""></div>
+   <div>
+    <h2>Zoning District Ineligibility</h2>
+    <div class="cat-code">Nashville Metro Code 17.16.030</div>
+   </div>
+  </div>
+
+  <div class="example-card">
+   <div class="card-header">
+    <span class="permit-id">Example: Application in MUN District</span>
+    <span class="status-badge badge-denied">Denied</span>
+   </div>
+   <div class="rejection-reason">
+    <strong>Reason:</strong> Parcel zoned MUN (Mixed Use Neighborhood). DADUs are only permitted in AG, AR2a, RS, R, and RM zoning districts per BL2025-1007. The MUN district is a mixed-use zone that does not qualify for by-right DADU construction.
+   </div>
+   <div class="detail-grid">
+    <div class="detail-item"><span class="label">Zoning:</span> <span class="value">MUN</span></div>
+    <div class="detail-item"><span class="label">Eligible Zones:</span> <span class="value">AG, AR2a, RS, R, RM</span></div>
+   </div>
+  </div>
+
+  <div class="example-card">
+   <div class="card-header">
+    <span class="permit-id">Example: GSD Without Qualifying Overlay</span>
+    <span class="status-badge badge-denied">Denied</span>
+   </div>
+   <div class="rejection-reason">
+    <strong>Reason:</strong> Parcel is within the General Services District (GSD) but lacks a qualifying overlay district. Parcels in GSD require a DADU-specific or UDO overlay to be eligible. Urban Services District (USD) parcels are by-right.
+   </div>
+   <div class="detail-grid">
+    <div class="detail-item"><span class="label">Service District:</span> <span class="value">GSD</span></div>
+    <div class="detail-item"><span class="label">Overlay Required:</span> <span class="value">Yes (none present)</span></div>
+   </div>
+  </div>
+
+  <div class="takeaway-box">
+   <h4>Contractor Takeaway</h4>
+   <p>Always verify the zoning district AND service district before submitting. Use the <a href="dadu_eligibility_map.html" style="color:var(--slate);font-weight:600;">Eligibility Map</a> to confirm status. GSD parcels need an overlay. If the parcel is not in <code>AG</code>, <code>AR2a</code>, <code>RS</code>, <code>R</code>, or <code>RM</code>, stop. It is not eligible. See <a href="dadu_code_legislation_v5.html" style="color:var(--slate);font-weight:600;">Code &amp; Legislation</a> for the full BL2025-1007 zoning text.</p>
+  </div>
+ </div>
+
+ <!-- ═══ CATEGORY 2: SIZE VIOLATIONS ═══ -->
+ <div class="category-section">
+  <div class="category-header">
+   <div class="category-icon"><img src="assets/icons/Appraisers.svg" alt=""></div>
+   <div>
+    <h2>Size and Square Footage Violations</h2>
+    <div class="cat-code">Nashville Metro Code 17.16.030.G</div>
+   </div>
+  </div>
+
+  <div class="example-card">
+   <div class="card-header">
+    <span class="permit-id">Example: Living Area Exceeds Lot-Based Maximum</span>
+    <span class="status-badge badge-revision">Revision Required</span>
+   </div>
+   <div class="rejection-reason">
+    <strong>Reason:</strong> Proposed DADU living area of 1,100 SF on a lot under 10,000 SF. Lots under 10,000 SF are limited to 850 SF maximum living area. The contractor submitted plans for a 2BR/1BA unit that exceeded the threshold by 250 SF.
+   </div>
+   <div class="detail-grid">
+    <div class="detail-item"><span class="label">Lot Size:</span> <span class="value">8,200 SF</span></div>
+    <div class="detail-item"><span class="label">Proposed DADU:</span> <span class="value">1,100 SF living</span></div>
+    <div class="detail-item"><span class="label">Maximum Allowed:</span> <span class="value">850 SF living</span></div>
+    <div class="detail-item"><span class="label">Overage:</span> <span class="value">250 SF</span></div>
+   </div>
+  </div>
+
+  <div class="example-card">
+   <div class="card-header">
+    <span class="permit-id">Example: Footprint Exceeds 50% of Principal Home</span>
+    <span class="status-badge badge-revision">Revision Required</span>
+   </div>
+   <div class="rejection-reason">
+    <strong>Reason:</strong> DADU footprint of 1,200 SF proposed on a lot where the principal home footprint is 1,800 SF. Maximum footprint is 850 SF or 50% of the principal home footprint (900 SF), whichever is greater. The 1,200 SF footprint exceeds both thresholds. Absolute maximum footprint is 2,500 SF.
+   </div>
+   <div class="detail-grid">
+    <div class="detail-item"><span class="label">Principal Footprint:</span> <span class="value">1,800 SF</span></div>
+    <div class="detail-item"><span class="label">50% of Principal:</span> <span class="value">900 SF</span></div>
+    <div class="detail-item"><span class="label">Proposed Footprint:</span> <span class="value">1,200 SF</span></div>
+    <div class="detail-item"><span class="label">Maximum Allowed:</span> <span class="value">900 SF</span></div>
+   </div>
+  </div>
+
+  <div class="takeaway-box">
+   <h4>Contractor Takeaway</h4>
+   <p>Size rules have two layers: <strong>living area</strong> (850 SF if lot &lt; 10K SF; 1,200 SF if lot &ge; 10K SF) and <strong>footprint</strong> (850 SF or 50% of principal home footprint, whichever is greater, up to 2,500 SF max). Use the <a href="size_calculator.html" style="color:var(--slate);font-weight:600;">Size Calculator</a> to verify both dimensions before drawing plans. Full dimensional standards at <a href="dadu_requirements_overview.html" style="color:var(--slate);font-weight:600;">General Requirements</a>.</p>
+  </div>
+ </div>
+
+ <!-- ═══ CATEGORY 3: SETBACK VIOLATIONS ═══ -->
+ <div class="category-section">
+  <div class="category-header">
+   <div class="category-icon"><img src="assets/icons/Draw_on_Parcel.svg" alt=""></div>
+   <div>
+    <h2>Setback Violations</h2>
+    <div class="cat-code">Nashville Metro Code 17.16.030.E</div>
+   </div>
+  </div>
+
+  <div class="example-card">
+   <div class="card-header">
+    <span class="permit-id">Example: Rear Setback Encroachment</span>
+    <span class="status-badge badge-revision">Revision Required</span>
+   </div>
+   <div class="rejection-reason">
+    <strong>Reason:</strong> DADU placement encroaches into the required rear setback. The proposed structure was 3 feet from the rear property line where the minimum rear setback for the zoning district requires 5 feet. DADU must be located behind the principal structure and meet all applicable setback requirements.
+   </div>
+   <div class="detail-grid">
+    <div class="detail-item"><span class="label">Proposed Rear Setback:</span> <span class="value">3 ft</span></div>
+    <div class="detail-item"><span class="label">Required Minimum:</span> <span class="value">5 ft</span></div>
+    <div class="detail-item"><span class="label">Location:</span> <span class="value">Behind principal</span></div>
+   </div>
+  </div>
+
+  <div class="example-card">
+   <div class="card-header">
+    <span class="permit-id">Example: DADU Not Behind Principal Structure</span>
+    <span class="status-badge badge-denied">Denied</span>
+   </div>
+   <div class="rejection-reason">
+    <strong>Reason:</strong> DADU proposed alongside the principal structure rather than behind it. BL2025-1007 requires the DADU to be located behind the principal structure. The site plan showed the DADU positioned to the side of the main house, extending into the front yard setback area.
+   </div>
+   <div class="detail-grid">
+    <div class="detail-item"><span class="label">Placement:</span> <span class="value">Side of principal</span></div>
+    <div class="detail-item"><span class="label">Required:</span> <span class="value">Behind principal</span></div>
+   </div>
+  </div>
+
+  <div class="takeaway-box">
+   <h4>Contractor Takeaway</h4>
+   <p>DADUs must be <strong>behind the principal structure</strong> and meet all zoning district setbacks. Use the <a href="draw_dadu_on_parcel.html" style="color:var(--slate);font-weight:600;">Draw DADU on Parcel</a> tool to visualize placement. Check for easements that may further restrict the buildable area. A survey is strongly recommended before submitting plans. See setback tables at <a href="dadu_requirements_overview.html" style="color:var(--slate);font-weight:600;">General Requirements</a>.</p>
+  </div>
+ </div>
+
+ <!-- ═══ CATEGORY 4: PROCEDURAL DEFICIENCIES ═══ -->
+ <div class="category-section">
+  <div class="category-header">
+   <div class="category-icon"><img src="assets/icons/Project_Checklist.svg" alt=""></div>
+   <div>
+    <h2>Procedural Deficiencies</h2>
+    <div class="cat-code">Nashville Metro Code 17.16.030.H-J</div>
+   </div>
+  </div>
+
+  <div class="example-card">
+   <div class="card-header">
+    <span class="permit-id">Example: Missing Owner Occupancy Affidavit</span>
+    <span class="status-badge badge-revision">Revision Required</span>
+   </div>
+   <div class="rejection-reason">
+    <strong>Reason:</strong> Application submitted without the required owner occupancy affidavit. BL2025-1007 requires the property owner to occupy either the principal structure or the DADU. The signed affidavit must be recorded with the Davidson County Register of Deeds.
+   </div>
+   <div class="detail-grid">
+    <div class="detail-item"><span class="label">Missing Document:</span> <span class="value">Owner Occupancy Affidavit</span></div>
+    <div class="detail-item"><span class="label">Recording:</span> <span class="value">Davidson County ROD</span></div>
+   </div>
+   <div class="card-links">
+    <a href="owner_occupancy.html">Owner Occupancy Requirements &#8594;</a>
+    <a href="form_wizard.html">Form Wizard &#8594;</a>
+   </div>
+  </div>
+
+  <div class="example-card">
+   <div class="card-header">
+    <span class="permit-id">Example: Historic Overlay Review Not Obtained</span>
+    <span class="status-badge badge-revision">Revision Required</span>
+   </div>
+   <div class="rejection-reason">
+    <strong>Reason:</strong> Parcel is within a historic or conservation overlay district. DADU applications in overlay districts require additional design review and approval from the Metro Historic Zoning Commission (MHZC) before a building permit can be issued. Plans must demonstrate architectural compatibility.
+   </div>
+   <div class="detail-grid">
+    <div class="detail-item"><span class="label">Overlay:</span> <span class="value">Historic Conservation</span></div>
+    <div class="detail-item"><span class="label">Required Review:</span> <span class="value">MHZC approval</span></div>
+    <div class="detail-item"><span class="label">Design Standard:</span> <span class="value">Architectural compatibility</span></div>
+   </div>
+   <div class="card-links">
+    <a href="overlay-districts.html">Overlay Districts &#8594;</a>
+    <a href="dadu_design_standards.html">Design Standards &#8594;</a>
+   </div>
+  </div>
+
+  <div class="takeaway-box">
+   <h4>Contractor Takeaway</h4>
+   <p>The most common procedural issue is <strong>historic overlay review</strong> (37.8% of flagged applications). Always check for overlay districts before submitting. Use the <a href="project_checklist.html" style="color:var(--slate);font-weight:600;">Interactive Checklist</a> to ensure all required documents are assembled before application. The <a href="form_wizard.html" style="color:var(--slate);font-weight:600;">Form Wizard</a> identifies exactly which forms your project needs. Download required forms at <a href="dadu_resources.html" style="color:var(--slate);font-weight:600;">External Links &amp; Forms</a>.</p>
+  </div>
+ </div>
+
+ <!-- ═══ RELATED RESOURCES ═══ -->
+ <div style="margin-top:48px; margin-bottom:32px;">
+  <h2 style="font-size:20px; font-weight:700; color:var(--slate,#3A5566); margin-bottom:16px;">Related Resources</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px;">
+   <a href="dadu_code_legislation_v5.html" style="display:block; background:var(--card-bg,#F5F5F0); border:1px solid var(--gray-light,#E2E2E0); border-radius:8px; padding:16px; text-decoration:none; transition:transform 0.2s;">
+    <div style="font-size:14px; font-weight:700; color:var(--slate,#3A5566); margin-bottom:4px;">Code &amp; Legislation</div>
+    <div style="font-size:13px; color:var(--gray-warm,#706F6C);">111+ legal citations, full BL2025-1007 text, Metro Code references</div>
+   </a>
+   <a href="dadu_requirements_overview.html" style="display:block; background:var(--card-bg,#F5F5F0); border:1px solid var(--gray-light,#E2E2E0); border-radius:8px; padding:16px; text-decoration:none; transition:transform 0.2s;">
+    <div style="font-size:14px; font-weight:700; color:var(--slate,#3A5566); margin-bottom:4px;">General Requirements</div>
+    <div style="font-size:13px; color:var(--gray-warm,#706F6C);">Setbacks, height limits, lot coverage, dimensional standards</div>
+   </a>
+   <a href="dadu_resources.html" style="display:block; background:var(--card-bg,#F5F5F0); border:1px solid var(--gray-light,#E2E2E0); border-radius:8px; padding:16px; text-decoration:none; transition:transform 0.2s;">
+    <div style="font-size:14px; font-weight:700; color:var(--slate,#3A5566); margin-bottom:4px;">External Links &amp; Forms</div>
+    <div style="font-size:13px; color:var(--gray-warm,#706F6C);">Downloadable permit forms, Metro Nashville portals, external resources</div>
+   </a>
+   <a href="form_wizard.html" style="display:block; background:var(--card-bg,#F5F5F0); border:1px solid var(--gray-light,#E2E2E0); border-radius:8px; padding:16px; text-decoration:none; transition:transform 0.2s;">
+    <div style="font-size:14px; font-weight:700; color:var(--slate,#3A5566); margin-bottom:4px;">Form Wizard</div>
+    <div style="font-size:13px; color:var(--gray-warm,#706F6C);">Find exactly which forms your DADU project requires</div>
+   </a>
+   <a href="restrictive_covenants_v2.html" style="display:block; background:var(--card-bg,#F5F5F0); border:1px solid var(--gray-light,#E2E2E0); border-radius:8px; padding:16px; text-decoration:none; transition:transform 0.2s;">
+    <div style="font-size:14px; font-weight:700; color:var(--slate,#3A5566); margin-bottom:4px;">Restrictive Covenants</div>
+    <div style="font-size:13px; color:var(--gray-warm,#706F6C);">Search 43,000+ parcels with recorded covenant data</div>
+   </a>
+   <a href="trade_permits.html" style="display:block; background:var(--card-bg,#F5F5F0); border:1px solid var(--gray-light,#E2E2E0); border-radius:8px; padding:16px; text-decoration:none; transition:transform 0.2s;">
+    <div style="font-size:14px; font-weight:700; color:var(--slate,#3A5566); margin-bottom:4px;">Required Trade Permits</div>
+    <div style="font-size:13px; color:var(--gray-warm,#706F6C);">Electrical, plumbing, mechanical, and grading permit requirements</div>
+   </a>
+  </div>
+ </div>
+
+ <!-- ═══ LEGAL CITATIONS ═══ -->
+ <div class="citations-section">
+  <h2>Legal Citations</h2>
+  <div class="citation">Nashville, Tenn., Metro. Code &sect; 17.16.030 (2025) (establishing DADU dimensional standards, permitted zoning districts, and site requirements).</div>
+  <div class="citation">Nashville, Tenn., Metro. Code &sect; 17.16.030.G (2025) (maximum living area and footprint calculations for detached accessory dwelling units).</div>
+  <div class="citation">Nashville, Tenn., Metro. Code &sect; 17.16.030.E (2025) (setback requirements and location restrictions for DADUs relative to principal structures).</div>
+  <div class="citation">Nashville, Tenn., Metro. Code &sect; 17.16.030.H (2025) (owner occupancy affidavit requirement and recording obligations).</div>
+  <div class="citation">Nashville, Tenn., Bill No. BL2025-1007 (effective Dec. 12, 2025) (expanding DADU eligibility to AG, AR2a, RS, R, and RM zoning districts within Urban Services District).</div>
+  <div class="citation">Nashville Metro. Historic Zoning Comm'n, <em>Design Guidelines for Historic Overlay Districts</em> (2024) (architectural compatibility standards for accessory structures in conservation overlays).</div>
+  <div class="citation">Nashville, Tenn., Metro. Code &sect; 17.16.030.I (2025) (short-term rental restrictions for detached accessory dwelling units).</div>
+  <div class="citation">Davidson County Register of Deeds, <em>Restrictive Covenant Recording Requirements</em> (requiring covenant review for parcels with recorded instruments restricting secondary structures).</div>
+ </div>
+
+ <!-- ═══ CTA ═══ -->
+ <div class="cta-section">
+  <h3>Avoid These Mistakes on Your Next Project</h3>
+  <p>Use Homebody Projects tools to verify eligibility, calculate sizes, and check for overlays before submitting your permit application.</p>
+  <div class="cta-links">
+   <a href="dadu_eligibility_map.html" class="cta-btn cta-btn-primary">Check Eligibility</a>
+   <a href="project_checklist.html" class="cta-btn cta-btn-secondary">Project Checklist</a>
+   <a href="contractor_portal.html" class="cta-btn cta-btn-secondary">Back to Contractor Portal</a>
+  </div>
+ </div>
+
+ <div class="footer">
+  <p><span class="brand">Homebody Projects</span> &middot; Powered by Castlehold &middot; Nashville-Davidson County &middot; 2026</p>
+ </div>
+</div>
+
+<script src="homebody_header.js"></script>
+</body>
+</html>

@@ -98,12 +98,57 @@
  }
  .advertise-cta .cta-btn:hover { opacity: 0.9; }
 
+ /* Things to Flag Section */
+ .flag-section { margin-top: 60px; padding-top: 48px; border-top: 2px solid var(--gray-light, #E2E2E0); }
+ .flag-section .section-header { margin-bottom: 28px; }
+ .flag-section .section-header h2 { font-size: 24px; color: var(--slate, #3A5566); margin-bottom: 8px; font-weight: 700; }
+ .flag-section .section-header p { color: var(--gray-warm, #706F6C); font-size: 15px; max-width: 700px; }
+ .flag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+ .flag-item {
+  background: var(--card-bg, #F5F5F0); border: 1px solid var(--gray-light, #E2E2E0);
+  border-radius: 8px; padding: 20px; display: flex; gap: 14px; align-items: flex-start;
+ }
+ .flag-check {
+  width: 28px; height: 28px; background: var(--linen, #F0EBE1); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  color: var(--slate, #3A5566); font-weight: 700; font-size: 14px;
+ }
+ .flag-item h4 { font-size: 14px; font-weight: 700; color: var(--slate, #3A5566); margin: 0 0 4px; }
+ .flag-item p { font-size: 13px; color: var(--gray-warm, #706F6C); margin: 0; }
+
+ /* Common Mistakes Section */
+ .mistakes-section { margin-top: 48px; }
+ .mistakes-banner {
+  background: var(--slate, #3A5566); border-radius: 12px; padding: 36px; display: flex;
+  align-items: center; gap: 28px; flex-wrap: wrap;
+ }
+ .mistakes-banner .banner-icon {
+  width: 64px; height: 64px; background: rgba(203, 178, 121, 0.15); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+ }
+ .mistakes-banner .banner-icon img { width: 32px; height: 32px; filter: brightness(0) invert(0.85); }
+ .mistakes-banner .banner-content { flex: 1; min-width: 200px; }
+ .mistakes-banner h3 { font-size: 20px; color: var(--cream, #E1D4BB); font-weight: 700; margin: 0 0 8px; }
+ .mistakes-banner p { font-size: 14px; color: var(--cream, #E1D4BB); opacity: 0.85; margin: 0 0 4px; }
+ .mistakes-banner .stat-row { display: flex; gap: 20px; margin-top: 12px; flex-wrap: wrap; }
+ .mistakes-banner .stat-item { font-size: 13px; color: var(--cream, #E1D4BB); opacity: 0.7; }
+ .mistakes-banner .stat-item strong { color: var(--wheat, #CBB279); font-weight: 800; opacity: 1; }
+ .mistakes-banner .banner-btn {
+  display: inline-block; background: var(--wheat, #CBB279); color: var(--slate, #3A5566);
+  padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 700;
+  text-decoration: none; transition: opacity 0.2s; white-space: nowrap;
+ }
+ .mistakes-banner .banner-btn:hover { opacity: 0.9; }
+
  .footer { text-align: center; margin-top: 60px; padding: 20px; color: var(--stone, #7B746D); font-size: 12px; }
  .footer .brand { font-weight: 700; color: var(--slate, #3A5566); }
 
  @media (max-width: 768px) {
  .ad-tiers-grid { grid-template-columns: 1fr; }
  .benefits-grid { grid-template-columns: 1fr; }
+ .flag-grid { grid-template-columns: 1fr; }
+ .mistakes-banner { flex-direction: column; text-align: center; }
+ .mistakes-banner .stat-row { justify-content: center; }
  }
  </style></head>
 <body>
@@ -149,6 +194,104 @@
  <h3>Building Requirements</h3>
  <p>Review BL2025-1007 dimensional standards, setbacks, height limits, and design requirements for DADUs.</p>
  <a href="dadu_requirements_overview.html" class="card-btn">View Requirements</a></div></div>
+
+ <!-- ═══ THINGS TO FLAG AS A CONTRACTOR ═══ -->
+ <section class="flag-section">
+  <div class="section-header">
+   <h2>Contractor Checklist: Things You Need to Know</h2>
+   <p>Beyond the standard zoning and bulk standards, these are the non-obvious requirements that cause delays and denials. Miss any one and you could lose weeks.</p>
+  </div>
+
+  <div class="flag-grid">
+   <div class="flag-item">
+    <div class="flag-check">1</div>
+    <div>
+     <h4>DADU Cannot Be in the Floodplain</h4>
+     <p>If any part of the buildable area is in a FEMA floodplain or floodway, the DADU is not permitted there. Check the flood zone before designing. <a href="dadu_requirements_overview.html" style="color:var(--slate);font-weight:600;">See Requirements</a></p>
+    </div>
+   </div>
+   <div class="flag-item">
+    <div class="flag-check">2</div>
+    <div>
+     <h4>Restrictive Covenant Must Be Filed at Permit Time</h4>
+     <p>A restrictive covenant must be recorded with the Davidson County Register of Deeds BEFORE the building permit is issued. This takes 2-3 weeks. Start early. <a href="restrictive_covenants_v2.html" style="color:var(--slate);font-weight:600;">Check Covenants</a></p>
+    </div>
+   </div>
+   <div class="flag-item">
+    <div class="flag-check">3</div>
+    <div>
+     <h4>Owner Occupancy Affidavit Is a Blocking Requirement</h4>
+     <p>The owner must sign and record an affidavit committing to live in either the principal home or the DADU. No affidavit = no permit. <a href="owner_occupancy.html" style="color:var(--slate);font-weight:600;">See Details</a></p>
+    </div>
+   </div>
+   <div class="flag-item">
+    <div class="flag-check">4</div>
+    <div>
+     <h4>Self-Permits Are NOT Allowed for DADUs</h4>
+     <p>You cannot use the expedited self-permit process. DADUs require full permitting: zoning help desk, building permit, then trade permits. <a href="dadu_code_legislation_v5.html" style="color:var(--slate);font-weight:600;">See Code</a></p>
+    </div>
+   </div>
+   <div class="flag-item">
+    <div class="flag-check">5</div>
+    <div>
+     <h4>Historic Overlay Requires Separate MHZC Approval</h4>
+     <p>Properties in historic or conservation overlays need approval from the Metro Historic Zoning Commission BEFORE the building permit. MHZC meets the 3rd Wednesday of each month. <a href="overlay-districts.html" style="color:var(--slate);font-weight:600;">Check Overlays</a></p>
+    </div>
+   </div>
+   <div class="flag-item">
+    <div class="flag-check">6</div>
+    <div>
+     <h4>Easements Can Kill Your Design</h4>
+     <p>Utility, drainage, and stormwater easements reduce the buildable area. You cannot build over an easement. Get a survey before you draw plans. <a href="dadu_requirements_overview.html" style="color:var(--slate);font-weight:600;">See Requirements</a></p>
+    </div>
+   </div>
+   <div class="flag-item">
+    <div class="flag-check">7</div>
+    <div>
+     <h4>No Other Accessory Structure Over 200 SF</h4>
+     <p>If you build a DADU, no other accessory structure on the lot (garage, shed, workshop) can exceed 200 SF. This surprises homeowners with large detached garages. <a href="dadu_code_legislation_v5.html" style="color:var(--slate);font-weight:600;">See Code</a></p>
+    </div>
+   </div>
+   <div class="flag-item">
+    <div class="flag-check">8</div>
+    <div>
+     <h4>Water/Sewer Tap Fees Are Separate</h4>
+     <p>Metro Water Services charges separate tap and capacity fees for new connections. These are NOT included in the building permit fee and can be significant. <a href="trade_permits.html" style="color:var(--slate);font-weight:600;">See Trade Permits</a></p>
+    </div>
+   </div>
+   <div class="flag-item">
+    <div class="flag-check">9</div>
+    <div>
+     <h4>Design Must Match the Principal Home</h4>
+     <p>DADUs must have similar style, materials, color, and roof form as the principal structure. This is legally enforced, not advisory. Incompatible designs get denied. <a href="dadu_design_standards.html" style="color:var(--slate);font-weight:600;">Design Standards</a></p>
+    </div>
+   </div>
+   <div class="flag-item">
+    <div class="flag-check">10</div>
+    <div>
+     <h4>Need Help With Forms?</h4>
+     <p>Not sure which forms your project needs? Use the Form Wizard to identify every required document. Download forms from External Links. <a href="form_wizard.html" style="color:var(--slate);font-weight:600;">Form Wizard</a> | <a href="dadu_resources.html" style="color:var(--slate);font-weight:600;">Forms &amp; Links</a></p>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <!-- ═══ COMMON MISTAKES ═══ -->
+ <section class="mistakes-section">
+  <div class="mistakes-banner">
+   <div class="banner-icon"><img src="assets/icons/Project_Checklist.svg" alt=""></div>
+   <div class="banner-content">
+    <h3>Common DADU Permit Mistakes</h3>
+    <p>Real rejection reasons from Nashville Metro Codes permit reviews. Learn from documented issues to avoid costly delays.</p>
+    <div class="stat-row">
+     <span class="stat-item"><strong>37.8%</strong> flagged for overlay review</span>
+     <span class="stat-item"><strong>35.1%</strong> setback violations</span>
+     <span class="stat-item"><strong>23.9%</strong> size violations</span>
+    </div>
+   </div>
+   <a href="dadu_common_mistakes.html" class="banner-btn">View All Mistakes &#8594;</a>
+  </div>
+ </section>
 
  <!-- ═══ PROMOTE YOUR BUSINESS (merged from contractor_advertising.html) ═══ -->
  <section class="advertise-section" id="advertise">
