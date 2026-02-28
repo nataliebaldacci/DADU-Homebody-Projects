@@ -68,10 +68,10 @@
     '        </a>' +
     '        <div class="dropdown-menu mega-menu mega-menu-2" id="explore-dropdown" role="menu">' +
              col('Area_Maps_and_Visual_layers.svg', 'Interactive Maps',
-                 item('dadu_eligibility_map.html', 'Zoning.svg', 'Eligibility Map') +
+                 item('dadu_eligibility_map.html', 'Parcel Search.svg', 'Eligibility Map') +
                  item('dadu_near_me_v3.html', 'Neighbors.svg', 'DADUs Near Me') +
                  item('permit_explorer.html', 'Permit_Explorer.svg', 'Permit Explorer Map') +
-                 item('existing_dadus_map.html', 'ADU.png', 'Existing DADUs')
+                 item('existing_dadus_map.html', 'Zoning.svg', 'Existing DADUs')
              ) +
              col('Dashboard.svg', 'Dashboards',
                  item('permit_activity_dashboard.html', 'Permit_Activity.svg', 'Permit Activity') +
