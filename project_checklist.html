@@ -4,7 +4,8 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>DADU Project Checklist | Homebody Projects</title>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="homebody_shared.css">
  <style>
  :root {
  --navy: #3A5566;
@@ -20,9 +21,9 @@
  --text-light: #666666;
  --text-muted: #999999;
  --border: #e0e0e0;
- --success: #22c55e;
- --warning: #f59e0b;
- --error: #ef4444;
+ --success: #406A64;
+ --warning: #918A83;
+ --error: #B58676;
  }
 
  * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,36 +36,27 @@
  min-height: 100vh;
  }
 
- .nav {
+ /* Hero */
+ .checklist-hero {
  background: var(--navy);
- padding: 16px 24px;
- display: flex;
- align-items: center;
- justify-content: space-between;
+ padding: 56px 24px 48px;
+ text-align: center;
  }
-
- .nav-logo {
- display: flex;
- align-items: center;
- gap: 12px;
- text-decoration: none;
- color: white;
+ .checklist-hero h1 {
+ font-family: 'Source Serif 4', Georgia, serif;
+ font-weight: 700;
+ font-style: italic;
+ font-size: 2.4rem;
+ color: #E1D4BB;
+ margin-bottom: 12px;
  }
-
- .nav-logo-icon {
- width: 40px;
- height: 40px;
- background: var(--terracotta);
- border-radius: 10px;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 20px;
+ .checklist-hero p {
+ color: #E1D4BB;
+ font-size: 1.05rem;
+ max-width: 580px;
+ margin: 0 auto;
+ opacity: 0.92;
  }
-
- .nav-logo-text { font-weight: 700; font-size: 18px; }
- .nav-back { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; }
- .nav-back:hover { color: white; }
 
  .container {
  max-width: 900px;
@@ -420,27 +412,16 @@
  }
 
  .footer a { color: var(--terracotta); text-decoration: none; }</style>
- <link rel="stylesheet" href="homebody_shared.css"></head>
-<body>
-<!-- Shared Header - Castlehold -->
+</head>
+<body class="dark-nav">
 <div id="site-header"></div>
 
-<!-- End Shared Header -->
-
-
- <nav class="nav">
- <a href="index.html" class="nav-logo">
- <div class="nav-logo-icon">
- <img src="assets/icons/ADU.png" alt="Homebody Projects" width="42" height="42" style="object-fit:contain;"></div>
- <div class="nav-logo-text">
- <span class="nav-logo-title">Homebody Projects</span>
- <span class="nav-logo-subtitle">Nashville DADU Platform</span></div></a>
- <a href="index.html" class="nav-back">Back to Home</a></nav>
+<section class="checklist-hero">
+ <h1>DADU Project Checklist</h1>
+ <p>Track your Nashville DADU project from initial planning through final inspection. Check off tasks as you go.</p>
+</section>
 
  <div class="container">
- <div class="page-header">
- <h1 class="page-title">DADU Project Checklist</h1>
- <p class="page-subtitle">Track your Nashville DADU project from initial planning through final inspection</p></div>
 
  <!-- Progress Card -->
  <div class="progress-card">
@@ -466,7 +447,7 @@
  <div class="checklist-section" data-section="planning">
  <div class="section-header" onclick="toggleSection(this)">
  <div class="section-header-left">
- <div class="section-icon planning"></div>
+ <div class="section-icon planning"><img src="assets/icons/Parcel Search.svg" alt="" style="width:24px;height:24px;filter:brightness(0) invert(1);"></div>
  <div class="section-title-group">
  <div class="section-title">Phase 1: Planning & Research</div>
  <div class="section-subtitle">Verify eligibility and understand requirements</div></div></div>
@@ -480,7 +461,7 @@
  <div class="item-content">
  <div class="item-title">Verify DADU eligibility for your property</div>
  <div class="item-description">Check that your property is in the Urban Services District (USD) and zoned R or RS. Verify lot size meets minimum requirements.</div>
- <a href="am_i_eligible.html" class="item-link">Use Eligibility Checker</a>
+ <a href="dadu_eligibility_map.html" class="item-link">Use Eligibility Map</a>
  <div class="item-meta">
  <span class="item-tag required">Required</span>
  <span class="item-tag time">~15 min</span></div></div></div>
@@ -500,7 +481,7 @@
  <div class="item-content">
  <div class="item-title">Review DADU size limits for your lot</div>
  <div class="item-description">Lots under 10,000 sqft: max 700 sqft living area, 750 sqft footprint. Lots 10,000+ sqft: max 850 sqft living area, 1,000 sqft footprint.</div>
- <a href="dadu_building_requirements.html" class="item-link">View Building Requirements</a>
+ <a href="dadu_requirements_overview.html" class="item-link">View Building Requirements</a>
  <div class="item-meta">
  <span class="item-tag required">Required</span></div></div></div>
  <div class="checklist-item" data-item="4">
@@ -534,7 +515,7 @@
  <div class="checklist-section" data-section="design">
  <div class="section-header" onclick="toggleSection(this)">
  <div class="section-header-left">
- <div class="section-icon design"></div>
+ <div class="section-icon design"><img src="assets/icons/Draw_DADU.svg" alt="" style="width:24px;height:24px;filter:brightness(0) invert(1);"></div>
  <div class="section-title-group">
  <div class="section-title">Phase 2: Design & Planning</div>
  <div class="section-subtitle">Create plans and hire your team</div></div></div>
@@ -558,7 +539,7 @@
  <div class="item-content">
  <div class="item-title">Hire an architect or designer</div>
  <div class="item-description">Work with a licensed architect or designer to create construction drawings that meet Nashville codes. Some contractors offer design-build services.</div>
- <a href="contractor_dashboard.html" class="item-link">Find Contractors</a>
+ <a href="contractor_marketplace.html" class="item-link">Find Contractors</a>
  <div class="item-meta">
  <span class="item-tag cost">$3,000-12,000</span>
  <span class="item-tag time">4-8 weeks</span></div></div></div>
@@ -576,7 +557,7 @@
  <div class="item-content">
  <div class="item-title">Get contractor quotes</div>
  <div class="item-description">Obtain at least 3 quotes from licensed contractors. Verify their license, insurance, and check references from previous DADU projects.</div>
- <a href="contractor_dashboard.html" class="item-link">View Top Contractors</a>
+ <a href="contractor_marketplace.html" class="item-link">View Top Contractors</a>
  <div class="item-meta">
  <span class="item-tag time">2-4 weeks</span></div></div></div>
  <div class="checklist-item" data-item="11">
@@ -592,7 +573,7 @@
  <div class="checklist-section" data-section="permits">
  <div class="section-header" onclick="toggleSection(this)">
  <div class="section-header-left">
- <div class="section-icon permits"></div>
+ <div class="section-icon permits"><img src="assets/icons/Permit_Explorer.svg" alt="" style="width:24px;height:24px;filter:brightness(0) invert(1);"></div>
  <div class="section-title-group">
  <div class="section-title">Phase 3: Permits & Approvals</div>
  <div class="section-subtitle">Submit applications and get approvals</div></div></div>
@@ -656,7 +637,7 @@
  <div class="checklist-section" data-section="construction">
  <div class="section-header" onclick="toggleSection(this)">
  <div class="section-header-left">
- <div class="section-icon construction"></div>
+ <div class="section-icon construction"><img src="assets/icons/Building_and_Construction.svg" alt="" style="width:24px;height:24px;filter:brightness(0) invert(1);"></div>
  <div class="section-title-group">
  <div class="section-title">Phase 4: Construction</div>
  <div class="section-subtitle">Build your DADU and pass inspections</div></div></div>
@@ -717,7 +698,7 @@
  <div class="checklist-section" data-section="final">
  <div class="section-header" onclick="toggleSection(this)">
  <div class="section-header-left">
- <div class="section-icon final"></div>
+ <div class="section-icon final"><img src="assets/icons/Eligibility_Check.svg" alt="" style="width:24px;height:24px;filter:brightness(0) invert(1);"></div>
  <div class="section-title-group">
  <div class="section-title">Phase 5: Final Steps</div>
  <div class="section-subtitle">Complete inspections and move in</div></div></div>
