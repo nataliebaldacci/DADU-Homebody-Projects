@@ -573,6 +573,23 @@
 
 <main class="main">
 
+  <!-- Embedded Permit Explorer Map -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">
+        <img src="assets/icons/Permit_Explorer.svg" alt="">
+        Permit Explorer Map
+      </h2>
+    </div>
+    <div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+      <iframe src="permit_explorer.html" style="width: 100%; height: 500px; border: none; display: block;" loading="lazy" title="Permit Explorer Map"></iframe>
+      <div style="padding: 16px 24px; border-top: 1px solid var(--gray-light); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+        <p style="font-size: 14px; color: var(--gray-warm); margin: 0;">Filter permits by type, date, status, contractor, cost, and square footage.</p>
+        <a href="permit_explorer.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; background: var(--wheat); color: var(--slate); border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap;">Open Full Permit Explorer <span>&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
   <!-- Recent Activity Feed -->
   <section class="section">
     <div class="section-header">
@@ -632,16 +649,6 @@
 
   </div>
 
-  <!-- Permit Explorer CTA -->
-  <section class="section">
-    <div style="background: var(--slate); border-radius: 16px; padding: 40px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
-      <div>
-        <h3 style="font-family: 'Source Serif 4', Georgia, serif; font-weight: 700; font-style: italic; font-size: 22px; color: #E1D4BB; margin-bottom: 8px;">Explore the Permit Map</h3>
-        <p style="color: rgba(225, 212, 187, 0.75); font-size: 14px; max-width: 500px;">Filter all Nashville building permits on an interactive map by type, date, status, contractor, cost, and square footage.</p>
-      </div>
-      <a href="permit_explorer.html" style="display: inline-block; padding: 14px 32px; background: #CBB279; color: #3A5566; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; white-space: nowrap;">Open Permit Explorer</a>
-    </div>
-  </section>
 
 </main>
 
